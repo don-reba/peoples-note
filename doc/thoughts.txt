@@ -1,0 +1,27 @@
+functionality needed
+	fast loading time
+	low memory footprint
+	offline notes
+	compressed audio
+	checkboxes
+	folder tracking
+	snapshot sizing
+original main screen buttons
+	text note
+	ink note
+	snapshot
+	audio note
+	upload file
+interface ideas
+	Awesome Note
+		displays different folders as vertical tabs
+			tabs span the width of the screen
+			maximized tab header contains controls
+				back
+				add note
+				add quick note
+			maximized tab footer contains controls
+				folder setting
+				search
+				view mode
+				sort by date or name
