@@ -449,50 +449,26 @@
 			<File
 				RelativePath=".\clientppc.rc"
 				>
-				<FileConfiguration
-					Name="Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Windows Mobile 6 Professional SDK (ARMV4I)"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\clientppc.rc2"
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\about.htm"
-			DeploymentContent="true"
+		<Filter
+			Name="HTML"
 			>
-		</File>
-		<File
-			RelativePath=".\main.htm"
-			DeploymentContent="true"
-			>
-		</File>
+			<File
+				RelativePath=".\html\about.htm"
+				DeploymentContent="true"
+				>
+			</File>
+			<File
+				RelativePath=".\html\main.htm"
+				DeploymentContent="true"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
