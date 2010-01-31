@@ -8,12 +8,8 @@
 #define IDR_MENU                        102
 #define IDS_OK                          103
 #define IDS_HELP                        104
-#define IDD_ABOUTBOX                    105
-#define IDD_ABOUTBOX_WIDE               106
 #define IDH_ABOUT                       130
-#define IDC_STATIC_1                    201
-#define IDC_STATIC_2                    202
-#define IDC_STATIC_3                    203
+#define IDH_MAIN                        131
 #define IDM_OK                          40000
 #define IDM_HELP                        40001
 #define IDM_HELP_ABOUT                  40002
@@ -24,7 +20,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110

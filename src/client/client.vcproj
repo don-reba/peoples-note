@@ -488,6 +488,11 @@
 			DeploymentContent="true"
 			>
 		</File>
+		<File
+			RelativePath=".\main.htm"
+			DeploymentContent="true"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
