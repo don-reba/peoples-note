@@ -7,7 +7,9 @@
 #define IDI_CLIENT                      101
 #define IDR_MENU                        102
 #define IDS_OK                          103
+#define IDS_MAIN_ACTION                 103
 #define IDS_HELP                        104
+#define IDS_MAIN_MENU                   104
 #define IDH_ABOUT                       130
 #define IDH_MAIN                        131
 #define IDM_OK                          40000

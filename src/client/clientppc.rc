@@ -106,8 +106,8 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_OK                  "OK"
-    IDS_HELP                "HELP"
+    IDS_MAIN_ACTION         "Notes"
+    IDS_MAIN_MENU           "Menu"
 END
 
 #endif    // English (U.S.) resources
