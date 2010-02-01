@@ -40,7 +40,7 @@ IDI_CLIENT              ICON                    "client.ico"
 
 IDR_MENU MENU 
 BEGIN
-    POPUP "Help"
+    POPUP "Menu"
     BEGIN
         MENUITEM "About",                       IDM_HELP_ABOUT
     END
