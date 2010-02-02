@@ -163,14 +163,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // Parse the menu selections:
             switch (wmId)
             {
-                case IDM_HELP_ABOUT:
+                case IDM_MENU_ABOUT:
                     // TODO
                     break;
-#ifdef WIN32_PLATFORM_PSPC
-                case IDM_OK:
+                case IDM_MENU_EXIT:
                     SendMessage (hWnd, WM_CLOSE, 0, 0);				
                     break;
-#endif // WIN32_PLATFORM_PSPC
                 default:
                     return DefWindowProc(hWnd, message, wParam, lParam);
             }

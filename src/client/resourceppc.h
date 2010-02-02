@@ -7,14 +7,16 @@
 #define IDI_CLIENT                      101
 #define IDR_MENU                        102
 #define IDS_OK                          103
-#define IDS_MAIN_ACTION                 103
+#define IDS_SYNC                        103
 #define IDS_HELP                        104
 #define IDS_MAIN_MENU                   104
 #define IDH_ABOUT                       130
 #define IDH_MAIN                        131
-#define IDM_OK                          40000
-#define IDM_HELP                        40001
-#define IDM_HELP_ABOUT                  40002
+#define IDM_SYNC                        32771
+#define ID_ACCELERATOR32772             32772
+#define IDM_MENU_EXIT                   32773
+#define IDM_MENU_ABOUT                  32774
+#define IDM_MENU                        32775
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -23,7 +25,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        132
-#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_COMMAND_VALUE         32776
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

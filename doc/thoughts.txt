@@ -6,22 +6,113 @@ functionality needed
 	checkboxes
 	folder tracking
 	snapshot sizing
+	search
+		EN has its own search facility
+			only available online
+		specifications are available
+			so it could be implemented offline also
+		sorting
 original main screen buttons
 	text note
 	ink note
 	snapshot
 	audio note
 	upload file
-interface ideas
-	Awesome Note
-		displays different folders as vertical tabs
-			tabs span the width of the screen
-			maximized tab header contains controls
-				back
-				add note
-				add quick note
-			maximized tab footer contains controls
-				folder setting
+tech needed
+	UI
+		HTMLayout
+	DTD checking
+		only needed for testing
+	THTTP
+	ENML XML->HTML convertion
+		TinyXML
+		pugixml
+		RapidXML
+need to figure out the overall design
+	highest level features
+		view notes
+			subsets of notes
+			with sorting
+		create notes
+			text at first
+			photo, ink, audio, files later
+		modify todo notes
+			by checking/unchecking
+		find notes
+		switch notebooks
+		sync
+	required functionality
+		UI to view a set of notes
+		UI to view a note
+		UI to choose a method of note creation
+		note creation UI
+		note storage and retrieval
+		note synchronization
+	runtime design
+		load main UI first
+		delay-load the remaining functionality
+		nah, not until profiling shows it to be a bottleneck
+	UI design
+		log in
+			get username and password
+			go to the main screen
+			action
+				OK/Cancel
+		main screen
+			create notes
+			action
+				Notes
+			menu
+				About
+				Logout
+				Exit
+		notes view
+			shows most recent notes
+			options
 				search
-				view mode
-				sort by date or name
+				sort
+					HTMLayoutSortElements
+				reset
+			actions
+				New note/Sync
+		sync
+			collapsible
+			list sync events
+				status
+				progress
+	data storage design
+		store notes and settings
+		EN has a flat data model
+		so, we can make tables directly from structs
+		unsynced notes
+			should be stored with the rest
+			but marked as asynced
+		at sync
+			query the database for unsynced notes
+			replace them with synced ones received from the server
+		full-text search
+			provided by the FTS3 extension of SQLite
+			used by the Windows EN client
+	synchronization design
+		sync is comprised of several tasks
+			download new server notes
+				getSyncState/getSyncChunk/getNoteContent/getResourceData
+				resolve conflicts
+			upload new local notes
+				the server provides replacements for the local notes
+				resolve conflicts
+		sync connections
+			USB always
+			9G never
+			WiFi probably
+		manual sync
+			needed for searching server notes
+			uploading local notes
+			either way, it is only needed in the notes screen
+		fault tolerance
+			downloading notes
+				via SQLite transactions
+			uploading notes
+				create a log before uploading
+				clear it on success
+				try to repeat on failure

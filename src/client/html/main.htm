@@ -3,39 +3,126 @@
 		<style>
 			body
 			{
-				margin:     0px;
-				padding:    0px;
-				text-align: center;
+				background-color: silver;
+				margin:           0px;
+				padding:          0px;
+				text-align:       center;
 			}
-			button
+			#search-frame
+			{
+				background-color: white;
+				border:           2px solid black;
+				margin:           10px;
+				padding:          4px;
+				width:            100%%;
+			}
+			#search-box
 			{
 				background-color: white;
 				background-image: none;
-				border:           1px solid black;
-				color:            black;
-				font-size:        36;
-				margin:           12px 0px;
-				outline-width:    0px;
-				padding:          0px;
-				text-align:       center;
+				border:           0px;
+				font-height:      1em;
+				margin:           0px;
 				width:            100%%;
 			}
-			button:active
+			#search-button
 			{
-				background-color: rgb(153, 180, 209);
+				background-color: silver;
+				background-image: none;
+				border:           0px;
+				height:           100%%;
+				margin:           0px;
+				padding:          0px;
+				width:            35px;
 			}
-			h1
+			#note-list
 			{
-				font-size:  24;
-				text-align: left;
+				background-color: white;
+				background-image: none;
+				border:           none;
+				border-top:       1px solid black;
+				height:           100%%;
+				padding:          0px;
+				text-align:       left;
+				width:            100%%;
+			}
+			#note-list .note
+			{
+				border-top: 1px solid black;
+				padding:    0px 10px;
+			}
+			#note-list option
+			{
+			}
+			#note-list .note #thumb
+			{
+				background-color: silver;
+				height:           100px;
+				margin:           0px 4px 0px 0px;
+				width:            162px;
+			}
+			#new-note-note
+			{
+				padding: 10px;
+			}
+			#new-text, #new-voice, #new-photo, #new-file
+			{
+				background-color: silver;
+				background-image: none;
+				height:           48px;
+				margin:           0px 8px;
+				padding:          0px;
+				vertical-align:   middle;
+				width:            48px;
 			}
 		</style>
 	</head>
 	<body>
-		<h1>Create new note:</h1>
-		<button name="NewTextNote">Text</button><br>
-		<button name="NewPhotoNote">Snapshot</button><br>
-		<button name="NewAudioNote">Audio</button><br>
-		<button name="NewFileNote">Upload a file</button><br>
+		<div id="search-frame">
+			<input id="search-box" /><button id="search-button" />
+		</div>
+		<widget type="select" id="note-list">
+			<option id="new-note-note">Create note: <button id="new-text" /><button id="new-voice" /><button id="new-photo" /><button id="new-file" /></option>
+			<option class="note">
+				<table>
+					<tr>
+						<td rowspan="3"><div id="thumb" /></td>
+						<td>Note 1</td>
+					</tr>
+					<tr><td>Tags</td></tr>
+					<tr><td>2010-02-01 18:36</td></tr>
+				</table>
+			</option>
+			<option class="note">
+				<table>
+					<tr>
+						<td rowspan="3"><div id="thumb" /></td>
+						<td>Note 2</td>
+					</tr>
+					<tr><td>Tags</td></tr>
+					<tr><td>2010-02-01 18:38</td></tr>
+				</table>
+			</option>
+			<option class="note">
+				<table>
+					<tr>
+						<td rowspan="3"><div id="thumb" /></td>
+						<td>Note 3</td>
+					</tr>
+					<tr><td>Tags</td></tr>
+					<tr><td>2010-02-01 18:40</td></tr>
+				</table>
+			</option>
+			<option class="note">
+				<table>
+					<tr>
+						<td rowspan="3"><div id="thumb" /></td>
+						<td>Note 4</td>
+					</tr>
+					<tr><td>Tags</td></tr>
+					<tr><td>2010-02-01 18:49</td></tr>
+				</table>
+			</option>
+		</widget>
 	</body>
 </html>

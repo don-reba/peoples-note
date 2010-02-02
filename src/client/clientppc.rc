@@ -42,7 +42,9 @@ IDR_MENU MENU
 BEGIN
     POPUP "Menu"
     BEGIN
-        MENUITEM "About",                       IDM_HELP_ABOUT
+        MENUITEM "About",                       IDM_MENU_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        IDM_MENU_EXIT
     END
 END
 
@@ -54,8 +56,7 @@ END
 
 IDC_CLIENT ACCELERATORS 
 BEGIN
-    "A",            IDM_HELP_ABOUT,         VIRTKEY, CONTROL, NOINVERT
-    "Q",            IDM_OK,                 VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          IDM_SYNC,               VIRTKEY, NOINVERT
 END
 
 
@@ -106,7 +107,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MAIN_ACTION         "Notes"
+    IDS_SYNC                "Sync"
     IDS_MAIN_MENU           "Menu"
 END
 
