@@ -42,8 +42,14 @@ IDR_MENU MENU
 BEGIN
     POPUP "Menu"
     BEGIN
-        MENUITEM "About",                       IDM_MENU_ABOUT
+        MENUITEM "Sign out",                    ID_MENU_LOGOUT
         MENUITEM SEPARATOR
+        POPUP "Notebook"
+        BEGIN
+            MENUITEM "donreba's notebook",          0
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "About",                       IDM_MENU_ABOUT
         MENUITEM "Exit",                        IDM_MENU_EXIT
     END
 END
