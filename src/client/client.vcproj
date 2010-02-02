@@ -382,11 +382,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\src\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\sqlite3.c"
+				RelativePath=".\src\SQLite\sqlite3.c"
 				>
 				<FileConfiguration
 					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
@@ -406,7 +406,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath=".\src\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)"
@@ -448,19 +448,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\main.h"
+				RelativePath=".\src\main.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\sqlite3.h"
+				RelativePath=".\src\SQLite\sqlite3.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath=".\src\stdafx.h"
 				>
 			</File>
 		</Filter>
