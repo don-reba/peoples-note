@@ -63,7 +63,18 @@
 			}
 			#new-note-note
 			{
-				padding: 10px;
+				padding: 0;
+			}
+			#new-note-note td
+			{
+				padding:    10px 0px;
+				text-align: center;
+			}
+			#new-note-note #left
+			{
+				padding:     10px;
+				text-align:  left;
+				white-space: nowrap;
 			}
 			#new-text, #new-voice, #new-photo, #new-file
 			{
@@ -82,7 +93,17 @@
 			<input id="search-box" /><button id="search-button" />
 		</div>
 		<widget type="select" id="note-list">
-			<option id="new-note-note">Create note: <button id="new-text" /><button id="new-voice" /><button id="new-photo" /><button id="new-file" /></option>
+			<option id="new-note-note">
+				<table cellspacing="0px" cellpadding="0px" width="100%">
+					<tr>
+						<td id="left">Create note:</td>
+						<td width="25%"><button id="new-text"  /></td>
+						<td width="25%"><button id="new-voice" /></td>
+						<td width="25%"><button id="new-photo" /></td>
+						<td width="25%"><button id="new-file"  /></td>
+					</tr>
+				</table>
+			</option>
 			<option class="note">
 				<table>
 					<tr>
