@@ -3,8 +3,12 @@
 #include "htmlayout.h"
 #include "NoteListView.h"
 #include "resourceppc.h"
+#include "Tools.h"
 
+#include <string>
 #include <vector>
+
+using namespace Tools;
 
 
 #define MAX_LOADSTRING 100
@@ -13,35 +17,19 @@
 NoteListView::NoteListView(HINSTANCE hInstance, int nCmdShow)
 	: instance_ (hInstance)
 {
-	TCHAR szTitle[MAX_LOADSTRING];       // title bar text
-	TCHAR szWindowClass[MAX_LOADSTRING]; // main window class name
-
 #if defined(WIN32_PLATFORM_PSPC) || defined(WIN32_PLATFORM_WFSP)
 	// SHInitExtraControls should be called once during your application's initialization to initialize any
 	// of the device specific controls such as CAPEDIT and SIPPREF.
 	SHInitExtraControls();
 #endif // WIN32_PLATFORM_PSPC || WIN32_PLATFORM_WFSP
 
+	TCHAR szTitle[MAX_LOADSTRING];       // title bar text
+	TCHAR szWindowClass[MAX_LOADSTRING]; // main window class name
 	LoadString(hInstance, IDS_APP_TITLE, szTitle,       MAX_LOADSTRING); 
 	LoadString(hInstance, IDC_CLIENT,    szWindowClass, MAX_LOADSTRING);
 
-#if defined(WIN32_PLATFORM_PSPC) || defined(WIN32_PLATFORM_WFSP)
-	//If it is already running, then focus on the window, and exit
-	hwnd_ = FindWindow(szWindowClass, szTitle);	
-	if (hwnd_)
-	{
-		// set focus to foremost child window
-		// The "| 0x00000001" is used to bring any owned windows to the foreground and
-		// activate them.
-		SetForegroundWindow((HWND)((ULONG) hwnd_ | 0x00000001));
-		throw std::exception("Window already exists.");
-	} 
-#endif // WIN32_PLATFORM_PSPC || WIN32_PLATFORM_WFSP
-
 	if (!RegisterClass(szWindowClass))
-	{
 		throw std::exception("Class could not be registered.");
-	}
 
 	hwnd_ = CreateWindow
 		( szWindowClass // lpClassName
@@ -83,44 +71,46 @@ NoteListView::NoteListView(HINSTANCE hInstance, int nCmdShow)
 	UpdateWindow(hwnd_);
 }
 
+bool NoteListView::SwitchToPreviousInstance(HINSTANCE instance)
+{
+	std::wstring title       = LoadStringResource(instance, IDS_APP_TITLE);
+	std::wstring windowClass = LoadStringResource(instance, IDC_CLIENT);
+	HWND hwnd = FindWindow(windowClass.c_str(), title.c_str());	
+	if (hwnd)
+	{
+		HWND activeOwnedWindow = (HWND)((ULONG)hwnd | 1);
+		SetForegroundWindow(activeOwnedWindow);
+		return true;
+	}
+	return false;
+}
+
 ATOM NoteListView::RegisterClass(LPTSTR szWindowClass)
 {
-	WNDCLASS wc;
-
+	WNDCLASS wc = { 0 };
 	wc.style         = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc   = &NoteListView::WndProc<NoteListView>;
-	wc.cbClsExtra    = 0;
-	wc.cbWndExtra    = 0;
 	wc.hInstance     = instance_;
 	wc.hIcon         = LoadIcon(instance_, MAKEINTRESOURCE(IDI_CLIENT));
-	wc.hCursor       = 0;
 	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
-	wc.lpszMenuName  = 0;
 	wc.lpszClassName = szWindowClass;
-
 	return ::RegisterClass(&wc);
 }
 
-#ifndef RT_HTML
-#define RT_HTML MAKEINTRESOURCE(23)
-#endif
-
 BOOL NoteListView::GetHtmlResource(int id, /*out*/PBYTE& pb, /*out*/DWORD& cb)
 {
+	const wchar_t * const RT_HTML = reinterpret_cast<wchar_t * const>(23);
+
 	// Find specified resource and check if ok
-
 	HRSRC hrsrc = ::FindResource(instance_, MAKEINTRESOURCE(id), RT_HTML);
-
 	if(!hrsrc)
 		return false;
 
 	// Load specified resource and check if ok
-
 	HGLOBAL hgres = ::LoadResource(instance_, hrsrc);
 	if(!hgres) return FALSE;
 
 	// Retrieve resource data and check if ok
-
 	pb = (PBYTE)::LockResource(hgres); if (!pb) return FALSE;
 	cb = ::SizeofResource(instance_, hrsrc); if (!cb) return FALSE;
 

@@ -386,6 +386,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NoteListView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SQLite\sqlite3.c"
 				>
 				<FileConfiguration
@@ -441,6 +445,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\src\Tools.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -449,10 +457,6 @@
 			>
 			<File
 				RelativePath=".\src\main.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\NoteListView.cpp"
 				>
 			</File>
 			<File
@@ -469,6 +473,10 @@
 			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Tools.h"
 				>
 			</File>
 			<File

@@ -1,0 +1,60 @@
+stories
+	signin
+		when the program starts without a user, the signin screen should be displayed to get username and password
+			AppModel CredentialsPresenter CredentialsView
+		when EN rejects the user's password at sync, the signin screen should be displayed with his username
+			NoteListView CredentialsPresenter CredentialsView
+		when the user signs out, the signin screen should be displayed with his username
+		when the user chooses "sign in", the username and password should be verified
+		when the user tries to sign in with invalid credentials, a message should be displayed and the password cleared
+		when the user signs in with valid credentials, the window should close
+			credentials should be persisted
+		when the user chooses "cancel", the operation requiring credentials should be aborted
+	note creation
+		when the user clicks the new-text button, a text note creation screen should be displayed
+		when the user clicks the new-voice button, audio recording should start
+			the audio should be compressed
+		when the user clicks the new-photo button, the camera should be activated
+		when the user clicks the new-file button, a file selection dialog should show up
+			the file selection dialog should default to the photos folder
+		when a note is created, it should be added to the note list and persisted
+		when creation is aborted, no note should be created
+	sync
+		when unsynced files are available, their number should be displayed in the "sync" label
+		when a note is synced, the number of unsynced files displayed should decrease
+		when connection is lost, sync is stopped and disabled
+		when sync is impossible, the sync button should be disabled
+			sync in progress
+			no connection
+	search
+		when the user searches for a non-empty string, the note list should be filtered by full-text search
+		when the user searches for an empty string or whitespace, the note list should be reset
+		when a search is in progress, the note list should be grayed out and disabled
+	note list navigation
+		when the user clicks on a note while the note list is still, note view for it should open up
+		when the user clicks on the note list while it is scrolling, the scrolling should stop
+		when the user flicks the note list, it should receive scrolling momentum
+		when the user clicks "show more notes", the note list should be extended by another page
+	note view
+		when the user flicks the note left, the next note should be displayed
+			unless the note is the last
+		when the user flicks the note right, the previous note should be displayed
+			unless the note is the first
+		when the user clicks a TODO checkbox, the checkbox should be toggled
+			this note should then be up for sync
+	notebooks
+		when the user changes notebooks, search should be cleared and the note list filled from the new notebook
+			notebook choice should be persisted
+	about
+		when the user selects "about" from the menu, the "about" window should be shown
+views
+	NoteListView
+	NoteView
+	CredentialsView
+	AboutView
+models
+	AppModel
+	NoteListModel
+	NoteModel
+	CredentialsModel
+	SyncModel

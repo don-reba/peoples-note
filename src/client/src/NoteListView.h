@@ -9,6 +9,8 @@ class NoteListView : public Window
 {
 public:
 	NoteListView(HINSTANCE hInstance, int nCmdShow);
+public:
+	static bool SwitchToPreviousInstance(HINSTANCE instance);
 // window message handlers
 private:
 	void OnActivate       (Msg<WM_ACTIVATE>        &msg);

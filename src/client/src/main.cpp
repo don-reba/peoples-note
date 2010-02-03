@@ -13,7 +13,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				   LPTSTR    lpCmdLine,
 				   int       nCmdShow)
 {
-	// Perform application initialization
+	if (NoteListView::SwitchToPreviousInstance(hInstance))
+		return 0;
+
 	try
 	{
 		NoteListView noteListView(hInstance, nCmdShow);
