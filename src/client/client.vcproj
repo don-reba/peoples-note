@@ -452,6 +452,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NoteListView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NoteListView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
@@ -461,6 +469,10 @@
 			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\window.h"
 				>
 			</File>
 		</Filter>

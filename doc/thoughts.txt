@@ -80,6 +80,53 @@ need to figure out the overall design
 			list sync events
 				status
 				progress
+		soft keys
+			neither the main screen nor notes view have main actions
+			I could make a single screen
+				with the following elements
+					notes list
+					new note popout
+					synchronization indicator
+					search box
+					sort popout
+			however, showing the new note screen is much faster
+				more optimized for starting quickly
+				less optimized for coninuous use
+			how to place the elements
+				search box at the top
+				notes list has to take as much space as possible
+				have to be on the bottom
+				as buttons with text, like EN iPhone
+					Create Note
+					Sort by <order>
+					Sync
+				bad idea
+				make Sync the default action
+				make note creation a fake first note
+				make sort/filter menu options
+		new screens
+			sign in
+				username/password and link to evernote.com
+				soft keys
+					Sign in
+					Cancel
+			notes list
+				notes list, search, creation
+				soft keys
+					Sync
+					Menu
+						Sign out
+						Notebook
+						About
+						Exit
+			note view
+				note contents, prev/next navigation
+				soft keys
+					Notes
+			about
+				branding, version, author, date
+				soft keys
+					OK
 	data storage design
 		store notes and settings
 		EN has a flat data model
@@ -116,3 +163,6 @@ need to figure out the overall design
 				create a log before uploading
 				clear it on success
 				try to repeat on failure
+		need to show the user when sync is required
+			how many unsynced messages he has
+			this calls for a button, instead of the soft key
