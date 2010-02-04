@@ -3,9 +3,15 @@
 #include "Tools.h"
 
 #include <algorithm>
+#include <vector>
 
 using namespace Tools;
 using namespace std;
+
+
+//-----------------
+// Helper functions
+//-----------------
 
 // Based on Raymond Chen's implementation.
 // http://blogs.msdn.com/oldnewthing/archive/2004/01/30/65013.aspx
@@ -28,15 +34,23 @@ LPCWSTR GetStringResource(HINSTANCE instance, UINT id)
 	return resource;
 }
 
+//---------------------
+// Tools implementation
+//---------------------
+
+std::wstring Tools::ConvertToUnicode(std::string str)
+{
+	std::vector<wchar_t> result
+		( MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), NULL, 0) + 1
+		);
+	MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), &result[0], result.size());
+	return &result[0];
+}
+
 wstring Tools::LoadStringResource(HINSTANCE instance, UINT id)
 {
 	LPCWSTR resource = GetStringResource(instance, id);
-	wstring str;
-	str.reserve(1 + (resource ? *resource : 0));
-	copy
-		( resource + 1
-		, resource + 1 + str.length()
-		, std::back_insert_iterator<wstring>(str)
-		);
-	return str;
+	vector<wchar_t> str(1 + *resource);
+	CopyMemory(&str[0], resource + 1, *resource * sizeof(wchar_t));
+	return &str[0];
 }

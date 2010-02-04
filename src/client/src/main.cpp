@@ -4,8 +4,11 @@
 #include "main.h"
 #include "NoteListView.h"
 #include "resourceppc.h"
+#include "Tools.h"
 
 #include <vector>
+
+using namespace Tools;
 
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -38,10 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	}
 	catch(std::exception e)
 	{
-		int length = strlen(e.what());
-		std::vector<wchar_t> msg(length + 1);
-		MultiByteToWideChar(CP_ACP, 0, e.what(), length, &msg[0], msg.size());
-		MessageBox(NULL, &msg[0], L"Error", MB_OK | MB_ICONERROR);
+		MessageBox(NULL, ConvertToUnicode(e.what()).c_str(), L"Error", MB_OK | MB_ICONERROR);
 		return 1;
 	}
 }

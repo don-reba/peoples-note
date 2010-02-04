@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="client"
-	ProjectGUID="{E9069DC9-4154-4A12-A1EF-7FF3A38B3500}"
-	RootNamespace="client"
+	Name="MobileTest"
+	ProjectGUID="{4F35AB66-DAF0-4393-8AE9-5553D818C9E8}"
+	RootNamespace="MobileTest"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -67,11 +67,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.01"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/MobileTest.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/MobileTest.pdb"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
@@ -131,12 +131,11 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\HTMLayout\include;&quot;$(ProjectDir)&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Users\Alexey\Files\Programming\Evernote client\src\client\src&quot;;&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="StdAfx.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -155,17 +154,17 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot;"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/MobileTest.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/MobileTest.pdb"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				TargetMachine="16"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -189,7 +188,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\pocket pc 2003 (armv4)|%CSIDL_PROGRAM_FILES%\$(TargetName)|0"
+				AdditionalFiles=""
 			/>
 			<DebuggerTool
 			/>
@@ -242,11 +241,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.01"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/MobileTest.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/MobileTest.pdb"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
@@ -288,7 +287,6 @@
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
-			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -310,7 +308,6 @@
 				ExecutionBucket="7"
 				Optimization="2"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="..\HTMLayout\include;&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
@@ -332,17 +329,17 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot;"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/MobileTest.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/MobileTest.pdb"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				EntryPointSymbol="mainWCRTStartup"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 			/>
@@ -383,32 +380,8 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\main.cpp"
+				RelativePath=".\src\MobileTest.cpp"
 				>
-			</File>
-			<File
-				RelativePath=".\src\NoteListView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\SQLite\sqlite3.c"
-				>
-				<FileConfiguration
-					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Windows Mobile 6 Professional SDK (ARMV4I)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\stdafx.cpp"
@@ -447,7 +420,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\Tools.cpp"
+				RelativePath="..\client\src\Tools.cpp"
 				>
 			</File>
 		</Filter>
@@ -457,19 +430,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\src\main.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\NoteListView.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\SQLite\sqlite3.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
@@ -477,11 +442,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Tools.h"
+				RelativePath=".\src\Test.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\window.h"
+				RelativePath="..\client\src\Tools.h"
 				>
 			</File>
 		</Filter>
@@ -491,29 +456,15 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\client.ico"
+				RelativePath=".\MobileTest.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\clientppc.rc"
+				RelativePath=".\MobileTestppc.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\clientppc.rc2"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="HTML"
-			>
-			<File
-				RelativePath=".\html\about.htm"
-				DeploymentContent="true"
-				>
-			</File>
-			<File
-				RelativePath=".\html\main.htm"
-				DeploymentContent="true"
+				RelativePath=".\MobileTestppc.rc2"
 				>
 			</File>
 		</Filter>
