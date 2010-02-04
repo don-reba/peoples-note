@@ -123,6 +123,10 @@ need to figure out the overall design
 				note contents, prev/next navigation
 				soft keys
 					Notes
+			note creation
+				soft keys
+					OK
+					Cancel
 			about
 				branding, version, author, date
 				soft keys
@@ -166,3 +170,49 @@ need to figure out the overall design
 		need to show the user when sync is required
 			how many unsynced messages he has
 			this calls for a button, instead of the soft key
+				not really
+				could add a number to the soft key title
+	program structure
+		MVP - Presenter First
+			DB and registry are the model
+			the windows are the views with controllers attached
+		main window is not always needed
+			not when there is no user signed in
+		who desides which windows are created when?
+			some sort of overlord state machine
+			created at startup
+			decides which windows to show
+			receives messages from these windows
+			changes window states
+		there should be a flat stateless core
+			with heavy-duty functions called by the controllers
+	user credentials
+		CryptProtectData/CryptUnprotectData
+	EN connection
+		through credentials verification
+			get AuthenticationToken from EN
+		through note sync
+			upload/download notes and resources
+	program start
+		sounds like an event
+		when the program starts with a user, his notes are displayed
+			and his credentials not authenticated
+			meaning, that valid credentials are not needed
+			the user is, then, separate from credentials
+		there should be a user model, then, with credentials and notebooks
+		when the program starts without a user, a default user is created
+			with empty credentials
+			which are, obviously, invalid
+			and an empty notebook
+		what should happen
+			the last active user is retrieved from the registry
+				default user assumed
+			the user's database is loaded
+				if no database is present
+					create one
+					with an empty default notebook
+				if loading fails
+					go to sign in with the error message
+			the list of notes is retreived
+				from the last active notebook
+			the list of notes is displayed
