@@ -131,7 +131,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\HTMLayout\include;&quot;$(ProjectDir)&quot;"
+				AdditionalIncludeDirectories="..\HTMLayout\include;&quot;$(ProjectDir)&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -383,6 +383,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\CredentialsPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\main.cpp"
 				>
 			</File>
@@ -456,6 +460,22 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\src\CredentialsPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ICredentialsModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ICredentialsView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ISignalProvider.h"
+				>
+			</File>
 			<File
 				RelativePath=".\src\main.h"
 				>

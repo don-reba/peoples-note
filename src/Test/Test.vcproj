@@ -175,6 +175,18 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\client\src\CredentialsPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockCredentialsModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockCredentialsView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -208,6 +220,22 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\client\src\CredentialsPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\ISignalProvider.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockCredentialsModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockCredentialsView.h"
+				>
+			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
 				>

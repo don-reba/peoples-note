@@ -49,3 +49,8 @@
 
 // HTMLayout behaviours
 #include "behaviors/behavior_aux.h"
+
+#include <string>
+
+#include <boost/bind.hpp>
+#include <boost/signals2.hpp>
