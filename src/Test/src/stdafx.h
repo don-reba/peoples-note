@@ -11,6 +11,9 @@
 #include <tchar.h>
 
 #include <string>
+#include <vector>
 
 #include <boost/bind.hpp>
 #include <boost/signals2.hpp>
+
+#include "foreach.h"

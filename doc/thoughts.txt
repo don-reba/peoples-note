@@ -193,26 +193,51 @@ need to figure out the overall design
 			get AuthenticationToken from EN
 		through note sync
 			upload/download notes and resources
-	program start
-		sounds like an event
-		when the program starts with a user, his notes are displayed
-			and his credentials not authenticated
-			meaning, that valid credentials are not needed
-			the user is, then, separate from credentials
-		there should be a user model, then, with credentials and notebooks
-		when the program starts without a user, a default user is created
-			with empty credentials
-			which are, obviously, invalid
-			and an empty notebook
-		what should happen
-			the last active user is retrieved from the registry
-				default user assumed
-			the user's database is loaded
-				if no database is present
-					create one
-					with an empty default notebook
-				if loading fails
-					go to sign in with the error message
-			the list of notes is retreived
-				from the last active notebook
-			the list of notes is displayed
+program start
+	sounds like an event
+	when the program starts with a user, his notes are displayed
+		and his credentials not authenticated
+		meaning, that valid credentials are not needed
+		the user is, then, separate from credentials
+	there should be a user model, then, with credentials and notebooks
+	when the program starts without a user, a default user is created
+		with empty credentials
+		which are, obviously, invalid
+		and an empty notebook
+	what should happen
+		the last active user is retrieved from the registry
+			default user assumed
+		the user's database is loaded
+			if no database is present
+				create one
+				with an empty default notebook
+			if loading fails
+				go to sign in with the error message
+		the list of notes is retreived
+			from the last active notebook
+		the list of notes is displayed
+NoteListView
+	displays notes
+		NoteListModel
+	performs searches
+		affects NoteListModel
+		but indirectly
+		since the search is within the current notebook
+	lists notebooks
+		UserModel
+	displaying notes requires creation of HTML code and HTMLayout handling
+		created from an internal format
+		which should be as close to Evernote's as possible
+		preferably, Evernote's format
+			seems usable for internal representation
+			better yet, create a note interface
+			the real one will delegate to EN Note
+			the mock one will do something else
+		sounds like the problem in the paper
+			they created an adapter that converted data
+			but my problem is simpler
+			merely one-way encoding
+		streaming
+			no need to encode all at once
+			HTMLayout will need one DOM element at a time
+				then, a mass update

@@ -5,6 +5,9 @@
 
 namespace Tools
 {
-	std::wstring LoadStringResource(HINSTANCE instance, UINT id);
+	std::string ConvertToAnsi(std::wstring str);
+
 	std::wstring ConvertToUnicode(std::string str);
+
+	std::wstring LoadStringResource(HINSTANCE instance, UINT id);
 }

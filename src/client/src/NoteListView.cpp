@@ -173,7 +173,7 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> &msg)
 	switch (msg.GetCtrlId())
 	{
 	case IDM_MENU_ABOUT:
-		// TODO
+		// TODO: implement About dialog
 		break;
 	case IDM_MENU_EXIT:
 		SendMessage(hwnd_, WM_CLOSE, 0, 0);

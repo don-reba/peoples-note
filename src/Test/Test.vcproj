@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -91,7 +91,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -187,6 +187,30 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockNote.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNoteListModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNoteListView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockTag.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockTimestamp.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\NoteListPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -225,6 +249,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\ISignalProvider.h"
 				>
 			</File>
@@ -234,6 +262,30 @@
 			</File>
 			<File
 				RelativePath=".\src\MockCredentialsView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNote.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNoteListModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNoteListView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockTag.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockTimestamp.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\NoteListPresenter.h"
 				>
 			</File>
 			<File

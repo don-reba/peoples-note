@@ -3,7 +3,6 @@
 #include "Tools.h"
 
 #include <algorithm>
-#include <vector>
 
 using namespace Tools;
 using namespace std;
@@ -38,12 +37,55 @@ LPCWSTR GetStringResource(HINSTANCE instance, UINT id)
 // Tools implementation
 //---------------------
 
+std::string Tools::ConvertToAnsi(std::wstring str)
+{
+	UINT  codePage = CP_ACP;
+	DWORD flags    = 0;
+	int resultSize = WideCharToMultiByte
+		( codePage     // CodePage
+		, flags        // dwFlags
+		, str.c_str()  // lpWideCharStr
+		, str.length() // cchWideChar
+		, NULL         // lpMultiByteStr
+		, 0            // cbMultiByte
+		, NULL         // lpDefaultChar
+		, NULL         // lpUsedDefaultChar
+		);
+	vector<char> result(resultSize + 1);
+	WideCharToMultiByte
+		( codePage     // CodePage
+		, flags        // dwFlags
+		, str.c_str()  // lpWideCharStr
+		, str.length() // cchWideChar
+		, &result[0]   // lpMultiByteStr
+		, resultSize   // cbMultiByte
+		, NULL         // lpDefaultChar
+		, NULL         // lpUsedDefaultChar
+		);
+	return &result[0];
+}
+
 std::wstring Tools::ConvertToUnicode(std::string str)
 {
-	std::vector<wchar_t> result
-		( MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), NULL, 0) + 1
+	UINT  codePage = CP_ACP;
+	DWORD flags    = 0;
+	int resultSize = MultiByteToWideChar
+		( codePage     // CodePage
+		, flags        // dwFlags
+		, str.c_str()  // lpMultiByteStr
+		, str.length() // cbMultiByte
+		, NULL         // lpWideCharStr
+		, 0            // cchWideChar
 		);
-	MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), &result[0], result.size());
+	vector<wchar_t> result(resultSize + 1);
+	MultiByteToWideChar
+		( codePage     // CodePage
+		, flags        // dwFlags
+		, str.c_str()  // lpMultiByteStr
+		, str.length() // cbMultiByte
+		, &result[0]   // lpWideCharStr
+		, resultSize   // cchWideChar
+		);
 	return &result[0];
 }
 

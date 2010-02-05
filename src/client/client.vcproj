@@ -391,6 +391,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NoteListPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteListView.cpp"
 				>
 			</File>
@@ -465,6 +469,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ICredentialsModel.h"
 				>
 			</File>
@@ -473,11 +481,35 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\INote.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\INoteListModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\INoteListView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ISignalProvider.h"
 				>
 			</File>
 			<File
+				RelativePath=".\src\ITag.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ITimestamp.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NoteListPresenter.h"
 				>
 			</File>
 			<File
