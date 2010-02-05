@@ -3,6 +3,10 @@
 class ICredentialsModel
 {
 public:
+
+	virtual ICredentialsModel & operator =
+		( const ICredentialsModel & credentials
+		) = 0;
 	
 	virtual std::wstring GetUsername() const = 0;
 

@@ -7,6 +7,9 @@ class MockCredentialsView : public ICredentialsView
 private:
 
 	signal SignalSignIn;
+
+public:
+
 	std::wstring username;
 	std::wstring password;
 

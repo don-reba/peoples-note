@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "CredentialsPresenter.h"
+#include "CurrentUserLoader.h"
+#include "MockAppModel.h"
 #include "MockCredentialsModel.h"
 #include "MockCredentialsView.h"
+#include "MockLastUserModel.h"
 #include "MockNote.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
+#include "MockUserModel.h"
 #include "NoteListPresenter.h"
 #include "Tools.h"
 
@@ -18,7 +22,7 @@ using namespace std;
 
 BOOST_TEST_DONT_PRINT_LOG_VALUE(std::wstring)
 
-BOOST_AUTO_TEST_CASE(ToolsConvertToUnicodeTest)
+BOOST_AUTO_TEST_CASE(ToolsConvertToUnicode_Test)
 {
 	wstring testString = Tools::ConvertToUnicode("Test");
 	BOOST_CHECK_EQUAL(testString, L"Test");
@@ -27,7 +31,7 @@ BOOST_AUTO_TEST_CASE(ToolsConvertToUnicodeTest)
 	BOOST_CHECK_EQUAL(emptyString, L"");
 }
 
-BOOST_AUTO_TEST_CASE(ToolsConvertToAnsiTest)
+BOOST_AUTO_TEST_CASE(ToolsConvertToAnsi_Test)
 {
 	string testString = Tools::ConvertToAnsi(L"Test");
 	BOOST_CHECK_EQUAL(testString, "Test");
@@ -36,21 +40,21 @@ BOOST_AUTO_TEST_CASE(ToolsConvertToAnsiTest)
 	BOOST_CHECK_EQUAL(emptyString, "");
 }
 
-BOOST_AUTO_TEST_CASE(CredentialsPresenterTest)
+BOOST_AUTO_TEST_CASE(CredentialsPresenter_Test)
 {
 	MockCredentialsModel model;
 	MockCredentialsView  view;
 	CredentialsPresenter presenter(model, view);
 
-	view.SetUsername(L"test-usr");
-	view.SetPassword(L"test-pwd");
+	view.username = L"test-usr";
+	view.password = L"test-pwd";
 	view.SignIn();
 
 	BOOST_CHECK_EQUAL(model.GetUsername(), L"test-usr");
 	BOOST_CHECK_EQUAL(model.GetPassword(), L"test-pwd");
 }
 
-BOOST_AUTO_TEST_CASE(NoteListPresenterTest)
+BOOST_AUTO_TEST_CASE(NoteListPresenter_Reset_Test)
 {
 	MockNoteListModel model;
 	MockNoteListView  view;
@@ -94,4 +98,55 @@ BOOST_AUTO_TEST_CASE(NoteListPresenterTest)
 		( Tools::ConvertToAnsi(view.notes[2])
 		, Tools::ConvertToAnsi(L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;</td></tr><tr><td>&lt;strong&gt;not bold&lt;/strong&gt;</td></tr></table></option>")
 		);
+}
+
+BOOST_AUTO_TEST_CASE(CurrentUserLoader_DefaultUser_Test)
+{
+	MockAppModel      appModel;
+	MockUserModel     userModel;
+	MockLastUserModel lastUserModel;
+	CurrentUserLoader(appModel, userModel, lastUserModel);
+
+	appModel.Start();
+
+	BOOST_CHECK(userModel.isDefault);
+	BOOST_CHECK(userModel.isLoaded);
+}
+
+BOOST_AUTO_TEST_CASE(CurrentUserLoader_Test)
+{
+	MockAppModel      appModel;
+	MockUserModel     userModel;
+	MockLastUserModel lastUserModel;
+	CurrentUserLoader(appModel, userModel, lastUserModel);
+
+	lastUserModel.credentialsModel.username = L"test-usr";
+	lastUserModel.credentialsModel.password = L"test-pwd";
+
+	appModel.Start();
+
+	BOOST_CHECK(!userModel.isDefault);
+	BOOST_CHECK(userModel.isLoaded);
+
+	BOOST_CHECK_EQUAL(userModel.credentialsModel.username, L"test-usr");
+	BOOST_CHECK_EQUAL(userModel.credentialsModel.password, L"test-pwd");
+}
+
+BOOST_AUTO_TEST_CASE(CurrentUserLoader_NoPassword_Test)
+{
+	MockAppModel      appModel;
+	MockUserModel     userModel;
+	MockLastUserModel lastUserModel;
+	CurrentUserLoader(appModel, userModel, lastUserModel);
+
+	lastUserModel.credentialsModel.username = L"test-usr";
+	lastUserModel.credentialsModel.password = L"";
+
+	appModel.Start();
+
+	BOOST_CHECK(!userModel.isDefault);
+	BOOST_CHECK(userModel.isLoaded);
+
+	BOOST_CHECK_EQUAL(userModel.credentialsModel.username, L"test-usr");
+	BOOST_CHECK_EQUAL(userModel.credentialsModel.password, L"");
 }

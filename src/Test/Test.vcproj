@@ -179,11 +179,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\CurrentUserLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockAppModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockCredentialsModel.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\MockCredentialsView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockLastUserModel.cpp"
 				>
 			</File>
 			<File
@@ -204,6 +216,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockTimestamp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockUserModel.cpp"
 				>
 			</File>
 			<File
@@ -249,6 +265,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\CurrentUserLoader.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\foreach.h"
 				>
 			</File>
@@ -257,11 +277,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockAppModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockCredentialsModel.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\MockCredentialsView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockLastUserModel.h"
 				>
 			</File>
 			<File
@@ -282,6 +310,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockTimestamp.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockUserModel.h"
 				>
 			</File>
 			<File

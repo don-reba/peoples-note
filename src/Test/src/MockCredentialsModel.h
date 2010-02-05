@@ -4,12 +4,16 @@
 
 class MockCredentialsModel : public ICredentialsModel
 {
-private:
+public:
 	
 	std::wstring username;
 	std::wstring password;
 
 public:
+
+	virtual ICredentialsModel & operator =
+		( const ICredentialsModel & credentials
+		);
 	
 	virtual std::wstring GetUsername() const;
 

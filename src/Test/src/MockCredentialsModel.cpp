@@ -1,6 +1,15 @@
 #include "stdafx.h"
 #include "MockCredentialsModel.h"
 
+ICredentialsModel & MockCredentialsModel::operator =
+	( const ICredentialsModel & credentials
+	)
+{
+	username = credentials.GetUsername();
+	password = credentials.GetPassword();
+	return *this;
+}
+
 std::wstring MockCredentialsModel::GetUsername() const
 {
 	return username;

@@ -387,6 +387,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CurrentUserLoader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\main.cpp"
 				>
 			</File>
@@ -469,7 +473,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CurrentUserLoader.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IAppModel.h"
 				>
 			</File>
 			<File
@@ -478,6 +490,10 @@
 			</File>
 			<File
 				RelativePath=".\src\ICredentialsView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ILastUserModel.h"
 				>
 			</File>
 			<File
@@ -502,6 +518,10 @@
 			</File>
 			<File
 				RelativePath=".\src\ITimestamp.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IUserModel.h"
 				>
 			</File>
 			<File
