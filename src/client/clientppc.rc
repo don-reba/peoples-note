@@ -107,14 +107,11 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_APP_TITLE           "client"
+    IDS_APP_TITLE           "People's Note"
     IDC_CLIENT              "CLIENT"
-END
-
-STRINGTABLE 
-BEGIN
     IDS_SYNC                "Sync"
     IDS_MAIN_MENU           "Menu"
+    IDS_REGISTRY_KEY        "Software\\People's Note"
 END
 
 #endif    // English (U.S.) resources

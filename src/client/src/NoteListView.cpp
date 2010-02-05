@@ -73,8 +73,8 @@ NoteListView::NoteListView(HINSTANCE hInstance, int nCmdShow)
 
 bool NoteListView::SwitchToPreviousInstance(HINSTANCE instance)
 {
-	std::wstring title       = LoadStringResource(instance, IDS_APP_TITLE);
-	std::wstring windowClass = LoadStringResource(instance, IDC_CLIENT);
+	std::wstring title       = LoadStringResource(IDS_APP_TITLE);
+	std::wstring windowClass = LoadStringResource(IDC_CLIENT);
 	HWND hwnd = FindWindow(windowClass.c_str(), title.c_str());	
 	if (hwnd)
 	{

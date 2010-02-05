@@ -383,11 +383,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\CredentialsModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CredentialsPresenter.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\CurrentUserLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\LastUserModel.cpp"
 				>
 			</File>
 			<File
@@ -469,6 +477,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\src\CredentialsModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CredentialsPresenter.h"
 				>
 			</File>
@@ -509,6 +521,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\IRegistryKey.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ISignalProvider.h"
 				>
 			</File>
@@ -525,6 +541,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\LastUserModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\main.h"
 				>
 			</File>
@@ -537,7 +557,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File

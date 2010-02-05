@@ -175,11 +175,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\client\src\CredentialsModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\CredentialsPresenter.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\client\src\CurrentUserLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\LastUserModel.cpp"
 				>
 			</File>
 			<File
@@ -208,6 +216,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockNoteListView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockRegistryKey.cpp"
 				>
 			</File>
 			<File
@@ -261,6 +273,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\client\src\CredentialsModel.h"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\CredentialsPresenter.h"
 				>
 			</File>
@@ -274,6 +290,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\ISignalProvider.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\LastUserModel.h"
 				>
 			</File>
 			<File
@@ -302,6 +322,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockNoteListView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockRegistryKey.h"
 				>
 			</File>
 			<File

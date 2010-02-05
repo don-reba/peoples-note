@@ -89,8 +89,9 @@ std::wstring Tools::ConvertToUnicode(std::string str)
 	return &result[0];
 }
 
-wstring Tools::LoadStringResource(HINSTANCE instance, UINT id)
+wstring Tools::LoadStringResource(UINT id)
 {
+	HINSTANCE instance = GetModuleHandle(NULL);
 	LPCWSTR resource = GetStringResource(instance, id);
 	vector<wchar_t> str(1 + *resource);
 	CopyMemory(&str[0], resource + 1, *resource * sizeof(wchar_t));

@@ -1,6 +1,8 @@
 #include "stdafx.h"
+#include "CredentialsModel.h"
 #include "CredentialsPresenter.h"
 #include "CurrentUserLoader.h"
+#include "LastUserModel.h"
 #include "MockAppModel.h"
 #include "MockCredentialsModel.h"
 #include "MockCredentialsView.h"
@@ -8,6 +10,7 @@
 #include "MockNote.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
+#include "MockRegistryKey.h"
 #include "MockUserModel.h"
 #include "NoteListPresenter.h"
 #include "Tools.h"
@@ -18,6 +21,7 @@
 #define BOOST_TEST_MODULE const_string test
 #include <boost/test/unit_test.hpp>
 
+using namespace boost;
 using namespace std;
 
 BOOST_TEST_DONT_PRINT_LOG_VALUE(std::wstring)
@@ -149,4 +153,27 @@ BOOST_AUTO_TEST_CASE(CurrentUserLoader_NoPassword_Test)
 
 	BOOST_CHECK_EQUAL(userModel.credentialsModel.username, L"test-usr");
 	BOOST_CHECK_EQUAL(userModel.credentialsModel.password, L"");
+}
+
+BOOST_AUTO_TEST_CASE(CredentialsModel_Test)
+{
+	CredentialsModel model;
+	model.SetCredentials(L"test-usr", L"test-pwd");
+
+	BOOST_CHECK_EQUAL(model.GetUsername(), L"test-usr");
+	BOOST_CHECK_EQUAL(model.GetPassword(), L"test-pwd");
+}
+
+BOOST_AUTO_TEST_CASE(LastUserModel_Test)
+{
+	MockRegistryKey  key;
+	LastUserModel    lastUserModel(key);
+
+	key.data[L"username"] = L"test-usr";
+	key.data[L"password"] = L"test-pwd";
+
+	const ICredentialsModel & credentials = lastUserModel.GetCredentials();
+
+	BOOST_CHECK_EQUAL(credentials.GetUsername(), L"test-usr");
+	BOOST_CHECK_EQUAL(credentials.GetPassword(), L"test-pwd");
 }

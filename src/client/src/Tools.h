@@ -9,5 +9,5 @@ namespace Tools
 
 	std::wstring ConvertToUnicode(std::string str);
 
-	std::wstring LoadStringResource(HINSTANCE instance, UINT id);
+	std::wstring LoadStringResource(UINT id);
 }
