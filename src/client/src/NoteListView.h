@@ -4,8 +4,9 @@
 #endif 
 
 #include "window.h"
+#include "INoteListView.h"
 
-class NoteListView : public Window
+class NoteListView : public Window, public INoteListView
 {
 private:
 
@@ -19,6 +20,18 @@ public:
 	NoteListView(HINSTANCE hInstance, int cmdShow);
 
 	virtual void Create();
+
+	virtual void ClearNotes();
+
+	virtual void AddNote(std::wstring note);
+
+	virtual void UpdateNotes();
+
+	virtual void ClearNotebooks();
+
+	virtual void AddNotebook(std::wstring notebook);
+
+	virtual void UpdateNotebooks();
 
 private:
 

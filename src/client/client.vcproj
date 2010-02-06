@@ -553,10 +553,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Main.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\NoteListPresenter.h"
 				>
 			</File>

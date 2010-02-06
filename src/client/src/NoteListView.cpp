@@ -46,6 +46,36 @@ void NoteListView::Create()
 	::UpdateWindow(hwnd_);
 }
 
+void NoteListView::ClearNotes()
+{
+	// TODO: implement
+}
+
+void NoteListView::AddNote(wstring note)
+{
+	// TODO: implement
+}
+
+void NoteListView::UpdateNotes()
+{
+	// TODO: implement
+}
+
+void NoteListView::ClearNotebooks()
+{
+	// TODO: implement
+}
+
+void NoteListView::AddNotebook(wstring notebook)
+{
+	// TODO: implement
+}
+
+void NoteListView::UpdateNotebooks()
+{
+	// TODO: implement
+}
+
 //-----------------
 // message handlers
 //-----------------

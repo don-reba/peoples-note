@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "htmlayout.h"
-#include "main.h"
 #include "NoteListView.h"
 #include "resourceppc.h"
 #include "Tools.h"
