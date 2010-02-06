@@ -430,11 +430,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
@@ -468,6 +468,11 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\test.htm"
+			DeploymentContent="true"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

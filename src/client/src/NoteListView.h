@@ -7,30 +7,52 @@
 
 class NoteListView : public Window
 {
-public:
-	NoteListView(HINSTANCE hInstance, int nCmdShow);
-public:
-	static bool SwitchToPreviousInstance(HINSTANCE instance);
-// window message handlers
 private:
+
+	HINSTANCE      instance;
+	HWND           menuBar;
+	SHACTIVATEINFO activateInfo;
+
+public:
+
+	NoteListView(HINSTANCE hInstance, int nCmdShow);
+
+private:
+
+	// window message handlers
 	void OnActivate       (Msg<WM_ACTIVATE>        &msg);
 	void OnBehaviorNotify (Msg<WM_BEHAVIOR_NOTIFY> &msg);
 	void OnCommand        (Msg<WM_COMMAND>         &msg);
 	void OnCreate         (Msg<WM_CREATE>          &msg);
 	void OnDestroy        (Msg<WM_DESTROY>         &msg);
 	void OnSettingChange  (Msg<WM_SETTINGCHANGE>   &msg);
+
 private:
+
 	bool ProcessHtmLayout(WndMsg &msg);
+
 protected:
+
 	void ProcessMessage(WndMsg &msg);
-// HTMLayout message handlers
+
 private:
-	static LRESULT CALLBACK HTMLayoutNotifyHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LPVOID vParam);
+
+	static LRESULT CALLBACK HTMLayoutNotifyHandler
+		( UINT   uMsg
+		, WPARAM wParam
+		, LPARAM lParam
+		, LPVOID vParam
+		);
+
+private:
+
 	LRESULT OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab);
-	ATOM RegisterClass(LPTSTR szWindowClass);
+
+	void CreateMenuBar();
+
+	ATOM RegisterClass(std::wstring wndClass);
+
 	BOOL GetHtmlResource(int id, /*out*/PBYTE& pb, /*out*/DWORD& cb);
-// data
-	HINSTANCE      instance_;       // current instance
-	HWND           g_hWndMenuBar; // menu bar handle
-	SHACTIVATEINFO s_sai;
+
+	void ResizeForMenuBar();
 };

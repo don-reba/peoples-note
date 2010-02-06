@@ -493,6 +493,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\HtmlResource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\IAppModel.h"
 				>
 			</File>

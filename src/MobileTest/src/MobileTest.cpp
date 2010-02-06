@@ -5,10 +5,9 @@
 #include "Tools.h"
 
 #include <fstream>
-#include <string>
 
 
-void TestToolsLoadStringResource(Test & test, HINSTANCE instance)
+void TestToolsLoadStringResource(Test & test)
 {
 	std::wstring charString = Tools::LoadStringResource(IDS_CHAR_STRING);
 	TEST_CHECK_EQUAL(test, charString.length(), 1);
@@ -17,6 +16,14 @@ void TestToolsLoadStringResource(Test & test, HINSTANCE instance)
 	std::wstring testString = Tools::LoadStringResource(IDS_TEST_STRING);
 	TEST_CHECK_EQUAL(test, testString.length(), 4);
 	TEST_CHECK_EQUAL(test, testString, L"Test");
+}
+
+void TestToolsLoadHtmlResource(Test & test)
+{
+	std::string html = "<html></html>";
+	HtmlResource resource = Tools::LoadHtmlResource(IDH_TEST);
+	TEST_CHECK_EQUAL(test, memcmp(resource.data, html.c_str(), html.length()), 0);
+	TEST_CHECK_EQUAL(test, resource.size, html.size());
 }
 
 void OpenFile(const wchar_t * file)
@@ -40,7 +47,9 @@ int WINAPI WinMain
 
 	Test test(resultsFile);
 
-	TestToolsLoadStringResource(test, instance);
+	TestToolsLoadHtmlResource(test);
+	TestToolsLoadStringResource(test);
+
 	test.Report();
 
 	OpenFile(resultsFileName);

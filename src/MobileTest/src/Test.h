@@ -4,10 +4,11 @@
 
 #include "Tools.h"
 
+#define TEST_CHECK(test, expr) \
+	try { test.Check(expr, L#expr); } catch (std::exception e) { test.HandleException(e); }
 
-#define TEST_CHECK_EQUAL(tTest, l, r) \
+#define TEST_CHECK_EQUAL(test, l, r) \
 	try { test.CheckEqual(l, r, L#l, L#r); } catch (std::exception e) { test.HandleException(e); }
-
 
 class Test
 {
@@ -26,10 +27,23 @@ public:
 	{
 	}
 
-	template<typename T1, typename T2>
+	template <typename T>
+	void Check(T e, LPCWSTR str)
+	{
+		if (e)
+		{
+			++passCount_;
+		}
+		else
+		{
+			out_ << L"!(" << str << L")\n";
+			++failCount_;
+		}
+	}
+
+	template <typename T1, typename T2>
 	void CheckEqual(T1 v1, T2 v2, LPCWSTR v1Str, LPCWSTR v2Str)
 	{
-		const wchar_t * result(NULL);
 		if (v1 == v2)
 		{
 			++passCount_;

@@ -11,6 +11,8 @@
 #define IDD_ABOUTBOX                    105
 #define IDD_ABOUTBOX_WIDE               106
 #define IDS_CHAR_STRING                 129
+#define IDR_HTML1                       129
+#define IDH_TEST                        129
 #define IDS_TEST_STRING                 130
 #define IDC_STATIC_1                    201
 #define IDC_STATIC_2                    202
@@ -25,7 +27,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        129
+#define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110

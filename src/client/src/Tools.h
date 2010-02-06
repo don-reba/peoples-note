@@ -1,7 +1,6 @@
 #pragma once
 
-#include <string>
-#include <windows.h>
+#include "HtmlResource.h"
 
 namespace Tools
 {
@@ -9,5 +8,7 @@ namespace Tools
 
 	std::wstring ConvertToUnicode(std::string str);
 
-	std::wstring LoadStringResource(UINT id);
+	HtmlResource LoadHtmlResource(int id);
+
+	std::wstring LoadStringResource(int id);
 }

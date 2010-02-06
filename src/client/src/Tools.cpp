@@ -3,6 +3,7 @@
 #include "Tools.h"
 
 #include <algorithm>
+#include <windows.h>
 
 using namespace Tools;
 using namespace std;
@@ -14,22 +15,27 @@ using namespace std;
 
 // Based on Raymond Chen's implementation.
 // http://blogs.msdn.com/oldnewthing/archive/2004/01/30/65013.aspx
-LPCWSTR GetStringResource(HINSTANCE instance, UINT id)
+LPCWSTR GetStringResource(HINSTANCE instance, WORD id)
 {
 	// Convert the string ID into a bundle number
 	LPWSTR resourceName = MAKEINTRESOURCE(id / 16 + 1);
-	HRSRC hrsrc = FindResource(instance, resourceName, RT_STRING);
+
+	HRSRC hrsrc = ::FindResource(instance, resourceName, RT_STRING);
 	if (!hrsrc)
 		throw std::exception("Resource not found.");
-	HGLOBAL hglob = LoadResource(instance, hrsrc);
+
+	HGLOBAL hglob = ::LoadResource(instance, hrsrc);
 	if (!hglob)
 		throw std::exception("Resource could not be loaded.");
-	LPCWSTR resource = reinterpret_cast<LPCWSTR>(LockResource(hglob));
+
+	LPCWSTR resource = reinterpret_cast<LPCWSTR>(::LockResource(hglob));
 	if (!resource)
 		throw std::exception("Resource could not be locked.");
-	// okay now walk the string table
-	for (UINT i = 0; i < (id & 0xF); i++)
+
+	// walk the string table
+	for (int i = 0; i < (id & 0xF); i++)
 		resource += 1 + (UINT)*resource;
+
 	return resource;
 }
 
@@ -89,7 +95,33 @@ std::wstring Tools::ConvertToUnicode(std::string str)
 	return &result[0];
 }
 
-wstring Tools::LoadStringResource(UINT id)
+HtmlResource Tools::LoadHtmlResource(int id)
+{
+	const LPCWSTR RT_HTML = MAKEINTRESOURCE(23);
+	HINSTANCE instance = GetModuleHandle(NULL);
+
+	HRSRC hrsrc = ::FindResource(instance, MAKEINTRESOURCE(id), RT_HTML);
+	if(!hrsrc)
+		throw std::exception("Resource not found.");
+
+	HGLOBAL hglob = ::LoadResource(instance, hrsrc);
+	if(!hglob)
+		throw std::exception("Resource could not be loaded.");
+
+	HtmlResource resource;
+
+	resource.data = static_cast<PBYTE>(::LockResource(hglob));
+	if (!resource.data)
+		throw std::exception("Resource could not be locked.");
+
+	resource.size = ::SizeofResource(instance, hrsrc);
+	if (0 == resource.size)
+		throw exception("Resource size could not be found");
+
+	return resource;
+}
+
+wstring Tools::LoadStringResource(int id)
 {
 	HINSTANCE instance = GetModuleHandle(NULL);
 	LPCWSTR resource = GetStringResource(instance, id);

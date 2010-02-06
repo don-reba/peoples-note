@@ -10,13 +10,28 @@
 
 using namespace Tools;
 
+bool SwitchToPreviousInstance(HINSTANCE instance)
+{
+	std::wstring title       = LoadStringResource(IDS_APP_TITLE);
+	std::wstring windowClass = LoadStringResource(IDC_CLIENT);
+	HWND hwnd = FindWindow(windowClass.c_str(), title.c_str());	
+	if (hwnd)
+	{
+		HWND activeOwnedWindow = (HWND)((ULONG)hwnd | 1);
+		SetForegroundWindow(activeOwnedWindow);
+		return true;
+	}
+	return false;
+}
 
 int WINAPI WinMain(HINSTANCE hInstance,
 				   HINSTANCE hPrevInstance,
 				   LPTSTR    lpCmdLine,
 				   int       nCmdShow)
 {
-	if (NoteListView::SwitchToPreviousInstance(hInstance))
+	SHInitExtraControls();
+
+	if (SwitchToPreviousInstance(hInstance))
 		return 0;
 
 	try
