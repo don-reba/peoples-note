@@ -166,8 +166,8 @@ BOOST_AUTO_TEST_CASE(CredentialsModel_Test)
 
 BOOST_AUTO_TEST_CASE(LastUserModel_Test)
 {
-	MockRegistryKey  key;
-	LastUserModel    lastUserModel(key);
+	MockRegistryKey key;
+	LastUserModel   lastUserModel(key);
 
 	key.data[L"username"] = L"test-usr";
 	key.data[L"password"] = L"test-pwd";

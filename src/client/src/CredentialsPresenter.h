@@ -7,14 +7,14 @@ class CredentialsPresenter
 {
 private:
 
-	ICredentialsModel & model;
-	ICredentialsView  & view;
+	ICredentialsModel & credentialsModel;
+	ICredentialsView  & credentialsView;
 
 public:
 	
 	CredentialsPresenter
-		( ICredentialsModel & model
-		, ICredentialsView  & view
+		( ICredentialsModel & credentialsModel
+		, ICredentialsView  & credentialsView
 		);
 
 private:

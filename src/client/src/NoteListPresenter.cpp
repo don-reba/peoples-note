@@ -7,22 +7,22 @@ using namespace boost;
 using namespace std;
 
 NoteListPresenter::NoteListPresenter
-	( INoteListModel & model
-	, INoteListView  & view
+	( INoteListModel & noteListModel
+	, INoteListView  & noteListView
 	)
-	: model (model)
-	, view  (view)
+	: noteListModel (noteListModel)
+	, noteListView  (noteListView)
 {
-	model.ConnectReset(bind(&NoteListPresenter::OnResetNoteList, this));
+	noteListModel.ConnectReset(bind(&NoteListPresenter::OnResetNoteList, this));
 }
 
 void NoteListPresenter::OnResetNoteList()
 {
-	const vector<const INote*> & notes(model.GetNotes());
-	view.ClearNotes();
+	const vector<const INote*> & notes(noteListModel.GetNotes());
+	noteListView.ClearNotes();
 	foreach (const INote * note, notes)
-		view.AddNote(ConvertToHtml(note));
-	view.Update();
+		noteListView.AddNote(ConvertToHtml(note));
+	noteListView.Update();
 }
 
 wstring NoteListPresenter::ConvertToHtml(const INote * note) const

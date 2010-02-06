@@ -10,14 +10,14 @@ class NoteListPresenter
 {
 private:
 
-	INoteListModel & model;
-	INoteListView  & view;
+	INoteListModel & noteListModel;
+	INoteListView  & noteListView;
 
 public:
 
 	NoteListPresenter
-		( INoteListModel & model
-		, INoteListView  & view
+		( INoteListModel & noteListModel
+		, INoteListView  & noteListView
 		);
 
 	std::wstring ConvertToHtml(const INote * note) const;

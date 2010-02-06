@@ -5,21 +5,21 @@
 using namespace boost;
 
 CredentialsPresenter::CredentialsPresenter
-	( ICredentialsModel & model
-	, ICredentialsView  & view
+	( ICredentialsModel & credentialsModel
+	, ICredentialsView  & credentialsView
 	)
-	: model (model)
-	, view  (view)
+	: credentialsModel (credentialsModel)
+	, credentialsView  (credentialsView)
 {
-	view.ConnectSignIn(bind(&CredentialsPresenter::OnSignIn, this));
-	view.SetUsername(model.GetUsername());
-	view.SetPassword(model.GetPassword());
+	credentialsView.ConnectSignIn(bind(&CredentialsPresenter::OnSignIn, this));
+	credentialsView.SetUsername(credentialsModel.GetUsername());
+	credentialsView.SetPassword(credentialsModel.GetPassword());
 }
 
 void CredentialsPresenter::OnSignIn()
 {
-	model.SetCredentials
-		( view.GetUsername()
-		, view.GetPassword()
+	credentialsModel.SetCredentials
+		( credentialsView.GetUsername()
+		, credentialsView.GetPassword()
 		);
 }
