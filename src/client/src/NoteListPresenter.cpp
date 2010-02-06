@@ -9,20 +9,28 @@ using namespace std;
 NoteListPresenter::NoteListPresenter
 	( INoteListModel & noteListModel
 	, INoteListView  & noteListView
+	, IUserModel     & userModel
 	)
 	: noteListModel (noteListModel)
 	, noteListView  (noteListView)
+	, userModel     (userModel)
 {
-	noteListModel.ConnectReset(bind(&NoteListPresenter::OnResetNoteList, this));
+	noteListModel.ConnectChanged(bind(&NoteListPresenter::OnNoteListChanged, this));
+	userModel.ConnectLoaded(bind(&NoteListPresenter::OnUserLoaded, this));
 }
 
-void NoteListPresenter::OnResetNoteList()
+void NoteListPresenter::OnNoteListChanged()
 {
-	const vector<const INote*> & notes(noteListModel.GetNotes());
+	vector<INote*> notes = noteListModel.GetNotes();
 	noteListView.ClearNotes();
 	foreach (const INote * note, notes)
 		noteListView.AddNote(ConvertToHtml(note));
 	noteListView.Update();
+}
+
+void NoteListPresenter::OnUserLoaded()
+{
+	noteListModel.SetNotes(userModel.GetLastUsedNotebook().GetNotes());
 }
 
 wstring NoteListPresenter::ConvertToHtml(const INote * note) const

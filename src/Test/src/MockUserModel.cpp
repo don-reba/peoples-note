@@ -7,6 +7,16 @@ MockUserModel::MockUserModel()
 {
 }
 
+void MockUserModel::Loaded()
+{
+	SignalLoaded();
+}
+
+void MockUserModel::ConnectLoaded(slot_type OnLoaded)
+{
+	SignalLoaded.connect(OnLoaded);
+}
+
 void MockUserModel::CreateDefaultUser()
 {
 	isDefault = true;
@@ -15,6 +25,11 @@ void MockUserModel::CreateDefaultUser()
 void MockUserModel::SetCredentials(const ICredentialsModel & credentials)
 {
 	credentialsModel = credentials;
+}
+
+INotebook & MockUserModel::GetLastUsedNotebook()
+{
+	return lastUsedNotebook;
 }
 
 void MockUserModel::Load()

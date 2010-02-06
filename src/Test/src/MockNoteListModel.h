@@ -11,13 +11,13 @@ private:
 
 public:
 
-	std::vector<MockNote> notes;
-
-public:
-
-	virtual void ConnectReset(slot_type OnReset);
-
-	virtual std::vector<const INote*> GetNotes() const;
+	std::vector<INote*> notes;
 
 	void Reset();
+
+	virtual void ConnectChanged(slot_type OnReset);
+
+	virtual std::vector<INote*> GetNotes();
+
+	virtual void SetNotes(std::vector<INote*> notes);
 };

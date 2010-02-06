@@ -5,6 +5,7 @@
 #include "ITimestamp.h"
 #include "INoteListModel.h"
 #include "INoteListView.h"
+#include "IUserModel.h"
 
 class NoteListPresenter
 {
@@ -12,12 +13,14 @@ private:
 
 	INoteListModel & noteListModel;
 	INoteListView  & noteListView;
+	IUserModel     & userModel;
 
 public:
 
 	NoteListPresenter
 		( INoteListModel & noteListModel
 		, INoteListView  & noteListView
+		, IUserModel     & userModel
 		);
 
 	std::wstring ConvertToHtml(const INote * note) const;
@@ -32,5 +35,7 @@ public:
 
 private:
 
-	void OnResetNoteList();
+	void OnNoteListChanged();
+
+	void OnUserLoaded();
 };

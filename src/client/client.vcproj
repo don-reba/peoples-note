@@ -513,6 +513,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\INotebook.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\INoteListModel.h"
 				>
 			</File>

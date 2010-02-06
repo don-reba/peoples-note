@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockNotebook.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockNoteListModel.cpp"
 				>
 			</File>
@@ -314,6 +318,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockNote.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNotebook.h"
 				>
 			</File>
 			<File

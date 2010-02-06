@@ -58,11 +58,16 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_Test)
 	BOOST_CHECK_EQUAL(model.GetPassword(), L"test-pwd");
 }
 
-BOOST_AUTO_TEST_CASE(NoteListPresenter_Reset_Test)
+BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 {
-	MockNoteListModel model;
-	MockNoteListView  view;
-	NoteListPresenter presenter(model, view);
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockUserModel     userModel;
+	NoteListPresenter presenter
+		( noteListModel
+		, noteListView
+		, userModel
+		);
 
 	vector<MockTag> tags(3);
 	tags[0].name = L"tag-1";
@@ -83,25 +88,48 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_Reset_Test)
 	notes[2].tags.push_back(tags[2]);
 	notes[2].createDate.formattedDateTime = L"<strong>not bold</strong>";
 
-	foreach (const MockNote & note, notes)
-		model.notes.push_back(note);
-	model.Reset();
+	foreach (MockNote & note, notes)
+		noteListModel.notes.push_back(&note);
+	noteListModel.Reset();
 
-	BOOST_CHECK_EQUAL(view.updated, true);
+	BOOST_CHECK_EQUAL(noteListView.updated, true);
 
-	BOOST_CHECK_EQUAL(view.notes.size(), 3);
+	BOOST_CHECK_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
-		( Tools::ConvertToAnsi(view.notes[0])
+		( Tools::ConvertToAnsi(noteListView.notes[0])
 		, Tools::ConvertToAnsi(L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>Note</td></tr><tr><td>tag-1, tag-2</td></tr><tr><td>2010-02-04 15:20</td></tr></table></option>")
 		);
 	BOOST_CHECK_EQUAL
-		( Tools::ConvertToAnsi(view.notes[1])
+		( Tools::ConvertToAnsi(noteListView.notes[1])
 		, Tools::ConvertToAnsi(L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td></td></tr><tr><td></td></tr><tr><td></td></tr></table></option>")
 		);
 	BOOST_CHECK_EQUAL
-		( Tools::ConvertToAnsi(view.notes[2])
+		( Tools::ConvertToAnsi(noteListView.notes[2])
 		, Tools::ConvertToAnsi(L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;</td></tr><tr><td>&lt;strong&gt;not bold&lt;/strong&gt;</td></tr></table></option>")
 		);
+}
+
+BOOST_AUTO_TEST_CASE(NoteListPresenter_UserLoaded_Test)
+{
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockUserModel     userModel;
+	NoteListPresenter presenter
+		( noteListModel
+		, noteListView
+		, userModel
+		);
+
+	vector<MockNote> notes(2);
+	notes[0].title = L"note-0";
+	notes[1].title = L"note-1";
+
+	foreach (MockNote & note, notes)
+		userModel.lastUsedNotebook.notes.push_back(&note);
+	userModel.Loaded();
+
+	BOOST_CHECK_EQUAL(noteListModel.notes[0]->GetTitle(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes[1]->GetTitle(), L"note-1");
 }
 
 BOOST_AUTO_TEST_CASE(CurrentUserLoader_DefaultUser_Test)
