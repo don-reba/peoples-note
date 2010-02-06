@@ -399,7 +399,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\main.cpp"
+				RelativePath=".\src\Main.cpp"
 				>
 			</File>
 			<File
@@ -553,7 +553,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\main.h"
+				RelativePath=".\src\Main.h"
 				>
 			</File>
 			<File

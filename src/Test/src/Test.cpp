@@ -19,19 +19,30 @@
 #include <iostream>
 #include <string>
 
+namespace std
+{
+	ostream & operator << (ostream & stream, const wchar_t * str)
+	{
+		return stream << Tools::ConvertToAnsi(str);
+	}
+
+	ostream & operator << (ostream & stream, const wstring & str)
+	{
+		return stream << Tools::ConvertToAnsi(str);
+	}
+}
+
 #define BOOST_TEST_MODULE const_string test
 #include <boost/test/unit_test.hpp>
 
 using namespace boost;
 using namespace std;
 
-BOOST_TEST_DONT_PRINT_LOG_VALUE(std::wstring)
+//BOOST_TEST_DONT_PRINT_LOG_VALUE(std::wstring)
 
 BOOST_AUTO_TEST_CASE(ToolsConvertToUnicode_Test)
 {
-	std::cout << L"Test";
-
-	wstring testString = Tools::ConvertToUnicode("Test");
+	wstring testString = L"Test";
 	BOOST_CHECK_EQUAL(testString, L"Test");
 
 	wstring emptyString = Tools::ConvertToUnicode("");
@@ -99,16 +110,16 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 
 	BOOST_CHECK_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
-		( Tools::ConvertToAnsi(noteListView.notes[0])
-		, Tools::ConvertToAnsi(L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>Note</td></tr><tr><td>tag-1, tag-2</td></tr><tr><td>2010-02-04 15:20</td></tr></table></option>")
+		( noteListView.notes[0]
+		, L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>Note</td></tr><tr><td>tag-1, tag-2</td></tr><tr><td>2010-02-04 15:20</td></tr></table></option>"
 		);
 	BOOST_CHECK_EQUAL
-		( Tools::ConvertToAnsi(noteListView.notes[1])
-		, Tools::ConvertToAnsi(L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td></td></tr><tr><td></td></tr><tr><td></td></tr></table></option>")
+		( noteListView.notes[1]
+		, L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td></td></tr><tr><td></td></tr><tr><td></td></tr></table></option>"
 		);
 	BOOST_CHECK_EQUAL
-		( Tools::ConvertToAnsi(noteListView.notes[2])
-		, Tools::ConvertToAnsi(L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;</td></tr><tr><td>&lt;strong&gt;not bold&lt;/strong&gt;</td></tr></table></option>")
+		( noteListView.notes[2]
+		, L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;</td></tr><tr><td>&lt;strong&gt;not bold&lt;/strong&gt;</td></tr></table></option>"
 		);
 }
 

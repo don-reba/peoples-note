@@ -24,35 +24,43 @@ bool SwitchToPreviousInstance(HINSTANCE instance)
 	return false;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance,
+WPARAM RunMessageLoop(HACCEL accelerators)
+{
+	MSG msg;
+	while (GetMessage(&msg, NULL, 0, 0)) 
+	{
+		if (!TranslateAccelerator(msg.hwnd, accelerators, &msg)) 
+		{
+			if (!HTMLayoutTranslateMessage(&msg))
+				TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+	return msg.wParam;
+}
+
+
+int WINAPI WinMain(HINSTANCE instance,
 				   HINSTANCE hPrevInstance,
 				   LPTSTR    lpCmdLine,
 				   int       nCmdShow)
 {
-	SHInitExtraControls();
-
-	if (SwitchToPreviousInstance(hInstance))
+	if (SwitchToPreviousInstance(instance))
 		return 0;
+
+	SHInitExtraControls();
 
 	try
 	{
-		NoteListView noteListView(hInstance, nCmdShow);
+		NoteListView noteListView(instance, nCmdShow);
+		noteListView.Create();
 
-		HACCEL hAccelTable;
-		hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
+		HACCEL accelerators = LoadAccelerators
+			( instance
+			, MAKEINTRESOURCE(IDC_CLIENT)
+			);
 
-		MSG msg;
-		while (GetMessage(&msg, NULL, 0, 0)) 
-		{
-			if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg)) 
-			{
-				if (!HTMLayoutTranslateMessage(&msg))
-					TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
-		}
-
-		return (int) msg.wParam;
+		return static_cast<int>(RunMessageLoop(accelerators));
 	}
 	catch(std::exception e)
 	{

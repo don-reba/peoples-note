@@ -39,6 +39,10 @@ LPCWSTR GetStringResource(HINSTANCE instance, WORD id)
 	return resource;
 }
 
+#ifndef RT_HTML
+#define RT_HTML MAKEINTRESOURCE(23)
+#endif // RT_HTML
+
 //---------------------
 // Tools implementation
 //---------------------
@@ -97,7 +101,6 @@ std::wstring Tools::ConvertToUnicode(std::string str)
 
 HtmlResource Tools::LoadHtmlResource(int id)
 {
-	const LPCWSTR RT_HTML = MAKEINTRESOURCE(23);
 	HINSTANCE instance = GetModuleHandle(NULL);
 
 	HRSRC hrsrc = ::FindResource(instance, MAKEINTRESOURCE(id), RT_HTML);

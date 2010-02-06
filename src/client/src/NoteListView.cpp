@@ -8,12 +8,16 @@
 using namespace std;
 using namespace Tools;
 
-NoteListView::NoteListView(HINSTANCE instance, int nCmdShow)
-	: instance (instance)
+NoteListView::NoteListView(HINSTANCE instance, int cmdShow)
+	: cmdShow  (cmdShow)
+	, instance (instance)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
+}
 
+void NoteListView::Create()
+{
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_CLIENT);
 
@@ -38,8 +42,110 @@ NoteListView::NoteListView(HINSTANCE instance, int nCmdShow)
 
 	ResizeForMenuBar();
 
-	::ShowWindow(hwnd_, nCmdShow);
+	::ShowWindow(hwnd_, cmdShow);
 	::UpdateWindow(hwnd_);
+}
+
+//-----------------
+// message handlers
+//-----------------
+
+void NoteListView::OnActivate(Msg<WM_ACTIVATE> &msg)
+{
+	SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, FALSE);
+	msg.result_  = 0;
+	msg.handled_ = true;
+}
+
+void NoteListView::OnBehaviorNotify(Msg<WM_BEHAVIOR_NOTIFY> &msg)
+{
+	msg.handled_ = true;
+}
+
+void NoteListView::OnCommand(Msg<WM_COMMAND> &msg)
+{
+	switch (msg.GetCtrlId())
+	{
+	case IDM_MENU_ABOUT:
+		// TODO: implement About dialog
+		break;
+	case IDM_MENU_EXIT:
+		SendMessage(hwnd_, WM_CLOSE, 0, 0);
+		msg.handled_ = true;
+		break;
+	}
+}
+
+void NoteListView::OnCreate(Msg<WM_CREATE> &msg)
+{
+	CreateMenuBar();
+
+	HTMLayoutSetCallback(hwnd_, &HTMLayoutNotifyHandler, this);
+
+	HtmlResource resource = Tools::LoadHtmlResource(IDH_MAIN);
+	HTMLayoutLoadHtml(hwnd_, resource.data, resource.size);
+
+	msg.handled_ = true;
+}
+
+void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
+{
+	CommandBar_Destroy(menuBar);
+	PostQuitMessage(0);
+}
+
+bool NoteListView::ProcessHtmLayout(WndMsg &msg)
+{
+	LRESULT result;
+	BOOL    handled;
+	result = HTMLayoutProcND(hwnd_, msg.id_, msg.wprm_, msg.lprm_, &handled);
+	if (handled)
+	{
+		msg.result_  = result;
+		msg.handled_ = true;
+	}
+	return handled != FALSE;
+}
+
+void NoteListView::ProcessMessage(WndMsg &msg)
+{
+	static Handler mmp[] =
+	{
+		&NoteListView::OnActivate,
+		&NoteListView::OnBehaviorNotify,
+		&NoteListView::OnCommand,
+		&NoteListView::OnCreate,
+		&NoteListView::OnDestroy,
+		&NoteListView::OnSettingChange
+	};
+	if (!ProcessHtmLayout(msg) && !Handler::Call(mmp, this, msg))
+		__super::ProcessMessage(msg);
+}
+
+void NoteListView::OnSettingChange(Msg<WM_SETTINGCHANGE> &msg)
+{
+	SHHandleWMSettingChange(hwnd_, msg.wprm_, msg.lprm_, &activateInfo);
+	msg.handled_ = true;
+}
+
+//---------------------------
+// HTMLayout message handlers
+//---------------------------
+
+LRESULT NoteListView::OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab )
+{
+	// attach custom behaviors
+	htmlayout::event_handler * handler = htmlayout::behavior::find
+		( lpab->behaviorName
+		, lpab->element
+		);
+	if(handler)
+	{
+		lpab->elementTag    = handler;
+		lpab->elementProc   = htmlayout::behavior::element_proc;
+		lpab->elementEvents = handler->subscribed_to;
+	}
+	return 0;
 }
 
 // HTMLayout specific notification handler.
@@ -110,106 +216,4 @@ void NoteListView::ResizeForMenuBar()
 
 		::MoveWindow(hwnd_, x, y, width, height, repaint);
 	}
-}
-
-//---------------------------
-// HTMLayout message handlers
-//---------------------------
-
-LRESULT NoteListView::OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab )
-{
-	// attach custom behaviors
-	htmlayout::event_handler * handler = htmlayout::behavior::find
-		( lpab->behaviorName
-		, lpab->element
-		);
-	if(handler)
-	{
-		lpab->elementTag    = handler;
-		lpab->elementProc   = htmlayout::behavior::element_proc;
-		lpab->elementEvents = handler->subscribed_to;
-	}
-	return 0;
-}
-
-//-----------------
-// message handlers
-//-----------------
-
-void NoteListView::OnActivate(Msg<WM_ACTIVATE> &msg)
-{
-	SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, FALSE);
-	msg.result_  = 0;
-	msg.handled_ = true;
-}
-
-void NoteListView::OnBehaviorNotify(Msg<WM_BEHAVIOR_NOTIFY> &msg)
-{
-	msg.handled_ = true;
-}
-
-void NoteListView::OnCommand(Msg<WM_COMMAND> &msg)
-{
-	switch (msg.GetCtrlId())
-	{
-	case IDM_MENU_ABOUT:
-		// TODO: implement About dialog
-		break;
-	case IDM_MENU_EXIT:
-		SendMessage(hwnd_, WM_CLOSE, 0, 0);
-		msg.handled_ = true;
-		break;
-	}
-}
-
-void NoteListView::OnCreate(Msg<WM_CREATE> &msg)
-{
-	CreateMenuBar();
-
-	HTMLayoutSetCallback(hwnd_, &HTMLayoutNotifyHandler, this);
-
-	HtmlResource resource = Tools::LoadHtmlResource(IDH_MAIN);
-	HTMLayoutLoadHtml(hwnd_, resource.data, resource.size);
-
-	msg.handled_ = true;
-}
-
-void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
-{
-	CommandBar_Destroy(menuBar);
-	PostQuitMessage(0);
-}
-
-void NoteListView::OnSettingChange(Msg<WM_SETTINGCHANGE> &msg)
-{
-	SHHandleWMSettingChange(hwnd_, msg.wprm_, msg.lprm_, &activateInfo);
-	msg.handled_ = true;
-}
-
-bool NoteListView::ProcessHtmLayout(WndMsg &msg)
-{
-	LRESULT result;
-	BOOL    handled;
-	result = HTMLayoutProcND(hwnd_, msg.id_, msg.wprm_, msg.lprm_, &handled);
-	if (handled)
-	{
-		msg.result_  = result;
-		msg.handled_ = true;
-	}
-	return handled != FALSE;
-}
-
-void NoteListView::ProcessMessage(WndMsg &msg)
-{
-	static Handler mmp[] =
-	{
-		&NoteListView::OnActivate,
-		&NoteListView::OnBehaviorNotify,
-		&NoteListView::OnCommand,
-		&NoteListView::OnCreate,
-		&NoteListView::OnDestroy,
-		&NoteListView::OnSettingChange
-	};
-	if (!ProcessHtmLayout(msg) && !Handler::Call(mmp, this, msg))
-		__super::ProcessMessage(msg);
 }
