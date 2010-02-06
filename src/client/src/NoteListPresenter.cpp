@@ -25,15 +25,21 @@ void NoteListPresenter::OnNoteListChanged()
 	noteListView.ClearNotes();
 	foreach (const INote * note, notes)
 		noteListView.AddNote(ConvertToHtml(note));
-	noteListView.Update();
+	noteListView.UpdateNotes();
 }
 
 void NoteListPresenter::OnUserLoaded()
 {
 	noteListModel.SetNotes(userModel.GetLastUsedNotebook().GetNotes());
+	
+	noteListView.ClearNotebooks();
+	const vector<INotebook*> notebooks = userModel.GetNotebooks();
+	foreach (const INotebook * notebook, notebooks)
+		noteListView.AddNotebook(notebook->GetName());
+	noteListView.UpdateNotebooks();
 }
 
-wstring NoteListPresenter::ConvertToHtml(const INote * note) const
+wstring NoteListPresenter::ConvertToHtml(const INote * note)
 {
 	wostringstream stream;
 	stream << L"<option class=\"note\"><table><tr><td rowspan=\"3\">";
@@ -47,12 +53,12 @@ wstring NoteListPresenter::ConvertToHtml(const INote * note) const
 	return stream.str();
 }
 
-wstring NoteListPresenter::FormatTitle(const wstring & title) const
+wstring NoteListPresenter::FormatTitle(const wstring & title)
 {
 	return EscapeHtml(title);
 }
 
-wstring NoteListPresenter::FormatTags(const vector<const ITag*> &tags) const
+wstring NoteListPresenter::FormatTags(const vector<const ITag*> &tags)
 {
 	wostringstream stream;
 	bool first = true;
@@ -66,7 +72,7 @@ wstring NoteListPresenter::FormatTags(const vector<const ITag*> &tags) const
 	return stream.str();
 }
 
-wstring NoteListPresenter::FormatDate(const ITimestamp &timestamp) const
+wstring NoteListPresenter::FormatDate(const ITimestamp &timestamp)
 {
 	return EscapeHtml(timestamp.GetFormattedDateTime());
 
@@ -100,7 +106,7 @@ wstring NoteListPresenter::FormatDate(const ITimestamp &timestamp) const
 	//return stream.str();
 }
 
-wstring NoteListPresenter::EscapeHtml(const std::wstring & str) const
+wstring NoteListPresenter::EscapeHtml(const std::wstring & str)
 {
 	wostringstream stream;
 	foreach (wchar_t c, str)

@@ -23,19 +23,21 @@ public:
 		, IUserModel     & userModel
 		);
 
-	std::wstring ConvertToHtml(const INote * note) const;
-
-	std::wstring FormatTitle(const std::wstring & title) const;
-
-	std::wstring FormatTags(const std::vector<const ITag*> & tags) const;
-
-	std::wstring FormatDate(const ITimestamp & timestamp) const;
-
-	std::wstring EscapeHtml(const std::wstring & string) const;
-
 private:
 
 	void OnNoteListChanged();
 
 	void OnUserLoaded();
+
+private:
+
+	static std::wstring ConvertToHtml(const INote * note);
+
+	static std::wstring FormatTitle(const std::wstring & title);
+
+	static std::wstring FormatTags(const std::vector<const ITag*> & tags);
+
+	static std::wstring FormatDate(const ITimestamp & timestamp);
+
+	static std::wstring EscapeHtml(const std::wstring & string);
 };

@@ -6,5 +6,7 @@ class INotebook
 {
 public:
 
-	virtual std::vector<INote*> GetNotes() = 0;
+	virtual std::wstring GetName() const = 0;
+
+	virtual std::vector<INote*> GetNotes() const = 0;
 };

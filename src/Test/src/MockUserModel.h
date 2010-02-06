@@ -12,10 +12,11 @@ private:
 
 public:
 
-	MockCredentialsModel credentialsModel;
-	MockNotebook         lastUsedNotebook;
-	bool                 isDefault;
-	bool                 isLoaded;
+	MockCredentialsModel    credentialsModel;
+	MockNotebook            lastUsedNotebook;
+	std::vector<INotebook*> notebooks;
+	bool                    isDefault;
+	bool                    isLoaded;
 
 public:
 
@@ -30,6 +31,8 @@ public:
 	virtual void SetCredentials(const ICredentialsModel & credentials);
 
 	virtual INotebook & GetLastUsedNotebook();
+
+	virtual std::vector<INotebook*> GetNotebooks() const;
 
 	virtual void Load();
 };

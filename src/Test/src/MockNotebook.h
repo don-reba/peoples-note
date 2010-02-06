@@ -7,6 +7,11 @@ class MockNotebook : public INotebook
 public:
 
 	std::vector<INote*> notes;
+	std::wstring        name;
 
-	virtual std::vector<INote*> GetNotes();
+public:
+
+	virtual std::wstring GetName() const;
+
+	virtual std::vector<INote*> GetNotes() const;
 };

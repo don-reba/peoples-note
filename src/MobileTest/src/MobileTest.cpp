@@ -10,11 +10,11 @@
 
 void TestToolsLoadStringResource(Test & test, HINSTANCE instance)
 {
-	std::wstring charString = Tools::LoadStringResource(instance, IDS_CHAR_STRING);
+	std::wstring charString = Tools::LoadStringResource(IDS_CHAR_STRING);
 	TEST_CHECK_EQUAL(test, charString.length(), 1);
 	TEST_CHECK_EQUAL(test, charString, L".");
 
-	std::wstring testString = Tools::LoadStringResource(instance, IDS_TEST_STRING);
+	std::wstring testString = Tools::LoadStringResource(IDS_TEST_STRING);
 	TEST_CHECK_EQUAL(test, testString.length(), 4);
 	TEST_CHECK_EQUAL(test, testString, L"Test");
 }

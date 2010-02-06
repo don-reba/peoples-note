@@ -8,6 +8,7 @@
 #include "MockCredentialsView.h"
 #include "MockLastUserModel.h"
 #include "MockNote.h"
+#include "MockNotebook.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockRegistryKey.h"
@@ -28,6 +29,8 @@ BOOST_TEST_DONT_PRINT_LOG_VALUE(std::wstring)
 
 BOOST_AUTO_TEST_CASE(ToolsConvertToUnicode_Test)
 {
+	std::cout << L"Test";
+
 	wstring testString = Tools::ConvertToUnicode("Test");
 	BOOST_CHECK_EQUAL(testString, L"Test");
 
@@ -92,7 +95,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 		noteListModel.notes.push_back(&note);
 	noteListModel.Reset();
 
-	BOOST_CHECK_EQUAL(noteListView.updated, true);
+	BOOST_CHECK_EQUAL(noteListView.notesUpdated, true);
 
 	BOOST_CHECK_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
@@ -109,7 +112,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 		);
 }
 
-BOOST_AUTO_TEST_CASE(NoteListPresenter_UserLoaded_Test)
+BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 {
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
@@ -128,8 +131,33 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_UserLoaded_Test)
 		userModel.lastUsedNotebook.notes.push_back(&note);
 	userModel.Loaded();
 
+	BOOST_CHECK_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes[0]->GetTitle(), L"note-0");
 	BOOST_CHECK_EQUAL(noteListModel.notes[1]->GetTitle(), L"note-1");
+}
+
+BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
+{
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockUserModel     userModel;
+	NoteListPresenter presenter
+		( noteListModel
+		, noteListView
+		, userModel
+		);
+
+	vector<MockNotebook> notebooks(2);
+	notebooks[0].name = L"notebook-0";
+	notebooks[1].name = L"notebook-1";
+
+	foreach (MockNotebook & notebook, notebooks)
+		userModel.notebooks.push_back(&notebook);
+	userModel.Loaded();
+
+	BOOST_CHECK_EQUAL(noteListView.notebooks.size(), 2);
+	BOOST_CHECK_EQUAL(noteListView.notebooks[0], L"notebook-0");
+	BOOST_CHECK_EQUAL(noteListView.notebooks[1], L"notebook-1");
 }
 
 BOOST_AUTO_TEST_CASE(CurrentUserLoader_DefaultUser_Test)

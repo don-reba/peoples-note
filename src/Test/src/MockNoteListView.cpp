@@ -4,23 +4,41 @@
 using namespace std;
 
 MockNoteListView::MockNoteListView()
-	: updated (true)
+	: notesUpdated     (true)
+	, notebooksUpdated (true)
 {
 }
 
 void MockNoteListView::ClearNotes()
 {
 	notes.clear();
-	updated = false;
+	notesUpdated = false;
+}
+
+void MockNoteListView::UpdateNotes()
+{
+	notesUpdated = true;
 }
 
 void MockNoteListView::AddNote(wstring note)
 {
 	notes.push_back(note);
-	updated = false;
+	notesUpdated = false;
 }
 
-void MockNoteListView::Update()
+void MockNoteListView::ClearNotebooks()
 {
-	updated = true;
+	notebooks.clear();
+	notebooksUpdated = false;
+}
+
+void MockNoteListView::AddNotebook(wstring notebook)
+{
+	notebooks.push_back(notebook);
+	notebooksUpdated = false;
+}
+
+void MockNoteListView::UpdateNotebooks()
+{
+	notebooksUpdated = true;
 }

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "MockUserModel.h"
 
+using namespace std;
+
 MockUserModel::MockUserModel()
 	: isDefault (false)
 	, isLoaded  (false)
@@ -30,6 +32,11 @@ void MockUserModel::SetCredentials(const ICredentialsModel & credentials)
 INotebook & MockUserModel::GetLastUsedNotebook()
 {
 	return lastUsedNotebook;
+}
+
+vector<INotebook*> MockUserModel::GetNotebooks() const
+{
+	return notebooks;
 }
 
 void MockUserModel::Load()

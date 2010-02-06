@@ -3,7 +3,12 @@
 
 using namespace std;
 
-vector<INote*> MockNotebook::GetNotes()
+wstring MockNotebook::GetName() const
+{
+	return name;
+}
+
+vector<INote*> MockNotebook::GetNotes() const
 {
 	return notes;
 }

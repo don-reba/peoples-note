@@ -7,7 +7,9 @@ class MockNoteListView : public INoteListView
 public:
 
 	std::vector<std::wstring> notes;
-	bool                      updated;
+	std::vector<std::wstring> notebooks;
+	bool                      notesUpdated;
+	bool                      notebooksUpdated;
 
 public:
 
@@ -17,5 +19,11 @@ public:
 
 	virtual void AddNote(std::wstring note);
 
-	virtual void Update();
+	virtual void UpdateNotes();
+
+	virtual void ClearNotebooks();
+
+	virtual void AddNotebook(std::wstring notebook);
+
+	virtual void UpdateNotebooks();
 };

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MobileTest", "MobileTest\Mo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcproj", "{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpExperiment", "OpExperiment\OpExperiment.vcproj", "{173C5227-2656-46DE-95B8-ADB181EE1D2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -65,6 +67,18 @@ Global
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Release|Win32.Build.0 = Release|Win32
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Release|Win32
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Release|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Release|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Debug|Win32.Build.0 = Debug|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Release|Win32.ActiveCfg = Release|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Release|Win32.Build.0 = Release|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Release|Win32
+		{173C5227-2656-46DE-95B8-ADB181EE1D2A}.Release|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -62,3 +62,6 @@
 #include <altcecrt.h>
 
 // TODO: reference additional headers your program requires here
+
+#include <string>
+#include <vector>
