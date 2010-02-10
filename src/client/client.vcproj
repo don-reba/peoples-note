@@ -403,6 +403,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Note.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Notebook.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteListPresenter.cpp"
 				>
 			</File>
@@ -467,7 +475,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\Timestamp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Tools.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\UserModel.cpp"
 				>
 			</File>
 		</Filter>
@@ -549,6 +565,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Note.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Notebook.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteListPresenter.h"
 				>
 			</File>
@@ -569,7 +593,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Timestamp.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Tools.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\UserModel.h"
 				>
 			</File>
 			<File
