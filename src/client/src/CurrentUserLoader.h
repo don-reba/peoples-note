@@ -1,24 +1,24 @@
 #pragma once
 
-#include "IAppModel.h"
 #include "ILastUserModel.h"
+#include "INoteListView.h"
 #include "IUserModel.h"
 
 class CurrentUserLoader
 {
 private:
 
-	IAppModel      & appModel;
 	IUserModel     & userModel;
 	ILastUserModel & lastUserModel;
+	INoteListView  & noteListView;
 
 public:
 
 	CurrentUserLoader
-		( IAppModel      & appModel
-		, IUserModel     & userModel
+		( IUserModel     & userModel
 		, ILastUserModel & lastUserModel
+		, INoteListView  & noteListView
 		);
 
-	void OnStart();
+	void OnCreated();
 };

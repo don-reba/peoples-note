@@ -9,6 +9,11 @@ MockNoteListView::MockNoteListView()
 {
 }
 
+void MockNoteListView::ConnectCreated(slot_type OnCreated)
+{
+	SignalCreated.connect(OnCreated);
+}
+
 void MockNoteListView::ClearNotes()
 {
 	notes.clear();

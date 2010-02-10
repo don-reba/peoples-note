@@ -1,8 +1,12 @@
 #pragma once
 
-class INoteListView
+#include "ISignalProvider.h"
+
+class INoteListView : public ISignalProvider
 {
 public:
+
+	virtual void ConnectCreated(slot_type OnCreated) = 0;
 
 	virtual void ClearNotes() = 0;
 

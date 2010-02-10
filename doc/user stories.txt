@@ -1,4 +1,6 @@
-signin
+sign in
+	when the user signs in, the note list should display the last used notebok
+		last used notebook defaults to the default notebook
 	when the program starts without a user, a default user should be created
 	when a user without a notebook signs in, an empty default notebook should be created
 	when the user changes username from the default, the database should be renamed
@@ -37,6 +39,7 @@ note list navigation
 	when the user flicks the note list, it should receive scrolling momentum
 	when the user clicks "show more notes", the note list should be extended by another page
 note view
+	when the user signs in, the list of notebooks should be filled in
 	when the user flicks the note left, the next note should be displayed
 		unless the note is the last
 	when the user flicks the note right, the previous note should be displayed

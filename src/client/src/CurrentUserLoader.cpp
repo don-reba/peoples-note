@@ -5,18 +5,18 @@ using namespace boost;
 using namespace std;
 
 CurrentUserLoader::CurrentUserLoader
-	( IAppModel      & appModel
-	, IUserModel     & userModel
+	( IUserModel     & userModel
 	, ILastUserModel & lastUserModel
+	, INoteListView  & noteListView
 	)
-	: appModel      (appModel)
-	, userModel     (userModel)
+	: userModel     (userModel)
 	, lastUserModel (lastUserModel)
+	, noteListView  (noteListView)
 {
-	appModel.ConnectStart(bind(&CurrentUserLoader::OnStart, this));
+	noteListView.ConnectCreated(bind(&CurrentUserLoader::OnCreated, this));
 }
 
-void CurrentUserLoader::OnStart()
+void CurrentUserLoader::OnCreated()
 {
 	const ICredentialsModel & credentials = lastUserModel.GetCredentials();
 	if (credentials.GetUsername().empty())

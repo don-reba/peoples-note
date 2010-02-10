@@ -15,9 +15,13 @@ private:
 	HWND           menuBar;
 	SHACTIVATEINFO activateInfo;
 
+	signal SignalCreated;
+
 public:
 
 	NoteListView(HINSTANCE hInstance, int cmdShow);
+
+	virtual void ConnectCreated(slot_type OnCreated);
 
 	virtual void Create();
 

@@ -5,6 +5,7 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
+using namespace htmlayout;
 using namespace std;
 using namespace Tools;
 
@@ -46,9 +47,15 @@ void NoteListView::Create()
 	::UpdateWindow(hwnd_);
 }
 
+void NoteListView::ConnectCreated(slot_type OnCreated)
+{
+	SignalCreated.connect(OnCreated);
+}
+
 void NoteListView::ClearNotes()
 {
-	// TODO: implement
+	// http://www.terrainformatica.com/wiki/htmlayout/tutorial-basics-r
+	//dom::element root = dom::element::root_element(hwnd_);
 }
 
 void NoteListView::AddNote(wstring note)
@@ -114,6 +121,8 @@ void NoteListView::OnCreate(Msg<WM_CREATE> &msg)
 
 	HtmlResource resource = Tools::LoadHtmlResource(IDH_MAIN);
 	HTMLayoutLoadHtml(hwnd_, resource.data, resource.size);
+
+	SignalCreated();
 
 	msg.handled_ = true;
 }

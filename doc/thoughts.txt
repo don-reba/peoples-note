@@ -241,3 +241,48 @@ NoteListView
 			no need to encode all at once
 			HTMLayout will need one DOM element at a time
 				then, a mass update
+	creation
+		should be created before loading notes
+			before the user is loaded
+		so, the user should be loaded in responce to window being created
+		create separate events for starting the UI and starting the model
+			no, the app does not know when the window is created
+			it should return to the message loop first
+asynchronous start
+	the model should not be loaded on the UI thread
+	UI should be created first
+		then the message loop should start running
+		then the model should start loading on a separate thread
+	everything is connected in advance
+	so to start loading on another thread, a signal has to be made on another thread
+asynchronous sync
+	could be done using a worker thread
+AppModel
+	maybe, it is entirely redundant
+	before the message loop starts
+		everything needs to be connected
+		and the main window needs to be created
+	everything else should start in response to main window creation
+		after the message loop starts running
+	PostQuitMessage is a good way to terminate
+lock hierarchy
+	UI runs on its own thread
+	UI also starts other threads
+		loading data
+		sync
+	UI does not access other objects directly
+		because it a view
+	UI signals should not block
+		because they return nothing
+		however, they do signal user intent
+		which might warrant some immediate UI changes
+		so, it is not the view that decides on threading
+	which non-UI operations should be serial?
+		operations on any one model, obviously
+		note list and a notebook could be modified simulatneously
+			to search while syncing
+			except for copying from the notebook to the note list
+	solution
+		model-wide locks
+		only call getters while holding a lock
+		do not make signals from getters

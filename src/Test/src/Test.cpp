@@ -3,7 +3,6 @@
 #include "CredentialsPresenter.h"
 #include "CurrentUserLoader.h"
 #include "LastUserModel.h"
-#include "MockAppModel.h"
 #include "MockCredentialsModel.h"
 #include "MockCredentialsView.h"
 #include "MockLastUserModel.h"
@@ -173,12 +172,12 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
 
 BOOST_AUTO_TEST_CASE(CurrentUserLoader_DefaultUser_Test)
 {
-	MockAppModel      appModel;
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
-	CurrentUserLoader(appModel, userModel, lastUserModel);
+	MockNoteListView  noteListView;
+	CurrentUserLoader(userModel, lastUserModel, noteListView);
 
-	appModel.Start();
+	noteListView.SignalCreated();
 
 	BOOST_CHECK(userModel.isDefault);
 	BOOST_CHECK(userModel.isLoaded);
@@ -186,15 +185,15 @@ BOOST_AUTO_TEST_CASE(CurrentUserLoader_DefaultUser_Test)
 
 BOOST_AUTO_TEST_CASE(CurrentUserLoader_Test)
 {
-	MockAppModel      appModel;
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
-	CurrentUserLoader(appModel, userModel, lastUserModel);
+	MockNoteListView  noteListView;
+	CurrentUserLoader(userModel, lastUserModel, noteListView);
 
 	lastUserModel.credentialsModel.username = L"test-usr";
 	lastUserModel.credentialsModel.password = L"test-pwd";
 
-	appModel.Start();
+	noteListView.SignalCreated();
 
 	BOOST_CHECK(!userModel.isDefault);
 	BOOST_CHECK(userModel.isLoaded);
@@ -205,15 +204,15 @@ BOOST_AUTO_TEST_CASE(CurrentUserLoader_Test)
 
 BOOST_AUTO_TEST_CASE(CurrentUserLoader_NoPassword_Test)
 {
-	MockAppModel      appModel;
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
-	CurrentUserLoader(appModel, userModel, lastUserModel);
+	MockNoteListView  noteListView;
+	CurrentUserLoader(userModel, lastUserModel, noteListView);
 
 	lastUserModel.credentialsModel.username = L"test-usr";
 	lastUserModel.credentialsModel.password = L"";
 
-	appModel.Start();
+	noteListView.SignalCreated();
 
 	BOOST_CHECK(!userModel.isDefault);
 	BOOST_CHECK(userModel.isLoaded);
