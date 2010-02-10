@@ -259,7 +259,27 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\Test.cpp"
+				RelativePath=".\src\TestCredentialsModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestCredentialsPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestCurrentUserLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestLastUserModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestNoteListPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestTools.cpp"
 				>
 			</File>
 			<File

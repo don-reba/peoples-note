@@ -13,6 +13,9 @@
 #include <string>
 #include <vector>
 
+#define BOOST_TEST_MODULE const_string test
+#include <boost/test/unit_test.hpp>
+
 #include <boost/bind.hpp>
 #include <boost/signals2.hpp>
 
