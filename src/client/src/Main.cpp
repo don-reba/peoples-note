@@ -1,8 +1,15 @@
 #include "stdafx.h"
 
-#include "htmlayout.h"
+#include "CurrentUserLoader.h"
+#include "LastUserModel.h"
+#include "NoteListModel.h"
+#include "NoteListPresenter.h"
 #include "NoteListView.h"
+#include "RegistryKey.h"
+#include "UserModel.h"
+
 #include "resourceppc.h"
+#include "htmlayout.h"
 #include "Tools.h"
 
 #include <vector>
@@ -51,19 +58,41 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
+		RegistryKey registryKey;
+
+		LastUserModel lastUserModel(registryKey);
+		NoteListModel noteListModel;
+		UserModel     userModel;
+
 		NoteListView noteListView(instance, nCmdShow);
+
+		CurrentUserLoader currentUserLoader
+			( userModel
+			, lastUserModel
+			, noteListView
+			);
+		NoteListPresenter noteListPresenter
+			( noteListModel
+			, noteListView
+			, userModel
+			);
+
 		noteListView.Create();
 
 		HACCEL accelerators = LoadAccelerators
 			( instance
 			, MAKEINTRESOURCE(IDC_CLIENT)
 			);
-
 		return static_cast<int>(RunMessageLoop(accelerators));
 	}
 	catch(std::exception e)
 	{
-		MessageBox(NULL, ConvertToUnicode(e.what()).c_str(), L"Error", MB_OK | MB_ICONERROR);
+		MessageBox
+			( NULL
+			, ConvertToUnicode(e.what()).c_str()
+			, L"Error"
+			, MB_OK | MB_ICONERROR
+			);
 		return 1;
 	}
 }

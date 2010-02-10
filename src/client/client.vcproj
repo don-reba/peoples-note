@@ -411,11 +411,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NoteListModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteListPresenter.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\NoteListView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\RegistryKey.cpp"
 				>
 			</File>
 			<File
@@ -573,11 +581,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NoteListModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteListPresenter.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\NoteListView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\RegistryKey.h"
 				>
 			</File>
 			<File
