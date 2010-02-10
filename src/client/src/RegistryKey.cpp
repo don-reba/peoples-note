@@ -9,9 +9,5 @@ wstring RegistryKey::GetString
 	) const
 {
 	// TODO: implement
-	if (value == L"username")
-		return L"test-usr";
-	if (value == L"password")
-		return L"test-pwd";
-	return L"test";
+	return L"";
 }

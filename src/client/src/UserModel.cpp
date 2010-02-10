@@ -14,11 +14,13 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 void UserModel::CreateDefaultUser()
 {
 	// TODO: implement
+	credentialsModel.SetCredentials(L"", L"");
+	notebooks.resize(1);
 }
 
 void UserModel::SetCredentials(const ICredentialsModel & credentials)
 {
-	// TODO: implement
+	credentialsModel = credentials;
 }
 
 INotebook & UserModel::GetLastUsedNotebook()

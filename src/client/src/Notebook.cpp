@@ -6,7 +6,7 @@ using namespace std;
 wstring Notebook::GetName() const
 {
 	// TODO: implement
-	return L"test-name";
+	return L"test-notebook";
 }
 
 vector<INote*> Notebook::GetNotes() const
