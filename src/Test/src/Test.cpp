@@ -18,26 +18,11 @@
 #include <iostream>
 #include <string>
 
-namespace std
-{
-	ostream & operator << (ostream & stream, const wchar_t * str)
-	{
-		return stream << Tools::ConvertToAnsi(str);
-	}
-
-	ostream & operator << (ostream & stream, const wstring & str)
-	{
-		return stream << Tools::ConvertToAnsi(str);
-	}
-}
-
 #define BOOST_TEST_MODULE const_string test
 #include <boost/test/unit_test.hpp>
 
 using namespace boost;
 using namespace std;
-
-//BOOST_TEST_DONT_PRINT_LOG_VALUE(std::wstring)
 
 BOOST_AUTO_TEST_CASE(ToolsConvertToUnicode_Test)
 {

@@ -3,6 +3,17 @@
 // stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
+#include "Tools.h"
 
-// TODO: reference any additional headers you need in STDAFX.H
-// and not in this file
+namespace std
+{
+	ostream & operator << (ostream & stream, const wchar_t * str)
+	{
+		return stream << Tools::ConvertToAnsi(str);
+	}
+
+	ostream & operator << (ostream & stream, const wstring & str)
+	{
+		return stream << Tools::ConvertToAnsi(str);
+	}
+}

@@ -17,3 +17,9 @@
 #include <boost/signals2.hpp>
 
 #include "foreach.h"
+
+namespace std
+{
+	ostream & operator << (ostream & stream, const wchar_t * str);
+	ostream & operator << (ostream & stream, const wstring & str);
+}
