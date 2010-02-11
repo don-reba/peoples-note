@@ -235,6 +235,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Note.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\NoteListPresenter.cpp"
 				>
 			</File>
@@ -275,11 +279,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestNote.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestNoteListPresenter.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestTimestamp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestTools.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\Timestamp.cpp"
 				>
 			</File>
 			<File
@@ -361,6 +377,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Note.h"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\NoteListPresenter.h"
 				>
 			</File>
@@ -370,6 +390,10 @@
 			</File>
 			<File
 				RelativePath=".\src\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\Timestamp.h"
 				>
 			</File>
 			<File
