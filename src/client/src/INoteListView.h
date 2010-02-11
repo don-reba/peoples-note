@@ -10,7 +10,7 @@ public:
 
 	virtual void ClearNotes() = 0;
 
-	virtual void AddNote(std::wstring note) = 0;
+	virtual void AddNote(std::wstring noteHtml) = 0;
 
 	virtual void UpdateNotes() = 0;
 

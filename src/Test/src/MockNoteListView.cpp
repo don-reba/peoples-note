@@ -25,9 +25,9 @@ void MockNoteListView::UpdateNotes()
 	notesUpdated = true;
 }
 
-void MockNoteListView::AddNote(wstring note)
+void MockNoteListView::AddNote(wstring noteHtml)
 {
-	notes.push_back(note);
+	notes.push_back(noteHtml);
 	notesUpdated = false;
 }
 

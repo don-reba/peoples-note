@@ -42,14 +42,14 @@ void NoteListPresenter::OnUserLoaded()
 wstring NoteListPresenter::ConvertToHtml(const INote * note)
 {
 	wostringstream stream;
-	stream << L"<option class=\"note\"><table><tr><td rowspan=\"3\">";
+	stream << L"<table><tr><td rowspan=\"3\">";
 	stream << L"<div id=\"thumb\" /></td><td>";
 	stream << FormatTitle(note->GetTitle());
 	stream << L"</td></tr><tr><td>";
 	stream << FormatTags(note->GetTags());
 	stream << L"</td></tr><tr><td>";
 	stream << FormatDate(note->GetCreateDate());
-	stream << L"</td></tr></table></option>";
+	stream << L"</td></tr></table>";
 	return stream.str();
 }
 

@@ -45,18 +45,18 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 
 	BOOST_CHECK_EQUAL(noteListView.notesUpdated, true);
 
-	BOOST_CHECK_EQUAL(noteListView.notes.size(), 3);
+	BOOST_REQUIRE_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[0]
-		, L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>Note</td></tr><tr><td>tag-1, tag-2</td></tr><tr><td>2010-02-04 15:20</td></tr></table></option>"
+		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>Note</td></tr><tr><td>tag-1, tag-2</td></tr><tr><td>2010-02-04 15:20</td></tr></table>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[1]
-		, L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td></td></tr><tr><td></td></tr><tr><td></td></tr></table></option>"
+		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td></td></tr><tr><td></td></tr><tr><td></td></tr></table>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[2]
-		, L"<option class=\"note\"><table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;</td></tr><tr><td>&lt;strong&gt;not bold&lt;/strong&gt;</td></tr></table></option>"
+		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;</td></tr><tr><td>&lt;strong&gt;not bold&lt;/strong&gt;</td></tr></table>"
 		);
 }
 
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 		userModel.lastUsedNotebook.notes.push_back(&note);
 	userModel.Loaded();
 
-	BOOST_CHECK_EQUAL(noteListModel.notes.size(), 2);
+	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes[0]->GetTitle(), L"note-0");
 	BOOST_CHECK_EQUAL(noteListModel.notes[1]->GetTitle(), L"note-1");
 }
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
 		userModel.notebooks.push_back(&notebook);
 	userModel.Loaded();
 
-	BOOST_CHECK_EQUAL(noteListView.notebooks.size(), 2);
+	BOOST_REQUIRE_EQUAL(noteListView.notebooks.size(), 2);
 	BOOST_CHECK_EQUAL(noteListView.notebooks[0], L"notebook-0");
 	BOOST_CHECK_EQUAL(noteListView.notebooks[1], L"notebook-1");
 }

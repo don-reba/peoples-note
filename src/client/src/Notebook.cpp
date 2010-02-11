@@ -3,6 +3,12 @@
 
 using namespace std;
 
+Notebook::Notebook()
+{
+	// TODO: implement
+	notes.resize(4);
+}
+
 wstring Notebook::GetName() const
 {
 	// TODO: implement

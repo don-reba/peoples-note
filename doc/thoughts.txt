@@ -285,4 +285,6 @@ lock hierarchy
 	solution
 		model-wide locks
 		only call getters while holding a lock
+			everything that is called is called inside some lock
+			so this condition makes no sense
 		do not make signals from getters

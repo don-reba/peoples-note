@@ -54,18 +54,32 @@ void NoteListView::ConnectCreated(slot_type OnCreated)
 
 void NoteListView::ClearNotes()
 {
-	// http://www.terrainformatica.com/wiki/htmlayout/tutorial-basics-r
-	//dom::element root = dom::element::root_element(hwnd_);
+	dom::element root = dom::element::root_element(hwnd_);
+	vector<dom::element> notes;
+	root.find_all(notes, "#note-list .note");
+
+	foreach (dom::element & note, notes)
+		note.destroy();
 }
 
-void NoteListView::AddNote(wstring note)
+void NoteListView::AddNote(wstring noteHtml)
 {
-	// TODO: implement
+	dom::element root = dom::element::root_element(hwnd_);
+	dom::element noteList = root.find_first("#note-list");
+	if (!noteList)
+		throw std::exception("'#note-list' not found.");
+
+	vector<unsigned char> noteHtmlUtf8 = Tools::ConvertToUtf8(noteHtml);
+	dom::element note = dom::element::create("option");
+	noteList.append(note);
+	note.set_attribute("class", L"note");
+	note.set_html(&noteHtmlUtf8[0], noteHtmlUtf8.size());
 }
 
 void NoteListView::UpdateNotes()
 {
-	// TODO: implement
+	dom::element root = dom::element::root_element(hwnd_);
+	root.update();
 }
 
 void NoteListView::ClearNotebooks()

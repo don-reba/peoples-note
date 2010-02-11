@@ -22,15 +22,15 @@ LPCWSTR GetStringResource(HINSTANCE instance, WORD id)
 
 	HRSRC hrsrc = ::FindResource(instance, resourceName, RT_STRING);
 	if (!hrsrc)
-		throw std::exception("Resource not found.");
+		throw exception("Resource not found.");
 
 	HGLOBAL hglob = ::LoadResource(instance, hrsrc);
 	if (!hglob)
-		throw std::exception("Resource could not be loaded.");
+		throw exception("Resource could not be loaded.");
 
 	LPCWSTR resource = reinterpret_cast<LPCWSTR>(::LockResource(hglob));
 	if (!resource)
-		throw std::exception("Resource could not be locked.");
+		throw exception("Resource could not be locked.");
 
 	// walk the string table
 	for (int i = 0; i < (id & 0xF); i++)
@@ -47,7 +47,7 @@ LPCWSTR GetStringResource(HINSTANCE instance, WORD id)
 // Tools implementation
 //---------------------
 
-std::string Tools::ConvertToAnsi(std::wstring str)
+string Tools::ConvertToAnsi(wstring str)
 {
 	UINT  codePage = CP_ACP;
 	DWORD flags    = 0;
@@ -75,7 +75,37 @@ std::string Tools::ConvertToAnsi(std::wstring str)
 	return &result[0];
 }
 
-std::wstring Tools::ConvertToUnicode(std::string str)
+vector<unsigned char> Tools::ConvertToUtf8(wstring str)
+{
+	UINT  codePage = CP_UTF8;
+	DWORD flags    = 0;
+	int resultSize = WideCharToMultiByte
+		( codePage     // CodePage
+		, flags        // dwFlags
+		, str.c_str()  // lpWideCharStr
+		, str.length() // cchWideChar
+		, NULL         // lpMultiByteStr
+		, 0            // cbMultiByte
+		, NULL         // lpDefaultChar
+		, NULL         // lpUsedDefaultChar
+		);
+	vector<unsigned char> result(resultSize + 1);
+	LPSTR resultStr = reinterpret_cast<char*>(&result[0]);
+	WideCharToMultiByte
+		( codePage     // CodePage
+		, flags        // dwFlags
+		, str.c_str()  // lpWideCharStr
+		, str.length() // cchWideChar
+		, resultStr    // lpMultiByteStr
+		, resultSize   // cbMultiByte
+		, NULL         // lpDefaultChar
+		, NULL         // lpUsedDefaultChar
+		);
+	result.resize(result.size() - 1); // cut terminating zero
+	return result;
+}
+
+wstring Tools::ConvertToUnicode(string str)
 {
 	UINT  codePage = CP_ACP;
 	DWORD flags    = 0;
@@ -105,17 +135,17 @@ HtmlResource Tools::LoadHtmlResource(int id)
 
 	HRSRC hrsrc = ::FindResource(instance, MAKEINTRESOURCE(id), RT_HTML);
 	if(!hrsrc)
-		throw std::exception("Resource not found.");
+		throw exception("Resource not found.");
 
 	HGLOBAL hglob = ::LoadResource(instance, hrsrc);
 	if(!hglob)
-		throw std::exception("Resource could not be loaded.");
+		throw exception("Resource could not be loaded.");
 
 	HtmlResource resource;
 
 	resource.data = static_cast<PBYTE>(::LockResource(hglob));
 	if (!resource.data)
-		throw std::exception("Resource could not be locked.");
+		throw exception("Resource could not be locked.");
 
 	resource.size = ::SizeofResource(instance, hrsrc);
 	if (0 == resource.size)

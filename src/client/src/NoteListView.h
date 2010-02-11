@@ -27,7 +27,7 @@ public:
 
 	virtual void ClearNotes();
 
-	virtual void AddNote(std::wstring note);
+	virtual void AddNote(std::wstring noteHtml);
 
 	virtual void UpdateNotes();
 

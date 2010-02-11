@@ -11,6 +11,8 @@ private:
 
 public:
 
+	Notebook();
+
 	virtual std::wstring GetName() const;
 
 	virtual std::vector<INote*> GetNotes() const;
