@@ -239,6 +239,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Notebook.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\NoteListPresenter.cpp"
 				>
 			</File>
@@ -280,6 +284,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestNote.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestNotebook.cpp"
 				>
 			</File>
 			<File
@@ -378,6 +386,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Note.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\Notebook.h"
 				>
 			</File>
 			<File

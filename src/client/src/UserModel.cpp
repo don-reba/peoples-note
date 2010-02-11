@@ -13,9 +13,10 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 
 void UserModel::CreateDefaultUser()
 {
-	// TODO: implement
 	credentialsModel.SetCredentials(L"", L"");
-	notebooks.resize(1);
+
+	notebooks.clear();
+	notebooks.push_back(Notebook());
 }
 
 void UserModel::SetCredentials(const ICredentialsModel & credentials)

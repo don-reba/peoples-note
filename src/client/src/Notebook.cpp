@@ -3,16 +3,9 @@
 
 using namespace std;
 
-Notebook::Notebook()
-{
-	// TODO: implement
-	notes.resize(4);
-}
-
 wstring Notebook::GetName() const
 {
-	// TODO: implement
-	return L"test-notebook";
+	return name;
 }
 
 vector<INote*> Notebook::GetNotes() const

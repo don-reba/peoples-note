@@ -7,11 +7,11 @@ class Notebook : public INotebook
 {
 private:
 
+	std::wstring name;
+
 	mutable std::vector<Note> notes;
 
 public:
-
-	Notebook();
 
 	virtual std::wstring GetName() const;
 
