@@ -303,11 +303,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestUserModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Timestamp.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\client\src\Tools.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\UserModel.cpp"
 				>
 			</File>
 		</Filter>
@@ -410,6 +418,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Tools.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\UserModel.h"
 				>
 			</File>
 		</Filter>

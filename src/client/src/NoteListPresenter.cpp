@@ -30,13 +30,13 @@ void NoteListPresenter::OnNoteListChanged()
 
 void NoteListPresenter::OnUserLoaded()
 {
-	noteListModel.SetNotes(userModel.GetLastUsedNotebook().GetNotes());
-	
 	noteListView.ClearNotebooks();
 	const vector<INotebook*> notebooks = userModel.GetNotebooks();
 	foreach (const INotebook * notebook, notebooks)
 		noteListView.AddNotebook(notebook->GetName());
 	noteListView.UpdateNotebooks();
+
+	noteListModel.SetNotes(userModel.GetLastUsedNotebook().GetNotes());
 }
 
 wstring NoteListPresenter::ConvertToHtml(const INote * note)

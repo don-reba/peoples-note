@@ -21,6 +21,10 @@
 #define ID_MENU_LOGOUT                  32776
 #define ID_MENU_NOTEBOOK                32777
 #define ID_NOTEBOOK_DONREBA             32778
+#define ID_NOTEBOOK_DONREBA32779        32779
+#define ID_MENU_NOTEBOOK32780           32780
+#define IDM_NOTEBOOK                    32781
+#define ID_NOTEBOOK_FGFG                32782
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -29,7 +33,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        132
-#define _APS_NEXT_COMMAND_VALUE         32779
+#define _APS_NEXT_COMMAND_VALUE         32783
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

@@ -13,5 +13,7 @@ public:
 
 	virtual std::wstring GetName() const;
 
+	virtual void SetName(std::wstring name);
+
 	virtual std::vector<INote*> GetNotes() const;
 };

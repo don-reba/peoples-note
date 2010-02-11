@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "crackers.h"
 #include "htmlayout.h"
 #include "NoteListView.h"
 #include "resourceppc.h"
@@ -84,17 +85,17 @@ void NoteListView::UpdateNotes()
 
 void NoteListView::ClearNotebooks()
 {
-	// TODO: implement
+	while (RemoveMenu(notebooksMenu, 0, MF_BYPOSITION));
 }
 
 void NoteListView::AddNotebook(wstring notebook)
 {
-	// TODO: implement
+	if (!::AppendMenu(notebooksMenu, 0, 0, notebook.c_str()))
+		throw exception("Notebook menu entry could not be added.");
 }
 
 void NoteListView::UpdateNotebooks()
 {
-	// TODO: implement
 }
 
 //-----------------
@@ -240,14 +241,26 @@ ATOM NoteListView::RegisterClass(wstring wndClass)
 
 void NoteListView::CreateMenuBar()
 {
+	notebooksMenu = NULL;
+	menuBar       = NULL;
+
 	SHMENUBARINFO mbi = { sizeof(SHMENUBARINFO) };
 	mbi.hwndParent = hwnd_;
 	mbi.nToolBarId = IDR_MENU;
 	mbi.hInstRes   = instance;
-	if (!SHCreateMenuBar(&mbi)) 
-		menuBar = NULL;
-	else
-		menuBar = mbi.hwndMB;
+	if (!::SHCreateMenuBar(&mbi))
+		throw exception("Menu bar could not be created.");
+	menuBar = mbi.hwndMB;
+
+	TBBUTTONINFO buttonInfo = { sizeof(buttonInfo) };
+	buttonInfo.dwMask = TBIF_LPARAM;
+	if (!::Toolbar_GetButtonInfo(menuBar, IDM_MENU, &buttonInfo))
+		throw exception("Menu not found.");
+	HMENU menu = reinterpret_cast<HMENU>(buttonInfo.lParam);
+
+	notebooksMenu = ::GetSubMenu(menu, NotebooksMenuIndex);
+	if (!notebooksMenu)
+		throw exception("Notebook menu not found.");
 }
 
 void NoteListView::ResizeForMenuBar()

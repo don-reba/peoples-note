@@ -16,7 +16,8 @@ void UserModel::CreateDefaultUser()
 	credentialsModel.SetCredentials(L"", L"");
 
 	notebooks.clear();
-	notebooks.push_back(Notebook());
+	notebooks.resize(1);
+	notebooks.at(0).SetName(L"Notes");
 }
 
 void UserModel::SetCredentials(const ICredentialsModel & credentials)

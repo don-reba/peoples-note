@@ -10,10 +10,13 @@ class NoteListView : public Window, public INoteListView
 {
 private:
 
+	static const int NotebooksMenuIndex = 2;
+
+	SHACTIVATEINFO activateInfo;
 	int            cmdShow;
 	HINSTANCE      instance;
 	HWND           menuBar;
-	SHACTIVATEINFO activateInfo;
+	HMENU          notebooksMenu;
 
 	signal SignalCreated;
 

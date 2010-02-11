@@ -46,7 +46,7 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Notebook"
         BEGIN
-            MENUITEM "donreba's notebook",          0
+            MENUITEM SEPARATOR
         END
         MENUITEM SEPARATOR
         MENUITEM "About",                       IDM_MENU_ABOUT
