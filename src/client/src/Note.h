@@ -7,7 +7,10 @@ class Note : public INote
 {
 private:
 
-	Timestamp createDate;
+	Timestamp    createDate;
+	std::wstring title;
+
+	std::vector<boost::shared_ptr<ITag> > tags;
 
 public:
 

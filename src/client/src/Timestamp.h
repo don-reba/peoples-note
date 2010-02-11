@@ -8,9 +8,13 @@ class Timestamp : public ITimestamp
 {
 private:
 	
-	SYSTEMTIME time;
+	time_t unixTime;
 
 public:
+
+	Timestamp();
+
+	Timestamp(time_t unixTime);
 
 	virtual std::wstring GetFormattedDateTime() const;
 };

@@ -232,7 +232,9 @@ NoteListView
 			seems usable for internal representation
 			better yet, create a note interface
 			the real one will delegate to EN Note
+				cache to allow access to members through interface
 			the mock one will do something else
+			nah, better convert on sync
 		sounds like the problem in the paper
 			they created an adapter that converted data
 			but my problem is simpler
@@ -288,3 +290,4 @@ lock hierarchy
 			everything that is called is called inside some lock
 			so this condition makes no sense
 		do not make signals from getters
+		need another solution

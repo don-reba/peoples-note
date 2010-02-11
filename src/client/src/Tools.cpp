@@ -3,7 +3,6 @@
 #include "Tools.h"
 
 #include <algorithm>
-#include <windows.h>
 
 using namespace Tools;
 using namespace std;
@@ -47,7 +46,7 @@ LPCWSTR GetStringResource(HINSTANCE instance, WORD id)
 // Tools implementation
 //---------------------
 
-string Tools::ConvertToAnsi(wstring str)
+string Tools::ConvertToAnsi(const wstring str)
 {
 	UINT  codePage = CP_ACP;
 	DWORD flags    = 0;
@@ -75,7 +74,7 @@ string Tools::ConvertToAnsi(wstring str)
 	return &result[0];
 }
 
-vector<unsigned char> Tools::ConvertToUtf8(wstring str)
+vector<unsigned char> Tools::ConvertToUtf8(const wstring str)
 {
 	UINT  codePage = CP_UTF8;
 	DWORD flags    = 0;
@@ -105,7 +104,7 @@ vector<unsigned char> Tools::ConvertToUtf8(wstring str)
 	return result;
 }
 
-wstring Tools::ConvertToUnicode(string str)
+wstring Tools::ConvertToUnicode(const string str)
 {
 	UINT  codePage = CP_ACP;
 	DWORD flags    = 0;
@@ -161,4 +160,26 @@ wstring Tools::LoadStringResource(int id)
 	vector<wchar_t> str(1 + *resource);
 	CopyMemory(&str[0], resource + 1, *resource * sizeof(wchar_t));
 	return &str[0];
+}
+
+void Tools::UnixTimeToFileTime
+	(     time_t     unixTime
+	, OUT FILETIME & fileTime
+	)
+{
+	// Note that LONGLONG is a 64-bit value
+	LONGLONG temp;
+	temp = Int32x32To64(unixTime, 10000000) + 116444736000000000;
+	fileTime.dwLowDateTime  = static_cast<DWORD>(temp);
+	fileTime.dwHighDateTime = temp >> 32;
+}
+
+void Tools::UnixTimeToSystemTime
+	(     time_t       unixTime
+	, OUT SYSTEMTIME & systemTime
+	)
+{
+	FILETIME fileTime;
+	UnixTimeToFileTime(unixTime, fileTime);
+	::FileTimeToSystemTime(&fileTime, &systemTime);
 }

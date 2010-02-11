@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-#define BOOST_TEST_MODULE const_string test
+#define BOOST_TEST_MODULE general test
 #include <boost/test/unit_test.hpp>
 
 #include <boost/bind.hpp>
