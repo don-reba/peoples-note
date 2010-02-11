@@ -391,10 +391,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\CurrentUserLoader.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\LastUserModel.cpp"
 				>
 			</File>
@@ -491,6 +487,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\UserLoader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\UserModel.cpp"
 				>
 			</File>
@@ -510,10 +510,6 @@
 			</File>
 			<File
 				RelativePath=".\src\CredentialsPresenter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\CurrentUserLoader.h"
 				>
 			</File>
 			<File
@@ -618,6 +614,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Tools.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\UserLoader.h"
 				>
 			</File>
 			<File

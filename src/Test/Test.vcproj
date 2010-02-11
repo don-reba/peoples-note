@@ -183,10 +183,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\CurrentUserLoader.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\LastUserModel.cpp"
 				>
 			</File>
@@ -275,10 +271,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\TestCurrentUserLoader.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\TestLastUserModel.cpp"
 				>
 			</File>
@@ -303,6 +295,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestUserLoader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestUserModel.cpp"
 				>
 			</File>
@@ -312,6 +308,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Tools.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\UserLoader.cpp"
 				>
 			</File>
 			<File
@@ -330,10 +330,6 @@
 			</File>
 			<File
 				RelativePath="..\client\src\CredentialsPresenter.h"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\CurrentUserLoader.h"
 				>
 			</File>
 			<File
@@ -418,6 +414,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Tools.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\UserLoader.h"
 				>
 			</File>
 			<File

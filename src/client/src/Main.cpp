@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-#include "CurrentUserLoader.h"
 #include "LastUserModel.h"
 #include "NoteListModel.h"
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
 #include "RegistryKey.h"
+#include "UserLoader.h"
 #include "UserModel.h"
 
 #include "resourceppc.h"
@@ -66,7 +66,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		NoteListView noteListView(instance, nCmdShow);
 
-		CurrentUserLoader currentUserLoader
+		UserLoader userLoader
 			( userModel
 			, lastUserModel
 			, noteListView

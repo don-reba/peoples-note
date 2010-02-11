@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "CurrentUserLoader.h"
+#include "UserLoader.h"
 
 using namespace boost;
 using namespace std;
 
-CurrentUserLoader::CurrentUserLoader
+UserLoader::UserLoader
 	( IUserModel     & userModel
 	, ILastUserModel & lastUserModel
 	, INoteListView  & noteListView
@@ -13,10 +13,10 @@ CurrentUserLoader::CurrentUserLoader
 	, lastUserModel (lastUserModel)
 	, noteListView  (noteListView)
 {
-	noteListView.ConnectCreated(bind(&CurrentUserLoader::OnCreated, this));
+	noteListView.ConnectCreated(bind(&UserLoader::OnCreated, this));
 }
 
-void CurrentUserLoader::OnCreated()
+void UserLoader::OnCreated()
 {
 	const ICredentialsModel & credentials = lastUserModel.GetCredentials();
 	if (credentials.GetUsername().empty())

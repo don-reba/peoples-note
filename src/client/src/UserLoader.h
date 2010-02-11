@@ -4,7 +4,7 @@
 #include "INoteListView.h"
 #include "IUserModel.h"
 
-class CurrentUserLoader
+class UserLoader
 {
 private:
 
@@ -14,7 +14,7 @@ private:
 
 public:
 
-	CurrentUserLoader
+	UserLoader
 		( IUserModel     & userModel
 		, ILastUserModel & lastUserModel
 		, INoteListView  & noteListView

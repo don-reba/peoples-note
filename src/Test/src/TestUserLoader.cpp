@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CurrentUserLoader.h"
+#include "UserLoader.h"
 #include "MockLastUserModel.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
@@ -7,12 +7,12 @@
 using namespace boost;
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(CurrentUserLoader_DefaultUser_Test)
+BOOST_AUTO_TEST_CASE(UserLoader_DefaultUser_Test)
 {
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
 	MockNoteListView  noteListView;
-	CurrentUserLoader(userModel, lastUserModel, noteListView);
+	UserLoader(userModel, lastUserModel, noteListView);
 
 	noteListView.SignalCreated();
 
@@ -20,12 +20,12 @@ BOOST_AUTO_TEST_CASE(CurrentUserLoader_DefaultUser_Test)
 	BOOST_CHECK(userModel.isLoaded);
 }
 
-BOOST_AUTO_TEST_CASE(CurrentUserLoader_Test)
+BOOST_AUTO_TEST_CASE(UserLoader_Test)
 {
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
 	MockNoteListView  noteListView;
-	CurrentUserLoader(userModel, lastUserModel, noteListView);
+	UserLoader(userModel, lastUserModel, noteListView);
 
 	lastUserModel.credentialsModel.username = L"test-usr";
 	lastUserModel.credentialsModel.password = L"test-pwd";
@@ -39,12 +39,12 @@ BOOST_AUTO_TEST_CASE(CurrentUserLoader_Test)
 	BOOST_CHECK_EQUAL(userModel.credentialsModel.password, L"test-pwd");
 }
 
-BOOST_AUTO_TEST_CASE(CurrentUserLoader_NoPassword_Test)
+BOOST_AUTO_TEST_CASE(UserLoader_NoPassword_Test)
 {
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
 	MockNoteListView  noteListView;
-	CurrentUserLoader(userModel, lastUserModel, noteListView);
+	UserLoader(userModel, lastUserModel, noteListView);
 
 	lastUserModel.credentialsModel.username = L"test-usr";
 	lastUserModel.credentialsModel.password = L"";
