@@ -8,7 +8,7 @@ wstring Notebook::GetName() const
 	return name;
 }
 
-void Notebook::SetName(std::wstring name)
+void Notebook::SetName(wstring name)
 {
 	this->name = name;
 }
@@ -20,4 +20,10 @@ vector<INote*> Notebook::GetNotes() const
 	foreach (Note & note, this->notes)
 		notes.push_back(&note);
 	return notes;
+}
+
+vector<INote*> Notebook::GetNotes(wstring search) const
+{
+	// TODO: implement
+	return vector<INote*>();
 }

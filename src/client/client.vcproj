@@ -423,6 +423,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SearchPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SQLite\sqlite3.c"
 				>
 				<FileConfiguration
@@ -598,6 +602,10 @@
 			</File>
 			<File
 				RelativePath=".\resourceppc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SearchPresenter.h"
 				>
 			</File>
 			<File

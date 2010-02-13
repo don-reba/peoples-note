@@ -8,6 +8,8 @@ public:
 
 	virtual void ConnectCreated(slot_type OnCreated) = 0;
 
+	virtual void ConnectSearch(slot_type OnSearch) = 0;
+
 	virtual void ClearNotes() = 0;
 
 	virtual void AddNote(std::wstring noteHtml) = 0;
@@ -19,4 +21,6 @@ public:
 	virtual void AddNotebook(std::wstring notebook) = 0;
 
 	virtual void UpdateNotebooks() = 0;
+
+	virtual std::wstring GetSearchString() = 0;
 };

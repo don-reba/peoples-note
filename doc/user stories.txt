@@ -1,7 +1,7 @@
 sign in
 	when the user signs in, the note list should display the last used notebok
 		last used notebook defaults to the default notebook
-	when the program starts without a user, a default user should be created
+	√ when the program starts without a user, a default user should be created
 	when a user without a notebook signs in, an empty default notebook should be created
 	when the user changes username from the default, the database should be renamed
 	when EN rejects the user's password at sync, the signin screen should be displayed with his username
@@ -51,3 +51,7 @@ notebooks
 		notebook choice should be persisted
 about
 	when the user selects "about" from the menu, the "about" window should be shown
+storage
+	when a set of notes is needed, their attributes are loaded from the database
+	when a note's contest is needed, it is loaded from the database
+	when a note is added, it is stored in the database

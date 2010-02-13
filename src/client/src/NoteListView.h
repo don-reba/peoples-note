@@ -19,12 +19,15 @@ private:
 	HMENU          notebooksMenu;
 
 	signal SignalCreated;
+	signal SignalSearch;
 
 public:
 
 	NoteListView(HINSTANCE hInstance, int cmdShow);
 
 	virtual void ConnectCreated(slot_type OnCreated);
+
+	virtual void ConnectSearch(slot_type OnSearch);
 
 	virtual void Create();
 
@@ -40,9 +43,12 @@ public:
 
 	virtual void UpdateNotebooks();
 
+	virtual std::wstring GetSearchString();
+
 private:
 
 	// window message handlers
+
 	void OnActivate       (Msg<WM_ACTIVATE>        & msg);
 	void OnBehaviorNotify (Msg<WM_BEHAVIOR_NOTIFY> & msg);
 	void OnCommand        (Msg<WM_COMMAND>         & msg);
@@ -50,13 +56,21 @@ private:
 	void OnDestroy        (Msg<WM_DESTROY>         & msg);
 	void OnSettingChange  (Msg<WM_SETTINGCHANGE>   & msg);
 
-	bool ProcessHtmLayout(WndMsg &msg);
 	void ProcessMessage(WndMsg &msg);
 
 private:
 
 	// HTMLayout message handlers
+
+	bool ProcessHtmLayout(WndMsg &msg);
+
 	LRESULT OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab);
+
+	LRESULT ProcessHTMLayoutNotify
+		( UINT   uMsg
+		, WPARAM wParam
+		, LPARAM lParam
+		);
 
 	static LRESULT CALLBACK HTMLayoutNotifyHandler
 		( UINT   uMsg

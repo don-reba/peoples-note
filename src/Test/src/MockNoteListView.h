@@ -10,16 +10,18 @@ public:
 	std::vector<std::wstring> notebooks;
 	bool                      notesUpdated;
 	bool                      notebooksUpdated;
+	std::wstring              searchString;
 
 	signal SignalCreated;
+	signal SignalSearch;
 
 public:
 
 	MockNoteListView();
 
-	void Created();
-
 	virtual void ConnectCreated(slot_type OnCreated);
+
+	virtual void ConnectSearch(slot_type OnSearch);
 
 	virtual void ClearNotes();
 
@@ -32,4 +34,6 @@ public:
 	virtual void AddNotebook(std::wstring notebook);
 
 	virtual void UpdateNotebooks();
+
+	virtual std::wstring GetSearchString();
 };

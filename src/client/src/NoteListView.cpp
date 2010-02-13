@@ -53,6 +53,11 @@ void NoteListView::ConnectCreated(slot_type OnCreated)
 	SignalCreated.connect(OnCreated);
 }
 
+void NoteListView::ConnectSearch(slot_type OnSearch)
+{
+	SignalSearch.connect(OnSearch);
+}
+
 void NoteListView::ClearNotes()
 {
 	dom::element root = dom::element::root_element(hwnd_);
@@ -68,7 +73,7 @@ void NoteListView::AddNote(wstring noteHtml)
 	dom::element root = dom::element::root_element(hwnd_);
 	dom::element noteList = root.find_first("#note-list");
 	if (!noteList)
-		throw std::exception("'#note-list' not found.");
+		throw exception("'#note-list' not found.");
 
 	vector<unsigned char> noteHtmlUtf8 = Tools::ConvertToUtf8(noteHtml);
 	dom::element note = dom::element::create("option");
@@ -96,6 +101,15 @@ void NoteListView::AddNotebook(wstring notebook)
 
 void NoteListView::UpdateNotebooks()
 {
+}
+
+wstring NoteListView::GetSearchString()
+{
+	dom::element root = dom::element::root_element(hwnd_);
+	dom::element searchBox = root.find_first("#search-box");
+	if (!searchBox)
+		throw exception("'#search-box' not found.");
+	return searchBox.text().c_str();
 }
 
 //-----------------
@@ -148,19 +162,6 @@ void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 	PostQuitMessage(0);
 }
 
-bool NoteListView::ProcessHtmLayout(WndMsg &msg)
-{
-	LRESULT result;
-	BOOL    handled;
-	result = HTMLayoutProcND(hwnd_, msg.id_, msg.wprm_, msg.lprm_, &handled);
-	if (handled)
-	{
-		msg.result_  = result;
-		msg.handled_ = true;
-	}
-	return handled != FALSE;
-}
-
 void NoteListView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
@@ -186,6 +187,19 @@ void NoteListView::OnSettingChange(Msg<WM_SETTINGCHANGE> &msg)
 // HTMLayout message handlers
 //---------------------------
 
+bool NoteListView::ProcessHtmLayout(WndMsg &msg)
+{
+	LRESULT result;
+	BOOL    handled;
+	result = HTMLayoutProcND(hwnd_, msg.id_, msg.wprm_, msg.lprm_, &handled);
+	if (handled)
+	{
+		msg.result_  = result;
+		msg.handled_ = true;
+	}
+	return handled != FALSE;
+}
+
 LRESULT NoteListView::OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab )
 {
 	// attach custom behaviors
@@ -202,11 +216,12 @@ LRESULT NoteListView::OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab )
 	return 0;
 }
 
-// HTMLayout specific notification handler.
-LRESULT CALLBACK NoteListView::HTMLayoutNotifyHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LPVOID vParam)
+LRESULT NoteListView::ProcessHTMLayoutNotify
+	( UINT   uMsg
+	, WPARAM wParam
+	, LPARAM lParam
+	)
 {
-	NoteListView * noteListView = reinterpret_cast<NoteListView*>(vParam);
-
 	// all HTMLayout notification are comming here.
 	NMHDR*  phdr = (NMHDR*)lParam;
 
@@ -218,9 +233,20 @@ LRESULT CALLBACK NoteListView::HTMLayoutNotifyHandler(UINT uMsg, WPARAM wParam, 
 	case HLN_LOAD_DATA:         break; //return OnLoadData((LPNMHL_LOAD_DATA) lParam);
 	case HLN_DATA_LOADED:       break; //return OnDataLoaded((LPNMHL_DATA_LOADED)lParam);
 	case HLN_DOCUMENT_COMPLETE: break; //return OnDocumentComplete();
-	case HLN_ATTACH_BEHAVIOR:   return noteListView->OnAttachBehavior((LPNMHL_ATTACH_BEHAVIOR)lParam );
+	case HLN_ATTACH_BEHAVIOR:   return OnAttachBehavior((LPNMHL_ATTACH_BEHAVIOR)lParam );
 	}
 	return 0;
+}
+
+LRESULT CALLBACK NoteListView::HTMLayoutNotifyHandler
+	( UINT   uMsg
+	, WPARAM wParam
+	, LPARAM lParam
+	, LPVOID vParam
+	)
+{
+	return reinterpret_cast<NoteListView*>(vParam)
+		->ProcessHTMLayoutNotify(uMsg, wParam, lParam);
 }
 
 //-------------------

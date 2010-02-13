@@ -14,6 +14,11 @@ void MockNoteListView::ConnectCreated(slot_type OnCreated)
 	SignalCreated.connect(OnCreated);
 }
 
+void MockNoteListView::ConnectSearch(slot_type OnSearch)
+{
+	SignalSearch.connect(OnSearch);
+}
+
 void MockNoteListView::ClearNotes()
 {
 	notes.clear();
@@ -46,4 +51,9 @@ void MockNoteListView::AddNotebook(wstring notebook)
 void MockNoteListView::UpdateNotebooks()
 {
 	notebooksUpdated = true;
+}
+
+std::wstring MockNoteListView::GetSearchString()
+{
+	return searchString;
 }

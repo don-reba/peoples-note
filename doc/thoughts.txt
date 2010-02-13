@@ -291,3 +291,30 @@ lock hierarchy
 			so this condition makes no sense
 		do not make signals from getters
 		need another solution
+database
+	access should be encapsulated
+		a separate class should return data from the database
+			notes
+			notebooks
+			tags
+			user data
+		notebooks should not store notes
+	caching should be explicit
+		caching policy should be flexible
+		consumers should not know what is cached
+	who should query the database
+		UserModel should return ready-to-use data
+		this data can come from cache or store
+		UserModel has little other logic
+		so let it do it
+	editing
+		edited notes have to be synced
+			replaced with EN's versions
+		editing needs to be fluid
+			reloading note list bad option
+		solution
+			edit in-place
+			signal editing complete
+			notify UserModel
+			mark the note for sync
+			have UserModel signal note update

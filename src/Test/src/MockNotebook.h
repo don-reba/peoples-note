@@ -8,6 +8,8 @@ public:
 
 	std::vector<INote*> notes;
 	std::wstring        name;
+	
+	mutable std::wstring search;
 
 public:
 
@@ -16,4 +18,6 @@ public:
 	virtual void SetName(std::wstring name);
 
 	virtual std::vector<INote*> GetNotes() const;
+
+	virtual std::vector<INote*> GetNotes(std::wstring search) const;
 };
