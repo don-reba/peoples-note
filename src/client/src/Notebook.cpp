@@ -8,11 +8,6 @@ wstring Notebook::GetName() const
 	return name;
 }
 
-void Notebook::SetName(wstring name)
-{
-	this->name = name;
-}
-
 vector<INote*> Notebook::GetNotes() const
 {
 	vector<INote*> notes;
@@ -26,4 +21,9 @@ vector<INote*> Notebook::GetNotes(wstring search) const
 {
 	// TODO: implement
 	return vector<INote*>();
+}
+
+void Notebook::SetName(wstring name)
+{
+	this->name = name;
 }
