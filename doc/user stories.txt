@@ -1,8 +1,8 @@
 sign in
-	when the user signs in, the note list should display the last used notebok
-		last used notebook defaults to the default notebook
+	√ when the user signs in, the note list should display the last used notebok
+		√ last used notebook defaults to the default notebook
 	√ when the program starts without a user, a default user should be created
-	when a user without a notebook signs in, an empty default notebook should be created
+	√ when a user without a notebook signs in, an empty default notebook should be created
 	when the user changes username from the default, the database should be renamed
 	when EN rejects the user's password at sync, the signin screen should be displayed with his username
 		the username should be read-only
@@ -30,8 +30,8 @@ sync
 		sync in progress
 		no connection
 search
-	when the user searches for a non-empty string, the note list should be filtered by full-text search
-	when the user searches for an empty string or whitespace, the note list should be reset
+	√ when the user searches for a non-empty string, notebook should be filtered by full-text search
+	√ when the user searches for an empty string or whitespace, the note list should be reset
 	when a search is in progress, the note list should be grayed out and disabled
 note list navigation
 	when the user clicks on a note while the note list is still, note view for it should open up
@@ -39,7 +39,7 @@ note list navigation
 	when the user flicks the note list, it should receive scrolling momentum
 	when the user clicks "show more notes", the note list should be extended by another page
 note view
-	when the user signs in, the list of notebooks should be filled in
+	√ when the user signs in, the list of notebooks should be filled in
 	when the user flicks the note left, the next note should be displayed
 		unless the note is the last
 	when the user flicks the note right, the previous note should be displayed

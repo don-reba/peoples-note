@@ -1,13 +1,43 @@
 #include "stdafx.h"
 #include "HTMLayoutWindow.h"
+
+#include "htmlayout.h"
 #include "Tools.h"
 
+using namespace htmlayout;
 using namespace std;
 using namespace Tools;
+
+//----------
+// interface
+//----------
 
 HTMLayoutWindow::HTMLayoutWindow(int resourceId)
 	: resourceId (resourceId)
 {
+}
+
+//------------------
+// utility functions
+//------------------
+
+void HTMLayoutWindow::AttachBehaviors()
+{
+	dom::element root = dom::element::root_element(hwnd_);
+
+	eventRecords.clear();
+	eventRecords.reserve(eventTargets.size());
+
+	foreach (const EventTarget target, eventTargets)
+	{
+		vector<dom::element> elements;
+		root.find_all(elements, target.path.c_str());
+		foreach (dom::element element, elements)
+		{
+			EventRecord record = { element, target.command, target.event };
+			eventRecords.push_back(record);
+		}
+	}
 }
 
 //------------------------
@@ -25,12 +55,14 @@ void HTMLayoutWindow::OnCreate(Msg<WM_CREATE> & msg)
 		( hwnd_
 		, &HTMLayoutWindow::ProcessHTMLayoutEvent
 		, this
-		, HANDLE_ALL
+		, HANDLE_BEHAVIOR_EVENT
 		);
 
 	HtmlResource resource = LoadHtmlResource(resourceId);
 	if (!HTMLayoutLoadHtml(hwnd_, resource.data, resource.size))
 		throw exception("Failed to load interface.");
+
+	AttachBehaviors();
 
 	msg.handled_ = true;
 }
@@ -72,23 +104,28 @@ void HTMLayoutWindow::ProcessMessage(WndMsg &msg)
 // HTMLayout message handlers
 //---------------------------
 
-LRESULT HTMLayoutWindow::OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab)
+BOOL HTMLayoutWindow::OnBehavior(BEHAVIOR_EVENT_PARAMS * params)
 {
-	// attach custom behaviors
-	htmlayout::event_handler * handler = htmlayout::behavior::find
-		( lpab->behaviorName
-		, lpab->element
-		);
-	if(handler)
+	const HELEMENT element = params->heTarget;
+	const UINT     command = params->cmd;
+	foreach (const EventRecord & record, eventRecords)
 	{
-		lpab->elementTag    = handler;
-		lpab->elementProc   = htmlayout::behavior::element_proc;
-		lpab->elementEvents = handler->subscribed_to;
+		if (record.element == element && record.command == command)
+		{
+			(this->*record.event)();
+			return TRUE;
+		}
 	}
-	return 0;
+	return FALSE;
 }
 
-bool HTMLayoutWindow::ProcessHtmLayout(WndMsg &msg)
+BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
+{
+	// TODO: implement
+	return FALSE;
+}
+
+bool HTMLayoutWindow::ProcessHtmLayout(WndMsg & msg)
 {
 	LRESULT result;
 	BOOL    handled;
@@ -102,11 +139,16 @@ bool HTMLayoutWindow::ProcessHtmLayout(WndMsg &msg)
 }
 
 BOOL HTMLayoutWindow::ProcessHTMLayoutEvent
-	( LPVOID   tag
-	, HELEMENT element
+	( HELEMENT element
 	, UINT     event
+	, LPVOID   params
 	)
 {
+	switch (event)
+	{
+	case HANDLE_BEHAVIOR_EVENT:
+		return OnBehavior(reinterpret_cast<BEHAVIOR_EVENT_PARAMS*>(params));
+	};
 	return FALSE;
 }
 
@@ -117,8 +159,8 @@ BOOL CALLBACK HTMLayoutWindow::ProcessHTMLayoutEvent
 	, LPVOID   params
 	)
 {
-	return reinterpret_cast<HTMLayoutWindow*>(params)->
-		ProcessHTMLayoutEvent(tag, element, event);
+	return reinterpret_cast<HTMLayoutWindow*>(tag)->
+		ProcessHTMLayoutEvent(element, event, params);
 }
 
 LRESULT HTMLayoutWindow::ProcessHTMLayoutNotify
@@ -127,18 +169,11 @@ LRESULT HTMLayoutWindow::ProcessHTMLayoutNotify
 	, LPARAM lParam
 	)
 {
-	// all HTMLayout notification are comming here.
-	NMHDR*  phdr = (NMHDR*)lParam;
-
+	NMHDR*  phdr = reinterpret_cast<NMHDR*>(lParam);
 	switch(phdr->code)
 	{
-	case HLN_CREATE_CONTROL:    break; //return OnCreateControl((LPNMHL_CREATE_CONTROL) lParam);
-	case HLN_CONTROL_CREATED:   break; //return OnControlCreated((LPNMHL_CREATE_CONTROL) lParam);
-	case HLN_DESTROY_CONTROL:   break; //return OnDestroyControl((LPNMHL_DESTROY_CONTROL) lParam);
-	case HLN_LOAD_DATA:         break; //return OnLoadData((LPNMHL_LOAD_DATA) lParam);
-	case HLN_DATA_LOADED:       break; //return OnDataLoaded((LPNMHL_DATA_LOADED)lParam);
-	case HLN_DOCUMENT_COMPLETE: break; //return OnDocumentComplete();
-	case HLN_ATTACH_BEHAVIOR:   return OnAttachBehavior((LPNMHL_ATTACH_BEHAVIOR)lParam );
+	case HLN_LOAD_DATA:
+		return OnLoadData(reinterpret_cast<NMHL_LOAD_DATA*>(lParam));
 	}
 	return 0;
 }

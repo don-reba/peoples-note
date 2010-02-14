@@ -5,6 +5,7 @@
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
 #include "RegistryKey.h"
+#include "SearchPresenter.h"
 #include "UserLoader.h"
 #include "UserModel.h"
 
@@ -66,15 +67,20 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		NoteListView noteListView(instance, nCmdShow);
 
-		UserLoader userLoader
-			( userModel
-			, lastUserModel
-			, noteListView
-			);
 		NoteListPresenter noteListPresenter
 			( noteListModel
 			, noteListView
 			, userModel
+			);
+		SearchPresenter searchPresenter
+			( noteListModel
+			, userModel
+			, noteListView
+			);
+		UserLoader userLoader
+			( userModel
+			, lastUserModel
+			, noteListView
 			);
 
 		noteListView.Create();

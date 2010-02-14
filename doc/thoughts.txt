@@ -323,3 +323,14 @@ database
 			notify UserModel
 			mark the note for sync
 			have UserModel signal note update
+HTMLayout event handling
+	alternatives
+		process events within window
+			- need a map indexed by two values
+		create element behaviors
+			- writing a class to foward a cilck
+			- event switch
+			+ easier attachment
+HTMLayut resource loading
+	by name
+	maybe they could all be classified as HTML

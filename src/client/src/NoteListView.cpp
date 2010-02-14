@@ -17,6 +17,8 @@ NoteListView::NoteListView(HINSTANCE instance, int cmdShow)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
+
+	ConnectBehavior("#search-button", BUTTON_CLICK, &NoteListView::OnSearch);
 }
 
 void NoteListView::Create()
@@ -113,9 +115,70 @@ wstring NoteListView::GetSearchString()
 	return searchBox.text().c_str();
 }
 
-//-----------------
-// message handlers
-//-----------------
+//------------------
+// utility functions
+//------------------
+
+void NoteListView::CreateMenuBar()
+{
+	notebooksMenu = NULL;
+	menuBar       = NULL;
+
+	SHMENUBARINFO mbi = { sizeof(SHMENUBARINFO) };
+	mbi.hwndParent = hwnd_;
+	mbi.nToolBarId = IDR_MENU;
+	mbi.hInstRes   = instance;
+	if (!::SHCreateMenuBar(&mbi))
+		throw exception("Menu bar could not be created.");
+	menuBar = mbi.hwndMB;
+
+	TBBUTTONINFO buttonInfo = { sizeof(buttonInfo) };
+	buttonInfo.dwMask = TBIF_LPARAM;
+	if (!::Toolbar_GetButtonInfo(menuBar, IDM_MENU, &buttonInfo))
+		throw exception("Menu not found.");
+	HMENU menu = reinterpret_cast<HMENU>(buttonInfo.lParam);
+
+	notebooksMenu = ::GetSubMenu(menu, NotebooksMenuIndex);
+	if (!notebooksMenu)
+		throw exception("Notebook menu not found.");
+}
+
+ATOM NoteListView::RegisterClass(wstring wndClass)
+{
+	WNDCLASS wc = { 0 };
+	wc.style         = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc   = &NoteListView::WndProc<NoteListView>;
+	wc.hInstance     = instance;
+	wc.hIcon         = LoadIcon(instance, MAKEINTRESOURCE(IDI_CLIENT));
+	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
+	wc.lpszClassName = wndClass.c_str();
+	return ::RegisterClass(&wc);
+}
+
+void NoteListView::ResizeForMenuBar()
+{
+	if (menuBar)
+	{
+		RECT windowRect;
+		RECT menuBarRect;
+
+		::GetWindowRect(hwnd_,   &windowRect);
+		::GetWindowRect(menuBar, &menuBarRect);
+		windowRect.bottom -= (menuBarRect.bottom - menuBarRect.top);
+
+		int  x       = windowRect.left;
+		int  y       = windowRect.top;
+		int  width   = windowRect.right  - windowRect.left;
+		int  height  = windowRect.bottom - windowRect.top;
+		BOOL repaint = FALSE;
+
+		::MoveWindow(hwnd_, x, y, width, height, repaint);
+	}
+}
+
+//------------------------
+// window message handlers
+//------------------------
 
 void NoteListView::OnActivate(Msg<WM_ACTIVATE> &msg)
 {
@@ -189,63 +252,11 @@ void NoteListView::OnSettingChange(Msg<WM_SETTINGCHANGE> &msg)
 	msg.handled_ = true;
 }
 
-//------------------
-// utility functions
-//------------------
+//---------------------------
+// HTMLayout message handlers
+//---------------------------
 
-void NoteListView::CreateMenuBar()
+void NoteListView::OnSearch()
 {
-	notebooksMenu = NULL;
-	menuBar       = NULL;
-
-	SHMENUBARINFO mbi = { sizeof(SHMENUBARINFO) };
-	mbi.hwndParent = hwnd_;
-	mbi.nToolBarId = IDR_MENU;
-	mbi.hInstRes   = instance;
-	if (!::SHCreateMenuBar(&mbi))
-		throw exception("Menu bar could not be created.");
-	menuBar = mbi.hwndMB;
-
-	TBBUTTONINFO buttonInfo = { sizeof(buttonInfo) };
-	buttonInfo.dwMask = TBIF_LPARAM;
-	if (!::Toolbar_GetButtonInfo(menuBar, IDM_MENU, &buttonInfo))
-		throw exception("Menu not found.");
-	HMENU menu = reinterpret_cast<HMENU>(buttonInfo.lParam);
-
-	notebooksMenu = ::GetSubMenu(menu, NotebooksMenuIndex);
-	if (!notebooksMenu)
-		throw exception("Notebook menu not found.");
-}
-
-ATOM NoteListView::RegisterClass(wstring wndClass)
-{
-	WNDCLASS wc = { 0 };
-	wc.style         = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc   = &NoteListView::WndProc<NoteListView>;
-	wc.hInstance     = instance;
-	wc.hIcon         = LoadIcon(instance, MAKEINTRESOURCE(IDI_CLIENT));
-	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
-	wc.lpszClassName = wndClass.c_str();
-	return ::RegisterClass(&wc);
-}
-
-void NoteListView::ResizeForMenuBar()
-{
-	if (menuBar)
-	{
-		RECT windowRect;
-		RECT menuBarRect;
-
-		::GetWindowRect(hwnd_,   &windowRect);
-		::GetWindowRect(menuBar, &menuBarRect);
-		windowRect.bottom -= (menuBarRect.bottom - menuBarRect.top);
-
-		int  x       = windowRect.left;
-		int  y       = windowRect.top;
-		int  width   = windowRect.right  - windowRect.left;
-		int  height  = windowRect.bottom - windowRect.top;
-		BOOL repaint = FALSE;
-
-		::MoveWindow(hwnd_, x, y, width, height, repaint);
-	}
+	SignalSearch();
 }

@@ -21,6 +21,8 @@ private:
 	signal SignalCreated;
 	signal SignalSearch;
 
+// interface
+
 public:
 
 	NoteListView(HINSTANCE hInstance, int cmdShow);
@@ -45,6 +47,16 @@ public:
 
 	virtual std::wstring GetSearchString();
 
+// utility functions
+
+private:
+
+	void CreateMenuBar();
+
+	ATOM RegisterClass(std::wstring wndClass);
+
+	void ResizeForMenuBar();
+
 // window message handlers
 
 private:
@@ -58,13 +70,9 @@ private:
 
 	virtual void ProcessMessage(WndMsg &msg);
 
-// utility functions
+// HTMLayout message handlers
 
 private:
 
-	void CreateMenuBar();
-
-	ATOM RegisterClass(std::wstring wndClass);
-
-	void ResizeForMenuBar();
+	void OnSearch();
 };
