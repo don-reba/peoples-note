@@ -45,7 +45,11 @@ protected:
 		{
 			LPCREATESTRUCT cs(reinterpret_cast<LPCREATESTRUCT>(lParam));
 			reinterpret_cast<Window*>(cs->lpCreateParams)->hwnd_ = hWnd;
-			SetWindowLong(hWnd, GWL_USERDATA, reinterpret_cast<LONG>(cs->lpCreateParams));
+			SetWindowLong
+				( hWnd
+				, GWL_USERDATA
+				, reinterpret_cast<LONG>(cs->lpCreateParams)
+				);
 			initialized = true;
 		}
 		if (!initialized)

@@ -299,6 +299,11 @@ database
 			tags
 			user data
 		notebooks should not store notes
+		but notes could still be accessed through notebooks
+			notebooks could have references to the user model
+			which would manage store and cache
+		the alternative is to pass notebooks to user model
+			which is awkward
 	caching should be explicit
 		caching policy should be flexible
 		consumers should not know what is cached

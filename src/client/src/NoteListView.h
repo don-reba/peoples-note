@@ -3,10 +3,10 @@
 #include "resourceppc.h"
 #endif 
 
-#include "window.h"
+#include "HTMLayoutWindow.h"
 #include "INoteListView.h"
 
-class NoteListView : public Window, public INoteListView
+class NoteListView : public HTMLayoutWindow, public INoteListView
 {
 private:
 
@@ -45,9 +45,9 @@ public:
 
 	virtual std::wstring GetSearchString();
 
-private:
+// window message handlers
 
-	// window message handlers
+private:
 
 	void OnActivate       (Msg<WM_ACTIVATE>        & msg);
 	void OnBehaviorNotify (Msg<WM_BEHAVIOR_NOTIFY> & msg);
@@ -56,36 +56,15 @@ private:
 	void OnDestroy        (Msg<WM_DESTROY>         & msg);
 	void OnSettingChange  (Msg<WM_SETTINGCHANGE>   & msg);
 
-	void ProcessMessage(WndMsg &msg);
+	virtual void ProcessMessage(WndMsg &msg);
 
-private:
-
-	// HTMLayout message handlers
-
-	bool ProcessHtmLayout(WndMsg &msg);
-
-	LRESULT OnAttachBehavior(LPNMHL_ATTACH_BEHAVIOR lpab);
-
-	LRESULT ProcessHTMLayoutNotify
-		( UINT   uMsg
-		, WPARAM wParam
-		, LPARAM lParam
-		);
-
-	static LRESULT CALLBACK HTMLayoutNotifyHandler
-		( UINT   uMsg
-		, WPARAM wParam
-		, LPARAM lParam
-		, LPVOID vParam
-		);
+// utility functions
 
 private:
 
 	void CreateMenuBar();
 
 	ATOM RegisterClass(std::wstring wndClass);
-
-	BOOL GetHtmlResource(int id, /*out*/PBYTE& pb, /*out*/DWORD& cb);
 
 	void ResizeForMenuBar();
 };

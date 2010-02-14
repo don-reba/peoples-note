@@ -391,6 +391,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\HTMLayoutWindow.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\LastUserModel.cpp"
 				>
 			</File>
@@ -518,6 +522,10 @@
 			</File>
 			<File
 				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\HTMLayoutWindow.h"
 				>
 			</File>
 			<File
