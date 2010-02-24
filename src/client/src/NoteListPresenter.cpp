@@ -38,7 +38,8 @@ void NoteListPresenter::OnUserLoaded()
 		noteListView.AddNotebook(notebook->GetName());
 	noteListView.UpdateNotebooks();
 
-	noteListModel.SetNotes(userModel.GetLastUsedNotebook().GetNotes());
+	vector<INote*> notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
+	noteListModel.SetNotes(notes);
 }
 
 wstring NoteListPresenter::ConvertToHtml(const INote * note)

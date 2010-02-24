@@ -29,10 +29,11 @@ void SearchPresenter::OnSearch()
 
 void SearchPresenter::ResetNotes()
 {
-	noteListModel.SetNotes(userModel.GetLastUsedNotebook().GetNotes());
+	vector<INote*> notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
+	noteListModel.SetNotes(notes);
 }
 
 void SearchPresenter::SearchNotes(wstring search)
 {
-	noteListModel.SetNotes(userModel.GetLastUsedNotebook().GetNotes(search));
+	noteListModel.SetNotes(userModel.GetNotesBySearch(search));
 }

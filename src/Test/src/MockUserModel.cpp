@@ -39,6 +39,18 @@ vector<INotebook*> MockUserModel::GetNotebooks() const
 	return notebooks;
 }
 
+vector<INote*> MockUserModel::GetNotesByNotebook(INotebook & notebook) const
+{
+	notebookSelection = notebook.GetName();
+	return notes;
+}
+
+vector<INote*> MockUserModel::GetNotesBySearch(wstring search) const
+{
+	searchSelection = search;
+	return notes;
+}
+
 void MockUserModel::Load()
 {
 	isLoaded = true;

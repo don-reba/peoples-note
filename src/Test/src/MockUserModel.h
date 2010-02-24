@@ -3,6 +3,7 @@
 #include "IUserModel.h"
 #include "MockCredentialsModel.h"
 #include "MockNotebook.h"
+#include "MockNote.h"
 
 class MockUserModel : public IUserModel
 {
@@ -15,8 +16,12 @@ public:
 	MockCredentialsModel    credentialsModel;
 	MockNotebook            lastUsedNotebook;
 	std::vector<INotebook*> notebooks;
+	std::vector<INote*>     notes;
 	bool                    isDefault;
 	bool                    isLoaded;
+
+	mutable std::wstring notebookSelection;
+	mutable std::wstring searchSelection;
 
 public:
 
@@ -33,6 +38,10 @@ public:
 	virtual INotebook & GetLastUsedNotebook();
 
 	virtual std::vector<INotebook*> GetNotebooks() const;
+
+	virtual std::vector<INote*> GetNotesByNotebook(INotebook & notebook) const;
+
+	virtual std::vector<INote*> GetNotesBySearch(std::wstring search) const;
 
 	virtual void Load();
 };

@@ -71,13 +71,17 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 		, userModel
 		);
 
+	userModel.lastUsedNotebook.name = L"notebook";
+
 	vector<MockNote> notes(2);
 	notes[0].title = L"note-0";
 	notes[1].title = L"note-1";
 
 	foreach (MockNote & note, notes)
-		userModel.lastUsedNotebook.notes.push_back(&note);
+		userModel.notes.push_back(&note);
 	userModel.Loaded();
+
+	BOOST_CHECK_EQUAL(userModel.notebookSelection, L"notebook");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes[0]->GetTitle(), L"note-0");

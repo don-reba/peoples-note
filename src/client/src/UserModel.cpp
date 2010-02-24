@@ -16,8 +16,7 @@ void UserModel::CreateDefaultUser()
 	credentialsModel.SetCredentials(L"", L"");
 
 	notebooks.clear();
-	notebooks.resize(1);
-	notebooks.at(0).SetName(L"Notes");
+	notebooks.push_back(Notebook(L"Notes"));
 }
 
 void UserModel::SetCredentials(const ICredentialsModel & credentials)
@@ -38,6 +37,18 @@ vector<INotebook*> UserModel::GetNotebooks() const
 	foreach (Notebook & notebook, this->notebooks)
 		notebooks.push_back(&notebook);
 	return notebooks;
+}
+
+vector<INote*> UserModel::GetNotesByNotebook(INotebook & notebook) const
+{
+	// TODO: implement
+	return vector<INote*>();
+}
+
+vector<INote*> UserModel::GetNotesBySearch(wstring search) const
+{
+	// TODO: implement
+	return vector<INote*>();
 }
 
 void UserModel::Load()

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "IUserModel.h"
+
 #include "CredentialsModel.h"
+#include "Note.h"
 #include "Notebook.h"
 
 class UserModel : public IUserModel
@@ -25,6 +27,10 @@ public:
 	virtual INotebook & GetLastUsedNotebook();
 
 	virtual std::vector<INotebook*> GetNotebooks() const;
+
+	virtual std::vector<INote*> GetNotesByNotebook(INotebook & notebook) const;
+
+	virtual std::vector<INote*> GetNotesBySearch(std::wstring search) const;
 
 	virtual void Load();
 };

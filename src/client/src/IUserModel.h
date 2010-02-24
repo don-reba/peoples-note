@@ -3,6 +3,7 @@
 #include "ISignalProvider.h"
 
 class ICredentialsModel;
+class INote;
 class INotebook;
 
 class IUserModel : public ISignalProvider
@@ -18,6 +19,10 @@ public:
 	virtual INotebook & GetLastUsedNotebook() = 0;
 
 	virtual std::vector<INotebook*> GetNotebooks() const = 0;
+
+	virtual std::vector<INote*> GetNotesByNotebook(INotebook & notebook) const = 0;
+
+	virtual std::vector<INote*> GetNotesBySearch(std::wstring search) const = 0;
 
 	virtual void Load() = 0;
 };

@@ -14,5 +14,4 @@ BOOST_AUTO_TEST_CASE(UserModel_CreateDefaultUser_Test)
 
 	INotebook & notebook = *notebooks.at(0);
 	BOOST_CHECK_EQUAL(notebook.GetName(), L"Notes");
-	BOOST_CHECK_EQUAL(notebook.GetNotes().size(), 0);
 }

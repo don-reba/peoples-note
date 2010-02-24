@@ -331,10 +331,31 @@ HTMLayout event handling
 			- writing a class to foward a cilck
 			- event switch
 			+ easier attachment
-HTMLayut resource loading
+HTMLayout resource loading
 	by name
 	maybe they could all be classified as HTML
 sync with Evernote
 	can implement sending by email at first
 forward declarations
 	should be made for interfaces in headers
+		done
+note access
+	most data transformation should be done by data access layer
+	data requests
+		get a page of notes in a notebook
+			filtered by keywords
+			filtered by tags
+			filtered by creation date
+		get next page of notes
+		get previous page of notes
+		get a note
+		get previous note
+		get next note
+	EN search grammar is non-recursive
+	in the end, request becomes an SQL query
+		same kind of filter can be combined
+	solutions
+		specialized functions, like GetNotesByNotebook
+		generic function; client provides filters
+			- verbose for simple queries
+			- difficult to cache
