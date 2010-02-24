@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ICredentialsModel.h"
+class ICredentialsModel;
 
 class ILastUserModel
 {

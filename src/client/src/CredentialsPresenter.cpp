@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "CredentialsPresenter.h"
+#include "ICredentialsModel.h"
+#include "ICredentialsView.h"
 
 using namespace boost;
 

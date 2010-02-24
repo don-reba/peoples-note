@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ISignalProvider.h"
 #include "IUserModel.h"
 #include "CredentialsModel.h"
 #include "Notebook.h"

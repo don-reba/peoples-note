@@ -1,6 +1,6 @@
 #pragma once
 
-#include "INote.h"
+class INote;
 
 class INotebook
 {

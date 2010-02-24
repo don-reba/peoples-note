@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "NoteListPresenter.h"
 
+#include "INotebook.h"
+
 #include <sstream>
 
 using namespace boost;

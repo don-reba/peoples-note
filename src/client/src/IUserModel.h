@@ -1,8 +1,9 @@
 #pragma once
 
-#include "ICredentialsModel.h"
-#include "INotebook.h"
 #include "ISignalProvider.h"
+
+class ICredentialsModel;
+class INotebook;
 
 class IUserModel : public ISignalProvider
 {

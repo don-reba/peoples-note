@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ITag.h"
-#include "ITimestamp.h"
+class ITag;
+class ITimestamp;
 
 class INote
 {

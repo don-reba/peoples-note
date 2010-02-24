@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "UserLoader.h"
 
+#include "ICredentialsModel.h"
+#include "ILastUserModel.h"
+#include "INoteListView.h"
+#include "IUserModel.h"
+
 using namespace boost;
 using namespace std;
 

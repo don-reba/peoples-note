@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ICredentialsModel.h"
-#include "ICredentialsView.h"
+class ICredentialsModel;
+class ICredentialsView;
 
 class CredentialsPresenter
 {

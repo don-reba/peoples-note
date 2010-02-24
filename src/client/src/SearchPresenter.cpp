@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SearchPresenter.h"
 
+#include "INotebook.h"
+
 using namespace boost;
 using namespace std;
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ILastUserModel.h"
-#include "INoteListView.h"
-#include "IUserModel.h"
+class ILastUserModel;
+class INoteListView;
+class IUserModel;
 
 class UserLoader
 {

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "INote.h"
 #include "ISignalProvider.h"
+
+class INote;
 
 class INoteListModel : public ISignalProvider
 {

@@ -334,3 +334,7 @@ HTMLayout event handling
 HTMLayut resource loading
 	by name
 	maybe they could all be classified as HTML
+sync with Evernote
+	can implement sending by email at first
+forward declarations
+	should be made for interfaces in headers
