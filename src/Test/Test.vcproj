@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockDataStore.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockLastUserModel.cpp"
 				>
 			</File>
@@ -358,6 +362,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockCredentialsView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockDataStore.h"
 				>
 			</File>
 			<File

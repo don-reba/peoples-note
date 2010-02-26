@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MockUserModel.h"
 
+using namespace boost;
 using namespace std;
 
 MockUserModel::MockUserModel()

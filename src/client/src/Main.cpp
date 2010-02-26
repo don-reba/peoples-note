@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "DataStore.h"
 #include "LastUserModel.h"
 #include "NoteListModel.h"
 #include "NoteListPresenter.h"
@@ -60,10 +61,11 @@ int WINAPI WinMain(HINSTANCE instance,
 	try
 	{
 		RegistryKey registryKey;
+		DataStore   dataStore;
 
 		LastUserModel lastUserModel(registryKey);
 		NoteListModel noteListModel;
-		UserModel     userModel;
+		UserModel     userModel(dataStore);
 
 		NoteListView noteListView(instance, nCmdShow);
 

@@ -1,7 +1,9 @@
 sign in
+	√ when no default user is available, default to unnamed user
+	when the database for the default user is not available, create a new database named after the user
 	√ when the user signs in, the note list should display the last used notebok
 		√ last used notebook defaults to the default notebook
-	√ when the program starts without a user, a default user should be created
+	when the program starts without a user, a default user should be created
 	√ when a user without a notebook signs in, an empty default notebook should be created
 	when the user changes username from the default, the database should be renamed
 	when EN rejects the user's password at sync, the signin screen should be displayed with his username

@@ -1,10 +1,19 @@
 #include "stdafx.h"
 #include "UserModel.h"
 
+#include "IDataStore.h"
+#include "Notebook.h"
+
 #include <algorithm>
 #include <iterator>
 
 using namespace std;
+
+UserModel::UserModel(IDataStore & dataStore)
+	: dataStore        (dataStore)
+	, lastUsedNotebook (L"temp")
+{
+}
 
 void UserModel::ConnectLoaded(slot_type OnLoaded)
 {
@@ -14,9 +23,6 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 void UserModel::CreateDefaultUser()
 {
 	credentialsModel.SetCredentials(L"", L"");
-
-	notebooks.clear();
-	notebooks.push_back(Notebook(L"Notes"));
 }
 
 void UserModel::SetCredentials(const ICredentialsModel & credentials)
@@ -27,16 +33,13 @@ void UserModel::SetCredentials(const ICredentialsModel & credentials)
 INotebook & UserModel::GetLastUsedNotebook()
 {
 	// TODO: implement
-	return notebooks.at(0);
+	return lastUsedNotebook;
 }
 
 vector<INotebook*> UserModel::GetNotebooks() const
 {
-	vector<INotebook*> notebooks;
-	notebooks.reserve(this->notebooks.size());
-	foreach (Notebook & notebook, this->notebooks)
-		notebooks.push_back(&notebook);
-	return notebooks;
+	// TODO: implement
+	return vector<INotebook*>();
 }
 
 vector<INote*> UserModel::GetNotesByNotebook(INotebook & notebook) const
@@ -53,6 +56,13 @@ vector<INote*> UserModel::GetNotesBySearch(wstring search) const
 
 void UserModel::Load()
 {
-	// TODO: implement
+	// TODO: handle failure
+	dataStore.LoadOrCreate(credentialsModel.GetUsername());
+	if (dataStore.GetNotebookCount() == 0)
+	{
+		Notebook defaultNotebook(L"Notes");
+		dataStore.AddNotebook(defaultNotebook);
+		dataStore.MakeNotebookDefault(defaultNotebook);
+	}
 	SignalLoaded();
 }

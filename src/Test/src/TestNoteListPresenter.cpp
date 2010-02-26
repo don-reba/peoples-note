@@ -6,7 +6,6 @@
 #include "MockTag.h"
 #include "MockUserModel.h"
 
-using namespace boost;
 using namespace std;
 
 BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)

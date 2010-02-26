@@ -359,3 +359,87 @@ note access
 		generic function; client provides filters
 			- verbose for simple queries
 			- difficult to cache
+data modification
+	is database access is single-threaded?
+		sync via separate connection
+			can sync read/write data in one go?
+			no, there can be long delays and conflicts
+		wait, is it really single-threaded?
+		loading notes might be time-consuming
+		blocking UI for that period of time might be bad
+			insead, disable some UI elements
+			create a worker thread for creating the element HTML
+			block UI to add one ready HTML at a time
+			can be aborted
+		so, data for HTML creation is loaded by a worker thread
+			only one of these can exist at a time
+		can other threads access the database?
+			these threads would not be modifying or querying notes
+			modify some other data?
+				notebook name
+		SQLite has three modes
+			single-threaded: only one thread
+			multi-threaded: one thread per connection
+			serialized: multiple threads per connection
+		target multi-threaded mode
+	database access from sync thread and ui thread
+	ui thread and ui data thread are different threads
+		ui thread
+			processes messages
+			enqueues data tasks
+		data thread
+			executes data tasks
+			sends messages to ui thread
+	so, what happens when the user enters a new note title?
+		ui thread asks data thread to make the modification
+		data thead comits the modification transactionally
+		data thread notifies ui thread of completion
+		ui thread changes the note title
+	GUI is only modified in response to window messages
+	view classes can have setter methods
+		if they do not modify GUI
+			therefore, can be called from other threads
+		also, if they do modify GUI
+			these methods post window messages
+	should there be different db models for sync and processing?
+		no, they return the same data types
+	should there be different db instances for sync and processing?
+		each instance with its own connection
+		each with its own caching, if needed
+		seems like a good idea
+	so, how should last used notebook be returned?
+		stored as a name-value pair
+		db passes a notebook object to the user model
+		the user model passes it to the presenter
+		the presenter processes it
+		maybe creates some new object for a view
+		the point is, db access is single-threaded
+		so the database can return a pointer
+			there is always at least one notebook
+			there is always a default notebook
+			the pointer should never be null
+		if the pointer is never null, it can be a reference
+		the class member can be a pointer
+			assert not null before returning the reference
+threading
+	I don't want to implement threading right away
+	but threading should be easy to add later on
+	the threading model is dictated by sqlite and htmlayout
+	each db instance represents a db connection
+	access to each db instance is single-threaded
+	all ui should be single-threaded
+	we therefore have a ui thread and a thread per db instance
+	ui thread
+		signals from ui create data thread tasks
+			presenters handles this
+		ui getters send messages
+			ui handles this
+			sending on the same thread does not lock
+			signal handlers from data threads should avoid getters
+		ui setters post messages
+			ui handles this
+	data thread
+		one per db instance
+		should then be implemented in the db
+		the db should have a message pump
+	want to avoid bothering with messaging and tasks for now

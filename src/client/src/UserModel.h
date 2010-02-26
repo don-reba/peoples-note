@@ -6,17 +6,23 @@
 #include "Note.h"
 #include "Notebook.h"
 
+class IDataStore;
+
 class UserModel : public IUserModel
 {
 private:
 
-	CredentialsModel credentialsModel;
+	IDataStore & dataStore;
 
-	mutable std::vector<Notebook> notebooks;
+	CredentialsModel credentialsModel;
 
 	signal SignalLoaded;
 
+	Notebook lastUsedNotebook; // temporary
+
 public:
+
+	UserModel(IDataStore & dataStore);
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 

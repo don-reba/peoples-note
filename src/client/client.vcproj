@@ -391,6 +391,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\DataStore.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\HTMLayoutWindow.cpp"
 				>
 			</File>
@@ -521,6 +525,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\DataStore.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\foreach.h"
 				>
 			</File>
@@ -538,6 +546,10 @@
 			</File>
 			<File
 				RelativePath=".\src\ICredentialsView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IDataStore.h"
 				>
 			</File>
 			<File

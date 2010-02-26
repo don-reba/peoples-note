@@ -10,5 +10,9 @@ public:
 
 public:
 
+	MockNotebook();
+
+	MockNotebook(const INotebook & notebook);
+
 	virtual std::wstring GetName() const;
 };

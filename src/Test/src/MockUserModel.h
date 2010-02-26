@@ -17,8 +17,9 @@ public:
 	MockNotebook            lastUsedNotebook;
 	std::vector<INotebook*> notebooks;
 	std::vector<INote*>     notes;
-	bool                    isDefault;
-	bool                    isLoaded;
+
+	bool isDefault;
+	bool isLoaded;
 
 	mutable std::wstring notebookSelection;
 	mutable std::wstring searchSelection;
