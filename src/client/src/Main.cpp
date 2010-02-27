@@ -14,9 +14,26 @@
 #include "htmlayout.h"
 #include "Tools.h"
 
+#include <sstream>
 #include <vector>
 
+using namespace std;
 using namespace Tools;
+
+wstring GetDocumentPath()
+{
+	wchar_t folder[MAX_PATH];
+	folder[0] = L'\0';
+	::SHGetSpecialFolderPath
+		( NULL           // hwndOwner
+		, folder         // lpszPath
+		, CSIDL_PERSONAL // nFolder
+		, TRUE           // fCreate
+		);
+	wstringstream stream;
+	stream << folder << L'\\' << LoadStringResource(IDS_DOC_FOLDER);
+	return stream.str();
+}
 
 bool SwitchToPreviousInstance(HINSTANCE instance)
 {
@@ -61,7 +78,7 @@ int WINAPI WinMain(HINSTANCE instance,
 	try
 	{
 		RegistryKey registryKey;
-		DataStore   dataStore;
+		DataStore   dataStore(GetDocumentPath());
 
 		LastUserModel lastUserModel(registryKey);
 		NoteListModel noteListModel;

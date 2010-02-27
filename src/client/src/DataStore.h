@@ -1,10 +1,24 @@
 #pragma once
 
 #include "IDataStore.h"
+#include "SQLite/sqlite3.h"
 
 class DataStore : public IDataStore
 {
+private:
+
+	sqlite3 * db;
+
+	std::wstring folder;
+	std::wstring path;
+
+// interface
+
 public:
+
+	DataStore(std::wstring folder);
+
+	~DataStore();
 
 	virtual void LoadOrCreate(std::wstring name);
 
@@ -13,4 +27,14 @@ public:
 	virtual void MakeNotebookDefault(INotebook & notebook);
 
 	virtual int GetNotebookCount();
+
+// utility functions
+
+private:
+
+	void Connect();
+
+	void Disconnect();
+
+	std::wstring CreatePathFromName(std::wstring name);
 };

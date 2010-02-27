@@ -112,6 +112,7 @@ BEGIN
     IDS_SYNC                "Sync"
     IDS_MAIN_MENU           "Menu"
     IDS_REGISTRY_KEY        "Software\\People's Note"
+    IDS_DOC_FOLDER          "People's Note"
 END
 
 #endif    // English (U.S.) resources

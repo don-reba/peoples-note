@@ -7,6 +7,7 @@
 #define IDS_SYNC                        3
 #define IDS_MAIN_MENU                   4
 #define IDS_REGISTRY_KEY                5
+#define IDS_DOC_FOLDER                  6
 #define IDI_CLIENT                      101
 #define IDR_MENU                        102
 #define IDS_OK                          103

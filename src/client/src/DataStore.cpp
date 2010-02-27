@@ -1,11 +1,32 @@
 #include "stdafx.h"
 #include "DataStore.h"
 
+#include "Tools.h"
+
+#include <sstream>
+
 using namespace std;
+using namespace Tools;
+
+//----------
+// interface
+//----------
+
+DataStore::DataStore(wstring folder)
+	: db     (NULL)
+	, folder (folder)
+{
+}
+
+DataStore::~DataStore()
+{
+	Disconnect();
+}
 
 void DataStore::LoadOrCreate(wstring name)
 {
-	// TODO: implement
+	path = CreatePathFromName(name);
+	Connect();
 }
 
 void DataStore::AddNotebook(INotebook & notebook)
@@ -24,3 +45,34 @@ int DataStore::GetNotebookCount()
 	return 0;
 }
 
+//------------------
+// utility functions
+//------------------
+
+void DataStore::Connect()
+{
+	assert(db == NULL);
+	if (SQLITE_OK != sqlite3_open16(path.c_str(), &db))
+	{
+		sqlite3_close(db);
+		db = NULL;
+		throw exception("Database could not be opened.");
+	}
+}
+
+void DataStore::Disconnect()
+{
+	if (db == NULL)
+		return;
+	sqlite3 * copy = db;
+	db = NULL;
+	if (SQLITE_OK != sqlite3_close(copy))
+		throw exception("Database could not be closed.");
+}
+
+wstring DataStore::CreatePathFromName(wstring name)
+{
+	wstringstream stream;
+	stream << folder << L'\\' << name << L".db";
+	return stream.str();
+}
