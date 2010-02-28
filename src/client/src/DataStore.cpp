@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DataStore.h"
 
+#include "INotebook.h"
 #include "Tools.h"
 
 #include <map>
@@ -43,7 +44,29 @@ void DataStore::LoadOrCreate(wstring name)
 
 void DataStore::AddNotebook(INotebook & notebook)
 {
-	// TODO: implement
+	int result;
+
+	// prepare statement
+	sqlite3_stmt * statement = NULL;
+	const wchar_t * sql = L"INSERT into Notebooks VALUES (1, ?, 0, 0)";
+	result = sqlite3_prepare16_v2(db, sql, -1, &statement, NULL);
+	if (result != SQLITE_OK)
+		throw exception("Query could not be constructed.");
+
+	// bind name
+	result = sqlite3_bind_text16(statement, 1, notebook.GetName().c_str(), -1, SQLITE_STATIC);
+	if (result != SQLITE_OK)
+		throw exception("Query could not be parameterized.");
+
+	// execute statement
+	result = sqlite3_step(statement);
+	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+		throw exception("Query could not be executed.");
+
+	// close statement
+	result = sqlite3_finalize(statement);
+	if (result != SQLITE_OK)
+		throw exception("Notebook could not be added");
 }
 
 void DataStore::MakeNotebookDefault(INotebook & notebook)
@@ -135,7 +158,7 @@ void DataStore::Initialize(wstring name)
 	}
 
 	// notebooks table
-	sql = "CREATE TABLE Notebooks(guid INTEGER PRIMARY KEY, name, isDefault, isLastUsed)";
+	sql = "CREATE TABLE Notebooks(guid INTEGER PRIMARY KEY, name UNIQUE, isDefault, isLastUsed)";
 	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
 		throw exception(message); // WARN: memory leak
