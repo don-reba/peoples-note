@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IDataStore.h"
+#include "Notebook.h"
 #include "SQLite/sqlite3.h"
 
 class DataStore : public IDataStore
@@ -12,6 +13,8 @@ private:
 	std::wstring folder;
 	std::wstring path;
 
+	boost::shared_ptr<INotebook> defaultNotebook;
+
 // interface
 
 public:
@@ -22,7 +25,11 @@ public:
 
 	int GetVersion();
 
+	INotebook & GetDefaultNotebook();
+
 	std::wstring GetUser();
+
+// IDataStore implementation
 
 	virtual void LoadOrCreate(std::wstring name);
 

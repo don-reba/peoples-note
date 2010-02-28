@@ -51,8 +51,29 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 	}
 	catch (const exception & e)
 	{
-		TEST_CHECK_EQUAL(string(e.what()), "Notebook could not be added.");
+		TEST_CHECK_EQUAL(string(e.what()), "column name is not unique");
 	}
 
 	TEST_CHECK_EQUAL(store.GetNotebookCount(), 2);
+}
+
+AUTO_TEST_CASE(TestDataStoreMakeNotebookDefault)
+{
+	const wchar_t * name   = L"test";
+	const wchar_t * folder = L"Program Files\\MobileTest";
+	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
+
+	DataStore store(folder);
+	::DeleteFile(file);
+	store.LoadOrCreate(name);
+
+	MockNotebook notebook;
+	notebook.name = L"test-notebook";
+	store.AddNotebook(notebook);
+
+	TEST_CHECK_EQUAL(store.GetDefaultNotebook().GetName(), L"Notes");
+
+	store.MakeNotebookDefault(notebook);
+
+	TEST_CHECK_EQUAL(store.GetDefaultNotebook().GetName(), L"test-notebook");
 }

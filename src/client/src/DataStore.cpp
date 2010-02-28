@@ -7,6 +7,7 @@
 #include <map>
 #include <sstream>
 
+using namespace boost;
 using namespace std;
 using namespace Tools;
 
@@ -35,6 +36,38 @@ wstring DataStore::GetUser()
 	return GetProperty(L"user");
 }
 
+INotebook & DataStore::GetDefaultNotebook()
+{
+	int result;
+
+	// prepare statement
+	sqlite3_stmt * statement = NULL;
+	const char * sql = "SELECT name FROM Notebooks WHERE isDefault = 1 LIMIT 1";
+	result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
+	if (result != SQLITE_OK)
+		throw std::exception("Query could not be constructed.");
+
+	// retrieve value
+	result = sqlite3_step(statement);
+	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+		throw std::exception("Query could not be executed.");
+	if (result == SQLITE_DONE)
+		throw std::exception("No default notebook.");
+	wstring name(ConvertToUnicode(sqlite3_column_text(statement, 0)));
+
+	// close statement
+	result = sqlite3_finalize(statement);
+	if (result != SQLITE_OK)
+		throw std::exception("Query could not be finalized.");
+
+	defaultNotebook = make_shared<Notebook>(name);
+	return *defaultNotebook;
+}
+
+//--------------------------
+// IDataStore implementation
+//--------------------------
+
 void DataStore::LoadOrCreate(wstring name)
 {
 	path = CreatePathFromName(name);
@@ -48,30 +81,90 @@ void DataStore::AddNotebook(INotebook & notebook)
 
 	// prepare statement
 	sqlite3_stmt * statement = NULL;
-	const wchar_t * sql = L"INSERT into Notebooks(name) VALUES (?)";
-	result = sqlite3_prepare16_v2(db, sql, -1, &statement, NULL);
+	const char * sql = "INSERT INTO Notebooks(name, isDefault, isLastUsed) VALUES (?, 0, 0)";
+	result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
 	if (result != SQLITE_OK)
-		throw exception("Query could not be constructed.");
+		throw std::exception(sqlite3_errmsg(db));
 
 	// bind name
-	result = sqlite3_bind_text16(statement, 1, notebook.GetName().c_str(), -1, SQLITE_STATIC);
+	vector<unsigned char> utf8Name(ConvertToUtf8(notebook.GetName()));
+	result = sqlite3_bind_text
+		( statement
+		, 1
+		, reinterpret_cast<const char*>(&utf8Name[0])
+		, -1
+		, SQLITE_STATIC
+		);
 	if (result != SQLITE_OK)
-		throw exception("Query could not be parameterized.");
+		throw std::exception(sqlite3_errmsg(db));
 
 	// execute statement
 	result = sqlite3_step(statement);
 	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
-		throw exception("Query could not be executed.");
+		throw std::exception(sqlite3_errmsg(db));
 
 	// close statement
+	// TODO: handle this better
 	result = sqlite3_finalize(statement);
 	if (result != SQLITE_OK)
-		throw exception("Notebook could not be added.");
+		throw std::exception(sqlite3_errmsg(db));
 }
 
 void DataStore::MakeNotebookDefault(INotebook & notebook)
 {
-	// TODO: implement
+	int result;
+
+	// remove old default
+	{
+		// prepare statement
+		sqlite3_stmt * statement = NULL;
+		const char * sql = "UPDATE Notebooks SET isDefault = 0 WHERE isDefault = 1";
+		result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
+		if (result != SQLITE_OK)
+			throw std::exception(sqlite3_errmsg(db));
+
+		// execute statement
+		result = sqlite3_step(statement);
+		if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+			throw std::exception(sqlite3_errmsg(db));
+
+		// close statement
+		result = sqlite3_finalize(statement);
+		if (result != SQLITE_OK)
+			throw std::exception(sqlite3_errmsg(db));
+	}
+
+	// set new default
+	{
+		// prepare statement
+		sqlite3_stmt * statement = NULL;
+		const char * sql = "UPDATE Notebooks SET isDefault = 1 WHERE name = ?";
+		result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
+		if (result != SQLITE_OK)
+			throw std::exception(sqlite3_errmsg(db));
+
+		// bind name
+		vector<unsigned char> utf8Name(ConvertToUtf8(notebook.GetName()));
+		result = sqlite3_bind_text
+			( statement
+			, 1
+			, reinterpret_cast<const char*>(&utf8Name[0])
+			, -1
+			, SQLITE_STATIC
+			);
+		if (result != SQLITE_OK)
+			throw std::exception(sqlite3_errmsg(db));
+
+		// execute statement
+		result = sqlite3_step(statement);
+		if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+			throw std::exception(sqlite3_errmsg(db));
+
+		// close statement
+		result = sqlite3_finalize(statement);
+		if (result != SQLITE_OK)
+			throw std::exception(sqlite3_errmsg(db));
+	}
 }
 
 int DataStore::GetNotebookCount()
@@ -80,21 +173,21 @@ int DataStore::GetNotebookCount()
 
 	// prepare statement
 	sqlite3_stmt * statement = NULL;
-	const wchar_t * sql = L"SELECT COUNT(*) FROM Notebooks";
-	result = sqlite3_prepare16_v2(db, sql, -1, &statement, NULL);
+	const char * sql = "SELECT COUNT(*) FROM Notebooks";
+	result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
 	if (result != SQLITE_OK)
-		throw exception("Query could not be constructed.");
+		throw std::exception(sqlite3_errmsg(db));
 
 	// retrieve value
 	result = sqlite3_step(statement);
 	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
-		throw exception("Query could not be executed.");
+		throw std::exception(sqlite3_errmsg(db));
 	int count = sqlite3_column_int(statement, 0);
 
 	// close statement
 	result = sqlite3_finalize(statement);
 	if (result != SQLITE_OK)
-		throw exception("Query could not be finalized.");
+		throw std::exception(sqlite3_errmsg(db));
 
 	return count;
 }
@@ -106,11 +199,19 @@ int DataStore::GetNotebookCount()
 void DataStore::Connect()
 {
 	assert(db == NULL);
-	if (SQLITE_OK != sqlite3_open16(path.c_str(), &db))
+	vector<unsigned char> utf8Path = ConvertToUtf8(path);
+	int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+	int result = sqlite3_open_v2
+		( reinterpret_cast<const char *>(&utf8Path[0])
+		, &db
+		, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE
+		, NULL
+		);
+	if (SQLITE_OK != result)
 	{
 		sqlite3_close(db);
 		db = NULL;
-		throw exception("Database could not be opened.");
+		throw std::exception(sqlite3_errmsg(db));
 	}
 }
 
@@ -121,7 +222,7 @@ void DataStore::Disconnect()
 	sqlite3 * copy = db;
 	db = NULL;
 	if (SQLITE_OK != sqlite3_close(copy))
-		throw exception("Database could not be closed.");
+		throw std::exception(sqlite3_errmsg(db));
 }
 
 wstring DataStore::CreatePathFromName(wstring name)
@@ -141,7 +242,7 @@ void DataStore::Initialize(wstring name)
 	sql = "CREATE TABLE Properties(key PRIMARY KEY, value NOT NULL)";
 	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
-		throw exception(message); // WARN: memory leak
+		throw std::exception(message); // HACK: memory leak
 
 	// properties
 	typedef pair<string, string> Property;
@@ -154,20 +255,20 @@ void DataStore::Initialize(wstring name)
 		stream << "INSERT INTO Properties VALUES ('" << p.first << "', '" << p.second << "')";
 		result = sqlite3_exec(db, stream.str().c_str(), NULL, NULL, &message);
 		if (SQLITE_OK != result)
-			throw exception(message); // WARN: memory leak
+			throw std::exception(message); // HACK: memory leak
 	}
 
 	// notebooks table
 	sql = "CREATE TABLE Notebooks(name PRIMARY KEY, isDefault, isLastUsed)";
 	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
-		throw exception(message); // WARN: memory leak
+		throw std::exception(message); // HACK: memory leak
 
 	// default notebook
 	sql = "INSERT into Notebooks(name, isDefault, isLastUsed) VALUES ('Notes', 1, 1)";
 	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
-		throw exception(message); // WARN: memory leak
+		throw std::exception(message); // HACK: memory leak
 }
 
 std::wstring DataStore::GetProperty(std::wstring key)
@@ -176,26 +277,35 @@ std::wstring DataStore::GetProperty(std::wstring key)
 
 	// prepare statement
 	sqlite3_stmt * statement = NULL;
-	const wchar_t * sql = L"SELECT value FROM Properties WHERE key = ? LIMIT 1";
-	result = sqlite3_prepare16_v2(db, sql, -1, &statement, NULL);
+	const char * sql = "SELECT value FROM Properties WHERE key = ? LIMIT 1";
+	result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
 	if (result != SQLITE_OK)
-		throw exception("Query could not be constructed.");
+		throw std::exception("Query could not be constructed.");
 
 	// bind key
-	result = sqlite3_bind_text16(statement, 1, key.c_str(), -1, SQLITE_STATIC);
+	vector<unsigned char> utf8Key = ConvertToUtf8(key);
+	result = sqlite3_bind_text
+		( statement
+		, 1
+		, reinterpret_cast<const char *>(&utf8Key[0])
+		, -1
+		, SQLITE_STATIC
+		);
 	if (result != SQLITE_OK)
-		throw exception("Query could not be parameterized.");
+		throw std::exception("Query could not be parameterized.");
 
 	// retrieve value
 	result = sqlite3_step(statement);
 	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
-		throw exception("Query could not be executed.");
-	wstring value(static_cast<const wchar_t*>(sqlite3_column_text16(statement, 0)));
+		throw std::exception("Query could not be executed.");
+	if (result == SQLITE_DONE)
+		throw std::exception("Property not found.");
+	wstring value(ConvertToUnicode(sqlite3_column_text(statement, 0)));
 
 	// close statement
 	result = sqlite3_finalize(statement);
 	if (result != SQLITE_OK)
-		throw exception("Query could not be finalized.");
+		throw std::exception("Query could not be finalized.");
 
 	return value;
 }

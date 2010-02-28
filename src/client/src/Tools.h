@@ -12,6 +12,8 @@ namespace Tools
 
 	std::wstring ConvertToUnicode(const std::string str);
 
+	std::wstring ConvertToUnicode(const unsigned char * str);
+
 	HtmlResource LoadHtmlResource(int id);
 
 	std::wstring LoadStringResource(int id);

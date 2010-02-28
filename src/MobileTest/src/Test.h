@@ -89,19 +89,19 @@ extern std::vector<TEST_BASE*> TEST_LIST;
 
 struct TEST_BASE
 {
+	const wchar_t * name;
 	TEST_BASE() { TEST_LIST.push_back(this); }
-	virtual std::string GetName() const = 0;
 	virtual void Run(TEST_SUITE&) = 0;
 };
 
-#define AUTO_TEST_CASE(test_name)                          \
-    struct test_name : TEST_BASE                           \
-    {                                                      \
-        void Run(TEST_SUITE&);                             \
-		std::string GetName() const { return #test_name; } \
-    };                                                     \
-	static test_name test_name##instance;                  \
-    void test_name::Run(TEST_SUITE & TEST)                 \
+#define AUTO_TEST_CASE(test_name)          \
+    struct test_name : TEST_BASE           \
+    {                                      \
+	test_name() { name = L#test_name; }    \
+        void Run(TEST_SUITE&);             \
+    };                                     \
+	static test_name test_name##instance;  \
+    void test_name::Run(TEST_SUITE & TEST) \
 
 //------
 // Tests

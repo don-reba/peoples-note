@@ -128,6 +128,33 @@ wstring Tools::ConvertToUnicode(const string str)
 	return &result[0];
 }
 
+std::wstring Tools::ConvertToUnicode(const unsigned char * str)
+{
+	LPCSTR cStr = reinterpret_cast<LPCSTR>(str);
+	int length = strlen(cStr);
+
+	UINT  codePage = CP_UTF8;
+	DWORD flags    = 0;
+	int resultSize = MultiByteToWideChar
+		( codePage // CodePage
+		, flags    // dwFlags
+		, cStr     // lpMultiByteStr
+		, length   // cbMultiByte
+		, NULL     // lpWideCharStr
+		, 0        // cchWideChar
+		);
+	vector<wchar_t> result(resultSize + 1);
+	MultiByteToWideChar
+		( codePage   // CodePage
+		, flags      // dwFlags
+		, cStr       // lpMultiByteStr
+		, length     // cbMultiByte
+		, &result[0] // lpWideCharStr
+		, resultSize // cchWideChar
+		);
+	return &result[0];
+}
+
 HtmlResource Tools::LoadHtmlResource(int id)
 {
 	HINSTANCE instance = GetModuleHandle(NULL);
