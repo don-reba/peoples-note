@@ -53,8 +53,27 @@ void DataStore::MakeNotebookDefault(INotebook & notebook)
 
 int DataStore::GetNotebookCount()
 {
-	// TODO: implement
-	return 0;
+	int result;
+
+	// prepare statement
+	sqlite3_stmt * statement = NULL;
+	const wchar_t * sql = L"SELECT COUNT(*) FROM Notebooks";
+	result = sqlite3_prepare16_v2(db, sql, -1, &statement, NULL);
+	if (result != SQLITE_OK)
+		throw exception("Query could not be constructed.");
+
+	// retrieve value
+	result = sqlite3_step(statement);
+	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+		throw exception("Query could not be executed.");
+	int count = sqlite3_column_int(statement, 0);
+
+	// close statement
+	result = sqlite3_finalize(statement);
+	if (result != SQLITE_OK)
+		throw exception("Query could not be finalized.");
+
+	return count;
 }
 
 //------------------
@@ -92,18 +111,16 @@ wstring DataStore::CreatePathFromName(wstring name)
 void DataStore::Initialize(wstring name)
 {
 	int result;
-	char * errorMessage = NULL;
+	const char * sql;
+	char * message = NULL;
 
-	result = sqlite3_exec
-		( db
-		, "CREATE TABLE Properties(key PRIMARY KEY, value NOT NULL)"
-		, NULL
-		, this
-		, &errorMessage
-		);
+	// properties table
+	sql = "CREATE TABLE Properties(key PRIMARY KEY, value NOT NULL)";
+	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
-		throw exception(errorMessage); // WARN: memory leak
+		throw exception(message); // WARN: memory leak
 
+	// properties
 	typedef pair<string, string> Property;
 	vector<Property> properties;
 	properties.push_back(make_pair("version", "1"));
@@ -112,16 +129,22 @@ void DataStore::Initialize(wstring name)
 	{
 		stringstream stream;
 		stream << "INSERT INTO Properties VALUES ('" << p.first << "', '" << p.second << "')";
-		result = sqlite3_exec
-			( db
-			, stream.str().c_str()
-			, NULL
-			, this
-			, &errorMessage
-			);
+		result = sqlite3_exec(db, stream.str().c_str(), NULL, NULL, &message);
 		if (SQLITE_OK != result)
-			throw exception(errorMessage); // WARN: memory leak
+			throw exception(message); // WARN: memory leak
 	}
+
+	// notebooks table
+	sql = "CREATE TABLE Notebooks(guid INTEGER PRIMARY KEY, name, isDefault, isLastUsed)";
+	result = sqlite3_exec(db, sql, NULL, NULL, &message);
+	if (SQLITE_OK != result)
+		throw exception(message); // WARN: memory leak
+
+	// default notebook
+	sql = "INSERT into Notebooks VALUES (0, 'Notes', 1, 1)";
+	result = sqlite3_exec(db, sql, NULL, NULL, &message);
+	if (SQLITE_OK != result)
+		throw exception(message); // WARN: memory leak
 }
 
 std::wstring DataStore::GetProperty(std::wstring key)

@@ -21,6 +21,7 @@ AUTO_TEST_CASE(TestDataStoreLoad)
 	store.LoadOrCreate(name);
 	TEST_CHECK(FileExists(file));
 
-	TEST_CHECK_EQUAL(store.GetVersion(), 1);
-	TEST_CHECK_EQUAL(store.GetUser(),    name);
+	TEST_CHECK_EQUAL(store.GetVersion(),       1);
+	TEST_CHECK_EQUAL(store.GetUser(),          name);
+	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
 }
