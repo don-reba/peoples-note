@@ -66,3 +66,10 @@
 #include <vector>
 
 #include "foreach.h"
+
+namespace std
+{
+	wostream & operator << (wostream & stream, const char   * str);
+	wostream & operator << (wostream & stream, const string & str);
+}
+

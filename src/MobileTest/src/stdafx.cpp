@@ -3,6 +3,17 @@
 // stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
+#include "Tools.h"
 
-// TODO: reference any additional headers you need in STDAFX.H
-// and not in this file
+namespace std
+{
+	wostream & operator << (wostream & stream, const char * str)
+	{
+		return stream << Tools::ConvertToUnicode(str);
+	}
+
+	wostream & operator << (wostream & stream, const string & str)
+	{
+		return stream << Tools::ConvertToUnicode(str);
+	}
+}

@@ -48,7 +48,7 @@ void DataStore::AddNotebook(INotebook & notebook)
 
 	// prepare statement
 	sqlite3_stmt * statement = NULL;
-	const wchar_t * sql = L"INSERT into Notebooks VALUES (1, ?, 0, 0)";
+	const wchar_t * sql = L"INSERT into Notebooks(name) VALUES (?)";
 	result = sqlite3_prepare16_v2(db, sql, -1, &statement, NULL);
 	if (result != SQLITE_OK)
 		throw exception("Query could not be constructed.");
@@ -66,7 +66,7 @@ void DataStore::AddNotebook(INotebook & notebook)
 	// close statement
 	result = sqlite3_finalize(statement);
 	if (result != SQLITE_OK)
-		throw exception("Notebook could not be added");
+		throw exception("Notebook could not be added.");
 }
 
 void DataStore::MakeNotebookDefault(INotebook & notebook)
@@ -146,7 +146,7 @@ void DataStore::Initialize(wstring name)
 	// properties
 	typedef pair<string, string> Property;
 	vector<Property> properties;
-	properties.push_back(make_pair("version", "1"));
+	properties.push_back(make_pair("version", "0"));
 	properties.push_back(make_pair("user",    ConvertToAnsi(name)));
 	foreach (const Property & p, properties)
 	{
@@ -158,13 +158,13 @@ void DataStore::Initialize(wstring name)
 	}
 
 	// notebooks table
-	sql = "CREATE TABLE Notebooks(guid INTEGER PRIMARY KEY, name UNIQUE, isDefault, isLastUsed)";
+	sql = "CREATE TABLE Notebooks(name PRIMARY KEY, isDefault, isLastUsed)";
 	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
 		throw exception(message); // WARN: memory leak
 
 	// default notebook
-	sql = "INSERT into Notebooks VALUES (0, 'Notes', 1, 1)";
+	sql = "INSERT into Notebooks(name, isDefault, isLastUsed) VALUES ('Notes', 1, 1)";
 	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
 		throw exception(message); // WARN: memory leak

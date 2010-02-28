@@ -443,3 +443,33 @@ threading
 		should then be implemented in the db
 		the db should have a message pump
 	want to avoid bothering with messaging and tasks for now
+database
+	when should it be initialized?
+		when it is being created
+			check if the database is empty
+			check for the properties table
+		in future, when converting an old format
+	how should it be initialized?
+		assuming it is empty
+		create tables
+			properties
+				version
+				user name
+				last used notebook
+				default notebook
+			notes
+mobile testing
+	need simple alternative to boost::test
+	can copy stuff
+	how can I implement AUTO_TEST_CASE?
+		create a function taking a Test parameter
+		add a pointer to the function to some global list
+			how?
+		create a base that adds itself to the global list on construction
+		create test case classes that inherit from the base
+		create a static instance of every such class
+identity
+	notebooks are identified by GUID
+		but also have unique names
+	unsynced notebooks have no GUID
+	therefore, names are the real identifier
