@@ -2,10 +2,10 @@
 
 #include "Test.h"
 
-#include "TestDataStore.h"
-#include "TestTools.h"
-
 #include <fstream>
+#include <vector>
+
+std::vector<TEST_BASE*> TEST_LIST;
 
 void OpenFile(const wchar_t * file)
 {
@@ -26,12 +26,22 @@ int WINAPI WinMain
 	const wchar_t * resultsFileName(L"results.txt");
 	std::wofstream resultsFile(resultsFileName);
 
-	Test test(resultsFile);
-
-	TestDataStoreLoad(test);
-	TestToolsLoadHtmlResource(test);
-	TestToolsLoadStringResource(test);
-
+	TEST_SUITE test(resultsFile);
+	foreach (TEST_BASE * test_case, TEST_LIST)
+	{
+		try
+		{
+			test_case->Run(test);
+		}
+		catch (const std::exception & e)
+		{
+			test.HandleException(e);
+		}
+		catch (...)
+		{
+			test.HandleException();
+		}
+	}
 	test.Report();
 
 	OpenFile(resultsFileName);

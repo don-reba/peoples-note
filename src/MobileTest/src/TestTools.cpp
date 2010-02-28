@@ -1,9 +1,10 @@
-#pragma once
+#include "stdafx.h"
 
 #include "resourceppc.h"
+#include "Test.h"
 #include "Tools.h"
 
-void TestToolsLoadStringResource(Test & test)
+AUTO_TEST_CASE(TestToolsLoadStringResource)
 {
 	std::wstring charString = Tools::LoadStringResource(IDS_CHAR_STRING);
 	TEST_CHECK_EQUAL(charString.length(), 1);
@@ -14,7 +15,7 @@ void TestToolsLoadStringResource(Test & test)
 	TEST_CHECK_EQUAL(testString, L"Test");
 }
 
-void TestToolsLoadHtmlResource(Test & test)
+AUTO_TEST_CASE(TestToolsLoadHtmlResource)
 {
 	std::string html = "<html></html>";
 	HtmlResource resource = Tools::LoadHtmlResource(IDH_TEST);

@@ -37,4 +37,6 @@ private:
 	void Disconnect();
 
 	std::wstring CreatePathFromName(std::wstring name);
+
+	void Initialize();
 };

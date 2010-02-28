@@ -1,13 +1,14 @@
-#pragma once
+#include "stdafx.h"
 
 #include "DataStore.h"
+#include "Test.h"
 
 bool FileExists(const wchar_t * path)
 {
 	return GetFileAttributes(path) != 0xFFFFFFFF;
 }
 
-void TestDataStoreLoad(Test & test)
+AUTO_TEST_CASE(TestDataStoreLoad)
 {
 	const wchar_t * name   = L"test";
 	const wchar_t * folder = L"Program Files\\MobileTest";

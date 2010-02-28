@@ -27,6 +27,7 @@ void DataStore::LoadOrCreate(wstring name)
 {
 	path = CreatePathFromName(name);
 	Connect();
+	Initialize(); // TODO: change
 }
 
 void DataStore::AddNotebook(INotebook & notebook)
@@ -75,4 +76,18 @@ wstring DataStore::CreatePathFromName(wstring name)
 	wstringstream stream;
 	stream << folder << L'\\' << name << L".db";
 	return stream.str();
+}
+
+void DataStore::Initialize()
+{
+	char * errorMessage = NULL;
+	int result = sqlite3_exec
+		( db
+		, "CREATE TABLE Properties(key PRIMARY KEY, value NOT NULL)"
+		, NULL
+		, this
+		, &errorMessage
+		);
+	if (SQLITE_OK != result)
+		throw exception("Nyu!");
 }

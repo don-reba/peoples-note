@@ -131,7 +131,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Users\Alexey\Files\Programming\Evernote client\src\client\src&quot;;&quot;$(ProjectDir)&quot;"
+				AdditionalIncludeDirectories="C:\Users\Alexey\Files\Programming\boost_1_41_0;&quot;C:\Users\Alexey\Files\Programming\Evernote client\src\client\src&quot;;&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -436,7 +436,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\TestTools.h"
+				RelativePath=".\src\TestDataStore.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestTools.cpp"
 				>
 			</File>
 			<File
@@ -454,11 +458,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\src\foreach.h"
 				>
 			</File>
 			<File
 				RelativePath=".\resourceppc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
@@ -471,10 +479,6 @@
 			</File>
 			<File
 				RelativePath=".\src\Test.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\TestDataStore.h"
 				>
 			</File>
 			<File
