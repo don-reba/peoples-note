@@ -101,7 +101,7 @@ struct TEST_BASE
 		std::string GetName() const { return #test_name; } \
     };                                                     \
 	static test_name test_name##instance;                  \
-    void test_name::Run(TEST_SUITE & test)                 \
+    void test_name::Run(TEST_SUITE & TEST)                 \
 
 //------
 // Tests
@@ -115,21 +115,21 @@ struct TEST_BASE
     }                                \
     catch (const std::exception & e) \
     {                                \
-        test.Fail();                 \
-        test.HandleException(e);     \
+        TEST.Fail();                 \
+        TEST.HandleException(e);     \
     }                                \
     catch (...)                      \
     {                                \
-        test.Fail();                 \
-        test.HandleException();      \
+        TEST.Fail();                 \
+        TEST.HandleException();      \
     }                                \
 
 #define TEST_CHECK(expr)                           \
-    TEST_OPEN test.Check(expr, L#expr); TEST_CLOSE \
+    TEST_OPEN TEST.Check(expr, L#expr); TEST_CLOSE \
 
 #define TEST_CHECK_EQUAL(l, r)                            \
-    TEST_OPEN test.CheckEqual(l, r, L#l, L#r); TEST_CLOSE \
+    TEST_OPEN TEST.CheckEqual(l, r, L#l, L#r); TEST_CLOSE \
 
 #define TEST_CHECK_NOT_EQUAL(l, r)                           \
-    TEST_OPEN test.CheckNotEqual(l, r, L#l, L#r); TEST_CLOSE \
+    TEST_OPEN TEST.CheckNotEqual(l, r, L#l, L#r); TEST_CLOSE \
 

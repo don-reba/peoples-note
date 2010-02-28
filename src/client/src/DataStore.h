@@ -20,6 +20,10 @@ public:
 
 	~DataStore();
 
+	int GetVersion();
+
+	std::wstring GetUser();
+
 	virtual void LoadOrCreate(std::wstring name);
 
 	virtual void AddNotebook(INotebook & notebook);
@@ -38,5 +42,7 @@ private:
 
 	std::wstring CreatePathFromName(std::wstring name);
 
-	void Initialize();
+	void Initialize(std::wstring name);
+
+	std::wstring GetProperty(std::wstring name);
 };

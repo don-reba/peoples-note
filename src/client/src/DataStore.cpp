@@ -3,6 +3,7 @@
 
 #include "Tools.h"
 
+#include <map>
 #include <sstream>
 
 using namespace std;
@@ -23,11 +24,21 @@ DataStore::~DataStore()
 	Disconnect();
 }
 
+int DataStore::GetVersion()
+{
+	return _wtoi(GetProperty(L"version").c_str());
+}
+
+wstring DataStore::GetUser()
+{
+	return GetProperty(L"user");
+}
+
 void DataStore::LoadOrCreate(wstring name)
 {
 	path = CreatePathFromName(name);
 	Connect();
-	Initialize(); // TODO: change
+	Initialize(name); // TODO: change
 }
 
 void DataStore::AddNotebook(INotebook & notebook)
@@ -78,10 +89,12 @@ wstring DataStore::CreatePathFromName(wstring name)
 	return stream.str();
 }
 
-void DataStore::Initialize()
+void DataStore::Initialize(wstring name)
 {
+	int result;
 	char * errorMessage = NULL;
-	int result = sqlite3_exec
+
+	result = sqlite3_exec
 		( db
 		, "CREATE TABLE Properties(key PRIMARY KEY, value NOT NULL)"
 		, NULL
@@ -89,5 +102,54 @@ void DataStore::Initialize()
 		, &errorMessage
 		);
 	if (SQLITE_OK != result)
-		throw exception("Nyu!");
+		throw exception(errorMessage); // WARN: memory leak
+
+	typedef pair<string, string> Property;
+	vector<Property> properties;
+	properties.push_back(make_pair("version", "1"));
+	properties.push_back(make_pair("user",    ConvertToAnsi(name)));
+	foreach (const Property & p, properties)
+	{
+		stringstream stream;
+		stream << "INSERT INTO Properties VALUES ('" << p.first << "', '" << p.second << "')";
+		result = sqlite3_exec
+			( db
+			, stream.str().c_str()
+			, NULL
+			, this
+			, &errorMessage
+			);
+		if (SQLITE_OK != result)
+			throw exception(errorMessage); // WARN: memory leak
+	}
+}
+
+std::wstring DataStore::GetProperty(std::wstring key)
+{
+	int result;
+
+	// prepare statement
+	sqlite3_stmt * statement = NULL;
+	const wchar_t * sql = L"SELECT value FROM Properties WHERE key = ? LIMIT 1";
+	result = sqlite3_prepare16_v2(db, sql, -1, &statement, NULL);
+	if (result != SQLITE_OK)
+		throw exception("Query could not be constructed.");
+
+	// bind key
+	result = sqlite3_bind_text16(statement, 1, key.c_str(), -1, SQLITE_STATIC);
+	if (result != SQLITE_OK)
+		throw exception("Query could not be parameterized.");
+
+	// retrieve value
+	result = sqlite3_step(statement);
+	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+		throw exception("Query could not be executed.");
+	wstring value(static_cast<const wchar_t*>(sqlite3_column_text16(statement, 0)));
+
+	// close statement
+	result = sqlite3_finalize(statement);
+	if (result != SQLITE_OK)
+		throw exception("Query could not be finalized.");
+
+	return value;
 }
