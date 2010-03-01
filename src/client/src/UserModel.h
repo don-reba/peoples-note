@@ -32,7 +32,7 @@ public:
 
 	virtual INotebook & GetLastUsedNotebook();
 
-	virtual std::vector<INotebook*> GetNotebooks() const;
+	virtual boost::ptr_vector<INotebook> & GetNotebooks() const;
 
 	virtual std::vector<INote*> GetNotesByNotebook(INotebook & notebook) const;
 

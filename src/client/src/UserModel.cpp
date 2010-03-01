@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace boost;
 using namespace std;
 
 UserModel::UserModel(IDataStore & dataStore)
@@ -32,14 +33,12 @@ void UserModel::SetCredentials(const ICredentialsModel & credentials)
 
 INotebook & UserModel::GetLastUsedNotebook()
 {
-	// TODO: implement
-	return lastUsedNotebook;
+	return dataStore.GetLastUsedNotebook();
 }
 
-vector<INotebook*> UserModel::GetNotebooks() const
+ptr_vector<INotebook> & UserModel::GetNotebooks() const
 {
-	// TODO: implement
-	return vector<INotebook*>();
+	return dataStore.GetNotebooks();
 }
 
 vector<INote*> UserModel::GetNotesByNotebook(INotebook & notebook) const

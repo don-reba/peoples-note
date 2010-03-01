@@ -18,7 +18,7 @@ public:
 
 	virtual INotebook & GetLastUsedNotebook() = 0;
 
-	virtual std::vector<INotebook*> GetNotebooks() const = 0;
+	virtual boost::ptr_vector<INotebook> & GetNotebooks() const = 0;
 
 	virtual std::vector<INote*> GetNotesByNotebook(INotebook & notebook) const = 0;
 

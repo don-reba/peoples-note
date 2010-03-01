@@ -33,9 +33,9 @@ void NoteListPresenter::OnNoteListChanged()
 void NoteListPresenter::OnUserLoaded()
 {
 	noteListView.ClearNotebooks();
-	const vector<INotebook*> notebooks = userModel.GetNotebooks();
-	foreach (const INotebook * notebook, notebooks)
-		noteListView.AddNotebook(notebook->GetName());
+	const ptr_vector<INotebook> & notebooks = userModel.GetNotebooks();
+	foreach (const INotebook & notebook, notebooks)
+		noteListView.AddNotebook(notebook.GetName());
 	noteListView.UpdateNotebooks();
 
 	vector<INote*> notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());

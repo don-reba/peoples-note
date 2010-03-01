@@ -4,6 +4,7 @@
 #include "MockNotebook.h"
 #include "Test.h"
 
+using namespace boost;
 using namespace std;
 
 bool FileExists(const wchar_t * path)
@@ -49,7 +50,7 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 	{
 		store.AddNotebook(notebook);
 	}
-	catch (const exception & e)
+	catch (const std::exception & e)
 	{
 		TEST_CHECK_EQUAL(string(e.what()), "column name is not unique");
 	}
@@ -57,7 +58,7 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 	TEST_CHECK_EQUAL(store.GetNotebookCount(), 2);
 }
 
-AUTO_TEST_CASE(TestDataStoreMakeNotebookDefault)
+AUTO_TEST_CASE(TestDataStoreDefaultNotebook)
 {
 	const wchar_t * name   = L"test";
 	const wchar_t * folder = L"Program Files\\MobileTest";
@@ -76,4 +77,41 @@ AUTO_TEST_CASE(TestDataStoreMakeNotebookDefault)
 	store.MakeNotebookDefault(notebook);
 
 	TEST_CHECK_EQUAL(store.GetDefaultNotebook().GetName(), L"test-notebook");
+}
+
+AUTO_TEST_CASE(TestDataStoreLastUsedNotebook)
+{
+	const wchar_t * name   = L"test";
+	const wchar_t * folder = L"Program Files\\MobileTest";
+	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
+
+	DataStore store(folder);
+	::DeleteFile(file);
+	store.LoadOrCreate(name);
+
+	MockNotebook notebook;
+	notebook.name = L"test-notebook";
+	store.AddNotebook(notebook);
+
+	TEST_CHECK_EQUAL(store.GetLastUsedNotebook().GetName(), L"Notes");
+}
+
+AUTO_TEST_CASE(TestDataStoreNotebooks)
+{
+	const wchar_t * name   = L"test";
+	const wchar_t * folder = L"Program Files\\MobileTest";
+	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
+
+	DataStore store(folder);
+	::DeleteFile(file);
+	store.LoadOrCreate(name);
+
+	MockNotebook notebook;
+	notebook.name = L"Test";
+	store.AddNotebook(notebook);
+
+	ptr_vector<INotebook> & notebooks = store.GetNotebooks();
+	TEST_CHECK_EQUAL(notebooks.size(), 2);
+	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"Notes");
+	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"Test");
 }

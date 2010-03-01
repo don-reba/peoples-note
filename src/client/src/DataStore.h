@@ -15,6 +15,8 @@ private:
 
 	boost::shared_ptr<INotebook> defaultNotebook;
 
+	boost::ptr_vector<INotebook> notebooks;
+
 // interface
 
 public:
@@ -36,6 +38,10 @@ public:
 	virtual void AddNotebook(INotebook & notebook);
 
 	virtual void MakeNotebookDefault(INotebook & notebook);
+
+	virtual INotebook & GetLastUsedNotebook();
+
+	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
 	virtual int GetNotebookCount();
 

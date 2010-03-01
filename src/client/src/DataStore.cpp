@@ -167,6 +167,71 @@ void DataStore::MakeNotebookDefault(INotebook & notebook)
 	}
 }
 
+INotebook & DataStore::GetLastUsedNotebook()
+{
+	int result;
+
+	// prepare statement
+	sqlite3_stmt * statement = NULL;
+	const char * sql = "SELECT name FROM Notebooks WHERE isLastUsed = 1 LIMIT 1";
+	result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
+	if (result != SQLITE_OK)
+		throw std::exception("Query could not be constructed.");
+
+	// retrieve value
+	result = sqlite3_step(statement);
+	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+		throw std::exception("Query could not be executed.");
+	if (result == SQLITE_DONE)
+		throw std::exception("No default notebook.");
+	wstring name(ConvertToUnicode(sqlite3_column_text(statement, 0)));
+
+	// close statement
+	result = sqlite3_finalize(statement);
+	if (result != SQLITE_OK)
+		throw std::exception("Query could not be finalized.");
+
+	defaultNotebook = make_shared<Notebook>(name);
+	return *defaultNotebook;
+}
+
+ptr_vector<INotebook> & DataStore::GetNotebooks()
+{
+	int result;
+
+	// prepare statement
+	sqlite3_stmt * statement = NULL;
+	const char * sql = "SELECT name FROM Notebooks ORDER BY name";
+	result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
+	if (result != SQLITE_OK)
+		throw std::exception("Query could not be constructed.");
+
+	// retrieve values
+	notebooks.clear();
+	for (;;)
+	{
+		result = sqlite3_step(statement);
+		if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+			throw std::exception("Query could not be executed.");
+		if (result == SQLITE_DONE)
+		{
+			break;
+		}
+		else
+		{
+			const unsigned char * name = sqlite3_column_text(statement, 0);
+			notebooks.push_back(new Notebook(ConvertToUnicode(name)));
+		}
+	}
+
+	// close statement
+	result = sqlite3_finalize(statement);
+	if (result != SQLITE_OK)
+		throw std::exception("Query could not be finalized.");
+
+	return notebooks;
+}
+
 int DataStore::GetNotebookCount()
 {
 	int result;
