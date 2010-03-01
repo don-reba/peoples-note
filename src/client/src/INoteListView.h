@@ -6,6 +6,8 @@ class INoteListView : public ISignalProvider
 {
 public:
 
+	virtual ~INoteListView() {}
+
 	virtual void ConnectCreated(slot_type OnCreated) = 0;
 
 	virtual void ConnectSearch(slot_type OnSearch) = 0;

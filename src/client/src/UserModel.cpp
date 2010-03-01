@@ -36,21 +36,19 @@ INotebook & UserModel::GetLastUsedNotebook()
 	return dataStore.GetLastUsedNotebook();
 }
 
-ptr_vector<INotebook> & UserModel::GetNotebooks() const
+ptr_vector<INotebook> & UserModel::GetNotebooks()
 {
 	return dataStore.GetNotebooks();
 }
 
-vector<INote*> UserModel::GetNotesByNotebook(INotebook & notebook) const
+ptr_vector<INote> & UserModel::GetNotesByNotebook(INotebook & notebook)
 {
-	// TODO: implement
-	return vector<INote*>();
+	return dataStore.GetNotesByNotebook(notebook);
 }
 
-vector<INote*> UserModel::GetNotesBySearch(wstring search) const
+ptr_vector<INote> & UserModel::GetNotesBySearch(wstring search)
 {
-	// TODO: implement
-	return vector<INote*>();
+	return dataStore.GetNotesBySearch(search);
 }
 
 void UserModel::Load()

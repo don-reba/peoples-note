@@ -32,11 +32,11 @@ public:
 
 	virtual INotebook & GetLastUsedNotebook();
 
-	virtual boost::ptr_vector<INotebook> & GetNotebooks() const;
+	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
-	virtual std::vector<INote*> GetNotesByNotebook(INotebook & notebook) const;
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook);
 
-	virtual std::vector<INote*> GetNotesBySearch(std::wstring search) const;
+	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
 
 	virtual void Load();
 };

@@ -29,7 +29,7 @@ void SearchPresenter::OnSearch()
 
 void SearchPresenter::ResetNotes()
 {
-	vector<INote*> notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
+	ptr_vector<INote> & notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
 	noteListModel.SetNotes(notes);
 }
 

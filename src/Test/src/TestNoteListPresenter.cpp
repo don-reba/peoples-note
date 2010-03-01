@@ -6,6 +6,9 @@
 #include "MockTag.h"
 #include "MockUserModel.h"
 
+#include <algorithm>
+
+using namespace boost;
 using namespace std;
 
 BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
@@ -24,22 +27,21 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 	tags[1].name = L"tag-2";
 	tags[2].name = L"&amp;";
 
-	vector<MockNote> notes(3);
+	ptr_vector<MockNote> notes(3);
+	notes.push_back(new MockNote());
+	notes.at(0).title = L"Note";
+	notes.at(0).tags.push_back(tags[0]);
+	notes.at(0).tags.push_back(tags[1]);
+	notes.at(0).createDate.formattedDateTime = L"2010-02-04 15:20";
+	notes.push_back(new MockNote());
+	notes.at(1).title = L"";
+	notes.at(1).createDate.formattedDateTime = L"";
+	notes.push_back(new MockNote());
+	notes.at(2).title = L"<td id=\"";
+	notes.at(2).tags.push_back(tags[2]);
+	notes.at(2).createDate.formattedDateTime = L"<strong>not bold</strong>";
+	noteListModel.notes.transfer(noteListModel.notes.end(), notes);
 
-	notes[0].title = L"Note";
-	notes[0].tags.push_back(tags[0]);
-	notes[0].tags.push_back(tags[1]);
-	notes[0].createDate.formattedDateTime = L"2010-02-04 15:20";
-
-	notes[1].title = L"";
-	notes[1].createDate.formattedDateTime = L"";
-
-	notes[2].title = L"<td id=\"";
-	notes[2].tags.push_back(tags[2]);
-	notes[2].createDate.formattedDateTime = L"<strong>not bold</strong>";
-
-	foreach (MockNote & note, notes)
-		noteListModel.notes.push_back(&note);
 	noteListModel.Reset();
 
 	BOOST_CHECK_EQUAL(noteListView.notesUpdated, true);
@@ -72,19 +74,20 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 
 	userModel.lastUsedNotebook.name = L"notebook";
 
-	vector<MockNote> notes(2);
-	notes[0].title = L"note-0";
-	notes[1].title = L"note-1";
+	ptr_vector<MockNote> notes(2);
+	notes.push_back(new MockNote());
+	notes.at(0).title = L"note-0";
+	notes.push_back(new MockNote());
+	notes.at(1).title = L"note-1";
+	userModel.notes.transfer(userModel.notes.end(), notes);
 
-	foreach (MockNote & note, notes)
-		userModel.notes.push_back(&note);
 	userModel.Loaded();
 
 	BOOST_CHECK_EQUAL(userModel.notebookSelection, L"notebook");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes[0]->GetTitle(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes[1]->GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes[0].GetTitle(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes[1].GetTitle(), L"note-1");
 }
 
 BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
@@ -98,12 +101,13 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
 		, userModel
 		);
 
-	vector<MockNotebook> notebooks(2);
+	ptr_vector<MockNotebook> notebooks(2);
+	notebooks.push_back(new MockNotebook());
 	notebooks[0].name = L"notebook-0";
+	notebooks.push_back(new MockNotebook());
 	notebooks[1].name = L"notebook-1";
+	userModel.notebooks.transfer(userModel.notebooks.end(), notebooks);
 
-	foreach (MockNotebook & notebook, notebooks)
-		userModel.notebooks.push_back(&notebook);
 	userModel.Loaded();
 
 	BOOST_REQUIRE_EQUAL(noteListView.notebooks.size(), 2);

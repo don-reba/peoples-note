@@ -6,6 +6,8 @@ class ICredentialsView : public ISignalProvider
 {
 public:
 
+	virtual ~ICredentialsView() {}
+
 	virtual void ConnectSignIn(slot_type OnSignIn) = 0;
 
 	virtual std::wstring GetUsername() const = 0;

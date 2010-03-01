@@ -11,13 +11,13 @@ private:
 
 public:
 
-	std::vector<INote*> notes;
+	boost::ptr_vector<INote> notes;
 
 	void Reset();
 
 	virtual void ConnectChanged(slot_type OnReset);
 
-	virtual std::vector<INote*> GetNotes();
+	virtual boost::ptr_vector<INote> & GetNotes();
 
-	virtual void SetNotes(std::vector<INote*> notes);
+	virtual void SetNotes(boost::ptr_vector<INote> & notes);
 };

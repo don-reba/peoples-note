@@ -23,9 +23,9 @@ NoteListPresenter::NoteListPresenter
 
 void NoteListPresenter::OnNoteListChanged()
 {
-	vector<INote*> notes = noteListModel.GetNotes();
+	const ptr_vector<INote> & notes = noteListModel.GetNotes();
 	noteListView.ClearNotes();
-	foreach (const INote * note, notes)
+	foreach (const INote & note, notes)
 		noteListView.AddNote(ConvertToHtml(note));
 	noteListView.UpdateNotes();
 }
@@ -38,20 +38,20 @@ void NoteListPresenter::OnUserLoaded()
 		noteListView.AddNotebook(notebook.GetName());
 	noteListView.UpdateNotebooks();
 
-	vector<INote*> notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
+	ptr_vector<INote> & notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
 	noteListModel.SetNotes(notes);
 }
 
-wstring NoteListPresenter::ConvertToHtml(const INote * note)
+wstring NoteListPresenter::ConvertToHtml(const INote & note)
 {
 	wostringstream stream;
 	stream << L"<table><tr><td rowspan=\"3\">";
 	stream << L"<div id=\"thumb\" /></td><td>";
-	stream << FormatTitle(note->GetTitle());
+	stream << FormatTitle(note.GetTitle());
 	stream << L"</td></tr><tr><td>";
-	stream << FormatTags(note->GetTags());
+	stream << FormatTags(note.GetTags());
 	stream << L"</td></tr><tr><td>";
-	stream << FormatDate(note->GetCreateDate());
+	stream << FormatDate(note.GetCreateDate());
 	stream << L"</td></tr></table>";
 	return stream.str();
 }

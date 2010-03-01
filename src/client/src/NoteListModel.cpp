@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "NoteListModel.h"
 
+#include "INote.h"
+
+using namespace boost;
 using namespace std;
 
 void NoteListModel::ConnectChanged(slot_type OnReset)
@@ -8,13 +11,13 @@ void NoteListModel::ConnectChanged(slot_type OnReset)
 	SignalChanged.connect(OnReset);
 }
 
-vector<INote*> NoteListModel::GetNotes()
+ptr_vector<INote> & NoteListModel::GetNotes()
 {
 	return notes;
 }
 
-void NoteListModel::SetNotes(vector<INote*> notes)
+void NoteListModel::SetNotes(ptr_vector<INote> & notes)
 {
-	this->notes = notes;
+	//this->notes = notes.release();
 	SignalChanged();
 }

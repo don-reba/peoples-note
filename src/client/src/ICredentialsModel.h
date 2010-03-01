@@ -4,6 +4,8 @@ class ICredentialsModel
 {
 public:
 
+	virtual ~ICredentialsModel() {}
+
 	virtual ICredentialsModel & operator =
 		( const ICredentialsModel & credentials
 		) = 0;

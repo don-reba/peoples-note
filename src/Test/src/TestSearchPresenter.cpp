@@ -15,11 +15,12 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 	MockNoteListView  noteListView;
 	SearchPresenter   searchPresenter(noteListModel, userModel, noteListView);
 
-	vector<MockNote> notes(2);
+	ptr_vector<MockNote> notes(2);
+	notes.push_back(new MockNote());
 	notes.at(0).title = L"note-0";
+	notes.push_back(new MockNote());
 	notes.at(1).title = L"note-1";
-	foreach (MockNote & note, notes)
-		userModel.notes.push_back(&note);
+	userModel.notes.transfer(userModel.notes.end(), notes);
 
 	noteListView.searchString = L"search";
 	noteListView.SignalSearch();
@@ -27,8 +28,8 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 	BOOST_CHECK_EQUAL(userModel.searchSelection, L"search");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0)->GetTitle(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1)->GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
 }
 
 BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
@@ -40,11 +41,12 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
 
 	userModel.lastUsedNotebook.name = L"notebook";
 
-	vector<MockNote> notes(2);
+	ptr_vector<MockNote> notes(2);
+	notes.push_back(new MockNote());
 	notes.at(0).title = L"note-0";
+	notes.push_back(new MockNote());
 	notes.at(1).title = L"note-1";
-	foreach (MockNote & note, notes)
-		userModel.notes.push_back(&note);
+	userModel.notes.transfer(userModel.notes.end(), notes);
 
 	noteListView.searchString = L"";
 	noteListView.SignalSearch();
@@ -52,6 +54,6 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
 	BOOST_CHECK_EQUAL(userModel.notebookSelection, L"notebook");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0)->GetTitle(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1)->GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "INoteListModel.h"
+#include "INote.h"
 
 class NoteListModel : public INoteListModel
 {
 private:
 
-	std::vector<INote*> notes;
+	boost::ptr_vector<INote> notes;
 
 	signal SignalChanged;
 
@@ -14,7 +15,7 @@ public:
 
 	virtual void ConnectChanged(slot_type OnReset);
 
-	virtual std::vector<INote*> GetNotes();
+	virtual boost::ptr_vector<INote> & GetNotes(); 
 
-	virtual void SetNotes(std::vector<INote*> notes);
+	virtual void SetNotes(boost::ptr_vector<INote> & notes);
 };

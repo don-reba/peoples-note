@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include "foreach.h"
+
 #include <string>
 #include <vector>
 
@@ -18,10 +20,9 @@
 
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
-
-#include "foreach.h"
 
 namespace std
 {

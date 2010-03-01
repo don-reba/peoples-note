@@ -1,7 +1,8 @@
 #pragma once
 
 #include "IDataStore.h"
-#include "Notebook.h"
+#include "INotebook.h"
+#include "INote.h"
 #include "SQLite/sqlite3.h"
 
 class DataStore : public IDataStore
@@ -16,6 +17,8 @@ private:
 	boost::shared_ptr<INotebook> defaultNotebook;
 
 	boost::ptr_vector<INotebook> notebooks;
+
+	boost::ptr_vector<INote> notes;
 
 // interface
 
@@ -46,6 +49,10 @@ public:
 	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
 	virtual int GetNotebookCount();
+
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook);
+
+	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
 
 // utility functions
 

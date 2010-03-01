@@ -12,6 +12,8 @@ class IRegistryKey
 {
 public:
 
+	virtual ~IRegistryKey() {}
+
 	virtual std::wstring GetString
 		( std::wstring value
 		, std::wstring defaultData

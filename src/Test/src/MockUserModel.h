@@ -15,8 +15,8 @@ public:
 
 	MockCredentialsModel    credentialsModel;
 	MockNotebook            lastUsedNotebook;
-	std::vector<INotebook*> notebooks;
-	std::vector<INote*>     notes;
+	boost::ptr_vector<INotebook> notebooks;
+	boost::ptr_vector<INote>     notes;
 
 	bool isDefault;
 	bool isLoaded;
@@ -38,11 +38,11 @@ public:
 
 	virtual INotebook & GetLastUsedNotebook();
 
-	virtual std::vector<INotebook*> GetNotebooks() const;
+	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
-	virtual std::vector<INote*> GetNotesByNotebook(INotebook & notebook) const;
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook);
 
-	virtual std::vector<INote*> GetNotesBySearch(std::wstring search) const;
+	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
 
 	virtual void Load();
 };

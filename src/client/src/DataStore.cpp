@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "DataStore.h"
 
-#include "INotebook.h"
+#include "Note.h"
+#include "Notebook.h"
 #include "Tools.h"
 
 #include <map>
@@ -135,6 +136,18 @@ int DataStore::GetNotebookCount()
 	int count = GetColumnInt(statement, 0);
 	CloseStatement(statement);
 	return count;
+}
+
+ptr_vector<INote> & DataStore::GetNotesByNotebook(INotebook & notebook)
+{
+	// TODO: implement
+	return notes;
+}
+
+ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
+{
+	// TODO: implement
+	return notes;
 }
 
 //------------------

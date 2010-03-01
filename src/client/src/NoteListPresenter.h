@@ -31,7 +31,7 @@ private:
 
 private:
 
-	static std::wstring ConvertToHtml(const INote * note);
+	static std::wstring ConvertToHtml(const INote & note);
 
 	static std::wstring FormatTitle(const std::wstring & title);
 

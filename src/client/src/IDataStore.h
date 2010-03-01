@@ -1,10 +1,13 @@
 #pragma once
 
+class INote;
 class INotebook;
 
 class IDataStore
 {
 public:
+
+	virtual ~IDataStore() {}
 
 	virtual void LoadOrCreate(std::wstring name) = 0;
 
@@ -17,4 +20,8 @@ public:
 	virtual boost::ptr_vector<INotebook> & GetNotebooks() = 0;
 
 	virtual int GetNotebookCount() = 0;
+
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook) = 0;
+
+	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search) = 0;
 };

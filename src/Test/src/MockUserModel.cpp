@@ -35,18 +35,18 @@ INotebook & MockUserModel::GetLastUsedNotebook()
 	return lastUsedNotebook;
 }
 
-vector<INotebook*> MockUserModel::GetNotebooks() const
+ptr_vector<INotebook> & MockUserModel::GetNotebooks()
 {
 	return notebooks;
 }
 
-vector<INote*> MockUserModel::GetNotesByNotebook(INotebook & notebook) const
+ptr_vector<INote> & MockUserModel::GetNotesByNotebook(INotebook & notebook)
 {
 	notebookSelection = notebook.GetName();
 	return notes;
 }
 
-vector<INote*> MockUserModel::GetNotesBySearch(wstring search) const
+ptr_vector<INote> & MockUserModel::GetNotesBySearch(wstring search)
 {
 	searchSelection = search;
 	return notes;
