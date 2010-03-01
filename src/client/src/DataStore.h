@@ -31,6 +31,8 @@ public:
 
 	std::wstring GetUser();
 
+	void MakeNotebookLastUsed(INotebook & notebook);
+
 // IDataStore implementation
 
 	virtual void LoadOrCreate(std::wstring name);
@@ -58,4 +60,24 @@ private:
 	void Initialize(std::wstring name);
 
 	std::wstring GetProperty(std::wstring name);
+
+// SQLite wrappers
+
+private:
+
+	sqlite3_stmt * PrepareStatement(const char * sql);
+
+	void BindText
+		( sqlite3_stmt * statement
+		, std::wstring   text
+		, int            index
+		);
+
+	bool ExecuteStatement(sqlite3_stmt * statement);
+
+	int GetColumnInt(sqlite3_stmt * statement, int index);
+
+	std::wstring GetColumnText(sqlite3_stmt * statement, int index);
+
+	void CloseStatement(sqlite3_stmt * statement);
 };

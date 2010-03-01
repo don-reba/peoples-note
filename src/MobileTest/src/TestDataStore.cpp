@@ -27,7 +27,7 @@ AUTO_TEST_CASE(TestDataStoreLoad)
 
 	TEST_CHECK_EQUAL(store.GetVersion(),       0);
 	TEST_CHECK_EQUAL(store.GetUser(),          name);
-	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
+	TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
 }
 
 AUTO_TEST_CASE(TestDataStoreAddNotebook)
@@ -44,7 +44,7 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 	notebook.name = L"test-notebook";
 	store.AddNotebook(notebook);
 
-	TEST_CHECK_EQUAL(store.GetNotebookCount(), 2);
+	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
 
 	try
 	{
@@ -55,7 +55,7 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 		TEST_CHECK_EQUAL(string(e.what()), "column name is not unique");
 	}
 
-	TEST_CHECK_EQUAL(store.GetNotebookCount(), 2);
+	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
 }
 
 AUTO_TEST_CASE(TestDataStoreDefaultNotebook)
@@ -71,9 +71,6 @@ AUTO_TEST_CASE(TestDataStoreDefaultNotebook)
 	MockNotebook notebook;
 	notebook.name = L"test-notebook";
 	store.AddNotebook(notebook);
-
-	TEST_CHECK_EQUAL(store.GetDefaultNotebook().GetName(), L"Notes");
-
 	store.MakeNotebookDefault(notebook);
 
 	TEST_CHECK_EQUAL(store.GetDefaultNotebook().GetName(), L"test-notebook");
@@ -89,11 +86,15 @@ AUTO_TEST_CASE(TestDataStoreLastUsedNotebook)
 	::DeleteFile(file);
 	store.LoadOrCreate(name);
 
-	MockNotebook notebook;
-	notebook.name = L"test-notebook";
-	store.AddNotebook(notebook);
+	vector<MockNotebook> notebooks(3);
+	notebooks.at(0).name = L"notebook0";
+	notebooks.at(1).name = L"notebook1";
+	notebooks.at(2).name = L"notebook2";
+	foreach (MockNotebook & notebook, notebooks)
+		store.AddNotebook(notebook);
+	store.MakeNotebookLastUsed(notebooks.at(1));
 
-	TEST_CHECK_EQUAL(store.GetLastUsedNotebook().GetName(), L"Notes");
+	TEST_CHECK_EQUAL(store.GetLastUsedNotebook().GetName(), L"notebook1");
 }
 
 AUTO_TEST_CASE(TestDataStoreNotebooks)
@@ -106,12 +107,16 @@ AUTO_TEST_CASE(TestDataStoreNotebooks)
 	::DeleteFile(file);
 	store.LoadOrCreate(name);
 
-	MockNotebook notebook;
-	notebook.name = L"Test";
-	store.AddNotebook(notebook);
+	vector<MockNotebook> mockNotebooks(3);
+	mockNotebooks.at(0).name = L"notebook1";
+	mockNotebooks.at(1).name = L"notebook0";
+	mockNotebooks.at(2).name = L"notebook2";
+	foreach (MockNotebook & notebook, mockNotebooks)
+		store.AddNotebook(notebook);
 
 	ptr_vector<INotebook> & notebooks = store.GetNotebooks();
-	TEST_CHECK_EQUAL(notebooks.size(), 2);
-	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"Notes");
-	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"Test");
+	TEST_CHECK_EQUAL(notebooks.size(), 3);
+	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"notebook0");
+	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"notebook1");
+	TEST_CHECK_EQUAL(notebooks.at(2).GetName(), L"notebook2");
 }
