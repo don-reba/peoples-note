@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "DataStore.h"
+#include "MockNote.h"
 #include "MockNotebook.h"
 #include "Test.h"
 
@@ -12,22 +13,37 @@ bool FileExists(const wchar_t * path)
 	return ::GetFileAttributes(path) != 0xFFFFFFFF;
 }
 
-AUTO_TEST_CASE(TestDataStoreLoad)
+AUTO_TEST_CASE(TestDataStoreAddNote)
 {
 	const wchar_t * name   = L"test";
 	const wchar_t * folder = L"Program Files\\MobileTest";
 	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
 
 	DataStore store(folder);
-
 	::DeleteFile(file);
-	TEST_CHECK(!FileExists(file));
 	store.LoadOrCreate(name);
-	TEST_CHECK(FileExists(file));
 
-	TEST_CHECK_EQUAL(store.GetVersion(),       0);
-	TEST_CHECK_EQUAL(store.GetUser(),          name);
-	TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
+	MockNotebook notebook(L"test-notebook");
+	store.AddNotebook(notebook);
+
+	store.AddNote
+		( MockNote(Guid(), L"note-0", MockTimestamp())
+		, notebook
+		);
+
+	MockNotebook fakeNotebook(L"fake-notebook");
+
+	try
+	{
+		store.AddNote
+			( MockNote(Guid(), L"note-1", MockTimestamp())
+			, fakeNotebook
+			);
+	}
+	catch (const std::exception & e)
+	{
+		TEST_CHECK_EQUAL(string(e.what()), "foreign key constraint failed");
+	}
 }
 
 AUTO_TEST_CASE(TestDataStoreAddNotebook)
@@ -40,8 +56,7 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 	::DeleteFile(file);
 	store.LoadOrCreate(name);
 
-	MockNotebook notebook;
-	notebook.name = L"test-notebook";
+	MockNotebook notebook(L"test-notebook");
 	store.AddNotebook(notebook);
 
 	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
@@ -68,8 +83,7 @@ AUTO_TEST_CASE(TestDataStoreDefaultNotebook)
 	::DeleteFile(file);
 	store.LoadOrCreate(name);
 
-	MockNotebook notebook;
-	notebook.name = L"test-notebook";
+	MockNotebook notebook(L"test-notebook");
 	store.AddNotebook(notebook);
 	store.MakeNotebookDefault(notebook);
 
@@ -95,6 +109,24 @@ AUTO_TEST_CASE(TestDataStoreLastUsedNotebook)
 	store.MakeNotebookLastUsed(notebooks.at(1));
 
 	TEST_CHECK_EQUAL(store.GetLastUsedNotebook().GetName(), L"notebook1");
+}
+
+AUTO_TEST_CASE(TestDataStoreLoad)
+{
+	const wchar_t * name   = L"test";
+	const wchar_t * folder = L"Program Files\\MobileTest";
+	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
+
+	DataStore store(folder);
+
+	::DeleteFile(file);
+	TEST_CHECK(!FileExists(file));
+	store.LoadOrCreate(name);
+	TEST_CHECK(FileExists(file));
+
+	TEST_CHECK_EQUAL(store.GetVersion(),       0);
+	TEST_CHECK_EQUAL(store.GetUser(),          name);
+	TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
 }
 
 AUTO_TEST_CASE(TestDataStoreNotebooks)

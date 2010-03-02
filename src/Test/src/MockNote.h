@@ -16,6 +16,14 @@ public:
 
 public:
 
+	MockNote();
+
+	MockNote
+		( Guid          guid
+		, std::wstring  title
+		, MockTimestamp createDate
+		);
+
 	virtual Guid GetGuid() const;
 
 	virtual std::wstring GetTitle() const;

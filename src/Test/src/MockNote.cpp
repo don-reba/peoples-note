@@ -4,6 +4,21 @@
 using namespace boost;
 using namespace std;
 
+MockNote::MockNote()
+{
+}
+
+MockNote::MockNote
+	( Guid          guid
+	, std::wstring  title
+	, MockTimestamp createDate
+	)
+	: guid       (guid)
+	, title      (title)
+	, createDate (createDate)
+{
+}
+
 Guid MockNote::GetGuid() const
 {
 	return guid;

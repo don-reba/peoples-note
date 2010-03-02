@@ -494,4 +494,12 @@ sync update
 		but how, if it's GUID is old
 		need a map from old GUIDs to new
 	if a note is being edited
-		
+		TODO
+mobile testing exceptions
+	are often not caught
+		TODO
+	also need to test for exceptions
+		TODO
+mobile testing fixtures
+	setting up the database every time is taking up space
+	TODO

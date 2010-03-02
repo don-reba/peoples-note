@@ -37,7 +37,7 @@ wstring DataStore::GetUser()
 	return GetProperty(L"user");
 }
 
-void DataStore::MakeNotebookLastUsed(INotebook & notebook)
+void DataStore::MakeNotebookLastUsed(const INotebook & notebook)
 {
 	// remove old
 	{
@@ -69,6 +69,24 @@ INotebook & DataStore::GetDefaultNotebook()
 	return *defaultNotebook;
 }
 
+void DataStore::AddNote(const INote & note, const INotebook & notebook)
+{
+	{
+		sqlite3_stmt * statement = PrepareStatement("INSERT INTO NoteContents(title) VALUES (?)");
+		BindText(statement, note.GetTitle(), 1);
+		ExecuteStatement(statement);
+		CloseStatement(statement);
+	}
+	{
+		sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notes(guid, content, notebook) VALUES (?, ?, ?)");
+		BindText (statement, note.GetGuid(),       1);
+		BindInt  (statement, GetLastInsertRowid(), 2);
+		BindText (statement, notebook.GetGuid(),   3);
+		ExecuteStatement(statement);
+		CloseStatement(statement);
+	}
+}
+
 //--------------------------
 // IDataStore implementation
 //--------------------------
@@ -77,6 +95,7 @@ void DataStore::LoadOrCreate(wstring name)
 {
 	path = CreatePathFromName(name);
 	Connect();
+	SetPragma("PRAGMA foreign_keys = ON");
 	Initialize(name); // TODO: change
 }
 
@@ -180,6 +199,13 @@ void DataStore::Connect()
 	}
 }
 
+wstring DataStore::CreatePathFromName(wstring name)
+{
+	wstringstream stream;
+	stream << folder << L'\\' << name << L".db";
+	return stream.str();
+}
+
 void DataStore::Disconnect()
 {
 	if (db == NULL)
@@ -190,44 +216,40 @@ void DataStore::Disconnect()
 		throw std::exception(sqlite3_errmsg(db));
 }
 
-wstring DataStore::CreatePathFromName(wstring name)
-{
-	wstringstream stream;
-	stream << folder << L'\\' << name << L".db";
-	return stream.str();
-}
-
 void DataStore::Initialize(wstring name)
 {
-	int result;
-	const char * sql;
-	char * message = NULL;
+	CreateTable
+		( "CREATE TABLE Properties"
+			"( key PRIMARY KEY"
+			", value NOT NULL"
+			")"
+		);
+	AddProperty(L"version", L"0");
+	AddProperty(L"user",    name);
 
-	// properties table
-	sql = "CREATE TABLE Properties(key PRIMARY KEY, value NOT NULL)";
-	result = sqlite3_exec(db, sql, NULL, NULL, &message);
-	if (SQLITE_OK != result)
-		throw std::exception(message); // HACK: memory leak
+	CreateTable
+		( "CREATE TABLE Notebooks"
+			"( guid PRIMARY KEY"
+			", name"
+			", isDefault"
+			", isLastUsed"
+			")"
+		);
 
-	// properties
-	typedef pair<string, string> Property;
-	vector<Property> properties;
-	properties.push_back(make_pair("version", "0"));
-	properties.push_back(make_pair("user",    ConvertToAnsi(name)));
-	foreach (const Property & p, properties)
-	{
-		stringstream stream;
-		stream << "INSERT INTO Properties VALUES ('" << p.first << "', '" << p.second << "')";
-		result = sqlite3_exec(db, stream.str().c_str(), NULL, NULL, &message);
-		if (SQLITE_OK != result)
-			throw std::exception(message); // HACK: memory leak
-	}
+	CreateTable
+		( "CREATE VIRTUAL TABLE NoteContents USING fts3"
+			"( title"
+			", body"
+			")"
+		);
 
-	// notebooks table
-	sql = "CREATE TABLE Notebooks(guid PRIMARY KEY, name, isDefault, isLastUsed)";
-	result = sqlite3_exec(db, sql, NULL, NULL, &message);
-	if (SQLITE_OK != result)
-		throw std::exception(message); // HACK: memory leak
+	CreateTable
+		( "CREATE TABLE Notes"
+			"( guid PRIMARY KEY"
+			", content REFERENCES NoteContents"
+			", notebook REFERENCES Notebooks"
+			")"
+		);
 }
 
 std::wstring DataStore::GetProperty(std::wstring key)
@@ -246,6 +268,28 @@ std::wstring DataStore::GetProperty(std::wstring key)
 	return value;
 }
 
+void DataStore::CreateTable(const char * sql)
+{
+	sqlite3_stmt * statement = PrepareStatement(sql);
+	ExecuteStatement(statement);
+	CloseStatement(statement);
+}
+
+void DataStore::AddProperty(wstring key, wstring value)
+{
+	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Properties VALUES (?, ?)");
+	BindText(statement, key,   1);
+	BindText(statement, value, 2);
+	ExecuteStatement(statement);
+	CloseStatement(statement);
+}
+void DataStore::SetPragma(const char * sql)
+{
+	sqlite3_stmt * statement = PrepareStatement(sql);
+	ExecuteStatement(statement);
+	CloseStatement(statement);
+}
+
 //----------------
 // SQLite wrappers
 //----------------
@@ -257,6 +301,13 @@ sqlite3_stmt * DataStore::PrepareStatement(const char * sql)
 	if (result != SQLITE_OK)
 		throw std::exception(sqlite3_errmsg(db));
 	return statement;
+}
+
+void DataStore::BindInt(sqlite3_stmt * statement, __int64 n, int index)
+{
+	int result = sqlite3_bind_int64(statement, index, n);
+	if (result != SQLITE_OK)
+		throw std::exception(sqlite3_errmsg(db));
 }
 
 void DataStore::BindText
@@ -320,4 +371,9 @@ void DataStore::CloseStatement(sqlite3_stmt * statement)
 	int result = sqlite3_finalize(statement);
 	if (result != SQLITE_OK)
 		throw std::exception(sqlite3_errmsg(db));
+}
+
+__int64 DataStore::GetLastInsertRowid()
+{
+	return sqlite3_last_insert_rowid(db);
 }

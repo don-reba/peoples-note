@@ -392,7 +392,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Test\src\MockNote.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Test\src\MockNotebook.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Test\src\MockTimestamp.cpp"
 				>
 			</File>
 			<File
@@ -474,7 +482,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Test\src\MockNote.h"
+				>
+			</File>
+			<File
 				RelativePath="..\Test\src\MockNotebook.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Test\src\MockTimestamp.h"
 				>
 			</File>
 			<File
