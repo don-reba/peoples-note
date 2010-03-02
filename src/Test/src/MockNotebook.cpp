@@ -13,7 +13,8 @@ MockNotebook::MockNotebook(wstring name)
 }
 
 MockNotebook::MockNotebook(const INotebook & notebook)
-	: name (notebook.GetName())
+	: guid (notebook.GetGuid())	
+	, name (notebook.GetName())
 {
 }
 
