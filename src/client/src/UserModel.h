@@ -18,8 +18,6 @@ private:
 
 	signal SignalLoaded;
 
-	Notebook lastUsedNotebook; // temporary
-
 public:
 
 	UserModel(IDataStore & dataStore);

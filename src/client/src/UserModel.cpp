@@ -11,8 +11,7 @@ using namespace boost;
 using namespace std;
 
 UserModel::UserModel(IDataStore & dataStore)
-	: dataStore        (dataStore)
-	, lastUsedNotebook (L"temp")
+	: dataStore (dataStore)
 {
 }
 
@@ -57,7 +56,7 @@ void UserModel::Load()
 	dataStore.LoadOrCreate(credentialsModel.GetUsername());
 	if (dataStore.GetNotebookCount() == 0)
 	{
-		Notebook defaultNotebook(L"Notes");
+		Notebook defaultNotebook(Guid(), L"Notes");
 		dataStore.AddNotebook(defaultNotebook);
 		dataStore.MakeNotebookDefault(defaultNotebook);
 	}

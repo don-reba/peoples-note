@@ -47,8 +47,8 @@ void DataStore::MakeNotebookLastUsed(INotebook & notebook)
 	}
 	// set new
 	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 1 WHERE name = ?");
-		BindText(statement, notebook.GetName(), 1);
+		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 1 WHERE guid = ?");
+		BindText(statement, notebook.GetGuid(), 1);
 		ExecuteStatement(statement);
 		CloseStatement(statement);
 	}
@@ -56,15 +56,16 @@ void DataStore::MakeNotebookLastUsed(INotebook & notebook)
 
 INotebook & DataStore::GetDefaultNotebook()
 {
-	sqlite3_stmt * statement = PrepareStatement("SELECT name FROM Notebooks WHERE isDefault = 1 LIMIT 1");
+	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks WHERE isDefault = 1 LIMIT 1");
 
 	if (ExecuteStatement(statement))
 		throw std::exception("No default notebook.");
-	wstring name(GetColumnText(statement, 0));
+	wstring guid(GetColumnText(statement, 0));
+	wstring name(GetColumnText(statement, 1));
 
 	CloseStatement(statement);
 
-	defaultNotebook = make_shared<Notebook>(name);
+	defaultNotebook = make_shared<Notebook>(guid, name);
 	return *defaultNotebook;
 }
 
@@ -81,8 +82,9 @@ void DataStore::LoadOrCreate(wstring name)
 
 void DataStore::AddNotebook(INotebook & notebook)
 {
-	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notebooks(name, isDefault, isLastUsed) VALUES (?, 0, 0)");
-	BindText(statement, notebook.GetName(), 1);
+	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notebooks(guid, name, isDefault, isLastUsed) VALUES (?, ?, 0, 0)");
+	BindText(statement, notebook.GetGuid(), 1);
+	BindText(statement, notebook.GetName(), 2);
 	ExecuteStatement(statement);
 	CloseStatement(statement); // TODO: handle exception
 }
@@ -97,8 +99,8 @@ void DataStore::MakeNotebookDefault(INotebook & notebook)
 	}
 	// set new
 	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isDefault = 1 WHERE name = ?");
-		BindText(statement, notebook.GetName(), 1);
+		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isDefault = 1 WHERE guid = ?");
+		BindText(statement, notebook.GetGuid(), 1);
 		ExecuteStatement(statement);
 		CloseStatement(statement);
 	}
@@ -106,24 +108,29 @@ void DataStore::MakeNotebookDefault(INotebook & notebook)
 
 INotebook & DataStore::GetLastUsedNotebook()
 {
-	sqlite3_stmt * statement = PrepareStatement("SELECT name FROM Notebooks WHERE isLastUsed = 1 LIMIT 1");
+	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks WHERE isLastUsed = 1 LIMIT 1");
 
 	if (ExecuteStatement(statement))
 		throw std::exception("No last used notebook.");
-	wstring name(GetColumnText(statement, 0));
+	wstring guid(GetColumnText(statement, 0));
+	wstring name(GetColumnText(statement, 1));
 
 	CloseStatement(statement);
 
-	defaultNotebook = make_shared<Notebook>(name);
+	defaultNotebook = make_shared<Notebook>(guid, name);
 	return *defaultNotebook;
 }
 
 ptr_vector<INotebook> & DataStore::GetNotebooks()
 {
-	sqlite3_stmt * statement = PrepareStatement("SELECT name FROM Notebooks ORDER BY name");
+	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks ORDER BY name");
 	notebooks.clear();
 	while (!ExecuteStatement(statement))
-		notebooks.push_back(new Notebook(GetColumnText(statement, 0)));
+	{
+		wstring guid(GetColumnText(statement, 0));
+		wstring name(GetColumnText(statement, 1));
+		notebooks.push_back(new Notebook(guid, name));
+	}
 
 	CloseStatement(statement);
 
@@ -217,7 +224,7 @@ void DataStore::Initialize(wstring name)
 	}
 
 	// notebooks table
-	sql = "CREATE TABLE Notebooks(name PRIMARY KEY, isDefault, isLastUsed)";
+	sql = "CREATE TABLE Notebooks(guid PRIMARY KEY, name, isDefault, isLastUsed)";
 	result = sqlite3_exec(db, sql, NULL, NULL, &message);
 	if (SQLITE_OK != result)
 		throw std::exception(message); // HACK: memory leak
@@ -254,6 +261,23 @@ sqlite3_stmt * DataStore::PrepareStatement(const char * sql)
 
 void DataStore::BindText
 	( sqlite3_stmt * statement
+	, std::string    text
+	, int            index
+	)
+{
+	int result = sqlite3_bind_text
+		( statement
+		, index
+		, text.c_str()
+		, text.size()
+		, SQLITE_TRANSIENT
+		);
+	if (result != SQLITE_OK)
+		throw std::exception(sqlite3_errmsg(db));
+}
+
+void DataStore::BindText
+	( sqlite3_stmt * statement
 	, std::wstring   text
 	, int            index
 	)
@@ -283,12 +307,12 @@ int DataStore::GetColumnInt(sqlite3_stmt * statement, int index)
 	int result = sqlite3_step(statement);
 	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
 		throw std::exception(sqlite3_errmsg(db));
-	return sqlite3_column_int(statement, 0);
+	return sqlite3_column_int(statement, index);
 }
 
 wstring DataStore::GetColumnText(sqlite3_stmt * statement, int index)
 {
-	return ConvertToUnicode(sqlite3_column_text(statement, 0));
+	return ConvertToUnicode(sqlite3_column_text(statement, index));
 }
 
 void DataStore::CloseStatement(sqlite3_stmt * statement)

@@ -384,6 +384,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Guid.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MobileTest.cpp"
 				>
 			</File>

@@ -1,14 +1,23 @@
 #include "stdafx.h"
 #include "Notebook.h"
 
-using namespace std;
+#include "Tools.h"
 
-Notebook::Notebook(wstring name)
-	: name (name)
+using namespace std;
+using namespace Tools;
+
+Notebook::Notebook(Guid guid, wstring name)
+	: guid (guid)
+	, name (name)
 {
 }
 
 wstring Notebook::GetName() const
 {
 	return name;
+}
+
+Guid Notebook::GetGuid() const
+{
+	return guid;
 }

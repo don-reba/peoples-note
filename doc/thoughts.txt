@@ -473,3 +473,25 @@ identity
 		but also have unique names
 	unsynced notebooks have no GUID
 	therefore, names are the real identifier
+	what about notes?
+	they don't have unique names
+	when I want to open a note, a have to refer to it by some id
+		by GUID
+	therefore, notes need to have GUIDs
+	maybe notebooks should have GUIDs too, then
+	they can be assigned GUIDs automatically between syncs
+	these would be replaced by server's GUIDs after sync
+		views would have to be updated after sync completes
+	also, the DOM elements need a GUID attribute
+sync update
+	GUIDs change after sync
+		and possibly other fields
+	if the note list is being displayed
+		the query should be repeated
+	if a note is being displayed
+		it should be fetched from the database again
+		deleted if absent
+		but how, if it's GUID is old
+		need a map from old GUIDs to new
+	if a note is being edited
+		

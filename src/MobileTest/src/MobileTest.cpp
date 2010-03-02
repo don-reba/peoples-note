@@ -29,6 +29,7 @@ int WINAPI WinMain
 	TEST_SUITE test(resultsFile);
 	foreach (TEST_BASE * test_case, TEST_LIST)
 	{
+		test.SetTest(test_case->name);
 		try
 		{
 			test_case->Run(test);
@@ -42,7 +43,7 @@ int WINAPI WinMain
 			test.HandleException();
 		}
 	}
-	test.Report();
+	test.PrintReport();
 
 	OpenFile(resultsFileName);
 

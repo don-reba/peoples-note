@@ -76,6 +76,12 @@ private:
 
 	void BindText
 		( sqlite3_stmt * statement
+		, std::string    text
+		, int            index
+		);
+
+	void BindText
+		( sqlite3_stmt * statement
 		, std::wstring   text
 		, int            index
 		);

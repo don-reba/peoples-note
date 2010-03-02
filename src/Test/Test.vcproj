@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Guid.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\LastUserModel.cpp"
 				>
 			</File>

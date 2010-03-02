@@ -52,7 +52,7 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 	}
 	catch (const std::exception & e)
 	{
-		TEST_CHECK_EQUAL(string(e.what()), "column name is not unique");
+		TEST_CHECK_EQUAL(string(e.what()), "column guid is not unique");
 	}
 
 	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
@@ -86,10 +86,10 @@ AUTO_TEST_CASE(TestDataStoreLastUsedNotebook)
 	::DeleteFile(file);
 	store.LoadOrCreate(name);
 
-	vector<MockNotebook> notebooks(3);
-	notebooks.at(0).name = L"notebook0";
-	notebooks.at(1).name = L"notebook1";
-	notebooks.at(2).name = L"notebook2";
+	vector<MockNotebook> notebooks;
+	notebooks.push_back(MockNotebook(L"notebook0"));
+	notebooks.push_back(MockNotebook(L"notebook1"));
+	notebooks.push_back(MockNotebook(L"notebook2"));
 	foreach (MockNotebook & notebook, notebooks)
 		store.AddNotebook(notebook);
 	store.MakeNotebookLastUsed(notebooks.at(1));
@@ -107,10 +107,10 @@ AUTO_TEST_CASE(TestDataStoreNotebooks)
 	::DeleteFile(file);
 	store.LoadOrCreate(name);
 
-	vector<MockNotebook> mockNotebooks(3);
-	mockNotebooks.at(0).name = L"notebook1";
-	mockNotebooks.at(1).name = L"notebook0";
-	mockNotebooks.at(2).name = L"notebook2";
+	vector<MockNotebook> mockNotebooks;
+	mockNotebooks.push_back(MockNotebook(L"notebook1"));
+	mockNotebooks.push_back(MockNotebook(L"notebook0"));
+	mockNotebooks.push_back(MockNotebook(L"notebook2"));
 	foreach (MockNotebook & notebook, mockNotebooks)
 		store.AddNotebook(notebook);
 

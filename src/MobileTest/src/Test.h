@@ -14,12 +14,15 @@ private:
 	int passCount_;
 	int failCount_;
 	std::wostream & out_;
+	std::wstring currentTestName;
+	bool needHeader;
 
 public:
 
 	TEST_SUITE(std::wostream & out)
 		: passCount_ (0)
 		, failCount_ (0)
+		, needHeader (false)
 		, out_       (out)
 	{
 	}
@@ -45,36 +48,55 @@ public:
 			out_ << v1Str << L" != " << v2Str << L" [" << v1 << L" == " << v2 << L"]\n";
 	}
 
+	void Pass()
+	{
+		++passCount_;
+	}
+
 	void Fail()
 	{
+		PrintHeader();
 		++failCount_;
 	}
 
 	void HandleException(const std::exception & e)
 	{
+		PrintHeader();
 		using namespace Tools;
 		out_ << L"exception: " << ConvertToUnicode(e.what()) << L'\n';
 	}
 
 	void HandleException()
 	{
+		PrintHeader();
 		using namespace Tools;
 		out_ << L"exception\n";
 	}
 
-	void Report()
+	void PrintReport()
 	{
 		out_ << passCount_ << L"/" << (failCount_ + passCount_) << L" tests passed\n";
 	}
 
+	void SetTest(const wchar_t * name)
+	{
+		currentTestName = name;
+		needHeader = true;
+	}
+
 private:
+
+	void PrintHeader()
+	{
+		if (!needHeader)
+			return;
+		out_ << currentTestName << L'\n';
+		needHeader = false;
+	}
 
 	bool RecordResult(bool result)
 	{
-		if (result)
-			++passCount_;
-		else
-			++failCount_;
+		result ? Pass() : Fail();
 		return !result;
 	}
 };

@@ -395,6 +395,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Guid.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\HTMLayoutWindow.cpp"
 				>
 			</File>
@@ -530,6 +534,10 @@
 			</File>
 			<File
 				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Guid.h"
 				>
 			</File>
 			<File
