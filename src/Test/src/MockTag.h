@@ -10,5 +10,7 @@ public:
 
 public:
 
+	MockTag(std::wstring name);
+
 	virtual std::wstring GetName() const;
 };

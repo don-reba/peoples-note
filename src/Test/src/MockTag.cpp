@@ -3,6 +3,11 @@
 
 using namespace std;
 
+MockTag::MockTag(wstring name)
+	: name (name)
+{
+}
+
 wstring MockTag::GetName() const
 {
 	return name;

@@ -7,16 +7,19 @@ class Note : public INote
 {
 private:
 
+	Guid         guid;
 	Timestamp    createDate;
 	std::wstring title;
 
-	std::vector<boost::shared_ptr<ITag> > tags;
+	boost::ptr_vector<ITag> tags;
 
 public:
 
+	virtual Guid GetGuid() const;
+
 	virtual std::wstring GetTitle() const;
 
-	virtual std::vector<const ITag*> GetTags() const;
+	virtual const boost::ptr_vector<ITag> & GetTags() const;
 
 	virtual const ITimestamp & GetCreateDate() const;
 };
