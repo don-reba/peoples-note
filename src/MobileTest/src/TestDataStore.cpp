@@ -8,21 +8,30 @@
 using namespace boost;
 using namespace std;
 
+const wchar_t * const storeName   = L"test";
+const wchar_t * const storeFolder = L"Program Files\\MobileTest";
+const wchar_t * const storeFile   = L"Program Files\\MobileTest\\test.db";
+
+struct DataStoreFixture
+{
+
+	DataStore store;
+
+	DataStoreFixture()
+		: store (storeFolder)
+	{
+		::DeleteFile(storeFile);
+		store.LoadOrCreate(storeName);
+	}
+};
+
 bool FileExists(const wchar_t * path)
 {
 	return ::GetFileAttributes(path) != 0xFFFFFFFF;
 }
 
-AUTO_TEST_CASE(TestDataStoreAddNote)
+FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
-
-	DataStore store(folder);
-	::DeleteFile(file);
-	store.LoadOrCreate(name);
-
 	MockNotebook notebook(L"test-notebook");
 	store.AddNotebook(notebook);
 
@@ -46,16 +55,8 @@ AUTO_TEST_CASE(TestDataStoreAddNote)
 	}
 }
 
-AUTO_TEST_CASE(TestDataStoreAddNotebook)
+FIXTURE_TEST_CASE(TestDataStoreAddNotebook, DataStoreFixture)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
-
-	DataStore store(folder);
-	::DeleteFile(file);
-	store.LoadOrCreate(name);
-
 	MockNotebook notebook(L"test-notebook");
 	store.AddNotebook(notebook);
 
@@ -73,16 +74,8 @@ AUTO_TEST_CASE(TestDataStoreAddNotebook)
 	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
 }
 
-AUTO_TEST_CASE(TestDataStoreDefaultNotebook)
+FIXTURE_TEST_CASE(TestDataStoreDefaultNotebook, DataStoreFixture)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
-
-	DataStore store(folder);
-	::DeleteFile(file);
-	store.LoadOrCreate(name);
-
 	MockNotebook notebook(L"test-notebook");
 	store.AddNotebook(notebook);
 	store.MakeNotebookDefault(notebook);
@@ -90,16 +83,8 @@ AUTO_TEST_CASE(TestDataStoreDefaultNotebook)
 	TEST_CHECK_EQUAL(store.GetDefaultNotebook().GetName(), L"test-notebook");
 }
 
-AUTO_TEST_CASE(TestDataStoreLastUsedNotebook)
+FIXTURE_TEST_CASE(TestDataStoreLastUsedNotebook, DataStoreFixture)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
-
-	DataStore store(folder);
-	::DeleteFile(file);
-	store.LoadOrCreate(name);
-
 	vector<MockNotebook> notebooks;
 	notebooks.push_back(MockNotebook(L"notebook0"));
 	notebooks.push_back(MockNotebook(L"notebook1"));
@@ -113,32 +98,20 @@ AUTO_TEST_CASE(TestDataStoreLastUsedNotebook)
 
 AUTO_TEST_CASE(TestDataStoreLoad)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
+	DataStore store(storeFolder);
 
-	DataStore store(folder);
-
-	::DeleteFile(file);
-	TEST_CHECK(!FileExists(file));
-	store.LoadOrCreate(name);
-	TEST_CHECK(FileExists(file));
+	::DeleteFile(storeFile);
+	TEST_CHECK(!FileExists(storeFile));
+	store.LoadOrCreate(storeName);
+	TEST_CHECK(FileExists(storeFile));
 
 	TEST_CHECK_EQUAL(store.GetVersion(),       0);
-	TEST_CHECK_EQUAL(store.GetUser(),          name);
+	TEST_CHECK_EQUAL(store.GetUser(),          storeName);
 	TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
 }
 
-AUTO_TEST_CASE(TestDataStoreNotebooks)
+FIXTURE_TEST_CASE(TestDataStoreNotebooks, DataStoreFixture)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
-
-	DataStore store(folder);
-	::DeleteFile(file);
-	store.LoadOrCreate(name);
-
 	store.AddNotebook(MockNotebook(L"notebook1"));
 	store.AddNotebook(MockNotebook(L"notebook0"));
 	store.AddNotebook(MockNotebook(L"notebook2"));
@@ -150,16 +123,8 @@ AUTO_TEST_CASE(TestDataStoreNotebooks)
 	TEST_CHECK_EQUAL(notebooks.at(2).GetName(), L"notebook2");
 }
 
-AUTO_TEST_CASE(TestDataStoreNotesByNotebook)
+FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
-
-	DataStore store(folder);
-	::DeleteFile(file);
-	store.LoadOrCreate(name);
-
 	vector<MockNotebook> notebooks;
 	notebooks.push_back(MockNotebook(L"notebook-0"));
 	notebooks.push_back(MockNotebook(L"notebook-1"));
@@ -185,16 +150,8 @@ AUTO_TEST_CASE(TestDataStoreNotesByNotebook)
 	TEST_CHECK_EQUAL(notes.at(1).GetTitle(), L"note-2");
 }
 
-AUTO_TEST_CASE(TestDataStoreNotesBySearch)
+FIXTURE_TEST_CASE(TestDataStoreNotesBySearch, DataStoreFixture)
 {
-	const wchar_t * name   = L"test";
-	const wchar_t * folder = L"Program Files\\MobileTest";
-	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
-
-	DataStore store(folder);
-	::DeleteFile(file);
-	store.LoadOrCreate(name);
-
 	MockNotebook notebook(L"notebook");
 	store.AddNotebook(notebook);
 

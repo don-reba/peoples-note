@@ -116,14 +116,26 @@ struct TEST_BASE
 	virtual void Run(TEST_SUITE&) = 0;
 };
 
-#define AUTO_TEST_CASE(test_name)          \
-    struct test_name : TEST_BASE           \
-    {                                      \
-	test_name() { name = L#test_name; }    \
-        void Run(TEST_SUITE&);             \
-    };                                     \
-	static test_name test_name##instance;  \
-    void test_name::Run(TEST_SUITE & TEST) \
+#define FIXTURE_TEST_CASE(test_name, F)              \
+    struct test_name : F                             \
+    {                                                \
+        void Run(TEST_SUITE&);                       \
+    };                                               \
+    struct test_name##_runner : TEST_BASE            \
+    {                                                \
+        test_name##_runner() { name = L#test_name; } \
+        void Run(TEST_SUITE & TEST)                  \
+        {                                            \
+            test_name().Run(TEST);                   \
+        }                                            \
+    };                                               \
+    static test_name##_runner test_name##instance;   \
+    void test_name::Run(TEST_SUITE & TEST)           \
+
+struct EMPTY_FIXTURE {};
+
+#define AUTO_TEST_CASE(test_name)               \
+    FIXTURE_TEST_CASE(test_name, EMPTY_FIXTURE) \
 
 //------
 // Tests
