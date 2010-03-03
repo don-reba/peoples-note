@@ -28,51 +28,51 @@ public:
 
 	~DataStore();
 
-	int GetVersion();
+	void AddNote(const INote & note, const INotebook & notebook);
 
 	INotebook & GetDefaultNotebook();
 
 	std::wstring GetUser();
 
-	void MakeNotebookLastUsed(const INotebook & notebook);
+	int GetVersion();
 
-	void AddNote(const INote & note, const INotebook & notebook);
+	void MakeNotebookLastUsed(const INotebook & notebook);
 
 // IDataStore implementation
 
-	virtual void LoadOrCreate(std::wstring name);
-
 	virtual void AddNotebook(const INotebook & notebook);
-
-	virtual void MakeNotebookDefault(const INotebook & notebook);
 
 	virtual INotebook & GetLastUsedNotebook();
 
-	virtual boost::ptr_vector<INotebook> & GetNotebooks();
-
 	virtual int GetNotebookCount();
+
+	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
 	virtual boost::ptr_vector<INote> & GetNotesByNotebook(const INotebook & notebook);
 
 	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
 
+	virtual void LoadOrCreate(std::wstring name);
+
+	virtual void MakeNotebookDefault(const INotebook & notebook);
+
 // utility functions
 
 private:
 
-	void Connect();
+	void AddProperty(std::wstring key, std::wstring value);
 
-	void Disconnect();
+	void Connect();
 
 	std::wstring CreatePathFromName(std::wstring name);
 
-	void Initialize(std::wstring name);
+	void CreateTable(const char * sql);
+
+	void Disconnect();
 
 	std::wstring GetProperty(std::wstring name);
 
-	void CreateTable(const char * sql);
-
-	void AddProperty(std::wstring key, std::wstring value);
+	void Initialize(std::wstring name);
 
 // SQLite wrappers
 
