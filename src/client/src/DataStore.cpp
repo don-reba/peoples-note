@@ -183,9 +183,16 @@ ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
 void DataStore::LoadOrCreate(wstring name)
 {
 	path = CreatePathFromName(name);
-	Connect();
-	SetPragma("PRAGMA foreign_keys = ON");
-	Initialize(name); // TODO: change
+	if (TryLoad())
+	{
+		if (GetVersion() != 0)
+			throw std::exception("Incorrect database version.");
+	}
+	else
+	{
+		Create();
+		Initialize(name);
+	}
 }
 
 void DataStore::MakeNotebookDefault(const INotebook & notebook)
@@ -218,10 +225,11 @@ void DataStore::AddProperty(wstring key, wstring value)
 	CloseStatement(statement);
 }
 
-void DataStore::Connect()
+void DataStore::Create()
 {
 	assert(db == NULL);
 	vector<unsigned char> utf8Path = ConvertToUtf8(path);
+	assert(!utf8Path.empty());
 	int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
 	int result = sqlite3_open_v2
 		( reinterpret_cast<const char *>(&utf8Path[0])
@@ -235,6 +243,7 @@ void DataStore::Connect()
 		db = NULL;
 		throw std::exception(sqlite3_errmsg(db));
 	}
+	SetPragma("PRAGMA foreign_keys = ON");
 }
 
 wstring DataStore::CreatePathFromName(wstring name)
@@ -315,6 +324,27 @@ void DataStore::Initialize(wstring name)
 		);
 }
 
+bool DataStore::TryLoad()
+{
+	assert(db == NULL);
+	vector<unsigned char> utf8Path = ConvertToUtf8(path);
+	assert(!utf8Path.empty());
+	int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+	int result = sqlite3_open_v2
+		( reinterpret_cast<const char *>(&utf8Path[0])
+		, &db
+		, SQLITE_OPEN_READWRITE
+		, NULL
+		);
+	if (SQLITE_OK != result)
+	{
+		sqlite3_close(db);
+		db = NULL;
+		return false;
+	}
+	return true;
+}
+
 //----------------
 // SQLite wrappers
 //----------------
@@ -359,10 +389,15 @@ void DataStore::BindText
 	)
 {
 	vector<unsigned char> utf8Text = ConvertToUtf8(text);
+	const char * textPointer
+		= utf8Text.empty()
+		? NULL
+		: reinterpret_cast<const char*>(&utf8Text[0])
+		;
 	int result = sqlite3_bind_text
 		( statement
 		, index
-		, reinterpret_cast<const char*>(&utf8Text[0])
+		, textPointer
 		, utf8Text.size()
 		, SQLITE_TRANSIENT
 		);

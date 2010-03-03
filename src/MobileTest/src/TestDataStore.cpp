@@ -104,18 +104,30 @@ FIXTURE_TEST_CASE(TestDataStoreLastUsedNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(store.GetLastUsedNotebook().GetName(), L"notebook1");
 }
 
-AUTO_TEST_CASE(TestDataStoreLoad)
+AUTO_TEST_CASE(TestDataStoreLoadOrCreate)
 {
-	DataStore store(storeFolder);
+	{
+		DataStore store(storeFolder);
 
-	::DeleteFile(storeFile);
-	TEST_CHECK(!FileExists(storeFile));
-	store.LoadOrCreate(storeName);
-	TEST_CHECK(FileExists(storeFile));
+		::DeleteFile(storeFile);
+		TEST_CHECK(!FileExists(storeFile));
+		store.LoadOrCreate(storeName);
+		TEST_CHECK(FileExists(storeFile));
 
-	TEST_CHECK_EQUAL(store.GetVersion(),       0);
-	TEST_CHECK_EQUAL(store.GetUser(),          storeName);
-	TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
+		TEST_CHECK_EQUAL(store.GetVersion(),       0);
+		TEST_CHECK_EQUAL(store.GetUser(),          storeName);
+		TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
+
+		store.AddNotebook(MockNotebook());
+	}
+	{
+		DataStore store(storeFolder);
+		store.LoadOrCreate(storeName);
+
+		TEST_CHECK_EQUAL(store.GetVersion(),       0);
+		TEST_CHECK_EQUAL(store.GetUser(),          storeName);
+		TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
+	}
 }
 
 FIXTURE_TEST_CASE(TestDataStoreNotebooks, DataStoreFixture)

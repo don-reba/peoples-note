@@ -1,6 +1,5 @@
 sign in
 	√ when no default user is available, default to unnamed user
-	when the database for the default user is not available, create a new database named after the user
 	√ when the user signs in, the note list should display the last used notebok
 		√ last used notebook defaults to the default notebook
 	when the program starts without a user, a default user should be created
@@ -57,3 +56,10 @@ storage
 	when a set of notes is needed, their attributes are loaded from the database
 	when a note's contest is needed, it is loaded from the database
 	when a note is added, it is stored in the database
+database
+	when file does not exist, create a new one for the current version
+	when the file exists and has a lesser version, convert it to current version
+	when the file exists and has a greater version, refuse to open it
+	when the file exists and has the correct version, use it
+	when a database for a named user cannot be opened, switch to the default user
+	when a database for the default user cannot be opened, show an error message and quit

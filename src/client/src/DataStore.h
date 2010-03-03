@@ -40,6 +40,8 @@ public:
 
 // IDataStore implementation
 
+public:
+
 	virtual void AddNotebook(const INotebook & notebook);
 
 	virtual INotebook & GetLastUsedNotebook();
@@ -62,7 +64,7 @@ private:
 
 	void AddProperty(std::wstring key, std::wstring value);
 
-	void Connect();
+	void Create();
 
 	std::wstring CreatePathFromName(std::wstring name);
 
@@ -73,6 +75,8 @@ private:
 	std::wstring GetProperty(std::wstring name);
 
 	void Initialize(std::wstring name);
+
+	bool TryLoad();
 
 // SQLite wrappers
 

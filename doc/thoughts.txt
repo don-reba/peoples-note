@@ -502,4 +502,10 @@ mobile testing exceptions
 		TODO
 mobile testing fixtures
 	setting up the database every time is taking up space
+	need two different classes
+		global one to register the test
+		local one to be created with a  fixture
+UTF8 strings
+	vector<unsigned char> is a bad container
+	can't get a pointer when empty
 	TODO
