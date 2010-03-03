@@ -6,6 +6,12 @@ using namespace boost;
 using namespace std;
 using namespace Tools;
 
+Note::Note(Guid guid, wstring title)
+	: guid  (guid)
+	, title (title)
+{
+}
+
 Guid Note::GetGuid() const
 {
 	return guid;

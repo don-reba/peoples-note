@@ -15,6 +15,8 @@ private:
 
 public:
 
+	Note(Guid guid, std::wstring title);
+
 	virtual Guid GetGuid() const;
 
 	virtual std::wstring GetTitle() const;

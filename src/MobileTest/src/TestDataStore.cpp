@@ -139,16 +139,78 @@ AUTO_TEST_CASE(TestDataStoreNotebooks)
 	::DeleteFile(file);
 	store.LoadOrCreate(name);
 
-	vector<MockNotebook> mockNotebooks;
-	mockNotebooks.push_back(MockNotebook(L"notebook1"));
-	mockNotebooks.push_back(MockNotebook(L"notebook0"));
-	mockNotebooks.push_back(MockNotebook(L"notebook2"));
-	foreach (MockNotebook & notebook, mockNotebooks)
-		store.AddNotebook(notebook);
+	store.AddNotebook(MockNotebook(L"notebook1"));
+	store.AddNotebook(MockNotebook(L"notebook0"));
+	store.AddNotebook(MockNotebook(L"notebook2"));
 
 	ptr_vector<INotebook> & notebooks = store.GetNotebooks();
 	TEST_CHECK_EQUAL(notebooks.size(), 3);
 	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"notebook0");
 	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"notebook1");
 	TEST_CHECK_EQUAL(notebooks.at(2).GetName(), L"notebook2");
+}
+
+AUTO_TEST_CASE(TestDataStoreNotesByNotebook)
+{
+	const wchar_t * name   = L"test";
+	const wchar_t * folder = L"Program Files\\MobileTest";
+	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
+
+	DataStore store(folder);
+	::DeleteFile(file);
+	store.LoadOrCreate(name);
+
+	vector<MockNotebook> notebooks;
+	notebooks.push_back(MockNotebook(L"notebook-0"));
+	notebooks.push_back(MockNotebook(L"notebook-1"));
+	foreach (const INotebook & notebook, notebooks)
+		store.AddNotebook(notebook);
+
+	store.AddNote
+		( MockNote(Guid(), L"note-0", MockTimestamp())
+		, notebooks.at(0)
+		);
+	store.AddNote
+		( MockNote(Guid(), L"note-1", MockTimestamp())
+		, notebooks.at(1)
+		);
+	store.AddNote
+		( MockNote(Guid(), L"note-2", MockTimestamp())
+		, notebooks.at(0)
+		);
+
+	ptr_vector<INote> & notes = store.GetNotesByNotebook(notebooks.at(0));
+	TEST_CHECK_EQUAL(notes.size(), 2);
+	TEST_CHECK_EQUAL(notes.at(0).GetTitle(), L"note-0");
+	TEST_CHECK_EQUAL(notes.at(1).GetTitle(), L"note-2");
+}
+
+AUTO_TEST_CASE(TestDataStoreNotesBySearch)
+{
+	const wchar_t * name   = L"test";
+	const wchar_t * folder = L"Program Files\\MobileTest";
+	const wchar_t * file   = L"Program Files\\MobileTest\\test.db";
+
+	DataStore store(folder);
+	::DeleteFile(file);
+	store.LoadOrCreate(name);
+
+	MockNotebook notebook(L"notebook");
+	store.AddNotebook(notebook);
+
+	store.AddNote
+		( MockNote(Guid(), L"useful software", MockTimestamp())
+		, notebook
+		);
+	store.AddNote
+		( MockNote(Guid(), L"software use", MockTimestamp())
+		, notebook
+		);
+
+	ptr_vector<INote> & notes0 = store.GetNotesBySearch(L"software");
+	TEST_CHECK_EQUAL(notes0.size(), 2);
+
+	ptr_vector<INote> & notes1 = store.GetNotesBySearch(L"use");
+	TEST_CHECK_EQUAL(notes1.size(), 1);
+	TEST_CHECK_EQUAL(notes1.at(0).GetTitle(), L"software use");
 }

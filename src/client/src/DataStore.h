@@ -42,9 +42,9 @@ public:
 
 	virtual void LoadOrCreate(std::wstring name);
 
-	virtual void AddNotebook(INotebook & notebook);
+	virtual void AddNotebook(const INotebook & notebook);
 
-	virtual void MakeNotebookDefault(INotebook & notebook);
+	virtual void MakeNotebookDefault(const INotebook & notebook);
 
 	virtual INotebook & GetLastUsedNotebook();
 
@@ -52,7 +52,7 @@ public:
 
 	virtual int GetNotebookCount();
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook);
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook(const INotebook & notebook);
 
 	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
 

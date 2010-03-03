@@ -404,6 +404,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Note.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Notebook.cpp"
 				>
 			</File>
@@ -464,6 +468,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Timestamp.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Tools.cpp"
 				>
 			</File>
@@ -494,15 +502,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Note.h"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Notebook.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
@@ -515,6 +527,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Test.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\Timestamp.h"
 				>
 			</File>
 			<File

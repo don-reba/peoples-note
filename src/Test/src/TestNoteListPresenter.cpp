@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 	BOOST_REQUIRE_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[0]
-		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>Note</td></tr><tr><td>tag-1, tag-2</td></tr><tr><td>2010-02-04 15:20</td></tr></table>"
+		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\" /></td><td>Note</td></tr><tr><td>tag-0, tag-1</td></tr><tr><td>2010-02-04 15:20</td></tr></table>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[1]

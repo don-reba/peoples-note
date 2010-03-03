@@ -99,7 +99,7 @@ void DataStore::LoadOrCreate(wstring name)
 	Initialize(name); // TODO: change
 }
 
-void DataStore::AddNotebook(INotebook & notebook)
+void DataStore::AddNotebook(const INotebook & notebook)
 {
 	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notebooks(guid, name, isDefault, isLastUsed) VALUES (?, ?, 0, 0)");
 	BindText(statement, notebook.GetGuid(), 1);
@@ -108,7 +108,7 @@ void DataStore::AddNotebook(INotebook & notebook)
 	CloseStatement(statement); // TODO: handle exception
 }
 
-void DataStore::MakeNotebookDefault(INotebook & notebook)
+void DataStore::MakeNotebookDefault(const INotebook & notebook)
 {
 	// remove old
 	{
@@ -164,15 +164,43 @@ int DataStore::GetNotebookCount()
 	return count;
 }
 
-ptr_vector<INote> & DataStore::GetNotesByNotebook(INotebook & notebook)
+ptr_vector<INote> & DataStore::GetNotesByNotebook(const INotebook & notebook)
 {
-	// TODO: implement
+	sqlite3_stmt * statement = PrepareStatement
+		( "SELECT guid, title"
+			" FROM Notes, NoteContents"
+			" WHERE content = docid AND notebook = ?"
+			" ORDER BY title"
+		);
+	BindText(statement, notebook.GetGuid(), 1);
+	notes.clear();
+	while (!ExecuteStatement(statement))
+	{
+		Guid    guid  (GetColumnText(statement, 0));
+		wstring title (GetColumnText(statement, 1));
+		notes.push_back(new Note(guid, title));
+	}
+	CloseStatement(statement);
 	return notes;
 }
 
 ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
 {
-	// TODO: implement
+	sqlite3_stmt * statement = PrepareStatement
+		( "SELECT guid, title"
+			" FROM Notes, NoteContents"
+			" WHERE content = docid AND NoteContents MATCH ?"
+			" ORDER BY title"
+			);
+	BindText(statement, search, 1);
+	notes.clear();
+	while (!ExecuteStatement(statement))
+	{
+		Guid    guid  (GetColumnText(statement, 0));
+		wstring title (GetColumnText(statement, 1));
+		notes.push_back(new Note(guid, title));
+	}
+	CloseStatement(statement);
 	return notes;
 }
 
@@ -212,8 +240,9 @@ void DataStore::Disconnect()
 		return;
 	sqlite3 * copy = db;
 	db = NULL;
-	if (SQLITE_OK != sqlite3_close(copy))
-		throw std::exception(sqlite3_errmsg(db));
+	int result = sqlite3_close(copy);
+	if (result != SQLITE_OK)
+		throw std::exception(sqlite3_errmsg(copy));
 }
 
 void DataStore::Initialize(wstring name)
@@ -246,7 +275,7 @@ void DataStore::Initialize(wstring name)
 	CreateTable
 		( "CREATE TABLE Notes"
 			"( guid PRIMARY KEY"
-			", content REFERENCES NoteContents"
+			", content"
 			", notebook REFERENCES Notebooks"
 			")"
 		);
