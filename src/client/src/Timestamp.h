@@ -17,4 +17,6 @@ public:
 	Timestamp(time_t unixTime);
 
 	virtual std::wstring GetFormattedDateTime() const;
+
+	virtual __int64 GetTime() const;
 };

@@ -17,5 +17,5 @@ public:
 
 	virtual const boost::ptr_vector<ITag> & GetTags() const = 0;
 
-	virtual const ITimestamp & GetCreateDate() const = 0;
+	virtual const ITimestamp & GetCreationDate() const = 0;
 };

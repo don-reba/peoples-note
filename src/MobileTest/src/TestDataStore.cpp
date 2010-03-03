@@ -8,6 +8,10 @@
 using namespace boost;
 using namespace std;
 
+//----------------------
+// auxillary definitions
+//----------------------
+
 const wchar_t * const storeName   = L"test";
 const wchar_t * const storeFolder = L"Program Files\\MobileTest";
 const wchar_t * const storeFile   = L"Program Files\\MobileTest\\test.db";
@@ -29,6 +33,10 @@ bool FileExists(const wchar_t * path)
 {
 	return ::GetFileAttributes(path) != 0xFFFFFFFF;
 }
+
+//-----------
+// test suite
+//-----------
 
 FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 {
@@ -132,15 +140,15 @@ FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 		store.AddNotebook(notebook);
 
 	store.AddNote
-		( MockNote(Guid(), L"note-0", MockTimestamp())
+		( MockNote(Guid(), L"note-0", MockTimestamp(L"", 0))
 		, notebooks.at(0)
 		);
 	store.AddNote
-		( MockNote(Guid(), L"note-1", MockTimestamp())
+		( MockNote(Guid(), L"note-1", MockTimestamp(L"", 1))
 		, notebooks.at(1)
 		);
 	store.AddNote
-		( MockNote(Guid(), L"note-2", MockTimestamp())
+		( MockNote(Guid(), L"note-2", MockTimestamp(L"", 2))
 		, notebooks.at(0)
 		);
 
@@ -156,16 +164,18 @@ FIXTURE_TEST_CASE(TestDataStoreNotesBySearch, DataStoreFixture)
 	store.AddNotebook(notebook);
 
 	store.AddNote
-		( MockNote(Guid(), L"useful software", MockTimestamp())
+		( MockNote(Guid(), L"useful software", MockTimestamp(L"", 0))
 		, notebook
 		);
 	store.AddNote
-		( MockNote(Guid(), L"software use", MockTimestamp())
+		( MockNote(Guid(), L"software use", MockTimestamp(L"", 1))
 		, notebook
 		);
 
 	ptr_vector<INote> & notes0 = store.GetNotesBySearch(L"software");
 	TEST_CHECK_EQUAL(notes0.size(), 2);
+	TEST_CHECK_EQUAL(notes0.at(0).GetTitle(), L"useful software");
+	TEST_CHECK_EQUAL(notes0.at(1).GetTitle(), L"software use");
 
 	ptr_vector<INote> & notes1 = store.GetNotesBySearch(L"use");
 	TEST_CHECK_EQUAL(notes1.size(), 1);

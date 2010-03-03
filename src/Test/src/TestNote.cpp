@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(Note_Test)
 	BOOST_CHECK_EQUAL(note.GetTitle(), L"test");
 	BOOST_CHECK_EQUAL(note.GetTags().size(), 0);
 	BOOST_CHECK_EQUAL
-		( note.GetCreateDate().GetFormattedDateTime()
+		( note.GetCreationDate().GetFormattedDateTime()
 		, L"1970-01-01 00:00"
 		);
 }

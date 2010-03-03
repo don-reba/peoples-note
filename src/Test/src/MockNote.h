@@ -10,7 +10,7 @@ public:
 
 	Guid          guid;
 	std::wstring  title;
-	MockTimestamp createDate;
+	MockTimestamp creationDate;
 
 	boost::ptr_vector<ITag> tags;
 
@@ -21,7 +21,7 @@ public:
 	MockNote
 		( Guid          guid
 		, std::wstring  title
-		, MockTimestamp createDate
+		, MockTimestamp creationDate
 		);
 
 	virtual Guid GetGuid() const;
@@ -30,5 +30,5 @@ public:
 
 	virtual const boost::ptr_vector<ITag> & GetTags() const;
 
-	virtual const ITimestamp & GetCreateDate() const;
+	virtual const ITimestamp & GetCreationDate() const;
 };

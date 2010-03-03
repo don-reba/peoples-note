@@ -51,7 +51,7 @@ wstring NoteListPresenter::ConvertToHtml(const INote & note)
 	stream << L"</td></tr><tr><td>";
 	stream << FormatTags(note.GetTags());
 	stream << L"</td></tr><tr><td>";
-	stream << FormatDate(note.GetCreateDate());
+	stream << FormatDate(note.GetCreationDate());
 	stream << L"</td></tr></table>";
 	return stream.str();
 }

@@ -11,11 +11,11 @@ MockNote::MockNote()
 MockNote::MockNote
 	( Guid          guid
 	, std::wstring  title
-	, MockTimestamp createDate
+	, MockTimestamp creationDate
 	)
 	: guid       (guid)
 	, title      (title)
-	, createDate (createDate)
+	, creationDate (creationDate)
 {
 }
 
@@ -34,7 +34,7 @@ const ptr_vector<ITag> & MockNote::GetTags() const
 	return tags;
 }
 
-const ITimestamp & MockNote::GetCreateDate() const
+const ITimestamp & MockNote::GetCreationDate() const
 {
-	return createDate;
+	return creationDate;
 }

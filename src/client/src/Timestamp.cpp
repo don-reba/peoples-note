@@ -49,3 +49,8 @@ wstring Timestamp::GetFormattedDateTime() const
 	stream << &dateChars[0] << L" " << &timeChars[0];
 	return stream.str();
 }
+
+__int64 Timestamp::GetTime() const
+{
+	return unixTime;
+}

@@ -8,7 +8,7 @@ class Note : public INote
 private:
 
 	Guid         guid;
-	Timestamp    createDate;
+	Timestamp    creationDate;
 	std::wstring title;
 
 	boost::ptr_vector<ITag> tags;
@@ -23,5 +23,5 @@ public:
 
 	virtual const boost::ptr_vector<ITag> & GetTags() const;
 
-	virtual const ITimestamp & GetCreateDate() const;
+	virtual const ITimestamp & GetCreationDate() const;
 };

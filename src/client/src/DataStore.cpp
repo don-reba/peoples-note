@@ -78,10 +78,11 @@ void DataStore::AddNote(const INote & note, const INotebook & notebook)
 		CloseStatement(statement);
 	}
 	{
-		sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notes(guid, content, notebook) VALUES (?, ?, ?)");
-		BindText (statement, note.GetGuid(),       1);
-		BindInt  (statement, GetLastInsertRowid(), 2);
-		BindText (statement, notebook.GetGuid(),   3);
+		sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notes(guid, creationDate, content, notebook) VALUES (?, ?, ?, ?)");
+		BindText (statement, note.GetGuid(),                   1);
+		BindInt  (statement, note.GetCreationDate().GetTime(), 2);
+		BindInt  (statement, GetLastInsertRowid(),             3);
+		BindText (statement, notebook.GetGuid(),               4);
 		ExecuteStatement(statement);
 		CloseStatement(statement);
 	}
@@ -170,7 +171,7 @@ ptr_vector<INote> & DataStore::GetNotesByNotebook(const INotebook & notebook)
 		( "SELECT guid, title"
 			" FROM Notes, NoteContents"
 			" WHERE content = docid AND notebook = ?"
-			" ORDER BY title"
+			" ORDER BY creationDate"
 		);
 	BindText(statement, notebook.GetGuid(), 1);
 	notes.clear();
@@ -190,7 +191,7 @@ ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
 		( "SELECT guid, title"
 			" FROM Notes, NoteContents"
 			" WHERE content = docid AND NoteContents MATCH ?"
-			" ORDER BY title"
+			" ORDER BY creationDate"
 			);
 	BindText(statement, search, 1);
 	notes.clear();
@@ -275,6 +276,7 @@ void DataStore::Initialize(wstring name)
 	CreateTable
 		( "CREATE TABLE Notes"
 			"( guid PRIMARY KEY"
+			", creationDate"
 			", content"
 			", notebook REFERENCES Notebooks"
 			")"

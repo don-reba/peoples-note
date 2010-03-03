@@ -27,7 +27,7 @@ const ptr_vector<ITag> & Note::GetTags() const
 	return tags;
 }
 
-const ITimestamp & Note::GetCreateDate() const
+const ITimestamp & Note::GetCreationDate() const
 {
-	return createDate;
+	return creationDate;
 }
