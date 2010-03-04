@@ -19,6 +19,7 @@ private:
 	HMENU          notebooksMenu;
 
 	signal SignalCreated;
+	signal SignalImport;
 	signal SignalSearch;
 
 // interface
@@ -27,25 +28,29 @@ public:
 
 	NoteListView(HINSTANCE hInstance, int cmdShow);
 
-	virtual void ConnectCreated(slot_type OnCreated);
-
-	virtual void ConnectSearch(slot_type OnSearch);
-
-	virtual void Create();
-
-	virtual void ClearNotes();
+	void Create();
 
 	virtual void AddNote(std::wstring noteHtml);
 
-	virtual void UpdateNotes();
+	virtual void AddNotebook(std::wstring notebook);
 
 	virtual void ClearNotebooks();
 
-	virtual void AddNotebook(std::wstring notebook);
+	virtual void ClearNotes();
+
+	virtual void ConnectCreated(slot_type OnCreated);
+
+	virtual void ConnectImport(slot_type OnImport);
+
+	virtual void ConnectSearch(slot_type OnSearch);
+
+	virtual bool GetEnexPath(std::wstring & path);
+	
+	virtual std::wstring GetSearchString();
 
 	virtual void UpdateNotebooks();
 
-	virtual std::wstring GetSearchString();
+	virtual void UpdateNotes();
 
 // utility functions
 

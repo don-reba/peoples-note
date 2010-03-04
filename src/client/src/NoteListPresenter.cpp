@@ -61,16 +61,16 @@ wstring NoteListPresenter::FormatTitle(const wstring & title)
 	return EscapeHtml(title);
 }
 
-wstring NoteListPresenter::FormatTags(const ptr_vector<ITag> & tags)
+wstring NoteListPresenter::FormatTags(const vector<const ITag*> & tags)
 {
 	wostringstream stream;
 	bool first = true;
-	foreach (const ITag & tag, tags)
+	foreach (const ITag * tag, tags)
 	{
 		if (!first)
 			stream << L", ";
 		first = false;
-		stream << EscapeHtml(tag.GetName());
+		stream << EscapeHtml(tag->GetName());
 	}
 	return stream.str();
 }

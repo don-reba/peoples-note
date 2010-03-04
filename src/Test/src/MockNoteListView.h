@@ -12,28 +12,36 @@ public:
 	bool                      notebooksUpdated;
 	std::wstring              searchString;
 
+	bool         hasEnexPath;
+	std::wstring enexPath;
+
 	signal SignalCreated;
+	signal SignalImport;
 	signal SignalSearch;
 
 public:
 
 	MockNoteListView();
 
-	virtual void ConnectCreated(slot_type OnCreated);
-
-	virtual void ConnectSearch(slot_type OnSearch);
-
-	virtual void ClearNotes();
-
 	virtual void AddNote(std::wstring noteHtml);
-
-	virtual void UpdateNotes();
-
-	virtual void ClearNotebooks();
 
 	virtual void AddNotebook(std::wstring notebook);
 
+	virtual void ClearNotebooks();
+
+	virtual void ClearNotes();
+
+	virtual void ConnectCreated(slot_type OnCreated);
+
+	virtual void ConnectImport(slot_type OnImport);
+
+	virtual void ConnectSearch(slot_type OnSearch);
+
+	virtual bool GetEnexPath(std::wstring & path);
+	
+	virtual std::wstring GetSearchString();
+
 	virtual void UpdateNotebooks();
 
-	virtual std::wstring GetSearchString();
+	virtual void UpdateNotes();
 };

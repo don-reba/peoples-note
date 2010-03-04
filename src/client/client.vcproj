@@ -395,6 +395,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EnImportPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Guid.cpp"
 				>
 			</File>
@@ -533,6 +537,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EnImportPresenter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\foreach.h"
 				>
 			</File>
@@ -558,6 +566,10 @@
 			</File>
 			<File
 				RelativePath=".\src\IDataStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IEnImporter.h"
 				>
 			</File>
 			<File

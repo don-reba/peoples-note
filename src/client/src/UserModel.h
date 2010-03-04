@@ -22,6 +22,8 @@ public:
 
 	UserModel(IDataStore & dataStore);
 
+	virtual void AddNote(const INote & note, const INotebook & notebook);
+
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
 	virtual void CreateDefaultUser();

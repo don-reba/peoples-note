@@ -15,6 +15,11 @@ UserModel::UserModel(IDataStore & dataStore)
 {
 }
 
+void UserModel::AddNote(const INote & note, const INotebook & notebook)
+{
+	// TODO: implement
+}
+
 void UserModel::ConnectLoaded(slot_type OnLoaded)
 {
 	SignalLoaded.connect(OnLoaded);

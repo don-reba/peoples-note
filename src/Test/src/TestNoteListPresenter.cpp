@@ -25,15 +25,15 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 	ptr_vector<MockNote> notes(3);
 	notes.push_back(new MockNote());
 	notes.at(0).title = L"Note";
-	notes.at(0).tags.push_back(new MockTag(L"tag-0"));
-	notes.at(0).tags.push_back(new MockTag(L"tag-1"));
+	notes.at(0).tags.push_back(MockTag(L"tag-0"));
+	notes.at(0).tags.push_back(MockTag(L"tag-1"));
 	notes.at(0).creationDate.formattedDateTime = L"2010-02-04 15:20";
 	notes.push_back(new MockNote());
 	notes.at(1).title = L"";
 	notes.at(1).creationDate.formattedDateTime = L"";
 	notes.push_back(new MockNote());
 	notes.at(2).title = L"<td id=\"";
-	notes.at(2).tags.push_back(new MockTag(L"&amp;"));
+	notes.at(2).tags.push_back(MockTag(L"&amp;"));
 	notes.at(2).creationDate.formattedDateTime = L"<strong>not bold</strong>";
 	noteListModel.notes.transfer(noteListModel.notes.end(), notes);
 

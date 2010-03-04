@@ -35,7 +35,7 @@ private:
 
 	static std::wstring FormatTitle(const std::wstring & title);
 
-	static std::wstring FormatTags(const boost::ptr_vector<ITag> & tags);
+	static std::wstring FormatTags(const std::vector<const ITag*> & tags);
 
 	static std::wstring FormatDate(const ITimestamp & timestamp);
 

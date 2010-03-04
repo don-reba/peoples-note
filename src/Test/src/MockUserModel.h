@@ -18,6 +18,9 @@ public:
 	boost::ptr_vector<INotebook> notebooks;
 	boost::ptr_vector<INote>     notes;
 
+	typedef std::pair<std::wstring, std::wstring> AddedNote;
+	std::vector<AddedNote> addedNotes;
+
 	bool isDefault;
 	bool isLoaded;
 
@@ -29,6 +32,8 @@ public:
 	MockUserModel();
 
 	void Loaded();
+
+	virtual void AddNote(const INote & note, const INotebook & notebook);
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 

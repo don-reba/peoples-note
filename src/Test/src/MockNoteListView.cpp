@@ -9,25 +9,10 @@ MockNoteListView::MockNoteListView()
 {
 }
 
-void MockNoteListView::ConnectCreated(slot_type OnCreated)
+void MockNoteListView::AddNotebook(wstring notebook)
 {
-	SignalCreated.connect(OnCreated);
-}
-
-void MockNoteListView::ConnectSearch(slot_type OnSearch)
-{
-	SignalSearch.connect(OnSearch);
-}
-
-void MockNoteListView::ClearNotes()
-{
-	notes.clear();
-	notesUpdated = false;
-}
-
-void MockNoteListView::UpdateNotes()
-{
-	notesUpdated = true;
+	notebooks.push_back(notebook);
+	notebooksUpdated = false;
 }
 
 void MockNoteListView::AddNote(wstring noteHtml)
@@ -42,10 +27,37 @@ void MockNoteListView::ClearNotebooks()
 	notebooksUpdated = false;
 }
 
-void MockNoteListView::AddNotebook(wstring notebook)
+void MockNoteListView::ClearNotes()
 {
-	notebooks.push_back(notebook);
-	notebooksUpdated = false;
+	notes.clear();
+	notesUpdated = false;
+}
+
+void MockNoteListView::ConnectCreated(slot_type OnCreated)
+{
+	SignalCreated.connect(OnCreated);
+}
+
+void MockNoteListView::ConnectImport(slot_type OnImport)
+{
+	SignalImport.connect(OnImport);
+}
+
+void MockNoteListView::ConnectSearch(slot_type OnSearch)
+{
+	SignalSearch.connect(OnSearch);
+}
+
+bool MockNoteListView::GetEnexPath(std::wstring & path)
+{
+	if (hasEnexPath)
+		path = enexPath;
+	return hasEnexPath;
+}
+
+std::wstring MockNoteListView::GetSearchString()
+{
+	return searchString;
 }
 
 void MockNoteListView::UpdateNotebooks()
@@ -53,7 +65,7 @@ void MockNoteListView::UpdateNotebooks()
 	notebooksUpdated = true;
 }
 
-std::wstring MockNoteListView::GetSearchString()
+void MockNoteListView::UpdateNotes()
 {
-	return searchString;
+	notesUpdated = true;
 }

@@ -2,9 +2,9 @@
 #include "Note.h"
 #include "Tools.h"
 
-using namespace boost;
+#include <algorithm>
+
 using namespace std;
-using namespace Tools;
 
 Note::Note(Guid guid, wstring title)
 	: guid  (guid)
@@ -22,8 +22,12 @@ wstring Note::GetTitle() const
 	return title;
 }
 
-const ptr_vector<ITag> & Note::GetTags() const
+std::vector<const ITag*> Note::GetTags() const
 {
+	vector<const ITag*> tags;
+	tags.reserve(this->tags.size());
+	foreach (const ITag & tag, this->tags)
+		tags.push_back(&tag);
 	return tags;
 }
 

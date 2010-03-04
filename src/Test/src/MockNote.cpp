@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "MockNote.h"
 
-using namespace boost;
+#include <algorithm>
+
 using namespace std;
 
 MockNote::MockNote()
@@ -29,8 +30,12 @@ wstring MockNote::GetTitle() const
 	return title;
 }
 
-const ptr_vector<ITag> & MockNote::GetTags() const
+vector<const ITag*> MockNote::GetTags() const
 {
+	vector<const ITag*> tags;
+	tags.reserve(this->tags.size());
+	foreach (const ITag & tag, this->tags)
+		tags.push_back(&tag);
 	return tags;
 }
 

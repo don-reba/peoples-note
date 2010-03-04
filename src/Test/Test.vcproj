@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EnImportPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Guid.cpp"
 				>
 			</File>
@@ -200,6 +204,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockDataStore.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockEnImporter.cpp"
 				>
 			</File>
 			<File
@@ -283,6 +291,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestEnImportPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestLastUserModel.cpp"
 				>
 			</File>
@@ -349,7 +361,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EnImportPresenter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\IEnImporter.h"
 				>
 			</File>
 			<File
@@ -370,6 +390,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockDataStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockEnImporter.h"
 				>
 			</File>
 			<File

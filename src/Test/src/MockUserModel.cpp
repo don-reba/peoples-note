@@ -15,6 +15,11 @@ void MockUserModel::Loaded()
 	SignalLoaded();
 }
 
+void MockUserModel::AddNote(const INote & note, const INotebook & notebook)
+{
+	addedNotes.push_back(make_pair(note.GetTitle(), notebook.GetName()));
+}
+
 void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 {
 	SignalLoaded.connect(OnLoaded);

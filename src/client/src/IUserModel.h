@@ -12,6 +12,8 @@ public:
 
 	virtual ~IUserModel() {}
 
+	virtual void AddNote(const INote & note, const INotebook & notebook) = 0;
+
 	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
 
 	virtual void CreateDefaultUser() = 0;

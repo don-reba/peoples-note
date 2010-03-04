@@ -21,7 +21,7 @@ public:
 
 	virtual std::wstring GetTitle() const;
 
-	virtual const boost::ptr_vector<ITag> & GetTags() const;
+	virtual std::vector<const ITag*> GetTags() const;
 
 	virtual const ITimestamp & GetCreationDate() const;
 };
