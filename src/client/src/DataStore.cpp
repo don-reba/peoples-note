@@ -239,9 +239,10 @@ void DataStore::Create()
 		);
 	if (SQLITE_OK != result)
 	{
+		const char * errorMessage = sqlite3_errmsg(db);
 		sqlite3_close(db);
 		db = NULL;
-		throw std::exception(sqlite3_errmsg(db));
+		throw std::exception(errorMessage);
 	}
 	SetPragma("PRAGMA foreign_keys = ON");
 }
