@@ -36,8 +36,6 @@ public:
 
 	int GetVersion();
 
-	void MakeNotebookLastUsed(const INotebook & notebook);
-
 // IDataStore implementation
 
 public:
@@ -50,13 +48,19 @@ public:
 
 	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook(const INotebook & notebook);
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook
+		( const INotebook & notebook
+		);
 
-	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
+	virtual boost::ptr_vector<INote> & GetNotesBySearch
+		( std::wstring search
+		);
 
 	virtual void LoadOrCreate(std::wstring name);
 
 	virtual void MakeNotebookDefault(const INotebook & notebook);
+
+	virtual void MakeNotebookLastUsed(const INotebook & notebook);
 
 // utility functions
 

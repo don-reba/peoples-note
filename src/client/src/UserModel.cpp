@@ -64,6 +64,7 @@ void UserModel::Load()
 		Notebook defaultNotebook(Guid(), L"Notes");
 		dataStore.AddNotebook(defaultNotebook);
 		dataStore.MakeNotebookDefault(defaultNotebook);
+		dataStore.MakeNotebookLastUsed(defaultNotebook);
 	}
 	SignalLoaded();
 }

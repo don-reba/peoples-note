@@ -509,3 +509,24 @@ UTF8 strings
 	vector<unsigned char> is a bad container
 	can't get a pointer when empty
 	TODO
+data store initialization
+	sqlite3_open_v2 creates a database that is either
+		has no version
+		has lesser version
+		has greater version
+		has correct version
+	it is better not to try handling invalid databases
+		what about db creation errors?
+			TODO
+note import
+	EnImporter needs to allocate notes
+	no need to have them live outside OnImport handler
+	options
+		create EnImporter locally
+			- can't use an interface, then
+		have EnImporter use outside storage
+			- different from DataStore
+				maybe DataStore is the one that needs to change
+				if it does not want notes to live between calls
+		make EnImport clear its memory
+			- extra call; might forget

@@ -71,23 +71,6 @@ int DataStore::GetVersion()
 	return _wtoi(GetProperty(L"version").c_str());
 }
 
-void DataStore::MakeNotebookLastUsed(const INotebook & notebook)
-{
-	// remove old
-	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 0 WHERE isLastUsed = 1");
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
-	// set new
-	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 1 WHERE guid = ?");
-		BindText(statement, notebook.GetGuid(), 1);
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
-}
-
 //--------------------------
 // IDataStore implementation
 //--------------------------
@@ -206,6 +189,23 @@ void DataStore::MakeNotebookDefault(const INotebook & notebook)
 	// set new
 	{
 		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isDefault = 1 WHERE guid = ?");
+		BindText(statement, notebook.GetGuid(), 1);
+		ExecuteStatement(statement);
+		CloseStatement(statement);
+	}
+}
+
+void DataStore::MakeNotebookLastUsed(const INotebook & notebook)
+{
+	// remove old
+	{
+		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 0 WHERE isLastUsed = 1");
+		ExecuteStatement(statement);
+		CloseStatement(statement);
+	}
+	// set new
+	{
+		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 1 WHERE guid = ?");
 		BindText(statement, notebook.GetGuid(), 1);
 		ExecuteStatement(statement);
 		CloseStatement(statement);
@@ -392,7 +392,7 @@ void DataStore::BindText
 	vector<unsigned char> utf8Text = ConvertToUtf8(text);
 	const char * textPointer
 		= utf8Text.empty()
-		? NULL
+		? ""
 		: reinterpret_cast<const char*>(&utf8Text[0])
 		;
 	int result = sqlite3_bind_text

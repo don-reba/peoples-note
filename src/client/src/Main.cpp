@@ -32,7 +32,9 @@ wstring GetDocumentPath()
 		);
 	wstringstream stream;
 	stream << folder << L'\\' << LoadStringResource(IDS_DOC_FOLDER);
-	return stream.str();
+	wstring path(stream.str());
+	::CreateDirectory(path.c_str(), NULL);
+	return path;
 }
 
 bool SwitchToPreviousInstance(HINSTANCE instance)

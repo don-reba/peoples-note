@@ -57,9 +57,12 @@ storage
 	when a note's contest is needed, it is loaded from the database
 	when a note is added, it is stored in the database
 database
-	when file does not exist, create a new one for the current version
+	√ when file does not exist, create a new one for the current version
 	when the file exists and has a lesser version, convert it to current version
 	when the file exists and has a greater version, refuse to open it
-	when the file exists and has the correct version, use it
+	√ when the file exists and has the correct version, use it
 	when a database for a named user cannot be opened, switch to the default user
 	when a database for the default user cannot be opened, show an error message and quit
+Evernote import
+	when the "Import" menu option is selected, dispaly an ".enex" file open dialog
+	when an .enex file is imported, add the notes from it to the last used notebook
