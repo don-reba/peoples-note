@@ -6,9 +6,10 @@
 
 using namespace std;
 
-Note::Note(Guid guid, wstring title)
-	: guid  (guid)
-	, title (title)
+Note::Note(Guid guid, wstring title, const Timestamp & creationDate)
+	: guid         (guid)
+	, title        (title)
+	, creationDate (creationDate)
 {
 }
 

@@ -210,3 +210,22 @@ void Tools::UnixTimeToSystemTime
 	UnixTimeToFileTime(unixTime, fileTime);
 	::FileTimeToSystemTime(&fileTime, &systemTime);
 }
+
+time_t Tools::FileTimeToUnixTime
+	( const FILETIME & fileTime
+	)
+{
+	LONGLONG temp;
+	temp = fileTime.dwHighDateTime;
+	temp = (temp << 32) | fileTime.dwLowDateTime;
+	return static_cast<time_t>(temp / 10000000 - 11644473600);
+}
+
+time_t Tools::SystemTimeToUnixTime
+	( const SYSTEMTIME & systemTime
+	)
+{
+	FILETIME fileTime;
+	::SystemTimeToFileTime(&systemTime, &fileTime);
+	return FileTimeToUnixTime(fileTime);
+}

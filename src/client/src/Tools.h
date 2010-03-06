@@ -18,7 +18,21 @@ namespace Tools
 
 	std::wstring LoadStringResource(int id);
 
-	void UnixTimeToFileTime(time_t unixTime, OUT FILETIME & fileTime);
+	void UnixTimeToFileTime
+		( time_t         unixTime
+		, OUT FILETIME & fileTime
+		);
 
-	void UnixTimeToSystemTime(time_t unixTime, OUT SYSTEMTIME & systemTime);
+	void UnixTimeToSystemTime
+		( time_t           unixTime
+		, OUT SYSTEMTIME & systemTime
+		);
+
+	time_t FileTimeToUnixTime
+		( const FILETIME & fileTime
+		);
+
+	time_t SystemTimeToUnixTime
+		( const SYSTEMTIME & systemTime
+		);
 }

@@ -18,6 +18,7 @@ ptr_vector<INote> & NoteListModel::GetNotes()
 
 void NoteListModel::SetNotes(ptr_vector<INote> & notes)
 {
+	int count = notes.size();
 	this->notes = notes.release();
 	SignalChanged();
 }

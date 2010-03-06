@@ -10,4 +10,10 @@ public:
 		( std::wistream            & stream
 		, boost::ptr_vector<INote> & notes
 		);
+
+private:
+
+	time_t ParseTime(std::wstring time);
+
+	int GetDigit(wchar_t c);
 };

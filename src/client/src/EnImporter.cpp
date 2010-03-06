@@ -2,6 +2,7 @@
 #include "EnImporter.h"
 
 #include "Note.h"
+#include "Tools.h"
 
 #include "RapidXML/rapidxml.hpp"
 
@@ -11,6 +12,7 @@
 using namespace boost;
 using namespace rapidxml;
 using namespace std;
+using namespace Tools;
 
 void EnImporter::ImportNotes
 	( wistream          & stream
@@ -43,16 +45,20 @@ void EnImporter::ImportNotes
 		while (node)
 		{
 			wstring title;
+			wstring created;
 
 			xml_node<wchar_t> * noteNode(node->first_node());
 			while (noteNode)
 			{
 				if (0 == wcscmp(noteNode->name(), L"title"))
 					title = noteNode->value();
+				if (0 == wcscmp(noteNode->name(), L"created"))
+					created = noteNode->value();
 				noteNode = noteNode->next_sibling();
 			}
 
-			notes.push_back(new Note(Guid(), title));
+			Timestamp timestamp = Timestamp(ParseTime(created));
+			notes.push_back(new Note(Guid(), title, timestamp));
 
 			node = node->next_sibling();
 		}
@@ -62,4 +68,44 @@ void EnImporter::ImportNotes
 		const wchar_t * fragment = e.where<wchar_t>();
 		cout << e.what() << endl;
 	}
+}
+time_t EnImporter::ParseTime(wstring time)
+{
+	if (time.size() != 16 || time[8] != L'T' || time[15] != L'Z')
+		return 0;
+	SYSTEMTIME systemTime;
+	systemTime.wYear
+		= GetDigit(time[0]) * 1000
+		+ GetDigit(time[1]) * 100
+		+ GetDigit(time[2]) * 10
+		+ GetDigit(time[3]) * 1
+		;
+	systemTime.wMonth
+		= GetDigit(time[4]) * 10
+		+ GetDigit(time[5]) * 1
+		;
+	systemTime.wDay
+		= GetDigit(time[6]) * 10
+		+ GetDigit(time[7]) * 1
+		;
+	systemTime.wHour
+		= GetDigit(time[9])  * 10
+		+ GetDigit(time[10]) * 1
+		;
+	systemTime.wMinute
+		= GetDigit(time[11]) * 10
+		+ GetDigit(time[12]) * 1
+		;
+	systemTime.wSecond
+		= GetDigit(time[13]) * 10
+		+ GetDigit(time[14]) * 1
+		;
+	return SystemTimeToUnixTime(systemTime);
+}
+
+int EnImporter::GetDigit(wchar_t c)
+{
+	if (c < L'0') return 0;
+	if (c > L'9') return 9;
+	return c - L'0';
 }

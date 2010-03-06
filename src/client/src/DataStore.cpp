@@ -27,25 +27,6 @@ DataStore::~DataStore()
 	Disconnect();
 }
 
-void DataStore::AddNote(const INote & note, const INotebook & notebook)
-{
-	{
-		sqlite3_stmt * statement = PrepareStatement("INSERT INTO NoteContents(title) VALUES (?)");
-		BindText(statement, note.GetTitle(), 1);
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
-	{
-		sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notes(guid, creationDate, content, notebook) VALUES (?, ?, ?, ?)");
-		BindText (statement, note.GetGuid(),                   1);
-		BindInt  (statement, note.GetCreationDate().GetTime(), 2);
-		BindInt  (statement, GetLastInsertRowid(),             3);
-		BindText (statement, notebook.GetGuid(),               4);
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
-}
-
 INotebook & DataStore::GetDefaultNotebook()
 {
 	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks WHERE isDefault = 1 LIMIT 1");
@@ -75,6 +56,25 @@ int DataStore::GetVersion()
 // IDataStore implementation
 //--------------------------
 
+void DataStore::AddNote(const INote & note, const INotebook & notebook)
+{
+	{
+		sqlite3_stmt * statement = PrepareStatement("INSERT INTO NoteContents(title) VALUES (?)");
+		BindText(statement, note.GetTitle(), 1);
+		ExecuteStatement(statement);
+		CloseStatement(statement);
+	}
+	{
+		sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notes(guid, creationDate, content, notebook) VALUES (?, ?, ?, ?)");
+		BindText (statement, note.GetGuid(),                   1);
+		BindInt  (statement, note.GetCreationDate().GetTime(), 2);
+		BindInt  (statement, GetLastInsertRowid(),             3);
+		BindText (statement, notebook.GetGuid(),               4);
+		ExecuteStatement(statement);
+		CloseStatement(statement);
+	}
+}
+
 void DataStore::AddNotebook(const INotebook & notebook)
 {
 	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notebooks(guid, name, isDefault, isLastUsed) VALUES (?, ?, 0, 0)");
@@ -102,6 +102,7 @@ INotebook & DataStore::GetLastUsedNotebook()
 int DataStore::GetNotebookCount()
 {
 	sqlite3_stmt * statement = PrepareStatement("SELECT COUNT(*) FROM Notebooks");
+	ExecuteStatement(statement);
 	int count = GetColumnInt(statement, 0);
 	CloseStatement(statement);
 	return count;
@@ -126,7 +127,7 @@ ptr_vector<INotebook> & DataStore::GetNotebooks()
 ptr_vector<INote> & DataStore::GetNotesByNotebook(const INotebook & notebook)
 {
 	sqlite3_stmt * statement = PrepareStatement
-		( "SELECT guid, title"
+		( "SELECT guid, title, creationDate"
 			" FROM Notes, NoteContents"
 			" WHERE content = docid AND notebook = ?"
 			" ORDER BY creationDate"
@@ -135,9 +136,10 @@ ptr_vector<INote> & DataStore::GetNotesByNotebook(const INotebook & notebook)
 	notes.clear();
 	while (!ExecuteStatement(statement))
 	{
-		Guid    guid  (GetColumnText(statement, 0));
-		wstring title (GetColumnText(statement, 1));
-		notes.push_back(new Note(guid, title));
+		Guid    guid         (GetColumnText (statement, 0));
+		wstring title        (GetColumnText (statement, 1));
+		int     creationDate (GetColumnInt  (statement, 2));
+		notes.push_back(new Note(guid, title, Timestamp(creationDate)));
 	}
 	CloseStatement(statement);
 	return notes;
@@ -146,7 +148,7 @@ ptr_vector<INote> & DataStore::GetNotesByNotebook(const INotebook & notebook)
 ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
 {
 	sqlite3_stmt * statement = PrepareStatement
-		( "SELECT guid, title"
+		( "SELECT guid, title, creationDate"
 			" FROM Notes, NoteContents"
 			" WHERE content = docid AND NoteContents MATCH ?"
 			" ORDER BY creationDate"
@@ -155,9 +157,10 @@ ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
 	notes.clear();
 	while (!ExecuteStatement(statement))
 	{
-		Guid    guid  (GetColumnText(statement, 0));
-		wstring title (GetColumnText(statement, 1));
-		notes.push_back(new Note(guid, title));
+		Guid    guid         (GetColumnText (statement, 0));
+		wstring title        (GetColumnText (statement, 1));
+		int     creationDate (GetColumnInt  (statement, 2));
+		notes.push_back(new Note(guid, title, Timestamp(creationDate)));
 	}
 	CloseStatement(statement);
 	return notes;
@@ -265,11 +268,8 @@ void DataStore::Disconnect()
 {
 	if (db == NULL)
 		return;
-	sqlite3 * copy = db;
+	sqlite3_close(db);
 	db = NULL;
-	int result = sqlite3_close(copy);
-	if (result != SQLITE_OK)
-		throw std::exception(sqlite3_errmsg(copy));
 }
 
 std::wstring DataStore::GetProperty(std::wstring key)
@@ -416,9 +416,6 @@ bool DataStore::ExecuteStatement(sqlite3_stmt * statement)
 
 int DataStore::GetColumnInt(sqlite3_stmt * statement, int index)
 {
-	int result = sqlite3_step(statement);
-	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
-		throw std::exception(sqlite3_errmsg(db));
 	return sqlite3_column_int(statement, index);
 }
 

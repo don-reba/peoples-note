@@ -530,3 +530,8 @@ note import
 				if it does not want notes to live between calls
 		make EnImport clear its memory
 			- extra call; might forget
+SQLite wrapper
+	need to destroy statements automatically
+note list design
+	need to set overflow for titles etc
+		TODO

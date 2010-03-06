@@ -15,7 +15,7 @@ private:
 
 public:
 
-	Note(Guid guid, std::wstring title);
+	Note(Guid guid, std::wstring title, const Timestamp & creationDate);
 
 	virtual Guid GetGuid() const;
 
