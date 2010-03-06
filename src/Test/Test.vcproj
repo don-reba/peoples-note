@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EnImporter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\EnImportPresenter.cpp"
 				>
 			</File>
@@ -291,6 +295,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestEnImporter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestEnImportPresenter.cpp"
 				>
 			</File>
@@ -358,6 +366,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\CredentialsPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\EnImporter.h"
 				>
 			</File>
 			<File

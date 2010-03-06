@@ -1,14 +1,9 @@
 #pragma once
 
 #include "IEnImporter.h"
-#include "MockNote.h"
 
-class MockEnImporter : public IEnImporter
+class EnImporter : public IEnImporter
 {
-public:
-
-	std::vector<MockNote> notes;
-
 public:
 
 	virtual void ImportNotes

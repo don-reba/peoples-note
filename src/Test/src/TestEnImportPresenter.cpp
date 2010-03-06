@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test0)
 	userModel.lastUsedNotebook = MockNotebook(L"notebook");
 
 	noteListView.hasEnexPath = true;
-	noteListView.enexPath    = L"test-path";
+	noteListView.enexPath    = L"data\\Mixed.enex";
 
 	noteListView.SignalImport();
 

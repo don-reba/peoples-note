@@ -395,6 +395,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EnImporter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\EnImportPresenter.cpp"
 				>
 			</File>
@@ -534,6 +538,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DataStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EnImporter.h"
 				>
 			</File>
 			<File
