@@ -92,6 +92,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		EnImportPresenter enImportPresenter
 			( enImporter
+			, noteListModel
 			, noteListView
 			, userModel
 			);

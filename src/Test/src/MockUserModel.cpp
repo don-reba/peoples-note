@@ -15,9 +15,13 @@ void MockUserModel::Loaded()
 	SignalLoaded();
 }
 
-void MockUserModel::AddNote(const INote & note, const INotebook & notebook)
+void MockUserModel::AddNote
+	( const INote     & note
+	, const INotebook & notebook
+	)
 {
 	addedNotes.push_back(make_pair(note.GetTitle(), notebook.GetName()));
+	notes.push_back(new MockNote(note));
 }
 
 void MockUserModel::ConnectLoaded(slot_type OnLoaded)
@@ -45,7 +49,7 @@ ptr_vector<INotebook> & MockUserModel::GetNotebooks()
 	return notebooks;
 }
 
-ptr_vector<INote> & MockUserModel::GetNotesByNotebook(INotebook & notebook)
+ptr_vector<INote> & MockUserModel::GetNotesByNotebook(const INotebook & notebook)
 {
 	notebookSelection = notebook.GetName();
 	return notes;

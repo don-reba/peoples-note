@@ -13,6 +13,8 @@ public:
 
 	MockTimestamp();
 
+	MockTimestamp(const ITimestamp & timestamp);
+
 	MockTimestamp(std::wstring formattedDateTime, __int64 time);
 
 	virtual std::wstring GetFormattedDateTime() const;

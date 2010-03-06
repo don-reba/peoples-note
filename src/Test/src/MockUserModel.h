@@ -2,8 +2,8 @@
 
 #include "IUserModel.h"
 #include "MockCredentialsModel.h"
-#include "MockNotebook.h"
 #include "MockNote.h"
+#include "MockNotebook.h"
 
 class MockUserModel : public IUserModel
 {
@@ -33,21 +33,30 @@ public:
 
 	void Loaded();
 
-	virtual void AddNote(const INote & note, const INotebook & notebook);
+	virtual void AddNote
+		( const INote     & note
+		, const INotebook & notebook
+		);
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
 	virtual void CreateDefaultUser();
 	
-	virtual void SetCredentials(const ICredentialsModel & credentials);
+	virtual void SetCredentials
+		( const ICredentialsModel & credentials
+		);
 
 	virtual INotebook & GetLastUsedNotebook();
 
 	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook);
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook
+		( const INotebook & notebook
+		);
 
-	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
+	virtual boost::ptr_vector<INote> & GetNotesBySearch
+		( std::wstring search
+		);
 
 	virtual void Load();
 };

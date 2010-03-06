@@ -9,6 +9,13 @@ MockNote::MockNote()
 {
 }
 
+MockNote::MockNote(const INote & note)
+{
+	guid         = note.GetGuid();
+	title        = note.GetTitle();
+	creationDate = note.GetCreationDate();
+}
+
 MockNote::MockNote
 	( Guid          guid
 	, std::wstring  title

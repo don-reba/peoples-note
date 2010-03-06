@@ -9,6 +9,11 @@ public:
 
 	virtual ~IDataStore() {}
 
+	virtual void AddNote
+		( const INote     & note
+		, const INotebook & notebook
+		) = 0;
+
 	virtual void AddNotebook(const INotebook & notebook) = 0;
 
 	virtual INotebook & GetLastUsedNotebook() = 0;

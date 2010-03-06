@@ -7,6 +7,12 @@ MockTimestamp::MockTimestamp()
 {
 }
 
+MockTimestamp::MockTimestamp(const ITimestamp & timestamp)
+{
+	formattedDateTime = L"";
+	time              = timestamp.GetTime();
+}
+
 MockTimestamp::MockTimestamp(wstring formattedDateTime, __int64 time)
 	: formattedDateTime (formattedDateTime)
 	, time              (time)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IDataStore.h"
+#include "MockNote.h"
 #include "MockNotebook.h"
 
 class MockDataStore : public IDataStore
@@ -18,7 +19,15 @@ public:
 	MockNotebook getNotesByNotebookNotebook;
 	std::wstring getNotesBySearchSearch;
 
+	typedef std::pair<std::wstring, std::wstring> AddedNote;
+	std::vector<AddedNote> addedNotes;
+
 public:
+
+	virtual void AddNote
+		( const INote     & note
+		, const INotebook & notebook
+		);
 
 	virtual void AddNotebook(const INotebook & notebook);
 

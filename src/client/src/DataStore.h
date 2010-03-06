@@ -28,8 +28,6 @@ public:
 
 	~DataStore();
 
-	void AddNote(const INote & note, const INotebook & notebook);
-
 	INotebook & GetDefaultNotebook();
 
 	std::wstring GetUser();
@@ -39,6 +37,11 @@ public:
 // IDataStore implementation
 
 public:
+
+	virtual void AddNote
+		( const INote     & note
+		, const INotebook & notebook
+		);
 
 	virtual void AddNotebook(const INotebook & notebook);
 

@@ -18,6 +18,8 @@ public:
 
 	MockNote();
 
+	MockNote(const INote & note);
+
 	MockNote
 		( Guid          guid
 		, std::wstring  title

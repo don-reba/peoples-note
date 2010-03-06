@@ -34,7 +34,7 @@ public:
 
 	virtual boost::ptr_vector<INotebook> & GetNotebooks();
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook);
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook(const INotebook & notebook);
 
 	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
 

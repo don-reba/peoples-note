@@ -2,6 +2,7 @@
 #include "EnImportPresenter.h"
 
 #include "IEnIMporter.h"
+#include "INoteListModel.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
 
@@ -11,13 +12,15 @@ using namespace boost;
 using namespace std;
 
 EnImportPresenter::EnImportPresenter
-	( IEnImporter   & enImporter
-	, INoteListView & noteListView
-	, IUserModel    & userModel
+	( IEnImporter    & enImporter
+	, INoteListModel & noteListModel
+	, INoteListView  & noteListView
+	, IUserModel     & userModel
 	)
-	: enImporter   (enImporter)
-	, noteListView (noteListView)
-	, userModel    (userModel)
+	: enImporter    (enImporter)
+	, noteListModel (noteListModel)
+	, noteListView  (noteListView)
+	, userModel     (userModel)
 {
 	noteListView.ConnectImport(bind(&EnImportPresenter::OnImport, *this));
 }
@@ -39,4 +42,6 @@ void EnImportPresenter::OnImport()
 	const INotebook & notebook = userModel.GetLastUsedNotebook();
 	foreach (const INote & note, notes)
 		userModel.AddNote(note, notebook);
+
+	noteListModel.SetNotes(userModel.GetNotesByNotebook(notebook));
 }

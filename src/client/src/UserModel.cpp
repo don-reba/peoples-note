@@ -17,7 +17,7 @@ UserModel::UserModel(IDataStore & dataStore)
 
 void UserModel::AddNote(const INote & note, const INotebook & notebook)
 {
-	// TODO: implement
+	dataStore.AddNote(note, notebook);
 }
 
 void UserModel::ConnectLoaded(slot_type OnLoaded)
@@ -45,7 +45,7 @@ ptr_vector<INotebook> & UserModel::GetNotebooks()
 	return dataStore.GetNotebooks();
 }
 
-ptr_vector<INote> & UserModel::GetNotesByNotebook(INotebook & notebook)
+ptr_vector<INote> & UserModel::GetNotesByNotebook(const INotebook & notebook)
 {
 	return dataStore.GetNotesByNotebook(notebook);
 }

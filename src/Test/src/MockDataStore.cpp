@@ -3,6 +3,14 @@
 
 using namespace std;
 
+void MockDataStore::AddNote
+	( const INote     & note
+	, const INotebook & notebook
+	)
+{
+	addedNotes.push_back(make_pair(note.GetTitle(), notebook.GetName()));
+}
+
 void MockDataStore::AddNotebook(const INotebook & notebook)
 {
 	notebooks.push_back(new MockNotebook(notebook));

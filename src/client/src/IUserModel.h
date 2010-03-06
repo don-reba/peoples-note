@@ -24,7 +24,7 @@ public:
 
 	virtual boost::ptr_vector<INotebook> & GetNotebooks() = 0;
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook(INotebook & notebook) = 0;
+	virtual boost::ptr_vector<INote> & GetNotesByNotebook(const INotebook & notebook) = 0;
 
 	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search) = 0;
 
