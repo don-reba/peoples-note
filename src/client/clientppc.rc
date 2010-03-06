@@ -48,6 +48,7 @@ BEGIN
         BEGIN
             MENUITEM SEPARATOR
         END
+        MENUITEM "Import notes",                IDM_MENU_IMPORTNOTES
         MENUITEM SEPARATOR
         MENUITEM "About",                       IDM_MENU_ABOUT
         MENUITEM "Exit",                        IDM_MENU_EXIT

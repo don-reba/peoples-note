@@ -103,7 +103,25 @@ void NoteListView::Create()
 
 bool NoteListView::GetEnexPath(wstring & path)
 {
-	// TODO: implement
+	vector<wchar_t> file(MAX_PATH);
+	OPENFILENAME parameters = { sizeof(parameters) };
+	parameters.hwndOwner   = hwnd_;
+	parameters.lpstrFile   = &file[0];
+	parameters.nMaxFile    = file.size();
+	parameters.lpstrTitle  = L"Open Evernote notebook";
+	parameters.lpstrFilter = L"Evernote notebook (*.enex)\0*.enex\0";
+	parameters.Flags
+		= OFN_LONGNAMES
+		| OFN_FILEMUSTEXIST
+		| OFN_READONLY
+		| OFN_NOCHANGEDIR
+		| OFN_HIDEREADONLY
+		;
+	if (::GetOpenFileName(&parameters))
+	{
+		path = &file[0];
+		return true;
+	}
 	return false;
 }
 
@@ -207,6 +225,9 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> &msg)
 {
 	switch (msg.GetCtrlId())
 	{
+	case IDM_MENU_IMPORTNOTES:
+		SignalImport();
+		break;
 	case IDM_MENU_ABOUT:
 		// TODO: implement About dialog
 		break;

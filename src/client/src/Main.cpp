@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "DataStore.h"
+#include "EnImporter.h"
+#include "EnImportPresenter.h"
 #include "LastUserModel.h"
 #include "NoteListModel.h"
 #include "NoteListPresenter.h"
@@ -81,6 +83,7 @@ int WINAPI WinMain(HINSTANCE instance,
 	{
 		RegistryKey registryKey;
 		DataStore   dataStore(GetDocumentPath());
+		EnImporter  enImporter;
 
 		LastUserModel lastUserModel(registryKey);
 		NoteListModel noteListModel;
@@ -88,6 +91,11 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		NoteListView noteListView(instance, nCmdShow);
 
+		EnImportPresenter enImportPresenter
+			( enImporter
+			, noteListView
+			, userModel
+			);
 		NoteListPresenter noteListPresenter
 			( noteListModel
 			, noteListView
