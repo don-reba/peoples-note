@@ -28,10 +28,12 @@ void EnImporter::ImportNotes
 
 	try
 	{
-		xml_document<wchar_t> doc;
-		doc.parse<0>(&text[0]);
+		typedef xml_document<wchar_t> XmlDocument;
+		auto_ptr<XmlDocument> doc(new XmlDocument());
 
-		xml_node<wchar_t> * node(doc.first_node());
+		doc->parse<0>(&text[0]);
+
+		xml_node<wchar_t> * node(doc->first_node());
 		while (node && 0 != wcscmp(node->name(), L"en-export"))
 			node = node->next_sibling();
 		if (!node)

@@ -111,10 +111,7 @@ bool NoteListView::GetEnexPath(wstring & path)
 	parameters.lpstrTitle  = L"Open Evernote notebook";
 	parameters.lpstrFilter = L"Evernote notebook (*.enex)\0*.enex\0";
 	parameters.Flags
-		= OFN_LONGNAMES
-		| OFN_FILEMUSTEXIST
-		| OFN_READONLY
-		| OFN_NOCHANGEDIR
+		= OFN_FILEMUSTEXIST
 		| OFN_HIDEREADONLY
 		;
 	if (::GetOpenFileName(&parameters))

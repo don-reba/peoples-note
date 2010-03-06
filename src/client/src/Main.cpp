@@ -24,16 +24,15 @@ using namespace Tools;
 
 wstring GetDocumentPath()
 {
-	wchar_t folder[MAX_PATH];
-	folder[0] = L'\0';
+	vector<wchar_t> folder(MAX_PATH);
 	::SHGetSpecialFolderPath
 		( NULL           // hwndOwner
-		, folder         // lpszPath
+		, &folder[0]     // lpszPath
 		, CSIDL_PERSONAL // nFolder
 		, TRUE           // fCreate
 		);
 	wstringstream stream;
-	stream << folder << L'\\' << LoadStringResource(IDS_DOC_FOLDER);
+	stream << &folder[0] << L'\\' << LoadStringResource(IDS_DOC_FOLDER);
 	wstring path(stream.str());
 	::CreateDirectory(path.c_str(), NULL);
 	return path;
