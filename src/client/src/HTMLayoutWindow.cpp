@@ -64,6 +64,8 @@ void HTMLayoutWindow::OnCreate(Msg<WM_CREATE> & msg)
 
 	AttachBehaviors();
 
+	SignalCreated();
+
 	msg.handled_ = true;
 }
 

@@ -18,7 +18,6 @@ private:
 	HWND           menuBar;
 	HMENU          notebooksMenu;
 
-	signal SignalCreated;
 	signal SignalImport;
 	signal SignalSearch;
 

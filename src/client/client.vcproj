@@ -625,6 +625,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Messages.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Note.h"
 				>
 			</File>

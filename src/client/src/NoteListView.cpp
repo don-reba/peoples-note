@@ -46,6 +46,16 @@ void NoteListView::ClearNotebooks()
 	while (RemoveMenu(notebooksMenu, 0, MF_BYPOSITION));
 }
 
+void NoteListView::ClearNotes()
+{
+	dom::element root = dom::element::root_element(hwnd_);
+	vector<dom::element> notes;
+	root.find_all(notes, "#note-list .note");
+
+	foreach (dom::element & note, notes)
+		note.destroy();
+}
+
 void NoteListView::ConnectCreated(slot_type OnCreated)
 {
 	SignalCreated.connect(OnCreated);
@@ -59,16 +69,6 @@ void NoteListView::ConnectImport(slot_type OnImport)
 void NoteListView::ConnectSearch(slot_type OnSearch)
 {
 	SignalSearch.connect(OnSearch);
-}
-
-void NoteListView::ClearNotes()
-{
-	dom::element root = dom::element::root_element(hwnd_);
-	vector<dom::element> notes;
-	root.find_all(notes, "#note-list .note");
-
-	foreach (dom::element & note, notes)
-		note.destroy();
 }
 
 void NoteListView::Create()
@@ -238,14 +238,18 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> &msg)
 void NoteListView::OnCreate(Msg<WM_CREATE> &msg)
 {
 	CreateMenuBar();
-
-	SignalCreated();
 }
 
 void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 {
 	CommandBar_Destroy(menuBar);
 	PostQuitMessage(0);
+}
+
+void NoteListView::OnSettingChange(Msg<WM_SETTINGCHANGE> &msg)
+{
+	SHHandleWMSettingChange(hwnd_, msg.wprm_, msg.lprm_, &activateInfo);
+	msg.handled_ = true;
 }
 
 void NoteListView::ProcessMessage(WndMsg &msg)
@@ -273,12 +277,6 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 			, MB_OK | MB_ICONERROR
 			);
 	}
-}
-
-void NoteListView::OnSettingChange(Msg<WM_SETTINGCHANGE> &msg)
-{
-	SHHandleWMSettingChange(hwnd_, msg.wprm_, msg.lprm_, &activateInfo);
-	msg.handled_ = true;
 }
 
 //---------------------------

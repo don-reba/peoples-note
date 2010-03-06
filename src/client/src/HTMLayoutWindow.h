@@ -1,11 +1,14 @@
 #pragma once
 
+#include "ISignalProvider.h"
 #include "window.h"
 
 #include <map>
 
-class HTMLayoutWindow : public Window
+class HTMLayoutWindow : public Window, public ISignalProvider
 {
+// data types
+
 private:
 
 	typedef void (HTMLayoutWindow::*EventType)();
@@ -24,12 +27,18 @@ private:
 		EventType event;
 	};
 
+// data
+
 private:
 
 	const int resourceId;
 
 	std::vector<EventTarget> eventTargets;
 	std::vector<EventRecord> eventRecords;
+
+protected:
+
+	signal SignalCreated;
 
 // interface
 

@@ -18,6 +18,6 @@ ptr_vector<INote> & NoteListModel::GetNotes()
 
 void NoteListModel::SetNotes(ptr_vector<INote> & notes)
 {
-	//this->notes = notes.release();
+	this->notes = notes.release();
 	SignalChanged();
 }
