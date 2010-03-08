@@ -1,9 +1,11 @@
 #include "stdafx.h"
 
 #include "DataStore.h"
+#include "MockCredentialsModel.h"
 #include "Note.h"
 #include "Notebook.h"
 #include "Test.h"
+#include "UserModel.h"
 
 using namespace boost;
 using namespace std;
@@ -20,12 +22,14 @@ struct DataStoreFixture
 {
 
 	DataStore store;
+	UserModel userModel;
 
 	DataStoreFixture()
-		: store (storeFolder)
+		: userModel (store, storeFolder)
 	{
 		::DeleteFile(storeFile);
-		store.LoadOrCreate(storeName);
+		userModel.SetCredentials(MockCredentialsModel(storeName, L""));
+		userModel.Load();
 	}
 };
 
@@ -41,9 +45,9 @@ bool FileExists(const wchar_t * path)
 FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"test-notebook");
-	store.AddNotebook(notebook);
+	userModel.AddNotebook(notebook);
 
-	store.AddNote
+	userModel.AddNote
 		( Note(Guid(), L"note-0", Timestamp(0))
 		, notebook
 		);
@@ -52,7 +56,7 @@ FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 
 	try
 	{
-		store.AddNote
+		userModel.AddNote
 			( Note(Guid(), L"note-1", Timestamp(1))
 			, fakeNotebook
 			);
@@ -66,29 +70,29 @@ FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 FIXTURE_TEST_CASE(TestDataStoreAddNotebook, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"test-notebook");
-	store.AddNotebook(notebook);
+	userModel.AddNotebook(notebook);
 
-	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 
 	try
 	{
-		store.AddNotebook(notebook);
+		userModel.AddNotebook(notebook);
 	}
 	catch (const std::exception & e)
 	{
 		TEST_CHECK_EQUAL(string(e.what()), "column guid is not unique");
 	}
 
-	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 }
 
 FIXTURE_TEST_CASE(TestDataStoreDefaultNotebook, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"test-notebook");
-	store.AddNotebook(notebook);
-	store.MakeNotebookDefault(notebook);
+	userModel.AddNotebook(notebook);
+	userModel.MakeNotebookDefault(notebook);
 
-	TEST_CHECK_EQUAL(store.GetDefaultNotebook().GetName(), L"test-notebook");
+	TEST_CHECK_EQUAL(userModel.GetDefaultNotebook().GetName(), L"test-notebook");
 }
 
 FIXTURE_TEST_CASE(TestDataStoreLastUsedNotebook, DataStoreFixture)
@@ -98,49 +102,55 @@ FIXTURE_TEST_CASE(TestDataStoreLastUsedNotebook, DataStoreFixture)
 	notebooks.push_back(Notebook(Guid(), L"notebook1"));
 	notebooks.push_back(Notebook(Guid(), L"notebook2"));
 	foreach (Notebook & notebook, notebooks)
-		store.AddNotebook(notebook);
-	store.MakeNotebookLastUsed(notebooks.at(1));
+		userModel.AddNotebook(notebook);
+	userModel.MakeNotebookLastUsed(notebooks.at(1));
 
-	TEST_CHECK_EQUAL(store.GetLastUsedNotebook().GetName(), L"notebook1");
+	TEST_CHECK_EQUAL(userModel.GetLastUsedNotebook().GetName(), L"notebook1");
 }
 
 AUTO_TEST_CASE(TestDataStoreLoadOrCreate)
 {
 	{
-		DataStore store(storeFolder);
+		DataStore store;
+		UserModel userModel(store, storeFolder);
+		userModel.SetCredentials(MockCredentialsModel(storeName, L""));
 
 		::DeleteFile(storeFile);
 		TEST_CHECK(!FileExists(storeFile));
-		store.LoadOrCreate(storeName);
+		userModel.Load();
 		TEST_CHECK(FileExists(storeFile));
 
-		TEST_CHECK_EQUAL(store.GetVersion(),       0);
-		TEST_CHECK_EQUAL(store.GetUser(),          storeName);
-		TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
+		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
+		TEST_CHECK_EQUAL(userModel.GetUser(),          storeName);
+		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
 
-		store.AddNotebook(Notebook(Guid(), L""));
+		userModel.AddNotebook(Notebook(Guid(), L""));
 	}
 	{
-		DataStore store(storeFolder);
-		store.LoadOrCreate(storeName);
+		DataStore store;
+		UserModel userModel(store, storeFolder);
+		userModel.SetCredentials(MockCredentialsModel(storeName, L""));
 
-		TEST_CHECK_EQUAL(store.GetVersion(),       0);
-		TEST_CHECK_EQUAL(store.GetUser(),          storeName);
-		TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
+		userModel.Load();
+
+		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
+		TEST_CHECK_EQUAL(userModel.GetUser(),          storeName);
+		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 	}
 }
 
 FIXTURE_TEST_CASE(TestDataStoreNotebooks, DataStoreFixture)
 {
-	store.AddNotebook(Notebook(Guid(), L"notebook1"));
-	store.AddNotebook(Notebook(Guid(), L"notebook0"));
-	store.AddNotebook(Notebook(Guid(), L"notebook2"));
+	userModel.AddNotebook(Notebook(Guid(), L"notebook1"));
+	userModel.AddNotebook(Notebook(Guid(), L"notebook0"));
+	userModel.AddNotebook(Notebook(Guid(), L"notebook2"));
 
-	const NotebookList & notebooks = store.GetNotebooks();
-	TEST_CHECK_EQUAL(notebooks.size(), 3);
-	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"notebook0");
-	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"notebook1");
-	TEST_CHECK_EQUAL(notebooks.at(2).GetName(), L"notebook2");
+	const NotebookList & notebooks = userModel.GetNotebooks();
+	TEST_CHECK_EQUAL(notebooks.size(), 4);
+	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"Notes");
+	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"notebook0");
+	TEST_CHECK_EQUAL(notebooks.at(2).GetName(), L"notebook1");
+	TEST_CHECK_EQUAL(notebooks.at(3).GetName(), L"notebook2");
 }
 
 FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
@@ -149,22 +159,22 @@ FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 	notebooks.push_back(Notebook(Guid(), L"notebook-0"));
 	notebooks.push_back(Notebook(Guid(), L"notebook-1"));
 	foreach (const Notebook & notebook, notebooks)
-		store.AddNotebook(notebook);
+		userModel.AddNotebook(notebook);
 
-	store.AddNote
+	userModel.AddNote
 		( Note(Guid(), L"note-0", Timestamp(0))
 		, notebooks.at(0)
 		);
-	store.AddNote
+	userModel.AddNote
 		( Note(Guid(), L"note-1", Timestamp(1))
 		, notebooks.at(1)
 		);
-	store.AddNote
+	userModel.AddNote
 		( Note(Guid(), L"note-2", Timestamp(2))
 		, notebooks.at(0)
 		);
 
-	const NoteList & notes = store.GetNotesByNotebook(notebooks.at(0));
+	const NoteList & notes = userModel.GetNotesByNotebook(notebooks.at(0));
 	TEST_CHECK_EQUAL(notes.size(), 2);
 	TEST_CHECK_EQUAL(notes.at(0).GetTitle(), L"note-0");
 	TEST_CHECK_EQUAL(notes.at(1).GetTitle(), L"note-2");
@@ -173,23 +183,23 @@ FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 FIXTURE_TEST_CASE(TestDataStoreNotesBySearch, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"notebook");
-	store.AddNotebook(notebook);
+	userModel.AddNotebook(notebook);
 
-	store.AddNote
+	userModel.AddNote
 		( Note(Guid(), L"useful software", Timestamp(0))
 		, notebook
 		);
-	store.AddNote
+	userModel.AddNote
 		( Note(Guid(), L"software use", Timestamp(1))
 		, notebook
 		);
 
-	const NoteList & notes0 = store.GetNotesBySearch(L"software");
+	const NoteList & notes0 = userModel.GetNotesBySearch(L"software");
 	TEST_CHECK_EQUAL(notes0.size(), 2);
 	TEST_CHECK_EQUAL(notes0.at(0).GetTitle(), L"useful software");
 	TEST_CHECK_EQUAL(notes0.at(1).GetTitle(), L"software use");
 
-	const NoteList & notes1 = store.GetNotesBySearch(L"use");
+	const NoteList & notes1 = userModel.GetNotesBySearch(L"use");
 	TEST_CHECK_EQUAL(notes1.size(), 1);
 	TEST_CHECK_EQUAL(notes1.at(0).GetTitle(), L"software use");
 }

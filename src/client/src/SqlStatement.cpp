@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SqlStatement.h"
 
+#include "IDataStore.h"
 #include "Tools.h"
 
 #include "SQLite/sqlite3.h"

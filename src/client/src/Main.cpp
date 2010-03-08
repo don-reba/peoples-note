@@ -81,12 +81,12 @@ int WINAPI WinMain(HINSTANCE instance,
 	try
 	{
 		RegistryKey registryKey;
-		DataStore   dataStore(GetDocumentPath());
+		DataStore   dataStore;
 		EnImporter  enImporter;
 
 		LastUserModel lastUserModel(registryKey);
 		NoteListModel noteListModel;
-		UserModel     userModel(dataStore);
+		UserModel     userModel(dataStore, GetDocumentPath());
 
 		NoteListView noteListView(instance, nCmdShow);
 

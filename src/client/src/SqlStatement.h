@@ -18,6 +18,10 @@ public:
 
 	~SqlStatement();
 
+// ISqlStatement implementation
+
+public:
+
 	virtual bool Execute();
 
 	virtual void Bind(int index, __int32      n);

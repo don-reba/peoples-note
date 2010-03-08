@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(UserLoader_DefaultUser_Test)
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
 	MockNoteListView  noteListView;
-	UserLoader(userModel, lastUserModel, noteListView);
+	UserLoader userLoader(userModel, lastUserModel, noteListView);
 
 	noteListView.SignalCreated();
 
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(UserLoader_Test)
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
 	MockNoteListView  noteListView;
-	UserLoader(userModel, lastUserModel, noteListView);
+	UserLoader userLoader(userModel, lastUserModel, noteListView);
 
 	lastUserModel.credentialsModel.username = L"test-usr";
 	lastUserModel.credentialsModel.password = L"test-pwd";
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(UserLoader_NoPassword_Test)
 	MockUserModel     userModel;
 	MockLastUserModel lastUserModel;
 	MockNoteListView  noteListView;
-	UserLoader(userModel, lastUserModel, noteListView);
+	UserLoader userLoader(userModel, lastUserModel, noteListView);
 
 	lastUserModel.credentialsModel.username = L"test-usr";
 	lastUserModel.credentialsModel.password = L"";

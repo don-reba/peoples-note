@@ -579,7 +579,7 @@ data interface revamp
 				can either get it directly from user model
 				or cache it
 					can store the reference
-						can't change references
+						can't switch references
 						store a pointer
 					but then initialize it with an empty
 					have to store the empty, as well, then
@@ -605,6 +605,10 @@ data interface revamp
 		thin database and statement wrappers are easier to test
 			user model can then be properly tested on PC
 			also avoiding untested private methods
-database naming
-	user names might contain invalid characters
-		TODO
+database use testing
+	mock database can't evaluate SQL
+	might be better to just use the real database
+	then I will need a real database whenever I involve UserModel
+		for almost all tests, that is
+	but, no; I can use MockUserModel instead
+	test only UserModel itself with the mobile test suite

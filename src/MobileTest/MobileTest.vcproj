@@ -380,6 +380,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\client\src\CredentialsModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\DataStore.cpp"
 				>
 			</File>
@@ -389,6 +393,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MobileTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Test\src\MockCredentialsModel.cpp"
 				>
 			</File>
 			<File
@@ -452,11 +460,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\TestDataStore.cpp"
+				RelativePath=".\src\TestTools.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\TestTools.cpp"
+				RelativePath=".\src\TestUserModel.cpp"
 				>
 			</File>
 			<File
@@ -465,6 +473,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Tools.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\UserModel.cpp"
 				>
 			</File>
 		</Filter>

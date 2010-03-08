@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
 	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
 
-	userModel.Loaded();
+	userModel.SignalLoaded();
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
 	userModel.notebooks.push_back(Notebook(Guid(), L"notebook-0"));
 	userModel.notebooks.push_back(Notebook(Guid(), L"notebook-1"));
 
-	userModel.Loaded();
+	userModel.SignalLoaded();
 
 	BOOST_REQUIRE_EQUAL(noteListView.notebooks.size(), 2);
 	BOOST_CHECK_EQUAL(noteListView.notebooks.at(0), L"notebook-0");

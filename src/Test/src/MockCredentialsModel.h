@@ -11,6 +11,11 @@ public:
 
 public:
 
+	MockCredentialsModel
+		( std::wstring username
+		, std::wstring password
+		);
+
 	virtual ICredentialsModel & operator =
 		( const ICredentialsModel & credentials
 		);

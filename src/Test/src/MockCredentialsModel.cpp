@@ -1,6 +1,17 @@
 #include "stdafx.h"
 #include "MockCredentialsModel.h"
 
+using namespace std;
+
+MockCredentialsModel::MockCredentialsModel
+	( wstring username
+	, wstring password
+	)
+	: username (username)
+	, password (password)
+{
+}
+
 ICredentialsModel & MockCredentialsModel::operator =
 	( const ICredentialsModel & credentials
 	)
