@@ -3,6 +3,7 @@
 
 #include "Note.h"
 #include "Notebook.h"
+#include "SqlStatement.h"
 #include "Tools.h"
 
 #include <map>
@@ -29,14 +30,19 @@ DataStore::~DataStore()
 
 Notebook & DataStore::GetDefaultNotebook()
 {
-	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks WHERE isDefault = 1 LIMIT 1");
+	SqlStatement statement
+		( db
+		, "SELECT guid, name"
+		"  FROM Notebooks"
+		"  WHERE isDefault = 1 LIMIT 1"
+		);
 
-	if (ExecuteStatement(statement))
+	if (statement.Execute())
 		throw std::exception("No default notebook.");
-	wstring guid(GetColumnText(statement, 0));
-	wstring name(GetColumnText(statement, 1));
-
-	CloseStatement(statement);
+	wstring guid;
+	wstring name;
+	statement.Get(0, guid);
+	statement.Get(1, name);
 
 	defaultNotebook = make_shared<Notebook>(guid, name);
 	return *defaultNotebook;
@@ -58,109 +64,133 @@ int DataStore::GetVersion()
 
 void DataStore::AddNote(const Note & note, const Notebook & notebook)
 {
-	{
-		sqlite3_stmt * statement = PrepareStatement("INSERT INTO NoteContents(title) VALUES (?)");
-		BindText(statement, note.GetTitle(), 1);
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
-	{
-		sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notes(guid, creationDate, content, notebook) VALUES (?, ?, ?, ?)");
-		BindText (statement, note.GetGuid(),                   1);
-		BindInt  (statement, note.GetCreationDate().GetTime(), 2);
-		BindInt  (statement, GetLastInsertRowid(),             3);
-		BindText (statement, notebook.GetGuid(),               4);
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
+	SqlStatement insertContents
+		( db
+		, "INSERT INTO NoteContents(title) VALUES (?)"
+		);
+	insertContents.Bind(1, note.GetTitle());
+	insertContents.Execute();
+
+	SqlStatement insertInfo
+		( db
+		, "INSERT INTO Notes(guid, creationDate, content, notebook)"
+		"  VALUES (?, ?, ?, ?)"
+		);
+	insertInfo.Bind(1, note.GetGuid());
+	insertInfo.Bind(2, note.GetCreationDate().GetTime());
+	insertInfo.Bind(3, GetLastInsertRowid());
+	insertInfo.Bind(4, notebook.GetGuid());
+	insertInfo.Execute();
 }
 
 void DataStore::AddNotebook(const Notebook & notebook)
 {
-	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notebooks(guid, name, isDefault, isLastUsed) VALUES (?, ?, 0, 0)");
-	BindText(statement, notebook.GetGuid(), 1);
-	BindText(statement, notebook.GetName(), 2);
-	ExecuteStatement(statement);
-	CloseStatement(statement); // TODO: handle exception
+	SqlStatement statement
+		( db
+		, "INSERT INTO Notebooks(guid, name, isDefault, isLastUsed)"
+		"  VALUES (?, ?, 0, 0)"
+		);
+	statement.Bind(1, notebook.GetGuid());
+	statement.Bind(2, notebook.GetName());
+	statement.Execute();
 }
 
 Notebook & DataStore::GetLastUsedNotebook()
 {
-	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks WHERE isLastUsed = 1 LIMIT 1");
-
-	if (ExecuteStatement(statement))
+	SqlStatement statement
+		( db
+		, "SELECT guid, name"
+		"  FROM Notebooks"
+		"  WHERE isLastUsed = 1"
+		"  LIMIT 1"
+		);
+	if (statement.Execute())
 		throw std::exception("No last used notebook.");
-	wstring guid(GetColumnText(statement, 0));
-	wstring name(GetColumnText(statement, 1));
-
-	CloseStatement(statement);
-
+	wstring guid;
+	wstring name;
+	statement.Get(0, guid);
+	statement.Get(1, name);
 	defaultNotebook = make_shared<Notebook>(guid, name);
 	return *defaultNotebook;
 }
 
 int DataStore::GetNotebookCount()
 {
-	sqlite3_stmt * statement = PrepareStatement("SELECT COUNT(*) FROM Notebooks");
-	ExecuteStatement(statement);
-	int count = GetColumnInt(statement, 0);
-	CloseStatement(statement);
+	SqlStatement statement
+		( db
+		, "SELECT COUNT(*)"
+		"  FROM Notebooks"
+		);
+	statement.Execute();
+	int count(0);
+	statement.Get(0, count);
 	return count;
 }
 
 const NotebookList & DataStore::GetNotebooks()
 {
-	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks ORDER BY name");
+	SqlStatement statement
+		( db
+		, "SELECT guid, name"
+		"  FROM Notebooks"
+		"  ORDER BY name"
+		);
 	notebooks.clear();
-	while (!ExecuteStatement(statement))
+	while (!statement.Execute())
 	{
-		wstring guid(GetColumnText(statement, 0));
-		wstring name(GetColumnText(statement, 1));
+		wstring guid;
+		wstring name;
+		statement.Get(0, guid);
+		statement.Get(1, name);
 		notebooks.push_back(Notebook(guid, name));
 	}
-	CloseStatement(statement);
 	return notebooks;
 }
 
 const NoteList & DataStore::GetNotesByNotebook(const Notebook & notebook)
 {
-	sqlite3_stmt * statement = PrepareStatement
-		( "SELECT guid, title, creationDate"
-			" FROM Notes, NoteContents"
-			" WHERE content = docid AND notebook = ?"
-			" ORDER BY creationDate"
+	SqlStatement statement
+		( db
+		, "SELECT guid, title, creationDate"
+		"  FROM Notes, NoteContents"
+		"  WHERE content = docid AND notebook = ?"
+		"  ORDER BY creationDate"
 		);
-	BindText(statement, notebook.GetGuid(), 1);
-	notes.clear();
-	while (!ExecuteStatement(statement))
+	statement.Bind(1, notebook.GetGuid());
+	while (!statement.Execute())
 	{
-		Guid    guid         (GetColumnText (statement, 0));
-		wstring title        (GetColumnText (statement, 1));
-		int     creationDate (GetColumnInt  (statement, 2));
-		notes.push_back(Note(guid, title, Timestamp(creationDate)));
+		string  guid;
+		wstring title;
+		int     creationDate;
+		statement.Get(0, guid);
+		statement.Get(1, title);
+		statement.Get(2, creationDate);
+		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate)));
 	}
-	CloseStatement(statement);
 	return notes;
 }
 
 const NoteList & DataStore::GetNotesBySearch(wstring search)
 {
-	sqlite3_stmt * statement = PrepareStatement
-		( "SELECT guid, title, creationDate"
-			" FROM Notes, NoteContents"
-			" WHERE content = docid AND NoteContents MATCH ?"
-			" ORDER BY creationDate"
-			);
-	BindText(statement, search, 1);
+	SqlStatement statement
+		( db
+		, "SELECT guid, title, creationDate"
+		"  FROM Notes, NoteContents"
+		"  WHERE content = docid AND NoteContents MATCH ?"
+		"  ORDER BY creationDate"
+		);
+	statement.Bind(1, search);
 	notes.clear();
-	while (!ExecuteStatement(statement))
+	while (!statement.Execute())
 	{
-		Guid    guid         (GetColumnText (statement, 0));
-		wstring title        (GetColumnText (statement, 1));
-		int     creationDate (GetColumnInt  (statement, 2));
-		notes.push_back(Note(guid, title, Timestamp(creationDate)));
+		string  guid;
+		wstring title;
+		int     creationDate;
+		statement.Get(0, guid);
+		statement.Get(1, title);
+		statement.Get(2, creationDate);
+		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate)));
 	}
-	CloseStatement(statement);
 	return notes;
 }
 
@@ -181,36 +211,42 @@ void DataStore::LoadOrCreate(wstring name)
 
 void DataStore::MakeNotebookDefault(const Notebook & notebook)
 {
-	// remove old
-	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isDefault = 0 WHERE isDefault = 1");
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
-	// set new
-	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isDefault = 1 WHERE guid = ?");
-		BindText(statement, notebook.GetGuid(), 1);
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
+	SqlStatement removeOld
+		( db
+		, "UPDATE Notebooks"
+		"  SET isDefault = 0"
+		"  WHERE isDefault = 1"
+		);
+	removeOld.Execute();
+
+	SqlStatement setNew
+		( db
+		, "UPDATE Notebooks"
+		"  SET isDefault = 1"
+		"  WHERE guid = ?"
+		);
+	setNew.Bind(1, notebook.GetGuid());
+	setNew.Execute();
 }
 
 void DataStore::MakeNotebookLastUsed(const Notebook & notebook)
 {
-	// remove old
-	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 0 WHERE isLastUsed = 1");
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
-	// set new
-	{
-		sqlite3_stmt * statement = PrepareStatement("UPDATE Notebooks SET isLastUsed = 1 WHERE guid = ?");
-		BindText(statement, notebook.GetGuid(), 1);
-		ExecuteStatement(statement);
-		CloseStatement(statement);
-	}
+	SqlStatement removeOld
+		( db
+		, "UPDATE Notebooks"
+		"  SET isLastUsed = 0"
+		"  WHERE isLastUsed = 1"
+		);
+	removeOld.Execute();
+
+	SqlStatement setNew
+		( db
+		, "UPDATE Notebooks"
+		"  SET isLastUsed = 1"
+		"  WHERE guid = ?"
+		);
+	setNew.Bind(1, notebook.GetGuid());
+	setNew.Execute();
 }
 
 //------------------
@@ -219,11 +255,13 @@ void DataStore::MakeNotebookLastUsed(const Notebook & notebook)
 
 void DataStore::AddProperty(wstring key, wstring value)
 {
-	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Properties VALUES (?, ?)");
-	BindText(statement, key,   1);
-	BindText(statement, value, 2);
-	ExecuteStatement(statement);
-	CloseStatement(statement);
+	SqlStatement statement
+		( db
+		, "INSERT INTO Properties VALUES (?, ?)"
+		);
+	statement.Bind(1, key);
+	statement.Bind(2, value);
+	statement.Execute();
 }
 
 void DataStore::Create()
@@ -257,9 +295,8 @@ wstring DataStore::CreatePathFromName(wstring name)
 
 void DataStore::CreateTable(const char * sql)
 {
-	sqlite3_stmt * statement = PrepareStatement(sql);
-	ExecuteStatement(statement);
-	CloseStatement(statement);
+	SqlStatement statement(db, sql);
+	statement.Execute();
 }
 
 void DataStore::Disconnect()
@@ -272,17 +309,18 @@ void DataStore::Disconnect()
 
 std::wstring DataStore::GetProperty(std::wstring key)
 {
-	sqlite3_stmt * statement = PrepareStatement
-		( "SELECT value FROM Properties WHERE key = ? LIMIT 1"
+	SqlStatement statement
+		( db
+		, "SELECT value"
+		"  FROM Properties"
+		"  WHERE key = ?"
+		"  LIMIT 1"
 		);
-	BindText(statement, key, 1);
-
-	if (ExecuteStatement(statement))
+	statement.Bind(1, key);
+	if (statement.Execute())
 		throw std::exception("Property not found.");
-	wstring value(GetColumnText(statement, 0));
-
-	CloseStatement(statement);
-
+	wstring value;
+	statement.Get(0, value);
 	return value;
 }
 
@@ -323,6 +361,12 @@ void DataStore::Initialize(wstring name)
 		);
 }
 
+void DataStore::SetPragma(const char * sql)
+{
+	SqlStatement statement(db, sql);
+	statement.Execute();
+}
+
 bool DataStore::TryLoad()
 {
 	assert(db == NULL);
@@ -348,95 +392,7 @@ bool DataStore::TryLoad()
 // SQLite wrappers
 //----------------
 
-sqlite3_stmt * DataStore::PrepareStatement(const char * sql)
-{
-	sqlite3_stmt * statement = NULL;
-	int result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
-	if (result != SQLITE_OK)
-		throw std::exception(sqlite3_errmsg(db));
-	return statement;
-}
-
-void DataStore::BindInt(sqlite3_stmt * statement, __int64 n, int index)
-{
-	int result = sqlite3_bind_int64(statement, index, n);
-	if (result != SQLITE_OK)
-		throw std::exception(sqlite3_errmsg(db));
-}
-
-void DataStore::BindText
-	( sqlite3_stmt * statement
-	, std::string    text
-	, int            index
-	)
-{
-	int result = sqlite3_bind_text
-		( statement
-		, index
-		, text.c_str()
-		, text.size()
-		, SQLITE_TRANSIENT
-		);
-	if (result != SQLITE_OK)
-		throw std::exception(sqlite3_errmsg(db));
-}
-
-void DataStore::BindText
-	( sqlite3_stmt * statement
-	, std::wstring   text
-	, int            index
-	)
-{
-	vector<unsigned char> utf8Text = ConvertToUtf8(text);
-	const char * textPointer
-		= utf8Text.empty()
-		? ""
-		: reinterpret_cast<const char*>(&utf8Text[0])
-		;
-	int result = sqlite3_bind_text
-		( statement
-		, index
-		, textPointer
-		, utf8Text.size()
-		, SQLITE_TRANSIENT
-		);
-	if (result != SQLITE_OK)
-		throw std::exception(sqlite3_errmsg(db));
-}
-
-bool DataStore::ExecuteStatement(sqlite3_stmt * statement)
-{
-	int result = sqlite3_step(statement);
-	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
-		throw std::exception(sqlite3_errmsg(db));
-	return result == SQLITE_DONE;
-}
-
-int DataStore::GetColumnInt(sqlite3_stmt * statement, int index)
-{
-	return sqlite3_column_int(statement, index);
-}
-
-wstring DataStore::GetColumnText(sqlite3_stmt * statement, int index)
-{
-	return ConvertToUnicode(sqlite3_column_text(statement, index));
-}
-
-void DataStore::CloseStatement(sqlite3_stmt * statement)
-{
-	int result = sqlite3_finalize(statement);
-	if (result != SQLITE_OK)
-		throw std::exception(sqlite3_errmsg(db));
-}
-
 __int64 DataStore::GetLastInsertRowid()
 {
 	return sqlite3_last_insert_rowid(db);
-}
-
-void DataStore::SetPragma(const char * sql)
-{
-	sqlite3_stmt * statement = PrepareStatement(sql);
-	ExecuteStatement(statement);
-	CloseStatement(statement);
 }

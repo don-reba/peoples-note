@@ -467,6 +467,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\SqlStatement.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -605,6 +609,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ISqlStatement.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\IUserModel.h"
 				>
 			</File>
@@ -646,6 +654,10 @@
 			</File>
 			<File
 				RelativePath=".\src\SQLite\sqlite3.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SqlStatement.h"
 				>
 			</File>
 			<File

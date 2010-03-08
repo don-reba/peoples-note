@@ -412,6 +412,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\client\src\SqlStatement.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -470,19 +474,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\client\src\DataStore.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\foreach.h"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\Note.h"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\Notebook.h"
 				>
 			</File>
 			<File
@@ -503,14 +495,6 @@
 			</File>
 			<File
 				RelativePath=".\src\Test.h"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\Timestamp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\Tools.h"
 				>
 			</File>
 		</Filter>
