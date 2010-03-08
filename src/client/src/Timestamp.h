@@ -1,10 +1,8 @@
 #pragma once
 
-#include "ITimestamp.h"
-
 #include <windows.h>
 
-class Timestamp : public ITimestamp
+class Timestamp
 {
 private:
 	
@@ -12,11 +10,9 @@ private:
 
 public:
 
-	Timestamp();
-
 	Timestamp(time_t unixTime);
 
-	virtual std::wstring GetFormattedDateTime() const;
+	std::wstring GetFormattedDateTime() const;
 
-	virtual __int64 GetTime() const;
+	__int64 GetTime() const;
 };

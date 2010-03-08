@@ -1,18 +1,18 @@
 #pragma once
 
 #include "IEnImporter.h"
-#include "MockNote.h"
+#include "Note.h"
 
 class MockEnImporter : public IEnImporter
 {
 public:
 
-	std::vector<MockNote> notes;
+	std::vector<Note> notes;
 
 public:
 
 	virtual void ImportNotes
-		( std::wistream            & stream
-		, boost::ptr_vector<INote> & notes
+		( std::wistream & stream
+		, NoteList      & notes
 		);
 };

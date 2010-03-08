@@ -14,12 +14,12 @@ void MockNoteListModel::ConnectChanged(slot_type OnReset)
 	SignalReset.connect(OnReset);
 }
 
-ptr_vector<INote> & MockNoteListModel::GetNotes()
+const NoteList & MockNoteListModel::GetNotes()
 {
 	return notes;
 }
 
-void MockNoteListModel::SetNotes(ptr_vector<INote> & notes)
+void MockNoteListModel::SetNotes(const NoteList & notes)
 {
-	this->notes = notes.release();
+	this->notes = notes;
 }

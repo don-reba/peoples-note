@@ -1,27 +1,40 @@
 #pragma once
 
-#include "INote.h"
+#include "Guid.h"
+#include "Tag.h"
 #include "Timestamp.h"
 
-class Note : public INote
+class Note
 {
 private:
 
 	Guid         guid;
 	Timestamp    creationDate;
 	std::wstring title;
-
-	boost::ptr_vector<ITag> tags;
+	TagList      tags;
 
 public:
 
-	Note(Guid guid, std::wstring title, const Timestamp & creationDate);
+	Note
+		( Guid         guid
+		, std::wstring title
+		, Timestamp    creationDate
+		);
 
-	virtual Guid GetGuid() const;
+	Note
+		( Guid            guid
+		, std::wstring    title
+		, Timestamp       creationDate
+		, const TagList & tags
+		);
 
-	virtual std::wstring GetTitle() const;
+	Guid GetGuid() const;
 
-	virtual std::vector<const ITag*> GetTags() const;
+	std::wstring GetTitle() const;
 
-	virtual const ITimestamp & GetCreationDate() const;
+	const TagList & GetTags() const;
+
+	const Timestamp & GetCreationDate() const;
 };
+
+typedef std::vector<Note> NoteList;

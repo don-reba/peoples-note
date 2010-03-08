@@ -219,14 +219,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\MockNote.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockNotebook.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\MockNoteListModel.cpp"
 				>
 			</File>
@@ -236,14 +228,6 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockTag.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockTimestamp.cpp"
 				>
 			</File>
 			<File
@@ -285,6 +269,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\client\src\Tag.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\src\TestCredentialsModel.cpp"
@@ -413,14 +401,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\MockNote.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockNotebook.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\MockNoteListModel.h"
 				>
 			</File>
@@ -430,14 +410,6 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockTag.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockTimestamp.h"
 				>
 			</File>
 			<File
@@ -462,6 +434,10 @@
 			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\Tag.h"
 				>
 			</File>
 			<File

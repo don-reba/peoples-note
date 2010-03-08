@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "NoteListPresenter.h"
 
-#include "INotebook.h"
+#include "Notebook.h"
 
 #include <sstream>
 
@@ -23,9 +23,9 @@ NoteListPresenter::NoteListPresenter
 
 void NoteListPresenter::OnNoteListChanged()
 {
-	const ptr_vector<INote> & notes = noteListModel.GetNotes();
+	const NoteList & notes = noteListModel.GetNotes();
 	noteListView.ClearNotes();
-	foreach (const INote & note, notes)
+	foreach (const Note & note, notes)
 		noteListView.AddNote(ConvertToHtml(note));
 	noteListView.UpdateNotes();
 }
@@ -33,16 +33,15 @@ void NoteListPresenter::OnNoteListChanged()
 void NoteListPresenter::OnUserLoaded()
 {
 	noteListView.ClearNotebooks();
-	const ptr_vector<INotebook> & notebooks = userModel.GetNotebooks();
-	foreach (const INotebook & notebook, notebooks)
+	const NotebookList & notebooks = userModel.GetNotebooks();
+	foreach (const Notebook & notebook, notebooks)
 		noteListView.AddNotebook(notebook.GetName());
 	noteListView.UpdateNotebooks();
 
-	ptr_vector<INote> & notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
-	noteListModel.SetNotes(notes);
+	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
 }
 
-wstring NoteListPresenter::ConvertToHtml(const INote & note)
+wstring NoteListPresenter::ConvertToHtml(const Note & note)
 {
 	wostringstream stream;
 	stream << L"<table><tr><td rowspan=\"3\">";
@@ -61,21 +60,21 @@ wstring NoteListPresenter::FormatTitle(const wstring & title)
 	return EscapeHtml(title);
 }
 
-wstring NoteListPresenter::FormatTags(const vector<const ITag*> & tags)
+wstring NoteListPresenter::FormatTags(const TagList & tags)
 {
 	wostringstream stream;
 	bool first = true;
-	foreach (const ITag * tag, tags)
+	foreach (const Tag & tag, tags)
 	{
 		if (!first)
 			stream << L", ";
 		first = false;
-		stream << EscapeHtml(tag->GetName());
+		stream << EscapeHtml(tag.GetName());
 	}
 	return stream.str();
 }
 
-wstring NoteListPresenter::FormatDate(const ITimestamp &timestamp)
+wstring NoteListPresenter::FormatDate(const Timestamp &timestamp)
 {
 	return EscapeHtml(timestamp.GetFormattedDateTime());
 }

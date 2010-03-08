@@ -1,24 +1,28 @@
 #include "stdafx.h"
 #include "NoteListModel.h"
 
-#include "INote.h"
+#include "Note.h"
 
 using namespace boost;
 using namespace std;
+
+NoteListModel::NoteListModel()
+	: notes (&empty)
+{
+}
 
 void NoteListModel::ConnectChanged(slot_type OnReset)
 {
 	SignalChanged.connect(OnReset);
 }
 
-ptr_vector<INote> & NoteListModel::GetNotes()
+const NoteList & NoteListModel::GetNotes()
 {
-	return notes;
+	return *notes;
 }
 
-void NoteListModel::SetNotes(ptr_vector<INote> & notes)
+void NoteListModel::SetNotes(const NoteList & notes)
 {
-	int count = notes.size();
-	this->notes = notes.release();
+	this->notes = &notes;
 	SignalChanged();
 }

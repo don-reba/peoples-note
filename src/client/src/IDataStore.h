@@ -1,7 +1,7 @@
 #pragma once
 
-class INote;
-class INotebook;
+#include "Note.h"
+#include "Notebook.h"
 
 class IDataStore
 {
@@ -10,29 +10,29 @@ public:
 	virtual ~IDataStore() {}
 
 	virtual void AddNote
-		( const INote     & note
-		, const INotebook & notebook
+		( const Note     & note
+		, const Notebook & notebook
 		) = 0;
 
-	virtual void AddNotebook(const INotebook & notebook) = 0;
+	virtual void AddNotebook(const Notebook & notebook) = 0;
 
-	virtual INotebook & GetLastUsedNotebook() = 0;
+	virtual Notebook & GetLastUsedNotebook() = 0;
 
 	virtual int GetNotebookCount() = 0;
 
-	virtual boost::ptr_vector<INotebook> & GetNotebooks() = 0;
+	virtual const NotebookList & GetNotebooks() = 0;
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook
-		( const INotebook & notebook
+	virtual const NoteList & GetNotesByNotebook
+		( const Notebook & notebook
 		) = 0;
 
-	virtual boost::ptr_vector<INote> & GetNotesBySearch
+	virtual const NoteList & GetNotesBySearch
 		( std::wstring search
 		) = 0;
 
 	virtual void LoadOrCreate(std::wstring name) = 0;
 
-	virtual void MakeNotebookDefault(const INotebook & notebook) = 0;
+	virtual void MakeNotebookDefault(const Notebook & notebook) = 0;
 
-	virtual void MakeNotebookLastUsed(const INotebook & notebook) = 0;
+	virtual void MakeNotebookLastUsed(const Notebook & notebook) = 0;
 };

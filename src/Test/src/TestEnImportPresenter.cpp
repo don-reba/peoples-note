@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "MockEnImporter.h"
-#include "MockNote.h"
+#include "Note.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
@@ -26,16 +26,12 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test0)
 		, userModel
 		);
 
-	noteListModel.notes.push_back
-		( new MockNote(Guid(), L"note-0", MockTimestamp(L"", 0))
-		);
+	noteListModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
 
-	vector<MockNote> notes;
-	notes.push_back(MockNote(Guid(), L"note-1", MockTimestamp(L"", 1)));
-	notes.push_back(MockNote(Guid(), L"note-2", MockTimestamp(L"", 2)));
-	copy(notes.begin(), notes.end(), back_inserter(enImporter.notes));
+	enImporter.notes.push_back(Note(Guid(), L"note-1", Timestamp(1)));
+	enImporter.notes.push_back(Note(Guid(), L"note-2", Timestamp(2)));
 
-	userModel.lastUsedNotebook = MockNotebook(L"notebook");
+	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
 
 	noteListView.hasEnexPath = true;
 	noteListView.enexPath    = L"data\\Mixed.enex";
@@ -68,12 +64,10 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test1)
 		, userModel
 		);
 
-	vector<MockNote> notes;
-	notes.push_back(MockNote(Guid(), L"note-0", MockTimestamp()));
-	notes.push_back(MockNote(Guid(), L"note-1", MockTimestamp()));
-	copy(notes.begin(), notes.end(), back_inserter(enImporter.notes));
+	enImporter.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
+	enImporter.notes.push_back(Note(Guid(), L"note-1", Timestamp(1)));
 
-	userModel.lastUsedNotebook = MockNotebook(L"notebook");
+	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
 
 	noteListView.hasEnexPath = false;
 	noteListView.enexPath    = L"test-path";

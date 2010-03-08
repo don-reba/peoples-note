@@ -1,22 +1,22 @@
 #pragma once
 
 #include "IDataStore.h"
-#include "MockNote.h"
-#include "MockNotebook.h"
+#include "Note.h"
+#include "Notebook.h"
 
 class MockDataStore : public IDataStore
 {
 public:
 
 	std::wstring name;
-	MockNotebook defaultNotebook;
-	MockNotebook lastUsedNotebook;
+	Notebook     defaultNotebook;
+	Notebook     lastUsedNotebook;
 
-	boost::ptr_vector<INotebook> notebooks;
-	boost::ptr_vector<INote>     notesByNotebook;
-	boost::ptr_vector<INote>     notesBySearch;
+	NotebookList notebooks;
+	NoteList     notesByNotebook;
+	NoteList     notesBySearch;
 
-	MockNotebook getNotesByNotebookNotebook;
+	Notebook     getNotesByNotebookNotebook;
 	std::wstring getNotesBySearchSearch;
 
 	typedef std::pair<std::wstring, std::wstring> AddedNote;
@@ -24,30 +24,32 @@ public:
 
 public:
 
+	MockDataStore();
+
 	virtual void AddNote
-		( const INote     & note
-		, const INotebook & notebook
+		( const Note     & note
+		, const Notebook & notebook
 		);
 
-	virtual void AddNotebook(const INotebook & notebook);
+	virtual void AddNotebook(const Notebook & notebook);
 
-	virtual INotebook & GetLastUsedNotebook();
+	virtual Notebook & GetLastUsedNotebook();
 
 	virtual int GetNotebookCount();
 
-	virtual boost::ptr_vector<INotebook> & GetNotebooks();
+	virtual const NotebookList & GetNotebooks();
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook
-		( const INotebook & notebook
+	virtual const NoteList & GetNotesByNotebook
+		( const Notebook & notebook
 		);
 
-	virtual boost::ptr_vector<INote> & GetNotesBySearch
+	virtual const NoteList & GetNotesBySearch
 		( std::wstring search
 		);
 
 	virtual void LoadOrCreate(std::wstring name);
 
-	virtual void MakeNotebookDefault(const INotebook & notebook);
+	virtual void MakeNotebookDefault(const Notebook & notebook);
 
-	virtual void MakeNotebookLastUsed(const INotebook & notebook);
+	virtual void MakeNotebookLastUsed(const Notebook & notebook);
 };

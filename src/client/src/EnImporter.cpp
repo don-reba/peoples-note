@@ -15,8 +15,8 @@ using namespace std;
 using namespace Tools;
 
 void EnImporter::ImportNotes
-	( wistream          & stream
-	, ptr_vector<INote> & notes
+	( wistream & stream
+	, NoteList & notes
 	)
 {
 	vector<wchar_t> text
@@ -58,7 +58,7 @@ void EnImporter::ImportNotes
 			}
 
 			Timestamp timestamp = Timestamp(ParseTime(created));
-			notes.push_back(new Note(Guid(), title, timestamp));
+			notes.push_back(Note(Guid(), title, timestamp));
 
 			node = node->next_sibling();
 		}

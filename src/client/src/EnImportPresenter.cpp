@@ -36,11 +36,11 @@ void EnImportPresenter::OnImport()
 	if (!file.is_open())
 		throw std::exception("File could not be opened.");
 
-	ptr_vector<INote> notes;
+	NoteList notes;
 	enImporter.ImportNotes(file, notes);
 
-	const INotebook & notebook = userModel.GetLastUsedNotebook();
-	foreach (const INote & note, notes)
+	const Notebook & notebook = userModel.GetLastUsedNotebook();
+	foreach (const Note & note, notes)
 		userModel.AddNote(note, notebook);
 
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(notebook));

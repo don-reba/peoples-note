@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SearchPresenter.h"
 
-#include "INotebook.h"
+#include "Notebook.h"
 
 using namespace boost;
 using namespace std;
@@ -29,8 +29,7 @@ void SearchPresenter::OnSearch()
 
 void SearchPresenter::ResetNotes()
 {
-	ptr_vector<INote> & notes = userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook());
-	noteListModel.SetNotes(notes);
+	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
 }
 
 void SearchPresenter::SearchNotes(wstring search)

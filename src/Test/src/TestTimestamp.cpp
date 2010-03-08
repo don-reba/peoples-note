@@ -6,7 +6,7 @@ using namespace std;
 
 BOOST_AUTO_TEST_CASE(Timestamp_GetFormattedDateTime_Test1)
 {
-	Timestamp timestamp;
+	Timestamp timestamp(0);
 	BOOST_CHECK_EQUAL
 		( timestamp.GetFormattedDateTime()
 		, L"1970-01-01 00:00"

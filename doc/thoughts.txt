@@ -517,7 +517,7 @@ data store initialization
 		has correct version
 	it is better not to try handling invalid databases
 		what about db creation errors?
-			TODO
+			up to ACID to handle
 note import
 	EnImporter needs to allocate notes
 	no need to have them live outside OnImport handler
@@ -534,4 +534,77 @@ SQLite wrapper
 	need to destroy statements automatically
 note list design
 	need to set overflow for titles etc
+		TODO
+data interface revamp
+	is there a need for INote, INotebook, ITimestamp, or ITag?
+		they contain no complicated logic that might need to be mocked
+		removing them would cut down the number of classes by 12
+		what if I decided to add complicated logic later?
+			like, connect them to the database
+			seems like a bad idea even without the class overhead
+	how should these objects be passed around?
+		constraints
+			avoid copies
+				create a list of content
+				pass it to the end consumer
+				without caching
+			single-threaded
+			notes can be imported
+			note info used for note list display
+			note info can be edited
+			note content displayed occasionally
+			note content can be edited
+			can filter by tags
+			can rename notebooks
+			can change default notebook
+			can change last used notebook
+		note list view does not have to store notes
+			can store query
+		currently
+			query database
+			cache the result in the note list model
+			get results from this cache for the view
+		alternatively
+			store query in the note list model
+			query database by note list model
+			pass results directly to the view
+		database queries can be stored by either value or pointer
+			std::vector or boost::ptr_vector
+			we no longer use interfaces for data
+			so, no use for ptr_vector
+		implementation
+			database query functions return (const vector &)
+			note list model returns (const vector &)
+				where does it get it from?
+				can either get it directly from user model
+				or cache it
+					can store the reference
+						can't change references
+						store a pointer
+					but then initialize it with an empty
+					have to store the empty, as well, then
+					good for resetting, actually
+			presenters iterate through vectors
+			view functions add entries one by one
+	user model / data store split
+		right now, they have almost identical interfaces
+		a database is per-user
+		user model controls database lifetime
+		user model contains the database object
+		separate user model would be used for sync
+			with separate database connection 
+			with read-write rights
+			except, no use in creating a new database for sync
+				so, different loading policies
+		maybe data store should be a thinner sqlite3_db wrapper
+			with a statement wrapper, as well
+				RAII
+				lazy parsing
+		then user model should allocate a database and statements
+			then call statements as needed
+		thin database and statement wrappers are easier to test
+			user model can then be properly tested on PC
+			also avoiding untested private methods
+database naming
+	user names might contain invalid characters
 		TODO

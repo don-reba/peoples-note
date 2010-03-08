@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ISignalProvider.h"
+#include "Note.h"
+#include "Notebook.h"
 
 class ICredentialsModel;
-class INote;
-class INotebook;
 
 class IUserModel : public ISignalProvider
 {
@@ -12,7 +12,7 @@ public:
 
 	virtual ~IUserModel() {}
 
-	virtual void AddNote(const INote & note, const INotebook & notebook) = 0;
+	virtual void AddNote(const Note & note, const Notebook & notebook) = 0;
 
 	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
 
@@ -20,13 +20,13 @@ public:
 	
 	virtual void SetCredentials(const ICredentialsModel & credentials) = 0;
 
-	virtual INotebook & GetLastUsedNotebook() = 0;
+	virtual Notebook & GetLastUsedNotebook() = 0;
 
-	virtual boost::ptr_vector<INotebook> & GetNotebooks() = 0;
+	virtual const NotebookList & GetNotebooks() = 0;
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook(const INotebook & notebook) = 0;
+	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook) = 0;
 
-	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search) = 0;
+	virtual const NoteList & GetNotesBySearch(std::wstring search) = 0;
 
 	virtual void Load() = 0;
 };

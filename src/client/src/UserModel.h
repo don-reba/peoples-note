@@ -1,10 +1,7 @@
 #pragma once
-
 #include "IUserModel.h"
 
 #include "CredentialsModel.h"
-#include "Note.h"
-#include "Notebook.h"
 
 class IDataStore;
 
@@ -22,7 +19,7 @@ public:
 
 	UserModel(IDataStore & dataStore);
 
-	virtual void AddNote(const INote & note, const INotebook & notebook);
+	virtual void AddNote(const Note & note, const Notebook & notebook);
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
@@ -30,13 +27,13 @@ public:
 	
 	virtual void SetCredentials(const ICredentialsModel & credentials);
 
-	virtual INotebook & GetLastUsedNotebook();
+	virtual Notebook & GetLastUsedNotebook();
 
-	virtual boost::ptr_vector<INotebook> & GetNotebooks();
+	virtual const NotebookList & GetNotebooks();
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook(const INotebook & notebook);
+	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook);
 
-	virtual boost::ptr_vector<INote> & GetNotesBySearch(std::wstring search);
+	virtual const NoteList & GetNotesBySearch(std::wstring search);
 
 	virtual void Load();
 };

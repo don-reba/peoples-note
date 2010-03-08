@@ -6,10 +6,27 @@
 
 using namespace std;
 
-Note::Note(Guid guid, wstring title, const Timestamp & creationDate)
+Note::Note
+	( Guid      guid
+	, wstring   title
+	, Timestamp creationDate
+	)
 	: guid         (guid)
 	, title        (title)
 	, creationDate (creationDate)
+{
+}
+
+Note::Note
+	( Guid            guid
+	, std::wstring    title
+	, Timestamp       creationDate
+	, const TagList & tags
+	)
+	: guid         (guid)
+	, title        (title)
+	, creationDate (creationDate)
+	, tags         (tags)
 {
 }
 
@@ -23,16 +40,12 @@ wstring Note::GetTitle() const
 	return title;
 }
 
-std::vector<const ITag*> Note::GetTags() const
+const TagList & Note::GetTags() const
 {
-	vector<const ITag*> tags;
-	tags.reserve(this->tags.size());
-	foreach (const ITag & tag, this->tags)
-		tags.push_back(&tag);
 	return tags;
 }
 
-const ITimestamp & Note::GetCreationDate() const
+const Timestamp & Note::GetCreationDate() const
 {
 	return creationDate;
 }

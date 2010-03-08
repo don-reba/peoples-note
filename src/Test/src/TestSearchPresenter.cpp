@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "MockNote.h"
+#include "Note.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
@@ -15,12 +15,8 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 	MockNoteListView  noteListView;
 	SearchPresenter   searchPresenter(noteListModel, userModel, noteListView);
 
-	ptr_vector<MockNote> notes(2);
-	notes.push_back(new MockNote());
-	notes.at(0).title = L"note-0";
-	notes.push_back(new MockNote());
-	notes.at(1).title = L"note-1";
-	userModel.notes.transfer(userModel.notes.end(), notes);
+	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
+	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
 
 	noteListView.searchString = L"search";
 	noteListView.SignalSearch();
@@ -39,19 +35,11 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
 	MockNoteListView  noteListView;
 	SearchPresenter   searchPresenter(noteListModel, userModel, noteListView);
 
-	userModel.lastUsedNotebook.name = L"notebook";
-
-	ptr_vector<MockNote> notes(2);
-	notes.push_back(new MockNote());
-	notes.at(0).title = L"note-0";
-	notes.push_back(new MockNote());
-	notes.at(1).title = L"note-1";
-	userModel.notes.transfer(userModel.notes.end(), notes);
+	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
+	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
 
 	noteListView.searchString = L"";
 	noteListView.SignalSearch();
-
-	BOOST_CHECK_EQUAL(userModel.notebookSelection, L"notebook");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");

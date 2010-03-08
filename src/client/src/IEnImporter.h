@@ -1,6 +1,6 @@
 #pragma once
 
-#include "INote.h"
+#include "Note.h"
 
 #include <istream>
 
@@ -11,7 +11,7 @@ public:
 	virtual ~IEnImporter() {}
 
 	virtual void ImportNotes
-		( std::wistream            & stream
-		, boost::ptr_vector<INote> & notes
+		( std::wistream & stream
+		, NoteList      & notes
 		) = 0;
 };

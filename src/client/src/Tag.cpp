@@ -1,14 +1,14 @@
 #include "stdafx.h"
-#include "MockTag.h"
+#include "Tag.h"
 
 using namespace std;
 
-MockTag::MockTag(wstring name)
+Tag::Tag(wstring name)
 	: name (name)
 {
 }
 
-wstring MockTag::GetName() const
+wstring Tag::GetName() const
 {
 	return name;
 }

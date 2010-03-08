@@ -7,11 +7,6 @@
 using namespace std;
 using namespace Tools;
 
-Timestamp::Timestamp()
-	: unixTime (0L)
-{
-}
-
 Timestamp::Timestamp(time_t unixTime)
 	: unixTime (unixTime)
 {

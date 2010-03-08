@@ -5,8 +5,9 @@ using namespace boost;
 using namespace std;
 
 MockUserModel::MockUserModel()
-	: isDefault (false)
-	, isLoaded  (false)
+	: isDefault        (false)
+	, isLoaded         (false)
+	, lastUsedNotebook (Guid(), L"default-notebook")
 {
 }
 
@@ -16,12 +17,12 @@ void MockUserModel::Loaded()
 }
 
 void MockUserModel::AddNote
-	( const INote     & note
-	, const INotebook & notebook
+	( const Note     & note
+	, const Notebook & notebook
 	)
 {
 	addedNotes.push_back(make_pair(note.GetTitle(), notebook.GetName()));
-	notes.push_back(new MockNote(note));
+	notes.push_back(note);
 }
 
 void MockUserModel::ConnectLoaded(slot_type OnLoaded)
@@ -39,23 +40,23 @@ void MockUserModel::SetCredentials(const ICredentialsModel & credentials)
 	credentialsModel = credentials;
 }
 
-INotebook & MockUserModel::GetLastUsedNotebook()
+Notebook & MockUserModel::GetLastUsedNotebook()
 {
 	return lastUsedNotebook;
 }
 
-ptr_vector<INotebook> & MockUserModel::GetNotebooks()
+const NotebookList & MockUserModel::GetNotebooks()
 {
 	return notebooks;
 }
 
-ptr_vector<INote> & MockUserModel::GetNotesByNotebook(const INotebook & notebook)
+const NoteList & MockUserModel::GetNotesByNotebook(const Notebook & notebook)
 {
 	notebookSelection = notebook.GetName();
 	return notes;
 }
 
-ptr_vector<INote> & MockUserModel::GetNotesBySearch(wstring search)
+const NoteList & MockUserModel::GetNotesBySearch(wstring search)
 {
 	searchSelection = search;
 	return notes;

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
 #include "DataStore.h"
-#include "MockNote.h"
-#include "MockNotebook.h"
+#include "Note.h"
+#include "Notebook.h"
 #include "Test.h"
 
 using namespace boost;
@@ -40,20 +40,20 @@ bool FileExists(const wchar_t * path)
 
 FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 {
-	MockNotebook notebook(L"test-notebook");
+	Notebook notebook(Guid(), L"test-notebook");
 	store.AddNotebook(notebook);
 
 	store.AddNote
-		( MockNote(Guid(), L"note-0", MockTimestamp())
+		( Note(Guid(), L"note-0", Timestamp(0))
 		, notebook
 		);
 
-	MockNotebook fakeNotebook(L"fake-notebook");
+	Notebook fakeNotebook(Guid(), L"fake-notebook");
 
 	try
 	{
 		store.AddNote
-			( MockNote(Guid(), L"note-1", MockTimestamp())
+			( Note(Guid(), L"note-1", Timestamp(1))
 			, fakeNotebook
 			);
 	}
@@ -65,7 +65,7 @@ FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestDataStoreAddNotebook, DataStoreFixture)
 {
-	MockNotebook notebook(L"test-notebook");
+	Notebook notebook(Guid(), L"test-notebook");
 	store.AddNotebook(notebook);
 
 	TEST_CHECK_EQUAL(store.GetNotebookCount(), 1);
@@ -84,7 +84,7 @@ FIXTURE_TEST_CASE(TestDataStoreAddNotebook, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestDataStoreDefaultNotebook, DataStoreFixture)
 {
-	MockNotebook notebook(L"test-notebook");
+	Notebook notebook(Guid(), L"test-notebook");
 	store.AddNotebook(notebook);
 	store.MakeNotebookDefault(notebook);
 
@@ -93,11 +93,11 @@ FIXTURE_TEST_CASE(TestDataStoreDefaultNotebook, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestDataStoreLastUsedNotebook, DataStoreFixture)
 {
-	vector<MockNotebook> notebooks;
-	notebooks.push_back(MockNotebook(L"notebook0"));
-	notebooks.push_back(MockNotebook(L"notebook1"));
-	notebooks.push_back(MockNotebook(L"notebook2"));
-	foreach (MockNotebook & notebook, notebooks)
+	vector<Notebook> notebooks;
+	notebooks.push_back(Notebook(Guid(), L"notebook0"));
+	notebooks.push_back(Notebook(Guid(), L"notebook1"));
+	notebooks.push_back(Notebook(Guid(), L"notebook2"));
+	foreach (Notebook & notebook, notebooks)
 		store.AddNotebook(notebook);
 	store.MakeNotebookLastUsed(notebooks.at(1));
 
@@ -118,7 +118,7 @@ AUTO_TEST_CASE(TestDataStoreLoadOrCreate)
 		TEST_CHECK_EQUAL(store.GetUser(),          storeName);
 		TEST_CHECK_EQUAL(store.GetNotebookCount(), 0);
 
-		store.AddNotebook(MockNotebook());
+		store.AddNotebook(Notebook(Guid(), L""));
 	}
 	{
 		DataStore store(storeFolder);
@@ -132,11 +132,11 @@ AUTO_TEST_CASE(TestDataStoreLoadOrCreate)
 
 FIXTURE_TEST_CASE(TestDataStoreNotebooks, DataStoreFixture)
 {
-	store.AddNotebook(MockNotebook(L"notebook1"));
-	store.AddNotebook(MockNotebook(L"notebook0"));
-	store.AddNotebook(MockNotebook(L"notebook2"));
+	store.AddNotebook(Notebook(Guid(), L"notebook1"));
+	store.AddNotebook(Notebook(Guid(), L"notebook0"));
+	store.AddNotebook(Notebook(Guid(), L"notebook2"));
 
-	ptr_vector<INotebook> & notebooks = store.GetNotebooks();
+	const NotebookList & notebooks = store.GetNotebooks();
 	TEST_CHECK_EQUAL(notebooks.size(), 3);
 	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"notebook0");
 	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"notebook1");
@@ -145,26 +145,26 @@ FIXTURE_TEST_CASE(TestDataStoreNotebooks, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 {
-	vector<MockNotebook> notebooks;
-	notebooks.push_back(MockNotebook(L"notebook-0"));
-	notebooks.push_back(MockNotebook(L"notebook-1"));
-	foreach (const INotebook & notebook, notebooks)
+	vector<Notebook> notebooks;
+	notebooks.push_back(Notebook(Guid(), L"notebook-0"));
+	notebooks.push_back(Notebook(Guid(), L"notebook-1"));
+	foreach (const Notebook & notebook, notebooks)
 		store.AddNotebook(notebook);
 
 	store.AddNote
-		( MockNote(Guid(), L"note-0", MockTimestamp(L"", 0))
+		( Note(Guid(), L"note-0", Timestamp(0))
 		, notebooks.at(0)
 		);
 	store.AddNote
-		( MockNote(Guid(), L"note-1", MockTimestamp(L"", 1))
+		( Note(Guid(), L"note-1", Timestamp(1))
 		, notebooks.at(1)
 		);
 	store.AddNote
-		( MockNote(Guid(), L"note-2", MockTimestamp(L"", 2))
+		( Note(Guid(), L"note-2", Timestamp(2))
 		, notebooks.at(0)
 		);
 
-	ptr_vector<INote> & notes = store.GetNotesByNotebook(notebooks.at(0));
+	const NoteList & notes = store.GetNotesByNotebook(notebooks.at(0));
 	TEST_CHECK_EQUAL(notes.size(), 2);
 	TEST_CHECK_EQUAL(notes.at(0).GetTitle(), L"note-0");
 	TEST_CHECK_EQUAL(notes.at(1).GetTitle(), L"note-2");
@@ -172,24 +172,24 @@ FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestDataStoreNotesBySearch, DataStoreFixture)
 {
-	MockNotebook notebook(L"notebook");
+	Notebook notebook(Guid(), L"notebook");
 	store.AddNotebook(notebook);
 
 	store.AddNote
-		( MockNote(Guid(), L"useful software", MockTimestamp(L"", 0))
+		( Note(Guid(), L"useful software", Timestamp(0))
 		, notebook
 		);
 	store.AddNote
-		( MockNote(Guid(), L"software use", MockTimestamp(L"", 1))
+		( Note(Guid(), L"software use", Timestamp(1))
 		, notebook
 		);
 
-	ptr_vector<INote> & notes0 = store.GetNotesBySearch(L"software");
+	const NoteList & notes0 = store.GetNotesBySearch(L"software");
 	TEST_CHECK_EQUAL(notes0.size(), 2);
 	TEST_CHECK_EQUAL(notes0.at(0).GetTitle(), L"useful software");
 	TEST_CHECK_EQUAL(notes0.at(1).GetTitle(), L"software use");
 
-	ptr_vector<INote> & notes1 = store.GetNotesBySearch(L"use");
+	const NoteList & notes1 = store.GetNotesBySearch(L"use");
 	TEST_CHECK_EQUAL(notes1.size(), 1);
 	TEST_CHECK_EQUAL(notes1.at(0).GetTitle(), L"software use");
 }

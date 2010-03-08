@@ -2,8 +2,8 @@
 
 #include "IUserModel.h"
 #include "MockCredentialsModel.h"
-#include "MockNote.h"
-#include "MockNotebook.h"
+#include "Note.h"
+#include "Notebook.h"
 
 class MockUserModel : public IUserModel
 {
@@ -13,10 +13,10 @@ private:
 
 public:
 
-	MockCredentialsModel    credentialsModel;
-	MockNotebook            lastUsedNotebook;
-	boost::ptr_vector<INotebook> notebooks;
-	boost::ptr_vector<INote>     notes;
+	MockCredentialsModel credentialsModel;
+	Notebook             lastUsedNotebook;
+	NotebookList         notebooks;
+	NoteList             notes;
 
 	typedef std::pair<std::wstring, std::wstring> AddedNote;
 	std::vector<AddedNote> addedNotes;
@@ -34,8 +34,8 @@ public:
 	void Loaded();
 
 	virtual void AddNote
-		( const INote     & note
-		, const INotebook & notebook
+		( const Note     & note
+		, const Notebook & notebook
 		);
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
@@ -46,15 +46,15 @@ public:
 		( const ICredentialsModel & credentials
 		);
 
-	virtual INotebook & GetLastUsedNotebook();
+	virtual Notebook & GetLastUsedNotebook();
 
-	virtual boost::ptr_vector<INotebook> & GetNotebooks();
+	virtual const NotebookList & GetNotebooks();
 
-	virtual boost::ptr_vector<INote> & GetNotesByNotebook
-		( const INotebook & notebook
+	virtual const NoteList & GetNotesByNotebook
+		( const Notebook & notebook
 		);
 
-	virtual boost::ptr_vector<INote> & GetNotesBySearch
+	virtual const NoteList & GetNotesBySearch
 		( std::wstring search
 		);
 

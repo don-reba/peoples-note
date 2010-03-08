@@ -8,7 +8,7 @@ BOOST_AUTO_TEST_CASE(Note_Test)
 {
 	Guid    guid;
 	wstring title(L"test");
-	Note note(guid, title);
+	Note note(guid, title, Timestamp(0));
 	BOOST_CHECK_EQUAL
 		( static_cast<string>(note.GetGuid())
 		, static_cast<string>(guid)

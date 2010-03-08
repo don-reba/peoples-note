@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ISignalProvider.h"
-
-class INote;
+#include "Note.h"
 
 class INoteListModel : public ISignalProvider
 {
@@ -12,7 +11,7 @@ public:
 
 	virtual void ConnectChanged(slot_type OnReset) = 0;
 
-	virtual boost::ptr_vector<INote> & GetNotes() = 0;
+	virtual const NoteList & GetNotes() = 0;
 
-	virtual void SetNotes(boost::ptr_vector<INote> & notes) = 0;
+	virtual void SetNotes(const NoteList & notes) = 0;
 };

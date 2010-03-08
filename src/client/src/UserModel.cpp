@@ -15,7 +15,7 @@ UserModel::UserModel(IDataStore & dataStore)
 {
 }
 
-void UserModel::AddNote(const INote & note, const INotebook & notebook)
+void UserModel::AddNote(const Note & note, const Notebook & notebook)
 {
 	dataStore.AddNote(note, notebook);
 }
@@ -35,22 +35,22 @@ void UserModel::SetCredentials(const ICredentialsModel & credentials)
 	credentialsModel = credentials;
 }
 
-INotebook & UserModel::GetLastUsedNotebook()
+Notebook & UserModel::GetLastUsedNotebook()
 {
 	return dataStore.GetLastUsedNotebook();
 }
 
-ptr_vector<INotebook> & UserModel::GetNotebooks()
+const NotebookList & UserModel::GetNotebooks()
 {
 	return dataStore.GetNotebooks();
 }
 
-ptr_vector<INote> & UserModel::GetNotesByNotebook(const INotebook & notebook)
+const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 {
 	return dataStore.GetNotesByNotebook(notebook);
 }
 
-ptr_vector<INote> & UserModel::GetNotesBySearch(wstring search)
+const NoteList & UserModel::GetNotesBySearch(wstring search)
 {
 	return dataStore.GetNotesBySearch(search);
 }

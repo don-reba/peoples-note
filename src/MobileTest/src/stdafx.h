@@ -65,7 +65,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 

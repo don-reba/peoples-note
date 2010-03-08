@@ -1,8 +1,8 @@
 #pragma once
 
-#include "INote.h"
-#include "ITag.h"
-#include "ITimestamp.h"
+#include "Note.h"
+#include "Tag.h"
+#include "Timestamp.h"
 #include "INoteListModel.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
@@ -31,13 +31,13 @@ private:
 
 private:
 
-	static std::wstring ConvertToHtml(const INote & note);
+	static std::wstring ConvertToHtml(const Note & note);
 
 	static std::wstring FormatTitle(const std::wstring & title);
 
-	static std::wstring FormatTags(const std::vector<const ITag*> & tags);
+	static std::wstring FormatTags(const TagList & tags);
 
-	static std::wstring FormatDate(const ITimestamp & timestamp);
+	static std::wstring FormatDate(const Timestamp & timestamp);
 
 	static std::wstring EscapeHtml(const std::wstring & string);
 };

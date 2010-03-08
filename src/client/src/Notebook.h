@@ -1,8 +1,8 @@
 #pragma once
 
-#include "INotebook.h"
+#include "Guid.h"
 
-class Notebook : public INotebook
+class Notebook
 {
 private:
 
@@ -13,7 +13,9 @@ public:
 
 	Notebook(Guid guid, std::wstring name);
 
-	virtual std::wstring GetName() const;
+	std::wstring GetName() const;
 
-	virtual Guid GetGuid() const;
+	Guid GetGuid() const;
 };
+
+typedef std::vector<Notebook> NotebookList;

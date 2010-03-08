@@ -27,7 +27,7 @@ DataStore::~DataStore()
 	Disconnect();
 }
 
-INotebook & DataStore::GetDefaultNotebook()
+Notebook & DataStore::GetDefaultNotebook()
 {
 	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks WHERE isDefault = 1 LIMIT 1");
 
@@ -56,7 +56,7 @@ int DataStore::GetVersion()
 // IDataStore implementation
 //--------------------------
 
-void DataStore::AddNote(const INote & note, const INotebook & notebook)
+void DataStore::AddNote(const Note & note, const Notebook & notebook)
 {
 	{
 		sqlite3_stmt * statement = PrepareStatement("INSERT INTO NoteContents(title) VALUES (?)");
@@ -75,7 +75,7 @@ void DataStore::AddNote(const INote & note, const INotebook & notebook)
 	}
 }
 
-void DataStore::AddNotebook(const INotebook & notebook)
+void DataStore::AddNotebook(const Notebook & notebook)
 {
 	sqlite3_stmt * statement = PrepareStatement("INSERT INTO Notebooks(guid, name, isDefault, isLastUsed) VALUES (?, ?, 0, 0)");
 	BindText(statement, notebook.GetGuid(), 1);
@@ -84,7 +84,7 @@ void DataStore::AddNotebook(const INotebook & notebook)
 	CloseStatement(statement); // TODO: handle exception
 }
 
-INotebook & DataStore::GetLastUsedNotebook()
+Notebook & DataStore::GetLastUsedNotebook()
 {
 	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks WHERE isLastUsed = 1 LIMIT 1");
 
@@ -108,7 +108,7 @@ int DataStore::GetNotebookCount()
 	return count;
 }
 
-ptr_vector<INotebook> & DataStore::GetNotebooks()
+const NotebookList & DataStore::GetNotebooks()
 {
 	sqlite3_stmt * statement = PrepareStatement("SELECT guid, name FROM Notebooks ORDER BY name");
 	notebooks.clear();
@@ -116,15 +116,13 @@ ptr_vector<INotebook> & DataStore::GetNotebooks()
 	{
 		wstring guid(GetColumnText(statement, 0));
 		wstring name(GetColumnText(statement, 1));
-		notebooks.push_back(new Notebook(guid, name));
+		notebooks.push_back(Notebook(guid, name));
 	}
-
 	CloseStatement(statement);
-
 	return notebooks;
 }
 
-ptr_vector<INote> & DataStore::GetNotesByNotebook(const INotebook & notebook)
+const NoteList & DataStore::GetNotesByNotebook(const Notebook & notebook)
 {
 	sqlite3_stmt * statement = PrepareStatement
 		( "SELECT guid, title, creationDate"
@@ -139,13 +137,13 @@ ptr_vector<INote> & DataStore::GetNotesByNotebook(const INotebook & notebook)
 		Guid    guid         (GetColumnText (statement, 0));
 		wstring title        (GetColumnText (statement, 1));
 		int     creationDate (GetColumnInt  (statement, 2));
-		notes.push_back(new Note(guid, title, Timestamp(creationDate)));
+		notes.push_back(Note(guid, title, Timestamp(creationDate)));
 	}
 	CloseStatement(statement);
 	return notes;
 }
 
-ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
+const NoteList & DataStore::GetNotesBySearch(wstring search)
 {
 	sqlite3_stmt * statement = PrepareStatement
 		( "SELECT guid, title, creationDate"
@@ -160,7 +158,7 @@ ptr_vector<INote> & DataStore::GetNotesBySearch(wstring search)
 		Guid    guid         (GetColumnText (statement, 0));
 		wstring title        (GetColumnText (statement, 1));
 		int     creationDate (GetColumnInt  (statement, 2));
-		notes.push_back(new Note(guid, title, Timestamp(creationDate)));
+		notes.push_back(Note(guid, title, Timestamp(creationDate)));
 	}
 	CloseStatement(statement);
 	return notes;
@@ -181,7 +179,7 @@ void DataStore::LoadOrCreate(wstring name)
 	}
 }
 
-void DataStore::MakeNotebookDefault(const INotebook & notebook)
+void DataStore::MakeNotebookDefault(const Notebook & notebook)
 {
 	// remove old
 	{
@@ -198,7 +196,7 @@ void DataStore::MakeNotebookDefault(const INotebook & notebook)
 	}
 }
 
-void DataStore::MakeNotebookLastUsed(const INotebook & notebook)
+void DataStore::MakeNotebookLastUsed(const Notebook & notebook)
 {
 	// remove old
 	{

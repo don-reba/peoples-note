@@ -503,6 +503,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\Tag.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Timestamp.cpp"
 				>
 			</File>
@@ -585,14 +589,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\INote.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\INotebook.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\INoteListModel.h"
 				>
 			</File>
@@ -609,23 +605,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\ITag.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\ITimestamp.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\IUserModel.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\LastUserModel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\Messages.h"
 				>
 			</File>
 			<File
@@ -666,6 +650,10 @@
 			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Tag.h"
 				>
 			</File>
 			<File
