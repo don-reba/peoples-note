@@ -157,9 +157,14 @@ std::wstring Tools::ConvertToUnicode(const unsigned char * str)
 
 HtmlResource Tools::LoadHtmlResource(int id)
 {
+	return Tools::LoadHtmlResource(MAKEINTRESOURCE(id));
+}
+
+HtmlResource Tools::LoadHtmlResource(LPCWSTR id)
+{
 	HINSTANCE instance = GetModuleHandle(NULL);
 
-	HRSRC hrsrc = ::FindResource(instance, MAKEINTRESOURCE(id), RT_HTML);
+	HRSRC hrsrc = ::FindResource(instance, id, RT_HTML);
 	if(!hrsrc)
 		throw exception("Resource not found.");
 

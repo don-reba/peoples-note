@@ -706,6 +706,10 @@
 				RelativePath=".\clientppc.rc2"
 				>
 			</File>
+			<File
+				RelativePath=".\html\text-note.png"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="HTML"

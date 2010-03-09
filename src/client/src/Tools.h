@@ -16,6 +16,8 @@ namespace Tools
 
 	HtmlResource LoadHtmlResource(int id);
 
+	HtmlResource LoadHtmlResource(LPCWSTR id);
+
 	std::wstring LoadStringResource(int id);
 
 	void UnixTimeToFileTime

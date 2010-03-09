@@ -136,6 +136,11 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 
 IDH_ABOUT               HTML                    "html\\about.htm"
 IDH_MAIN                HTML                    "html\\main.htm"
+text-note.png           HTML                    "html\\text-note.png"
+voice-note.png          HTML                    "html\\voice-note.png"
+photo-note.png          HTML                    "html\\photo-note.png"
+file-note.png           HTML                    "html\\file-note.png"
+
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 

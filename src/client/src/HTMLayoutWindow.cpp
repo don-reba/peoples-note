@@ -123,8 +123,10 @@ BOOL HTMLayoutWindow::OnBehavior(BEHAVIOR_EVENT_PARAMS * params)
 
 BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 {
-	// TODO: implement
-	return FALSE;
+	HtmlResource resource(LoadHtmlResource(params->uri));
+	params->outData     = resource.data;
+	params->outDataSize = resource.size;
+	return LOAD_OK;
 }
 
 bool HTMLayoutWindow::ProcessHtmLayout(WndMsg & msg)
