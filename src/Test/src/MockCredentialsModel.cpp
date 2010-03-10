@@ -3,6 +3,10 @@
 
 using namespace std;
 
+MockCredentialsModel::MockCredentialsModel()
+{
+}
+
 MockCredentialsModel::MockCredentialsModel
 	( wstring username
 	, wstring password

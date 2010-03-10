@@ -26,6 +26,8 @@ public:
 
 	virtual Notebook GetLastUsedNotebook() = 0;
 
+	virtual std::wstring GetNoteBody(Guid guid) = 0;
+
 	virtual const NotebookList & GetNotebooks() = 0;
 
 	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook) = 0;

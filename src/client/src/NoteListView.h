@@ -19,6 +19,7 @@ private:
 	HMENU          notebooksMenu;
 
 	signal SignalImport;
+	signal SignalOpenNote;
 	signal SignalSearch;
 
 // interface
@@ -29,7 +30,9 @@ public:
 
 	void Create();
 
-	virtual void AddNote(std::wstring noteHtml);
+// INoteListView implementation
+
+	virtual void AddNote(std::wstring noteHtml, std::wstring value);
 
 	virtual void AddNotebook(std::wstring notebook);
 
@@ -41,9 +44,13 @@ public:
 
 	virtual void ConnectImport(slot_type OnImport);
 
+	virtual void ConnectOpenNote(slot_type OnOpenNote);
+
 	virtual void ConnectSearch(slot_type OnSearch);
 
 	virtual bool GetEnexPath(std::wstring & path);
+
+	virtual Guid GetSelectedNoteGuid();
 	
 	virtual std::wstring GetSearchString();
 
@@ -78,5 +85,6 @@ private:
 
 private:
 
+	void OnNote();
 	void OnSearch();
 };

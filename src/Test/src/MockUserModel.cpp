@@ -46,6 +46,13 @@ Notebook MockUserModel::GetLastUsedNotebook()
 	return lastUsedNotebook;
 }
 
+wstring MockUserModel::GetNoteBody(Guid guid)
+{
+	if (noteBodies.find(guid) != noteBodies.end())
+		return noteBodies[guid];
+	return L"empty";
+}
+
 const NotebookList & MockUserModel::GetNotebooks()
 {
 	return notebooks;

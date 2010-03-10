@@ -2,11 +2,13 @@
 #include "NoteListPresenter.h"
 
 #include "Notebook.h"
+#include "Tools.h"
 
 #include <sstream>
 
 using namespace boost;
 using namespace std;
+using namespace Tools;
 
 NoteListPresenter::NoteListPresenter
 	( INoteListModel & noteListModel
@@ -26,7 +28,12 @@ void NoteListPresenter::OnNoteListChanged()
 	const NoteList & notes = noteListModel.GetNotes();
 	noteListView.ClearNotes();
 	foreach (const Note & note, notes)
-		noteListView.AddNote(ConvertToHtml(note));
+	{
+		noteListView.AddNote
+			( ConvertToHtml(note)
+			, ConvertToUnicode(note.GetGuid())
+			);
+	}
 	noteListView.UpdateNotes();
 }
 

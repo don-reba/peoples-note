@@ -439,6 +439,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NotePresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\RegistryKey.cpp"
 				>
 			</File>
@@ -601,6 +605,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\INoteView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\IRegistryKey.h"
 				>
 			</File>
@@ -638,6 +646,10 @@
 			</File>
 			<File
 				RelativePath=".\src\NoteListView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NotePresenter.h"
 				>
 			</File>
 			<File

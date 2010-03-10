@@ -131,6 +131,12 @@ Notebook UserModel::GetLastUsedNotebook()
 	return Notebook(guid, name);
 }
 
+wstring UserModel::GetNoteBody(Guid guid)
+{
+	// TODO: implement
+	return L"";
+}
+
 const NotebookList & UserModel::GetNotebooks()
 {
 	IDataStore::Statement statement = dataStore.MakeStatement

@@ -48,6 +48,8 @@ public:
 
 	virtual Notebook GetLastUsedNotebook();
 
+	virtual std::wstring GetNoteBody(Guid guid);
+
 	virtual const NotebookList & GetNotebooks();
 
 	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook);

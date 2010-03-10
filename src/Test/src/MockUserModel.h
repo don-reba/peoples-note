@@ -5,6 +5,8 @@
 #include "Note.h"
 #include "Notebook.h"
 
+#include <map>
+
 class MockUserModel : public IUserModel
 {
 // data
@@ -18,6 +20,8 @@ public:
 
 	NotebookList notebooks;
 	NoteList     notes;
+
+	std::map<std::string, std::wstring> noteBodies;
 
 	typedef std::pair<std::wstring, std::wstring> AddedNote;
 	std::vector<AddedNote> addedNotes;
@@ -51,6 +55,8 @@ public:
 	virtual Notebook GetDefaultNotebook();
 
 	virtual Notebook GetLastUsedNotebook();
+
+	virtual std::wstring GetNoteBody(Guid guid);
 
 	virtual const NotebookList & GetNotebooks();
 

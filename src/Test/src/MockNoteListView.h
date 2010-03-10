@@ -6,24 +6,36 @@ class MockNoteListView : public INoteListView
 {
 public:
 
-	std::vector<std::wstring> notes;
+	struct NoteRecord
+	{
+		std::wstring html;
+		std::wstring value;
+	};
+
+public:
+
+	std::vector<NoteRecord>   notes;
 	std::vector<std::wstring> notebooks;
-	bool                      notesUpdated;
-	bool                      notebooksUpdated;
-	std::wstring              searchString;
+
+	bool notesUpdated;
+	bool notebooksUpdated;
+
+	std::wstring searchString;
+	Guid         selectedNoteGuid;
 
 	bool         hasEnexPath;
 	std::wstring enexPath;
 
 	signal SignalCreated;
 	signal SignalImport;
+	signal SignalOpenNote;
 	signal SignalSearch;
 
 public:
 
 	MockNoteListView();
 
-	virtual void AddNote(std::wstring noteHtml);
+	virtual void AddNote(std::wstring noteHtml, std::wstring value);
 
 	virtual void AddNotebook(std::wstring notebook);
 
@@ -35,9 +47,13 @@ public:
 
 	virtual void ConnectImport(slot_type OnImport);
 
+	virtual void ConnectOpenNote(slot_type OnOpenNote);
+
 	virtual void ConnectSearch(slot_type OnSearch);
 
 	virtual bool GetEnexPath(std::wstring & path);
+
+	virtual Guid GetSelectedNoteGuid();
 	
 	virtual std::wstring GetSearchString();
 

@@ -11,6 +11,8 @@ public:
 
 public:
 
+	MockCredentialsModel();
+
 	MockCredentialsModel
 		( std::wstring username
 		, std::wstring password

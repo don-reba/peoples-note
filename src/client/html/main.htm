@@ -60,6 +60,10 @@
 				margin:           0px 4px 0px 0px;
 				width:            162px;
 			}
+			#note-list .note td
+			{
+				white-space: nowrap;
+			}
 			#note-list #new-note-note
 			{
 				padding: 0;
@@ -92,7 +96,7 @@
 			<input id="search-box" /><button id="search-button" />
 		</div>
 		<widget type="select" id="note-list">
-			<option id="new-note-note">
+			<div id="new-note-note">
 				<table cellspacing="0px" cellpadding="0px" width="100%">
 					<tr>
 						<td id="label">Create note</td>
@@ -102,47 +106,7 @@
 						<td width="25%"><button id="new-file"  ><img src="file-note.png"  /></button></td>
 					</tr>
 				</table>
-			</option>
-			<option class="note">
-				<table>
-					<tr>
-						<td rowspan="3"><div id="thumb" /></td>
-						<td>Note 1</td>
-					</tr>
-					<tr><td>Tags</td></tr>
-					<tr><td>2010-02-01 18:36</td></tr>
-				</table>
-			</option>
-			<option class="note">
-				<table>
-					<tr>
-						<td rowspan="3"><div id="thumb" /></td>
-						<td>Note 2</td>
-					</tr>
-					<tr><td>Tags</td></tr>
-					<tr><td>2010-02-01 18:38</td></tr>
-				</table>
-			</option>
-			<option class="note">
-				<table>
-					<tr>
-						<td rowspan="3"><div id="thumb" /></td>
-						<td>Note 3</td>
-					</tr>
-					<tr><td>Tags</td></tr>
-					<tr><td>2010-02-01 18:40</td></tr>
-				</table>
-			</option>
-			<option class="note">
-				<table>
-					<tr>
-						<td rowspan="3"><div id="thumb" /></td>
-						<td>Note 4</td>
-					</tr>
-					<tr><td>Tags</td></tr>
-					<tr><td>2010-02-01 18:49</td></tr>
-				</table>
-			</option>
+			</div>
 		</widget>
 	</body>
 </html>

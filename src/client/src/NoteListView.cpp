@@ -10,6 +10,10 @@ using namespace htmlayout;
 using namespace std;
 using namespace Tools;
 
+//----------
+// interface
+//----------
+
 NoteListView::NoteListView(HINSTANCE instance, int cmdShow)
 	: cmdShow         (cmdShow)
 	, instance        (instance)
@@ -18,57 +22,8 @@ NoteListView::NoteListView(HINSTANCE instance, int cmdShow)
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
 
-	ConnectBehavior("#search-button", BUTTON_CLICK, &NoteListView::OnSearch);
-}
-
-void NoteListView::AddNotebook(wstring notebook)
-{
-	if (!::AppendMenu(notebooksMenu, 0, 0, notebook.c_str()))
-		throw exception("Notebook menu entry could not be added.");
-}
-
-void NoteListView::AddNote(wstring noteHtml)
-{
-	dom::element root = dom::element::root_element(hwnd_);
-	dom::element noteList = root.find_first("#note-list");
-	if (!noteList)
-		throw exception("'#note-list' not found.");
-
-	vector<unsigned char> noteHtmlUtf8 = Tools::ConvertToUtf8(noteHtml);
-	dom::element note = dom::element::create("option");
-	noteList.append(note);
-	note.set_attribute("class", L"note");
-	note.set_html(&noteHtmlUtf8[0], noteHtmlUtf8.size());
-}
-
-void NoteListView::ClearNotebooks()
-{
-	while (RemoveMenu(notebooksMenu, 0, MF_BYPOSITION));
-}
-
-void NoteListView::ClearNotes()
-{
-	dom::element root = dom::element::root_element(hwnd_);
-	vector<dom::element> notes;
-	root.find_all(notes, "#note-list .note");
-
-	foreach (dom::element & note, notes)
-		note.destroy();
-}
-
-void NoteListView::ConnectCreated(slot_type OnCreated)
-{
-	SignalCreated.connect(OnCreated);
-}
-
-void NoteListView::ConnectImport(slot_type OnImport)
-{
-	SignalImport.connect(OnImport);
-}
-
-void NoteListView::ConnectSearch(slot_type OnSearch)
-{
-	SignalSearch.connect(OnSearch);
+	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
+	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 }
 
 void NoteListView::Create()
@@ -101,6 +56,66 @@ void NoteListView::Create()
 	::UpdateWindow(hwnd_);
 }
 
+//-----------------------------
+// INoteListView implementation
+//-----------------------------
+
+void NoteListView::AddNotebook(wstring notebook)
+{
+	if (!::AppendMenu(notebooksMenu, 0, 0, notebook.c_str()))
+		throw exception("Notebook menu entry could not be added.");
+}
+
+void NoteListView::AddNote(wstring noteHtml, wstring value)
+{
+	dom::element root = dom::element::root_element(hwnd_);
+	dom::element noteList = root.find_first("#note-list");
+	if (!noteList)
+		throw exception("'#note-list' not found.");
+
+	vector<unsigned char> noteHtmlUtf8 = Tools::ConvertToUtf8(noteHtml);
+	dom::element note = dom::element::create("option");
+	noteList.append(note);
+	note.set_attribute("class", L"note");
+	note.set_attribute("value", value.c_str());
+	note.set_html(&noteHtmlUtf8[0], noteHtmlUtf8.size());
+}
+
+void NoteListView::ClearNotebooks()
+{
+	while (RemoveMenu(notebooksMenu, 0, MF_BYPOSITION));
+}
+
+void NoteListView::ClearNotes()
+{
+	dom::element root = dom::element::root_element(hwnd_);
+	vector<dom::element> notes;
+	root.find_all(notes, "#note-list .note");
+
+	foreach (dom::element & note, notes)
+		note.destroy();
+}
+
+void NoteListView::ConnectCreated(slot_type OnCreated)
+{
+	SignalCreated.connect(OnCreated);
+}
+
+void NoteListView::ConnectImport(slot_type OnImport)
+{
+	SignalImport.connect(OnImport);
+}
+
+void NoteListView::ConnectOpenNote(slot_type OnOpenNote)
+{
+	SignalOpenNote.connect(OnOpenNote);
+}
+
+void NoteListView::ConnectSearch(slot_type OnSearch)
+{
+	SignalSearch.connect(OnSearch);
+}
+
 bool NoteListView::GetEnexPath(wstring & path)
 {
 	vector<wchar_t> file(MAX_PATH);
@@ -120,6 +135,13 @@ bool NoteListView::GetEnexPath(wstring & path)
 		return true;
 	}
 	return false;
+}
+
+Guid NoteListView::GetSelectedNoteGuid()
+{
+	dom::element root = dom::element::root_element(hwnd_);
+	dom::element noteList = root.find_first("#note-list");
+	return noteList.get_value().to_string().c_str();
 }
 
 wstring NoteListView::GetSearchString()
@@ -282,6 +304,11 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void NoteListView::OnNote()
+{
+	SignalOpenNote();
+}
 
 void NoteListView::OnSearch()
 {
