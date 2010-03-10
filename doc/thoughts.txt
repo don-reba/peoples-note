@@ -612,3 +612,9 @@ database use testing
 		for almost all tests, that is
 	but, no; I can use MockUserModel instead
 	test only UserModel itself with the mobile test suite
+full-text search
+	don't want to store raw note bodies in the FTS table
+	because they contain tags and other stuff we don't want to search on
+	even title, actually, might contain special markup
+	should store originals in the note table
+	should store stripped text in the FTS table

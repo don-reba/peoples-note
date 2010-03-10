@@ -56,19 +56,22 @@ int UserModel::GetVersion()
 void UserModel::AddNote(const Note & note, const Notebook & notebook)
 {
 	IDataStore::Statement insertContents = dataStore.MakeStatement
-		( "INSERT INTO NoteContents(title) VALUES (?)"
+		( "INSERT INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
 		);
 	insertContents->Bind(1, note.GetTitle());
+	insertContents->Bind(2, L"");
 	insertContents->Execute();
 
 	IDataStore::Statement insertInfo = dataStore.MakeStatement
-		( "INSERT INTO Notes(guid, creationDate, content, notebook)"
-		"  VALUES (?, ?, ?, ?)"
+		( "INSERT INTO Notes(guid, creationDate, title, body, search, notebook)"
+		"  VALUES (?, ?, ?, ?, ?, ?)"
 		);
 	insertInfo->Bind(1, note.GetGuid());
 	insertInfo->Bind(2, note.GetCreationDate().GetTime());
-	insertInfo->Bind(3, dataStore.GetLastInsertRowid());
-	insertInfo->Bind(4, notebook.GetGuid());
+	insertInfo->Bind(3, note.GetTitle());
+	insertInfo->Bind(4, L"");
+	insertInfo->Bind(5, dataStore.GetLastInsertRowid());
+	insertInfo->Bind(6, notebook.GetGuid());
 	insertInfo->Execute();
 }
 
@@ -133,8 +136,18 @@ Notebook UserModel::GetLastUsedNotebook()
 
 wstring UserModel::GetNoteBody(Guid guid)
 {
-	// TODO: implement
-	return L"";
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT body"
+		"  FROM Notes"
+		"  WHERE guid = ?"
+		"  LIMIT 1"
+		);
+	statement->Bind(1, guid);
+	if (statement->Execute())
+		throw std::exception("Note not found.");
+	wstring body;
+	statement->Get(0, body);
+	return body;
 }
 
 const NotebookList & UserModel::GetNotebooks()
@@ -160,8 +173,8 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, title, creationDate"
-		"  FROM Notes, NoteContents"
-		"  WHERE content = docid AND notebook = ?"
+		"  FROM Notes"
+		"  WHERE notebook = ?"
 		"  ORDER BY creationDate"
 		);
 	statement->Bind(1, notebook.GetGuid());
@@ -183,7 +196,7 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, title, creationDate"
 		"  FROM Notes, NoteContents"
-		"  WHERE content = docid AND NoteContents MATCH ?"
+		"  WHERE search = docid AND NoteContents MATCH ?"
 		"  ORDER BY creationDate"
 		);
 	statement->Bind(1, search);
@@ -323,8 +336,8 @@ void UserModel::Initialize(wstring name)
 
 	CreateTable
 		( "CREATE VIRTUAL TABLE NoteContents USING fts3"
-			"( title"
-			", body"
+			"( titleText"
+			", bodyText"
 			")"
 		);
 
@@ -332,7 +345,9 @@ void UserModel::Initialize(wstring name)
 		( "CREATE TABLE Notes"
 			"( guid PRIMARY KEY"
 			", creationDate"
-			", content"
+			", title"
+			", body"
+			", search"
 			", notebook REFERENCES Notebooks"
 			")"
 		);

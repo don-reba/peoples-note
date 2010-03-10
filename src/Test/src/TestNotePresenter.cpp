@@ -7,7 +7,7 @@
 
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(NotePresenter_Test0)
+BOOST_AUTO_TEST_CASE(NotePresenter_Test)
 {
 	MockNoteListView noteListView;
 	MockNoteView     noteView;
@@ -21,16 +21,4 @@ BOOST_AUTO_TEST_CASE(NotePresenter_Test0)
 	noteListView.SignalOpenNote();
 
 	BOOST_CHECK_EQUAL(noteView.body, L"test-note-body");
-}
-
-BOOST_AUTO_TEST_CASE(NotePresenter_Test1)
-{
-	MockNoteListView noteListView;
-	MockNoteView     noteView;
-	MockUserModel    userModel;
-	NotePresenter notePresenter(noteListView, noteView, userModel);
-
-	noteListView.SignalOpenNote();
-
-	BOOST_CHECK_EQUAL(noteView.body, L"empty");
 }
