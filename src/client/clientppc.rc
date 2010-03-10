@@ -115,6 +115,7 @@ BEGIN
     IDS_REGISTRY_KEY        "Software\\People's Note"
     IDS_DOC_FOLDER          "People's Note"
     IDC_NOTE_VIEW           "NOTE-VIEW"
+    IDS_CLOSE               "Close"
 END
 
 #endif    // English (U.S.) resources

@@ -8,6 +8,8 @@ class NoteView : public HTMLayoutWindow, public INoteView
 private:
 
 	HINSTANCE instance;
+	HWND      menuBar;
+	HWND      parent;
 
 // interface
 
@@ -17,15 +19,33 @@ public:
 
 	void Create(HWND parent);
 
-	void Hide();
-
-	void Show();
-
 // INoteView implementation
 
 public:
 
+	virtual void Hide();
+
 	virtual void SetBody(std::wstring html);
 
 	virtual void SetTitle(std::wstring text);
+
+	virtual void Show();
+
+// utility functions
+
+private:
+
+	void CopyParentSize();
+
+	void CreateMenuBar();
+
+	ATOM RegisterClass(std::wstring wndClass);
+
+// window message handlers
+
+private:
+
+	void OnCommand(Msg<WM_COMMAND> & msg);
+
+	virtual void ProcessMessage(WndMsg &msg);
 };

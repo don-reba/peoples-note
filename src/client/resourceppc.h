@@ -9,6 +9,7 @@
 #define IDS_REGISTRY_KEY                5
 #define IDS_DOC_FOLDER                  6
 #define IDC_NOTE_VIEW                   7
+#define IDS_CLOSE                       8
 #define IDI_CLIENT                      101
 #define IDR_MENU                        102
 #define IDS_OK                          103
@@ -27,6 +28,7 @@
 #define ID_NOTEBOOK_FGFG                32782
 #define ID_MENU_IMPORTNOTES             32783
 #define IDM_MENU_IMPORTNOTES            32784
+#define IDM_CLOSE                       32785
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

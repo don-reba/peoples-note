@@ -5,6 +5,7 @@
 
 #include "HTMLayoutWindow.h"
 #include "INoteListView.h"
+#include "NoteView.h"
 
 class NoteListView : public HTMLayoutWindow, public INoteListView
 {
@@ -26,7 +27,10 @@ private:
 
 public:
 
-	NoteListView(HINSTANCE hInstance, int cmdShow);
+	NoteListView
+		( HINSTANCE  instance
+		, int        cmdShow
+		);
 
 	void Create();
 
@@ -55,8 +59,6 @@ public:
 	virtual Guid GetSelectedNoteGuid();
 	
 	virtual std::wstring GetSearchString();
-
-	virtual void ShowNoteView();
 
 	virtual void UpdateNotebooks();
 

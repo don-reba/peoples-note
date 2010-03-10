@@ -13,7 +13,10 @@ using namespace Tools;
 // interface
 //----------
 
-NoteListView::NoteListView(HINSTANCE instance, int cmdShow)
+NoteListView::NoteListView
+	( HINSTANCE  instance
+	, int        cmdShow
+	)
 	: cmdShow         (cmdShow)
 	, instance        (instance)
 	, HTMLayoutWindow (L"main.htm")
@@ -154,11 +157,6 @@ wstring NoteListView::GetSearchString()
 	return searchBox.text().c_str();
 }
 
-void NoteListView::ShowNoteView()
-{
-	// TODO: implement
-}
-
 void NoteListView::UpdateNotebooks()
 {
 }
@@ -291,20 +289,8 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 		&NoteListView::OnDestroy,
 		&NoteListView::OnSettingChange
 	};
-	try
-	{
-		if (!Handler::Call(mmp, this, msg))
-			__super::ProcessMessage(msg);
-	}
-	catch(std::exception e)
-	{
-		MessageBox
-			( hwnd_
-			, Tools::ConvertToUnicode(e.what()).c_str()
-			, L"Error"
-			, MB_OK | MB_ICONERROR
-			);
-	}
+	if (!Handler::Call(mmp, this, msg))
+		__super::ProcessMessage(msg);
 }
 
 //---------------------------

@@ -1,19 +1,20 @@
 #include "stdafx.h"
 
 #include "DataStore.h"
-#include "EnImporter.h"
 #include "EnImportPresenter.h"
+#include "EnImporter.h"
 #include "LastUserModel.h"
 #include "NoteListModel.h"
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
+#include "NotePresenter.h"
 #include "RegistryKey.h"
 #include "SearchPresenter.h"
 #include "UserLoader.h"
 #include "UserModel.h"
 
-#include "resourceppc.h"
 #include "htmlayout.h"
+#include "resourceppc.h"
 #include "Tools.h"
 
 #include <sstream>
@@ -88,7 +89,8 @@ int WINAPI WinMain(HINSTANCE instance,
 		NoteListModel noteListModel;
 		UserModel     userModel(dataStore, GetDocumentPath());
 
-		NoteListView noteListView(instance, nCmdShow);
+		NoteView     noteView     (instance);
+		NoteListView noteListView (instance, nCmdShow);
 
 		EnImportPresenter enImportPresenter
 			( enImporter
@@ -99,6 +101,11 @@ int WINAPI WinMain(HINSTANCE instance,
 		NoteListPresenter noteListPresenter
 			( noteListModel
 			, noteListView
+			, userModel
+			);
+		NotePresenter notePresenter
+			( noteListView
+			, noteView
 			, userModel
 			);
 		SearchPresenter searchPresenter
@@ -113,6 +120,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 
 		noteListView.Create();
+		noteView.Create(noteListView.hwnd_);
 
 		HACCEL accelerators = LoadAccelerators
 			( instance

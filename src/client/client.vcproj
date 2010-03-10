@@ -749,6 +749,7 @@
 		</Filter>
 		<Filter
 			Name="HTML"
+			Filter="*.htm"
 			>
 			<File
 				RelativePath=".\html\about.htm"
@@ -760,12 +761,12 @@
 				DeploymentContent="true"
 				>
 			</File>
+			<File
+				RelativePath=".\html\note-view.htm"
+				DeploymentContent="true"
+				>
+			</File>
 		</Filter>
-		<File
-			RelativePath=".\html\note-view.htm"
-			DeploymentContent="true"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

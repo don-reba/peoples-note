@@ -23,8 +23,8 @@ void NoteView::Create(HWND parent)
 {
 	wstring wndClass = LoadStringResource(IDC_NOTE_VIEW);
 
-	//if (!RegisterClass(wndClass))
-	//	throw std::exception("Class could not be registered.");
+	if (!RegisterClass(wndClass))
+		throw std::exception("Class could not be registered.");
 
 	hwnd_ = ::CreateWindow
 		( wndClass.c_str() // lpClassName
@@ -34,7 +34,7 @@ void NoteView::Create(HWND parent)
 		, CW_USEDEFAULT    // y
 		, CW_USEDEFAULT    // nWidth
 		, CW_USEDEFAULT    // nHeight
-		, parent           // hWndParent
+		, NULL           // hWndParent
 		, NULL             // hMenu
 		, instance         // hInstance
 		, this             // lpParam
@@ -42,23 +42,21 @@ void NoteView::Create(HWND parent)
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
-	//ResizeForMenuBar();
-}
+	this->parent = parent;
 
-void NoteView::Hide()
-{
-	::ShowWindow(hwnd_, SW_HIDE);
-}
+	CopyParentSize();
 
-void NoteView::Show()
-{
-	::ShowWindow(hwnd_, SW_SHOW);
-	::UpdateWindow(hwnd_);
+	Hide();
 }
 
 //-------------------------
 // INoteView implementation
 //-------------------------
+
+void NoteView::Hide()
+{
+	::ShowWindow(hwnd_, SW_HIDE);
+}
 
 void NoteView::SetBody(wstring html)
 {
@@ -77,4 +75,80 @@ void NoteView::SetBody(wstring html)
 void NoteView::SetTitle(wstring text)
 {
 	::SetWindowText(hwnd_, text.c_str());
+}
+
+void NoteView::Show()
+{
+	RECT rect;
+	::GetWindowRect(hwnd_, &rect);
+	::ShowWindow(hwnd_, SW_SHOW);
+	::UpdateWindow(hwnd_);
+	::BringWindowToTop(hwnd_);
+}
+
+//------------------
+// utility functions
+//------------------
+
+void NoteView::CopyParentSize()
+{	
+	RECT rect;
+	::GetWindowRect(parent, &rect);
+	::MoveWindow
+		( hwnd_
+		, rect.left
+		, rect.top
+		, rect.right - rect.left
+		, rect.bottom - rect.top
+		, TRUE
+		);
+}
+
+void NoteView::CreateMenuBar()
+{
+	menuBar = NULL;
+
+	SHMENUBARINFO mbi = { sizeof(SHMENUBARINFO) };
+	mbi.hwndParent = hwnd_;
+	mbi.nToolBarId = IDR_MENU;
+	mbi.hInstRes   = instance;
+	if (!::SHCreateMenuBar(&mbi))
+		throw exception("Menu bar could not be created.");
+	menuBar = mbi.hwndMB;
+}
+
+ATOM NoteView::RegisterClass(wstring wndClass)
+{
+	WNDCLASS wc = { 0 };
+	wc.style         = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc   = &NoteView::WndProc<NoteView>;
+	wc.hInstance     = instance;
+	wc.hIcon         = LoadIcon(instance, MAKEINTRESOURCE(IDI_CLIENT));
+	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
+	wc.lpszClassName = wndClass.c_str();
+	return ::RegisterClass(&wc);
+}
+
+//------------------------
+// window message handlers
+//------------------------
+
+void NoteView::OnCommand(Msg<WM_COMMAND> &msg)
+{
+	switch (msg.GetCtrlId())
+	{
+	case IDM_CLOSE:
+		Hide();
+		break;
+	}
+}
+
+void NoteView::ProcessMessage(WndMsg &msg)
+{
+	static Handler mmp[] =
+	{
+		&NoteView::OnCommand,
+	};
+	if (!Handler::Call(mmp, this, msg))
+		__super::ProcessMessage(msg);
 }
