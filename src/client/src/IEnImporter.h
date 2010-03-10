@@ -13,5 +13,6 @@ public:
 	virtual void ImportNotes
 		( std::wistream & stream
 		, NoteList      & notes
+		, NoteBodyList  & bodies
 		) = 0;
 };

@@ -7,12 +7,14 @@ class MockEnImporter : public IEnImporter
 {
 public:
 
-	std::vector<Note> notes;
+	NoteBodyList bodies;
+	NoteList     notes;
 
 public:
 
 	virtual void ImportNotes
 		( std::wistream & stream
 		, NoteList      & notes
+		, NoteBodyList  & bodies
 		);
 };

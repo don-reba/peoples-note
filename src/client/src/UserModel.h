@@ -36,7 +36,12 @@ public:
 
 public:
 
-	virtual void AddNote(const Note & note, const Notebook & notebook);
+	virtual void AddNote
+		( const Note          & note
+		, const std::wstring  & body
+		, const std::wstring  & bodyText
+		, const Notebook      & notebook
+		);
 
 	virtual void AddNotebook(const Notebook & notebook);
 

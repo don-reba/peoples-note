@@ -45,7 +45,7 @@ void SqlStatement::Bind(int index, __int64 n)
 		throw std::exception(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, string text)
+void SqlStatement::Bind(int index, const string & text)
 {
 	int result = sqlite3_bind_text
 		( statement
@@ -58,7 +58,7 @@ void SqlStatement::Bind(int index, string text)
 		throw std::exception(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, wstring text)
+void SqlStatement::Bind(int index, const wstring & text)
 {
 	vector<unsigned char> utf8Text = ConvertToUtf8(text);
 	const char * textPointer

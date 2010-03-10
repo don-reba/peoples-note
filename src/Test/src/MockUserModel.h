@@ -9,6 +9,28 @@
 
 class MockUserModel : public IUserModel
 {
+public:
+
+	struct NoteRecord
+	{
+		NoteRecord
+			( const Note         & note
+			, const std::wstring & body
+			, const std::wstring & bodyText
+			, const Notebook     & notebook
+			)
+			: note     (note)
+			, body     (body)
+			, bodyText (bodyText)
+			, notebook (notebook)
+		{
+		}
+		Note         note;
+		std::wstring body;
+		std::wstring bodyText;
+		Notebook     notebook;
+	};
+
 // data
 
 public:
@@ -23,8 +45,7 @@ public:
 
 	std::map<std::string, std::wstring> noteBodies;
 
-	typedef std::pair<std::wstring, std::wstring> AddedNote;
-	std::vector<AddedNote> addedNotes;
+	std::vector<NoteRecord> addedNotes;
 
 	bool isDefault;
 	bool isLoaded;
@@ -44,7 +65,12 @@ public:
 
 public:
 
-	virtual void AddNote(const Note & note, const Notebook & notebook);
+	virtual void AddNote
+		( const Note          & note
+		, const std::wstring  & body
+		, const std::wstring  & bodyText
+		, const Notebook      & notebook
+		);
 
 	virtual void AddNotebook(const Notebook & notebook);
 

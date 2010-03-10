@@ -14,11 +14,14 @@ MockUserModel::MockUserModel()
 
 void MockUserModel::AddNote
 	( const Note     & note
+	, const wstring  & body
+	, const wstring  & bodyText
 	, const Notebook & notebook
 	)
 {
-	addedNotes.push_back(make_pair(note.GetTitle(), notebook.GetName()));
+	addedNotes.push_back(NoteRecord(note, body, bodyText, notebook));
 	notes.push_back(note);
+	noteBodies[note.GetGuid()] = body;
 }
 
 void MockUserModel::AddNotebook(const Notebook & notebook)

@@ -36,12 +36,19 @@ void EnImportPresenter::OnImport()
 	if (!file.is_open())
 		throw std::exception("File could not be opened.");
 
-	NoteList notes;
-	enImporter.ImportNotes(file, notes);
+	NoteList     notes;
+	NoteBodyList bodies;
+	enImporter.ImportNotes(file, notes, bodies);
+	assert(notes.size() == bodies.size());
 
 	const Notebook & notebook = userModel.GetLastUsedNotebook();
-	foreach (const Note & note, notes)
-		userModel.AddNote(note, notebook);
+	for (int i(0); i != notes.size(); ++i)
+	{
+		const Note    & note     = notes.at(i);
+		const wstring & body     = bodies.at(i);
+		wstring         bodyText = L""; // TODO: produce body text
+		userModel.AddNote(note, body, bodyText, notebook);
+	}
 
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(notebook));
 }

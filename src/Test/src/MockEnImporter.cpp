@@ -5,9 +5,11 @@ using namespace boost;
 using namespace std;
 
 void MockEnImporter::ImportNotes
-	( wistream & stream
-	, NoteList & notes
+	( wistream     & stream
+	, NoteList     & notes
+	, NoteBodyList & bodies
 	)
 {
-	notes = this->notes;
+	bodies = this->bodies;
+	notes  = this->notes;
 }

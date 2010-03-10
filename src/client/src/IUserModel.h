@@ -12,7 +12,12 @@ public:
 
 	virtual ~IUserModel() {}
 
-	virtual void AddNote(const Note & note, const Notebook & notebook) = 0;
+	virtual void AddNote
+		( const Note          & note
+		, const std::wstring  & body
+		, const std::wstring  & bodyText
+		, const Notebook      & notebook
+		) = 0;
 
 	virtual void AddNotebook(const Notebook & notebook) = 0;
 

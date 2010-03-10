@@ -24,10 +24,10 @@ public:
 
 	virtual bool Execute();
 
-	virtual void Bind(int index, __int32      n);
-	virtual void Bind(int index, __int64      n);
-	virtual void Bind(int index, std::string  text);
-	virtual void Bind(int index, std::wstring text);
+	virtual void Bind(int index, __int32              n);
+	virtual void Bind(int index, __int64              n);
+	virtual void Bind(int index, const std::string  & text);
+	virtual void Bind(int index, const std::wstring & text);
 
 	virtual void Get(int index, __int32      & n);
 	virtual void Get(int index, __int64      & n);

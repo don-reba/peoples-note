@@ -15,8 +15,9 @@ using namespace std;
 using namespace Tools;
 
 void EnImporter::ImportNotes
-	( wistream & stream
-	, NoteList & notes
+	( wistream     & stream
+	, NoteList     & notes
+	, NoteBodyList & bodies
 	)
 {
 	vector<wchar_t> text
@@ -44,12 +45,25 @@ void EnImporter::ImportNotes
 
 		while (node)
 		{
+			wstring body;
 			wstring title;
 			wstring created;
 
 			xml_node<wchar_t> * noteNode(node->first_node());
 			while (noteNode)
 			{
+				if (0 == wcscmp(noteNode->name(), L"content"))
+				{
+					if (noteNode->value_size() > 0)
+						body = noteNode->value();
+					else
+					{
+						xml_node<wchar_t> * contentNode
+							= noteNode->first_node();
+						if (contentNode)
+							body = contentNode->value();
+					}
+				}
 				if (0 == wcscmp(noteNode->name(), L"title"))
 					title = noteNode->value();
 				if (0 == wcscmp(noteNode->name(), L"created"))
@@ -59,6 +73,7 @@ void EnImporter::ImportNotes
 
 			Timestamp timestamp = Timestamp(ParseTime(created));
 			notes.push_back(Note(Guid(), title, timestamp));
+			bodies.push_back(body);
 
 			node = node->next_sibling();
 		}

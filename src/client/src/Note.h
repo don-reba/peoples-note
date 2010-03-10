@@ -37,4 +37,5 @@ public:
 	const Timestamp & GetCreationDate() const;
 };
 
-typedef std::vector<Note> NoteList;
+typedef std::vector<std::wstring> NoteBodyList;
+typedef std::vector<Note>         NoteList;

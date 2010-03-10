@@ -42,13 +42,27 @@ bool FileExists(const wchar_t * path)
 // test suite
 //-----------
 
-FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
+{
+	Note note        (Guid(), L"note-0", Timestamp(0));
+	wstring body     (L"<html>note body</html>");
+	wstring bodyText (L"");
+	const Notebook & notebook = userModel.GetLastUsedNotebook();
+	userModel.AddNote(note, body, bodyText, notebook);
+
+	TEST_CHECK_EQUAL(userModel.GetNoteBody(note.GetGuid()), body);
+}
+
+FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"test-notebook");
 	userModel.AddNotebook(notebook);
 
+	wstring empty;
 	userModel.AddNote
 		( Note(Guid(), L"note-0", Timestamp(0))
+		, empty
+		, empty
 		, notebook
 		);
 
@@ -58,6 +72,8 @@ FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 	{
 		userModel.AddNote
 			( Note(Guid(), L"note-1", Timestamp(1))
+			, empty
+			, empty
 			, fakeNotebook
 			);
 	}
@@ -67,7 +83,7 @@ FIXTURE_TEST_CASE(TestDataStoreAddNote, DataStoreFixture)
 	}
 }
 
-FIXTURE_TEST_CASE(TestDataStoreAddNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"test-notebook");
 	userModel.AddNotebook(notebook);
@@ -86,7 +102,7 @@ FIXTURE_TEST_CASE(TestDataStoreAddNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 }
 
-FIXTURE_TEST_CASE(TestDataStoreDefaultNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"test-notebook");
 	userModel.AddNotebook(notebook);
@@ -95,7 +111,7 @@ FIXTURE_TEST_CASE(TestDataStoreDefaultNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetDefaultNotebook().GetName(), L"test-notebook");
 }
 
-FIXTURE_TEST_CASE(TestDataStoreLastUsedNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
 {
 	vector<Notebook> notebooks;
 	notebooks.push_back(Notebook(Guid(), L"notebook0"));
@@ -108,7 +124,7 @@ FIXTURE_TEST_CASE(TestDataStoreLastUsedNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetLastUsedNotebook().GetName(), L"notebook1");
 }
 
-AUTO_TEST_CASE(TestDataStoreLoadOrCreate)
+AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 {
 	{
 		DataStore store;
@@ -139,7 +155,7 @@ AUTO_TEST_CASE(TestDataStoreLoadOrCreate)
 	}
 }
 
-FIXTURE_TEST_CASE(TestDataStoreNotebooks, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelNotebooks, DataStoreFixture)
 {
 	userModel.AddNotebook(Notebook(Guid(), L"notebook1"));
 	userModel.AddNotebook(Notebook(Guid(), L"notebook0"));
@@ -153,7 +169,7 @@ FIXTURE_TEST_CASE(TestDataStoreNotebooks, DataStoreFixture)
 	TEST_CHECK_EQUAL(notebooks.at(3).GetName(), L"notebook2");
 }
 
-FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
 {
 	vector<Notebook> notebooks;
 	notebooks.push_back(Notebook(Guid(), L"notebook-0"));
@@ -161,16 +177,24 @@ FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 	foreach (const Notebook & notebook, notebooks)
 		userModel.AddNotebook(notebook);
 
+	wstring empty;
+
 	userModel.AddNote
 		( Note(Guid(), L"note-0", Timestamp(0))
+		, empty
+		, empty
 		, notebooks.at(0)
 		);
 	userModel.AddNote
 		( Note(Guid(), L"note-1", Timestamp(1))
+		, empty
+		, empty
 		, notebooks.at(1)
 		);
 	userModel.AddNote
 		( Note(Guid(), L"note-2", Timestamp(2))
+		, empty
+		, empty
 		, notebooks.at(0)
 		);
 
@@ -180,17 +204,23 @@ FIXTURE_TEST_CASE(TestDataStoreNotesByNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes.at(1).GetTitle(), L"note-2");
 }
 
-FIXTURE_TEST_CASE(TestDataStoreNotesBySearch, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 {
 	Notebook notebook(Guid(), L"notebook");
 	userModel.AddNotebook(notebook);
 
+	wstring empty;
+
 	userModel.AddNote
 		( Note(Guid(), L"useful software", Timestamp(0))
+		, empty
+		, empty
 		, notebook
 		);
 	userModel.AddNote
 		( Note(Guid(), L"software use", Timestamp(1))
+		, empty
+		, empty
 		, notebook
 		);
 

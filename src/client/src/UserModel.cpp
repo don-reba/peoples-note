@@ -53,13 +53,18 @@ int UserModel::GetVersion()
 // IUuserModel implementaion
 //--------------------------
 
-void UserModel::AddNote(const Note & note, const Notebook & notebook)
+void UserModel::AddNote
+	( const Note     & note
+	, const wstring  & body
+	, const wstring  & bodyText
+	, const Notebook & notebook
+	)
 {
 	IDataStore::Statement insertContents = dataStore.MakeStatement
 		( "INSERT INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
 		);
 	insertContents->Bind(1, note.GetTitle());
-	insertContents->Bind(2, L"");
+	insertContents->Bind(2, bodyText);
 	insertContents->Execute();
 
 	IDataStore::Statement insertInfo = dataStore.MakeStatement
@@ -69,7 +74,7 @@ void UserModel::AddNote(const Note & note, const Notebook & notebook)
 	insertInfo->Bind(1, note.GetGuid());
 	insertInfo->Bind(2, note.GetCreationDate().GetTime());
 	insertInfo->Bind(3, note.GetTitle());
-	insertInfo->Bind(4, L"");
+	insertInfo->Bind(4, body);
 	insertInfo->Bind(5, dataStore.GetLastInsertRowid());
 	insertInfo->Bind(6, notebook.GetGuid());
 	insertInfo->Execute();

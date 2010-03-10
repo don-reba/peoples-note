@@ -30,6 +30,8 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test0)
 
 	enImporter.notes.push_back(Note(Guid(), L"note-1", Timestamp(1)));
 	enImporter.notes.push_back(Note(Guid(), L"note-2", Timestamp(2)));
+	enImporter.bodies.push_back(L"body-1");
+	enImporter.bodies.push_back(L"body-2");
 
 	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
 
@@ -38,11 +40,15 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test0)
 
 	noteListView.SignalImport();
 
-	BOOST_REQUIRE_EQUAL(userModel.addedNotes.size(), 2);
-	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).first, L"note-1");
-	BOOST_CHECK_EQUAL(userModel.addedNotes.at(1).first, L"note-2");
-	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).second, L"notebook");
-	BOOST_CHECK_EQUAL(userModel.addedNotes.at(1).second, L"notebook");
+	typedef vector<MockUserModel::NoteRecord> NoteRecordList;
+	const NoteRecordList & addedNotes = userModel.addedNotes;
+	BOOST_REQUIRE_EQUAL(addedNotes.size(), 2);
+	BOOST_CHECK_EQUAL(addedNotes.at(0).note.GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(addedNotes.at(1).note.GetTitle(), L"note-2");
+	BOOST_CHECK_EQUAL(addedNotes.at(0).body, L"body-1");
+	BOOST_CHECK_EQUAL(addedNotes.at(1).body, L"body-2");
+	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook.GetName(), L"notebook");
+	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook.GetName(), L"notebook");
 
 	// should actually be 3
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
