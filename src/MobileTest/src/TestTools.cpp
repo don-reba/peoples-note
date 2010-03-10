@@ -18,7 +18,7 @@ AUTO_TEST_CASE(TestToolsLoadStringResource)
 AUTO_TEST_CASE(TestToolsLoadHtmlResource)
 {
 	std::string html = "<html></html>";
-	HtmlResource resource = Tools::LoadHtmlResource(IDH_TEST);
+	HtmlResource resource = Tools::LoadHtmlResource(L"test.htm");
 	TEST_CHECK_EQUAL(memcmp(resource.data, html.c_str(), html.length()), 0);
 	TEST_CHECK_EQUAL(resource.size, html.size());
 }

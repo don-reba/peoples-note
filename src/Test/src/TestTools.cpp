@@ -18,18 +18,19 @@ BOOST_AUTO_TEST_CASE(ToolsConvertToAnsi_Test2)
 
 BOOST_AUTO_TEST_CASE(ToolsConvertToUtf8_Test1)
 {
-	vector<unsigned char> testString = Tools::ConvertToUtf8(L"Test");
-	BOOST_REQUIRE_EQUAL(testString.size(), 4);
-	BOOST_CHECK_EQUAL(testString.at(0), 'T');
-	BOOST_CHECK_EQUAL(testString.at(1), 'e');
-	BOOST_CHECK_EQUAL(testString.at(2), 's');
-	BOOST_CHECK_EQUAL(testString.at(3), 't');
+	vector<unsigned char> testChars;
+	const char * test
+		= reinterpret_cast<const char *>
+		( Tools::ConvertToUtf8(L"Test", testChars)
+		);
+	BOOST_CHECK_EQUAL(::strcmp(test, "Test"), 0);
 }
 
 BOOST_AUTO_TEST_CASE(ToolsConvertToUtf8_Test2)
 {
-	vector<unsigned char> emptyString = Tools::ConvertToUtf8(L"");
-	BOOST_REQUIRE_EQUAL(emptyString.size(), 0);
+	vector<unsigned char> testChars;
+	const unsigned char * test = Tools::ConvertToUtf8(L"", testChars);
+	BOOST_REQUIRE_EQUAL(*test, 0);
 }
 
 BOOST_AUTO_TEST_CASE(ToolsConvertToUnicode_Test1)

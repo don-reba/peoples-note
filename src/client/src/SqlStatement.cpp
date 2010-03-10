@@ -60,17 +60,13 @@ void SqlStatement::Bind(int index, const string & text)
 
 void SqlStatement::Bind(int index, const wstring & text)
 {
-	vector<unsigned char> utf8Text = ConvertToUtf8(text);
-	const char * textPointer
-		= utf8Text.empty()
-		? ""
-		: reinterpret_cast<const char*>(&utf8Text[0])
-		;
+	vector<unsigned char> textUtf8Chars;
+	const char * textUtf8 = reinterpret_cast<const char *>(ConvertToUtf8(text, textUtf8Chars));
 	int result = sqlite3_bind_text
 		( statement
 		, index
-		, textPointer
-		, utf8Text.size()
+		, textUtf8
+		, textUtf8Chars.size()
 		, SQLITE_TRANSIENT
 		);
 	if (result != SQLITE_OK)

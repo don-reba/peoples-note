@@ -74,7 +74,10 @@ string Tools::ConvertToAnsi(const wstring str)
 	return &result[0];
 }
 
-vector<unsigned char> Tools::ConvertToUtf8(const wstring str)
+const unsigned char * Tools::ConvertToUtf8
+	( const wstring         & str
+	, vector<unsigned char> & result
+	)
 {
 	UINT  codePage = CP_UTF8;
 	DWORD flags    = 0;
@@ -88,7 +91,8 @@ vector<unsigned char> Tools::ConvertToUtf8(const wstring str)
 		, NULL         // lpDefaultChar
 		, NULL         // lpUsedDefaultChar
 		);
-	vector<unsigned char> result(resultSize + 1);
+	result.resize(0);
+	result.resize(resultSize + 1);
 	LPSTR resultStr = reinterpret_cast<char*>(&result[0]);
 	WideCharToMultiByte
 		( codePage     // CodePage
@@ -101,7 +105,10 @@ vector<unsigned char> Tools::ConvertToUtf8(const wstring str)
 		, NULL         // lpUsedDefaultChar
 		);
 	result.resize(result.size() - 1); // cut terminating zero
-	return result;
+	return result.empty()
+		? reinterpret_cast<unsigned char *>("")
+		: &result[0]
+		;
 }
 
 wstring Tools::ConvertToUnicode(const string str)
@@ -153,11 +160,6 @@ std::wstring Tools::ConvertToUnicode(const unsigned char * str)
 		, resultSize // cchWideChar
 		);
 	return &result[0];
-}
-
-HtmlResource Tools::LoadHtmlResource(int id)
-{
-	return Tools::LoadHtmlResource(MAKEINTRESOURCE(id));
 }
 
 HtmlResource Tools::LoadHtmlResource(LPCWSTR id)

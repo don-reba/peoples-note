@@ -618,3 +618,12 @@ full-text search
 	even title, actually, might contain special markup
 	should store originals in the note table
 	should store stripped text in the FTS table
+note view class design
+	constraints
+		modal
+		create note view as child of note list view
+		subscribe presenters to note view events
+			presenter initialized after view
+		might want to cache data for the view
+			including window
+		should not expose window-specific things in interface

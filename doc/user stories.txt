@@ -53,9 +53,9 @@ notebooks
 about
 	when the user selects "about" from the menu, the "about" window should be shown
 storage
-	when a set of notes is needed, their attributes are loaded from the database
+	√ when a set of notes is needed, their attributes are loaded from the database
 	when a note's contest is needed, it is loaded from the database
-	when a note is added, it is stored in the database
+	√ when a note is added, it is stored in the database
 database
 	√ when file does not exist, create a new one for the current version
 	when the file exists and has a lesser version, convert it to current version

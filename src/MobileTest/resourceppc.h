@@ -11,8 +11,6 @@
 #define IDD_ABOUTBOX                    105
 #define IDD_ABOUTBOX_WIDE               106
 #define IDS_CHAR_STRING                 129
-#define IDR_HTML1                       129
-#define IDH_TEST                        129
 #define IDS_TEST_STRING                 130
 #define IDS_DOC_FOLDER                  131
 #define IDC_STATIC_1                    201

@@ -22,6 +22,7 @@ void NotePresenter::OnOpenNote()
 {
 	Guid guid(noteListView.GetSelectedNoteGuid());
 	noteView.SetBody(ProcessNote(userModel.GetNoteBody(guid)));
+	noteListView.ShowNoteView();
 }
 
 wstring NotePresenter::ProcessNote(wstring text)

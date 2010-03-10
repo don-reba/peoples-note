@@ -19,6 +19,7 @@ public:
 
 	bool notesUpdated;
 	bool notebooksUpdated;
+	bool noteViewShown;
 
 	std::wstring searchString;
 	Guid         selectedNoteGuid;
@@ -56,6 +57,8 @@ public:
 	virtual Guid GetSelectedNoteGuid();
 	
 	virtual std::wstring GetSearchString();
+
+	virtual void ShowNoteView();
 
 	virtual void UpdateNotebooks();
 

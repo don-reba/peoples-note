@@ -12,7 +12,7 @@ using namespace Tools;
 // interface
 //----------
 
-HTMLayoutWindow::HTMLayoutWindow(int resourceId)
+HTMLayoutWindow::HTMLayoutWindow(const wchar_t * resourceId)
 	: resourceId (resourceId)
 {
 }

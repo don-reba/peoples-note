@@ -31,6 +31,8 @@ public:
 
 	virtual std::wstring GetSearchString() = 0;
 
+	virtual void ShowNoteView() = 0;
+
 	virtual void UpdateNotes() = 0;
 
 	virtual void UpdateNotebooks() = 0;

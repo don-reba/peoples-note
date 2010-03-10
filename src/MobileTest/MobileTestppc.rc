@@ -177,7 +177,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 // HTML
 //
 
-IDH_TEST                HTML                    "test.htm"
+test.htm                HTML                    "test.htm"
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 

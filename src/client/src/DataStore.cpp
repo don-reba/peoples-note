@@ -30,11 +30,13 @@ bool DataStore::Create(std::wstring path, int flags)
 {
 	assert(db == NULL);
 
-	vector<unsigned char> utf8Path = ConvertToUtf8(path);
-	assert(!utf8Path.empty());
-	const char * cPath = reinterpret_cast<const char *>(&utf8Path[0]);
+	vector<unsigned char> utf8PathChars;
+	const char * utf8Path
+		= reinterpret_cast<const char *>
+		( ConvertToUtf8(path, utf8PathChars)
+		);
 
-	int result = sqlite3_open_v2(cPath, &db, flags, NULL);
+	int result = sqlite3_open_v2(utf8Path, &db, flags, NULL);
 	if (SQLITE_OK != result)
 	{
 		sqlite3_close(db);

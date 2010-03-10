@@ -21,4 +21,5 @@ BOOST_AUTO_TEST_CASE(NotePresenter_Test)
 	noteListView.SignalOpenNote();
 
 	BOOST_CHECK_EQUAL(noteView.body, L"test-note-body");
+	BOOST_CHECK(noteListView.noteViewShown);
 }

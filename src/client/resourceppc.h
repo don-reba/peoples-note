@@ -8,13 +8,11 @@
 #define IDS_MAIN_MENU                   4
 #define IDS_REGISTRY_KEY                5
 #define IDS_DOC_FOLDER                  6
+#define IDC_NOTE_VIEW                   7
 #define IDI_CLIENT                      101
 #define IDR_MENU                        102
 #define IDS_OK                          103
 #define IDS_HELP                        104
-#define IDH_ABOUT                       130
-#define IDH_MAIN                        131
-#define IDB_PNG1                        132
 #define IDM_SYNC                        32771
 #define ID_ACCELERATOR32772             32772
 #define IDM_MENU_EXIT                   32773

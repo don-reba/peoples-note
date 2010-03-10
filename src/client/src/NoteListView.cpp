@@ -1,8 +1,7 @@
 #include "stdafx.h"
+#include "NoteListView.h"
 
 #include "crackers.h"
-#include "htmlayout.h"
-#include "NoteListView.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
@@ -17,7 +16,7 @@ using namespace Tools;
 NoteListView::NoteListView(HINSTANCE instance, int cmdShow)
 	: cmdShow         (cmdShow)
 	, instance        (instance)
-	, HTMLayoutWindow (IDH_MAIN)
+	, HTMLayoutWindow (L"main.htm")
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
@@ -66,19 +65,21 @@ void NoteListView::AddNotebook(wstring notebook)
 		throw exception("Notebook menu entry could not be added.");
 }
 
-void NoteListView::AddNote(wstring noteHtml, wstring value)
+void NoteListView::AddNote(wstring html, wstring value)
 {
 	dom::element root = dom::element::root_element(hwnd_);
 	dom::element noteList = root.find_first("#note-list");
 	if (!noteList)
 		throw exception("'#note-list' not found.");
 
-	vector<unsigned char> noteHtmlUtf8 = Tools::ConvertToUtf8(noteHtml);
+	vector<unsigned char> htmlUtf8Chars;
+	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
+
 	dom::element note = dom::element::create("option");
 	noteList.append(note);
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
-	note.set_html(&noteHtmlUtf8[0], noteHtmlUtf8.size());
+	note.set_html(htmlUtf8, htmlUtf8Chars.size());
 }
 
 void NoteListView::ClearNotebooks()
@@ -151,6 +152,11 @@ wstring NoteListView::GetSearchString()
 	if (!searchBox)
 		throw exception("'#search-box' not found.");
 	return searchBox.text().c_str();
+}
+
+void NoteListView::ShowNoteView()
+{
+	// TODO: implement
 }
 
 void NoteListView::UpdateNotebooks()

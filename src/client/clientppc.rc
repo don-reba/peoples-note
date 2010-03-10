@@ -114,6 +114,7 @@ BEGIN
     IDS_MAIN_MENU           "Menu"
     IDS_REGISTRY_KEY        "Software\\People's Note"
     IDS_DOC_FOLDER          "People's Note"
+    IDC_NOTE_VIEW           "NOTE-VIEW"
 END
 
 #endif    // English (U.S.) resources
@@ -134,13 +135,13 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 // HTML
 //
 
-IDH_ABOUT               HTML                    "html\\about.htm"
-IDH_MAIN                HTML                    "html\\main.htm"
-text-note.png           HTML                    "html\\text-note.png"
-voice-note.png          HTML                    "html\\voice-note.png"
-photo-note.png          HTML                    "html\\photo-note.png"
-file-note.png           HTML                    "html\\file-note.png"
-
+ABOUT.HTM               HTML                    "html\\about.htm"
+MAIN.HTM                HTML                    "html\\main.htm"
+NOTE-VIEW.HTM           HTML                    "html\\note-view.htm"
+TEXT-NOTE.PNG           HTML                    "html\\text-note.png"
+VOICE-NOTE.PNG          HTML                    "html\\voice-note.png"
+PHOTO-NOTE.PNG          HTML                    "html\\photo-note.png"
+FILE-NOTE.PNG           HTML                    "html\\file-note.png"
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 

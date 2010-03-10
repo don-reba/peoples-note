@@ -32,6 +32,8 @@ public:
 
 // INoteListView implementation
 
+public:
+
 	virtual void AddNote(std::wstring noteHtml, std::wstring value);
 
 	virtual void AddNotebook(std::wstring notebook);
@@ -53,6 +55,8 @@ public:
 	virtual Guid GetSelectedNoteGuid();
 	
 	virtual std::wstring GetSearchString();
+
+	virtual void ShowNoteView();
 
 	virtual void UpdateNotebooks();
 

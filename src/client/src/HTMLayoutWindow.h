@@ -31,7 +31,7 @@ private:
 
 private:
 
-	const int resourceId;
+	const wchar_t * const resourceId;
 
 	std::vector<EventTarget> eventTargets;
 	std::vector<EventRecord> eventRecords;
@@ -44,7 +44,7 @@ protected:
 
 protected:
 
-	HTMLayoutWindow(int resourceId);
+	HTMLayoutWindow(const wchar_t * resourceId);
 
 	template <typename T>
 	void ConnectBehavior

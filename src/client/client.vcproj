@@ -383,6 +383,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\crackers.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CredentialsModel.cpp"
 				>
 			</File>
@@ -440,6 +444,10 @@
 			</File>
 			<File
 				RelativePath=".\src\NotePresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NoteView.cpp"
 				>
 			</File>
 			<File
@@ -653,6 +661,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NoteView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\RegistryKey.h"
 				>
 			</File>
@@ -719,7 +731,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html\file-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\photo-note.png"
+				>
+			</File>
+			<File
 				RelativePath=".\html\text-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\voice-note.png"
 				>
 			</File>
 		</Filter>
@@ -737,6 +761,11 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\html\note-view.htm"
+			DeploymentContent="true"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
