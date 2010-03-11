@@ -183,6 +183,7 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 		"  ORDER BY creationDate"
 		);
 	statement->Bind(1, notebook.GetGuid());
+	notes.clear();
 	while (!statement->Execute())
 	{
 		string  guid;

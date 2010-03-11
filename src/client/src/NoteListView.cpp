@@ -24,9 +24,10 @@ NoteListView::NoteListView
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
 
-	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
-	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
+	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
+	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
+	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 }
 
 void NoteListView::Create()
@@ -53,7 +54,7 @@ void NoteListView::Create()
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
-	::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
+	ResetUiSetup();
 
 	::ShowWindow(hwnd_, cmdShow);
 	::UpdateWindow(hwnd_);
@@ -135,9 +136,11 @@ bool NoteListView::GetEnexPath(wstring & path)
 		;
 	if (::GetOpenFileName(&parameters))
 	{
+		ResetUiSetup();
 		path = &file[0];
 		return true;
 	}
+	ResetUiSetup();
 	return false;
 }
 
@@ -159,6 +162,7 @@ wstring NoteListView::GetSearchString()
 
 void NoteListView::UpdateNotebooks()
 {
+	// TODO: implement
 }
 
 void NoteListView::UpdateNotes()
@@ -183,37 +187,20 @@ ATOM NoteListView::RegisterClass(wstring wndClass)
 	return ::RegisterClass(&wc);
 }
 
+void NoteListView::ResetUiSetup()
+{
+	::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
+}
+
 //------------------------
 // window message handlers
 //------------------------
 
 void NoteListView::OnActivate(Msg<WM_ACTIVATE> &msg)
 {
-	//SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, FALSE);
+	SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, FALSE);
 	msg.result_  = 0;
 	msg.handled_ = true;
-}
-
-void NoteListView::OnBehaviorNotify(Msg<WM_BEHAVIOR_NOTIFY> &msg)
-{
-	msg.handled_ = true;
-}
-
-void NoteListView::OnCommand(Msg<WM_COMMAND> &msg)
-{
-	switch (msg.GetCtrlId())
-	{
-	case IDM_MENU_IMPORTNOTES:
-		SignalImport();
-		break;
-	case IDM_MENU_ABOUT:
-		// TODO: implement About dialog
-		break;
-	case IDM_MENU_EXIT:
-		SendMessage(hwnd_, WM_CLOSE, 0, 0);
-		msg.handled_ = true;
-		break;
-	}
 }
 
 void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
@@ -226,8 +213,6 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 	static Handler mmp[] =
 	{
 		&NoteListView::OnActivate,
-		&NoteListView::OnBehaviorNotify,
-		&NoteListView::OnCommand,
 		&NoteListView::OnDestroy,
 	};
 	if (!Handler::Call(mmp, this, msg))
@@ -241,6 +226,11 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 void NoteListView::OnMenuExit()
 {
 	SendMessage(hwnd_, WM_CLOSE, 0, 0);
+}
+
+void NoteListView::OnMenuImport()
+{
+	SignalImport();
 }
 
 void NoteListView::OnNote()

@@ -68,13 +68,13 @@ private:
 
 	ATOM RegisterClass(std::wstring wndClass);
 
+	void ResetUiSetup();
+
 // window message handlers
 
 private:
 
 	void OnActivate       (Msg<WM_ACTIVATE>        & msg);
-	void OnBehaviorNotify (Msg<WM_BEHAVIOR_NOTIFY> & msg);
-	void OnCommand        (Msg<WM_COMMAND>         & msg);
 	void OnDestroy        (Msg<WM_DESTROY>         & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
@@ -84,6 +84,7 @@ private:
 private:
 
 	void OnMenuExit();
+	void OnMenuImport();
 	void OnNote();
 	void OnSearch();
 };
