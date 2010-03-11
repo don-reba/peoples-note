@@ -8,7 +8,6 @@ class NoteView : public HTMLayoutWindow, public INoteView
 private:
 
 	HINSTANCE instance;
-	HWND      menuBar;
 	HWND      parent;
 
 // interface
@@ -36,8 +35,6 @@ public:
 private:
 
 	void CopyParentSize();
-
-	void CreateMenuBar();
 
 	ATOM RegisterClass(std::wstring wndClass);
 

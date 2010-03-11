@@ -26,6 +26,7 @@ NoteListView::NoteListView
 
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
+	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
 }
 
 void NoteListView::Create()
@@ -52,7 +53,7 @@ void NoteListView::Create()
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
-	ResizeForMenuBar();
+	::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
 
 	::ShowWindow(hwnd_, cmdShow);
 	::UpdateWindow(hwnd_);
@@ -64,13 +65,12 @@ void NoteListView::Create()
 
 void NoteListView::AddNotebook(wstring notebook)
 {
-	if (!::AppendMenu(notebooksMenu, 0, 0, notebook.c_str()))
-		throw exception("Notebook menu entry could not be added.");
+	// TODO: implement
 }
 
 void NoteListView::AddNote(wstring html, wstring value)
 {
-	dom::element root = dom::element::root_element(hwnd_);
+	dom::element root(dom::element::root_element(hwnd_));
 	dom::element noteList = root.find_first("#note-list");
 	if (!noteList)
 		throw exception("'#note-list' not found.");
@@ -87,12 +87,12 @@ void NoteListView::AddNote(wstring html, wstring value)
 
 void NoteListView::ClearNotebooks()
 {
-	while (RemoveMenu(notebooksMenu, 0, MF_BYPOSITION));
+	// TODO: implement
 }
 
 void NoteListView::ClearNotes()
 {
-	dom::element root = dom::element::root_element(hwnd_);
+	dom::element root(dom::element::root_element(hwnd_));
 	vector<dom::element> notes;
 	root.find_all(notes, "#note-list .note");
 
@@ -143,14 +143,14 @@ bool NoteListView::GetEnexPath(wstring & path)
 
 Guid NoteListView::GetSelectedNoteGuid()
 {
-	dom::element root = dom::element::root_element(hwnd_);
+	dom::element root(dom::element::root_element(hwnd_));
 	dom::element noteList = root.find_first("#note-list");
 	return noteList.get_value().to_string().c_str();
 }
 
 wstring NoteListView::GetSearchString()
 {
-	dom::element root = dom::element::root_element(hwnd_);
+	dom::element root(dom::element::root_element(hwnd_));
 	dom::element searchBox = root.find_first("#search-box");
 	if (!searchBox)
 		throw exception("'#search-box' not found.");
@@ -163,37 +163,13 @@ void NoteListView::UpdateNotebooks()
 
 void NoteListView::UpdateNotes()
 {
-	dom::element root = dom::element::root_element(hwnd_);
+	dom::element root(dom::element::root_element(hwnd_));
 	root.update();
 }
 
 //------------------
 // utility functions
 //------------------
-
-void NoteListView::CreateMenuBar()
-{
-	notebooksMenu = NULL;
-	menuBar       = NULL;
-
-	SHMENUBARINFO mbi = { sizeof(SHMENUBARINFO) };
-	mbi.hwndParent = hwnd_;
-	mbi.nToolBarId = IDR_MENU;
-	mbi.hInstRes   = instance;
-	if (!::SHCreateMenuBar(&mbi))
-		throw exception("Menu bar could not be created.");
-	menuBar = mbi.hwndMB;
-
-	TBBUTTONINFO buttonInfo = { sizeof(buttonInfo) };
-	buttonInfo.dwMask = TBIF_LPARAM;
-	if (!::Toolbar_GetButtonInfo(menuBar, IDM_MENU, &buttonInfo))
-		throw exception("Menu not found.");
-	HMENU menu = reinterpret_cast<HMENU>(buttonInfo.lParam);
-
-	notebooksMenu = ::GetSubMenu(menu, NotebooksMenuIndex);
-	if (!notebooksMenu)
-		throw exception("Notebook menu not found.");
-}
 
 ATOM NoteListView::RegisterClass(wstring wndClass)
 {
@@ -207,34 +183,13 @@ ATOM NoteListView::RegisterClass(wstring wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void NoteListView::ResizeForMenuBar()
-{
-	if (menuBar)
-	{
-		RECT windowRect;
-		RECT menuBarRect;
-
-		::GetWindowRect(hwnd_,   &windowRect);
-		::GetWindowRect(menuBar, &menuBarRect);
-		windowRect.bottom -= (menuBarRect.bottom - menuBarRect.top);
-
-		int  x       = windowRect.left;
-		int  y       = windowRect.top;
-		int  width   = windowRect.right  - windowRect.left;
-		int  height  = windowRect.bottom - windowRect.top;
-		BOOL repaint = FALSE;
-
-		::MoveWindow(hwnd_, x, y, width, height, repaint);
-	}
-}
-
 //------------------------
 // window message handlers
 //------------------------
 
 void NoteListView::OnActivate(Msg<WM_ACTIVATE> &msg)
 {
-	SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, FALSE);
+	//SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, FALSE);
 	msg.result_  = 0;
 	msg.handled_ = true;
 }
@@ -261,21 +216,9 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> &msg)
 	}
 }
 
-void NoteListView::OnCreate(Msg<WM_CREATE> &msg)
-{
-	CreateMenuBar();
-}
-
 void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 {
-	CommandBar_Destroy(menuBar);
 	PostQuitMessage(0);
-}
-
-void NoteListView::OnSettingChange(Msg<WM_SETTINGCHANGE> &msg)
-{
-	SHHandleWMSettingChange(hwnd_, msg.wprm_, msg.lprm_, &activateInfo);
-	msg.handled_ = true;
 }
 
 void NoteListView::ProcessMessage(WndMsg &msg)
@@ -285,9 +228,7 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 		&NoteListView::OnActivate,
 		&NoteListView::OnBehaviorNotify,
 		&NoteListView::OnCommand,
-		&NoteListView::OnCreate,
 		&NoteListView::OnDestroy,
-		&NoteListView::OnSettingChange
 	};
 	if (!Handler::Call(mmp, this, msg))
 		__super::ProcessMessage(msg);
@@ -296,6 +237,11 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void NoteListView::OnMenuExit()
+{
+	SendMessage(hwnd_, WM_CLOSE, 0, 0);
+}
 
 void NoteListView::OnNote()
 {

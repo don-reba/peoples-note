@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<style>
+			@import url(menu.css);
 			body
 			{
 				background-color: silver;
@@ -34,6 +35,15 @@
 				margin:           0px;
 				padding:          0px;
 				width:            35px;
+			}
+			#menu
+			{
+				background-color: silver;
+				behavior:         popup-menu;
+				bottom:           0px;
+				padding:          12px;
+				position:         fixed;
+				right:            0px;
 			}
 			#note-list
 			{
@@ -94,6 +104,24 @@
 	<body>
 		<div id="search-frame">
 			<input id="search-box" /><button id="search-button" />
+		</div>
+		<div id="menu">
+			Menu
+			<menu>
+				<li>Sign out</li>
+				<hr />
+				<li>
+					Notebook
+					<menu>
+						<li>Notes</li>
+						<li>Notebook</li>
+					</menu>
+				</li>
+				<li>Import notes</li>
+				<hr />
+				<li>About</li>
+				<li id="menu-exit">Exit</li>
+			</menu>
 		</div>
 		<widget type="select" id="note-list">
 			<div id="new-note-note">

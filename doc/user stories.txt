@@ -66,3 +66,7 @@ database
 Evernote import
 	√ when the "Import" menu option is selected, dispaly an ".enex" file open dialog
 	√ when an .enex file is imported, add the notes from it to the last used notebook
+text note editing
+	when the screen is tilted, the editor should rotate
+	when the "full screen" button is clicked, the note should expand to full screen
+	when the "collapse" button is clicked, the note should restore from full screen

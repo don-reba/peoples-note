@@ -762,6 +762,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html\menu.css"
+				>
+			</File>
+			<File
 				RelativePath=".\html\note-view.htm"
 				DeploymentContent="true"
 				>

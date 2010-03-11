@@ -16,8 +16,6 @@ private:
 	SHACTIVATEINFO activateInfo;
 	int            cmdShow;
 	HINSTANCE      instance;
-	HWND           menuBar;
-	HMENU          notebooksMenu;
 
 	signal SignalImport;
 	signal SignalOpenNote;
@@ -68,11 +66,7 @@ public:
 
 private:
 
-	void CreateMenuBar();
-
 	ATOM RegisterClass(std::wstring wndClass);
-
-	void ResizeForMenuBar();
 
 // window message handlers
 
@@ -81,9 +75,7 @@ private:
 	void OnActivate       (Msg<WM_ACTIVATE>        & msg);
 	void OnBehaviorNotify (Msg<WM_BEHAVIOR_NOTIFY> & msg);
 	void OnCommand        (Msg<WM_COMMAND>         & msg);
-	void OnCreate         (Msg<WM_CREATE>          & msg);
 	void OnDestroy        (Msg<WM_DESTROY>         & msg);
-	void OnSettingChange  (Msg<WM_SETTINGCHANGE>   & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 
@@ -91,6 +83,7 @@ private:
 
 private:
 
+	void OnMenuExit();
 	void OnNote();
 	void OnSearch();
 };

@@ -104,19 +104,6 @@ void NoteView::CopyParentSize()
 		);
 }
 
-void NoteView::CreateMenuBar()
-{
-	menuBar = NULL;
-
-	SHMENUBARINFO mbi = { sizeof(SHMENUBARINFO) };
-	mbi.hwndParent = hwnd_;
-	mbi.nToolBarId = IDR_MENU;
-	mbi.hInstRes   = instance;
-	if (!::SHCreateMenuBar(&mbi))
-		throw exception("Menu bar could not be created.");
-	menuBar = mbi.hwndMB;
-}
-
 ATOM NoteView::RegisterClass(wstring wndClass)
 {
 	WNDCLASS wc = { 0 };
