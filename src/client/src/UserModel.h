@@ -36,6 +36,12 @@ public:
 
 public:
 
+	virtual void AddImageResource
+		( std::string  hash
+		, const Blob & data
+		, Guid         note
+		);
+
 	virtual void AddNote
 		( const Note          & note
 		, const std::wstring  & body
@@ -53,7 +59,9 @@ public:
 
 	virtual Notebook GetLastUsedNotebook();
 
-	virtual std::wstring GetNoteBody(Guid guid);
+	virtual void GetImageResource(std::string hash, Blob & blob);
+
+	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
 	virtual const NotebookList & GetNotebooks();
 

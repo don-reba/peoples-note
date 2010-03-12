@@ -50,7 +50,9 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 	const Notebook & notebook = userModel.GetLastUsedNotebook();
 	userModel.AddNote(note, body, bodyText, notebook);
 
-	TEST_CHECK_EQUAL(userModel.GetNoteBody(note.GetGuid()), body);
+	wstring loaded;
+	userModel.GetNoteBody(note.GetGuid(), loaded);
+	TEST_CHECK_EQUAL(loaded, body);
 }
 
 FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
@@ -68,6 +70,7 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 
 	Notebook fakeNotebook(Guid(), L"fake-notebook");
 
+	bool caughtException(false);
 	try
 	{
 		userModel.AddNote
@@ -79,8 +82,10 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 	}
 	catch (const std::exception & e)
 	{
+		caughtException = true;
 		TEST_CHECK_EQUAL(string(e.what()), "foreign key constraint failed");
 	}
+	TEST_CHECK(caughtException);
 }
 
 FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
@@ -109,6 +114,51 @@ FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 	userModel.MakeNotebookDefault(notebook);
 
 	TEST_CHECK_EQUAL(userModel.GetDefaultNotebook().GetName(), L"test-notebook");
+}
+
+FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
+{
+	Note note(Guid(), L"note-0", Timestamp(0));
+
+	Blob blob;
+	blob.push_back(2);
+	blob.push_back(3);
+	blob.push_back(5);
+	blob.push_back(7);
+
+	bool caughtException(false);
+	try
+	{
+		userModel.AddImageResource("hash", blob, note.GetGuid());
+		bool dbg = true;
+	}
+	catch (const std::exception & e)
+	{
+		caughtException = true;
+		TEST_CHECK_EQUAL(string(e.what()), "foreign key constraint failed");
+	}
+	TEST_CHECK(caughtException);
+}
+
+FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
+{
+	std::string hash ("hash");
+	Note        note (Guid(), L"note-0", Timestamp(0));
+
+	Blob blob;
+	blob.push_back(2);
+	blob.push_back(3);
+	blob.push_back(5);
+	blob.push_back(7);
+
+	userModel.AddNote(note, L"", L"", userModel.GetLastUsedNotebook());
+	userModel.AddImageResource(hash, blob, note.GetGuid());
+
+	Blob loaded;
+	userModel.GetImageResource(hash, loaded);
+	TEST_CHECK_EQUAL(blob.size(), loaded.size());
+	for (int i = 0; i != blob.size(); ++i)
+		TEST_CHECK_EQUAL(blob.at(i), loaded.at(i));
 }
 
 FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)

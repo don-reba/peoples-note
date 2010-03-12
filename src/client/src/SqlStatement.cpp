@@ -20,7 +20,8 @@ SqlStatement::SqlStatement(sqlite3 * db, const char * sql)
 
 SqlStatement::~SqlStatement()
 {
-	int result = sqlite3_finalize(statement);
+	if (statement != NULL)
+		sqlite3_finalize(statement);
 }
 
 bool SqlStatement::Execute()
@@ -29,6 +30,14 @@ bool SqlStatement::Execute()
 	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
 		throw std::exception(sqlite3_errmsg(db));
 	return result == SQLITE_DONE;
+}
+
+void SqlStatement::Finalize()
+{
+	int result(sqlite3_finalize(statement));
+	statement = NULL;
+	if (result != SQLITE_OK)
+		throw std::exception(sqlite3_errmsg(db));
 }
 
 void SqlStatement::Bind(int index, __int32 n)
@@ -68,6 +77,21 @@ void SqlStatement::Bind(int index, const wstring & text)
 		, textUtf8
 		, textUtf8Chars.size()
 		, SQLITE_TRANSIENT
+		);
+	if (result != SQLITE_OK)
+		throw std::exception(sqlite3_errmsg(db));
+}
+
+void SqlStatement::Bind(int index, const Blob & blob)
+{
+	if (blob.empty())
+		return;
+	int result = sqlite3_bind_blob
+		( statement
+		, index
+		, &blob[0]
+		, blob.size()
+		, SQLITE_STATIC
 		);
 	if (result != SQLITE_OK)
 		throw std::exception(sqlite3_errmsg(db));

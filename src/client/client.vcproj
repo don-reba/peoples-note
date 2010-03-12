@@ -132,7 +132,7 @@
 				ExecutionBucket="7"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\HTMLayout\include;&quot;$(ProjectDir)&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0;&quot;C:\Users\Alexey\Files\Programming\thrift-0.2.0\lib\cpp\src&quot;"
-				PreprocessorDefinitions="SQLITE_OMIT_UTF16;_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
+				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_OMIT_UTF16;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -383,6 +383,30 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\libb64\b64dec.c"
+				>
+				<FileConfiguration
+					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\libb64\cdecode.c"
+				>
+				<FileConfiguration
+					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\src\crackers.cpp"
 				>
 			</File>
@@ -456,6 +480,10 @@
 			</File>
 			<File
 				RelativePath=".\src\SearchPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SqlBlob.cpp"
 				>
 			</File>
 			<File
@@ -545,6 +573,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\src\Blob.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\libb64\cdecode.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\crackers.h"
 				>
 			</File>
@@ -558,6 +594,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DataStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\libb64\decode.h"
 				>
 			</File>
 			<File
@@ -625,6 +665,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ISqlBlob.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ISqlStatement.h"
 				>
 			</File>
@@ -674,6 +718,10 @@
 			</File>
 			<File
 				RelativePath=".\src\SearchPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SqlBlob.h"
 				>
 			</File>
 			<File

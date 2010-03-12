@@ -25,5 +25,11 @@ public:
 
 	virtual __int64 GetLastInsertRowid();
 
+	virtual Blob MakeBlob
+		( const char * table
+		, const char * column
+		, __int64      row
+		);
+
 	virtual Statement MakeStatement(const char * sql);
 };

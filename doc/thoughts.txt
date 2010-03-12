@@ -627,3 +627,31 @@ note view class design
 		might want to cache data for the view
 			including window
 		should not expose window-specific things in interface
+menu bar handling
+	constraints
+		sends commands to a specific window
+		is a top level window
+		should have different buttons for different active windows
+note resources
+	requirements
+		render pictures
+		play audio
+		attach files, audio, and pictures
+		search images
+	constraints
+		identified in note contents by hash
+		zero to many resources per note
+		has MIME format
+		has format-specific fields
+		has recognition data
+		has zero or more attributes
+	choices
+		one class with all necessary fields
+		multiple classes
+			common interface
+			no common interface
+		one class scenario is wasteful
+		would also add unecessary logic
+		multiple class scenario seems better
+		no need for common interface
+		there are few common operations with resources

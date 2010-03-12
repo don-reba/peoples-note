@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Blob.h"
 #include "ISignalProvider.h"
 #include "Note.h"
 #include "Notebook.h"
@@ -11,6 +12,12 @@ class IUserModel : public ISignalProvider
 public:
 
 	virtual ~IUserModel() {}
+
+	virtual void AddImageResource
+		( std::string  hash
+		, const Blob & data
+		, Guid         note
+		) = 0;
 
 	virtual void AddNote
 		( const Note          & note
@@ -29,9 +36,11 @@ public:
 
 	virtual Notebook GetDefaultNotebook() = 0;
 
+	virtual void GetImageResource(std::string hash, Blob & blob) = 0;
+
 	virtual Notebook GetLastUsedNotebook() = 0;
 
-	virtual std::wstring GetNoteBody(Guid guid) = 0;
+	virtual void GetNoteBody(Guid guid, std::wstring & body) = 0;
 
 	virtual const NotebookList & GetNotebooks() = 0;
 

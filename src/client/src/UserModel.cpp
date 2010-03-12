@@ -2,6 +2,7 @@
 #include "UserModel.h"
 
 #include "IDataStore.h"
+#include "ISqlBlob.h"
 #include "ISqlStatement.h"
 #include "Notebook.h"
 
@@ -53,6 +54,22 @@ int UserModel::GetVersion()
 // IUuserModel implementaion
 //--------------------------
 
+void UserModel::AddImageResource
+	( std::string  hash
+	, const Blob & data
+	, Guid         note
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "INSERT INTO ImageResources(hash, data, note) VALUES (?, ?, ?)"
+		);
+	statement->Bind(1, hash);
+	statement->Bind(2, data);
+	statement->Bind(3, note);
+	statement->Execute();
+	statement->Finalize();
+}
+
 void UserModel::AddNote
 	( const Note     & note
 	, const wstring  & body
@@ -66,6 +83,7 @@ void UserModel::AddNote
 	insertContents->Bind(1, note.GetTitle());
 	insertContents->Bind(2, bodyText);
 	insertContents->Execute();
+	insertContents->Finalize();
 
 	IDataStore::Statement insertInfo = dataStore.MakeStatement
 		( "INSERT INTO Notes(guid, creationDate, title, body, search, notebook)"
@@ -78,6 +96,7 @@ void UserModel::AddNote
 	insertInfo->Bind(5, dataStore.GetLastInsertRowid());
 	insertInfo->Bind(6, notebook.GetGuid());
 	insertInfo->Execute();
+	insertInfo->Finalize();
 }
 
 void UserModel::AddNotebook(const Notebook & notebook)
@@ -89,6 +108,7 @@ void UserModel::AddNotebook(const Notebook & notebook)
 	statement->Bind(1, notebook.GetGuid());
 	statement->Bind(2, notebook.GetName());
 	statement->Execute();
+	statement->Finalize();
 }
 
 void UserModel::ConnectLoaded(slot_type OnLoaded)
@@ -111,7 +131,8 @@ Notebook UserModel::GetDefaultNotebook()
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, name"
 		"  FROM Notebooks"
-		"  WHERE isDefault = 1 LIMIT 1"
+		"  WHERE isDefault = 1"
+		"  LIMIT 1"
 		);
 	if (statement->Execute())
 		throw std::exception("No default notebook.");
@@ -120,6 +141,28 @@ Notebook UserModel::GetDefaultNotebook()
 	statement->Get(0, guid);
 	statement->Get(1, name);
 	return Notebook(guid, name);
+}
+
+void UserModel::GetImageResource(string hash, Blob & blob)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT rowid"
+		"  FROM   ImageResources"
+		"  WHERE  hash = ?"
+		"  LIMIT  1"
+		);
+	statement->Bind(1, hash);
+	if (statement->Execute())
+		throw std::exception("Image resource not found.");
+	__int64 row(0);
+	statement->Get(0, row);
+
+	IDataStore::Blob sqlBlob = dataStore.MakeBlob
+		( "ImageResources"
+		, "data"
+		, row
+		);
+	sqlBlob->Read(blob);
 }
 
 Notebook UserModel::GetLastUsedNotebook()
@@ -139,7 +182,7 @@ Notebook UserModel::GetLastUsedNotebook()
 	return Notebook(guid, name);
 }
 
-wstring UserModel::GetNoteBody(Guid guid)
+void UserModel::GetNoteBody(Guid guid, wstring & body)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT body"
@@ -150,9 +193,7 @@ wstring UserModel::GetNoteBody(Guid guid)
 	statement->Bind(1, guid);
 	if (statement->Execute())
 		throw std::exception("Note not found.");
-	wstring body;
 	statement->Get(0, body);
-	return body;
 }
 
 const NotebookList & UserModel::GetNotebooks()
@@ -288,7 +329,6 @@ void UserModel::Create(wstring path)
 	int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
 	if (!dataStore.Create(path, flags))
 		throw std::exception("Database could not be created.");
-	SetPragma("PRAGMA foreign_keys = ON");
 }
 
 wstring UserModel::CreatePathFromName(wstring name)
@@ -357,6 +397,14 @@ void UserModel::Initialize(wstring name)
 			", notebook REFERENCES Notebooks"
 			")"
 		);
+
+	CreateTable
+		( "CREATE TABLE ImageResources"
+			"( hash PRIMARY KEY"
+			", data"
+			", note REFERENCES Notes"
+			")"
+		);
 }
 
 void UserModel::LoadOrCreate(wstring name)
@@ -372,6 +420,7 @@ void UserModel::LoadOrCreate(wstring name)
 		Create(path);
 		Initialize(name);
 	}
+	SetPragma("PRAGMA foreign_keys = ON");
 }
 
 void UserModel::SetPragma(const char * sql)

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DataStore.h"
 
+#include "SqlBlob.h"
 #include "SqlStatement.h"
 #include "Tools.h"
 
@@ -51,7 +52,16 @@ __int64 DataStore::GetLastInsertRowid()
 	return sqlite3_last_insert_rowid(db);
 }
 
-boost::shared_ptr<ISqlStatement> DataStore::MakeStatement(const char * sql)
+IDataStore::Blob DataStore::MakeBlob
+	( const char * table
+	, const char * column
+	, __int64      row
+	)
+{
+	return make_shared<SqlBlob>(db, table, column, row);
+}
+
+IDataStore::Statement DataStore::MakeStatement(const char * sql)
 {
 	return make_shared<SqlStatement>(db, sql);
 }
