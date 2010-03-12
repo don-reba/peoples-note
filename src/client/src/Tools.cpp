@@ -187,7 +187,7 @@ void Tools::DecodeBase64(const wchar_t * text, Blob & data)
 		{
 			for (int i(0); i != 4; ++i)
 			{
-				if (!*t || *t < 43 || *t > 43 + 90)
+				if (!*t || *t < 43 || *t >= 43 + 90)
 					throw std::exception("Invalid input.");
 				++size;
 				++t;
