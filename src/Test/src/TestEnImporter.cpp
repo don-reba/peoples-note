@@ -18,11 +18,14 @@ BOOST_AUTO_TEST_CASE(EnImporter_Test)
 
 	NoteBodyList bodies;
 	NoteList notes;
-	enImporter.ImportNotes(file, notes, bodies);
+	EnImporter::ImageList images;
+	enImporter.ImportNotes(file, notes, bodies, images);
 
 	BOOST_CHECK_EQUAL(notes.size(), 1);
 	BOOST_CHECK_EQUAL(notes.at(0).GetTitle(), L"Mixed note");
 
 	BOOST_CHECK_EQUAL(bodies.size(), 1);
-	// TOOD: use a test case with shorter note body
+	// TODO: use a test case with shorter note body
+
+	BOOST_CHECK_EQUAL(images.size(), 1);
 }

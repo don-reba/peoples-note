@@ -31,6 +31,25 @@ public:
 		Notebook     notebook;
 	};
 
+	struct ImageRecord
+	{
+		ImageRecord
+			( std::string  hash
+			, const Blob & data
+			, Guid         note
+			)
+			: hash (hash)
+			, data (data)
+			, note (note)
+		{
+		}
+		std::string hash;
+		Blob        data;
+		Guid        note;
+	};
+
+	typedef std::map<std::string, Blob> ImageList;
+
 // data
 
 public:
@@ -42,10 +61,13 @@ public:
 
 	NotebookList notebooks;
 	NoteList     notes;
+	ImageList    images;
+	
 
 	std::map<std::string, std::wstring> noteBodies;
 
-	std::vector<NoteRecord> addedNotes;
+	std::vector<ImageRecord> addedImages;
+	std::vector<NoteRecord>  addedNotes;
 
 	bool isDefault;
 	bool isLoaded;
@@ -65,6 +87,12 @@ public:
 
 public:
 
+	virtual void AddImageResource
+		( std::string  hash
+		, const Blob & data
+		, Guid         note
+		);
+
 	virtual void AddNote
 		( const Note          & note
 		, const std::wstring  & body
@@ -82,7 +110,9 @@ public:
 
 	virtual Notebook GetLastUsedNotebook();
 
-	virtual std::wstring GetNoteBody(Guid guid);
+	virtual void GetImageResource(std::string hash, Blob & blob);
+
+	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
 	virtual const NotebookList & GetNotebooks();
 

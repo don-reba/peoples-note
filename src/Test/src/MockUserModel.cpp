@@ -12,6 +12,16 @@ MockUserModel::MockUserModel()
 {
 }
 
+void MockUserModel::AddImageResource
+	( string       hash
+	, const Blob & data
+	, Guid         note
+	)
+{
+	addedImages.push_back(ImageRecord(hash, data, note));
+	images[hash] = data;
+}
+
 void MockUserModel::AddNote
 	( const Note     & note
 	, const wstring  & body
@@ -49,11 +59,16 @@ Notebook MockUserModel::GetLastUsedNotebook()
 	return lastUsedNotebook;
 }
 
-wstring MockUserModel::GetNoteBody(Guid guid)
+void MockUserModel::GetImageResource(string hash, Blob & blob)
+{
+	if (images.find(hash) != images.end())
+		blob = images[hash];
+}
+
+void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
 {
 	if (noteBodies.find(guid) != noteBodies.end())
-		return noteBodies[guid];
-	return L"empty";
+		resource = noteBodies[guid];
 }
 
 const NotebookList & MockUserModel::GetNotebooks()

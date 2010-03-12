@@ -45,6 +45,46 @@ BOOST_AUTO_TEST_CASE(ToolsConvertToUnicode_Test2)
 	BOOST_REQUIRE_EQUAL(emptyString, L"");
 }
 
+BOOST_AUTO_TEST_CASE(ToolsDecodeBase64)
+{
+	const int count(5);
+
+	vector<const wchar_t *> in  (count);
+	vector<Blob>            out (count);
+
+	in.at(0) = L"";
+
+	in.at(1) = L"Ag==";
+	out.at(1).push_back(2);
+
+	in.at(2) = L"AgM=";
+	out.at(2).push_back(2);
+	out.at(2).push_back(3);
+
+	in.at(3) = L"AgMF";
+	out.at(3).push_back(2);
+	out.at(3).push_back(3);
+	out.at(3).push_back(5);
+
+	in.at(4) = L"AgMF\r\nBw==";
+	out.at(4).push_back(2);
+	out.at(4).push_back(3);
+	out.at(4).push_back(5);
+	out.at(4).push_back(7);
+
+	for (int i(0); i != count; ++i)
+	{
+		Blob result;
+		Tools::DecodeBase64(in.at(i), result);
+		BOOST_CHECK_EQUAL(result.size(), out.at(i).size());
+		if (result.size() == out.size())
+		{
+			for (int j(0); j != count; ++j)
+				BOOST_CHECK_EQUAL(result.at(j), out.at(i).at(j));
+		}
+	}
+}
+
 BOOST_AUTO_TEST_CASE(ToolsUnixTimeToFileTime_Test1)
 {
 	time_t unixTime = 0;
