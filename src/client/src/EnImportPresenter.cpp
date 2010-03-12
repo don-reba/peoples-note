@@ -36,9 +36,10 @@ void EnImportPresenter::OnImport()
 	if (!file.is_open())
 		throw std::exception("File could not be opened.");
 
-	NoteList     notes;
-	NoteBodyList bodies;
-	enImporter.ImportNotes(file, notes, bodies);
+	NoteList               notes;
+	NoteBodyList           bodies;
+	IEnImporter::ImageList images;
+	enImporter.ImportNotes(file, notes, bodies, images);
 	assert(notes.size() == bodies.size());
 
 	const Notebook & notebook = userModel.GetLastUsedNotebook();

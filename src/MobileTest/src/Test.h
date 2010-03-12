@@ -167,3 +167,19 @@ struct EMPTY_FIXTURE {};
 #define TEST_CHECK_NOT_EQUAL(l, r)                           \
     TEST_OPEN TEST.CheckNotEqual(l, r, L#l, L#r); TEST_CLOSE \
 
+//#define TEST_EXCEPTION(expr, exception, predicate)
+//    try                                                              \
+//    {                                                                \
+//        expr;                                                        \
+//    }                                                                \
+//    catch (const exception & e)                                      \
+//    {                                                                \
+//        TEST_OPEN                                                    \
+//        Test.CheckException(e, predicate, L#exception, L#predicate); \
+//        TEST_CLOSE                                                   \
+//    }                                                                \
+//    catch (...)                                                      \
+//    {                                                                \
+//        Test.FailException(L#exception);                             \
+//    }                                                                \
+//

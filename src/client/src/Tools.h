@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Blob.h"
 #include "HtmlResource.h"
 
 #include <windows.h>
@@ -16,6 +17,8 @@ namespace Tools
 	std::wstring ConvertToUnicode(const std::string str);
 
 	std::wstring ConvertToUnicode(const unsigned char * str);
+
+	void DecodeBase64(const wchar_t * text, Blob & data);
 
 	HtmlResource LoadHtmlResource(LPCWSTR id);
 

@@ -10,6 +10,7 @@ public:
 		( std::wistream & stream
 		, NoteList      & notes
 		, NoteBodyList  & bodies
+		, ImageList     & images
 		);
 
 private:

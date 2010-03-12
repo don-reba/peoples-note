@@ -18,6 +18,7 @@ void EnImporter::ImportNotes
 	( wistream     & stream
 	, NoteList     & notes
 	, NoteBodyList & bodies
+	, ImageList    & images
 	)
 {
 	vector<wchar_t> text
@@ -45,6 +46,7 @@ void EnImporter::ImportNotes
 
 		while (node)
 		{
+			Guid    guid;
 			wstring body;
 			wstring title;
 			wstring created;
@@ -64,6 +66,25 @@ void EnImporter::ImportNotes
 							body = contentNode->value();
 					}
 				}
+				if (0 == wcscmp(noteNode->name(), L"resource"))
+				{
+					xml_node<wchar_t> * resourceNode(noteNode->first_node());
+					while (resourceNode)
+					{
+						if (0 == wcscmp(resourceNode->name(), L"data"))
+						{
+							images.push_back(Image());
+							Image & image(images.back());
+							image.guid = guid;
+							Tools::DecodeBase64
+								( resourceNode->value()
+								, image.blob
+								);
+							break;
+						}
+						resourceNode = resourceNode->next_sibling();
+					}
+				}
 				if (0 == wcscmp(noteNode->name(), L"title"))
 					title = noteNode->value();
 				if (0 == wcscmp(noteNode->name(), L"created"))
@@ -72,7 +93,7 @@ void EnImporter::ImportNotes
 			}
 
 			Timestamp timestamp = Timestamp(ParseTime(created));
-			notes.push_back(Note(Guid(), title, timestamp));
+			notes.push_back(Note(guid, title, timestamp));
 			bodies.push_back(body);
 
 			node = node->next_sibling();
