@@ -177,7 +177,7 @@ void Tools::DecodeBase64(const wchar_t * text, Blob & data)
 	if (!text)
 		throw std::exception("Invalid input.");
 
-	// validate and measure input
+	// verify and measure input
 	int size(0);
 	for (const wchar_t * t(text); *t;)
 	{

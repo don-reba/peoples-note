@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-export SYSTEM "http://xml.evernote.com/pub/evernote-export.dtd">
+<en-export export-date="20100303T092150Z" application="Evernote/Windows" version="3.0">
+<note><title>The Ball-Pivoting Algorithm for Surface Reconstruction</title><content><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd">
+
+
+<en-note bgcolor="#FFFFFF">
+<ul>
+<li>Most methods estimating surface points depend on data structures that faciliatate the construction of the mesh.</li>
+<li>Two kinds of methods:</li>
+<li>
+<ul>
+<li>volumetric - signed distance function + marching cubes</li>
+<li>mesh stitching - heightfields -&gt; single surface</li>
+</ul>
+</li>
+<li>Point estimation does not have to depend on mesh construction. BPA only deals with mesh construction</li>
+<li>Two kinds of point cloud interpolation techinques:</li>
+<li>
+<ul>
+<li>sculpting - volume tetrahedralization; high quality, but slow</li>
+<li>region growing; could be O(n), like PBA</li>
+</ul>
+</li>
+<li>BPA uses a voxel grid to get constant-time neighbour lookup; could be done out-of-core</li>
+<li>Multiple passes of BPA could be used, where increasing ball radius expands active fronts</li>
+<li>Out-of-core processing loads and unloads data in slices as needed</li>
+</ul>
+</en-note>
+]]></content><created>20090730T174933Z</created><updated>20090730T175441Z</updated><tag>review</tag><tag>point cloud</tag><note-attributes><author/></note-attributes></note><note><title>Tomographic Reconstruction Using an Adaptive Tetrahedral Mesh Defined by a Point Cloud</title><content><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd">
+
+
+<en-note bgcolor="#FFFFFF">
+<ul>
+<li>Uses point cloud tetrahedralization for vizualization</li>
+<li>Linearly interpolates the tetrahedrons</li>
+</ul>
+</en-note>
+]]></content><created>20090730T175505Z</created><updated>20090730T175634Z</updated><tag>review</tag><tag>point cloud</tag><note-attributes><author/></note-attributes></note></en-export>

@@ -1,3 +1,3 @@
 #pragma once
 
-typedef std::vector<__int8> Blob;
+typedef std::vector<unsigned __int8> Blob;

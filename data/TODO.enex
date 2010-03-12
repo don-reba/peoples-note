@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-export SYSTEM "http://xml.evernote.com/pub/evernote-export.dtd">
+<en-export export-date="20100303T092015Z" application="Evernote/Windows" version="3.0">
+<note><title>employ ControlPaint in SMM</title><content><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd">
+
+
+<en-note bgcolor="#FFFFFF">
+<div><en-todo checked="false"/>employ <a href="http://msdn.microsoft.com/en-us/library/system.windows.forms.controlpaint.aspx">ControlPaint</a> in SMM</div>
+</en-note>
+]]></content><created>20090928T172249Z</created><updated>20091112T063622Z</updated><tag>TODO</tag><note-attributes><author/></note-attributes></note><note><title>respond to reviews</title><content><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd">
+
+
+<en-note bgcolor="#FFFFFF">
+<blockquote>
+<div><en-todo checked="false"/> respond to reviews</div>
+<blockquote>
+<div><en-todo checked="true"/> draft out the replies</div>
+<div><en-todo checked="false"/> implement whatever is needed</div>
+<div><en-todo checked="false"/> refine replies</div>
+<div><en-todo checked="false"/> organize into a letter</div>
+<div><en-todo checked="false"/> send to Irene</div>
+</blockquote>
+</blockquote>
+</en-note>
+]]></content><created>20100226T123441Z</created><updated>20100228T124342Z</updated><tag>TODO</tag><note-attributes><author/></note-attributes></note></en-export>
