@@ -17,6 +17,7 @@ NoteView::NoteView(HINSTANCE instance)
 	: instance        (instance)
 	, HTMLayoutWindow (L"note-view.htm")
 {
+	ConnectBehavior("#home", BUTTON_CLICK, &NoteView::OnHome);
 }
 
 void NoteView::Create(HWND parent)
@@ -138,21 +139,17 @@ ATOM NoteView::RegisterClass(wstring wndClass)
 // window message handlers
 //------------------------
 
-void NoteView::OnCommand(Msg<WM_COMMAND> &msg)
+void NoteView::OnClose(Msg<WM_CLOSE> &msg)
 {
-	switch (msg.GetCtrlId())
-	{
-	case IDM_CLOSE:
-		Hide();
-		break;
-	}
+	Hide();
+	msg.handled_ = true;
 }
 
 void NoteView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
 	{
-		&NoteView::OnCommand,
+		&NoteView::OnClose,
 	};
 	if (!Handler::Call(mmp, this, msg))
 		__super::ProcessMessage(msg);
@@ -161,6 +158,11 @@ void NoteView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void NoteView::OnHome()
+{
+	CloseWindow(hwnd_);
+}
 
 BOOL NoteView::OnLoadData(NMHL_LOAD_DATA * params)
 {

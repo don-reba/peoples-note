@@ -225,7 +225,7 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 
 void NoteListView::OnMenuExit()
 {
-	SendMessage(hwnd_, WM_CLOSE, 0, 0);
+	CloseWindow(hwnd_);
 }
 
 void NoteListView::OnMenuImport()

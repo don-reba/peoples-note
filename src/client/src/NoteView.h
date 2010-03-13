@@ -50,7 +50,7 @@ private:
 
 private:
 
-	void OnCommand(Msg<WM_COMMAND> & msg);
+	void OnClose(Msg<WM_CLOSE> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 
@@ -58,5 +58,6 @@ private:
 
 protected:
 
+	void OnHome();
 	BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };
