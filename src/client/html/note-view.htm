@@ -22,18 +22,20 @@
 			}
 			#tools
 			{
-				bottom:   0px;
-				position: fixed;
-				width:    100%;
+				bottom:     0px;
+				position:   fixed;
+				text-align: center;
+				width:      100%;
 			}
-			#zoom-in, #zoom-out, #full-screen
+			#home, #zoom-in, #zoom-out, #full-screen
 			{
 				background-color: silver;
 				background-image: none;
+				clear:            none;
 				margin:           0px;
 				padding:          0px;
 			}
-			#zoom-in, #zoom-out
+			#home
 			{
 				float: left;
 			}
@@ -48,7 +50,10 @@
 		<div id="subtitle" />
 		<div id="body" />
 		<div id="tools">
-			<button id="zoom-in"><img src="zoom-in.png" /></button><button id="zoom-out"><img src="zoom-out.png" /></button><button id="full-screen"><img src="view-fullscreen.png" /></button>
+			<button id="home"><img src="home.png" /></button>
+			<button id="full-screen"><img src="view-fullscreen.png" /></button>
+			<button id="zoom-in"><img src="zoom-in.png" /></button>
+			<button id="zoom-out"><img src="zoom-out.png" /></button>
 		</div>
 	</body>
 </html>

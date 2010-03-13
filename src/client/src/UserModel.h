@@ -61,6 +61,8 @@ public:
 
 	virtual void GetImageResource(std::string hash, Blob & blob);
 
+	virtual Note GetNote(Guid guid);
+
 	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
 	virtual const NotebookList & GetNotebooks();

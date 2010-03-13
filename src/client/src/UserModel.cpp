@@ -182,6 +182,24 @@ Notebook UserModel::GetLastUsedNotebook()
 	return Notebook(guid, name);
 }
 
+Note UserModel::GetNote(Guid guid)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT title, creationDate"
+		"  FROM Notes"
+		"  WHERE guid = ?"
+		"  LIMIT 1"
+		);
+	statement->Bind(1, guid);
+	if (statement->Execute())
+		throw std::exception("Note not found.");
+	wstring title;
+	int     creationDate;
+	statement->Get(0, title);
+	statement->Get(1, creationDate);
+	return Note(guid, title, Timestamp(creationDate));
+}
+
 void UserModel::GetNoteBody(Guid guid, wstring & body)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement

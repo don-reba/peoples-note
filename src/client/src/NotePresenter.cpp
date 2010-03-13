@@ -49,11 +49,17 @@ void NotePresenter::OnLoadingData
 void NotePresenter::OnOpenNote()
 {
 	Guid guid(noteListView.GetSelectedNoteGuid());
+
 	wstring body;
 	userModel.GetNoteBody(guid, body);
+	Note note(userModel.GetNote(guid));
+
+	wstring subtitle(L"created on ");
+	subtitle.append(note.GetCreationDate().GetFormattedDateTime());
+
 	noteView.SetBody(ProcessNote(body));
-	noteView.SetSubtitle(L"created on yyyy-mm-dd");
-	noteView.SetTitle(L"Note Title");
+	noteView.SetSubtitle(subtitle);
+	noteView.SetTitle(note.GetTitle());
 	noteView.Show();
 }
 
