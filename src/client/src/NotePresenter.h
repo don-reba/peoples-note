@@ -76,4 +76,10 @@ private:
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
+
+	static void ReplaceTodo
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
+		);
 };

@@ -95,6 +95,7 @@ wstring NotePresenter::ProcessNote(wstring text)
 
 	TransformMap transforms;
 	transforms[L"en-media"] = &NotePresenter::ReplaceMedia;
+	transforms[L"en-todo"]  = &NotePresenter::ReplaceTodo;
 	ProcessNoteXml(doc.get(), doc.get(), transforms);
 
 	wstring result;
@@ -147,6 +148,24 @@ void NotePresenter::ReplaceMedia
 		, store->allocate_string(src.c_str())
 		));
 	AddXmlAttributes(store, node, map);
+
+	parent->insert_node(child, node);
+	parent->remove_node(child);
+}
+
+void NotePresenter::ReplaceTodo
+	( memory_pool<wchar_t> * store
+	, xml_node<wchar_t>    * parent
+	, xml_node<wchar_t>    * child
+	)
+{
+	xml_attribute<wchar_t> * attribute = child->first_attribute(L"checked");
+	bool checked(attribute && 0 == wcscmp(attribute->value(), L"true"));
+
+	xml_node<wchar_t> * node(store->allocate_node(node_element, L"input"));
+	node->append_attribute(store->allocate_attribute(L"type", L"checkbox"));
+	if (checked)
+		node->append_attribute(store->allocate_attribute(L"checked"));
 
 	parent->insert_node(child, node);
 	parent->remove_node(child);
