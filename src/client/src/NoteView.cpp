@@ -21,6 +21,7 @@ NoteView::NoteView(HINSTANCE instance)
 
 void NoteView::Create(HWND parent)
 {
+	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_NOTE_VIEW);
 
 	if (!RegisterClass(wndClass))
@@ -28,7 +29,7 @@ void NoteView::Create(HWND parent)
 
 	hwnd_ = ::CreateWindow
 		( wndClass.c_str() // lpClassName
-		, L""              // lpWindowName
+		, wndTitle.c_str() // lpWindowName
 		, WS_VISIBLE       // dwStyle
 		, CW_USEDEFAULT    // x
 		, CW_USEDEFAULT    // y
@@ -66,20 +67,32 @@ void NoteView::Hide()
 void NoteView::SetBody(wstring html)
 {
 	dom::element root = dom::element::root_element(hwnd_);
-	dom::element body = root.find_first("body");
+	dom::element body = root.find_first("#body");
 	if (!body)
-		throw std::exception("Html body not found.");
+		throw std::exception("#body not found.");
 
-	
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
 
 	body.set_html(htmlUtf8, htmlUtf8Chars.size());
 }
 
+void NoteView::SetSubtitle(wstring text)
+{
+	dom::element root = dom::element::root_element(hwnd_);
+	dom::element body = root.find_first("#subtitle");
+	if (!body)
+		throw std::exception("#subtitle not found.");
+	body.set_text(text.c_str(), text.size());
+}
+
 void NoteView::SetTitle(wstring text)
 {
-	::SetWindowText(hwnd_, text.c_str());
+	dom::element root = dom::element::root_element(hwnd_);
+	dom::element body = root.find_first("#title");
+	if (!body)
+		throw std::exception("#title not found.");
+	body.set_text(text.c_str(), text.size());
 }
 
 void NoteView::Show()

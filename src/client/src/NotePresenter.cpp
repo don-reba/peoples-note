@@ -52,6 +52,8 @@ void NotePresenter::OnOpenNote()
 	wstring body;
 	userModel.GetNoteBody(guid, body);
 	noteView.SetBody(ProcessNote(body));
+	noteView.SetSubtitle(L"created on yyyy-mm-dd");
+	noteView.SetTitle(L"Note Title");
 	noteView.Show();
 }
 

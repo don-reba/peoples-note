@@ -238,9 +238,12 @@ void Tools::DecodeBase64(const wchar_t * text, Blob & data)
 
 HtmlResource Tools::LoadHtmlResource(LPCWSTR id)
 {
+	wstring newId(id);
+	std::replace(newId.begin(), newId.end(), L'-', L'_');
+
 	HINSTANCE instance = GetModuleHandle(NULL);
 
-	HRSRC hrsrc = ::FindResource(instance, id, RT_HTML);
+	HRSRC hrsrc = ::FindResource(instance, newId.c_str(), RT_HTML);
 	if(!hrsrc)
 		throw exception("Resource not found.");
 

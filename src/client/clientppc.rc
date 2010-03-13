@@ -137,13 +137,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 //
 
 ABOUT.HTM               HTML                    "html\\about.htm"
+FILE_NOTE.PNG           HTML                    "html\\file-note.png"
 MAIN.HTM                HTML                    "html\\main.htm"
 MENU.CSS                HTML                    "html\\menu.css"
-NOTE-VIEW.HTM           HTML                    "html\\note-view.htm"
-TEXT-NOTE.PNG           HTML                    "html\\text-note.png"
-VOICE-NOTE.PNG          HTML                    "html\\voice-note.png"
-PHOTO-NOTE.PNG          HTML                    "html\\photo-note.png"
-FILE-NOTE.PNG           HTML                    "html\\file-note.png"
+NOTE_VIEW.HTM           HTML                    "html\\note-view.htm"
+PHOTO_NOTE.PNG          HTML                    "html\\photo-note.png"
+TEXT_NOTE.PNG           HTML                    "html\\text-note.png"
+VIEW_FULLSCREEN.PNG     HTML                    "html\\view-fullscreen.png"
+VIEW_RESTORE.PNG        HTML                    "html\\view-restore.png"
+VOICE_NOTE.PNG          HTML                    "html\\voice-note.png"
+ZOOM_IN.PNG             HTML                    "html\\zoom-in.png"
+ZOOM_OUT.PNG            HTML                    "html\\zoom-out.png"
+
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 

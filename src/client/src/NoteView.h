@@ -32,6 +32,8 @@ public:
 
 	virtual void SetBody(std::wstring html);
 
+	virtual void SetSubtitle(std::wstring text);
+
 	virtual void SetTitle(std::wstring text);
 
 	virtual void Show();
