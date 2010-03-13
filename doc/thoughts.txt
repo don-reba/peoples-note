@@ -686,3 +686,4 @@ note resource handling
 	special signal seems like the least of evils
 	the lack of good choices is due to the immediacy of data loading
 	the function has to return LOAD_OK right away
+	data should be stored by the presenter
