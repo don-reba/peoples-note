@@ -15,9 +15,11 @@ using namespace Tools;
 
 NoteView::NoteView(HINSTANCE instance)
 	: instance        (instance)
+	, isFullScreen    (false)
 	, HTMLayoutWindow (L"note-view.htm")
 {
-	ConnectBehavior("#home", BUTTON_CLICK, &NoteView::OnHome);
+	ConnectBehavior("#home",        BUTTON_CLICK, &NoteView::OnHome);
+	ConnectBehavior("#full-screen", BUTTON_CLICK, &NoteView::OnFullScreen);
 }
 
 void NoteView::Create(HWND parent)
@@ -135,6 +137,47 @@ ATOM NoteView::RegisterClass(wstring wndClass)
 	return ::RegisterClass(&wc);
 }
 
+void NoteView::ToggleFullScreen()
+{
+	isFullScreen = !isFullScreen;
+	::SHFullScreen
+		( hwnd_
+		, isFullScreen
+		? SHFS_HIDESIPBUTTON | SHFS_HIDETASKBAR
+		: SHFS_HIDESIPBUTTON | SHFS_SHOWTASKBAR
+		);
+	RECT rect = { 0 };
+	if (isFullScreen)
+	{
+		rect.right  = GetSystemMetrics(SM_CXSCREEN);
+		rect.bottom = GetSystemMetrics(SM_CYSCREEN);
+	}
+	else
+	{
+		::SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, FALSE);
+	}
+	::MoveWindow
+		( hwnd_
+		, rect.left
+		, rect.top
+		, rect.right  - rect.left
+		, rect.bottom - rect.top
+		, TRUE
+		);
+	dom::element root = dom::element::root_element(hwnd_);
+	dom::element img  = root.find_first("#full-screen img");
+	if (img)
+	{
+		img.set_attribute
+			( "src"
+			, isFullScreen
+			? L"view-restore.png"
+			: L"view-fullscreen.png"
+			);
+		img.update();
+	}
+}
+
 //------------------------
 // window message handlers
 //------------------------
@@ -158,6 +201,11 @@ void NoteView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void NoteView::OnFullScreen()
+{
+	ToggleFullScreen();
+}
 
 void NoteView::OnHome()
 {

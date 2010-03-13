@@ -10,6 +10,8 @@ private:
 	HINSTANCE instance;
 	HWND      parent;
 
+	bool isFullScreen;
+
 	Blob blob;
 
 	DataSignal SignalLoadingData;
@@ -46,6 +48,8 @@ private:
 
 	ATOM RegisterClass(std::wstring wndClass);
 
+	void ToggleFullScreen();
+
 // window message handlers
 
 private:
@@ -58,6 +62,9 @@ private:
 
 protected:
 
+	void OnFullScreen();
+
 	void OnHome();
+
 	BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };
