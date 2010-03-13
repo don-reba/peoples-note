@@ -3,6 +3,11 @@
 
 using namespace std;
 
+void MockNoteView::ConnectLoadingData(DataSlot OnLoadingData)
+{
+	SignalLoadingData.connect(OnLoadingData);
+}
+
 void MockNoteView::Hide()
 {
 	isShown = false;

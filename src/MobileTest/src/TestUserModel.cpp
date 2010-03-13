@@ -70,22 +70,16 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 
 	Notebook fakeNotebook(Guid(), L"fake-notebook");
 
-	bool caughtException(false);
-	try
-	{
-		userModel.AddNote
+	TEST_CHECK_EXCEPTION
+		( userModel.AddNote
 			( Note(Guid(), L"note-1", Timestamp(1))
 			, empty
 			, empty
 			, fakeNotebook
-			);
-	}
-	catch (const std::exception & e)
-	{
-		caughtException = true;
-		TEST_CHECK_EQUAL(string(e.what()), "foreign key constraint failed");
-	}
-	TEST_CHECK(caughtException);
+			)
+		, std::exception
+		, MESSAGE_EQUALS("foreign key constraint failed")
+		);
 }
 
 FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
@@ -95,14 +89,11 @@ FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
 
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 
-	try
-	{
-		userModel.AddNotebook(notebook);
-	}
-	catch (const std::exception & e)
-	{
-		TEST_CHECK_EQUAL(string(e.what()), "column guid is not unique");
-	}
+	TEST_CHECK_EXCEPTION
+		( userModel.AddNotebook(notebook)
+		, std::exception
+		, MESSAGE_EQUALS("column guid is not unique")
+		);
 
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 }
@@ -126,18 +117,11 @@ FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
 	blob.push_back(5);
 	blob.push_back(7);
 
-	bool caughtException(false);
-	try
-	{
-		userModel.AddImageResource("hash", blob, note.GetGuid());
-		bool dbg = true;
-	}
-	catch (const std::exception & e)
-	{
-		caughtException = true;
-		TEST_CHECK_EQUAL(string(e.what()), "foreign key constraint failed");
-	}
-	TEST_CHECK(caughtException);
+	TEST_CHECK_EXCEPTION
+		( userModel.AddImageResource("hash", blob, note.GetGuid())
+		, std::exception
+		, MESSAGE_EQUALS("foreign key constraint failed")
+		);
 }
 
 FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)

@@ -10,7 +10,11 @@ public:
 	std::wstring title;
 	bool         isShown;
 
+	DataSignal SignalLoadingData;
+
 public:
+
+	virtual void ConnectLoadingData(DataSlot OnLoadingData);
 
 	virtual void Hide();
 

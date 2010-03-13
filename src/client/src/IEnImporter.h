@@ -12,8 +12,8 @@ public:
 
 	struct Image
 	{
-		Guid guid;
 		Blob blob;
+		Guid noteGuid;
 	};
 	typedef std::vector<Image> ImageList;
 

@@ -10,6 +10,10 @@ private:
 	HINSTANCE instance;
 	HWND      parent;
 
+	Blob blob;
+
+	DataSignal SignalLoadingData;
+
 // interface
 
 public:
@@ -21,6 +25,8 @@ public:
 // INoteView implementation
 
 public:
+
+	virtual void ConnectLoadingData(DataSlot OnLoadingData);
 
 	virtual void Hide();
 
@@ -45,4 +51,10 @@ private:
 	void OnCommand(Msg<WM_COMMAND> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
+
+// HTMLayout message handlers
+
+protected:
+
+	BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };

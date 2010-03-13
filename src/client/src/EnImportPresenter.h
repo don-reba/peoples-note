@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Blob.h"
+
 class IEnImporter;
 class INoteListModel;
 class INoteListView;
@@ -26,4 +28,8 @@ public:
 private:
 
 	void OnImport();
+
+private:
+
+	static std::string Hash(const Blob & blob);
 };

@@ -14,8 +14,8 @@ using namespace Tools;
 //----------
 
 NoteView::NoteView(HINSTANCE instance)
-: instance        (instance)
-, HTMLayoutWindow (L"note-view.htm")
+	: instance        (instance)
+	, HTMLayoutWindow (L"note-view.htm")
 {
 }
 
@@ -52,6 +52,11 @@ void NoteView::Create(HWND parent)
 //-------------------------
 // INoteView implementation
 //-------------------------
+
+void NoteView::ConnectLoadingData(DataSlot OnLoadingData)
+{
+	SignalLoadingData.connect(OnLoadingData);
+}
 
 void NoteView::Hide()
 {
@@ -138,4 +143,34 @@ void NoteView::ProcessMessage(WndMsg &msg)
 	};
 	if (!Handler::Call(mmp, this, msg))
 		__super::ProcessMessage(msg);
+}
+
+//---------------------------
+// HTMLayout message handlers
+//---------------------------
+
+BOOL NoteView::OnLoadData(NMHL_LOAD_DATA * params)
+{
+	if (NULL == wcschr(params->uri, L':'))
+		return __super::OnLoadData(params);
+	try
+	{
+		SignalLoadingData(params->uri, blob);
+	}
+	catch (const std::exception & e)
+	{
+#ifdef _DEBUG
+		::MessageBox
+			( hwnd_
+			, ConvertToUnicode(e.what()).c_str()
+			, L"Error"
+			, MB_ICONERROR | MB_OK
+			);
+#else
+		return LOAD_DISCARD;
+#endif
+	}
+	params->outData     = &blob[0];
+	params->outDataSize = blob.size();
+	return LOAD_OK;
 }

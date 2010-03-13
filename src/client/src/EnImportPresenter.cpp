@@ -6,7 +6,10 @@
 #include "INoteListView.h"
 #include "IUserModel.h"
 
+#include "MD5/md5.h"
+
 #include <fstream>
+#include <sstream>
 
 using namespace boost;
 using namespace std;
@@ -51,5 +54,30 @@ void EnImportPresenter::OnImport()
 		userModel.AddNote(note, body, bodyText, notebook);
 	}
 
+	foreach (const IEnImporter::Image & image, images)
+	{
+		userModel.AddImageResource
+			( Hash(image.blob)
+			, image.blob
+			, image.noteGuid
+			);
+	}
+
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(notebook));
+}
+
+string EnImportPresenter::Hash(const Blob & blob)
+{
+	md5_state_t state;
+	md5_byte_t  digest[16];
+
+	md5_init(&state);
+	md5_append(&state, &blob[0], blob.size());
+	md5_finish(&state, digest);
+
+	char hex[16 * 2 + 1];
+	for (int i(0); i != 16; ++i)
+		sprintf(hex + 2 * i, "%02x", digest[i]);
+
+	return hex;
 }

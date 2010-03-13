@@ -423,6 +423,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MD5\md5.c"
+				>
+				<FileConfiguration
+					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\src\Note.cpp"
 				>
 			</File>
@@ -646,6 +658,10 @@
 			</File>
 			<File
 				RelativePath=".\src\LastUserModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MD5\md5.h"
 				>
 			</File>
 			<File

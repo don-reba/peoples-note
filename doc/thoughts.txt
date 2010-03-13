@@ -650,8 +650,39 @@ note resources
 		multiple classes
 			common interface
 			no common interface
-		one class scenario is wasteful
-		would also add unecessary logic
-		multiple class scenario seems better
-		no need for common interface
-		there are few common operations with resources
+	one class scenario is wasteful
+	would also add unecessary logic
+	multiple class scenario seems better
+	no need for common interface
+	there are few common operations with resources
+exception testing
+	requirements
+		test that exception of the given type is thrown
+		test a specified predicate on the exception
+	plan
+		take the statement
+		give it catch of the specified type
+			check the predicate there
+		give it an ellipsis catch
+			report an error
+note resource handling
+	requirements
+		should be handled by NoteView
+		others should be handled by HTMLayoutWindow
+	HTMLayout gets requests through notification subscription
+	can make the function virtual
+	ask the descendant to call the base implementation
+	there are several ways to fufill data requests
+		send a signal with a blob reference
+			- new type of signal required
+			+ can protect against multiple providers
+				by only letting one connect
+		send a signal, provide blob setter
+			- does not protect against multiple providers
+			- non-local data storage
+		a data loader object
+			+ guarantees retrieval
+			- introduces model dependcy
+	special signal seems like the least of evils
+	the lack of good choices is due to the immediacy of data loading
+	the function has to return LOAD_OK right away

@@ -34,6 +34,13 @@ public:
 			out_ << L"!(" << str << L")\n";
 	}
 
+	template <typename T, typename P>
+	void CheckException(const T & e, P p, LPCWSTR eStr, LPCWSTR pStr)
+	{
+		if (RecordResult(p(e)))
+			out_ << L"!" << pStr << L"(" << eStr << L")\n";
+	}
+
 	template <typename T1, typename T2>
 	void CheckEqual(T1 v1, T2 v2, LPCWSTR v1Str, LPCWSTR v2Str)
 	{
@@ -82,6 +89,12 @@ public:
 	{
 		currentTestName = name;
 		needHeader = true;
+	}
+
+	void UnexpectedException(LPCWSTR eStr)
+	{
+		Fail();
+		out_ << "unexpected exception; expected " << eStr << "\n";
 	}
 
 private:
@@ -138,6 +151,26 @@ struct EMPTY_FIXTURE {};
     FIXTURE_TEST_CASE(test_name, EMPTY_FIXTURE) \
 
 //------
+// Tools
+//------
+
+class MESSAGE_EQUALS
+{
+private:
+
+	std::string message;
+
+public:
+
+	MESSAGE_EQUALS(std::string message) : message (message) {}
+
+	bool operator () (const std::exception & e)
+	{
+		return message == e.what();
+	}
+};
+
+//------
 // Tests
 //------
 
@@ -167,19 +200,19 @@ struct EMPTY_FIXTURE {};
 #define TEST_CHECK_NOT_EQUAL(l, r)                           \
     TEST_OPEN TEST.CheckNotEqual(l, r, L#l, L#r); TEST_CLOSE \
 
-//#define TEST_EXCEPTION(expr, exception, predicate)
-//    try                                                              \
-//    {                                                                \
-//        expr;                                                        \
-//    }                                                                \
-//    catch (const exception & e)                                      \
-//    {                                                                \
-//        TEST_OPEN                                                    \
-//        Test.CheckException(e, predicate, L#exception, L#predicate); \
-//        TEST_CLOSE                                                   \
-//    }                                                                \
-//    catch (...)                                                      \
-//    {                                                                \
-//        Test.FailException(L#exception);                             \
-//    }                                                                \
-//
+#define TEST_CHECK_EXCEPTION(expr, exception, predicate)                   \
+    try                                                              \
+    {                                                                \
+        expr;                                                        \
+    }                                                                \
+    catch (const exception & e)                                      \
+    {                                                                \
+        TEST_OPEN                                                    \
+        TEST.CheckException(e, predicate, L#exception, L#predicate); \
+        TEST_CLOSE                                                   \
+    }                                                                \
+    catch (...)                                                      \
+    {                                                                \
+        TEST.UnexpectedException(L#exception);                       \
+    }                                                                \
+

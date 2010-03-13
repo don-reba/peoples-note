@@ -75,7 +75,7 @@ void EnImporter::ImportNotes
 						{
 							images.push_back(Image());
 							Image & image(images.back());
-							image.guid = guid;
+							image.noteGuid = guid;
 							Tools::DecodeBase64
 								( resourceNode->value()
 								, image.blob

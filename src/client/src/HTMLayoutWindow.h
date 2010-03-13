@@ -76,11 +76,13 @@ protected:
 
 // HTMLayout message handlers
 
+protected:
+
+	virtual BOOL OnBehavior(BEHAVIOR_EVENT_PARAMS * params);
+
+	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
+
 private:
-
-	BOOL OnBehavior(BEHAVIOR_EVENT_PARAMS * params);
-
-	BOOL OnLoadData(NMHL_LOAD_DATA * params);
 
 	bool ProcessHtmLayout(WndMsg & msg);
 
