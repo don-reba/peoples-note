@@ -64,6 +64,7 @@ void NoteView::ConnectLoadingData(DataSlot OnLoadingData)
 
 void NoteView::Hide()
 {
+	::EnableWindow(parent, TRUE);
 	::ShowWindow(hwnd_, SW_HIDE);
 }
 
@@ -100,11 +101,10 @@ void NoteView::SetTitle(wstring text)
 
 void NoteView::Show()
 {
-	RECT rect;
-	::GetWindowRect(hwnd_, &rect);
 	::ShowWindow(hwnd_, SW_SHOW);
 	::UpdateWindow(hwnd_);
 	::BringWindowToTop(hwnd_);
+	::EnableWindow(parent, FALSE);
 }
 
 //------------------
