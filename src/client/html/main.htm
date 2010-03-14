@@ -11,19 +11,25 @@
 			}
 			#search-frame
 			{
-				background-color: white;
-				border:           2px solid black;
-				margin:           10px;
-				padding:          4px;
-				width:            100%%;
+				background-color:    white;
+				background-image:    url(inputshadow.png);
+				background-repeat:   repeat-x;
+				background-position: left top;
+				border:              2px solid black;
+				margin:              10px;
+				padding:             4px;
+				width:               100%%;
 			}
 			#search-box
 			{
-				background-color: white;
 				background-image: none;
 				border:           0px;
 				font-size:        1em;
+				height:           1.2em;
 				margin:           0px;
+				min-height:       0px;
+				min-width:        0px;
+				padding:          0px;
 				width:            100%%;
 			}
 			#search-button
@@ -31,10 +37,10 @@
 				background-color: silver;
 				background-image: none;
 				border:           0px;
-				height:           100%%;
-				margin:           0px;
+				height:           1.2em;
+				margin:           0 0 0 4px;
 				padding:          0px;
-				width:            35px;
+				width:            1.2em;
 			}
 			#menu
 			{
@@ -50,7 +56,6 @@
 				background-color: white;
 				background-image: none;
 				border:           none;
-				height:           100%%;
 				padding:          0px;
 				text-align:       left;
 				width:            100%%;
@@ -102,9 +107,12 @@
 		</style>
 	</head>
 	<body>
-		<div id="search-frame">
-			<input id="search-box" /><button id="search-button" />
-		</div>
+		<table id="search-frame" cellspacing="0px" cellpadding="0px">
+			<tr>
+				<td width="100%%"><widget type="text" id="search-box" /></td>
+				<td><button id="search-button" /></td>
+			</tr>
+		</table>
 		<div id="menu">
 			Menu
 			<menu>

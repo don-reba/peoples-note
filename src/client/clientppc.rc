@@ -138,7 +138,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 
 ABOUT.HTM               HTML                    "html\\about.htm"
 FILE_NOTE.PNG           HTML                    "html\\file-note.png"
-HOME.PNG                HTML                    "Html\\home.png"
+HOME.PNG                HTML                    "html\\home.png"
+INPUTSHADOW.PNG         HTML                    "html\\inputshadow.png"
 MAIN.HTM                HTML                    "html\\main.htm"
 MENU.CSS                HTML                    "html\\menu.css"
 NOTE_VIEW.HTM           HTML                    "html\\note-view.htm"
