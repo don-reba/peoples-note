@@ -686,4 +686,49 @@ note resource handling
 	special signal seems like the least of evils
 	the lack of good choices is due to the immediacy of data loading
 	the function has to return LOAD_OK right away
+note resource storage
+	requirements
+		data should be available while it is loaded
+		data for more than one note might be needed for one view
+			for transitions
 	data should be stored by the presenter
+	does it?
+	if it only needs to be available during loading, storage in view is enough
+kinetic scrolling
+	basic premise
+		play scrolling animation
+		mouse drag creates impulse
+		friction reduces impulse
+		animation stops when impulse vanishes
+	animation
+		similar to a game loop
+		scroll continuously on idle
+event subscription
+	applications
+		window subscrption to button clicks and selection changes
+			call void() function in response to event
+		kinetic scrolling animation
+			scroll control in response to mouse events from it
+		note flick animation
+			repaint note view in response to mouse events from it
+	requirements
+		bind to specific elements
+		bind by selector
+		subscribe with the correct parameters
+		subscribe member functions
+	handler signatures my differ
+	can create adapter functions
+		that will convert parameters and call the given handler
+		of a given object
+	but the function pointer would require the subscriber's specific type
+	how does boost::signal solve this problem?
+		takes a slot_type reference
+		slot_type is an object
+	how does SWL handle this problem?
+		creates a static proxy for each object type and message id
+		supplies specialized message parameter object
+	we have two scenarios
+		one object handles behaviour events from multiple elements
+		one object hnaldes miscellaneous events form one element
+	it makes sense to keep the old system for the first scnenario
+	subscribe event_handler obects for the second

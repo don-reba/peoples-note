@@ -2,9 +2,11 @@
 #include "NoteListView.h"
 
 #include "crackers.h"
+#include "GestureScroller.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
+using namespace boost;
 using namespace htmlayout;
 using namespace std;
 using namespace Tools;
@@ -28,6 +30,8 @@ NoteListView::NoteListView
 	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
+
+	ConnectBehavior("#note-list", make_shared<GestureScroller>());
 }
 
 void NoteListView::Create()
@@ -74,7 +78,7 @@ void NoteListView::AddNote(wstring html, wstring value)
 	dom::element root(dom::element::root_element(hwnd_));
 	dom::element noteList = root.find_first("#note-list");
 	if (!noteList)
-		throw exception("'#note-list' not found.");
+		throw std::exception("'#note-list' not found.");
 
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
@@ -156,7 +160,7 @@ wstring NoteListView::GetSearchString()
 	dom::element root(dom::element::root_element(hwnd_));
 	dom::element searchBox = root.find_first("#search-box");
 	if (!searchBox)
-		throw exception("'#search-box' not found.");
+		throw std::exception("'#search-box' not found.");
 	return searchBox.text().c_str();
 }
 

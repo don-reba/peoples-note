@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "HTMLayoutWindow.h"
 
-#include "htmlayout.h"
 #include "Tools.h"
 
 using namespace htmlayout;
@@ -15,6 +14,25 @@ using namespace Tools;
 HTMLayoutWindow::HTMLayoutWindow(const wchar_t * resourceId)
 	: resourceId (resourceId)
 {
+}
+
+void HTMLayoutWindow::ConnectBehavior
+		( const char * path
+		, UINT         command
+		, EventType    event
+		)
+{
+	EventTarget t = { path, command, event };
+	eventTargets.push_back(t);
+}
+
+void HTMLayoutWindow::ConnectBehavior
+	( const char      * path
+	, EventHandlerPtr   handler
+	)
+{
+	EventHandler h = { path, handler };
+	eventHandlers.push_back(h);
 }
 
 //------------------
@@ -37,6 +55,15 @@ void HTMLayoutWindow::AttachBehaviors()
 			EventRecord record = { element, target.command, target.event };
 			eventRecords.push_back(record);
 		}
+	}
+	eventTargets.clear();
+
+	foreach (EventHandler & handler, eventHandlers)
+	{
+		vector<dom::element> elements;
+		root.find_all(elements, handler.path.c_str());
+		foreach (dom::element element, elements)
+			attach_event_handler(element, handler.handler.get());
 	}
 }
 

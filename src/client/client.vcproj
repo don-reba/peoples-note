@@ -407,6 +407,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\GestureScroller.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Guid.cpp"
 				>
 			</File>
@@ -590,6 +594,10 @@
 			</File>
 			<File
 				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\GestureScroller.h"
 				>
 			</File>
 			<File

@@ -3,6 +3,8 @@
 #include "ISignalProvider.h"
 #include "window.h"
 
+#include "htmlayout.h"
+
 #include <map>
 
 class HTMLayoutWindow : public Window, public ISignalProvider
@@ -27,14 +29,23 @@ private:
 		EventType event;
 	};
 
+	typedef boost::shared_ptr<htmlayout::event_handler> EventHandlerPtr;
+
+	struct EventHandler
+	{
+		std::string     path;
+		EventHandlerPtr handler;
+	};
+
 // data
 
 private:
 
 	const wchar_t * const resourceId;
 
-	std::vector<EventTarget> eventTargets;
-	std::vector<EventRecord> eventRecords;
+	std::vector<EventTarget>  eventTargets;
+	std::vector<EventRecord>  eventRecords;
+	std::vector<EventHandler> eventHandlers;
 
 protected:
 
@@ -48,14 +59,24 @@ protected:
 
 	template <typename T>
 	void ConnectBehavior
-		( std::string path
-		, UINT        command
+		( const char * path
+		, UINT         command
 		, void (T::*event)()
 		)
 	{
-		EventTarget target = { path, command, static_cast<EventType>(event) };
-		eventTargets.push_back(target);
+		ConnectBehavior(path, command, static_cast<EventType>(event));
 	}
+
+	void ConnectBehavior
+		( const char * path
+		, UINT         command
+		, EventType    event
+		);
+
+	void ConnectBehavior
+		( const char      * path
+		, EventHandlerPtr   handler
+		);
 
 // utility functions
 
