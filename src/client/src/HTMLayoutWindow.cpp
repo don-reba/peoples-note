@@ -22,48 +22,13 @@ void HTMLayoutWindow::ConnectBehavior
 		, EventType    event
 		)
 {
-	EventTarget t = { path, command, event };
-	eventTargets.push_back(t);
-}
-
-void HTMLayoutWindow::ConnectBehavior
-	( const char      * path
-	, EventHandlerPtr   handler
-	)
-{
-	EventHandler h = { path, handler };
-	eventHandlers.push_back(h);
-}
-
-//------------------
-// utility functions
-//------------------
-
-void HTMLayoutWindow::AttachBehaviors()
-{
-	dom::element root = dom::element::root_element(hwnd_);
-
-	eventRecords.clear();
-	eventRecords.reserve(eventTargets.size());
-
-	foreach (const EventTarget target, eventTargets)
+	dom::element root(dom::element::root_element(hwnd_));
+	vector<dom::element> elements;
+	root.find_all(elements, path);
+	foreach (dom::element element, elements)
 	{
-		vector<dom::element> elements;
-		root.find_all(elements, target.path.c_str());
-		foreach (dom::element element, elements)
-		{
-			EventRecord record = { element, target.command, target.event };
-			eventRecords.push_back(record);
-		}
-	}
-	eventTargets.clear();
-
-	foreach (EventHandler & handler, eventHandlers)
-	{
-		vector<dom::element> elements;
-		root.find_all(elements, handler.path.c_str());
-		foreach (dom::element element, elements)
-			attach_event_handler(element, handler.handler.get());
+		EventRecord record = { element, command, event };
+		eventRecords.push_back(record);
 	}
 }
 
@@ -89,7 +54,7 @@ void HTMLayoutWindow::OnCreate(Msg<WM_CREATE> & msg)
 	if (!HTMLayoutLoadHtml(hwnd_, resource.data, resource.size))
 		throw exception("Failed to load interface.");
 
-	AttachBehaviors();
+	RegisterEventHandlers();
 
 	SignalCreated();
 

@@ -32,6 +32,8 @@ public:
 
 	void Create();
 
+	virtual void RegisterEventHandlers();
+
 // INoteListView implementation
 
 public:
@@ -74,8 +76,12 @@ private:
 
 private:
 
-	void OnActivate       (Msg<WM_ACTIVATE>        & msg);
-	void OnDestroy        (Msg<WM_DESTROY>         & msg);
+	void OnActivate       (Msg<WM_ACTIVATE>       & msg);
+	void OnCaptureChanged (Msg<WM_CAPTURECHANGED> & msg);
+	void OnDestroy        (Msg<WM_DESTROY>        & msg);
+	void OnMouseDown      (Msg<WM_LBUTTONDOWN>    & msg);
+	void OnMouseUp        (Msg<WM_LBUTTONUP>      & msg);
+	void OnMouseMove      (Msg<WM_MOUSEMOVE>      & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 

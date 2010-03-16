@@ -407,10 +407,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\GestureScroller.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\Guid.cpp"
 				>
 			</File>
@@ -597,10 +593,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\GestureScroller.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\Guid.h"
 				>
 			</File>
@@ -610,6 +602,10 @@
 			</File>
 			<File
 				RelativePath=".\src\HtmlResource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IAnimator.h"
 				>
 			</File>
 			<File

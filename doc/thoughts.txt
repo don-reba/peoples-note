@@ -732,3 +732,17 @@ event subscription
 		one object hnaldes miscellaneous events form one element
 	it makes sense to keep the old system for the first scnenario
 	subscribe event_handler obects for the second
+	why oh why did I not stop at this point?
+animation
+	two message loop modes
+		static
+			GetMessage
+			check for a "start animating" message
+		animation
+			PeekMessage
+			repeatedly call animation functions while idle
+	animation class
+		provides
+			flag for stopping animation
+			step frame function that runs some animation
+			methods to subscribe and unsubscribe animation functions

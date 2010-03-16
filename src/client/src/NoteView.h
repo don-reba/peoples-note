@@ -24,6 +24,8 @@ public:
 
 	void Create(HWND parent);
 
+	virtual void RegisterEventHandlers();
+
 // INoteView implementation
 
 public:

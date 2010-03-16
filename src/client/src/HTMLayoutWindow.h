@@ -5,6 +5,7 @@
 
 #include "htmlayout.h"
 
+#include <boost/ptr_container/ptr_vector.hpp>
 #include <map>
 
 class HTMLayoutWindow : public Window, public ISignalProvider
@@ -15,26 +16,11 @@ private:
 
 	typedef void (HTMLayoutWindow::*EventType)();
 
-	struct EventTarget
-	{
-		std::string path;
-		UINT        command;
-		EventType   event;
-	};
-
 	struct EventRecord
 	{
 		HELEMENT  element;
 		UINT      command;
 		EventType event;
-	};
-
-	typedef boost::shared_ptr<htmlayout::event_handler> EventHandlerPtr;
-
-	struct EventHandler
-	{
-		std::string     path;
-		EventHandlerPtr handler;
 	};
 
 // data
@@ -43,9 +29,7 @@ private:
 
 	const wchar_t * const resourceId;
 
-	std::vector<EventTarget>  eventTargets;
 	std::vector<EventRecord>  eventRecords;
-	std::vector<EventHandler> eventHandlers;
 
 protected:
 
@@ -73,16 +57,7 @@ protected:
 		, EventType    event
 		);
 
-	void ConnectBehavior
-		( const char      * path
-		, EventHandlerPtr   handler
-		);
-
-// utility functions
-
-private:
-
-	void AttachBehaviors();
+	virtual void RegisterEventHandlers() {}
 
 // window message handlers
 

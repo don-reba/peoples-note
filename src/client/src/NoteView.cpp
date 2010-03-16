@@ -18,8 +18,6 @@ NoteView::NoteView(HINSTANCE instance)
 	, isFullScreen    (false)
 	, HTMLayoutWindow (L"note-view.htm")
 {
-	ConnectBehavior("#home",        BUTTON_CLICK, &NoteView::OnHome);
-	ConnectBehavior("#full-screen", BUTTON_CLICK, &NoteView::OnFullScreen);
 }
 
 void NoteView::Create(HWND parent)
@@ -30,15 +28,17 @@ void NoteView::Create(HWND parent)
 	if (!RegisterClass(wndClass))
 		throw std::exception("Class could not be registered.");
 
+	DWORD windowStyle(WS_NONAVDONEBUTTON);
+
 	hwnd_ = ::CreateWindow
 		( wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
-		, WS_VISIBLE       // dwStyle
+		, windowStyle      // dwStyle
 		, CW_USEDEFAULT    // x
 		, CW_USEDEFAULT    // y
 		, CW_USEDEFAULT    // nWidth
 		, CW_USEDEFAULT    // nHeight
-		, NULL           // hWndParent
+		, NULL             // hWndParent
 		, NULL             // hMenu
 		, instance         // hInstance
 		, this             // lpParam
@@ -50,7 +50,13 @@ void NoteView::Create(HWND parent)
 
 	CopyParentSize();
 
-	Hide();
+//	Hide();
+}
+
+void NoteView::RegisterEventHandlers()
+{
+	ConnectBehavior("#home",        BUTTON_CLICK, &NoteView::OnHome);
+	ConnectBehavior("#full-screen", BUTTON_CLICK, &NoteView::OnFullScreen);
 }
 
 //-------------------------
@@ -101,10 +107,10 @@ void NoteView::SetTitle(wstring text)
 
 void NoteView::Show()
 {
+	::EnableWindow(parent, FALSE);
 	::ShowWindow(hwnd_, SW_SHOW);
 	::UpdateWindow(hwnd_);
 	::BringWindowToTop(hwnd_);
-	::EnableWindow(parent, FALSE);
 }
 
 //------------------

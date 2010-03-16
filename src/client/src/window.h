@@ -139,7 +139,7 @@ class Handler
 	struct CallProxyBase
 	{
 		virtual void Call(WndMsg&, Window*) = 0;
-		virtual ~CallProxyBase() {};
+		virtual ~CallProxyBase() {}
 	};
 	template <UINT id, typename T>
 	struct CallProxy : CallProxyBase

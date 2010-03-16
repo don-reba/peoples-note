@@ -2,7 +2,6 @@
 #include "NoteListView.h"
 
 #include "crackers.h"
-#include "GestureScroller.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
@@ -25,13 +24,6 @@ NoteListView::NoteListView
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
-
-	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
-	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
-	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
-	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
-
-	ConnectBehavior("#note-list", make_shared<GestureScroller>());
 }
 
 void NoteListView::Create()
@@ -62,6 +54,14 @@ void NoteListView::Create()
 
 	::ShowWindow(hwnd_, cmdShow);
 	::UpdateWindow(hwnd_);
+}
+
+void NoteListView::RegisterEventHandlers()
+{
+	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
+	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
+	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
+	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 }
 
 //-----------------------------
@@ -200,10 +200,15 @@ void NoteListView::ResetUiSetup()
 // window message handlers
 //------------------------
 
-void NoteListView::OnActivate(Msg<WM_ACTIVATE> &msg)
+void NoteListView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
-	SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, FALSE);
+	::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
 	msg.result_  = 0;
+	msg.handled_ = true;
+}
+
+void NoteListView::OnCaptureChanged(Msg<WM_CAPTURECHANGED> & msg)
+{
 	msg.handled_ = true;
 }
 
@@ -212,13 +217,32 @@ void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 	PostQuitMessage(0);
 }
 
+void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
+{
+}
+
+void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
+{
+}
+
+void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
+{
+}
+int msgCount = 0;
 void NoteListView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
 	{
 		&NoteListView::OnActivate,
+		&NoteListView::OnCaptureChanged,
 		&NoteListView::OnDestroy,
+		&NoteListView::OnMouseDown,
+		&NoteListView::OnMouseMove,
+		&NoteListView::OnMouseUp,
 	};
+	msgCount = (msg.id_ == 0x215) ? msgCount + 1 : 0;
+	if (msgCount == 4)
+		::DebugBreak();
 	if (!Handler::Call(mmp, this, msg))
 		__super::ProcessMessage(msg);
 }
