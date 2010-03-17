@@ -14,7 +14,6 @@
 #define IDR_MENU                        102
 #define IDS_OK                          103
 #define IDS_HELP                        104
-#define IDM_SYNC                        32771
 #define ID_ACCELERATOR32772             32772
 #define IDM_MENU_EXIT                   32773
 #define IDM_MENU_ABOUT                  32774

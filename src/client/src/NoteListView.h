@@ -4,6 +4,7 @@
 #endif 
 
 #include "HTMLayoutWindow.h"
+#include "IAnimator.h"
 #include "INoteListView.h"
 #include "NoteView.h"
 
@@ -11,11 +12,35 @@ class NoteListView : public HTMLayoutWindow, public INoteListView
 {
 private:
 
-	static const int NotebooksMenuIndex = 2;
+	enum State
+	{
+		StateIdle,
+		StateAnimating,
+		StateDragging,
+	};
+
+	typedef boost::shared_ptr<WndMsg> WndMsgPtr;
+	typedef htmlayout::dom::element   element;
+
+private:
+
+	const double acceleration; // px/ms
+
+	IAnimator & animator;
+
+	IAnimator::Connection animation;
 
 	SHACTIVATEINFO activateInfo;
 	int            cmdShow;
 	HINSTANCE      instance;
+
+	element   noteList;
+	WndMsgPtr lButtonDown;
+	int       lButtonDownY;
+	POINT     startScrollPos;
+	double    dragSpeed;
+	int       startTime;
+	State     state;
 
 	signal SignalImport;
 	signal SignalOpenNote;
@@ -26,8 +51,9 @@ private:
 public:
 
 	NoteListView
-		( HINSTANCE  instance
-		, int        cmdShow
+		( IAnimator & animator
+		, HINSTANCE   instance
+		, int         cmdShow
 		);
 
 	void Create();
@@ -67,6 +93,10 @@ public:
 // utility functions
 
 private:
+
+	void AnimateScroll(DWORD time);
+
+	static bool IsChild(element child, element parent);
 
 	ATOM RegisterClass(std::wstring wndClass);
 

@@ -78,20 +78,8 @@ void HTMLayoutWindow::ProcessMessage(WndMsg &msg)
 		&HTMLayoutWindow::OnCreate,
 		&HTMLayoutWindow::OnDestroy,
 	};
-	try
-	{
-		if (!ProcessHtmLayout(msg) && !Handler::Call(mmp, this, msg))
-			__super::ProcessMessage(msg);
-	}
-	catch(exception e)
-	{
-		MessageBox
-			( hwnd_
-			, ConvertToUnicode(e.what()).c_str()
-			, L"Error"
-			, MB_OK | MB_ICONERROR
-			);
-	}
+	if (!ProcessHtmLayout(msg) && !Handler::Call(mmp, this, msg))
+		__super::ProcessMessage(msg);
 }
 
 //---------------------------

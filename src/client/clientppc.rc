@@ -56,17 +56,6 @@ BEGIN
 END
 
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Accelerator
-//
-
-IDC_CLIENT ACCELERATORS 
-BEGIN
-    VK_F5,          IDM_SYNC,               VIRTKEY, NOINVERT
-END
-
-
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -150,7 +139,6 @@ VIEW_RESTORE.PNG        HTML                    "html\\view-restore.png"
 VOICE_NOTE.PNG          HTML                    "html\\voice-note.png"
 ZOOM_IN.PNG             HTML                    "html\\zoom-in.png"
 ZOOM_OUT.PNG            HTML                    "html\\zoom-out.png"
-
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 

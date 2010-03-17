@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "Animator.h"
 #include "DataStore.h"
 #include "EnImportPresenter.h"
 #include "EnImporter.h"
@@ -53,16 +54,25 @@ bool SwitchToPreviousInstance(HINSTANCE instance)
 	return false;
 }
 
-WPARAM RunMessageLoop(HACCEL accelerators)
+WPARAM RunMessageLoop(IAnimator & animator)
 {
 	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0)) 
+	while (::GetMessage(&msg, NULL, 0, 0)) 
 	{
-		if (!TranslateAccelerator(msg.hwnd, accelerators, &msg)) 
+		if (!::HTMLayoutTranslateMessage(&msg))
+			::TranslateMessage(&msg);
+		::DispatchMessage(&msg);
+		while (animator.IsRunning())
 		{
-			if (!HTMLayoutTranslateMessage(&msg))
-				TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			while (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+			{
+				if (!::HTMLayoutTranslateMessage(&msg))
+					::TranslateMessage(&msg);
+				::DispatchMessage(&msg);
+			}
+			if (msg.message == WM_QUIT)
+				return msg.wParam;
+			animator.StepFrame();
 		}
 	}
 	return msg.wParam;
@@ -81,6 +91,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
+		Animator    animator;
 		RegistryKey registryKey;
 		DataStore   dataStore;
 		EnImporter  enImporter;
@@ -90,7 +101,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		UserModel     userModel(dataStore, GetDocumentPath());
 
 		NoteView     noteView     (instance);
-		NoteListView noteListView (instance, nCmdShow);
+		NoteListView noteListView (animator, instance, nCmdShow);
 
 		EnImportPresenter enImportPresenter
 			( enImporter
@@ -122,11 +133,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		noteListView.Create();
 		noteView.Create(noteListView.hwnd_);
 
-		HACCEL accelerators = LoadAccelerators
-			( instance
-			, MAKEINTRESOURCE(IDC_CLIENT)
-			);
-		return static_cast<int>(RunMessageLoop(accelerators));
+		return static_cast<int>(RunMessageLoop(animator));
 	}
 	catch(std::exception e)
 	{

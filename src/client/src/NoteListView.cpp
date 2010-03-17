@@ -5,6 +5,8 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
+#include <cmath>
+
 using namespace boost;
 using namespace htmlayout;
 using namespace std;
@@ -15,10 +17,13 @@ using namespace Tools;
 //----------
 
 NoteListView::NoteListView
-	( HINSTANCE  instance
-	, int        cmdShow
+	( IAnimator & animator
+	, HINSTANCE   instance
+	, int         cmdShow
 	)
-	: cmdShow         (cmdShow)
+	: animator        (animator)
+	, acceleration    (-0.001)
+	, cmdShow         (cmdShow)
 	, instance        (instance)
 	, HTMLayoutWindow (L"main.htm")
 {
@@ -62,6 +67,11 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
+
+	dom::element root(dom::element::root_element(hwnd_));
+	noteList = root.find_first("#note-list");
+	if (!noteList)
+		throw std::exception("#note-list not found.");
 }
 
 //-----------------------------
@@ -75,11 +85,6 @@ void NoteListView::AddNotebook(wstring notebook)
 
 void NoteListView::AddNote(wstring html, wstring value)
 {
-	dom::element root(dom::element::root_element(hwnd_));
-	dom::element noteList = root.find_first("#note-list");
-	if (!noteList)
-		throw std::exception("'#note-list' not found.");
-
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
 
@@ -179,6 +184,40 @@ void NoteListView::UpdateNotes()
 // utility functions
 //------------------
 
+void NoteListView::AnimateScroll(DWORD time)
+{
+	int    t   (time - startTime);
+	int    sgn ((dragSpeed >= 0.0) ? 1 : -1);
+	double s   (fabs(dragSpeed));
+	double a   (acceleration);
+	if (s + a * t > 0.001)
+	{
+		POINT scrollPos =
+			{ startScrollPos.x
+			, startScrollPos.y - sgn * static_cast<int>(t * (s + 0.5 * a * t))
+			};
+		noteList.set_scroll_pos(scrollPos);
+	}
+	else
+	{
+		animation.disconnect();
+		state = StateIdle;
+	}
+}
+
+bool NoteListView::IsChild(dom::element child, dom::element parent)
+{
+	if (!parent)
+		return false;
+	while (child)
+	{
+		child = child.parent();
+		if (child == parent)
+			return true;
+	}
+	return false;
+}
+
 ATOM NoteListView::RegisterClass(wstring wndClass)
 {
 	WNDCLASS wc = { 0 };
@@ -219,16 +258,96 @@ void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 
 void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
+	using namespace dom;
+
+	element target(element::find_element(hwnd_, msg.Position()));
+	if (!IsChild(target, noteList))
+		return;
+
+	switch (state)
+	{
+	case StateAnimating:
+		animation.disconnect();
+		state = StateIdle;
+		break;
+	case StateIdle:
+		state = StateDragging;
+		startTime = animator.GetMilliseconds();
+
+		lButtonDown  = make_shared<WndMsg>
+			( WM_LBUTTONDOWN
+			, msg.lprm_
+			, msg.wprm_
+			);
+		lButtonDownY = msg.Position().y;
+
+		RECT  viewRect;
+		SIZE  contentSize;
+		noteList.get_scroll_info(startScrollPos, viewRect, contentSize);
+		break;
+	}
+
+	msg.handled_ = true;
 }
 
 void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
+	using namespace dom;
+
+	msg.handled_ = true;
+
+	switch (state)
+	{
+	case StateDragging:
+		element target(element::find_element(hwnd_, msg.Position()));
+		if (!IsChild(target, noteList))
+			return;
+
+		POINT scrollPos =
+			{ startScrollPos.x
+			, startScrollPos.y + lButtonDownY - msg.Position().y
+			};
+		noteList.set_scroll_pos(scrollPos);
+		break;
+	}
+
 }
 
 void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
+	using namespace dom;
+
+	switch (state)
+	{
+	case StateDragging:
+		element target(element::find_element(hwnd_, msg.Position()));
+		if (!IsChild(target, noteList))
+			return;
+
+		int distance = msg.Position().y - lButtonDownY;
+		if (4 < abs(distance))
+		{
+			RECT viewRect;
+			SIZE contentSize;
+			noteList.get_scroll_info(startScrollPos, viewRect, contentSize);
+
+			int time(animator.GetMilliseconds());
+
+			state     = StateAnimating;
+			dragSpeed = distance / static_cast<double>(time - startTime);
+			startTime = time;
+			animation = animator.Subscribe(bind(&NoteListView::AnimateScroll, this, _1));
+		}
+		else
+		{
+			state = StateIdle;
+			__super::ProcessMessage(*lButtonDown);
+			lButtonDown.reset();
+		}
+		break;
+	}
 }
-int msgCount = 0;
+
 void NoteListView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
@@ -240,9 +359,6 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 		&NoteListView::OnMouseMove,
 		&NoteListView::OnMouseUp,
 	};
-	msgCount = (msg.id_ == 0x215) ? msgCount + 1 : 0;
-	if (msgCount == 4)
-		::DebugBreak();
 	if (!Handler::Call(mmp, this, msg))
 		__super::ProcessMessage(msg);
 }

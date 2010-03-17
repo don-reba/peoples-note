@@ -703,6 +703,15 @@ kinetic scrolling
 	animation
 		similar to a game loop
 		scroll continuously on idle
+	state
+		idle
+			mouse down, move beyond threshold => dragging
+		animating
+			mouse down => dragging
+			velocity drops below threshold => idle
+		dragging
+			mouse up => animating
+				set velocity
 event subscription
 	applications
 		window subscrption to button clicks and selection changes
