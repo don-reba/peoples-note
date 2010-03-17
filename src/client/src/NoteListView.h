@@ -37,7 +37,7 @@ private:
 	element   noteList;
 	WndMsgPtr lButtonDown;
 	int       lButtonDownY;
-	POINT     startScrollPos;
+	int       startScrollPos;
 	double    dragSpeed;
 	int       startTime;
 	State     state;
@@ -96,11 +96,15 @@ private:
 
 	void AnimateScroll(DWORD time);
 
+	int GetNoteListScrollPos();
+
 	static bool IsChild(element child, element parent);
 
 	ATOM RegisterClass(std::wstring wndClass);
 
 	void ResetUiSetup();
+
+	void SetNoteListScrollPos(int pos);
 
 // window message handlers
 

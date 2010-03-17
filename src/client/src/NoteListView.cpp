@@ -192,17 +192,24 @@ void NoteListView::AnimateScroll(DWORD time)
 	double a   (acceleration);
 	if (s + a * t > 0.001)
 	{
-		POINT scrollPos =
-			{ startScrollPos.x
-			, startScrollPos.y - sgn * static_cast<int>(t * (s + 0.5 * a * t))
-			};
-		noteList.set_scroll_pos(scrollPos);
+		int offset(sgn * static_cast<int>(t * (s + 0.5 * a * t)));
+		SetNoteListScrollPos(startScrollPos - offset);
 	}
 	else
 	{
-		animation.disconnect();
 		state = StateIdle;
+		animation.disconnect();
+		noteList.update();
 	}
+}
+
+int NoteListView::GetNoteListScrollPos()
+{
+	POINT scrollPos;
+	RECT  viewRect;
+	SIZE  contentSize;
+	noteList.get_scroll_info(scrollPos, viewRect, contentSize);
+	return scrollPos.y;
 }
 
 bool NoteListView::IsChild(dom::element child, dom::element parent)
@@ -235,6 +242,12 @@ void NoteListView::ResetUiSetup()
 	::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
 }
 
+void NoteListView::SetNoteListScrollPos(int pos)
+{
+	POINT point = { 0, pos };
+	noteList.set_scroll_pos(point);
+}
+
 //------------------------
 // window message handlers
 //------------------------
@@ -264,28 +277,19 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 	if (!IsChild(target, noteList))
 		return;
 
-	switch (state)
+	if (state == StateAnimating)
 	{
-	case StateAnimating:
 		animation.disconnect();
-		state = StateIdle;
-		break;
-	case StateIdle:
-		state = StateDragging;
-		startTime = animator.GetMilliseconds();
-
-		lButtonDown  = make_shared<WndMsg>
-			( WM_LBUTTONDOWN
-			, msg.lprm_
-			, msg.wprm_
-			);
-		lButtonDownY = msg.Position().y;
-
-		RECT  viewRect;
-		SIZE  contentSize;
-		noteList.get_scroll_info(startScrollPos, viewRect, contentSize);
-		break;
+		noteList.update();
 	}
+
+	state = StateDragging;
+	startTime = animator.GetMilliseconds();
+
+	lButtonDown  = make_shared<WndMsg>(WM_LBUTTONDOWN, msg.lprm_, msg.wprm_);
+	lButtonDownY = msg.Position().y;
+
+	startScrollPos = GetNoteListScrollPos();
 
 	msg.handled_ = true;
 }
@@ -296,19 +300,12 @@ void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 
 	msg.handled_ = true;
 
-	switch (state)
+	if (state == StateDragging)
 	{
-	case StateDragging:
 		element target(element::find_element(hwnd_, msg.Position()));
 		if (!IsChild(target, noteList))
 			return;
-
-		POINT scrollPos =
-			{ startScrollPos.x
-			, startScrollPos.y + lButtonDownY - msg.Position().y
-			};
-		noteList.set_scroll_pos(scrollPos);
-		break;
+		SetNoteListScrollPos(startScrollPos + lButtonDownY - msg.Position().y);
 	}
 
 }
@@ -317,9 +314,8 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
 	using namespace dom;
 
-	switch (state)
+	if (state == StateDragging)
 	{
-	case StateDragging:
 		element target(element::find_element(hwnd_, msg.Position()));
 		if (!IsChild(target, noteList))
 			return;
@@ -327,9 +323,7 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 		int distance = msg.Position().y - lButtonDownY;
 		if (4 < abs(distance))
 		{
-			RECT viewRect;
-			SIZE contentSize;
-			noteList.get_scroll_info(startScrollPos, viewRect, contentSize);
+			startScrollPos = GetNoteListScrollPos();
 
 			int time(animator.GetMilliseconds());
 
@@ -344,7 +338,6 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 			__super::ProcessMessage(*lButtonDown);
 			lButtonDown.reset();
 		}
-		break;
 	}
 }
 
