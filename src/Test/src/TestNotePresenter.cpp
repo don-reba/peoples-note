@@ -36,6 +36,7 @@ BOOST_AUTO_TEST_CASE(NotePresenterMedia_Test)
 	NotePresenter notePresenter(noteListView, noteView, userModel);
 
 	Guid guid;
+	userModel.notes.push_back(Note(guid, L"note-title", Timestamp(0)));
 	noteListView.selectedNoteGuid = guid;
 	userModel.noteBodies[guid] =
 		L"<en-note>"
@@ -52,6 +53,8 @@ BOOST_AUTO_TEST_CASE(NotePresenterMedia_Test)
 			L"<img src=\"img:d978\" border=\"1\"/>"
 			L"</en-note>"
 		);
+	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
+	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 00:00");
 	BOOST_CHECK(noteView.isShown);
 }
 
@@ -63,6 +66,7 @@ BOOST_AUTO_TEST_CASE(NotePresenterTodo_Test)
 	NotePresenter notePresenter(noteListView, noteView, userModel);
 
 	Guid guid;
+	userModel.notes.push_back(Note(guid, L"", Timestamp(0)));
 	noteListView.selectedNoteGuid = guid;
 	userModel.noteBodies[guid] =
 		L"<en-note>"

@@ -7,6 +7,7 @@ class MockNoteView : public INoteView
 public:
 
 	std::wstring body;
+	std::wstring subtitle;
 	std::wstring title;
 	bool         isShown;
 
@@ -20,7 +21,9 @@ public:
 
 	virtual void SetBody(std::wstring html);
 
-	virtual void SetTitle(std::wstring text);
+	virtual void SetSubtitle(std::wstring html);
+
+	virtual void SetTitle(std::wstring html);
 
 	virtual void Show();
 };

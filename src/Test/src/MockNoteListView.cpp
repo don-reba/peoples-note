@@ -12,7 +12,7 @@ MockNoteListView::MockNoteListView()
 void MockNoteListView::AddNote(wstring html, wstring value)
 {
 	NoteRecord record;
-	record.html  = noteHtml;
+	record.html  = html;
 	record.value = value;
 	notes.push_back(record);
 	notesUpdated = false;
@@ -20,7 +20,7 @@ void MockNoteListView::AddNote(wstring html, wstring value)
 
 void MockNoteListView::AddNotebook(wstring html)
 {
-	notebooks.push_back(notebook);
+	notebooks.push_back(html);
 	notebooksUpdated = false;
 }
 

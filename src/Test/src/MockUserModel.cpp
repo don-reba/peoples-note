@@ -65,6 +65,17 @@ void MockUserModel::GetImageResource(string hash, Blob & blob)
 		blob = images[hash];
 }
 
+Note MockUserModel::GetNote(Guid guid)
+{
+	const string & guidString = static_cast<const string &>(guid);
+	foreach (Note & note, notes)
+	{
+		if (guidString == static_cast<const string &>(note.GetGuid()))
+			return note;
+	}
+	throw std::exception("Note not found.");
+}
+
 void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
 {
 	if (noteBodies.find(guid) != noteBodies.end())

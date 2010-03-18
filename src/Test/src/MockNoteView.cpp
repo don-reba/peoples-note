@@ -18,9 +18,14 @@ void MockNoteView::SetBody(wstring html)
 	body = html;
 }
 
-void MockNoteView::SetTitle(wstring text)
+void MockNoteView::SetSubtitle(wstring html)
 {
-	title = text;
+	subtitle = html;
+}
+
+void MockNoteView::SetTitle(wstring html)
+{
+	title = html;
 }
 
 void MockNoteView::Show()
