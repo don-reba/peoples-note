@@ -9,19 +9,19 @@ MockNoteListView::MockNoteListView()
 {
 }
 
-void MockNoteListView::AddNotebook(wstring notebook)
-{
-	notebooks.push_back(notebook);
-	notebooksUpdated = false;
-}
-
-void MockNoteListView::AddNote(wstring noteHtml, wstring value)
+void MockNoteListView::AddNote(wstring html, wstring value)
 {
 	NoteRecord record;
 	record.html  = noteHtml;
 	record.value = value;
 	notes.push_back(record);
 	notesUpdated = false;
+}
+
+void MockNoteListView::AddNotebook(wstring html)
+{
+	notebooks.push_back(notebook);
+	notebooksUpdated = false;
 }
 
 void MockNoteListView::ClearNotebooks()

@@ -9,9 +9,9 @@ public:
 
 	virtual ~INoteListView() {}
 
-	virtual void AddNote(std::wstring noteHtml, std::wstring value) = 0;
+	virtual void AddNote(std::wstring html, std::wstring value) = 0;
 
-	virtual void AddNotebook(std::wstring notebook) = 0;
+	virtual void AddNotebook(std::wstring html) = 0;
 
 	virtual void ConnectCreated(slot_type OnCreated) = 0;
 

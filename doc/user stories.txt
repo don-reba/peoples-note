@@ -35,9 +35,9 @@ search
 	√ when the user searches for an empty string or whitespace, the note list should be reset
 	when a search is in progress, the note list should be grayed out and disabled
 note list navigation
-	when the user clicks on a note while the note list is still, note view for it should open up
-	when the user clicks on the note list while it is scrolling, the scrolling should stop
-	when the user flicks the note list, it should receive scrolling momentum
+	√ when the user clicks on a note while the note list is still, note view for it should open up
+	√ when the user clicks on the note list while it is scrolling, the scrolling should stop
+	√ when the user flicks the note list, it should receive scrolling momentum
 	when the user clicks "show more notes", the note list should be extended by another page
 note view
 	√ when the user signs in, the list of notebooks should be filled in

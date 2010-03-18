@@ -9,6 +9,7 @@
 
 using namespace boost;
 using namespace htmlayout;
+using namespace htmlayout::dom;
 using namespace std;
 using namespace Tools;
 
@@ -68,45 +69,61 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 
-	dom::element root(dom::element::root_element(hwnd_));
+	element root(element::root_element(hwnd_));
 	noteList = root.find_first("#note-list");
 	if (!noteList)
 		throw std::exception("#note-list not found.");
+	notebookList = root.find_first("#notebook-list");
+	if (!notebookList)
+		throw std::exception("#notebook-list not found.");
 }
 
 //-----------------------------
 // INoteListView implementation
 //-----------------------------
 
-void NoteListView::AddNotebook(wstring notebook)
-{
-	// TODO: implement
-}
-
 void NoteListView::AddNote(wstring html, wstring value)
 {
 	vector<unsigned char> htmlUtf8Chars;
-	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
+	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
 
-	dom::element note = dom::element::create("option");
+	element note = element::create("option");
 	noteList.append(note);
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
 }
 
+void NoteListView::AddNotebook(wstring html)
+{
+	vector<unsigned char> htmlUtf8Chars;
+	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
+
+	element notebook = element::create("li");
+	notebookList.append(notebook);
+	notebook.set_html(htmlUtf8, htmlUtf8Chars.size());
+}
+
 void NoteListView::ClearNotebooks()
 {
-	// TODO: implement
+	element root(element::root_element(hwnd_));
+	element notebookList(root.find_first("#notebook-list"));
+	if (!notebookList)
+		throw std::exception("#notebook-list not found.");
+
+	vector<element> notebooks;
+	notebookList.find_all(notebooks, "li");
+	foreach (element & notebook, notebooks)
+		notebook.destroy();
 }
 
 void NoteListView::ClearNotes()
 {
-	dom::element root(dom::element::root_element(hwnd_));
-	vector<dom::element> notes;
+	element root(element::root_element(hwnd_));
+	vector<element> notes;
 	root.find_all(notes, "#note-list .note");
 
-	foreach (dom::element & note, notes)
+	foreach (element & note, notes)
 		note.destroy();
 }
 
@@ -155,15 +172,15 @@ bool NoteListView::GetEnexPath(wstring & path)
 
 Guid NoteListView::GetSelectedNoteGuid()
 {
-	dom::element root(dom::element::root_element(hwnd_));
-	dom::element noteList = root.find_first("#note-list");
+	element root(element::root_element(hwnd_));
+	element noteList = root.find_first("#note-list");
 	return noteList.get_value().to_string().c_str();
 }
 
 wstring NoteListView::GetSearchString()
 {
-	dom::element root(dom::element::root_element(hwnd_));
-	dom::element searchBox = root.find_first("#search-box");
+	element root(element::root_element(hwnd_));
+	element searchBox = root.find_first("#search-box");
 	if (!searchBox)
 		throw std::exception("'#search-box' not found.");
 	return searchBox.text().c_str();
@@ -171,13 +188,12 @@ wstring NoteListView::GetSearchString()
 
 void NoteListView::UpdateNotebooks()
 {
-	// TODO: implement
+	notebookList.update();
 }
 
 void NoteListView::UpdateNotes()
 {
-	dom::element root(dom::element::root_element(hwnd_));
-	root.update();
+	noteList.update();
 }
 
 //------------------
@@ -212,7 +228,7 @@ int NoteListView::GetNoteListScrollPos()
 	return scrollPos.y;
 }
 
-bool NoteListView::IsChild(dom::element child, dom::element parent)
+bool NoteListView::IsChild(element child, element parent)
 {
 	if (!parent)
 		return false;
@@ -271,8 +287,6 @@ void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 
 void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
-	using namespace dom;
-
 	element target(element::find_element(hwnd_, msg.Position()));
 	if (!IsChild(target, noteList))
 		return;
@@ -296,8 +310,6 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 
 void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
-	using namespace dom;
-
 	msg.handled_ = true;
 
 	if (state == StateDragging)
@@ -312,8 +324,6 @@ void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 
 void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
-	using namespace dom;
-
 	if (state == StateDragging)
 	{
 		element target(element::find_element(hwnd_, msg.Position()));

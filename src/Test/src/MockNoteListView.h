@@ -35,9 +35,9 @@ public:
 
 	MockNoteListView();
 
-	virtual void AddNote(std::wstring noteHtml, std::wstring value);
+	virtual void AddNote(std::wstring html, std::wstring value);
 
-	virtual void AddNotebook(std::wstring notebook);
+	virtual void AddNotebook(std::wstring html);
 
 	virtual void ClearNotebooks();
 

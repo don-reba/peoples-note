@@ -712,6 +712,19 @@ kinetic scrolling
 		dragging
 			mouse up => animating
 				set velocity
+		refactoring
+			does it make sense to handle animation in another class?
+				math
+				state management
+				make explicit data needed for state transitions
+			interface
+				SetStateAnimating
+				SetStateDragging
+				SetStateRefactoring
+				GetState
+				GetDistance(time)
+			dragging and animation are fairly separate, though
+			dragging is strongly tied to message processing
 event subscription
 	applications
 		window subscrption to button clicks and selection changes
