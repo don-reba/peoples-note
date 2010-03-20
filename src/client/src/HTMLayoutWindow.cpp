@@ -78,8 +78,16 @@ void HTMLayoutWindow::ProcessMessage(WndMsg &msg)
 		&HTMLayoutWindow::OnCreate,
 		&HTMLayoutWindow::OnDestroy,
 	};
-	if (!ProcessHtmLayout(msg) && !Handler::Call(mmp, this, msg))
-		__super::ProcessMessage(msg);
+	try
+	{
+		if (!ProcessHtmLayout(msg) && !Handler::Call(mmp, this, msg))
+			__super::ProcessMessage(msg);
+	}
+	catch (const std::exception & e)
+	{
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
+		throw e;
+	}
 }
 
 //---------------------------
@@ -103,10 +111,18 @@ BOOL HTMLayoutWindow::OnBehavior(BEHAVIOR_EVENT_PARAMS * params)
 
 BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 {
-	HtmlResource resource(LoadHtmlResource(params->uri));
-	params->outData     = resource.data;
-	params->outDataSize = resource.size;
-	return LOAD_OK;
+	try
+	{
+		HtmlResource resource(LoadHtmlResource(params->uri));
+		params->outData     = resource.data;
+		params->outDataSize = resource.size;
+		return LOAD_OK;
+	}
+	catch (const std::exception & e)
+	{
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
+		return LOAD_DISCARD;
+	}
 }
 
 bool HTMLayoutWindow::ProcessHtmLayout(WndMsg & msg)

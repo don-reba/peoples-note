@@ -387,6 +387,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\BitmapRenderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\crackers.cpp"
 				>
 			</File>
@@ -566,6 +570,10 @@
 			>
 			<File
 				RelativePath=".\src\Animator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\BitmapRenderer.h"
 				>
 			</File>
 			<File

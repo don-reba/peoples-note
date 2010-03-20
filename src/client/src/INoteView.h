@@ -19,6 +19,8 @@ public:
 
 	virtual void Hide() = 0;
 
+	virtual HBITMAP Render(SIZE size) = 0;
+
 	virtual void SetBody(std::wstring html) = 0;
 
 	virtual void SetSubtitle(std::wstring text) = 0;

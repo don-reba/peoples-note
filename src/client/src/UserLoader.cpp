@@ -3,7 +3,6 @@
 
 #include "ICredentialsModel.h"
 #include "ILastUserModel.h"
-#include "INoteListView.h"
 #include "IUserModel.h"
 
 using namespace boost;
@@ -12,16 +11,13 @@ using namespace std;
 UserLoader::UserLoader
 	( IUserModel     & userModel
 	, ILastUserModel & lastUserModel
-	, INoteListView  & noteListView
 	)
 	: userModel     (userModel)
 	, lastUserModel (lastUserModel)
-	, noteListView  (noteListView)
 {
-	noteListView.ConnectCreated(bind(&UserLoader::OnCreated, this));
 }
 
-void UserLoader::OnCreated()
+void UserLoader::Run()
 {
 	const ICredentialsModel & credentials = lastUserModel.GetCredentials();
 	if (credentials.GetUsername().empty())

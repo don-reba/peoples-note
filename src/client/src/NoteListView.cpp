@@ -24,6 +24,7 @@ NoteListView::NoteListView
 	)
 	: animator        (animator)
 	, acceleration    (-0.001)
+	, bitmapRenderer  (instance)
 	, cmdShow         (cmdShow)
 	, instance        (instance)
 	, HTMLayoutWindow (L"main.htm")
@@ -87,11 +88,15 @@ void NoteListView::AddNote(wstring html, wstring value)
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
 
-	element note = element::create("option");
+	element note(element::create("option"));
 	noteList.append(note);
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
+
+	element preview(note.find_first("#thumb img"));
+	if (preview)
+		preview.attach(&bitmapRenderer);
 }
 
 void NoteListView::AddNotebook(wstring html)
@@ -127,14 +132,14 @@ void NoteListView::ClearNotes()
 		note.destroy();
 }
 
-void NoteListView::ConnectCreated(slot_type OnCreated)
-{
-	SignalCreated.connect(OnCreated);
-}
-
 void NoteListView::ConnectImport(slot_type OnImport)
 {
 	SignalImport.connect(OnImport);
+}
+
+void NoteListView::ConnectLoadBitmap(BitmapSlot OnLoadBitmap)
+{
+	bitmapRenderer.ConnectLoadBitmap(OnLoadBitmap);
 }
 
 void NoteListView::ConnectOpenNote(slot_type OnOpenNote)
@@ -305,6 +310,8 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 
 	startScrollPos = GetNoteListScrollPos();
 
+	::SetCapture(hwnd_);
+
 	msg.handled_ = true;
 }
 
@@ -314,9 +321,6 @@ void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 
 	if (state == StateDragging)
 	{
-		element target(element::find_element(hwnd_, msg.Position()));
-		if (!IsChild(target, noteList))
-			return;
 		SetNoteListScrollPos(startScrollPos + lButtonDownY - msg.Position().y);
 	}
 
@@ -324,12 +328,10 @@ void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 
 void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
+	::ReleaseCapture();
+
 	if (state == StateDragging)
 	{
-		element target(element::find_element(hwnd_, msg.Position()));
-		if (!IsChild(target, noteList))
-			return;
-
 		int distance = msg.Position().y - lButtonDownY;
 		if (4 < abs(distance))
 		{
@@ -362,8 +364,16 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 		&NoteListView::OnMouseMove,
 		&NoteListView::OnMouseUp,
 	};
-	if (!Handler::Call(mmp, this, msg))
-		__super::ProcessMessage(msg);
+	try
+	{
+		if (!Handler::Call(mmp, this, msg))
+			__super::ProcessMessage(msg);
+	}
+	catch (const std::exception & e)
+	{
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
+		throw e;
+	}
 }
 
 //---------------------------
@@ -388,4 +398,11 @@ void NoteListView::OnNote()
 void NoteListView::OnSearch()
 {
 	SignalSearch();
+}
+
+BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
+{
+	if (NULL == wcschr(params->uri, L':'))
+		return __super::OnLoadData(params);
+	return LOAD_DISCARD;
 }

@@ -54,6 +54,8 @@ bool SwitchToPreviousInstance(HINSTANCE instance)
 	return false;
 }
 
+// Main message loop.
+// Switches between two modes: normal and animation.
 WPARAM RunMessageLoop(IAnimator & animator)
 {
 	MSG msg;
@@ -112,6 +114,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		NoteListPresenter noteListPresenter
 			( noteListModel
 			, noteListView
+			, noteView
 			, userModel
 			);
 		NotePresenter notePresenter
@@ -127,11 +130,12 @@ int WINAPI WinMain(HINSTANCE instance,
 		UserLoader userLoader
 			( userModel
 			, lastUserModel
-			, noteListView
 			);
 
 		noteListView.Create();
 		noteView.Create(noteListView.hwnd_);
+
+		userLoader.Run();
 
 		return static_cast<int>(RunMessageLoop(animator));
 	}

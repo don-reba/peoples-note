@@ -3,6 +3,7 @@
 #include "resourceppc.h"
 #endif 
 
+#include "BitmapRenderer.h"
 #include "HTMLayoutWindow.h"
 #include "IAnimator.h"
 #include "INoteListView.h"
@@ -44,6 +45,8 @@ private:
 	int       startTime;
 	State     state;
 
+	BitmapRenderer bitmapRenderer;
+
 	signal SignalImport;
 	signal SignalOpenNote;
 	signal SignalSearch;
@@ -74,9 +77,9 @@ public:
 
 	virtual void ClearNotes();
 
-	virtual void ConnectCreated(slot_type OnCreated);
-
 	virtual void ConnectImport(slot_type OnImport);
+
+	virtual void ConnectLoadBitmap(BitmapSlot OnLoadBitmap);
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 
@@ -129,4 +132,6 @@ private:
 	void OnMenuImport();
 	void OnNote();
 	void OnSearch();
+
+	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };

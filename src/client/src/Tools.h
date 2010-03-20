@@ -24,6 +24,8 @@ namespace Tools
 
 	std::wstring LoadStringResource(int id);
 
+	bool StartsWith(const wchar_t * text, const wchar_t * prefix);
+
 	void UnixTimeToFileTime
 		( time_t         unixTime
 		, OUT FILETIME & fileTime

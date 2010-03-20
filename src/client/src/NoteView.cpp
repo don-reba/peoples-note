@@ -74,6 +74,47 @@ void NoteView::Hide()
 	::ShowWindow(hwnd_, SW_HIDE);
 }
 
+struct BITMAPINFO_BF
+{
+	BITMAPINFOHEADER bmiHeader;
+	DWORD bmiColorsR;
+	DWORD bmiColorsG;
+	DWORD bmiColorsB;
+
+	BITMAPINFO * GetBitmapInfo()
+	{
+		return reinterpret_cast<BITMAPINFO*>(this);
+	}
+};
+
+HBITMAP NoteView::Render(SIZE size)
+{
+ 	BITMAPINFO_BF info = { 0 };
+	info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	info.bmiHeader.biWidth = size.cx;
+	info.bmiHeader.biHeight = size.cy;
+	info.bmiHeader.biPlanes = 1;
+	info.bmiHeader.biBitCount = 16;
+	info.bmiHeader.biCompression = BI_BITFIELDS;
+	info.bmiHeader.biSizeImage = 2 * size.cx * size.cy;
+	info.bmiHeader.biClrUsed = 1;
+	info.bmiHeader.biClrImportant = 0;
+	info.bmiColorsR = 0xf800;
+	info.bmiColorsG = 0x07e0;
+	info.bmiColorsB = 0x001f;
+
+	HDC     dc  (::CreateCompatibleDC(::GetDC(hwnd_)));
+	HBITMAP bmp (::CreateDIBSection(dc, info.GetBitmapInfo(), DIB_RGB_COLORS, NULL, NULL, 0));
+	if (bmp)
+	{
+		RECT rect = { 0, 0, size.cx, size.cy };
+		if (!HTMLayoutRender(hwnd_, bmp, rect))
+			throw std::exception("Note rendering failed.");
+	}
+	::DeleteDC(dc);
+	return bmp;
+}
+
 void NoteView::SetBody(wstring html)
 {
 	dom::element root = dom::element::root_element(hwnd_);
@@ -85,6 +126,7 @@ void NoteView::SetBody(wstring html)
 	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
 
 	body.set_html(htmlUtf8, htmlUtf8Chars.size());
+	root.update(true);
 }
 
 void NoteView::SetSubtitle(wstring text)
@@ -200,8 +242,16 @@ void NoteView::ProcessMessage(WndMsg &msg)
 	{
 		&NoteView::OnClose,
 	};
-	if (!Handler::Call(mmp, this, msg))
-		__super::ProcessMessage(msg);
+	try
+	{
+		if (!Handler::Call(mmp, this, msg))
+			__super::ProcessMessage(msg);
+	}
+	catch (const std::exception & e)
+	{
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
+		throw e;
+	}
 }
 
 //---------------------------
@@ -228,16 +278,8 @@ BOOL NoteView::OnLoadData(NMHL_LOAD_DATA * params)
 	}
 	catch (const std::exception & e)
 	{
-#ifdef _DEBUG
-		::MessageBox
-			( hwnd_
-			, ConvertToUnicode(e.what()).c_str()
-			, L"Error"
-			, MB_ICONERROR | MB_OK
-			);
-#else
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
 		return LOAD_DISCARD;
-#endif
 	}
 	params->outData     = &blob[0];
 	params->outDataSize = blob.size();

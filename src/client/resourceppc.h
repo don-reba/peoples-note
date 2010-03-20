@@ -14,6 +14,7 @@
 #define IDR_MENU                        102
 #define IDS_OK                          103
 #define IDS_HELP                        104
+#define IDB_BITMAP1                     133
 #define ID_ACCELERATOR32772             32772
 #define IDM_MENU_EXIT                   32773
 #define IDM_MENU_ABOUT                  32774
@@ -35,7 +36,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        133
+#define _APS_NEXT_RESOURCE_VALUE        134
 #define _APS_NEXT_COMMAND_VALUE         32785
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110

@@ -768,3 +768,47 @@ animation
 			flag for stopping animation
 			step frame function that runs some animation
 			methods to subscribe and unsubscribe animation functions
+note preview
+	want to display the thumbnails in note list
+	have to insert the <img /> tag into the note html
+	add a LoadingData handler to NotePresenter
+	where to get the image data from?
+		generate on the fly or pull from the database
+		database storage can't be permanent
+		because format may change
+		although, this can also be made part of the data format
+		except, we may decide to change format based on screen orientation
+		even if it seems like a bad idea at the moment
+	how to generate the data?
+		HTMLayoutRender
+			takes window handle, bitmap, and rectangle
+			should use native format (16bpp)
+		does it render to bitmap area or to window client area?
+			client area
+		how can I load HBITMAP data?
+			could implement an event handler with on_draw
+			seems like the way to do it
+			also answers the question of whether caching is necessary
+			if I draw, then it is
+		so, the general idea is
+			note list presenter
+				clear title and subtitle
+				set note body
+				render to an HBITMAP array
+				set the index as an attribute
+			note list view
+				subscribe to draw events from the newly added notes
+				in handler, get the index attribute
+				signal for HBITMAP with given index
+				draw using the returned handle
+		now both note and note list presenters are handling note list changes
+		but if images are cached in the database
+		then note list presenter will need to pull them
+			to avoid making unnecessary queries
+		actually, the note window would be creating the bitmap initially
+			Render(HTBITMAP & bmp)
+		then note list presenter needs access to note view
+	implementation
+		√ get HBITMAP drawing working
+		add rendering
+		add caching

@@ -7,15 +7,24 @@ class INoteListView : public ISignalProvider
 {
 public:
 
+	typedef boost::signals2::signal
+		< void(size_t, HBITMAP &)
+		> BitmapSignal;
+	typedef boost::signals2::signal
+		< void(size_t, HBITMAP &)
+		>::slot_type BitmapSlot;
+
+public:
+
 	virtual ~INoteListView() {}
 
 	virtual void AddNote(std::wstring html, std::wstring value) = 0;
 
 	virtual void AddNotebook(std::wstring html) = 0;
 
-	virtual void ConnectCreated(slot_type OnCreated) = 0;
-
 	virtual void ConnectImport(slot_type OnImport) = 0;
+
+	virtual void ConnectLoadBitmap(BitmapSlot OnLoadBitmap) = 0;
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote) = 0;
 

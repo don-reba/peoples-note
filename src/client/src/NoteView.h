@@ -34,6 +34,8 @@ public:
 
 	virtual void Hide();
 
+	virtual HBITMAP Render(SIZE size);
+
 	virtual void SetBody(std::wstring html);
 
 	virtual void SetSubtitle(std::wstring text);
@@ -65,8 +67,7 @@ private:
 protected:
 
 	void OnFullScreen();
-
 	void OnHome();
 
-	BOOL OnLoadData(NMHL_LOAD_DATA * params);
+	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };

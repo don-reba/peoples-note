@@ -273,6 +273,20 @@ wstring Tools::LoadStringResource(int id)
 	return &str[0];
 }
 
+bool Tools::StartsWith(const wchar_t * text, const wchar_t * prefix)
+{
+	if (!(text && prefix))
+		return false;
+	while (*prefix)
+	{
+		if (*text != *prefix)
+			return false;
+		++text;
+		++prefix;
+	}
+	return true;
+}
+
 void Tools::UnixTimeToFileTime
 	(     time_t     unixTime
 	, OUT FILETIME & fileTime
