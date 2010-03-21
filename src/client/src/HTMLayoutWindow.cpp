@@ -3,6 +3,8 @@
 
 #include "Tools.h"
 
+#include "htmlayout.h"
+
 using namespace htmlayout;
 using namespace std;
 using namespace Tools;

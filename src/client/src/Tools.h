@@ -3,8 +3,6 @@
 #include "Blob.h"
 #include "HtmlResource.h"
 
-#include <windows.h>
-
 namespace Tools
 {
 	std::string ConvertToAnsi(const std::wstring str);

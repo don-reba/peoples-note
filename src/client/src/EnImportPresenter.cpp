@@ -75,9 +75,17 @@ string EnImportPresenter::Hash(const Blob & blob)
 	md5_append(&state, &blob[0], blob.size());
 	md5_finish(&state, digest);
 
-	char hex[16 * 2 + 1];
+	char digits[] =
+		{ '0', '1', '2', '3', '4', '5', '6', '7'
+		, '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+		};
+	string hex;
+	hex.reserve(16 * 2 + 1);
 	for (int i(0); i != 16; ++i)
-		sprintf(hex + 2 * i, "%02x", digest[i]);
+	{
+		hex.push_back(digits[(digest[i] & 0xF0) >> 4]);
+		hex.push_back(digits[(digest[i] & 0x0F) >> 0]);
+	}
 
 	return hex;
 }

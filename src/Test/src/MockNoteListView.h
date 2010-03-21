@@ -31,6 +31,8 @@ public:
 	signal SignalOpenNote;
 	signal SignalSearch;
 
+	BitmapSignal SignalLoadBitmap;
+
 public:
 
 	MockNoteListView();
@@ -46,6 +48,8 @@ public:
 	virtual void ConnectCreated(slot_type OnCreated);
 
 	virtual void ConnectImport(slot_type OnImport);
+
+	virtual void ConnectLoadBitmap(BitmapSlot OnLoadBitmap);
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 

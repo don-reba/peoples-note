@@ -13,6 +13,12 @@ void MockNoteView::Hide()
 	isShown = false;
 }
 
+HBITMAP MockNoteView::Render(SIZE size)
+{
+	renderSize = size;
+	return NULL;
+}
+
 void MockNoteView::SetBody(wstring html)
 {
 	body = html;

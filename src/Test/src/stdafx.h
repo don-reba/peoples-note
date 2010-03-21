@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 
-#define BOOST_TEST_MODULE general test
+#define BOOST_TEST_MODULE Offline Test
 #include <boost/test/unit_test.hpp>
 
 #include <boost/bind.hpp>
@@ -28,3 +28,5 @@ namespace std
 	ostream & operator << (ostream & stream, const wchar_t * str);
 	ostream & operator << (ostream & stream, const wstring & str);
 }
+
+#include <windows.h>

@@ -3,10 +3,13 @@
 #include "ISignalProvider.h"
 #include "window.h"
 
-#include "htmlayout.h"
-
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <map>
+
+struct htmlayout_dom_element;
+typedef htmlayout_dom_element* HELEMENT;
+struct BEHAVIOR_EVENT_PARAMS;
+struct NMHL_LOAD_DATA;
 
 class HTMLayoutWindow : public Window, public ISignalProvider
 {
