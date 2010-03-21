@@ -12,7 +12,14 @@
 using namespace boost;
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test0)
+template<typename T, int N>
+void PushArray(vector<T> & v, const T (&a)[N])
+{
+	for (int i(0); i != N; ++i)
+		v.push_back(a[i]);
+}
+
+BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 {
 	MockEnImporter    enImporter;
 	MockNoteListModel noteListModel;
@@ -50,13 +57,12 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test0)
 	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook.GetName(), L"notebook");
 	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook.GetName(), L"notebook");
 
-	// should actually be 3
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-1");
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-2");
 }
 
-BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test1)
+BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test1)
 {
 	MockEnImporter    enImporter;
 	MockNoteListModel noteListModel;
@@ -71,7 +77,6 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test1)
 		);
 
 	enImporter.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
-	enImporter.notes.push_back(Note(Guid(), L"note-1", Timestamp(1)));
 
 	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
 
@@ -81,4 +86,45 @@ BOOST_AUTO_TEST_CASE(EnImortPresenter_Import_Test1)
 	noteListView.SignalImport();
 
 	BOOST_REQUIRE_EQUAL(userModel.addedNotes.size(), 0);
+}
+#include <stdarg.h>
+
+BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
+{
+	MockEnImporter    enImporter;
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockUserModel     userModel;
+
+	EnImportPresenter enImportPresenter
+		( enImporter
+		, noteListModel
+		, noteListView
+		, userModel
+		);
+
+	Guid guid;
+	enImporter.notes.push_back(Note(guid, L"note-0", Timestamp(0)));
+	enImporter.bodies.push_back(L"");
+
+	IEnImporter::Image image;
+	BYTE data[] = { 2, 3, 5, 7 };
+	PushArray(image.blob, data);
+	image.noteGuid = guid;
+	enImporter.images.push_back(image);
+
+	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
+
+	noteListView.hasEnexPath = true;
+	noteListView.enexPath    = L"data\\Mixed.enex";
+
+	noteListView.SignalImport();
+
+	BOOST_REQUIRE_EQUAL(userModel.addedImages.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.addedImages.at(0).data.size(), 4);
+	BOOST_CHECK_EQUAL(userModel.addedImages.at(0).note, guid);
+	BOOST_CHECK_EQUAL
+		( userModel.addedImages.at(0).hash
+		, "6d480b125139b3506fbaba5e84f9fece"
+		);
 }

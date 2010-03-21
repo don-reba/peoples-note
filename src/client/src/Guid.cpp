@@ -29,7 +29,12 @@ Guid::Guid(wstring data)
 {
 }
 
-Guid::operator const string & ()
+Guid::operator const string & () const
 {
 	return data;
+}
+
+bool Guid::operator ==(const Guid & guid) const
+{
+	return data == guid.data;
 }

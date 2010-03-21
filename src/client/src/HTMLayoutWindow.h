@@ -8,8 +8,11 @@
 
 struct htmlayout_dom_element;
 typedef htmlayout_dom_element* HELEMENT;
+
 struct BEHAVIOR_EVENT_PARAMS;
-struct NMHL_LOAD_DATA;
+
+struct tagNMHL_LOAD_DATA;
+typedef tagNMHL_LOAD_DATA NMHL_LOAD_DATA;
 
 class HTMLayoutWindow : public Window, public ISignalProvider
 {

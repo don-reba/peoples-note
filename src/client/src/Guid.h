@@ -12,5 +12,7 @@ public:
 	Guid(std::string  data);
 	Guid(std::wstring data);
 
-	operator const std::string & ();
+	operator const std::string & () const;
+
+	bool operator == (const Guid & guid) const;
 };

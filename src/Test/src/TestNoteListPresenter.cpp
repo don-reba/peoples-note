@@ -54,6 +54,9 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 		( noteListView.notes[2].html
 		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"bmp:2\"/></div></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;, &lt;strong&gt;not bold&lt;/strong</td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
 		);
+
+	BOOST_CHECK_EQUAL(noteView.renderSize.cx, 164);
+	BOOST_CHECK_EQUAL(noteView.renderSize.cy, 100);
 }
 
 BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)

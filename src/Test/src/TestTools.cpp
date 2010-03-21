@@ -85,6 +85,21 @@ BOOST_AUTO_TEST_CASE(ToolsDecodeBase64)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(ToolsStartsWith)
+{
+	BOOST_CHECK(!Tools::StartsWith(NULL, L""));
+	BOOST_CHECK(!Tools::StartsWith(NULL, NULL));
+	BOOST_CHECK(!Tools::StartsWith(L"",  NULL));
+
+	BOOST_CHECK(Tools::StartsWith(L"",    L""));
+	BOOST_CHECK(Tools::StartsWith(L"a",   L""));
+	BOOST_CHECK(Tools::StartsWith(L"abc", L"ab"));
+
+	BOOST_CHECK(!Tools::StartsWith(L"",    L"a"));
+	BOOST_CHECK(!Tools::StartsWith(L"a",   L"b"));
+	BOOST_CHECK(!Tools::StartsWith(L"abc", L"bc"));
+}
+
 BOOST_AUTO_TEST_CASE(ToolsUnixTimeToFileTime_Test1)
 {
 	time_t unixTime = 0;

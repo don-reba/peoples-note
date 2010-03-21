@@ -23,10 +23,13 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 
+class Guid;
+
 namespace std
 {
 	ostream & operator << (ostream & stream, const wchar_t * str);
 	ostream & operator << (ostream & stream, const wstring & str);
+	ostream & operator << (ostream & stream, const Guid    & guid);
 }
 
 #include <windows.h>
