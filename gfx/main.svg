@@ -19,6 +19,17 @@
   <defs
      id="defs4">
     <linearGradient
+       id="linearGradient3892">
+      <stop
+         id="stop3944"
+         offset="0"
+         style="stop-color:#535211;stop-opacity:1;" />
+      <stop
+         style="stop-color:#f0ec40;stop-opacity:1;"
+         offset="1"
+         id="stop3896" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient3725">
       <stop
          style="stop-color:#ffef00;stop-opacity:1;"
@@ -53,10 +64,10 @@
     </linearGradient>
     <inkscape:perspective
        sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 526.18109 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="744.09448 : 526.18109 : 1"
-       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_x="NaN : NaN : 1"
+       inkscape:vp_y="NaN : NaN : 0"
+       inkscape:vp_z="NaN : NaN : 1"
+       inkscape:persp3d-origin="NaN : NaN : 1"
        id="perspective10" />
     <inkscape:perspective
        id="perspective3614"
@@ -95,46 +106,6 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3725"
-       id="linearGradient3731"
-       x1="453.66989"
-       y1="579.0722"
-       x2="465.9129"
-       y2="566.47363"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.22519,0,0,1.1906086,-105.83182,-107.08617)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3725"
-       id="linearGradient3857"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.22519,0,0,1.1906086,-105.83182,-107.08617)"
-       x1="453.66989"
-       y1="579.0722"
-       x2="465.9129"
-       y2="566.47363" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3725"
-       id="linearGradient3954"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.22519,0,0,1.1906086,-105.83182,-107.08617)"
-       x1="453.66989"
-       y1="579.0722"
-       x2="465.9129"
-       y2="566.47363" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3725"
-       id="linearGradient3956"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.22519,0,0,1.1906086,-105.83182,-107.08617)"
-       x1="453.66989"
-       y1="579.0722"
-       x2="465.9129"
-       y2="566.47363" />
     <inkscape:perspective
        id="perspective3966"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
@@ -142,16 +113,6 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3725-5"
-       id="linearGradient3956-4"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.22519,0,0,1.1906086,-105.83182,-107.08617)"
-       x1="453.66989"
-       y1="579.0722"
-       x2="465.9129"
-       y2="566.47363" />
     <linearGradient
        id="linearGradient3725-5">
       <stop
@@ -163,6 +124,56 @@
          offset="1"
          id="stop3729-8" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3892"
+       id="linearGradient3986"
+       gradientUnits="userSpaceOnUse"
+       x1="464"
+       y1="156"
+       x2="449"
+       y2="171"
+       gradientTransform="translate(0,413.32897)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3892"
+       id="linearGradient4049"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,413.32897)"
+       x1="464"
+       y1="156"
+       x2="449"
+       y2="171" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3892"
+       id="linearGradient4132"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,413.32897)"
+       x1="464"
+       y1="156"
+       x2="449"
+       y2="171" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3892"
+       id="linearGradient4215"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,413.32897)"
+       x1="464"
+       y1="156"
+       x2="449"
+       y2="171" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3892"
+       id="linearGradient4237"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,413.32897)"
+       x1="464"
+       y1="156"
+       x2="449"
+       y2="171" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -171,9 +182,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="191.57072"
-     inkscape:cy="268.05861"
+     inkscape:zoom="1"
+     inkscape:cx="-103.91864"
+     inkscape:cy="318.81183"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -191,7 +202,7 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:snap-global="false">
+     inkscape:snap-global="true">
     <inkscape:grid
        type="xygrid"
        id="grid2820"
@@ -238,304 +249,273 @@
      id="layer1"
      transform="translate(0,-412.36218)">
     <g
-       id="g3753">
-      <rect
-         y="562.35669"
-         x="-0.0054662018"
-         height="100.01093"
-         width="469.51093"
-         id="rect3646"
-         style="fill:#ffef00;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       id="g3990">
+      <path
+         sodipodi:nodetypes="ccccccc"
+         id="path3881"
+         d="m 164,563.32897 0,100 306,0 0,-60 c 0,-22.21668 -6,-34 -6,-34 0,0 -10.84896,-6 -34.03125,-6 l -265.96875,0 z"
+         style="fill:url(#linearGradient3986);fill-opacity:1;stroke:none" />
       <text
          id="text3629"
-         y="589.39539"
+         y="590.36218"
          x="167.86182"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="589.39539"
+           y="590.36218"
            x="167.86182"
            id="tspan3631"
            sodipodi:role="line">Note title</tspan></text>
       <text
          id="text3633"
-         y="656.92322"
+         y="657.89001"
          x="169.16455"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="656.92322"
+           y="657.89001"
            x="169.16455"
            id="tspan3635"
            sodipodi:role="line">created on 2010-03-21</tspan></text>
       <text
          id="text3637"
-         y="622.64954"
+         y="623.61633"
          x="169.70264"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="622.64954"
+           y="623.61633"
            x="169.70264"
            id="tspan3639"
            sodipodi:role="line">tag1, tag2</tspan></text>
       <rect
-         y="562.36218"
+         y="563.32898"
          x="0"
          height="100"
          width="164"
          id="rect3641"
-         style="fill:#666666;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <g
-         id="g3749">
-        <path
-           id="path3652"
-           style="fill:url(#linearGradient3731);fill-opacity:1;stroke:none"
-           d="m 469.40157,601.75829 c -38.79768,-39.29771 0,-0.007 -38.79768,-39.29771 22.46182,0 32.67173,5.95304 32.67173,5.95304 0,0 6.12595,11.51685 6.12595,33.34467 z"
-           sodipodi:nodetypes="cccc" />
-        <path
-           style="fill:#ffffff;stroke:#000000;stroke-width:1.20777547;stroke-opacity:1"
-           d="m 430.61665,562.46058 c 22.46183,0 32.65897,5.95304 32.65897,5.95304 0,0 6.12595,11.50922 6.12595,33.33704 l 0,-39.29008 -38.78492,0 z"
-           id="path3678" />
-      </g>
+         style="fill:#666666;fill-opacity:1;stroke:none" />
+      <rect
+         ry="0"
+         y="663.32898"
+         x="0"
+         height="1"
+         width="470"
+         id="rect3947"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
     </g>
     <g
-       id="g3833"
-       transform="translate(0,99.999997)">
-      <rect
-         style="fill:#ffef00;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3835"
-         width="469.51093"
-         height="100.01093"
-         x="-0.0054662018"
-         y="562.35669" />
+       id="g4029"
+       transform="translate(0,101.03321)">
+      <path
+         style="fill:url(#linearGradient4049);fill-opacity:1;stroke:none"
+         d="m 164,563.32897 0,100 306,0 0,-60 c 0,-22.21668 -6,-34 -6,-34 0,0 -10.84896,-6 -34.03125,-6 l -265.96875,0 z"
+         id="path4031"
+         sodipodi:nodetypes="ccccccc" />
       <text
          xml:space="preserve"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          x="167.86182"
-         y="589.39539"
-         id="text3837"><tspan
+         y="590.36218"
+         id="text4033"><tspan
            sodipodi:role="line"
-           id="tspan3839"
+           id="tspan4035"
            x="167.86182"
-           y="589.39539">Note title</tspan></text>
+           y="590.36218">Note title</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          x="169.16455"
-         y="656.92322"
-         id="text3841"><tspan
+         y="657.89001"
+         id="text4037"><tspan
            sodipodi:role="line"
-           id="tspan3843"
+           id="tspan4039"
            x="169.16455"
-           y="656.92322">created on 2010-03-21</tspan></text>
+           y="657.89001">created on 2010-03-21</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          x="169.70264"
-         y="622.64954"
-         id="text3845"><tspan
+         y="623.61633"
+         id="text4041"><tspan
            sodipodi:role="line"
-           id="tspan3847"
+           id="tspan4043"
            x="169.70264"
-           y="622.64954">tag1, tag2</tspan></text>
+           y="623.61633">tag1, tag2</tspan></text>
       <rect
-         style="fill:#666666;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3849"
+         style="fill:#666666;fill-opacity:1;stroke:none"
+         id="rect4045"
          width="164"
          height="100"
          x="0"
-         y="562.36218" />
-      <g
-         id="g3851">
-        <path
-           sodipodi:nodetypes="cccc"
-           d="m 469.40157,601.75829 c -38.79768,-39.29771 0,-0.007 -38.79768,-39.29771 22.46182,0 32.67173,5.95304 32.67173,5.95304 0,0 6.12595,11.51685 6.12595,33.34467 z"
-           style="fill:url(#linearGradient3857);fill-opacity:1;stroke:none"
-           id="path3853" />
-        <path
-           id="path3855"
-           d="m 430.61665,562.46058 c 22.46183,0 32.65897,5.95304 32.65897,5.95304 0,0 6.12595,11.50922 6.12595,33.33704 l 0,-39.29008 -38.78492,0 z"
-           style="fill:#ffffff;stroke:#000000;stroke-width:1.20777547;stroke-opacity:1" />
-      </g>
-    </g>
-    <g
-       id="g3906"
-       transform="translate(0,200)">
+         y="563.32898" />
       <rect
-         style="fill:#ffef00;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3908"
-         width="469.51093"
-         height="100.01093"
-         x="-0.0054662018"
-         y="562.35669" />
-      <text
-         xml:space="preserve"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         x="167.86182"
-         y="589.39539"
-         id="text3910"><tspan
-           sodipodi:role="line"
-           id="tspan3912"
-           x="167.86182"
-           y="589.39539">Note title</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         x="169.16455"
-         y="656.92322"
-         id="text3914"><tspan
-           sodipodi:role="line"
-           id="tspan3916"
-           x="169.16455"
-           y="656.92322">created on 2010-03-21</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         x="169.70264"
-         y="622.64954"
-         id="text3918"><tspan
-           sodipodi:role="line"
-           id="tspan3920"
-           x="169.70264"
-           y="622.64954">tag1, tag2</tspan></text>
-      <rect
-         style="fill:#666666;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3922"
-         width="164"
-         height="100"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect4047"
+         width="470"
+         height="1"
          x="0"
-         y="562.36218" />
-      <g
-         id="g3924">
-        <path
-           sodipodi:nodetypes="cccc"
-           d="m 469.40157,601.75829 c -38.79768,-39.29771 0,-0.007 -38.79768,-39.29771 22.46182,0 32.67173,5.95304 32.67173,5.95304 0,0 6.12595,11.51685 6.12595,33.34467 z"
-           style="fill:url(#linearGradient3954);fill-opacity:1;stroke:none"
-           id="path3926" />
-        <path
-           id="path3928"
-           d="m 430.61665,562.46058 c 22.46183,0 32.65897,5.95304 32.65897,5.95304 0,0 6.12595,11.50922 6.12595,33.33704 l 0,-39.29008 -38.78492,0 z"
-           style="fill:#ffffff;stroke:#000000;stroke-width:1.20777547;stroke-opacity:1" />
-      </g>
+         y="663.32898"
+         ry="0" />
     </g>
     <g
-       transform="translate(0,300)"
-       id="g3930">
-      <rect
-         y="562.35669"
-         x="-0.0054662018"
-         height="100.01093"
-         width="469.51093"
-         id="rect3932"
-         style="fill:#ffef00;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       transform="translate(0,202)"
+       id="g4112">
+      <path
+         sodipodi:nodetypes="ccccccc"
+         id="path4114"
+         d="m 164,563.32897 0,100 306,0 0,-60 c 0,-22.21668 -6,-34 -6,-34 0,0 -10.84896,-6 -34.03125,-6 l -265.96875,0 z"
+         style="fill:url(#linearGradient4132);fill-opacity:1;stroke:none" />
       <text
-         id="text3934"
-         y="589.39539"
+         id="text4116"
+         y="590.36218"
          x="167.86182"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="589.39539"
+           y="590.36218"
            x="167.86182"
-           id="tspan3936"
+           id="tspan4118"
            sodipodi:role="line">Note title</tspan></text>
       <text
-         id="text3938"
-         y="656.92322"
+         id="text4120"
+         y="657.89001"
          x="169.16455"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="656.92322"
+           y="657.89001"
            x="169.16455"
-           id="tspan3940"
+           id="tspan4122"
            sodipodi:role="line">created on 2010-03-21</tspan></text>
       <text
-         id="text3942"
-         y="622.64954"
+         id="text4124"
+         y="623.61633"
          x="169.70264"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="622.64954"
+           y="623.61633"
            x="169.70264"
-           id="tspan3944"
+           id="tspan4126"
            sodipodi:role="line">tag1, tag2</tspan></text>
       <rect
-         y="562.36218"
+         y="563.32898"
          x="0"
          height="100"
          width="164"
-         id="rect3946"
-         style="fill:#666666;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <g
-         id="g3948">
-        <path
-           id="path3950"
-           style="fill:url(#linearGradient3956);fill-opacity:1;stroke:none"
-           d="m 469.40157,601.75829 c -38.79768,-39.29771 0,-0.007 -38.79768,-39.29771 22.46182,0 32.67173,5.95304 32.67173,5.95304 0,0 6.12595,11.51685 6.12595,33.34467 z"
-           sodipodi:nodetypes="cccc" />
-        <path
-           style="fill:#ffffff;stroke:#000000;stroke-width:1.20777547;stroke-opacity:1"
-           d="m 430.61665,562.46058 c 22.46183,0 32.65897,5.95304 32.65897,5.95304 0,0 6.12595,11.50922 6.12595,33.33704 l 0,-39.29008 -38.78492,0 z"
-           id="path3952" />
-      </g>
+         id="rect4128"
+         style="fill:#666666;fill-opacity:1;stroke:none" />
+      <rect
+         ry="0"
+         y="663.32898"
+         x="0"
+         height="1"
+         width="470"
+         id="rect4130"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
     </g>
     <g
-       transform="translate(0,400)"
-       id="g3930-1"
-       clip-path="none">
-      <rect
-         y="562.35669"
-         x="-0.0054662018"
-         height="100.01093"
-         width="469.51093"
-         id="rect3932-2"
-         style="fill:#ffef00;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       id="g4195"
+       transform="translate(0,303.03321)">
+      <path
+         style="fill:url(#linearGradient4215);fill-opacity:1;stroke:none"
+         d="m 164,563.32897 0,100 306,0 0,-60 c 0,-22.21668 -6,-34 -6,-34 0,0 -10.84896,-6 -34.03125,-6 l -265.96875,0 z"
+         id="path4197"
+         sodipodi:nodetypes="ccccccc" />
       <text
-         id="text3934-1"
-         y="589.39539"
+         xml:space="preserve"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         x="167.86182"
+         y="590.36218"
+         id="text4199"><tspan
+           sodipodi:role="line"
+           id="tspan4201"
+           x="167.86182"
+           y="590.36218">Note title</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         x="169.16455"
+         y="657.89001"
+         id="text4203"><tspan
+           sodipodi:role="line"
+           id="tspan4205"
+           x="169.16455"
+           y="657.89001">created on 2010-03-21</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         x="169.70264"
+         y="623.61633"
+         id="text4207"><tspan
+           sodipodi:role="line"
+           id="tspan4209"
+           x="169.70264"
+           y="623.61633">tag1, tag2</tspan></text>
+      <rect
+         style="fill:#666666;fill-opacity:1;stroke:none"
+         id="rect4211"
+         width="164"
+         height="100"
+         x="0"
+         y="563.32898" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect4213"
+         width="470"
+         height="1"
+         x="0"
+         y="663.32898"
+         ry="0" />
+    </g>
+    <g
+       transform="translate(0,404)"
+       id="g4217">
+      <path
+         sodipodi:nodetypes="ccccccc"
+         id="path4219"
+         d="m 164,563.32897 0,100 306,0 0,-60 c 0,-22.21668 -6,-34 -6,-34 0,0 -10.84896,-6 -34.03125,-6 l -265.96875,0 z"
+         style="fill:url(#linearGradient4237);fill-opacity:1;stroke:none" />
+      <text
+         id="text4221"
+         y="590.36218"
          x="167.86182"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="589.39539"
+           y="590.36218"
            x="167.86182"
-           id="tspan3936-4"
+           id="tspan4223"
            sodipodi:role="line">Note title</tspan></text>
       <text
-         id="text3938-9"
-         y="656.92322"
+         id="text4225"
+         y="657.89001"
          x="169.16455"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="656.92322"
+           y="657.89001"
            x="169.16455"
-           id="tspan3940-8"
+           id="tspan4227"
            sodipodi:role="line">created on 2010-03-21</tspan></text>
       <text
-         id="text3942-2"
-         y="622.64954"
+         id="text4229"
+         y="623.61633"
          x="169.70264"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="622.64954"
+           y="623.61633"
            x="169.70264"
-           id="tspan3944-4"
+           id="tspan4231"
            sodipodi:role="line">tag1, tag2</tspan></text>
       <rect
-         y="562.36218"
+         y="563.32898"
          x="0"
          height="100"
          width="164"
-         id="rect3946-5"
-         style="fill:#666666;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <g
-         id="g3948-2">
-        <path
-           id="path3950-9"
-           style="fill:url(#linearGradient3956-4);fill-opacity:1;stroke:none"
-           d="m 469.40157,601.75829 c -38.79768,-39.29771 0,-0.007 -38.79768,-39.29771 22.46182,0 32.67173,5.95304 32.67173,5.95304 0,0 6.12595,11.51685 6.12595,33.34467 z"
-           sodipodi:nodetypes="cccc" />
-        <path
-           style="fill:#ffffff;stroke:#000000;stroke-width:1.20777547;stroke-opacity:1"
-           d="m 430.61665,562.46058 c 22.46183,0 32.65897,5.95304 32.65897,5.95304 0,0 6.12595,11.50922 6.12595,33.33704 l 0,-39.29008 -38.78492,0 z"
-           id="path3952-9" />
-      </g>
+         id="rect4233"
+         style="fill:#666666;fill-opacity:1;stroke:none" />
+      <rect
+         ry="0"
+         y="663.32898"
+         x="0"
+         height="1"
+         width="470"
+         id="rect4235"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
     </g>
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -546,9 +526,9 @@
        y="1012.3622"
        ry="12.5" />
     <rect
-       style="fill:#ffef00;fill-opacity:1;stroke:#000000;stroke-width:1.01027584;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#f0ec40;fill-opacity:1;stroke:none"
        id="rect3660"
-       width="469.50018"
+       width="470.00531"
        height="90.000427"
        x="-0.00531821"
        y="472.35687" />
@@ -574,29 +554,29 @@
        id="rect2832"
        width="64"
        height="64"
-       x="387"
-       y="483.35706" />
+       x="401"
+       y="483.36218" />
     <rect
        style="fill:#999999;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2832-1"
        width="64"
        height="64"
-       x="313.33331"
-       y="483.35706" />
+       x="327.33331"
+       y="483.36218" />
     <rect
        style="fill:#999999;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2832-4"
        width="64"
        height="64"
-       x="239.66663"
-       y="483.35706" />
+       x="253.66663"
+       y="483.36218" />
     <rect
        style="fill:#999999;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect2832-9"
        width="64"
        height="64"
-       x="166"
-       y="483.35706" />
+       x="180"
+       y="483.36218" />
     <rect
        style="fill:url(#linearGradient3625);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3654"
@@ -622,6 +602,14 @@
        x="470"
        y="472.36218"
        ry="5" />
+    <rect
+       ry="0"
+       y="562.36218"
+       x="0"
+       height="1"
+       width="470"
+       id="rect3988"
+       style="fill:#000000;fill-opacity:1;stroke:none" />
   </g>
   <g
      inkscape:groupmode="layer"
