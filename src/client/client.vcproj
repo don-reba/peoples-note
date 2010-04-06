@@ -131,7 +131,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\HTMLayout\include;&quot;$(ProjectDir)&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0;&quot;C:\Users\Alexey\Files\Programming\thrift-0.2.0\lib\cpp\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;..\HTMLayout\include;&quot;..\Evernote API\include&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_OMIT_UTF16;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -155,7 +155,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot;"
+				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot;"
 				OutputFile="$(OutDir)/client.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
@@ -189,7 +189,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\pocket pc 2003 (armv4)|%CSIDL_PROGRAM_FILES%\$(TargetName)|0"
+				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\$(TargetName)|0"
 			/>
 			<DebuggerTool
 			/>
@@ -310,7 +310,7 @@
 				ExecutionBucket="7"
 				Optimization="2"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="..\HTMLayout\include;&quot;$(ProjectDir)&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0;&quot;C:\Users\Alexey\Files\Programming\thrift-0.2.0\lib\cpp\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;..\HTMLayout\include;&quot;..\Evernote API\include&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0"
 				PreprocessorDefinitions="SQLITE_OMIT_UTF16;NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"

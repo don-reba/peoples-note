@@ -286,8 +286,9 @@ EXTERN_C UINT VALAPI ValueInvoke( VALUE* pval, VALUE* pthis, UINT argc, const VA
   #include <string>
   #include "aux-slice.h"
   #include "aux-cvt.h"
-  
-  #pragma warning(disable:4786) //identifier was truncated...
+
+  #pragma warning( push )
+    #pragma warning(disable:4786) //identifier was truncated...
 
   namespace json
   {
@@ -465,20 +466,25 @@ EXTERN_C UINT VALAPI ValueInvoke( VALUE* pval, VALUE* pthis, UINT argc, const VA
         return defv;
       }
 
-      static value from_string(const wchar_t* s, unsigned int len = 0)
+      static value from_string(const wchar_t* s, unsigned int len = 0, VALUE_STRING_CVT_TYPE ct = CVT_SIMPLE)
       {
         value t;
         if( s ) 
         {
           if(len == 0) len = (unsigned int)wcslen(s);
-          ValueFromString( &t, s, len, CVT_SIMPLE );
+          ValueFromString( &t, s, len, ct );
         }
         return t;
       }
-      static value from_string(const std::wstring& s)
+      static value from_string(const std::wstring& s, VALUE_STRING_CVT_TYPE ct = CVT_SIMPLE)
       {
-        return from_string(s.c_str(), (unsigned int)s.length());
+        return from_string(s.c_str(), (unsigned int)s.length(),ct);
       }
+      static value from_string(aux::wchars s, VALUE_STRING_CVT_TYPE ct = CVT_SIMPLE)
+      {
+        return from_string(s.start, s.length,ct);
+      }
+
 
       string to_string(int how = CVT_SIMPLE) const
       {
@@ -661,12 +667,13 @@ EXTERN_C UINT VALAPI ValueInvoke( VALUE* pval, VALUE* pthis, UINT argc, const VA
       friend class value;
       value& col;
       value  key;
+      value_key_a& operator=(const value_key_a& val) { val; return *this; } // no such thing
     protected:
       value_key_a( value& c, const value& k ): col(c),key(k) {}
     public:
       ~value_key_a() {}
-      value_key_a& operator= (const value& val) { col.set_item(key,val); return *this; }
-      operator const value() const              { return col.get_item(key); }
+      value_key_a& operator=(const value& val) { col.set_item(key,val); return *this; }
+      operator const value() const  { return col.get_item(key); }
     };
 
     inline value_key_a 
@@ -678,6 +685,7 @@ EXTERN_C UINT VALAPI ValueInvoke( VALUE* pval, VALUE* pthis, UINT argc, const VA
       friend class value;
       value& col;
       int    idx;
+      value_idx_a& operator= (const value_idx_a& val) { val; return *this; } // no such thing
     protected:
       value_idx_a( value& c, int i ): col(c), idx(i) {}
     public:
@@ -690,6 +698,9 @@ EXTERN_C UINT VALAPI ValueInvoke( VALUE* pval, VALUE* pthis, UINT argc, const VA
         value::operator[](int idx) { return value_idx_a(*this, idx); }
 
   }
+
+  #pragma warning( pop )
+
 #endif //defined(__cplusplus)
 
 #endif

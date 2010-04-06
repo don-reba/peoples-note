@@ -121,6 +121,7 @@
       DROP        = 9,   // item dropped, target is that dropped item 
       DRAG_ENTER  = 0xA, // drag arrived to the target element that is one of current drop targets.  
       DRAG_LEAVE  = 0xB, // drag left one of current drop targets. target is the drop target element.  
+      DRAG_REQUEST = 0xC,  // drag src notification before drag start. To cancel - return true from handler.
 
       DRAGGING = 0x100, // This flag is 'ORed' with MOUSE_ENTER..MOUSE_DOWN codes if dragging operation is in effect.
                         // E.g. event DRAGGING | MOUSE_MOVE is sent to underlying DOM elements while dragging.

@@ -1,10 +1,13 @@
 #ifndef __HTMENGINE_AUX_H__
 #define __HTMENGINE_AUX_H__
 
+
+#pragma warning( push )
+
 // disable that warnings in VC 2005
-#pragma warning(disable:4786) //identifier was truncated...
-#pragma warning(disable:4996) //'strcpy' was declared deprecated
-#pragma warning(disable:4100) //unreferenced formal parameter 
+  #pragma warning(disable:4786) //identifier was truncated...
+  #pragma warning(disable:4996) //'strcpy' was declared deprecated
+  #pragma warning(disable:4100) //unreferenced formal parameter 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,13 +57,13 @@ namespace htmlayout
       : r(0),g(0),b(0),t(0xff) {}
 
     color(unsigned int rgbt )
-      : r(rgbt & 0xff),g( (rgbt & 0xff00) >> 8 ),b( (rgbt & 0xff0000) >> 16 ),t((rgbt & 0xff000000) >> 24) {}
+      : r(unsigned char(rgbt & 0xff)),g(unsigned char((rgbt & 0xff00) >> 8)),b(unsigned char((rgbt & 0xff0000) >> 16)),t(unsigned char((rgbt & 0xff000000) >> 24)) {}
 
     color(unsigned red, unsigned green, unsigned blue )
-      : r(red),g(green),b(blue),t(0) {}
+      : r(unsigned char(red)),g(unsigned char(green)),b(unsigned char(blue)),t(0) {}
 
     color(unsigned red, unsigned green, unsigned blue, unsigned transparency )
-      : r(red),g(green),b(blue),t(transparency) {}
+      : r(unsigned char(red)),g(unsigned char(green)),b(unsigned char(blue)),t(unsigned char(transparency)) {}
     color(const color& c): r(c.r),g(c.g),b(c.b),t(c.t) {}
     color& operator=(const color& c) { r = c.r; g = c.g; b = c.b; t = c.t; return *this; }
     
@@ -102,5 +105,7 @@ namespace htmlayout
 }
 
 /* other stuff moved to json-aux.h */
+
+#pragma warning( pop )
 
 #endif

@@ -37,10 +37,11 @@ namespace htmlayout
   };
   
   class critical_section { 
-    mutex& m;
+    mutex* m;
+    critical_section():m(0) {} // no such thing
   public:
-    critical_section(mutex& guard) : m(guard) { m.lock(); }
-    ~critical_section() { m.unlock(); }
+    critical_section(mutex& guard) : m(&guard) { m->lock(); }
+    ~critical_section() { m->unlock(); }
   };
 
   // derive your own tasks from this and implement your own exec()
@@ -103,8 +104,7 @@ namespace htmlayout
     // Place this call after GetMessage()/PeekMessage() in main loop
     void _execute()
     {
-      gui_task* next;
-      while(next = pop())
+      for(gui_task* next = pop(); next; next = pop())
       {
         next->exec(); // do it
         delete next;

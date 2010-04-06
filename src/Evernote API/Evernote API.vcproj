@@ -164,6 +164,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="assemble &gt;nul"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -321,6 +322,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="assemble &gt;nul"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"

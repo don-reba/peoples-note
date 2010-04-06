@@ -143,6 +143,7 @@ struct graphin_clock: public canvas
     void draw_caption( HELEMENT he, graphics& gx, UINT width, UINT height, aux::wchars text )
     {
         gx.state_save();
+          //gx.rotate(3.1415926 / 2, width / 2, height / 3); // for text rotation testing.
           gx.text_alignment(TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER);
           gx.font("Times New Roman", 18);
           gx.no_line();

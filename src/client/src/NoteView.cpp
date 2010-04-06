@@ -112,8 +112,8 @@ HBITMAP NoteView::Render(SIZE size)
 			throw std::exception("Note rendering failed.");
 	}
 
-	vector<WORD> bits(info.bmiHeader.biSizeImage / 2);
-	::GetDIBits(dc, bmp, 0, size.cy, &bits[0], &info, DIB_RGB_COLORS);
+	//vector<WORD> bits(info.bmiHeader.biSizeImage / 2);
+	//::GetDIBits(dc, bmp, 0, size.cy, &bits[0], &info, DIB_RGB_COLORS);
 
 	::DeleteDC(dc);
 	return bmp;

@@ -17,6 +17,8 @@
 #ifndef __htmlayout_dom_hpp__
 #define __htmlayout_dom_hpp__
 
+#pragma once
+
 #include "value.h"
 
 #include "htmlayout_dom.h"
@@ -28,11 +30,11 @@
 #include <stdio.h> // for vsnprintf
 #include <vector> // for dom_iterator
 
-#pragma warning(disable:4786) //identifier was truncated...
-#pragma warning(disable:4996) //'strcpy' was declared deprecated
-#pragma warning(disable:4100) //unreferenced formal parameter 
+#pragma warning( push )
 
-#pragma once
+  #pragma warning(disable:4786) //identifier was truncated...
+  #pragma warning(disable:4996) //'strcpy' was declared deprecated
+  #pragma warning(disable:4100) //unreferenced formal parameter 
 
 /**htmlayout namespace.*/
 namespace htmlayout
@@ -72,20 +74,20 @@ namespace htmlayout
         ~attribute_accessor()
         {
            HLDOM_RESULT r = HTMLayout_UnuseElement(el_);
-           assert(r == HLDOM_OK);
+           assert(r == HLDOM_OK);r;
         }
   
         attribute_accessor &operator= (const wchar_t* value)
         {
             HLDOM_RESULT r = HTMLayoutSetAttributeByName(el_, key_, value);
-            assert(r == HLDOM_OK);
+            assert(r == HLDOM_OK);r;
             return *this;
         }
 
         attribute_accessor &operator= (int value)
         {
             HLDOM_RESULT r = HTMLayoutSetAttributeByName(el_, key_, i2w(value));
-            assert(r == HLDOM_OK);
+            assert(r == HLDOM_OK);r;
             return *this;
         }
 
@@ -515,8 +517,8 @@ namespace htmlayout
                         ) const
       {
         HELEMENT heFound = 0;
-        HLDOM_RESULT ret = HTMLayoutSelectParent( he, selectors, depth, &heFound );
-        assert(ret == HLDOM_OK);
+        HLDOM_RESULT r = HTMLayoutSelectParent( he, selectors, depth, &heFound );
+        assert(r == HLDOM_OK);r;
         return heFound;
       }
 
@@ -525,8 +527,8 @@ namespace htmlayout
                         ) const
       {
         HELEMENT heFound = 0;
-        HLDOM_RESULT ret = HTMLayoutSelectParentW( he, selectors, depth, &heFound );
-        assert(ret == HLDOM_OK);
+        HLDOM_RESULT r = HTMLayoutSelectParentW( he, selectors, depth, &heFound );
+        assert(r == HLDOM_OK);r;
         return heFound;
       }
 
@@ -904,12 +906,14 @@ namespace htmlayout
           //assert(find_first.hfound);
         }
 
-      struct find_all_callback: callback 
+      class find_all_callback: public callback 
       {
-        std::vector<dom::element>& all;
-        find_all_callback(std::vector<dom::element>& _all):all(_all) {}
+        std::vector<dom::element>* all;
+        find_all_callback():all(0) {}
+      public:
+        find_all_callback(std::vector<dom::element>& _all):all(&_all) {}
         ~find_all_callback() {}
-        bool on_element(HELEMENT he) { all.push_back(dom::element(he)); return false; /*continue enumeration*/ }
+        bool on_element(HELEMENT he) { all->push_back(dom::element(he)); return false; /*continue enumeration*/ }
       };
 
       template<class char_t>
@@ -1184,6 +1188,7 @@ namespace htmlayout
           if( p5.is_undefined()) break; argv[prm.argc++] = p5; 
           if( p6.is_undefined()) break; argv[prm.argc++] = p6; 
           if( p7.is_undefined()) break; argv[prm.argc++] = p7; 
+//#pragma warning( suppress:4127 ) //  warning C4127: conditional expression is constant
         } while(false);
         bool r = call_behavior_method(&prm);
         assert(r); r;
@@ -1305,17 +1310,21 @@ namespace htmlayout
       T& operator = (const element& e) { set(e); return *this; }
 
 
-    struct text_selection_params: public TEXT_SELECTION_PARAMS
+    class text_selection_params: public TEXT_SELECTION_PARAMS
     {
-        pod::buffer<wchar_t>& _wos;
-        static BOOL CALLBACK ctl(text_selection_params* prms, UINT data ) { prms->_wos.push(data);  return 1; }
-        text_selection_params(pod::buffer<wchar_t>& wos): TEXT_SELECTION_PARAMS(false), _wos(wos)  { outs = (OutputStreamProc*)ctl; }
+        pod::buffer<wchar_t>* _wos;
+        text_selection_params():TEXT_SELECTION_PARAMS(false),_wos(0){}
+    public:
+        static BOOL CALLBACK ctl(text_selection_params* prms, UINT data ) { prms->_wos->push(wchar_t(data));  return 1; }
+        text_selection_params(pod::buffer<wchar_t>& wos): TEXT_SELECTION_PARAMS(false), _wos(&wos)  { outs = (OutputStreamProc*)ctl; }
     };
-    struct html_selection_params: public TEXT_SELECTION_PARAMS
+    class html_selection_params: public TEXT_SELECTION_PARAMS
     {
-        pod::buffer<byte>& _bos;
-        static BOOL CALLBACK ctl(html_selection_params* prms, UINT data ) { prms->_bos.push(data);  return 1; }
-        html_selection_params(pod::buffer<byte>& bos): TEXT_SELECTION_PARAMS(true), _bos(bos)  { outs = (OutputStreamProc*)ctl; }
+        pod::buffer<byte>* _bos;
+        html_selection_params():TEXT_SELECTION_PARAMS(true),_bos(0){}
+    public:
+        static BOOL CALLBACK ctl(html_selection_params* prms, UINT data ) { prms->_bos->push(byte(data));  return 1; }
+        html_selection_params(pod::buffer<byte>& bos): TEXT_SELECTION_PARAMS(true), _bos(&bos)  { outs = (OutputStreamProc*)ctl; }
     };
 
 
@@ -1520,5 +1529,7 @@ namespace htmlayout
  } // dom namespace
 
 } // htmlayout namespace
+
+#pragma warning( pop )
 
 #endif

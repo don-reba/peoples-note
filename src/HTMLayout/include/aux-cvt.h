@@ -58,9 +58,12 @@
 #include <stdio.h>
 
 // disable that warnings in VC 2005
-#pragma warning(disable:4786) //identifier was truncated...
-#pragma warning(disable:4996) //'strcpy' was declared deprecated
-#pragma warning(disable:4100) //unreferenced formal parameter 
+
+#pragma warning( push )
+
+  #pragma warning(disable:4786) //identifier was truncated...
+  #pragma warning(disable:4996) //'strcpy' was declared deprecated
+  #pragma warning(disable:4100) //unreferenced formal parameter 
 
 #ifndef byte
   typedef unsigned char   byte;
@@ -277,11 +280,13 @@ namespace utf8
           ++num_errors;
           continue;
         }
+//#pragma warning( suppress:4127 ) //  warning C4127: conditional expression is constant
         if( sizeof(wchar_t) == 16 ) // Seems like Windows, wchar_t is utf16 code units sequence there.
         {
           outbuf.push( wchar_t(0xd7c0 + (b >> 10)) );
           outbuf.push( wchar_t(0xdc00 | (b & 0x3ff)) );
         }
+//#pragma warning( suppress:4127 ) //  warning C4127: conditional expression is constant
         else if( sizeof(wchar_t) >= 21 ) // wchar_t is full ucs-4 
         {
           outbuf.push( wchar_t(b) );
@@ -700,5 +705,6 @@ namespace aux
   typedef ostream_t<pod::wchar_buffer> wostream;
 }
 
+#pragma warning( pop )
 
 #endif

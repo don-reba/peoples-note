@@ -15,7 +15,7 @@ struct sample_data_source: public behavior
     // ctor
     sample_data_source(const char* name = "sample-data-source"): behavior( HANDLE_BEHAVIOR_EVENT, name) {}
 
-    virtual BOOL on_event (HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UINT_PTR reason )
+    virtual BOOL on_event (HELEMENT, HELEMENT target, BEHAVIOR_EVENTS type, UINT_PTR reason )
     { 
        if( type != ROWS_DATA_REQUEST ) return FALSE; 
        // this is data source - we handle here only ROWS_DATA_REQUESTs

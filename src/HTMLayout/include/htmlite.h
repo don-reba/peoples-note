@@ -530,6 +530,7 @@ public:
     kp.cmd = keyCmd;
     BOOL result = FALSE;
     HLDOM_RESULT hr = HTMLiteTraverseUIEvent(hLite, HANDLE_KEY, &kp, &result );
+    assert(hr == HLDOM_OK); hr;
     return result;
   }
 
@@ -538,6 +539,7 @@ public:
   {
     BOOL result = FALSE;
     HLDOM_RESULT hr = HTMLiteTraverseUIEvent(hLite, HANDLE_TIMER, &timerId, &result );
+    assert(hr == HLDOM_OK); hr;
     return result; // host must destroy timer event if result is FALSE.
   }
 

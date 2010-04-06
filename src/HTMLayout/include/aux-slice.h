@@ -17,6 +17,13 @@
  * \brief range of elements
  **/
 
+#pragma warning( push )
+
+// disable that warnings in VC 2005
+#pragma warning(disable:4786) //identifier was truncated...
+#pragma warning(disable:4996) //'strcpy' was declared deprecated
+#pragma warning(disable:4100) //unreferenced formal parameter 
+
 #include "aux-cvt.h"
 #include "limits.h"
 
@@ -309,7 +316,7 @@ template <typename T >
       {
         //assert( sizeof(codes) == sizeof(CT) * sizeof(bool));
         const CT *p = (const CT *) pp;
-        unsigned char inv = *p == '^'? 0xff:0;
+        unsigned char inv = *p == '^'? unsigned char(0xff):unsigned char(0);
         if ( inv ) { ++p; }
         init ( inv );
         if ( *p == sep ) set(sep,sep,inv == 0);
@@ -346,7 +353,7 @@ template <typename T >
 
       charset<CT> cset;
 
-      while ( true )
+      for (;;)
       {
         if ( *pattern == AnySubstring )
         {
@@ -450,5 +457,7 @@ template <typename T >
   }
 
 }
+
+#pragma warning( pop )
 
 #endif

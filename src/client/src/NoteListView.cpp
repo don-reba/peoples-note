@@ -111,15 +111,12 @@ void NoteListView::AddNotebook(wstring html)
 
 void NoteListView::ClearNotebooks()
 {
-	element root(element::root_element(hwnd_));
-	element notebookList(root.find_first("#notebook-list"));
-	if (!notebookList)
-		throw std::exception("#notebook-list not found.");
-
 	vector<element> notebooks;
 	notebookList.find_all(notebooks, "li");
 	foreach (element & notebook, notebooks)
+	{
 		notebook.destroy();
+	}
 }
 
 void NoteListView::ClearNotes()
@@ -193,12 +190,12 @@ wstring NoteListView::GetSearchString()
 
 void NoteListView::UpdateNotebooks()
 {
-	notebookList.update();
+	notebookList.update(true);
 }
 
 void NoteListView::UpdateNotes()
 {
-	noteList.update();
+	noteList.update(true);
 }
 
 //------------------
@@ -220,7 +217,6 @@ void NoteListView::AnimateScroll(DWORD time)
 	{
 		state = StateIdle;
 		animation.disconnect();
-		noteList.update();
 	}
 }
 
@@ -297,10 +293,7 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 		return;
 
 	if (state == StateAnimating)
-	{
 		animation.disconnect();
-		noteList.update();
-	}
 
 	state = StateDragging;
 	startTime = animator.GetMilliseconds();

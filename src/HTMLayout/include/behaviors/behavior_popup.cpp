@@ -101,8 +101,10 @@ struct popup: public behavior
       switch( type )
       {
       case BUTTON_CLICK: 
+#pragma warning( suppress:4063 ) // case 'XXX' is not a valid value for switch of enum 'BEHAVIOR_EVENTS'
       case BUTTON_CLICK | HANDLED:
       case HYPERLINK_CLICK: 
+#pragma warning( suppress:4063 ) // case 'XXX' is not a valid value for switch of enum 'BEHAVIOR_EVENTS'
       case HYPERLINK_CLICK | HANDLED:
          ::HTMLayoutHidePopup(he);
          break;
