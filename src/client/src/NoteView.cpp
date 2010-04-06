@@ -5,6 +5,8 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
+#include "imaging.h"
+
 using namespace htmlayout;
 using namespace std;
 using namespace Tools;
@@ -49,8 +51,6 @@ void NoteView::Create(HWND parent)
 	this->parent = parent;
 
 	CopyParentSize();
-
-//	Hide();
 }
 
 void NoteView::RegisterEventHandlers()
@@ -90,18 +90,18 @@ struct BITMAPINFO_BF
 HBITMAP NoteView::Render(SIZE size)
 {
  	BITMAPINFO_BF info = { 0 };
-	info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	info.bmiHeader.biWidth = size.cx;
-	info.bmiHeader.biHeight = size.cy;
-	info.bmiHeader.biPlanes = 1;
-	info.bmiHeader.biBitCount = 16;
-	info.bmiHeader.biCompression = BI_BITFIELDS;
-	info.bmiHeader.biSizeImage = 2 * size.cx * size.cy;
-	info.bmiHeader.biClrUsed = 1;
+	info.bmiHeader.biSize         = sizeof(BITMAPINFOHEADER);
+	info.bmiHeader.biWidth        = size.cx;
+	info.bmiHeader.biHeight       = size.cy;
+	info.bmiHeader.biPlanes       = 1;
+	info.bmiHeader.biBitCount     = 16;
+	info.bmiHeader.biCompression  = BI_BITFIELDS;
+	info.bmiHeader.biSizeImage    = ((size.cx * 2 + 3) & ~3) * size.cy;
+	info.bmiHeader.biClrUsed      = 1;
 	info.bmiHeader.biClrImportant = 0;
-	info.bmiColorsR = 0xf800;
-	info.bmiColorsG = 0x07e0;
-	info.bmiColorsB = 0x001f;
+	info.bmiColorsR               = 0xf800;
+	info.bmiColorsG               = 0x07e0;
+	info.bmiColorsB               = 0x001f;
 
 	HDC     dc  (::CreateCompatibleDC(::GetDC(hwnd_)));
 	HBITMAP bmp (::CreateDIBSection(dc, info.GetBitmapInfo(), DIB_RGB_COLORS, NULL, NULL, 0));
@@ -111,6 +111,10 @@ HBITMAP NoteView::Render(SIZE size)
 		if (!HTMLayoutRender(hwnd_, bmp, rect))
 			throw std::exception("Note rendering failed.");
 	}
+
+	vector<WORD> bits(info.bmiHeader.biSizeImage / 2);
+	::GetDIBits(dc, bmp, 0, size.cy, &bits[0], &info, DIB_RGB_COLORS);
+
 	::DeleteDC(dc);
 	return bmp;
 }

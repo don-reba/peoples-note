@@ -34,7 +34,7 @@ Guid::operator const string & () const
 	return data;
 }
 
-bool Guid::operator ==(const Guid & guid) const
+bool Guid::operator == (const Guid & guid) const
 {
 	return data == guid.data;
 }

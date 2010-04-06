@@ -812,3 +812,10 @@ note preview
 		√ get HBITMAP drawing working
 		add rendering
 		add caching
+	note view does not exist when notes are initially loaded
+		on note list view creation
+	note view is required for preview rendering
+	therefore notes should be loaded after both views are created
+	maybe main should initiate user loading manually
+	image creation
+		there seems to be no way of getting the bits
