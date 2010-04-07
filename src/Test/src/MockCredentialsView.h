@@ -4,26 +4,41 @@
 
 class MockCredentialsView : public ICredentialsView
 {
-private:
-
-	signal SignalSignIn;
-
 public:
 
-	std::wstring username;
+	std::wstring message;
 	std::wstring password;
+	std::wstring username;
+
+	signal SignalCancel;
+	signal SignalCreated;
+	signal SignalOk;
+
+	bool isOpen;
 
 public:
 
-	virtual void ConnectSignIn(slot_type OnSignIn);
+	MockCredentialsView();
 
-	virtual std::wstring GetUsername() const;
+public:
 
-	virtual void SetUsername(std::wstring username);
+	virtual void Close();
+
+	virtual void ConnectCancel(slot_type OnCancel);
+
+	virtual void ConnectCreated(slot_type OnCreated);
+
+	virtual void ConnectOk(slot_type OnOk);
 
 	virtual std::wstring GetPassword() const;
 
-	virtual void SetPassword(std::wstring password);
+	virtual std::wstring GetUsername() const;
 
-	void SignIn();
+	virtual void Open();
+
+	virtual void SetMessage(const std::wstring & message);
+
+	virtual void SetPassword(const std::wstring & password);
+
+	virtual void SetUsername(const std::wstring & username);
 };

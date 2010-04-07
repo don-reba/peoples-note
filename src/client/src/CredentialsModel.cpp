@@ -1,14 +1,11 @@
 #include "stdafx.h"
 #include "CredentialsModel.h"
 
-ICredentialsModel & CredentialsModel::operator =
-	( const ICredentialsModel & credentials
-	)
+void CredentialsModel::ConnectNeedsSet(slot_type OnNeedsSet)
 {
-	username = credentials.GetUsername();
-	password = credentials.GetPassword();
-	return *this;
+	SignalNeedsSet.connect(OnNeedsSet);
 }
+
 
 std::wstring CredentialsModel::GetUsername() const
 {

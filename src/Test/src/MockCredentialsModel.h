@@ -9,6 +9,8 @@ public:
 	std::wstring username;
 	std::wstring password;
 
+	signal SignalNeedsSet;
+
 public:
 
 	MockCredentialsModel();
@@ -18,9 +20,9 @@ public:
 		, std::wstring password
 		);
 
-	virtual ICredentialsModel & operator =
-		( const ICredentialsModel & credentials
-		);
+public:
+
+	virtual void ConnectNeedsSet(slot_type OnNeedsSet);
 	
 	virtual std::wstring GetUsername() const;
 

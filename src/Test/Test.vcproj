@@ -223,6 +223,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockEnService.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockLastUserModel.cpp"
 				>
 			</File>
@@ -379,6 +383,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockEnImporter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockEnService.h"
 				>
 			</File>
 			<File

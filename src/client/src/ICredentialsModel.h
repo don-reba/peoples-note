@@ -1,14 +1,12 @@
 #pragma once
 
-class ICredentialsModel
+#include "ISignalProvider.h"
+
+class ICredentialsModel : public ISignalProvider
 {
 public:
 
-	virtual ~ICredentialsModel() {}
-
-	virtual ICredentialsModel & operator =
-		( const ICredentialsModel & credentials
-		) = 0;
+	virtual void ConnectNeedsSet(slot_type OnNeedsSet) = 0;
 	
 	virtual std::wstring GetUsername() const = 0;
 

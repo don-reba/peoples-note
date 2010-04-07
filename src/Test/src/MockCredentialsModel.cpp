@@ -16,13 +16,9 @@ MockCredentialsModel::MockCredentialsModel
 {
 }
 
-ICredentialsModel & MockCredentialsModel::operator =
-	( const ICredentialsModel & credentials
-	)
+void  MockCredentialsModel::ConnectNeedsSet(slot_type OnNeedsSet)
 {
-	username = credentials.GetUsername();
-	password = credentials.GetPassword();
-	return *this;
+	SignalNeedsSet.connect(OnNeedsSet);
 }
 
 std::wstring MockCredentialsModel::GetUsername() const

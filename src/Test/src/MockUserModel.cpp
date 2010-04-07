@@ -116,5 +116,6 @@ void MockUserModel::MakeNotebookLastUsed(const Notebook & notebook)
 
 void MockUserModel::SetCredentials(const ICredentialsModel & credentials)
 {
-	credentialsModel = credentials;
+	credentialsModel.password = credentials.GetPassword();
+	credentialsModel.username = credentials.GetUsername();
 }

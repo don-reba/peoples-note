@@ -123,7 +123,10 @@ void UserModel::CreateDefaultUser()
 
 void UserModel::SetCredentials(const ICredentialsModel & credentials)
 {
-	credentialsModel = credentials;
+	credentialsModel.SetCredentials
+		( credentials.GetUsername()
+		, credentials.GetPassword()
+		);
 }
 
 Notebook UserModel::GetDefaultNotebook()

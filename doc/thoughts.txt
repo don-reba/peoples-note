@@ -819,3 +819,5 @@ note preview
 	maybe main should initiate user loading manually
 	image creation
 		there seems to be no way of getting the bits
+sign in
+	initializes a credentials model or not

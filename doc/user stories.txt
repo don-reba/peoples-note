@@ -1,19 +1,17 @@
-sign in
-	√ when no default user is available, default to unnamed user
-	√ when the user signs in, the note list should display the last used notebok
-		√ last used notebook defaults to the default notebook
-	when the program starts without a user, a default user should be created
-	√ when a user without a notebook signs in, an empty default notebook should be created
-	when the user changes username from the default, the database should be renamed
-	when EN rejects the user's password at sync, the signin screen should be displayed with his username
-		the username should be read-only
-	when the user signs out, the signin screen should be displayed with his username
-		the username should be editable
-	when the user chooses "sign in", the username and password should be verified
-	when the user tries to sign in with invalid credentials, a message should be displayed and the password cleared
-	when the user signs in with valid credentials, the window should close
-		credentials should be persisted
-	when the user chooses "cancel", the operation requiring credentials should be aborted
+user management
+	when the program starts, the last user is loaded
+	when there is no last user, the anonymous user is loaded
+	when a user signs out, the anonymous user is loaded
+	when the anonymous user is not available, create one
+	when the anonymous user is loaded, the menu should contain a "sign in" option
+	when a named user is loaded, the menu should contain a "sign out" option
+notebook management
+	√ when a user without a notebook is loaded, an empty default notebook should be created
+sign in window
+	when the window is displayed, the user should be able to enter username and password, accept, or cancel
+	√ when the user chooses to accept, the username and password should be verified
+	√ when the user tries to sign in with invalid credentials, a message should be displayed and the password cleared
+	√ when the user signs in with valid credentials, the window should close
 note creation
 	when the user clicks the new-text button, a text note creation screen should be displayed
 	when the user clicks the new-voice button, audio recording should start
@@ -30,6 +28,8 @@ sync
 	when sync is impossible, the sync button should be disabled
 		sync in progress
 		no connection
+	when EN rejects the user's password at sync, the signin screen should be displayed with his username
+		the username should be read-only
 search
 	√ when the user searches for a non-empty string, notebook should be filtered by full-text search
 	√ when the user searches for an empty string or whitespace, the note list should be reset

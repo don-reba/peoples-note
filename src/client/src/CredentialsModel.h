@@ -9,11 +9,11 @@ private:
 	std::wstring username;
 	std::wstring password;
 
+	signal SignalNeedsSet;
+
 public:
 
-	virtual ICredentialsModel & operator =
-		( const ICredentialsModel & credentials
-		);
+	virtual void ConnectNeedsSet(slot_type OnNeedsSet);
 	
 	virtual std::wstring GetUsername() const;
 

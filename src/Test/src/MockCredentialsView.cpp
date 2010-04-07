@@ -3,19 +3,29 @@
 
 using namespace std;
 
-void MockCredentialsView::ConnectSignIn(ISignalProvider::slot_type OnSignIn)
+MockCredentialsView::MockCredentialsView()
+	: isOpen (false)
 {
-	SignalSignIn.connect(OnSignIn);
 }
 
-wstring MockCredentialsView::GetUsername() const
+void MockCredentialsView::Close()
 {
-	return username;
+	isOpen = false;
 }
 
-void MockCredentialsView::SetUsername(std::wstring username)
+void MockCredentialsView::ConnectCancel(slot_type OnCancel)
 {
-	this->username = username;
+	SignalCancel.connect(OnCancel);
+}
+
+void MockCredentialsView::ConnectCreated(slot_type OnCreated)
+{
+	SignalCreated.connect(OnCreated);
+}
+
+void MockCredentialsView::ConnectOk(slot_type OnOk)
+{
+	SignalOk.connect(OnOk);
 }
 
 wstring MockCredentialsView::GetPassword() const
@@ -23,12 +33,27 @@ wstring MockCredentialsView::GetPassword() const
 	return password;
 }
 
-void MockCredentialsView::SetPassword(std::wstring password)
+wstring MockCredentialsView::GetUsername() const
+{
+	return username;
+}
+
+void MockCredentialsView::Open()
+{
+	isOpen = true;
+}
+
+void MockCredentialsView::SetMessage(const wstring & message)
+{
+	this->message = message;
+}
+
+void MockCredentialsView::SetPassword(const std::wstring & password)
 {
 	this->password = password;
 }
 
-void MockCredentialsView::SignIn()
+void MockCredentialsView::SetUsername(const std::wstring & username)
 {
-	SignalSignIn();
+	this->username = username;
 }
