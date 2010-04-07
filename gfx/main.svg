@@ -19,6 +19,61 @@
   <defs
      id="defs4">
     <linearGradient
+       id="linearGradient4292">
+      <stop
+         style="stop-color:#cccccc;stop-opacity:1;"
+         offset="0"
+         id="stop4294" />
+      <stop
+         style="stop-color:#8c8c8c;stop-opacity:1"
+         offset="1"
+         id="stop4296" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4286">
+      <stop
+         style="stop-color:#b4b4b4;stop-opacity:1"
+         offset="0"
+         id="stop4288" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop4290" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4269">
+      <stop
+         id="stop4271"
+         offset="0"
+         style="stop-color:#cccccc;stop-opacity:1;" />
+      <stop
+         id="stop4273"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4263">
+      <stop
+         id="stop4265"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop4267"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4255">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop4257" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop4259" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient3706">
       <stop
          style="stop-color:#f0ec40;stop-opacity:1;"
@@ -385,6 +440,25 @@
        y1="700.86218"
        x2="452"
        y2="683.3653" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4269"
+       id="linearGradient4261"
+       x1="405.5"
+       y1="1052.8622"
+       x2="405.5"
+       y2="994.29077"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4286"
+       id="linearGradient4284"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0243903,0,0,0.61207968,-11.970325,384.5716)"
+       x1="405.5"
+       y1="1052.8622"
+       x2="405.5"
+       y2="994.29077" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -393,15 +467,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="473.66254"
-     inkscape:cy="344.97147"
+     inkscape:zoom="0.66"
+     inkscape:cx="-69.641608"
+     inkscape:cy="370.91165"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="false"
      inkscape:showpageshadow="true"
-     inkscape:snap-bbox="true"
+     inkscape:snap-bbox="false"
      inkscape:snap-bbox-edge-midpoints="false"
      inkscape:bbox-nodes="false"
      inkscape:snap-bbox-midpoints="false"
@@ -413,7 +487,7 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:snap-global="true">
+     inkscape:snap-global="false">
     <inkscape:grid
        type="xygrid"
        id="grid2820"
@@ -460,7 +534,8 @@
      id="layer1"
      transform="translate(0,-412.36218)">
     <g
-       id="g3899">
+       id="g3899"
+       transform="translate(0,-1.0000095)">
       <path
          sodipodi:nodetypes="ccccc"
          id="path4048"
@@ -509,7 +584,7 @@
         <path
            id="path3757"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876);opacity:0.5"
+           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
            clip-path="url(#clipPath3880)" />
         <path
            style="fill:url(#linearGradient3894);fill-opacity:1;stroke:none"
@@ -518,7 +593,7 @@
         <path
            id="path3848"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           style="fill:#ffffff;fill-opacity:1;stroke:none" />
+           style="fill:#f0ec40;fill-opacity:1;stroke:none" />
       </g>
     </g>
     <g
@@ -579,13 +654,13 @@
            d="m 438,665.32897 32,32 -32,0 0,-32"
            style="fill:url(#linearGradient3941);fill-opacity:1;stroke:none" />
         <path
-           style="fill:#ffffff;fill-opacity:1;stroke:none"
+           style="fill:#f0ec40;fill-opacity:1;stroke:none"
            d="m 470,697.32897 -32,-32 32,0 0,32"
            id="path3939" />
       </g>
     </g>
     <g
-       transform="translate(0,302.96679)"
+       transform="translate(0,301.96678)"
        id="g3969">
       <path
          sodipodi:nodetypes="ccccc"
@@ -635,7 +710,7 @@
         <path
            id="path3989"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876);opacity:0.5"
+           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
            clip-path="url(#clipPath3880)" />
         <path
            style="fill:url(#linearGradient4051);fill-opacity:1;stroke:none"
@@ -644,12 +719,12 @@
         <path
            id="path3993"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           style="fill:#ffffff;fill-opacity:1;stroke:none" />
+           style="fill:#f0ec40;fill-opacity:1;stroke:none" />
       </g>
     </g>
     <g
        id="g3995"
-       transform="translate(0,202)">
+       transform="translate(0,200.99999)">
       <path
          style="fill:#f0ec40;fill-opacity:1;stroke:none"
          d="m 164,665.32897 0,100 306,0 0,-99.96679 -306,-0.0332 z"
@@ -697,7 +772,7 @@
          transform="translate(0,0.03321)">
         <path
            clip-path="url(#clipPath3880)"
-           style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876);opacity:0.5"
+           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
            d="m 438,665.32897 32,32 -32,0 0,-32"
            id="path4015" />
         <path
@@ -705,13 +780,13 @@
            d="m 438,665.32897 32,32 -32,0 0,-32"
            style="fill:url(#linearGradient4049);fill-opacity:1;stroke:none" />
         <path
-           style="fill:#ffffff;fill-opacity:1;stroke:none"
+           style="fill:#f0ec40;fill-opacity:1;stroke:none"
            d="m 470,697.32897 -32,-32 32,0 0,32"
            id="path4019" />
       </g>
     </g>
     <g
-       transform="translate(0,100.96679)"
+       transform="translate(0,99.966781)"
        id="g4021">
       <path
          sodipodi:nodetypes="ccccc"
@@ -761,7 +836,7 @@
         <path
            id="path4041"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876);opacity:0.5"
+           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
            clip-path="url(#clipPath3880)" />
         <path
            style="fill:url(#linearGradient4047);fill-opacity:1;stroke:none"
@@ -770,7 +845,7 @@
         <path
            id="path4045"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           style="fill:#ffffff;fill-opacity:1;stroke:none" />
+           style="fill:#f0ec40;fill-opacity:1;stroke:none" />
       </g>
     </g>
     <rect
@@ -872,27 +947,24 @@
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
     <g
-       id="g3815"
-       transform="matrix(1.0243903,0,0,1.0243903,-11.970325,-25.679575)"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360">
+       id="g4298"
+       style="opacity:1">
       <rect
-         ry="17.857143"
-         y="995.00507"
-         x="341.21429"
-         height="57.142857"
-         width="128.57143"
+         ry="18.292685"
+         y="993.59393"
+         x="337.56628"
+         height="58.536587"
+         width="131.70732"
          id="rect2833"
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.42857146;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <text
          id="text2829"
-         y="1039.4114"
-         x="358.19949"
-         style="font-size:41.42856979px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         y="1039.0834"
+         x="354.96576"
+         style="font-size:42.43902588000000300px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="1039.4114"
-           x="358.19949"
+           y="1039.0834"
+           x="354.96576"
            id="tspan2831"
            sodipodi:role="line">Menu</tspan></text>
     </g>
@@ -979,7 +1051,7 @@
        inkscape:export-ydpi="360" />
     <rect
        ry="0"
-       y="765.32898"
+       y="764.32898"
        x="0.00531821"
        height="1"
        width="470"
@@ -994,14 +1066,14 @@
        width="470"
        height="1"
        x="0.00531821"
-       y="866.57898"
+       y="865.57898"
        ry="0"
        inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
     <rect
        ry="0"
-       y="967.32898"
+       y="966.32898"
        x="0.00531821"
        height="1"
        width="470"
