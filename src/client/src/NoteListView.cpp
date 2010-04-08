@@ -67,6 +67,7 @@ void NoteListView::RegisterEventHandlers()
 {
 	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
 	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
+	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 
@@ -147,6 +148,11 @@ void NoteListView::ConnectOpenNote(slot_type OnOpenNote)
 void NoteListView::ConnectSearch(slot_type OnSearch)
 {
 	SignalSearch.connect(OnSearch);
+}
+
+void NoteListView::ConnectSignIn(slot_type OnSignIn)
+{
+	SignalSignIn.connect(OnSignIn);
 }
 
 bool NoteListView::GetEnexPath(wstring & path)
@@ -373,9 +379,21 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 // HTMLayout message handlers
 //---------------------------
 
+BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
+{
+	if (NULL == wcschr(params->uri, L':'))
+		return __super::OnLoadData(params);
+	return LOAD_DISCARD;
+}
+
 void NoteListView::OnMenuExit()
 {
 	CloseWindow(hwnd_);
+}
+
+void NoteListView::OnMenuSignIn()
+{
+	SignalSignIn();
 }
 
 void NoteListView::OnMenuImport()
@@ -391,11 +409,4 @@ void NoteListView::OnNote()
 void NoteListView::OnSearch()
 {
 	SignalSearch();
-}
-
-BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
-{
-	if (NULL == wcschr(params->uri, L':'))
-		return __super::OnLoadData(params);
-	return LOAD_DISCARD;
 }

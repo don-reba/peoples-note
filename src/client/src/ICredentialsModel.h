@@ -6,7 +6,7 @@ class ICredentialsModel : public ISignalProvider
 {
 public:
 
-	virtual void ConnectNeedsSet(slot_type OnNeedsSet) = 0;
+	virtual void ConnectUpdating(slot_type OnUpdating) = 0;
 	
 	virtual std::wstring GetUsername() const = 0;
 

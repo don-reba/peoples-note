@@ -11,15 +11,11 @@
 #define IDC_NOTE_VIEW                   7
 #define IDS_CLOSE                       8
 #define IDI_CLIENT                      101
-#define IDR_MENU                        102
 #define IDS_OK                          103
 #define IDS_HELP                        104
 #define IDB_BITMAP1                     133
 #define ID_ACCELERATOR32772             32772
-#define IDM_MENU_EXIT                   32773
-#define IDM_MENU_ABOUT                  32774
 #define IDM_MENU                        32775
-#define ID_MENU_LOGOUT                  32776
 #define ID_MENU_NOTEBOOK                32777
 #define ID_NOTEBOOK_DONREBA             32778
 #define ID_NOTEBOOK_DONREBA32779        32779
@@ -27,7 +23,6 @@
 #define IDM_NOTEBOOK                    32781
 #define ID_NOTEBOOK_FGFG                32782
 #define ID_MENU_IMPORTNOTES             32783
-#define IDM_MENU_IMPORTNOTES            32784
 #define IDM_CLOSE                       32785
 #define IDC_STATIC                      -1
 

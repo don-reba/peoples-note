@@ -819,5 +819,61 @@ note preview
 	maybe main should initiate user loading manually
 	image creation
 		there seems to be no way of getting the bits
-sign in
-	initializes a credentials model or not
+sync
+	when sync connects to EN, the password might be rejected
+	then sync brings up the signin window to get a new password
+	two ways to proceed
+		modal
+			spin a new message loop in the signin window
+			return control to sync when finished
+		non-modal
+			generate a request event and suspend sync
+			generate a completion event and resume sync
+	keep in mind that sync is in a separate thread
+		any signals it sends are processed on its own thread
+		sync has a separate user model with a separate db connection
+		we don't want 2 UI threads
+			so sync needs to display the dialog on the UI thread
+		2 ways to run code on the UI thread
+			window messaging
+			main message loop augmentation
+	general scenario
+		sync does its own thing
+		UI does its own thing
+		sync gets in trouble, asks UI for some data, goes to sleep
+		UI interacts with the user, gets sync its data, resumes it
+	how to enable this
+		the presenter would interact with sync's user data
+			under assumption that sync is sleeping
+		sync cannot signal an event directly
+			has to leave some sort of message
+	SyncModel
+		presenters subscribe to events
+			standard Connect methods
+		sync calls method SetCredentials and blocks
+		message pump calls Process, which signals events
+		presenters modify sync's credentials model
+		finishing the event unblocks sync
+	lets look at it from another side
+		sync starts with user credentials and runs until either
+			it runs to completion
+			the credentials are rejected
+			some other error occurs
+		sync starts when
+			the sync button is pressed
+			invalid user credentials are updated
+		this no longer looks like a parallel thread
+			rather like a worker thread
+	SyncModel
+		Sync method
+			starts a new thread
+			runs sync to one of the termination conditions
+			if credentials are needed
+				posts the appropriate message
+					PostThreadMessage
+				message loop asks it to dispatch the message
+		DispatchMessage
+			if sees the message sent by Sync
+				raises the credentials.NeedsSet event
+				checks whether credentials were set
+				restarts sync, if they were

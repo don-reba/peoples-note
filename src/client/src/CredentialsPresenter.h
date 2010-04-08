@@ -22,15 +22,8 @@ public:
 
 private:
 
-	void OnModelNeedsSet();
+	void OnModelUpdating();
 	void OnViewCreated();
 	void OnOk();
 	void OnCancel();
-
-private:
-
-	static void AreCredentialsValid
-		( const std::wstring & username
-		, const std::wstring & password
-		);
 };

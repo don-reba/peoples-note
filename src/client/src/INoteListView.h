@@ -30,6 +30,8 @@ public:
 
 	virtual void ConnectSearch(slot_type OnSearch) = 0;
 
+	virtual void ConnectSignIn(slot_type OnSignin) = 0;
+
 	virtual void ClearNotes() = 0;
 
 	virtual void ClearNotebooks() = 0;

@@ -17,13 +17,13 @@ CredentialsPresenter::CredentialsPresenter
 	, credentialsView  (credentialsView)
 	, enService        (enService)
 {
-	credentialsModel.ConnectNeedsSet(bind(&CredentialsPresenter::OnModelNeedsSet, this));
-	credentialsView.ConnectCreated  (bind(&CredentialsPresenter::OnViewCreated,   this));
-	credentialsView.ConnectOk       (bind(&CredentialsPresenter::OnOk,            this));
-	credentialsView.ConnectCancel   (bind(&CredentialsPresenter::OnCancel,        this));
+	credentialsModel.ConnectUpdating (bind(&CredentialsPresenter::OnModelUpdating, this));
+	credentialsView.ConnectCreated   (bind(&CredentialsPresenter::OnViewCreated,   this));
+	credentialsView.ConnectOk        (bind(&CredentialsPresenter::OnOk,            this));
+	credentialsView.ConnectCancel    (bind(&CredentialsPresenter::OnCancel,        this));
 }
 
-void CredentialsPresenter::OnModelNeedsSet()
+void CredentialsPresenter::OnModelUpdating()
 {
 	credentialsView.Open();
 }

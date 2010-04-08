@@ -50,6 +50,7 @@ private:
 	signal SignalImport;
 	signal SignalOpenNote;
 	signal SignalSearch;
+	signal SignalSignIn;
 
 // interface
 
@@ -84,6 +85,8 @@ public:
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 
 	virtual void ConnectSearch(slot_type OnSearch);
+
+	virtual void ConnectSignIn(slot_type OnSignin);
 
 	virtual bool GetEnexPath(std::wstring & path);
 
@@ -128,10 +131,11 @@ private:
 
 private:
 
+	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
+
 	void OnMenuExit();
 	void OnMenuImport();
+	void OnMenuSignIn();
 	void OnNote();
 	void OnSearch();
-
-	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };

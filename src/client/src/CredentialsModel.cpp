@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "CredentialsModel.h"
 
-void CredentialsModel::ConnectNeedsSet(slot_type OnNeedsSet)
+void CredentialsModel::ConnectUpdating(slot_type OnUpdating)
 {
-	SignalNeedsSet.connect(OnNeedsSet);
+	SignalUpdating.connect(OnUpdating);
 }
 
 

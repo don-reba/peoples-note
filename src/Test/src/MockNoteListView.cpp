@@ -61,6 +61,11 @@ void MockNoteListView::ConnectSearch(slot_type OnSearch)
 	SignalSearch.connect(OnSearch);
 }
 
+void MockNoteListView::ConnectSignIn(slot_type OnSignIn)
+{
+	SignalSignIn.connect(OnSignIn);
+}
+
 bool MockNoteListView::GetEnexPath(std::wstring & path)
 {
 	if (hasEnexPath)

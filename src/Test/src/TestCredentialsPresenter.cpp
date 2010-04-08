@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_OkPass_Test)
 	credentialsModel.username = L"initial-usr";
 	credentialsModel.password = L"initial-pwd";
 
-	credentialsModel.SignalNeedsSet();
+	credentialsModel.SignalUpdating();
 	BOOST_CHECK(credentialsView.isOpen);
 
 	credentialsView.SignalCreated();
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_OkFail_Test)
 		, enService
 		);
 
-	credentialsModel.SignalNeedsSet();
+	credentialsModel.SignalUpdating();
 	credentialsView.SignalCreated();
 
 	enService.credentialsValidity.IsGood  = false;
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_Cancel_Test)
 		, enService
 		);
 
-	credentialsModel.SignalNeedsSet();
+	credentialsModel.SignalUpdating();
 	credentialsView.SignalCreated();
 
 	credentialsView.username = L"test-usr";

@@ -16,9 +16,9 @@ MockCredentialsModel::MockCredentialsModel
 {
 }
 
-void  MockCredentialsModel::ConnectNeedsSet(slot_type OnNeedsSet)
+void  MockCredentialsModel::ConnectUpdating(slot_type OnUpdating)
 {
-	SignalNeedsSet.connect(OnNeedsSet);
+	SignalUpdating.connect(OnUpdating);
 }
 
 std::wstring MockCredentialsModel::GetUsername() const

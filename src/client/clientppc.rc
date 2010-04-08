@@ -33,29 +33,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // remains consistent on all systems.
 IDI_CLIENT              ICON                    "client.ico"
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Menu
-//
-
-IDR_MENU MENU 
-BEGIN
-    POPUP "Menu"
-    BEGIN
-        MENUITEM "Sign out",                    ID_MENU_LOGOUT
-        MENUITEM SEPARATOR
-        POPUP "Notebook"
-        BEGIN
-            MENUITEM SEPARATOR
-        END
-        MENUITEM "Import notes",                IDM_MENU_IMPORTNOTES
-        MENUITEM SEPARATOR
-        MENUITEM "About",                       IDM_MENU_ABOUT
-        MENUITEM "Exit",                        IDM_MENU_EXIT
-    END
-END
-
-
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -139,7 +116,6 @@ VIEW_RESTORE.PNG        HTML                    "html\\view-restore.png"
 VOICE_NOTE.PNG          HTML                    "html\\voice-note.png"
 ZOOM_IN.PNG             HTML                    "html\\zoom-in.png"
 ZOOM_OUT.PNG            HTML                    "html\\zoom-out.png"
-
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 
