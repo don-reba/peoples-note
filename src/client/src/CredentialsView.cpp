@@ -6,6 +6,7 @@
 #include "Tools.h"
 
 using namespace htmlayout;
+using namespace htmlayout::dom;
 using namespace std;
 using namespace Tools;
 
@@ -26,6 +27,12 @@ void CredentialsView::Create(HWND parent)
 	this->parent = parent;
 }
 
+void CredentialsView::RegisterEventHandlers()
+{
+	ConnectBehavior("#ok",     BUTTON_CLICK, &CredentialsView::OnOk);
+	ConnectBehavior("#cancel", BUTTON_CLICK, &CredentialsView::OnCancel);
+}
+
 //--------------------------------
 // ICredentialsView implementation
 //--------------------------------
@@ -37,26 +44,35 @@ void CredentialsView::Close()
 
 void CredentialsView::ConnectCancel(slot_type OnCancel)
 {
+	SignalCancel.connect(OnCancel);
 }
 
 void CredentialsView::ConnectCreated(slot_type OnCreated)
 {
+	SignalCreated.connect(OnCreated);
 }
 
 void CredentialsView::ConnectOk(slot_type OnOk)
 {
+	SignalOk.connect(OnOk);
 }
 
 wstring CredentialsView::GetPassword() const
 {
-	// TODO: implement
-	return L"";
+	element root = element::root_element(hwnd_);
+	element e = root.find_first("#password");
+	if (!e)
+		throw std::exception("#password not found.");
+	return e.text().c_str();
 }
 
 wstring CredentialsView::GetUsername() const
 {
-	// TODO: implement
-	return L"";
+	element root = element::root_element(hwnd_);
+	element e = root.find_first("#username");
+	if (!e)
+		throw std::exception("#username not found.");
+	return e.text().c_str();
 }
 
 void CredentialsView::Open()
@@ -81,20 +97,33 @@ void CredentialsView::Open()
 		);
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
-
-	//CopyParentSize();
 }
 
 void CredentialsView::SetMessage(const std::wstring & message)
 {
+	element root = element::root_element(hwnd_);
+	element e = root.find_first("#message");
+	if (!e)
+		throw std::exception("#message not found.");
+	e.set_text(message.c_str());
 }
 
 void CredentialsView::SetPassword(const std::wstring & password)
 {
+	element root = element::root_element(hwnd_);
+	element e = root.find_first("#password");
+	if (!e)
+		throw std::exception("#password not found.");
+	e.set_text(password.c_str());
 }
 
 void CredentialsView::SetUsername(const std::wstring & username)
 {
+	element root = element::root_element(hwnd_);
+	element e = root.find_first("#username");
+	if (!e)
+		throw std::exception("#username not found.");
+	e.set_text(username.c_str());
 }
 
 //------------------
@@ -134,4 +163,18 @@ ATOM CredentialsView::RegisterClass(const wstring & wndClass)
 void CredentialsView::ProcessMessage(WndMsg &msg)
 {
 	__super::ProcessMessage(msg);
+}
+
+//---------------------------
+// HTMLayout message handlers
+//---------------------------
+
+void CredentialsView::OnCancel()
+{
+	SignalCancel();
+}
+
+void CredentialsView::OnOk()
+{
+	SignalOk();
 }

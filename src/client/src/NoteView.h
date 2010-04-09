@@ -66,7 +66,7 @@ private:
 
 // HTMLayout message handlers
 
-protected:
+private:
 
 	void OnFullScreen();
 	void OnHome();

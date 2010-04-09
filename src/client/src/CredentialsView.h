@@ -12,6 +12,9 @@ private:
 	HWND      parent;
 	HINSTANCE instance;
 
+	signal SignalCancel;
+	signal SignalOk;
+
 // interface
 
 public:
@@ -19,6 +22,8 @@ public:
 	CredentialsView(HINSTANCE instance);
 
 	void Create(HWND parent);
+
+	virtual void RegisterEventHandlers();
 
 // ICredentialsView implementation
 
@@ -57,4 +62,11 @@ private:
 private:
 
 	virtual void ProcessMessage(WndMsg &msg);
+
+// HTMLayout message handlers
+
+private:
+
+	void OnCancel();
+	void OnOk();
 };

@@ -8,6 +8,7 @@
 #include "imaging.h"
 
 using namespace htmlayout;
+using namespace htmlayout::dom;
 using namespace std;
 using namespace Tools;
 
@@ -122,8 +123,8 @@ HBITMAP NoteView::Render(SIZE size)
 
 void NoteView::SetBody(wstring html)
 {
-	dom::element root = dom::element::root_element(hwnd_);
-	dom::element body = root.find_first("#body");
+	element root = element::root_element(hwnd_);
+	element body = root.find_first("#body");
 	if (!body)
 		throw std::exception("#body not found.");
 
@@ -136,8 +137,8 @@ void NoteView::SetBody(wstring html)
 
 void NoteView::SetSubtitle(wstring text)
 {
-	dom::element root = dom::element::root_element(hwnd_);
-	dom::element body = root.find_first("#subtitle");
+	element root = element::root_element(hwnd_);
+	element body = root.find_first("#subtitle");
 	if (!body)
 		throw std::exception("#subtitle not found.");
 	body.set_text(text.c_str(), text.size());
@@ -145,8 +146,8 @@ void NoteView::SetSubtitle(wstring text)
 
 void NoteView::SetTitle(wstring text)
 {
-	dom::element root = dom::element::root_element(hwnd_);
-	dom::element body = root.find_first("#title");
+	element root = element::root_element(hwnd_);
+	element body = root.find_first("#title");
 	if (!body)
 		throw std::exception("#title not found.");
 	body.set_text(text.c_str(), text.size());
@@ -159,7 +160,7 @@ void NoteView::Show()
 	::UpdateWindow(hwnd_);
 	::BringWindowToTop(hwnd_);
 
-	dom::element root = dom::element::root_element(hwnd_);
+	element root = element::root_element(hwnd_);
 	root.update(true);
 }
 
@@ -220,8 +221,8 @@ void NoteView::ToggleFullScreen()
 		, rect.bottom - rect.top
 		, TRUE
 		);
-	dom::element root = dom::element::root_element(hwnd_);
-	dom::element img  = root.find_first("#full-screen img");
+	element root = element::root_element(hwnd_);
+	element img  = root.find_first("#full-screen img");
 	if (img)
 	{
 		img.set_attribute
