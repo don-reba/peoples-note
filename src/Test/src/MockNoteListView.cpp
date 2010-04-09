@@ -6,6 +6,7 @@ using namespace std;
 MockNoteListView::MockNoteListView()
 	: notesUpdated     (true)
 	, notebooksUpdated (true)
+	, signedIn         (false)
 {
 }
 
@@ -81,6 +82,11 @@ Guid MockNoteListView::GetSelectedNoteGuid()
 std::wstring MockNoteListView::GetSearchString()
 {
 	return searchString;
+}
+
+void MockNoteListView::SignIn()
+{
+	signedIn = true;
 }
 
 void MockNoteListView::UpdateNotebooks()

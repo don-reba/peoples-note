@@ -1,9 +1,12 @@
 #include "stdafx.h"
 
 #include "Animator.h"
+#include "CredentialsPresenter.h"
+#include "CredentialsView.h"
 #include "DataStore.h"
 #include "EnImportPresenter.h"
 #include "EnImporter.h"
+#include "EnService.h"
 #include "LastUserModel.h"
 #include "NoteListModel.h"
 #include "NoteListPresenter.h"
@@ -13,6 +16,7 @@
 #include "SearchPresenter.h"
 #include "UserLoader.h"
 #include "UserModel.h"
+#include "UserSignInPresenter.h"
 
 #include "htmlayout.h"
 #include "resourceppc.h"
@@ -97,14 +101,21 @@ int WINAPI WinMain(HINSTANCE instance,
 		RegistryKey registryKey;
 		DataStore   dataStore;
 		EnImporter  enImporter;
+		EnService   enService;
 
 		LastUserModel lastUserModel(registryKey);
 		NoteListModel noteListModel;
 		UserModel     userModel(dataStore, GetDocumentPath());
 
-		NoteView     noteView     (instance);
-		NoteListView noteListView (animator, instance, nCmdShow);
+		CredentialsView credentialsView (instance);
+		NoteView        noteView        (instance);
+		NoteListView    noteListView    (animator, instance, nCmdShow);
 
+		CredentialsPresenter credentialsPresenter
+			( userModel.GetCredentials()
+			, credentialsView
+			, enService
+			);
 		EnImportPresenter enImportPresenter
 			( enImporter
 			, noteListModel
@@ -131,9 +142,14 @@ int WINAPI WinMain(HINSTANCE instance,
 			( userModel
 			, lastUserModel
 			);
+		UserSignInPresenter userSignInPresenter
+			( noteListView
+			, userModel
+			);
 
 		noteListView.Create();
 		noteView.Create(noteListView.hwnd_);
+		credentialsView.Create(noteListView.hwnd_);
 
 		userLoader.Run();
 

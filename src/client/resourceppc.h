@@ -10,6 +10,7 @@
 #define IDS_DOC_FOLDER                  6
 #define IDC_NOTE_VIEW                   7
 #define IDS_CLOSE                       8
+#define IDC_CREDENTIALS_VIEW            9
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104

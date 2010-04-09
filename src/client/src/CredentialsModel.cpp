@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "CredentialsModel.h"
 
+void CredentialsModel::ConnectUpdated(slot_type OnUpdated)
+{
+	SignalUpdated.connect(OnUpdated);
+}
+
 void CredentialsModel::ConnectUpdating(slot_type OnUpdating)
 {
 	SignalUpdating.connect(OnUpdating);
@@ -24,4 +29,13 @@ void CredentialsModel::SetCredentials
 {
 	this->username = username;
 	this->password = password;
+	updated = true;
+}
+
+void CredentialsModel::Update()
+{
+	updated = false;
+	SignalUpdating();
+	if (updated)
+		SignalUpdated();
 }

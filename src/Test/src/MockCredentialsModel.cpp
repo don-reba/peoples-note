@@ -13,7 +13,13 @@ MockCredentialsModel::MockCredentialsModel
 	)
 	: username (username)
 	, password (password)
+	, updated  (false)
 {
+}
+
+void MockCredentialsModel::ConnectUpdated(slot_type OnUpdated)
+{
+	SignalUpdated.connect(OnUpdated);
 }
 
 void  MockCredentialsModel::ConnectUpdating(slot_type OnUpdating)
@@ -38,4 +44,13 @@ void MockCredentialsModel::SetCredentials
 {
 	this->username = username;
 	this->password = password;
+	updated = true;
+}
+
+void MockCredentialsModel::Update()
+{
+	updated = false;
+	SignalUpdating();
+	if (updated)
+		SignalUpdated();
 }

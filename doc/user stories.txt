@@ -3,8 +3,9 @@ user management
 	when there is no last user, the anonymous user is loaded
 	when a user signs out, the anonymous user is loaded
 	when the anonymous user is not available, create one
-	when the anonymous user is loaded, the menu should contain a "sign in" option
+	√ when the anonymous user is loaded, the menu should contain a "sign in" option
 	when a named user is loaded, the menu should contain a "sign out" option
+	when an anonymous user signs in, he is converted to a named user
 notebook management
 	√ when a user without a notebook is loaded, an empty default notebook should be created
 sign in window

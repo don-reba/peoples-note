@@ -194,6 +194,11 @@ wstring NoteListView::GetSearchString()
 	return searchBox.text().c_str();
 }
 
+void NoteListView::SignIn()
+{
+	// TODO: implement
+}
+
 void NoteListView::UpdateNotebooks()
 {
 	notebookList.update(true);

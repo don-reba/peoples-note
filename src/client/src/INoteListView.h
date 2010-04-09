@@ -42,6 +42,8 @@ public:
 
 	virtual std::wstring GetSearchString() = 0;
 
+	virtual void SignIn() = 0;
+
 	virtual void UpdateNotes() = 0;
 
 	virtual void UpdateNotebooks() = 0;

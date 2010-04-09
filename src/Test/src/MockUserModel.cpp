@@ -49,6 +49,11 @@ void MockUserModel::CreateDefaultUser()
 	isDefault = true;
 }
 
+ICredentialsModel & MockUserModel::GetCredentials()
+{
+	return credentialsModel;
+}
+
 Notebook MockUserModel::GetDefaultNotebook()
 {
 	return defaultNotebook;

@@ -18,6 +18,7 @@ using namespace Tools;
 NoteView::NoteView(HINSTANCE instance)
 	: instance        (instance)
 	, isFullScreen    (false)
+	, parent          (NULL)
 	, HTMLayoutWindow (L"note-view.htm")
 {
 }
@@ -157,6 +158,9 @@ void NoteView::Show()
 	::ShowWindow(hwnd_, SW_SHOW);
 	::UpdateWindow(hwnd_);
 	::BringWindowToTop(hwnd_);
+
+	dom::element root = dom::element::root_element(hwnd_);
+	root.update(true);
 }
 
 //------------------
@@ -177,7 +181,7 @@ void NoteView::CopyParentSize()
 		);
 }
 
-ATOM NoteView::RegisterClass(wstring wndClass)
+ATOM NoteView::RegisterClass(const wstring & wndClass)
 {
 	WNDCLASS wc = { 0 };
 	wc.style         = CS_HREDRAW | CS_VREDRAW;

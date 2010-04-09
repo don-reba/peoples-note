@@ -55,6 +55,8 @@ public:
 
 	virtual void CreateDefaultUser();
 
+	virtual ICredentialsModel & GetCredentials();
+
 	virtual Notebook GetDefaultNotebook();
 
 	virtual Notebook GetLastUsedNotebook();

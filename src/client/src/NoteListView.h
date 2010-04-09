@@ -94,6 +94,8 @@ public:
 	
 	virtual std::wstring GetSearchString();
 
+	virtual void SignIn();
+
 	virtual void UpdateNotebooks();
 
 	virtual void UpdateNotes();

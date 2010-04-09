@@ -82,6 +82,7 @@ BEGIN
     IDS_DOC_FOLDER          "People's Note"
     IDC_NOTE_VIEW           "NOTE-VIEW"
     IDS_CLOSE               "Close"
+    IDC_CREDENTIALS_VIEW    "CREDENTIALS-VIEW"
 END
 
 #endif    // English (U.S.) resources
@@ -110,6 +111,7 @@ MAIN.HTM                HTML                    "html\\main.htm"
 MENU.CSS                HTML                    "html\\menu.css"
 NOTE_VIEW.HTM           HTML                    "html\\note-view.htm"
 PHOTO_NOTE.PNG          HTML                    "html\\photo-note.png"
+SIGNIN_VIEW.HTM         HTML                    "html\\signin-view.htm"
 TEXT_NOTE.PNG           HTML                    "html\\text-note.png"
 VIEW_FULLSCREEN.PNG     HTML                    "html\\view-fullscreen.png"
 VIEW_RESTORE.PNG        HTML                    "html\\view-restore.png"

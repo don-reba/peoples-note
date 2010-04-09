@@ -874,6 +874,21 @@ sync
 				message loop asks it to dispatch the message
 		DispatchMessage
 			if sees the message sent by Sync
-				raises the credentials.NeedsSet event
+				raises the credentials.Updating event
 				checks whether credentials were set
 				restarts sync, if they were
+signin
+	two sources
+		sync needs new credentials
+		anonymous user conversion
+	what kind of presenters do they call for?
+		UserSigninPresenter
+			subscribes to NoteListView.SignIn
+			updates current user's credentials
+			converts the user to a named one
+		SyncSigninPresenter
+			subscribes to SyncModel.NeedCredentials
+			updates the sync user's credentials
+			restarts sync
+		could sync and main user models end up with different credentials?
+			do not cache them, but store in the database

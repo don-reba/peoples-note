@@ -121,12 +121,9 @@ void UserModel::CreateDefaultUser()
 	credentialsModel.SetCredentials(L"", L"");
 }
 
-void UserModel::SetCredentials(const ICredentialsModel & credentials)
+ICredentialsModel & UserModel::GetCredentials()
 {
-	credentialsModel.SetCredentials
-		( credentials.GetUsername()
-		, credentials.GetPassword()
-		);
+	return credentialsModel;
 }
 
 Notebook UserModel::GetDefaultNotebook()
@@ -329,6 +326,14 @@ void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
 		);
 	setNew->Bind(1, notebook.GetGuid());
 	setNew->Execute();
+}
+
+void UserModel::SetCredentials(const ICredentialsModel & credentials)
+{
+	credentialsModel.SetCredentials
+		( credentials.GetUsername()
+		, credentials.GetPassword()
+		);
 }
 
 //------------------

@@ -26,6 +26,8 @@ public:
 	bool         hasEnexPath;
 	std::wstring enexPath;
 
+	bool signedIn;
+
 	signal SignalCreated;
 	signal SignalImport;
 	signal SignalOpenNote;
@@ -63,6 +65,8 @@ public:
 	virtual Guid GetSelectedNoteGuid();
 	
 	virtual std::wstring GetSearchString();
+
+	virtual void SignIn();
 
 	virtual void UpdateNotebooks();
 

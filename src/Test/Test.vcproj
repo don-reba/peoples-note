@@ -348,6 +348,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestUserSignInPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Timestamp.cpp"
 				>
 			</File>
@@ -361,6 +365,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\UserModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\UserSignInPresenter.cpp"
 				>
 			</File>
 		</Filter>

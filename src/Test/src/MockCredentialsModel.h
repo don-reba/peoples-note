@@ -9,7 +9,10 @@ public:
 	std::wstring username;
 	std::wstring password;
 
+	signal SignalUpdated;
 	signal SignalUpdating;
+
+	bool updated;
 
 public:
 
@@ -22,6 +25,8 @@ public:
 
 public:
 
+	virtual void ConnectUpdated(slot_type OnUpdated);
+
 	virtual void ConnectUpdating(slot_type OnUpdating);
 	
 	virtual std::wstring GetUsername() const;
@@ -29,4 +34,6 @@ public:
 	virtual std::wstring GetPassword() const;
 
 	virtual void SetCredentials(std::wstring username, std::wstring password);
+
+	virtual void Update();
 };

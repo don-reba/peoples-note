@@ -403,6 +403,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CredentialsView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DataStore.cpp"
 				>
 			</File>
@@ -412,6 +416,10 @@
 			</File>
 			<File
 				RelativePath=".\src\EnImportPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EnService.cpp"
 				>
 			</File>
 			<File
@@ -562,6 +570,10 @@
 				RelativePath=".\src\UserModel.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\UserSignInPresenter.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -593,6 +605,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CredentialsView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DataStore.h"
 				>
 			</File>
@@ -602,6 +618,10 @@
 			</File>
 			<File
 				RelativePath=".\src\EnImportPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EnService.h"
 				>
 			</File>
 			<File
@@ -765,6 +785,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\UserSignInPresenter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\window.h"
 				>
 			</File>
@@ -830,15 +854,14 @@
 		<Filter
 			Name="HTML"
 			Filter="*.htm"
+			ParseFiles="false"
 			>
 			<File
 				RelativePath=".\html\about.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
 				RelativePath=".\html\main.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
@@ -847,7 +870,6 @@
 			</File>
 			<File
 				RelativePath=".\html\note-view.htm"
-				DeploymentContent="true"
 				>
 			</File>
 		</Filter>

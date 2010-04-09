@@ -104,6 +104,8 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
+	virtual ICredentialsModel & GetCredentials();
+
 	virtual void CreateDefaultUser();
 
 	virtual Notebook GetDefaultNotebook();

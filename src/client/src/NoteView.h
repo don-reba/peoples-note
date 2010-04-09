@@ -24,6 +24,8 @@ public:
 
 	void Create(HWND parent);
 
+	void Destroy();
+
 	virtual void RegisterEventHandlers();
 
 // INoteView implementation
@@ -50,7 +52,7 @@ private:
 
 	void CopyParentSize();
 
-	ATOM RegisterClass(std::wstring wndClass);
+	ATOM RegisterClass(const std::wstring & wndClass);
 
 	void ToggleFullScreen();
 
