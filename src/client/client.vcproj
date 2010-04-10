@@ -155,7 +155,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot;"
+				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot; wininet.lib"
 				OutputFile="$(OutDir)/client.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
