@@ -368,18 +368,6 @@
        y1="156"
        x2="449"
        y2="171" />
-    <filter
-       inkscape:collect="always"
-       id="filter3876"
-       x="-0.24"
-       width="1.48"
-       y="-0.24"
-       height="1.48">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="3.2"
-         id="feGaussianBlur3878" />
-    </filter>
     <clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath3880">
@@ -477,6 +465,49 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <filter
+       inkscape:collect="always"
+       id="filter3727">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="9.6818906"
+         id="feGaussianBlur3729" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3745">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="8.8397934"
+         id="feGaussianBlur3747" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3796">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.4198967"
+         id="feGaussianBlur3798" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3802">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.8409453"
+         id="feGaussianBlur3804" />
+    </filter>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3812">
+      <rect
+         y="442.02774"
+         x="-717.8205"
+         height="35.006645"
+         width="479"
+         id="rect3814"
+         style="opacity:0.81300001;fill:#ff9955;stroke:none" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -485,16 +516,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.66"
-     inkscape:cx="-193.71853"
-     inkscape:cy="154.59849"
+     inkscape:zoom="0.93338095"
+     inkscape:cx="2.9446362"
+     inkscape:cy="371.21538"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="false"
      inkscape:showpageshadow="true"
-     inkscape:snap-bbox="false"
-     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-edge-midpoints="true"
      inkscape:bbox-nodes="false"
      inkscape:snap-bbox-midpoints="false"
      inkscape:snap-grids="true"
@@ -506,7 +537,7 @@
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:snap-global="true"
-     inkscape:snap-page="false"
+     inkscape:snap-page="true"
      inkscape:snap-to-guides="false">
     <inkscape:grid
        type="xygrid"
@@ -563,29 +594,6 @@
        inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
-    <g
-       id="g3098"
-       transform="translate(5.138885,0.23166013)">
-      <rect
-         rx="18.292683"
-         ry="18.292685"
-         y="993.59393"
-         x="291.86111"
-         height="58.536587"
-         width="163"
-         id="rect2833"
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <text
-         id="text2829"
-         y="1039.0834"
-         x="312.5415"
-         style="font-size:42.43902588px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="1039.0834"
-           x="312.5415"
-           id="tspan2831"
-           sodipodi:role="line">Cancel</tspan></text>
-    </g>
     <path
        style="display:inline;fill:#000000;fill-opacity:1;stroke:none"
        d="m -66,-56 0,752 612,0 0,-752 -612,0 z M 0,0 480,0 480,640 0,640 0,0 z"
@@ -604,29 +612,6 @@
        width="460"
        id="rect3019"
        style="fill:url(#linearGradient3021);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-    <g
-       id="g3093"
-       transform="translate(-16.492275,0.23166013)">
-      <rect
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3056"
-         width="163"
-         height="58.536587"
-         x="36.492275"
-         y="993.59393"
-         ry="18.292685"
-         rx="18.292685" />
-      <text
-         xml:space="preserve"
-         style="font-size:42.43902588px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         x="54.965759"
-         y="1039.0834"
-         id="text3058"><tspan
-           sodipodi:role="line"
-           id="tspan3060"
-           x="54.965759"
-           y="1039.0834">Sign in</tspan></text>
-    </g>
     <text
        id="text4025"
        y="868.31079"
@@ -657,6 +642,71 @@
          id="tspan3881"
          x="47.106022"
          y="603.26825">People's Note</tspan></text>
+    <g
+       id="g3700">
+      <rect
+         y="1000.3622"
+         x="0"
+         height="52"
+         width="480"
+         id="rect2908"
+         style="fill:#1a1a1a;fill-opacity:1;stroke:none" />
+      <text
+         id="text3682"
+         y="1034.3839"
+         x="55.474854"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         xml:space="preserve"><tspan
+           y="1034.3839"
+           x="55.474854"
+           id="tspan3684"
+           sodipodi:role="line">Sign in</tspan></text>
+      <text
+         id="text3686"
+         y="1034.3839"
+         x="327.17407"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         xml:space="preserve"><tspan
+           y="1034.3839"
+           x="327.17407"
+           id="tspan3688"
+           sodipodi:role="line">Cancel</tspan></text>
+    </g>
+    <g
+       id="g3806"
+       clip-path="url(#clipPath3812)"
+       transform="translate(718.8205,-29.66556)">
+      <rect
+         y="425.62921"
+         x="-783.56812"
+         height="404.97934"
+         width="479"
+         id="rect3713"
+         style="fill:#000000;stroke:#000000;stroke-width:1;stroke-opacity:1;filter:url(#filter3802)"
+         transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,0,0)" />
+      <rect
+         transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,0,0)"
+         style="fill:#ffffff;stroke:none"
+         id="rect3711"
+         width="479"
+         height="404.97934"
+         x="-783.56812"
+         y="425.62921" />
+      <rect
+         style="fill:#000000;stroke:none;filter:url(#filter3796)"
+         id="rect3739"
+         width="479"
+         height="404.97934"
+         x="-717.8205"
+         y="477.03439" />
+      <rect
+         y="477.03439"
+         x="-717.8205"
+         height="404.97934"
+         width="479"
+         id="rect3709"
+         style="fill:#ffffff;stroke:none" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"

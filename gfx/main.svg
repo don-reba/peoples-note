@@ -468,8 +468,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.66"
-     inkscape:cx="-69.641608"
-     inkscape:cy="370.91165"
+     inkscape:cx="184.47247"
+     inkscape:cy="332.95764"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -487,7 +487,8 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:snap-global="false">
+     inkscape:snap-global="false"
+     inkscape:snap-page="true">
     <inkscape:grid
        type="xygrid"
        id="grid2820"
@@ -533,6 +534,14 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-412.36218)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       id="rect2981"
+       width="10"
+       height="580"
+       x="470"
+       y="472.36218"
+       ry="0" />
     <g
        id="g3899"
        transform="translate(0,-1.0000095)">
