@@ -497,9 +497,9 @@ sync update
 		TODO
 mobile testing exceptions
 	are often not caught
-		TODO
+		fixed
 	also need to test for exceptions
-		TODO
+		done
 mobile testing fixtures
 	setting up the database every time is taking up space
 	need two different classes
@@ -508,7 +508,7 @@ mobile testing fixtures
 UTF8 strings
 	vector<unsigned char> is a bad container
 	can't get a pointer when empty
-	TODO
+	can add checks for empty vectors
 data store initialization
 	sqlite3_open_v2 creates a database that is either
 		has no version
@@ -534,7 +534,7 @@ SQLite wrapper
 	need to destroy statements automatically
 note list design
 	need to set overflow for titles etc
-		TODO
+		done
 data interface revamp
 	is there a need for INote, INotebook, ITimestamp, or ITag?
 		they contain no complicated logic that might need to be mocked
@@ -918,3 +918,6 @@ thumbnail storage
 	retrieve the thumbnail with the note guid
 	check the retrieved thumbnail size
 	if different, replace the thumbnail
+image caching
+	there is something wrong with the current one-image caching
+		TODO

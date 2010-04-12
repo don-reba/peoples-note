@@ -551,6 +551,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Thumbnail.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Timestamp.cpp"
 				>
 			</File>

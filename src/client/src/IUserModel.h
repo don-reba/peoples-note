@@ -2,8 +2,10 @@
 
 #include "Blob.h"
 #include "ISignalProvider.h"
+#include "Guid.h"
 #include "Note.h"
 #include "Notebook.h"
+#include "Thumbnail.h"
 
 class ICredentialsModel;
 
@@ -44,6 +46,8 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body) = 0;
 
+	virtual void GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail) = 0;
+
 	virtual const NotebookList & GetNotebooks() = 0;
 
 	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook) = 0;
@@ -57,4 +61,6 @@ public:
 	virtual void MakeNotebookLastUsed(const Notebook & notebook) = 0;
 	
 	virtual void SetCredentials(const ICredentialsModel & credentials) = 0;
+
+	virtual void SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail) = 0;
 };

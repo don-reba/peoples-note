@@ -214,6 +214,38 @@ void UserModel::GetNoteBody(Guid guid, wstring & body)
 	statement->Get(0, body);
 }
 
+void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT rowid, thumbnailWidth, thumbnailHeight"
+		"  FROM Notes"
+		"  WHERE guid = ?"
+		"  LIMIT 1"
+		);
+	statement->Bind(1, guid);
+	if (statement->Execute())
+		throw std::exception("Note not found.");
+
+	__int64 row(0);
+	statement->Get(0, row);
+	statement->Get(1, thumbnail.Width);
+	statement->Get(2, thumbnail.Height);
+
+	if (thumbnail.Width > 0 && thumbnail.Height > 0)
+	{
+		IDataStore::Blob sqlBlob = dataStore.MakeBlob
+			( "Notes"
+			, "thumbnail"
+			, row
+			);
+		sqlBlob->Read(thumbnail.Data);
+	}
+	else
+	{
+		thumbnail.Data.clear();
+	}
+}
+
 const NotebookList & UserModel::GetNotebooks()
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -336,6 +368,20 @@ void UserModel::SetCredentials(const ICredentialsModel & credentials)
 		);
 }
 
+void UserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "UPDATE Notes"
+		"  SET thumbnail = ?, thumbnailWidth = ?, thumbnailHeight = ?"
+		"  WHERE guid = ?"
+		);
+	statement->Bind(1, thumbnail.Data);
+	statement->Bind(2, thumbnail.Width);
+	statement->Bind(3, thumbnail.Height);
+	statement->Bind(4, guid);
+	statement->Execute();
+}
+
 //------------------
 // utility functions
 //------------------
@@ -419,6 +465,9 @@ void UserModel::Initialize(wstring name)
 			", creationDate"
 			", title"
 			", body"
+			", thumbnail"
+			", thumbnailWidth  DEFAULT 0"
+			", thumbnailHeight DEFAULT 0"
 			", search"
 			", notebook REFERENCES Notebooks"
 			")"

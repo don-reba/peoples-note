@@ -33,7 +33,23 @@ NoteListPresenter::NoteListPresenter
 
 void NoteListPresenter::OnLoadThumbnail(const Guid & guid, Blob *& blob)
 {
-	// TODO: implement
+	const SIZE size = { 164, 100 };
+	userModel.GetNoteThumbnail(guid, thumbnail);
+	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
+	{
+		wstring body;
+		userModel.GetNoteBody(guid, body);
+
+		noteView.SetTitle(L"");
+		noteView.SetSubtitle(L"");
+		noteView.SetBody(body);
+
+		thumbnail.Width  = size.cx;
+		thumbnail.Height = size.cy;
+		noteView.Render(thumbnail);
+		userModel.SetNoteThumbnail(guid, thumbnail);
+	}
+	blob = &thumbnail.Data;
 }
 
 void NoteListPresenter::OnNoteListChanged()

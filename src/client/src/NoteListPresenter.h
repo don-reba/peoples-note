@@ -18,6 +18,8 @@ private:
 	INoteView      & noteView;
 	IUserModel     & userModel;
 
+	Thumbnail thumbnail;
+
 public:
 
 	NoteListPresenter

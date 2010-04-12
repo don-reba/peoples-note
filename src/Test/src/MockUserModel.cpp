@@ -87,6 +87,12 @@ void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
 		resource = noteBodies[guid];
 }
 
+void MockUserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
+{
+	if (noteThumbnails.end() != noteThumbnails.find(guid))
+		thumbnail = noteThumbnails[guid];
+}
+
 const NotebookList & MockUserModel::GetNotebooks()
 {
 	return notebooks;
@@ -123,4 +129,9 @@ void MockUserModel::SetCredentials(const ICredentialsModel & credentials)
 {
 	credentialsModel.password = credentials.GetPassword();
 	credentialsModel.username = credentials.GetUsername();
+}
+
+void MockUserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
+{
+	noteThumbnails[guid] = thumbnail;
 }

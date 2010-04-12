@@ -13,9 +13,10 @@ void MockNoteView::Hide()
 	isShown = false;
 }
 
-void MockNoteView::Render(SIZE size, Blob & thumbnail)
+void MockNoteView::Render(Thumbnail & thumbnail)
 {
-	renderSize = size;
+	renderSize.cx = thumbnail.Width;
+	renderSize.cy = thumbnail.Height;
 }
 
 void MockNoteView::SetBody(wstring html)

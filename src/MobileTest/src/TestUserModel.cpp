@@ -267,3 +267,36 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes1.size(), 1);
 	TEST_CHECK_EQUAL(notes1.at(0).GetTitle(), L"software use");
 }
+
+FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
+{
+	Notebook notebook = userModel.GetDefaultNotebook();
+
+	wstring empty;
+
+	Guid guid;
+
+	userModel.AddNote
+		( Note(guid, L"note", Timestamp(0))
+		, empty
+		, empty
+		, notebook
+		);
+	
+	Thumbnail in;
+	in.Data.push_back(2);
+	in.Data.push_back(3);
+	in.Data.push_back(5);
+	in.Width  = 7;
+	in.Height = 11;
+	userModel.SetNoteThumbnail(guid, in);
+
+	Thumbnail out;
+	userModel.GetNoteThumbnail(guid, out);
+	TEST_CHECK_EQUAL(out.Data.size(), 3);
+	TEST_CHECK_EQUAL(out.Data.at(0), 2);
+	TEST_CHECK_EQUAL(out.Data.at(1), 3);
+	TEST_CHECK_EQUAL(out.Data.at(2), 5);
+	TEST_CHECK_EQUAL(out.Width,  7);
+	TEST_CHECK_EQUAL(out.Height, 11);
+}

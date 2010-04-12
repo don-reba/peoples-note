@@ -65,6 +65,7 @@ public:
 	
 
 	std::map<std::string, std::wstring> noteBodies;
+	std::map<std::string, Thumbnail>    noteThumbnails;
 
 	std::vector<ImageRecord> addedImages;
 	std::vector<NoteRecord>  addedNotes;
@@ -118,6 +119,8 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
+	virtual void GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail);
+
 	virtual const NotebookList & GetNotebooks();
 
 	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook);
@@ -131,4 +134,6 @@ public:
 	virtual void MakeNotebookLastUsed(const Notebook & notebook);
 	
 	virtual void SetCredentials(const ICredentialsModel & credentials);
+
+	virtual void SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail);
 };
