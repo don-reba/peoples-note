@@ -911,3 +911,10 @@ thumbnailer
 			complicated
 		graphin hack
 			might be impossible
+	went with the Imaging option — it works
+thumbnail storage
+	store the thumbnail with the other note data
+	record the size, to update, if size requirements change
+	retrieve the thumbnail with the note guid
+	check the retrieved thumbnail size
+	if different, replace the thumbnail

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Blob.h"
+#include "Thumbnail.h"
 
 class WindowRenderer
 {
@@ -21,7 +21,7 @@ private:
 
 public:
 
-	void Render(HWND window, SIZE size, Blob & blob);
+	void Render(HWND window, Thumbnail & thumbnail);
 
 private:
 

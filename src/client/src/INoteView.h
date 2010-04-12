@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Blob.h"
+#include "Thumbnail.h"
 
 class INoteView
 {
@@ -19,7 +20,7 @@ public:
 
 	virtual void Hide() = 0;
 
-	virtual void Render(SIZE size, Blob & thumbnail) = 0;
+	virtual void Render(Thumbnail & thumbnail) = 0;
 
 	virtual void SetBody(std::wstring html) = 0;
 

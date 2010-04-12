@@ -7,6 +7,7 @@
 #include "INoteListView.h"
 #include "INoteView.h"
 #include "IUserModel.h"
+#include "Thumbnail.h"
 
 class NoteListPresenter
 {
@@ -17,8 +18,6 @@ private:
 	INoteView      & noteView;
 	IUserModel     & userModel;
 
-	std::vector<Blob> thumbnails;
-
 public:
 
 	NoteListPresenter
@@ -28,17 +27,21 @@ public:
 		, IUserModel     & userModel
 		);
 
+// event handlers
+
 private:
 
-	void OnLoadThumbnail(size_t index, Blob *& blob);
+	void OnLoadThumbnail(const Guid & guid, Blob *& blob);
 
 	void OnNoteListChanged();
 
 	void OnUserLoaded();
 
+// utility functions
+
 private:
 
-	static std::wstring ConvertToHtml(const Note & note, int previewIndex);
+	static std::wstring ConvertToHtml(const Note & note, const std::wstring & guid);
 
 	static std::wstring FormatTitle(const std::wstring & title);
 

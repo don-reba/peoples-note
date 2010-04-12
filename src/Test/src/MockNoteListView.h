@@ -34,7 +34,7 @@ public:
 	signal SignalSearch;
 	signal SignalSignIn;
 
-	BitmapSignal SignalLoadBitmap;
+	DataSignal SignalLoadThumbnail;
 
 public:
 
@@ -52,7 +52,7 @@ public:
 
 	virtual void ConnectImport(slot_type OnImport);
 
-	virtual void ConnectLoadBitmap(BitmapSlot OnLoadBitmap);
+	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail);
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 

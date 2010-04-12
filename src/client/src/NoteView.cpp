@@ -74,9 +74,9 @@ void NoteView::Hide()
 	::ShowWindow(hwnd_, SW_HIDE);
 }
 
-void NoteView::Render(SIZE size, Blob & thumbnail)
+void NoteView::Render(Thumbnail & thumbnail)
 {
-	windowRenderer.Render(hwnd_, size, thumbnail);
+	windowRenderer.Render(hwnd_, thumbnail);
 }
 
 void NoteView::SetBody(wstring html)

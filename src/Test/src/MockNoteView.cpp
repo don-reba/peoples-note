@@ -13,10 +13,9 @@ void MockNoteView::Hide()
 	isShown = false;
 }
 
-HBITMAP MockNoteView::Render(SIZE size)
+void MockNoteView::Render(SIZE size, Blob & thumbnail)
 {
 	renderSize = size;
-	return NULL;
 }
 
 void MockNoteView::SetBody(wstring html)

@@ -570,6 +570,10 @@
 				RelativePath=".\src\UserSignInPresenter.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\WindowRenderer.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -582,6 +586,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Blob.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CComPtr.h"
 				>
 			</File>
 			<File
@@ -761,6 +769,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Thumbnail.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Timestamp.h"
 				>
 			</File>
@@ -782,6 +794,10 @@
 			</File>
 			<File
 				RelativePath=".\src\window.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\WindowRenderer.h"
 				>
 			</File>
 		</Filter>

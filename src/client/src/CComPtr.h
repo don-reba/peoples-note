@@ -11,16 +11,9 @@ private:
 
 public:
 
-	CComPtr()
-		: ptr (NULL)
-	{
-	}
+	CComPtr() : ptr (NULL) {}
 
-	~CComPtr()
-	{
-		if (ptr)
-			ptr->Release();
-	}
+	~CComPtr() { if (ptr) ptr->Release(); }
 
 	template <typename S>
 	HRESULT QueryInterface(CComPtr<S> & object)

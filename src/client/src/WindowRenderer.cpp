@@ -11,14 +11,15 @@ using namespace htmlayout;
 using namespace htmlayout::dom;
 using namespace std;
 
-void WindowRenderer::Render(HWND window, SIZE size, Blob & blob)
+void WindowRenderer::Render(HWND window, Thumbnail & thumbnail)
 {
+	SIZE size = { thumbnail.width, thumbnail.height };
 	SIZE windowSize(ComputeWindowSize(window, size));
 
 	WORD * data(NULL);
 	HBITMAP bmp(RenderBitmap(window, windowSize, data));
 	FlipImage(data, windowSize);
-	ResizeAndCompress(data, windowSize, size, blob);
+	ResizeAndCompress(data, windowSize, size, thumbnail.data);
 	::DeleteObject(bmp);
 }
 

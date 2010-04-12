@@ -47,9 +47,9 @@ void MockNoteListView::ConnectImport(slot_type OnImport)
 	SignalImport.connect(OnImport);
 }
 
-void MockNoteListView::ConnectLoadBitmap(BitmapSlot OnLoadBitmap)
+void MockNoteListView::ConnectLoadThumbnail(DataSlot OnLoadThumbnail)
 {
-	SignalLoadBitmap.connect(OnLoadBitmap);
+	SignalLoadThumbnail.connect(OnLoadThumbnail);
 }
 
 void MockNoteListView::ConnectOpenNote(slot_type OnOpenNote)

@@ -9,10 +9,10 @@ class INoteListView : public ISignalProvider
 public:
 
 	typedef boost::signals2::signal
-		< void(size_t, Blob *&)
+		< void(const Guid &, Blob *&)
 		> DataSignal;
 	typedef boost::signals2::signal
-		< void(size_t, Blob *&)
+		< void(const Guid &, Blob *&)
 		>::slot_type DataSlot;
 
 public:

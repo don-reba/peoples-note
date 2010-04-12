@@ -44,15 +44,15 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 	BOOST_REQUIRE_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[0].html
-		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"bmp:0\"/></div></td><td>Note</td></tr><tr><td>tag-0, tag-1</td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
+		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:0\"/></div></td><td>Note</td></tr><tr><td>tag-0, tag-1</td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[1].html
-		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"bmp:1\"/></div></td><td></td></tr><tr><td></td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
+		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:1\"/></div></td><td></td></tr><tr><td></td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes[2].html
-		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"bmp:2\"/></div></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;, &lt;strong&gt;not bold&lt;/strong</td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
+		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:2\"/></div></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;, &lt;strong&gt;not bold&lt;/strong</td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
 		);
 
 	BOOST_CHECK_EQUAL(noteView.renderSize.cx, 164);

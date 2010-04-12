@@ -384,8 +384,9 @@ BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
 	wstring prefix(L"thumb:");
 	if (0 == wcsncmp(params->uri, prefix.c_str(), prefix.size()))
 	{
+		Guid guid(params->uri + prefix.size());
 		Blob * blob(NULL);
-		SignalLoadThumbnail(_wtoi(params->uri + prefix.size()), blob);
+		SignalLoadThumbnail(guid, blob);
 		if (NULL == blob)
 			return LOAD_DISCARD;
 		params->outData     = &blob->at(0);

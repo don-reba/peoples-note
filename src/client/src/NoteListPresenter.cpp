@@ -27,38 +27,23 @@ NoteListPresenter::NoteListPresenter
 	userModel.ConnectLoaded(bind(&NoteListPresenter::OnUserLoaded, this));
 }
 
-void NoteListPresenter::OnLoadThumbnail(size_t index, Blob *& blob)
+//---------------
+// event handlers
+//---------------
+
+void NoteListPresenter::OnLoadThumbnail(const Guid & guid, Blob *& blob)
 {
-	if (index < thumbnails.size())
-		blob = &thumbnails[index];
+	// TODO: implement
 }
 
 void NoteListPresenter::OnNoteListChanged()
 {
-	thumbnails.clear();
-
 	const NoteList & notes = noteListModel.GetNotes();
 	noteListView.ClearNotes();
 	foreach (const Note & note, notes)
 	{
-		wstring body;
-		userModel.GetNoteBody(note.GetGuid(), body);
-
-		noteView.SetTitle(L"");
-		noteView.SetSubtitle(L"");
-		noteView.SetBody(body);
-
-		int previewIndex = thumbnails.size();
-		SIZE bitmapSize = { 164, 100 };
-		Blob thumbnail;
-		noteView.Render(bitmapSize, thumbnail);
-		noteView.Render(bitmapSize, thumbnail);
-		thumbnails.push_back(thumbnail);
-
-		noteListView.AddNote
-			( ConvertToHtml(note, previewIndex)
-			, ConvertToUnicode(note.GetGuid())
-			);
+		wstring guid(ConvertToUnicode(note.GetGuid()));
+		noteListView.AddNote(ConvertToHtml(note, guid), guid);
 	}
 	noteListView.UpdateNotes();
 }
@@ -74,12 +59,17 @@ void NoteListPresenter::OnUserLoaded()
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
 }
 
-wstring NoteListPresenter::ConvertToHtml(const Note & note, int previewIndex)
+//------------------
+// utility functions
+//------------------
+
+wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid)
 {
 	wostringstream stream;
 	stream << L"<table><tr><td rowspan=\"3\">";
 	stream << L"<div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:";
-	stream << previewIndex << L"\"/></div></td><td>";
+	stream << guid;
+	stream << L"\"/></div></td><td>";
 	stream << FormatTitle(note.GetTitle());
 	stream << L"</td></tr><tr><td>";
 	stream << FormatTags(note.GetTags());

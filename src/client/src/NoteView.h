@@ -39,7 +39,7 @@ public:
 
 	virtual void Hide();
 
-	virtual void Render(SIZE size, Blob & thumbnail);
+	virtual void Render(Thumbnail & thumbnail);
 
 	virtual void SetBody(std::wstring html);
 
