@@ -155,7 +155,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot; wininet.lib"
+				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot; wininet.lib Imaging.lib"
 				OutputFile="$(OutDir)/client.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
@@ -387,10 +387,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\BitmapRenderer.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\crackers.cpp"
 				>
 			</File>
@@ -582,10 +578,6 @@
 			>
 			<File
 				RelativePath=".\src\Animator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\BitmapRenderer.h"
 				>
 			</File>
 			<File

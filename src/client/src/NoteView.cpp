@@ -1,11 +1,13 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "NoteView.h"
 
 #include "crackers.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
-#include "imaging.h"
+#include <imaging.h>
+#include <initguid.h>
+#include <imgguids.h>
 
 using namespace htmlayout;
 using namespace htmlayout::dom;
@@ -89,36 +91,136 @@ struct BITMAPINFO_BF
 	}
 };
 
-HBITMAP NoteView::Render(SIZE size)
+void NoteView::Render(SIZE size, vector<BYTE> & thumbnail)
 {
+	RECT client;
+	::GetClientRect(hwnd_, &client);
+
+	SIZE imageSize;
+	imageSize.cx = client.right;
+	imageSize.cy = min(client.bottom, client.right * size.cy / size.cx);
+
  	BITMAPINFO_BF info = { 0 };
 	info.bmiHeader.biSize         = sizeof(BITMAPINFOHEADER);
-	info.bmiHeader.biWidth        = size.cx;
-	info.bmiHeader.biHeight       = size.cy;
+	info.bmiHeader.biWidth        = imageSize.cx;
+	info.bmiHeader.biHeight       = imageSize.cy;
 	info.bmiHeader.biPlanes       = 1;
 	info.bmiHeader.biBitCount     = 16;
 	info.bmiHeader.biCompression  = BI_BITFIELDS;
-	info.bmiHeader.biSizeImage    = ((size.cx * 2 + 3) & ~3) * size.cy;
+	info.bmiHeader.biSizeImage    = ((imageSize.cx * 2 + 3) & ~3) * imageSize.cy;
 	info.bmiHeader.biClrUsed      = 1;
 	info.bmiHeader.biClrImportant = 0;
 	info.bmiColorsR               = 0xf800;
 	info.bmiColorsG               = 0x07e0;
 	info.bmiColorsB               = 0x001f;
 
-	HDC     dc  (::CreateCompatibleDC(::GetDC(hwnd_)));
-	HBITMAP bmp (::CreateDIBSection(dc, info.GetBitmapInfo(), DIB_RGB_COLORS, NULL, NULL, 0));
+	WORD * bits;
+
+	HDC dc(::CreateCompatibleDC(::GetDC(hwnd_)));
+	HBITMAP bmp = ::CreateDIBSection
+		( dc                              // hdc
+		, info.GetBitmapInfo()            // pbmi
+		, DIB_RGB_COLORS                  // iUsage
+		, reinterpret_cast<void**>(&bits) // ppvBits
+		, NULL                            // hSection
+		, 0                               // dwOffset
+		);
 	if (bmp)
 	{
-		RECT rect = { 0, 0, size.cx, size.cy };
+		RECT rect = { 0, 0, imageSize.cx, imageSize.cy };
 		if (!HTMLayoutRender(hwnd_, bmp, rect))
 			throw std::exception("Note rendering failed.");
 	}
 
-	//vector<WORD> bits(info.bmiHeader.biSizeImage / 2);
-	//::GetDIBits(dc, bmp, 0, size.cy, &bits[0], &info, DIB_RGB_COLORS);
+
+
+	// image resizing
+
+	HRESULT result;
+
+	IImagingFactory * imageFactory(NULL);
+	result = ::CoCreateInstance
+		( CLSID_ImagingFactory
+		, NULL
+		, CLSCTX_INPROC_SERVER
+		, IID_IImagingFactory
+		, reinterpret_cast<void**>(&imageFactory)
+		);
+
+	BitmapData bitmapData = { 0 };
+	bitmapData.Width       = imageSize.cx;
+	bitmapData.Height      = imageSize.cy;
+	bitmapData.Stride      = ((imageSize.cx * 2 + 3) & ~3);
+	bitmapData.PixelFormat = PixelFormat16bppRGB565;
+	bitmapData.Scan0       = bits;
+
+	IBitmapImage * image(NULL);
+	result = imageFactory->CreateBitmapFromBuffer
+		( &bitmapData
+		, &image
+		);
+
+	IImage * image2(NULL);
+	result = image->QueryInterface
+		( IID_IImage
+		, reinterpret_cast<void**>(&image2)
+		);
+
+	IBasicBitmapOps * basicBitmapOps(NULL);
+	result = image->QueryInterface
+		( IID_IBasicBitmapOps
+		, reinterpret_cast<void**>(&basicBitmapOps)
+		);
+
+	IImage * thumb(NULL);
+	result = image2->GetThumbnail(size.cx, size.cy, &thumb);
+
+	ImageCodecInfo * infos(NULL);
+	UINT             infoCount(0);
+	result = imageFactory->GetInstalledEncoders(&infoCount, &infos);
+	ImageCodecInfo * codecInfo(NULL);
+	for (int i(0); i != infoCount; ++i)
+	{
+		ImageCodecInfo * info = infos + i;
+		if (wcscmp(info->FormatDescription, L"JPEG") == 0)
+			codecInfo = info;
+	}
+	
+	IStream * stream(NULL);
+	result = ::CreateStreamOnHGlobal
+		( NULL    // hGlobal
+		, TRUE    // fDeleteOnRelease
+		, &stream // ppstm
+		);
+
+	IImageEncoder * encoder(NULL);
+	result = imageFactory->CreateImageEncoderToStream
+		( &codecInfo->Clsid // clsid
+		, stream            // stream
+		, &encoder          // encoder
+		);
+	encoder->InitEncoder(stream);
+
+	IImageSink * sink(NULL);
+	result = encoder->GetEncodeSink(&sink);
+
+	result = thumb->PushIntoSink(sink);
+
+	thumbnail.resize(0);
+
+	LARGE_INTEGER  zero = { 0 };
+	ULARGE_INTEGER pos  = { 0 };
+	stream->Seek(zero, STREAM_SEEK_CUR, &pos);
+	stream->Seek(zero, STREAM_SEEK_SET, NULL);
+	if (pos.HighPart > 0 || pos.LowPart == 0)
+		return;
+	thumbnail.resize(pos.LowPart);
+	ULONG bytesRead = 0;
+	stream->Read(&thumbnail[0], pos.LowPart, &bytesRead);
+	if (bytesRead < pos.LowPart)
+		thumbnail.resize(0);
 
 	::DeleteDC(dc);
-	return bmp;
 }
 
 void NoteView::SetBody(wstring html)
@@ -142,6 +244,7 @@ void NoteView::SetSubtitle(wstring text)
 	if (!body)
 		throw std::exception("#subtitle not found.");
 	body.set_text(text.c_str(), text.size());
+	root.update(true);
 }
 
 void NoteView::SetTitle(wstring text)
@@ -151,6 +254,7 @@ void NoteView::SetTitle(wstring text)
 	if (!body)
 		throw std::exception("#title not found.");
 	body.set_text(text.c_str(), text.size());
+	root.update(true);
 }
 
 void NoteView::Show()

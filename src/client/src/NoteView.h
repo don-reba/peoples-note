@@ -36,7 +36,7 @@ public:
 
 	virtual void Hide();
 
-	virtual HBITMAP Render(SIZE size);
+	virtual void Render(SIZE size, std::vector<BYTE> & thumbnail);
 
 	virtual void SetBody(std::wstring html);
 

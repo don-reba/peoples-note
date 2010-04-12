@@ -81,6 +81,7 @@ WPARAM RunMessageLoop(IAnimator & animator)
 			animator.StepFrame();
 		}
 	}
+	CoUninitialize();
 	return msg.wParam;
 }
 
@@ -94,6 +95,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		return 0;
 
 	SHInitExtraControls();
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
 	try
 	{

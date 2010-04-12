@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Blob.h"
 #include "ISignalProvider.h"
 #include "Guid.h"
 
@@ -8,11 +9,11 @@ class INoteListView : public ISignalProvider
 public:
 
 	typedef boost::signals2::signal
-		< void(size_t, HBITMAP &)
-		> BitmapSignal;
+		< void(size_t, Blob *&)
+		> DataSignal;
 	typedef boost::signals2::signal
-		< void(size_t, HBITMAP &)
-		>::slot_type BitmapSlot;
+		< void(size_t, Blob *&)
+		>::slot_type DataSlot;
 
 public:
 
@@ -24,7 +25,7 @@ public:
 
 	virtual void ConnectImport(slot_type OnImport) = 0;
 
-	virtual void ConnectLoadBitmap(BitmapSlot OnLoadBitmap) = 0;
+	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail) = 0;
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote) = 0;
 

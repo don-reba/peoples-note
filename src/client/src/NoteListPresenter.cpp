@@ -22,22 +22,20 @@ NoteListPresenter::NoteListPresenter
 	, noteView      (noteView)
 	, userModel     (userModel)
 {
-	noteListView.ConnectLoadBitmap(bind(&NoteListPresenter::OnLoadBitmap, this, _1, _2));
+	noteListView.ConnectLoadThumbnail(bind(&NoteListPresenter::OnLoadThumbnail, this, _1, _2));
 	noteListModel.ConnectChanged(bind(&NoteListPresenter::OnNoteListChanged, this));
 	userModel.ConnectLoaded(bind(&NoteListPresenter::OnUserLoaded, this));
 }
 
-void NoteListPresenter::OnLoadBitmap(size_t previewIndex, HBITMAP & bmp)
+void NoteListPresenter::OnLoadThumbnail(size_t index, Blob *& blob)
 {
-	if (previewIndex < bitmaps.size())
-		bmp = bitmaps.at(previewIndex);
+	if (index < thumbnails.size())
+		blob = &thumbnails[index];
 }
 
 void NoteListPresenter::OnNoteListChanged()
 {
-	foreach (HBITMAP bmp, bitmaps)
-		::DeleteObject(bmp);
-	bitmaps.clear();
+	thumbnails.clear();
 
 	const NoteList & notes = noteListModel.GetNotes();
 	noteListView.ClearNotes();
@@ -50,9 +48,11 @@ void NoteListPresenter::OnNoteListChanged()
 		noteView.SetSubtitle(L"");
 		noteView.SetBody(body);
 
-		int previewIndex = bitmaps.size();
+		int previewIndex = thumbnails.size();
 		SIZE bitmapSize = { 164, 100 };
-		bitmaps.push_back(noteView.Render(bitmapSize));
+		Blob thumbnail;
+		noteView.Render(bitmapSize, thumbnail);
+		thumbnails.push_back(thumbnail);
 
 		noteListView.AddNote
 			( ConvertToHtml(note, previewIndex)
@@ -77,7 +77,7 @@ wstring NoteListPresenter::ConvertToHtml(const Note & note, int previewIndex)
 {
 	wostringstream stream;
 	stream << L"<table><tr><td rowspan=\"3\">";
-	stream << L"<div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"bmp:";
+	stream << L"<div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:";
 	stream << previewIndex << L"\"/></div></td><td>";
 	stream << FormatTitle(note.GetTitle());
 	stream << L"</td></tr><tr><td>";

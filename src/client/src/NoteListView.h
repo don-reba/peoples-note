@@ -3,7 +3,6 @@
 #include "resourceppc.h"
 #endif 
 
-#include "BitmapRenderer.h"
 #include "HTMLayoutWindow.h"
 #include "IAnimator.h"
 #include "INoteListView.h"
@@ -45,12 +44,12 @@ private:
 	int       startTime;
 	State     state;
 
-	BitmapRenderer bitmapRenderer;
-
 	signal SignalImport;
 	signal SignalOpenNote;
 	signal SignalSearch;
 	signal SignalSignIn;
+
+	DataSignal  SignalLoadThumbnail;
 
 // interface
 
@@ -80,7 +79,7 @@ public:
 
 	virtual void ConnectImport(slot_type OnImport);
 
-	virtual void ConnectLoadBitmap(BitmapSlot OnLoadBitmap);
+	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail);
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 

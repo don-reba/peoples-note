@@ -892,3 +892,22 @@ signin
 			restarts sync
 		could sync and main user models end up with different credentials?
 			do not cache them, but store in the database
+thumbnailer
+	overview
+		takes an HTMLayout window handle and a thumbnail size
+		creates a window-sized DIB
+		renders the window into the DIB
+		creates an image object
+		resizes it to thumbnail size
+		creates a memory stream
+		encodes the image as a jpg into it
+	the imaging API is much too complex
+	lets try using the graphin library
+		jpg support not compiled
+	JPEG options
+		Imaging
+			complicated
+		libjpeg
+			complicated
+		graphin hack
+			might be impossible

@@ -17,7 +17,7 @@ private:
 	INoteView      & noteView;
 	IUserModel     & userModel;
 
-	std::vector<HBITMAP> bitmaps;
+	std::vector<Blob> thumbnails;
 
 public:
 
@@ -30,7 +30,7 @@ public:
 
 private:
 
-	void OnLoadBitmap(size_t previewIndex, HBITMAP & bmp);
+	void OnLoadThumbnail(size_t index, Blob *& blob);
 
 	void OnNoteListChanged();
 

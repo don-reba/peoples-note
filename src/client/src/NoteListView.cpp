@@ -24,7 +24,6 @@ NoteListView::NoteListView
 	)
 	: animator        (animator)
 	, acceleration    (-0.001)
-	, bitmapRenderer  (instance)
 	, cmdShow         (cmdShow)
 	, instance        (instance)
 	, HTMLayoutWindow (L"main.htm")
@@ -94,10 +93,6 @@ void NoteListView::AddNote(wstring html, wstring value)
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
-
-	element preview(note.find_first("#thumb img"));
-	if (preview)
-		preview.attach(&bitmapRenderer);
 }
 
 void NoteListView::AddNotebook(wstring html)
@@ -135,9 +130,9 @@ void NoteListView::ConnectImport(slot_type OnImport)
 	SignalImport.connect(OnImport);
 }
 
-void NoteListView::ConnectLoadBitmap(BitmapSlot OnLoadBitmap)
+void NoteListView::ConnectLoadThumbnail(DataSlot OnLoadThumbnail)
 {
-	bitmapRenderer.ConnectLoadBitmap(OnLoadBitmap);
+	SignalLoadThumbnail.connect(OnLoadThumbnail);
 }
 
 void NoteListView::ConnectOpenNote(slot_type OnOpenNote)
@@ -386,9 +381,18 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 
 BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
 {
-	if (NULL == wcschr(params->uri, L':'))
-		return __super::OnLoadData(params);
-	return LOAD_DISCARD;
+	wstring prefix(L"thumb:");
+	if (0 == wcsncmp(params->uri, prefix.c_str(), prefix.size()))
+	{
+		Blob * blob(NULL);
+		SignalLoadThumbnail(_wtoi(params->uri + prefix.size()), blob);
+		if (NULL == blob)
+			return LOAD_DISCARD;
+		params->outData     = &blob->at(0);
+		params->outDataSize = blob->size();
+		return LOAD_OK;
+	}
+	return __super::OnLoadData(params);
 }
 
 void NoteListView::OnMenuExit()
