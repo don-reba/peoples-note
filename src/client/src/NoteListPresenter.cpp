@@ -52,6 +52,7 @@ void NoteListPresenter::OnNoteListChanged()
 		SIZE bitmapSize = { 164, 100 };
 		Blob thumbnail;
 		noteView.Render(bitmapSize, thumbnail);
+		noteView.Render(bitmapSize, thumbnail);
 		thumbnails.push_back(thumbnail);
 
 		noteListView.AddNote

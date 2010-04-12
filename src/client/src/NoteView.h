@@ -2,6 +2,7 @@
 
 #include "HTMLayoutWindow.h"
 #include "INoteView.h"
+#include "WindowRenderer.h"
 
 class NoteView : public HTMLayoutWindow, public INoteView
 {
@@ -11,6 +12,8 @@ private:
 	HWND      parent;
 
 	bool isFullScreen;
+
+	WindowRenderer windowRenderer;
 
 	Blob blob;
 
@@ -36,7 +39,7 @@ public:
 
 	virtual void Hide();
 
-	virtual void Render(SIZE size, std::vector<BYTE> & thumbnail);
+	virtual void Render(SIZE size, Blob & thumbnail);
 
 	virtual void SetBody(std::wstring html);
 
