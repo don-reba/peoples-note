@@ -20,7 +20,8 @@ UserSignInPresenter::UserSignInPresenter
 
 void UserSignInPresenter::OnCredentialsUpdated()
 {
-	noteListView.SignIn();
+	if (!userModel.GetCredentials().GetUsername().empty())
+		noteListView.SignIn();
 }
 
 void UserSignInPresenter::OnSignIn()

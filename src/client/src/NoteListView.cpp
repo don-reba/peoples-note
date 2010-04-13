@@ -26,6 +26,7 @@ NoteListView::NoteListView
 	, acceleration    (-0.001)
 	, cmdShow         (cmdShow)
 	, instance        (instance)
+	, isSignedIn      (false)
 	, HTMLayoutWindow (L"main.htm")
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
@@ -175,15 +176,15 @@ bool NoteListView::GetEnexPath(wstring & path)
 
 Guid NoteListView::GetSelectedNoteGuid()
 {
-	element root(element::root_element(hwnd_));
-	element noteList = root.find_first("#note-list");
+	element root     (element::root_element(hwnd_));
+	element noteList (root.find_first("#note-list"));
 	return noteList.get_value().to_string().c_str();
 }
 
 wstring NoteListView::GetSearchString()
 {
-	element root(element::root_element(hwnd_));
-	element searchBox = root.find_first("#search-box");
+	element root      (element::root_element(hwnd_));
+	element searchBox (root.find_first("#search-box"));
 	if (!searchBox)
 		throw std::exception("'#search-box' not found.");
 	return searchBox.text().c_str();
@@ -191,7 +192,14 @@ wstring NoteListView::GetSearchString()
 
 void NoteListView::SignIn()
 {
-	// TODO: implement
+	isSignedIn = true;
+
+	element root   (element::root_element(hwnd_));
+	element signin (root.find_first("#menu-signin"));
+	if (!signin)
+		throw std::exception("'#menu-signin' not found.");
+	signin.set_text(L"Sign out");
+	signin.update();
 }
 
 void NoteListView::UpdateNotebooks()
@@ -403,7 +411,8 @@ void NoteListView::OnMenuExit()
 
 void NoteListView::OnMenuSignIn()
 {
-	SignalSignIn();
+	if (!isSignedIn)
+		SignalSignIn();
 }
 
 void NoteListView::OnMenuImport()

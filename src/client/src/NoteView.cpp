@@ -76,10 +76,10 @@ void NoteView::Hide()
 
 void NoteView::Render(Thumbnail & thumbnail)
 {
-	element root = element::root_element(hwnd_);
-	root.update(true);
-	HTMLayoutUpdateWindow(hwnd_);
-
+	HTMLayoutUpdateElementEx
+		( element::root_element(hwnd_)
+		, RESET_STYLE_DEEP | MEASURE_DEEP | REDRAW_NOW
+		);
 	windowRenderer.Render(hwnd_, thumbnail);
 }
 

@@ -29,13 +29,10 @@ void CredentialsModel::SetCredentials
 {
 	this->username = username;
 	this->password = password;
-	updated = true;
+	SignalUpdated();
 }
 
 void CredentialsModel::Update()
 {
-	updated = false;
 	SignalUpdating();
-	if (updated)
-		SignalUpdated();
 }

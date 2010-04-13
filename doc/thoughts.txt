@@ -912,6 +912,8 @@ thumbnailer
 		graphin hack
 			might be impossible
 	went with the Imaging option — it works
+	the note view shoud hide its UI when not shown
+		TODO
 thumbnail storage
 	store the thumbnail with the other note data
 	record the size, to update, if size requirements change

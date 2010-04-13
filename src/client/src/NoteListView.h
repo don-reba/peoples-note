@@ -37,6 +37,8 @@ private:
 	element noteList;
 	element notebookList;
 
+	bool isSignedIn;
+
 	WndMsgPtr lButtonDown;
 	int       lButtonDownY;
 	int       startScrollPos;

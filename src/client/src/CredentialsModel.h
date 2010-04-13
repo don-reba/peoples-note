@@ -12,8 +12,6 @@ private:
 	signal SignalUpdated;
 	signal SignalUpdating;
 
-	bool updated;
-
 public:
 
 	virtual void ConnectUpdated(slot_type OnUpdated);

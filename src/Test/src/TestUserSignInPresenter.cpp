@@ -11,6 +11,11 @@ BOOST_AUTO_TEST_CASE(UserSignInPresenter_Upate_Test)
 	UserSignInPresenter(noteListView, userModel);
 
 	userModel.credentialsModel.SignalUpdated();
+	BOOST_CHECK(!noteListView.signedIn);
+
+	userModel.credentialsModel.username = L"test-usr";
+
+	userModel.credentialsModel.SignalUpdated();
 	BOOST_CHECK(noteListView.signedIn);
 }
 
