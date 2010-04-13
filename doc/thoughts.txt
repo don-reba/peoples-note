@@ -921,3 +921,6 @@ thumbnail storage
 image caching
 	there is something wrong with the current one-image caching
 		TODO
+signin
+	need to test CredentialsPresenter::OnOk better
+		TODO

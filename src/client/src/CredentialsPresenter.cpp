@@ -36,19 +36,13 @@ void CredentialsPresenter::OnViewCreated()
 
 void CredentialsPresenter::OnOk()
 {
-	wstring username(credentialsModel.GetUsername());
-	wstring password(credentialsModel.GetPassword());
+	wstring username(credentialsView.GetUsername());
+	wstring password(credentialsView.GetPassword());
 
-	IEnService::CredentialsValidity validity = enService.CheckCredentials
-		( credentialsModel.GetUsername()
-		, credentialsModel.GetPassword()
-		);
+	IEnService::CredentialsValidity validity = enService.CheckCredentials(username, password);
 	if (validity.IsGood)
 	{
-		credentialsModel.SetCredentials
-			( credentialsView.GetUsername()
-			, credentialsView.GetPassword()
-			);
+		credentialsModel.SetCredentials(username, password);
 		credentialsView.Close();
 	}
 	else

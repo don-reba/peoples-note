@@ -22,6 +22,8 @@ IEnService::CredentialsValidity EnService::CheckCredentials
 	const wchar_t * userStoreUrl     = L"https://sandbox.evernote.com/edam/user";
 	const wchar_t * noteStoreUrlBase = L"http://sandbox.evernote.com/edam/note/";
 
+	CredentialsValidity validity;
+
 	try
 	{
 		THttpTransport  transport (userStoreUrl);
@@ -50,15 +52,22 @@ IEnService::CredentialsValidity EnService::CheckCredentials
 			, consumerSecret
 			);
 
-		CredentialsValidity validity;
 		validity.IsGood = true;
-		return validity;
+	}
+	catch (const Error::EDAMUserException & e)
+	{
+		validity.IsGood  = false;
+		validity.Message = e.parameter;
+	}
+	catch (const Error::EDAMSystemException & e)
+	{
+		validity.IsGood  = false;
+		validity.Message = e.message;
 	}
 	catch (const TException & e)
 	{
-		CredentialsValidity validity;
 		validity.IsGood  = false;
 		validity.Message = e.GetMessage();
-		return validity;
 	}
+	return validity;
 }

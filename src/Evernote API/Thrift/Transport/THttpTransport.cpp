@@ -263,6 +263,22 @@ void THttpTransport::SendRequest
 	if (data.empty())
 		return;
 
+	DWORD securityFlags(0);
+	DWORD securityFlagsSize(sizeof(securityFlags));
+	BOOL dbgSuccess = ::InternetQueryOption
+		( requestHandle
+		, INTERNET_OPTION_SECURITY_FLAGS
+		, reinterpret_cast<void*>(&securityFlags)
+		, &securityFlagsSize
+		);
+	securityFlags |= SECURITY_FLAG_IGNORE_UNKNOWN_CA;
+	dbgSuccess = ::InternetSetOption
+		( requestHandle
+		, INTERNET_OPTION_SECURITY_FLAGS
+		, reinterpret_cast<void*>(&securityFlags)
+		, securityFlagsSize
+		);
+
 	static wstring headers(L"Content-Type: application/x-thrift\r\n");
 
 	BOOL success = ::HttpSendRequest
