@@ -168,4 +168,5 @@ void WindowRenderer::ResizeAndCompress
 	stream->Read(&blob[0], pos.LowPart, &bytesRead);
 	if (bytesRead < pos.LowPart)
 		blob.resize(0);
+	DEBUGMSG(true, (L"size: %d\n", blob.size()));
 }
