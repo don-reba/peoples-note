@@ -39,17 +39,29 @@ void CredentialsPresenter::OnOk()
 	wstring username(credentialsView.GetUsername());
 	wstring password(credentialsView.GetPassword());
 
-	IEnService::CredentialsValidity validity = enService.CheckCredentials(username, password);
-	if (validity.IsGood)
+	if (username.empty())
 	{
-		credentialsModel.SetCredentials(username, password);
-		credentialsView.Close();
+		credentialsView.SetMessage(L"Please, enter a username.");
+	}
+	else if (password.empty())
+	{
+		credentialsView.SetMessage(L"Please, enter a password.");
 	}
 	else
 	{
-		wstring emptyPassword(L"");
-		credentialsView.SetPassword(emptyPassword);
-		credentialsView.SetMessage(validity.Message);
+		IEnService::CredentialsValidity validity
+			= enService.CheckCredentials(username, password);
+		if (validity.IsGood)
+		{
+			credentialsModel.SetCredentials(username, password);
+			credentialsView.Close();
+		}
+		else
+		{
+			wstring emptyPassword(L"");
+			credentialsView.SetPassword(emptyPassword);
+			credentialsView.SetMessage(validity.Message);
+		}
 	}
 }
 
