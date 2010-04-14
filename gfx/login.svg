@@ -467,22 +467,6 @@
        sodipodi:type="inkscape:persp3d" />
     <filter
        inkscape:collect="always"
-       id="filter3727">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="9.6818906"
-         id="feGaussianBlur3729" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       id="filter3745">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="8.8397934"
-         id="feGaussianBlur3747" />
-    </filter>
-    <filter
-       inkscape:collect="always"
        id="filter3796">
       <feGaussianBlur
          inkscape:collect="always"
@@ -635,13 +619,13 @@
     <text
        xml:space="preserve"
        style="font-size:64.09456635px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       x="47.106022"
+       x="113.70355"
        y="603.26825"
        id="text3879"><tspan
          sodipodi:role="line"
          id="tspan3881"
-         x="47.106022"
-         y="603.26825">People's Note</tspan></text>
+         x="113.70355"
+         y="603.26825">Evernote</tspan></text>
     <g
        id="g3700">
       <rect
