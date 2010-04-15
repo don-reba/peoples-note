@@ -85,9 +85,8 @@ void NoteView::Render(Thumbnail & thumbnail)
 
 void NoteView::SetBody(wstring html)
 {
-	element root = element::root_element(hwnd_);
-	root.update(true);
-	element body = root.find_first("#body");
+	element root (element::root_element(hwnd_));
+	element body (root.find_first("#body"));
 	if (!body)
 		throw std::exception("#body not found.");
 

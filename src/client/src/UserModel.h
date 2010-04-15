@@ -53,7 +53,7 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
-	virtual void CreateDefaultUser();
+	virtual bool Exists(const std::wstring & username);
 
 	virtual ICredentialsModel & GetCredentials();
 
@@ -67,7 +67,10 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
-	virtual void GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail);
+	virtual void GetNoteThumbnail
+		( const Guid & guid
+		, Thumbnail & thumbnail
+		);
 
 	virtual const NotebookList & GetNotebooks();
 
@@ -75,15 +78,25 @@ public:
 
 	virtual const NoteList & GetNotesBySearch(std::wstring search);
 
-	virtual void Load();
+	virtual void Load(const std::wstring & username);
+
+	virtual void LoadAs
+		( const std::wstring & oldUsername
+		, const std::wstring & newUsername
+		);
+
+	virtual void LoadOrCreate(const std::wstring & username);
 
 	virtual void MakeNotebookDefault(const Notebook & notebook);
 
 	virtual void MakeNotebookLastUsed(const Notebook & notebook);
 	
-	virtual void SetCredentials(const ICredentialsModel & credentials);
+	virtual void SetNoteThumbnail
+		( const Guid      & guid
+		, const Thumbnail & thumbnail
+		);
 
-	virtual void SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail);
+	virtual void Unload();
 
 // utility functions
 
@@ -101,9 +114,9 @@ private:
 
 	void Initialize(std::wstring name);
 
-	void LoadOrCreate(std::wstring name);
-
 	void SetPragma(const char * sql);
 
 	bool TryLoad(std::wstring path);
+
+	void Update();
 };

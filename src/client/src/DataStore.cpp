@@ -27,6 +27,15 @@ DataStore::~DataStore()
 // IDataStore implementation
 //--------------------------
 
+void DataStore::Close()
+{
+	if (NULL != db)
+	{
+		sqlite3_close(db);
+		db = NULL;
+	}
+}
+
 bool DataStore::Create(std::wstring path, int flags)
 {
 	assert(db == NULL);

@@ -21,6 +21,8 @@ public:
 
 public:
 
+	virtual void Close();
+
 	virtual bool Create(std::wstring path, int flags);
 
 	virtual __int64 GetLastInsertRowid();

@@ -5,10 +5,9 @@ using namespace boost;
 using namespace std;
 
 MockUserModel::MockUserModel()
-	: isDefault        (false)
-	, isLoaded         (false)
-	, defaultNotebook  (Guid(), L"default-notebook")
+	: defaultNotebook  (Guid(), L"default-notebook")
 	, lastUsedNotebook (Guid(), L"last-used-notebook")
+	, loadMethod       (LoadMethodNone)
 {
 }
 
@@ -44,9 +43,9 @@ void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
-void MockUserModel::CreateDefaultUser()
+bool MockUserModel::Exists(const wstring & username)
 {
-	isDefault = true;
+	return validUsernames.find(username) != validUsernames.end();
 }
 
 ICredentialsModel & MockUserModel::GetCredentials()
@@ -110,9 +109,40 @@ const NoteList & MockUserModel::GetNotesBySearch(wstring search)
 	return notes;
 }
 
-void MockUserModel::Load()
+void MockUserModel::Load(const wstring & username)
 {
-	isLoaded = true;
+	if (loadMethod != LoadMethodNone)
+	{
+		loadMethod = LoadMethodNone;
+		return;
+	}
+	loadedAs   = username;
+	loadMethod = LoadMethodLoad;
+}
+
+void MockUserModel::LoadAs
+		( const wstring & oldUsername
+		, const wstring & newUsername
+		)
+{
+	if (loadMethod != LoadMethodNone)
+	{
+		loadMethod = LoadMethodNone;
+		return;
+	}
+	loadedAs   = newUsername;
+	loadMethod = LoadMethodLoadAs;
+}
+
+void MockUserModel::LoadOrCreate(const wstring & username)
+{
+	if (loadMethod != LoadMethodNone)
+	{
+		loadMethod = LoadMethodNone;
+		return;
+	}
+	loadedAs   = username;
+	loadMethod = LoadMethodLoadOrCreate;
 }
 
 void MockUserModel::MakeNotebookDefault(const Notebook & notebook)
@@ -125,13 +155,13 @@ void MockUserModel::MakeNotebookLastUsed(const Notebook & notebook)
 	lastUsedNotebook = notebook;
 }
 
-void MockUserModel::SetCredentials(const ICredentialsModel & credentials)
-{
-	credentialsModel.password = credentials.GetPassword();
-	credentialsModel.username = credentials.GetUsername();
-}
-
 void MockUserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
 {
 	noteThumbnails[guid] = thumbnail;
+}
+
+void MockUserModel::Unload()
+{
+	loadMethod = LoadMethodNone;
+	loadedAs.clear();
 }

@@ -18,6 +18,8 @@ public:
 
 	virtual ~IDataStore() {}
 
+	virtual void Close() = 0;
+
 	virtual bool Create(std::wstring path, int flags) = 0;
 
 	virtual __int64 GetLastInsertRowid() = 0;

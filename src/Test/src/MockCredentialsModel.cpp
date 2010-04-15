@@ -13,7 +13,6 @@ MockCredentialsModel::MockCredentialsModel
 	)
 	: username (username)
 	, password (password)
-	, updated  (false)
 {
 }
 
@@ -44,13 +43,10 @@ void MockCredentialsModel::SetCredentials
 {
 	this->username = username;
 	this->password = password;
-	updated = true;
+	SignalUpdated();
 }
 
 void MockCredentialsModel::Update()
 {
-	updated = false;
 	SignalUpdating();
-	if (updated)
-		SignalUpdated();
 }

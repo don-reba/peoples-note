@@ -105,16 +105,17 @@ int WINAPI WinMain(HINSTANCE instance,
 		EnImporter  enImporter;
 		EnService   enService;
 
-		LastUserModel lastUserModel(registryKey);
-		NoteListModel noteListModel;
-		UserModel     userModel(dataStore, GetDocumentPath());
+		CredentialsModel newCredentials;
+		LastUserModel    lastUserModel(registryKey);
+		NoteListModel    noteListModel;
+		UserModel        userModel(dataStore, GetDocumentPath());
 
 		CredentialsView credentialsView (instance);
 		NoteView        noteView        (instance);
 		NoteListView    noteListView    (animator, instance, nCmdShow);
 
 		CredentialsPresenter credentialsPresenter
-			( userModel.GetCredentials()
+			( newCredentials
 			, credentialsView
 			, enService
 			);
@@ -145,7 +146,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, lastUserModel
 			);
 		UserSignInPresenter userSignInPresenter
-			( noteListView
+			( newCredentials
+			, noteListView
 			, userModel
 			);
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "NoteListPresenter.h"
 
+#include "ICredentialsModel.h"
 #include "NoteView.h"
 #include "Notebook.h"
 #include "Tools.h"
@@ -73,6 +74,9 @@ void NoteListPresenter::OnUserLoaded()
 	noteListView.UpdateNotebooks();
 
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
+
+	if (userModel.GetCredentials().GetUsername() != L"[anonymous]")
+		noteListView.SignIn();
 }
 
 //------------------

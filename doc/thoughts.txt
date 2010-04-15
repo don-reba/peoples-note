@@ -892,6 +892,10 @@ signin
 			restarts sync
 		could sync and main user models end up with different credentials?
 			do not cache them, but store in the database
+	should signin update the user's credentials?
+	after all, it is not his credentials that are set, but the next user's
+	what to call these credentials?
+		newCredentials
 thumbnailer
 	overview
 		takes an HTMLayout window handle and a thumbnail size
@@ -920,3 +924,20 @@ thumbnail storage
 	retrieve the thumbnail with the note guid
 	check the retrieved thumbnail size
 	if different, replace the thumbnail
+anonymous user
+	now called [anonymous]
+	disallow signing in with this username
+		TODO
+	add a test for this
+		TODO
+user management
+	right now, the Evernote credentials are used for user's credentials
+	what if I decide to add support for another note service, such as OneNote?
+	then things become much more complciated, so lets not do that
+	if I decide to switch from Evernote to OneNote, there would be no problem
+	what about passwords?
+	do I store the password for the last user only, or for all users?
+	when a user signs in, he has to enter the password
+	so there is no use in storing it
+	what if the user logs out accidentally and has no access to network?
+	he should be allowed to log back in

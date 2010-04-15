@@ -1,11 +1,12 @@
 #include "stdafx.h"
 
 #include "DataStore.h"
-#include "MockCredentialsModel.h"
 #include "Note.h"
 #include "Notebook.h"
 #include "Test.h"
 #include "UserModel.h"
+
+#include <fstream>
 
 using namespace boost;
 using namespace std;
@@ -20,7 +21,6 @@ const wchar_t * const storeFile   = L"Program Files\\MobileTest\\test.db";
 
 struct DataStoreFixture
 {
-
 	DataStore store;
 	UserModel userModel;
 
@@ -28,8 +28,12 @@ struct DataStoreFixture
 		: userModel (store, storeFolder)
 	{
 		::DeleteFile(storeFile);
-		userModel.SetCredentials(MockCredentialsModel(storeName, L""));
-		userModel.Load();
+		userModel.LoadOrCreate(storeName);
+	}
+
+	~DataStoreFixture()
+	{
+		::DeleteFile(storeFile);
 	}
 };
 
@@ -53,6 +57,18 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 	wstring loaded;
 	userModel.GetNoteBody(note.GetGuid(), loaded);
 	TEST_CHECK_EQUAL(loaded, body);
+}
+
+AUTO_TEST_CASE(TestUserModelExists)
+{
+	DataStore store;
+	UserModel userModel(store, storeFolder);
+
+	::DeleteFile(storeFile);
+	TEST_CHECK(!userModel.Exists(storeName));
+
+	{ ofstream(storeFile) << 0; }
+	TEST_CHECK(userModel.Exists(storeName));
 }
 
 FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
@@ -158,16 +174,68 @@ FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetLastUsedNotebook().GetName(), L"notebook1");
 }
 
+AUTO_TEST_CASE(TestUserModelLoad)
+{
+	DataStore store;
+	UserModel userModel(store, storeFolder);
+
+	::DeleteFile(storeFile);
+	TEST_CHECK_EXCEPTION
+		( userModel.Load(storeName)
+		, std::exception
+		, MESSAGE_EQUALS("Database could not be loaded.")
+		);
+
+	{
+		DataStore store;
+		UserModel userModel(store, storeFolder);
+		userModel.LoadOrCreate(storeName);
+	}
+
+	userModel.Load(storeName);
+}
+
+AUTO_TEST_CASE(TestUserModelLoadAs)
+{
+	DataStore store;
+	UserModel userModel(store, storeFolder);
+
+	const wchar_t * dstName = L"test2";
+	const wchar_t * dstFile = L"Program Files\\MobileTest\\test2.db";
+
+	::DeleteFile(storeFile);
+	TEST_CHECK_EXCEPTION
+		( userModel.LoadAs(storeName, dstName)
+		, std::exception
+		, MESSAGE_EQUALS("Database could not be renamed.")
+		);
+
+	{
+		DataStore store;
+		UserModel model(store, storeFolder);
+		model.LoadOrCreate(storeName);
+	}
+
+	{ ofstream(dstFile) << 0; }
+	TEST_CHECK_EXCEPTION
+		( userModel.LoadAs(storeName, dstName)
+		, std::exception
+		, MESSAGE_EQUALS("Database could not be renamed.")
+		);
+
+	::DeleteFile(dstFile);
+	userModel.LoadAs(storeName, dstName);
+}
+
 AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 {
 	{
 		DataStore store;
 		UserModel userModel(store, storeFolder);
-		userModel.SetCredentials(MockCredentialsModel(storeName, L""));
 
 		::DeleteFile(storeFile);
 		TEST_CHECK(!FileExists(storeFile));
-		userModel.Load();
+		userModel.LoadOrCreate(storeName);
 		TEST_CHECK(FileExists(storeFile));
 
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
@@ -179,9 +247,8 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 	{
 		DataStore store;
 		UserModel userModel(store, storeFolder);
-		userModel.SetCredentials(MockCredentialsModel(storeName, L""));
 
-		userModel.Load();
+		userModel.LoadOrCreate(storeName);
 
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
 		TEST_CHECK_EQUAL(userModel.GetUser(),          storeName);
@@ -299,4 +366,11 @@ FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
 	TEST_CHECK_EQUAL(out.Data.at(2), 5);
 	TEST_CHECK_EQUAL(out.Width,  7);
 	TEST_CHECK_EQUAL(out.Height, 11);
+}
+
+FIXTURE_TEST_CASE(TestUserModelUnload, DataStoreFixture)
+{
+	TEST_CHECK_EQUAL(::DeleteFile(storeFile), FALSE);
+	userModel.Unload();
+	TEST_CHECK_EQUAL(::DeleteFile(storeFile), TRUE);
 }

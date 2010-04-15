@@ -12,8 +12,6 @@ public:
 	signal SignalUpdated;
 	signal SignalUpdating;
 
-	bool updated;
-
 public:
 
 	MockCredentialsModel();

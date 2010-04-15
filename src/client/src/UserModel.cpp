@@ -116,10 +116,12 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
-void UserModel::CreateDefaultUser()
+bool UserModel::Exists(const wstring & username)
 {
-	credentialsModel.SetCredentials(L"", L"");
+	wstring path(CreatePathFromName(username));
+	return INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str());
 }
+
 
 ICredentialsModel & UserModel::GetCredentials()
 {
@@ -311,17 +313,41 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 	return notes;
 }
 
-void UserModel::Load()
+void UserModel::Load(const wstring & username)
 {
-	LoadOrCreate(credentialsModel.GetUsername());
-	if (GetNotebookCount() == 0)
-	{
-		Notebook notebook(Guid(), L"Notes");
-		AddNotebook(notebook);
-		MakeNotebookDefault(notebook);
-		MakeNotebookLastUsed(notebook);
-	}
+	wstring path = CreatePathFromName(username);
+	if (!TryLoad(path))
+		throw std::exception("Database could not be loaded.");
+	Update();
 	SignalLoaded();
+}
+
+void UserModel::LoadAs
+	( const std::wstring & oldUsername
+	, const std::wstring & newUsername
+	)
+{
+	wstring oldPath = CreatePathFromName(oldUsername);
+	wstring newPath = CreatePathFromName(newUsername);
+	if (!::MoveFile(oldPath.c_str(), newPath.c_str()))
+		throw std::exception("Database could not be renamed.");
+	Load(newUsername);
+}
+
+void UserModel::LoadOrCreate(const wstring & username)
+{
+	wstring path = CreatePathFromName(username);
+	if (TryLoad(path))
+	{
+		if (GetVersion() != 0)
+			throw std::exception("Incorrect database version.");
+	}
+	else
+	{
+		Create(path);
+		Initialize(username);
+	}
+	Update();
 }
 
 void UserModel::MakeNotebookDefault(const Notebook & notebook)
@@ -360,14 +386,6 @@ void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
 	setNew->Execute();
 }
 
-void UserModel::SetCredentials(const ICredentialsModel & credentials)
-{
-	credentialsModel.SetCredentials
-		( credentials.GetUsername()
-		, credentials.GetPassword()
-		);
-}
-
 void UserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -380,6 +398,11 @@ void UserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
 	statement->Bind(3, thumbnail.Height);
 	statement->Bind(4, guid);
 	statement->Execute();
+}
+
+void UserModel::Unload()
+{
+	dataStore.Close();
 }
 
 //------------------
@@ -482,22 +505,6 @@ void UserModel::Initialize(wstring name)
 		);
 }
 
-void UserModel::LoadOrCreate(wstring name)
-{
-	wstring path = CreatePathFromName(name);
-	if (TryLoad(path))
-	{
-		if (GetVersion() != 0)
-			throw std::exception("Incorrect database version.");
-	}
-	else
-	{
-		Create(path);
-		Initialize(name);
-	}
-	SetPragma("PRAGMA foreign_keys = ON");
-}
-
 void UserModel::SetPragma(const char * sql)
 {
 	dataStore.MakeStatement(sql)->Execute();
@@ -507,4 +514,16 @@ bool UserModel::TryLoad(wstring path)
 {
 	int flags = SQLITE_OPEN_READWRITE;
 	return dataStore.Create(path, flags);
+}
+
+void UserModel::Update()
+{
+	SetPragma("PRAGMA foreign_keys = ON");
+	if (GetNotebookCount() == 0)
+	{
+		Notebook notebook(Guid(), L"Notes");
+		AddNotebook(notebook);
+		MakeNotebookDefault(notebook);
+		MakeNotebookLastUsed(notebook);
+	}
 }

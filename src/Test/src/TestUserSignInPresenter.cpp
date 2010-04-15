@@ -1,32 +1,68 @@
 #include "stdafx.h"
+#include "MockCredentialsModel.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
 #include "UserSignInPresenter.h"
 
-BOOST_AUTO_TEST_CASE(UserSignInPresenter_Upate_Test)
+#include <boost/ref.hpp>
+
+struct UserSignInPresenterFixture
 {
-	MockNoteListView noteListView;
-	MockUserModel    userModel;
+	MockCredentialsModel credentialsModel;
+	MockNoteListView     noteListView;
+	MockUserModel        userModel;
+	UserSignInPresenter  signInPresenter;
 
-	UserSignInPresenter(noteListView, userModel);
+	UserSignInPresenterFixture()
+		: signInPresenter (credentialsModel, noteListView, userModel)
+	{
+	}
+};
 
-	userModel.credentialsModel.SignalUpdated();
+struct SignalCheck
+{
+	bool signalled;
+	SignalCheck() : signalled(false) {}
+	void operator () () { signalled = true; }
+};
+
+BOOST_FIXTURE_TEST_CASE
+	( UserSignInPresenter_UpdateNew_Test
+	, UserSignInPresenterFixture
+	)
+{
+	credentialsModel.SignalUpdated();
 	BOOST_CHECK(!noteListView.signedIn);
 
-	userModel.credentialsModel.username = L"test-usr";
-
-	userModel.credentialsModel.SignalUpdated();
-	BOOST_CHECK(noteListView.signedIn);
+	userModel.Load(L"[anonymous]");
+	credentialsModel.username = L"test-usr";
+	credentialsModel.SignalUpdated();
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadAs);
 }
 
-BOOST_AUTO_TEST_CASE(UserSignInPresenter_SignIn_Test)
+BOOST_FIXTURE_TEST_CASE
+	( UserSignInPresenter_UpdateOld_Test
+	, UserSignInPresenterFixture
+	)
 {
-	MockNoteListView noteListView;
-	MockUserModel    userModel;
+	credentialsModel.SignalUpdated();
+	BOOST_CHECK(!noteListView.signedIn);
 
-	UserSignInPresenter(noteListView, userModel);
+	userModel.Load(L"[anonymous]");
+	userModel.validUsernames.insert(L"test-usr");
+	credentialsModel.username = L"test-usr";
+	credentialsModel.SignalUpdated();
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoad);
+}
 
-	userModel.credentialsModel.updated = true;
+BOOST_FIXTURE_TEST_CASE
+	( UserSignInPresenter_SignIn_Test
+	, UserSignInPresenterFixture
+	)
+{
+	SignalCheck check;
+	credentialsModel.SignalUpdating.connect(boost::ref(check));
+
 	noteListView.SignalSignIn();
-	BOOST_CHECK(!userModel.credentialsModel.updated);
+	BOOST_CHECK(check.signalled);
 }
