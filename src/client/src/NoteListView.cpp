@@ -26,7 +26,6 @@ NoteListView::NoteListView
 	, acceleration    (-0.001)
 	, cmdShow         (cmdShow)
 	, instance        (instance)
-	, isSignedIn      (false)
 	, HTMLayoutWindow (L"main.htm")
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
@@ -190,16 +189,31 @@ wstring NoteListView::GetSearchString()
 	return searchBox.text().c_str();
 }
 
-void NoteListView::SignIn()
+void NoteListView::HideSyncButton()
 {
-	isSignedIn = true;
+	element root (element::root_element(hwnd_));
+	element sync (root.find_first("#sync"));
+	if (!sync)
+		throw std::exception("'#sync' not found.");
+	sync.set_style_attribute("display", L"none");
+}
 
+void NoteListView::SetSigninText(const wstring & text)
+{
 	element root   (element::root_element(hwnd_));
 	element signin (root.find_first("#menu-signin"));
 	if (!signin)
 		throw std::exception("'#menu-signin' not found.");
-	signin.set_text(L"Sign out");
-	signin.update();
+	signin.set_text(text.c_str());
+}
+
+void NoteListView::ShowSyncButton()
+{
+	element root (element::root_element(hwnd_));
+	element sync (root.find_first("#sync"));
+	if (!sync)
+		throw std::exception("'#sync' not found.");
+	sync.set_style_attribute("display", L"block");
 }
 
 void NoteListView::UpdateNotebooks()
@@ -411,8 +425,7 @@ void NoteListView::OnMenuExit()
 
 void NoteListView::OnMenuSignIn()
 {
-	if (!isSignedIn)
-		SignalSignIn();
+	SignalSignIn();
 }
 
 void NoteListView::OnMenuImport()

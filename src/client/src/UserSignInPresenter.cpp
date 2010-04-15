@@ -27,13 +27,23 @@ void UserSignInPresenter::OnCredentialsUpdated()
 	if (username.empty())
 		return;
 	userModel.Unload();
-	if (userModel.Exists(username))
-		userModel.Load(username);
+	if (username == L"[anonymous]")
+	{
+		userModel.LoadOrCreate(username);
+	}
 	else
-		userModel.LoadAs(L"[anonymous]", username);
+	{
+		if (userModel.Exists(username))
+			userModel.Load(username);
+		else
+			userModel.LoadAs(L"[anonymous]", username);
+	}
 }
 
 void UserSignInPresenter::OnSignIn()
 {
-	newCredentials.Update();
+	if (userModel.GetCredentials().GetUsername() == L"[anonymous]")
+		newCredentials.Update();
+	else
+		newCredentials.SetCredentials(L"[anonymous]", L"");
 }

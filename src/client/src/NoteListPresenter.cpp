@@ -75,8 +75,16 @@ void NoteListPresenter::OnUserLoaded()
 
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
 
-	if (userModel.GetCredentials().GetUsername() != L"[anonymous]")
-		noteListView.SignIn();
+	if (userModel.GetCredentials().GetUsername() == L"[anonymous]")
+	{
+		noteListView.SetSigninText(L"Sign in");
+		noteListView.HideSyncButton();
+	}
+	else
+	{
+		noteListView.SetSigninText(L"Sign out");
+		noteListView.ShowSyncButton();
+	}
 }
 
 //------------------

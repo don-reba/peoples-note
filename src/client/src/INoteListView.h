@@ -43,7 +43,11 @@ public:
 
 	virtual std::wstring GetSearchString() = 0;
 
-	virtual void SignIn() = 0;
+	virtual void HideSyncButton() = 0;
+
+	virtual void SetSigninText(const std::wstring & text) = 0;
+
+	virtual void ShowSyncButton() = 0;
 
 	virtual void UpdateNotes() = 0;
 

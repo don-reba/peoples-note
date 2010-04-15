@@ -37,8 +37,6 @@ private:
 	element noteList;
 	element notebookList;
 
-	bool isSignedIn;
-
 	WndMsgPtr lButtonDown;
 	int       lButtonDownY;
 	int       startScrollPos;
@@ -95,7 +93,11 @@ public:
 	
 	virtual std::wstring GetSearchString();
 
-	virtual void SignIn();
+	virtual void HideSyncButton();
+
+	virtual void SetSigninText(const std::wstring & text);
+
+	virtual void ShowSyncButton();
 
 	virtual void UpdateNotebooks();
 

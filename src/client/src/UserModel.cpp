@@ -319,6 +319,7 @@ void UserModel::Load(const wstring & username)
 	if (!TryLoad(path))
 		throw std::exception("Database could not be loaded.");
 	Update();
+	credentialsModel.SetCredentials(username, L""); // TODO: remove when database storage is added
 	SignalLoaded();
 }
 
@@ -348,6 +349,8 @@ void UserModel::LoadOrCreate(const wstring & username)
 		Initialize(username);
 	}
 	Update();
+	credentialsModel.SetCredentials(username, L""); // TODO: remove when database storage is added
+	SignalLoaded();
 }
 
 void UserModel::MakeNotebookDefault(const Notebook & notebook)
