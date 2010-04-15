@@ -15,7 +15,7 @@ public:
 	virtual ~IRegistryKey() {}
 
 	virtual std::wstring GetString
-		( std::wstring value
-		, std::wstring defaultData
+		( const std::wstring & value
+		, const std::wstring & defaultData
 		) const = 0;
 };

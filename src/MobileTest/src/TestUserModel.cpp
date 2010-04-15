@@ -1,11 +1,12 @@
 #include "stdafx.h"
-
+/*
 #include "DataStore.h"
 #include "Note.h"
 #include "Notebook.h"
 #include "Test.h"
 #include "UserModel.h"
 
+#include <boost/ref.hpp>
 #include <fstream>
 
 using namespace boost;
@@ -41,6 +42,13 @@ bool FileExists(const wchar_t * path)
 {
 	return ::GetFileAttributes(path) != 0xFFFFFFFF;
 }
+
+struct SignalCheck
+{
+	bool signalled;
+	SignalCheck() : signalled(false) {}
+	void operator () () { signalled = true; }
+};
 
 //-----------
 // test suite
@@ -179,12 +187,16 @@ AUTO_TEST_CASE(TestUserModelLoad)
 	DataStore store;
 	UserModel userModel(store, storeFolder);
 
+	SignalCheck check;
+	userModel.ConnectLoaded(boost::ref(check));
+
 	::DeleteFile(storeFile);
 	TEST_CHECK_EXCEPTION
 		( userModel.Load(storeName)
 		, std::exception
 		, MESSAGE_EQUALS("Database could not be loaded.")
 		);
+	TEST_CHECK(!check.signalled);
 
 	{
 		DataStore store;
@@ -193,12 +205,16 @@ AUTO_TEST_CASE(TestUserModelLoad)
 	}
 
 	userModel.Load(storeName);
+	TEST_CHECK(check.signalled);
 }
 
 AUTO_TEST_CASE(TestUserModelLoadAs)
 {
 	DataStore store;
 	UserModel userModel(store, storeFolder);
+
+	SignalCheck check;
+	userModel.ConnectLoaded(boost::ref(check));
 
 	const wchar_t * dstName = L"test2";
 	const wchar_t * dstFile = L"Program Files\\MobileTest\\test2.db";
@@ -209,6 +225,7 @@ AUTO_TEST_CASE(TestUserModelLoadAs)
 		, std::exception
 		, MESSAGE_EQUALS("Database could not be renamed.")
 		);
+	TEST_CHECK(!check.signalled);
 
 	{
 		DataStore store;
@@ -222,9 +239,11 @@ AUTO_TEST_CASE(TestUserModelLoadAs)
 		, std::exception
 		, MESSAGE_EQUALS("Database could not be renamed.")
 		);
+	TEST_CHECK(!check.signalled);
 
 	::DeleteFile(dstFile);
 	userModel.LoadAs(storeName, dstName);
+	TEST_CHECK(check.signalled);
 }
 
 AUTO_TEST_CASE(TestUserModelLoadOrCreate)
@@ -233,10 +252,14 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 		DataStore store;
 		UserModel userModel(store, storeFolder);
 
+		SignalCheck check;
+		userModel.ConnectLoaded(boost::ref(check));
+
 		::DeleteFile(storeFile);
 		TEST_CHECK(!FileExists(storeFile));
 		userModel.LoadOrCreate(storeName);
 		TEST_CHECK(FileExists(storeFile));
+		TEST_CHECK(check.signalled);
 
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
 		TEST_CHECK_EQUAL(userModel.GetUser(),          storeName);
@@ -248,7 +271,11 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 		DataStore store;
 		UserModel userModel(store, storeFolder);
 
+		SignalCheck check;
+		userModel.ConnectLoaded(boost::ref(check));
+
 		userModel.LoadOrCreate(storeName);
+		TEST_CHECK(check.signalled);
 
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
 		TEST_CHECK_EQUAL(userModel.GetUser(),          storeName);
@@ -374,3 +401,4 @@ FIXTURE_TEST_CASE(TestUserModelUnload, DataStoreFixture)
 	userModel.Unload();
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), TRUE);
 }
+*/

@@ -32,7 +32,7 @@ BOOST_FIXTURE_TEST_CASE
 	)
 {
 	credentialsModel.SignalUpdated();
-	BOOST_CHECK(!noteListView.signedIn);
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodNone);
 
 	userModel.Load(L"[anonymous]");
 	credentialsModel.username = L"test-usr";
@@ -46,7 +46,7 @@ BOOST_FIXTURE_TEST_CASE
 	)
 {
 	credentialsModel.SignalUpdated();
-	BOOST_CHECK(!noteListView.signedIn);
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodNone);
 
 	userModel.Load(L"[anonymous]");
 	userModel.validUsernames.insert(L"test-usr");
@@ -63,6 +63,25 @@ BOOST_FIXTURE_TEST_CASE
 	SignalCheck check;
 	credentialsModel.SignalUpdating.connect(boost::ref(check));
 
+	userModel.GetCredentials().SetCredentials(L"[anonymous]", L"");
+
 	noteListView.SignalSignIn();
 	BOOST_CHECK(check.signalled);
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( UserSignInPresenter_SignOut_Test
+	, UserSignInPresenterFixture
+	)
+{
+	SignalCheck check;
+	credentialsModel.SignalUpdating.connect(boost::ref(check));
+
+	noteListView.SignalSignIn();
+	BOOST_CHECK(!check.signalled);
+
+	BOOST_CHECK_EQUAL(credentialsModel.GetUsername(), L"[anonymous]");
+	BOOST_CHECK_EQUAL(credentialsModel.GetPassword(), L"");
+
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadOrCreate);
 }

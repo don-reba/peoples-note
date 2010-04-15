@@ -941,3 +941,30 @@ user management
 	so there is no use in storing it
 	what if the user logs out accidentally and has no access to network?
 	he should be allowed to log back in
+sync
+	must be capable of full sync and incremental sync
+	full sync = clear clean records from db, then perform incremental sync
+	implementation plan
+		UI
+			sync button
+		user management
+			last user
+			credentials storage
+		data model
+			transactions
+		threading model
+			sync thread spawning
+			sync result processing
+				can skip the signin requesting for now
+		download headers
+			clear database
+			authenticate
+			getSyncChunc with afterUSN=0
+			getNote
+		full download
+			download resources
+		sync
+			implement generic negotiation logic
+			apply it to tags, notebooks, notes
+UserModel.SignalLoaded is not tested
+	TODO

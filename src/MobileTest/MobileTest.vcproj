@@ -408,6 +408,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\RegistryKey.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\SqlBlob.cpp"
 				>
 			</File>
@@ -462,6 +466,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\TestRegistryKey.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\src\TestTools.cpp"

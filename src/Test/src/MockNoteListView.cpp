@@ -4,9 +4,9 @@
 using namespace std;
 
 MockNoteListView::MockNoteListView()
-	: notesUpdated     (true)
-	, notebooksUpdated (true)
-	, signedIn         (false)
+	: notesUpdated      (true)
+	, notebooksUpdated  (true)
+	, isSyncButtonShown (false)
 {
 }
 
@@ -84,9 +84,19 @@ std::wstring MockNoteListView::GetSearchString()
 	return searchString;
 }
 
-void MockNoteListView::SignIn()
+void MockNoteListView::HideSyncButton()
 {
-	signedIn = true;
+	isSyncButtonShown = false;
+}
+
+void MockNoteListView::SetSigninText(const wstring & text)
+{
+	signinText = text;
+}
+
+void MockNoteListView::ShowSyncButton()
+{
+	isSyncButtonShown = true;
 }
 
 void MockNoteListView::UpdateNotebooks()

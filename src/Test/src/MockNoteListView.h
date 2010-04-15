@@ -26,7 +26,8 @@ public:
 	bool         hasEnexPath;
 	std::wstring enexPath;
 
-	bool signedIn;
+	std::wstring signinText;
+	bool         isSyncButtonShown;
 
 	signal SignalCreated;
 	signal SignalImport;
@@ -66,7 +67,11 @@ public:
 	
 	virtual std::wstring GetSearchString();
 
-	virtual void SignIn();
+	virtual void HideSyncButton();
+
+	virtual void SetSigninText(const std::wstring & text);
+
+	virtual void ShowSyncButton();
 
 	virtual void UpdateNotebooks();
 

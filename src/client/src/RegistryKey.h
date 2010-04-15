@@ -4,10 +4,23 @@
 
 class RegistryKey : public IRegistryKey
 {
+private:
+
+	HKEY key;
+
 public:
 
+	RegistryKey(const std::wstring & path);
+
+	~RegistryKey();
+
 	virtual std::wstring GetString
-		( std::wstring value
-		, std::wstring defaultData
+		( const std::wstring & value
+		, const std::wstring & defaultData
 		) const;
+
+	virtual void SetString
+		( const std::wstring & value
+		, const std::wstring & data
+		);
 };

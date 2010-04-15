@@ -100,7 +100,7 @@ int WINAPI WinMain(HINSTANCE instance,
 	try
 	{
 		Animator    animator;
-		RegistryKey registryKey;
+		RegistryKey registryKey(L"Software\\People's Note");
 		DataStore   dataStore;
 		EnImporter  enImporter;
 		EnService   enService;
