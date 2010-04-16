@@ -15,8 +15,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="login.svg"
-   inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\login.png"
+   sodipodi:docname="about.svg"
+   inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\about.png"
    inkscape:export-xdpi="360"
    inkscape:export-ydpi="360">
   <defs
@@ -163,16 +163,6 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3619"
-       id="linearGradient3625"
-       x1="280"
-       y1="422.36218"
-       x2="280"
-       y2="437.36218"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-2.7041443e-5,415.15152)" />
     <inkscape:perspective
        id="perspective3695"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
@@ -451,16 +441,6 @@
        y1="1052.8622"
        x2="405.5"
        y2="994.29077" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3619"
-       id="linearGradient3021"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-2.7041443e-5,471.21213)"
-       x1="280"
-       y1="422.36218"
-       x2="280"
-       y2="437.36218" />
     <inkscape:perspective
        id="perspective3070"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
@@ -617,7 +597,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Background"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <rect
        transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,718.8205,-442.02774)"
        style="fill:#000000;stroke:#000000;stroke-width:1;stroke-opacity:1;filter:url(#filter3802)"
@@ -653,7 +634,7 @@
        y="35.006653"
        clip-path="url(#clipPath3742)" />
     <rect
-       style="fill:#6fb536;fill-opacity:1;stroke:none"
+       style="fill:#f0ec40;fill-opacity:1;stroke:none"
        id="rect3758"
        width="480"
        height="604.99335"
@@ -666,116 +647,77 @@
      id="layer1"
      transform="translate(0,-412.36218)"
      style="display:inline">
-    <rect
-       style="fill:url(#linearGradient3625);fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3654"
-       width="460"
-       height="40"
-       x="10"
-       y="837.51367"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render (login).png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360" />
-    <rect
-       inkscape:export-ydpi="360"
-       inkscape:export-xdpi="360"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render (login).png"
-       y="893.57428"
-       x="10"
-       height="40"
-       width="460"
-       id="rect3019"
-       style="fill:url(#linearGradient3021);fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-    <text
-       id="text4025"
-       y="868.31079"
-       x="30.116699"
-       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#696969;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       xml:space="preserve"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render (login).png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360"><tspan
-         y="868.31079"
-         x="30.116699"
-         id="tspan4027"
-         sodipodi:role="line">Username</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#696969;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       x="30.116699"
-       y="923.89703"
-       id="text3875"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render (login).png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360"><tspan
+       style="font-size:64.09456635px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       x="15.274277"
+       y="539.26825"
+       id="text3879"><tspan
          sodipodi:role="line"
-         id="tspan3877"
-         x="30.116699"
-         y="923.89703">Password</tspan></text>
+         x="15.274277"
+         y="539.26825"
+         id="tspan2915">People's Note</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:36.99126816px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       x="19.06543"
+       y="592.09143"
+       id="text2917"><tspan
+         sodipodi:role="line"
+         id="tspan2919"
+         x="19.06543"
+         y="592.09143"
+         style="font-size:29">Copyright © 2010, Alexey Badalov</tspan></text>
+    <text
+       id="text3450"
+       y="668.09143"
+       x="18.385742"
+       style="font-size:36.99126816px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       xml:space="preserve"
+       sodipodi:linespacing="150%"><tspan
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         y="668.09143"
+         x="18.385742"
+         id="tspan3452"
+         sodipodi:role="line">Parts of this app are based on:</tspan><tspan
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         y="711.59143"
+         x="18.385742"
+         sodipodi:role="line"
+         id="tspan3456">• Apache Thrift</tspan><tspan
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         y="755.09143"
+         x="18.385742"
+         sodipodi:role="line"
+         id="tspan3483">• Evernote API</tspan><tspan
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         y="798.59143"
+         x="18.385742"
+         sodipodi:role="line"
+         id="tspan3479">• HTMLayout</tspan><tspan
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         y="842.09143"
+         x="18.385742"
+         sodipodi:role="line"
+         id="tspan3475">• SQLite</tspan></text>
     <g
-       id="g3700"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render (login).png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360">
-      <rect
-         y="1000.3622"
-         x="0"
-         height="52"
-         width="480"
-         id="rect2908"
-         style="fill:#1a1a1a;fill-opacity:1;stroke:none" />
+       id="g3470"
+       transform="translate(-14.066998,0)">
       <text
-         id="text3682"
-         y="1034.3839"
-         x="55.474854"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans Bold"
+         transform="translate(0,412.36218)"
+         id="text3464"
+         y="544.64771"
+         x="32.141216"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="1034.3839"
-           x="55.474854"
-           id="tspan3684"
-           sodipodi:role="line">Sign in</tspan></text>
-      <text
-         id="text3686"
-         y="1034.3839"
-         x="327.17407"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans Bold"
-         xml:space="preserve"><tspan
-           y="1034.3839"
-           x="327.17407"
-           id="tspan3688"
-           sodipodi:role="line">Cancel</tspan></text>
-    </g>
-    <g
-       id="g2931"
-       transform="translate(0,-24)"
-       style="fill:#ffffff"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render (login).png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360">
-      <text
-         id="text3879"
-         y="603.26825"
-         x="113.70355"
-         style="font-size:64.09456634999999400px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="603.26825"
-           x="113.70355"
-           id="tspan3881"
-           sodipodi:role="line" /><tspan
-           id="tspan2915"
-           y="683.38647"
-           x="113.70355"
-           sodipodi:role="line">Evernote</tspan></text>
-      <text
-         id="text2917"
-         y="616.09143"
-         x="117.21912"
-         style="font-size:36.99126815999999700px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="616.09143"
-           x="117.21912"
-           id="tspan2919"
-           sodipodi:role="line">sign into</tspan></text>
+           y="544.64771"
+           x="32.141216"
+           id="tspan3466"
+           sodipodi:role="line">http://www.peoplesnote.org</tspan></text>
+      <path
+         id="path3468"
+         d="m 34.955006,962.49963 357.722024,0"
+         style="fill:#0000ff;stroke:#0000ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
   </g>
   <g
