@@ -18,4 +18,9 @@ public:
 		( const std::wstring & value
 		, const std::wstring & defaultData
 		) const = 0;
+
+	virtual void SetString
+		( const std::wstring & value
+		, const std::wstring & data
+		) = 0;
 };

@@ -189,6 +189,15 @@ wstring NoteListView::GetSearchString()
 	return searchBox.text().c_str();
 }
 
+void NoteListView::HideProfileText()
+{
+	element root    (element::root_element(hwnd_));
+	element profile (root.find_first("#menu-profile"));
+	if (!profile)
+		throw std::exception("'#menu-profile' not found.");
+	profile.set_style_attribute("display", L"none");
+}
+
 void NoteListView::HideSyncButton()
 {
 	element root (element::root_element(hwnd_));
@@ -205,6 +214,16 @@ void NoteListView::SetSigninText(const wstring & text)
 	if (!signin)
 		throw std::exception("'#menu-signin' not found.");
 	signin.set_text(text.c_str());
+}
+
+void NoteListView::ShowProfileText(const wstring & text)
+{
+	element root    (element::root_element(hwnd_));
+	element profile (root.find_first("#menu-profile"));
+	if (!profile)
+		throw std::exception("'#menu-profile' not found.");
+	profile.set_text(text.c_str());
+	profile.set_style_attribute("display", L"inline");
 }
 
 void NoteListView::ShowSyncButton()

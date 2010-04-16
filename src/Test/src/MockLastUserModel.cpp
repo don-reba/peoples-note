@@ -1,7 +1,14 @@
 #include "stdafx.h"
 #include "MockLastUserModel.h"
 
-const ICredentialsModel & MockLastUserModel::GetCredentials()
+using namespace std;
+
+wstring MockLastUserModel::GetUsername()
 {
-	return credentialsModel;
+	return username;
+}
+
+void MockLastUserModel::SetUsername(const wstring & username)
+{
+	this->username = username;
 }

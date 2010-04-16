@@ -9,12 +9,12 @@ LastUserModel::LastUserModel(IRegistryKey & registryKey)
 	: registryKey (registryKey)
 {
 }
-
-const ICredentialsModel & LastUserModel::GetCredentials()
+wstring LastUserModel::GetUsername()
 {
-	wstring username = registryKey.GetString(L"username", L"");
-	wstring password = registryKey.GetString(L"password", L"");
+	return registryKey.GetString(L"username", L"");
+}
 
-	credentialsModel.SetCredentials(username, password);
-	return credentialsModel;
+void LastUserModel::SetUsername(const std::wstring & username)
+{
+	registryKey.SetString(L"username", username);
 }

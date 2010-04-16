@@ -18,4 +18,6 @@ public:
 		);
 
 	void Run();
+
+	void Save();
 };

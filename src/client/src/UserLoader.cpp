@@ -19,10 +19,14 @@ UserLoader::UserLoader
 
 void UserLoader::Run()
 {
-	const ICredentialsModel & credentials(lastUserModel.GetCredentials());
-
-	if (credentials.GetUsername().empty())
+	const wstring & username(lastUserModel.GetUsername());
+	if (username.empty())
 		userModel.LoadOrCreate(L"[anonymous]");
 	else
-		userModel.Load(credentials.GetUsername());
+		userModel.Load(username);
+}
+
+void UserLoader::Save()
+{
+	lastUserModel.SetUsername(userModel.GetCredentials().GetUsername());
 }

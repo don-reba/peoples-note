@@ -43,9 +43,13 @@ public:
 
 	virtual std::wstring GetSearchString() = 0;
 
+	virtual void HideProfileText() = 0;
+
 	virtual void HideSyncButton() = 0;
 
 	virtual void SetSigninText(const std::wstring & text) = 0;
+
+	virtual void ShowProfileText(const std::wstring & text) = 0;
 
 	virtual void ShowSyncButton() = 0;
 

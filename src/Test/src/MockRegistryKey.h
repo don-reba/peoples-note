@@ -13,7 +13,12 @@ public:
 	DataType data;
 
 	virtual std::wstring GetString
-		( std::wstring value
-		, std::wstring defaultData
+		( const std::wstring & value
+		, const std::wstring & defaultData
 		) const;
+
+	virtual void SetString
+		( const std::wstring & value
+		, const std::wstring & data
+		);
 };

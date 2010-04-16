@@ -7,7 +7,7 @@ user management
 	√ when the user signs in, the anonymous account is unloaded
 	√ when signing into an existing account, load the new account
 	√ when signing into a new account, rename the anonymous account
-	when the program is closed, the user name is remembered
+	when the program is closed, the user name is stored in the registry
 notebook management
 	√ when a user without a notebook is loaded, an empty default notebook should be created
 sign in window

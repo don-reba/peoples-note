@@ -15,5 +15,7 @@ public:
 
 	LastUserModel(IRegistryKey & registryKey);
 
-	virtual const ICredentialsModel & GetCredentials();
+	virtual std::wstring GetUsername();
+
+	virtual void SetUsername(const std::wstring & username);
 };

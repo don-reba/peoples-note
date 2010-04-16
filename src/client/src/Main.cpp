@@ -60,7 +60,7 @@ bool SwitchToPreviousInstance(HINSTANCE instance)
 
 // Main message loop.
 // Switches between two modes: normal and animation.
-WPARAM RunMessageLoop(IAnimator & animator)
+int RunMessageLoop(IAnimator & animator)
 {
 	MSG msg;
 	while (::GetMessage(&msg, NULL, 0, 0)) 
@@ -77,12 +77,11 @@ WPARAM RunMessageLoop(IAnimator & animator)
 				::DispatchMessage(&msg);
 			}
 			if (msg.message == WM_QUIT)
-				return msg.wParam;
+				return static_cast<int>(msg.wParam);
 			animator.StepFrame();
 		}
 	}
-	CoUninitialize();
-	return msg.wParam;
+	return static_cast<int>(msg.wParam);
 }
 
 
@@ -156,8 +155,12 @@ int WINAPI WinMain(HINSTANCE instance,
 		credentialsView.Create(noteListView.hwnd_);
 
 		userLoader.Run();
+		int result(RunMessageLoop(animator));
+		userLoader.Save();
 
-		return static_cast<int>(RunMessageLoop(animator));
+		CoUninitialize();
+
+		return result;
 	}
 	catch(std::exception e)
 	{

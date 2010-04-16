@@ -941,6 +941,9 @@ user management
 	so there is no use in storing it
 	what if the user logs out accidentally and has no access to network?
 	he should be allowed to log back in
+	so we don't check password on login
+	however, sync needs the password
+	it is better to get it from the database
 sync
 	must be capable of full sync and incremental sync
 	full sync = clear clean records from db, then perform incremental sync

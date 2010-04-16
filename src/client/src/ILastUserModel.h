@@ -8,5 +8,7 @@ public:
 
 	virtual ~ILastUserModel() {}
 
-	virtual const ICredentialsModel & GetCredentials() = 0;
+	virtual std::wstring GetUsername() = 0;
+
+	virtual void SetUsername(const std::wstring & username) = 0;
 };

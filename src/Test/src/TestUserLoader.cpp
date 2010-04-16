@@ -32,8 +32,7 @@ BOOST_FIXTURE_TEST_CASE
 	, UserLoaderFixture
 	)
 {
-	lastUserModel.credentialsModel.username = L"test-usr";
-	lastUserModel.credentialsModel.password = L"test-pwd";
+	lastUserModel.username = L"test-usr";
 
 	userLoader.Run();
 

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-/*
 #include "DataStore.h"
 #include "Note.h"
 #include "Notebook.h"
@@ -401,4 +400,3 @@ FIXTURE_TEST_CASE(TestUserModelUnload, DataStoreFixture)
 	userModel.Unload();
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), TRUE);
 }
-*/
