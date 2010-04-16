@@ -969,5 +969,13 @@ sync
 		sync
 			implement generic negotiation logic
 			apply it to tags, notebooks, notes
-UserModel.SignalLoaded is not tested
-	TODO
+credentials
+	user credentials should be fetched from the database, not cached
+		username and password in a single transaction
+	new credentials should be cached
+	there is no need to subscribe to user credentials updates
+	so, we can create a POD credentials object
+TODO test
+	UserModel get/set credentials
+	√ UserSignInPresenter credential setting
+	UserModel username initialization

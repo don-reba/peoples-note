@@ -13,8 +13,6 @@ private:
 
 	std::wstring folder;
 
-	CredentialsModel credentialsModel;
-
 	NotebookList notebooks;
 	NoteList     notes;
 
@@ -27,8 +25,6 @@ public:
 	UserModel(IDataStore & dataStore, std::wstring folder);
 
 	int GetNotebookCount();
-
-	std::wstring GetUser();
 
 	int GetVersion();
 
@@ -55,7 +51,7 @@ public:
 
 	virtual bool Exists(const std::wstring & username);
 
-	virtual ICredentialsModel & GetCredentials();
+	virtual Credentials GetCredentials();
 
 	virtual Notebook GetDefaultNotebook();
 
@@ -90,6 +86,11 @@ public:
 	virtual void MakeNotebookDefault(const Notebook & notebook);
 
 	virtual void MakeNotebookLastUsed(const Notebook & notebook);
+
+	virtual void SetCredentials
+		( const std::wstring & username
+		, const std::wstring & password
+		);
 	
 	virtual void SetNoteThumbnail
 		( const Guid      & guid
@@ -102,7 +103,7 @@ public:
 
 private:
 
-	void AddProperty(std::wstring key, std::wstring value);
+	void SetProperty(std::wstring key, std::wstring value);
 
 	void Create(std::wstring path);
 

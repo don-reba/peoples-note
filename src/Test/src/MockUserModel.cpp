@@ -48,9 +48,9 @@ bool MockUserModel::Exists(const wstring & username)
 	return validUsernames.find(username) != validUsernames.end();
 }
 
-ICredentialsModel & MockUserModel::GetCredentials()
+Credentials MockUserModel::GetCredentials()
 {
-	return credentialsModel;
+	return credentials;
 }
 
 Notebook MockUserModel::GetDefaultNotebook()
@@ -153,6 +153,15 @@ void MockUserModel::MakeNotebookDefault(const Notebook & notebook)
 void MockUserModel::MakeNotebookLastUsed(const Notebook & notebook)
 {
 	lastUsedNotebook = notebook;
+}
+
+void MockUserModel::SetCredentials
+		( const wstring & username
+		, const wstring & password
+		)
+{
+	credentials.SetUsername(username);
+	credentials.SetPassword(password);
 }
 
 void MockUserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)

@@ -63,7 +63,7 @@ public:
 
 public:
 
-	MockCredentialsModel credentialsModel;
+	Credentials credentials;
 
 	Notebook defaultNotebook;
 	Notebook lastUsedNotebook;
@@ -116,9 +116,9 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
-	virtual ICredentialsModel & GetCredentials();
-
 	virtual bool Exists(const std::wstring & username);
+
+	virtual Credentials GetCredentials();
 
 	virtual Notebook GetDefaultNotebook();
 
@@ -153,6 +153,11 @@ public:
 	virtual void MakeNotebookDefault(const Notebook & notebook);
 
 	virtual void MakeNotebookLastUsed(const Notebook & notebook);
+
+	virtual void SetCredentials
+		( const std::wstring & username
+		, const std::wstring & password
+		);
 	
 	virtual void SetNoteThumbnail
 		( const Guid      & guid

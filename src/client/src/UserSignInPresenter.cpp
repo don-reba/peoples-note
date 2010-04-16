@@ -34,9 +34,17 @@ void UserSignInPresenter::OnCredentialsUpdated()
 	else
 	{
 		if (userModel.Exists(username))
+		{
 			userModel.Load(username);
+		}
 		else
+		{
 			userModel.LoadAs(L"[anonymous]", username);
+			userModel.SetCredentials
+				( username
+				, newCredentials.GetPassword()
+				);
+		}
 	}
 }
 

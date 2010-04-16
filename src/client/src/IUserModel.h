@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Blob.h"
+#include "Credentials.h"
 #include "ISignalProvider.h"
 #include "Guid.h"
 #include "Note.h"
@@ -34,7 +35,7 @@ public:
 
 	virtual bool Exists(const std::wstring & username) = 0;
 
-	virtual ICredentialsModel & GetCredentials() = 0;
+	virtual Credentials GetCredentials() = 0;
 
 	virtual Notebook GetDefaultNotebook() = 0;
 
@@ -69,6 +70,11 @@ public:
 	virtual void MakeNotebookDefault(const Notebook & notebook) = 0;
 
 	virtual void MakeNotebookLastUsed(const Notebook & notebook) = 0;
+
+	virtual void SetCredentials
+		( const std::wstring & username
+		, const std::wstring & password
+		) = 0;
 	
 	virtual void SetNoteThumbnail
 		( const Guid      & guid

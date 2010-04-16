@@ -40,11 +40,6 @@ int UserModel::GetNotebookCount()
 	return count;
 }
 
-wstring UserModel::GetUser()
-{
-	return GetProperty(L"user");
-}
-
 int UserModel::GetVersion()
 {
 	return _wtoi(GetProperty(L"version").c_str());
@@ -123,9 +118,12 @@ bool UserModel::Exists(const wstring & username)
 }
 
 
-ICredentialsModel & UserModel::GetCredentials()
+Credentials UserModel::GetCredentials()
 {
-	return credentialsModel;
+	return Credentials
+		( GetProperty(L"username")
+		, GetProperty(L"password")
+		);
 }
 
 Notebook UserModel::GetDefaultNotebook()
@@ -319,7 +317,6 @@ void UserModel::Load(const wstring & username)
 	if (!TryLoad(path))
 		throw std::exception("Database could not be loaded.");
 	Update();
-	credentialsModel.SetCredentials(username, L""); // TODO: remove when database storage is added
 	SignalLoaded();
 }
 
@@ -349,7 +346,6 @@ void UserModel::LoadOrCreate(const wstring & username)
 		Initialize(username);
 	}
 	Update();
-	credentialsModel.SetCredentials(username, L""); // TODO: remove when database storage is added
 	SignalLoaded();
 }
 
@@ -389,6 +385,15 @@ void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
 	setNew->Execute();
 }
 
+void UserModel::SetCredentials
+	( const wstring & username
+	, const wstring & password
+	)
+{
+	SetProperty(L"username", username);
+	SetProperty(L"password", password);
+}
+
 void UserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -412,10 +417,10 @@ void UserModel::Unload()
 // utility functions
 //------------------
 
-void UserModel::AddProperty(wstring key, wstring value)
+void UserModel::SetProperty(wstring key, wstring value)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT INTO Properties VALUES (?, ?)"
+		( "INSERT OR REPLACE INTO Properties VALUES (?, ?)"
 		);
 	statement->Bind(1, key);
 	statement->Bind(2, value);
@@ -466,8 +471,9 @@ void UserModel::Initialize(wstring name)
 			", value NOT NULL"
 			")"
 		);
-	AddProperty(L"version", L"0");
-	AddProperty(L"user",    name);
+	SetProperty(L"version",  L"0");
+	SetProperty(L"username", name);
+	SetProperty(L"password", L"");
 
 	CreateTable
 		( "CREATE TABLE Notebooks"

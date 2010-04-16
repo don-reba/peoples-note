@@ -36,8 +36,13 @@ BOOST_FIXTURE_TEST_CASE
 
 	userModel.Load(L"[anonymous]");
 	credentialsModel.username = L"test-usr";
+	credentialsModel.password = L"test-pwd";
 	credentialsModel.SignalUpdated();
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadAs);
+
+	Credentials credentials(userModel.GetCredentials());
+	BOOST_CHECK_EQUAL(credentials.GetUsername(), L"test-usr");
+	BOOST_CHECK_EQUAL(credentials.GetPassword(), L"test-pwd");
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -63,7 +68,7 @@ BOOST_FIXTURE_TEST_CASE
 	SignalCheck check;
 	credentialsModel.SignalUpdating.connect(boost::ref(check));
 
-	userModel.GetCredentials().SetCredentials(L"[anonymous]", L"");
+	userModel.SetCredentials(L"[anonymous]", L"");
 
 	noteListView.SignalSignIn();
 	BOOST_CHECK(check.signalled);

@@ -391,6 +391,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Credentials.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CredentialsModel.cpp"
 				>
 			</File>
@@ -598,6 +602,10 @@
 			</File>
 			<File
 				RelativePath=".\src\crackers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Credentials.h"
 				>
 			</File>
 			<File

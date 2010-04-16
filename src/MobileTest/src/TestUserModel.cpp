@@ -260,9 +260,12 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 		TEST_CHECK(FileExists(storeFile));
 		TEST_CHECK(check.signalled);
 
+		Credentials credentials(userModel.GetCredentials());
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
-		TEST_CHECK_EQUAL(userModel.GetUser(),          storeName);
+		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
+
+		userModel.SetCredentials(storeName, L"test-pwd");
 
 		userModel.AddNotebook(Notebook(Guid(), L""));
 	}
@@ -276,8 +279,10 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 		userModel.LoadOrCreate(storeName);
 		TEST_CHECK(check.signalled);
 
+		Credentials credentials(userModel.GetCredentials());
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
-		TEST_CHECK_EQUAL(userModel.GetUser(),          storeName);
+		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
+		TEST_CHECK_EQUAL(credentials.GetPassword(),    L"test-pwd");
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 	}
 }
