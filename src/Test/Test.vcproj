@@ -368,6 +368,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Transaction.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\UserLoader.cpp"
 				>
 			</File>

@@ -975,7 +975,37 @@ credentials
 	new credentials should be cached
 	there is no need to subscribe to user credentials updates
 	so, we can create a POD credentials object
-TODO test
-	UserModel get/set credentials
-	√ UserSignInPresenter credential setting
-	UserModel username initialization
+transactions
+	which operations are performed with UserModel?
+		EnImporter::OnImport
+			get last used notebook
+			add a bunch of notes
+			add a bunch of resources
+			retrieve the notebook notes
+		NoteListPresenter::OnLoadThumbnail
+			get thumbnail
+			set the thumbnail
+		NoteListPresenter::OnUserLoaded
+			get all notebooks
+			get last used notebook
+			retrieve the notebook notes
+			get credentials
+		NotePresenter::OnLoadingData
+			get an image resource
+		NotePresenter::OnOpenNote
+			get a note body
+			get a note
+		SearchPresenter::ResetNotes
+			get last used notebook
+			retrieve the notebook notes
+		SearchPresenter::SearchNotes
+			get last used notebook
+			retrieve the notebook notes
+		UserLoader::Save
+			get credentials
+		UserSignInPresenter::OnCredentialsUpdated
+			load
+			set credentials
+		UserSignInPresenter::OnSignIn
+			get credentials
+	transactions clearly have to be handled outside UserModel

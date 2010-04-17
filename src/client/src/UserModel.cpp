@@ -106,9 +106,25 @@ void UserModel::AddNotebook(const Notebook & notebook)
 	statement->Finalize();
 }
 
+void UserModel::BeginTransaction()
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "BEGIN TRANSACTION"
+		);
+	statement->Finalize();
+}
+
 void UserModel::ConnectLoaded(slot_type OnLoaded)
 {
 	SignalLoaded.connect(OnLoaded);
+}
+
+void UserModel::EndTransaction()
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "END TRANSACTION"
+		);
+	statement->Finalize();
 }
 
 bool UserModel::Exists(const wstring & username)

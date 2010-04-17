@@ -6,6 +6,7 @@ using namespace std;
 
 MockUserModel::MockUserModel()
 	: defaultNotebook  (Guid(), L"default-notebook")
+	, isInTransaction  (false)
 	, lastUsedNotebook (Guid(), L"last-used-notebook")
 	, loadMethod       (LoadMethodNone)
 {
@@ -38,9 +39,19 @@ void MockUserModel::AddNotebook(const Notebook & notebook)
 	notebooks.push_back(notebook);
 }
 
+void MockUserModel::BeginTransaction()
+{
+	isInTransaction = true;
+}
+
 void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 {
 	SignalLoaded.connect(OnLoaded);
+}
+
+void MockUserModel::EndTransaction()
+{
+	isInTransaction = false;
 }
 
 bool MockUserModel::Exists(const wstring & username)

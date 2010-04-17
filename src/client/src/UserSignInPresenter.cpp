@@ -4,6 +4,7 @@
 #include "ICredentialsModel.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
+#include "Transaction.h"
 
 using namespace boost;
 using namespace std;
@@ -50,6 +51,7 @@ void UserSignInPresenter::OnCredentialsUpdated()
 
 void UserSignInPresenter::OnSignIn()
 {
+	Transaction transaction(userModel);
 	if (userModel.GetCredentials().GetUsername() == L"[anonymous]")
 		newCredentials.Update();
 	else

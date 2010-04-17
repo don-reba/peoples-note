@@ -5,6 +5,7 @@
 #include "NoteView.h"
 #include "Notebook.h"
 #include "Tools.h"
+#include "Transaction.h"
 
 #include <sstream>
 
@@ -34,6 +35,8 @@ NoteListPresenter::NoteListPresenter
 
 void NoteListPresenter::OnLoadThumbnail(const Guid & guid, Blob *& blob)
 {
+	Transaction transaction(userModel);
+
 	const SIZE size = { 164, 100 };
 	userModel.GetNoteThumbnail(guid, thumbnail);
 	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
@@ -67,6 +70,8 @@ void NoteListPresenter::OnNoteListChanged()
 
 void NoteListPresenter::OnUserLoaded()
 {
+	Transaction transaction(userModel);
+
 	noteListView.ClearNotebooks();
 	const NotebookList & notebooks = userModel.GetNotebooks();
 	foreach (const Notebook & notebook, notebooks)

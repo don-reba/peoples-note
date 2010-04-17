@@ -84,6 +84,8 @@ public:
 	std::wstring loadedAs;
 	LoadMethod   loadMethod;
 
+	bool isInTransaction;
+
 	mutable std::wstring notebookSelection;
 	mutable std::wstring searchSelection;
 	
@@ -114,7 +116,11 @@ public:
 
 	virtual void AddNotebook(const Notebook & notebook);
 
+	virtual void BeginTransaction();
+
 	virtual void ConnectLoaded(slot_type OnLoaded);
+
+	virtual void EndTransaction();
 
 	virtual bool Exists(const std::wstring & username);
 

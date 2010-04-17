@@ -31,7 +31,11 @@ public:
 
 	virtual void AddNotebook(const Notebook & notebook) = 0;
 
+	virtual void BeginTransaction() = 0;
+
 	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
+
+	virtual void EndTransaction() = 0;
 
 	virtual bool Exists(const std::wstring & username) = 0;
 

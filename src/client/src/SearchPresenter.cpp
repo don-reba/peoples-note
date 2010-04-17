@@ -2,6 +2,7 @@
 #include "SearchPresenter.h"
 
 #include "Notebook.h"
+#include "Transaction.h"
 
 using namespace boost;
 using namespace std;
@@ -29,10 +30,12 @@ void SearchPresenter::OnSearch()
 
 void SearchPresenter::ResetNotes()
 {
+	Transaction transaction(userModel);
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
 }
 
 void SearchPresenter::SearchNotes(wstring search)
 {
+	Transaction transaction(userModel);
 	noteListModel.SetNotes(userModel.GetNotesBySearch(search));
 }

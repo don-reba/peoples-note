@@ -567,6 +567,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Transaction.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\UserLoader.cpp"
 				>
 			</File>
@@ -790,6 +794,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Tools.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Transaction.h"
 				>
 			</File>
 			<File

@@ -3,6 +3,7 @@
 
 #include "Guid.h"
 #include "Tools.h"
+#include "Transaction.h"
 
 #include "RapidXml/rapidxml_print.hpp"
 
@@ -43,11 +44,14 @@ void NotePresenter::OnLoadingData
 	if (!hash)
 		return;
 	++hash;
+	Transaction transaction(userModel);
 	userModel.GetImageResource(ConvertToAnsi(hash), blob);
 }
 
 void NotePresenter::OnOpenNote()
 {
+	Transaction transaction(userModel);
+
 	Guid guid(noteListView.GetSelectedNoteGuid());
 
 	wstring body;

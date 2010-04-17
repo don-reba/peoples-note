@@ -5,6 +5,7 @@
 #include "INoteListModel.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
+#include "Transaction.h"
 
 #include "MD5/md5.h"
 
@@ -44,6 +45,8 @@ void EnImportPresenter::OnImport()
 	IEnImporter::ImageList images;
 	enImporter.ImportNotes(file, notes, bodies, images);
 	assert(notes.size() == bodies.size());
+
+	Transaction transaction(userModel);
 
 	const Notebook & notebook = userModel.GetLastUsedNotebook();
 	for (int i(0); i != notes.size(); ++i)
