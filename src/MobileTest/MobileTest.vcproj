@@ -484,6 +484,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestUserModelTransactions.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Thumbnail.cpp"
 				>
 			</File>

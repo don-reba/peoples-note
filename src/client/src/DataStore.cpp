@@ -53,6 +53,9 @@ bool DataStore::Create(std::wstring path, int flags)
 		db = NULL;
 		return false;
 	}
+
+	sqlite3_busy_handler(db, &HandleBusy, this);
+
 	return true;
 }
 
@@ -73,4 +76,12 @@ IDataStore::Blob DataStore::MakeBlob
 IDataStore::Statement DataStore::MakeStatement(const char * sql)
 {
 	return make_shared<SqlStatement>(db, sql);
+}
+
+int DataStore::HandleBusy(void * param, int count)
+{
+	if (count < 0 || count > 13)
+		return 0;
+	::Sleep(1 << count);
+	return 1;
 }

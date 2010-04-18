@@ -34,4 +34,8 @@ public:
 		);
 
 	virtual Statement MakeStatement(const char * sql);
+
+private:
+
+	static int HandleBusy(void * param, int count);
 };

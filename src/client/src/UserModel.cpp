@@ -111,6 +111,7 @@ void UserModel::BeginTransaction()
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "BEGIN TRANSACTION"
 		);
+	statement->Execute();
 	statement->Finalize();
 }
 
@@ -124,6 +125,7 @@ void UserModel::EndTransaction()
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "END TRANSACTION"
 		);
+	statement->Execute();
 	statement->Finalize();
 }
 
