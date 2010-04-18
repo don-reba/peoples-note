@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Blob.h"
+#include "Note.h"
 
 class IEnImporter;
 class INoteListModel;
@@ -32,4 +33,6 @@ private:
 private:
 
 	static std::string Hash(const Blob & blob);
+
+	const NoteList & ImportNotes(std::wistream & file);
 };

@@ -40,33 +40,7 @@ void EnImportPresenter::OnImport()
 	if (!file.is_open())
 		throw std::exception("File could not be opened.");
 
-	NoteList               notes;
-	NoteBodyList           bodies;
-	IEnImporter::ImageList images;
-	enImporter.ImportNotes(file, notes, bodies, images);
-	assert(notes.size() == bodies.size());
-
-	Transaction transaction(userModel);
-
-	const Notebook & notebook = userModel.GetLastUsedNotebook();
-	for (int i(0); i != notes.size(); ++i)
-	{
-		const Note    & note     = notes.at(i);
-		const wstring & body     = bodies.at(i);
-		wstring         bodyText = L""; // TODO: produce body text
-		userModel.AddNote(note, body, bodyText, notebook);
-	}
-
-	foreach (const IEnImporter::Image & image, images)
-	{
-		userModel.AddImageResource
-			( Hash(image.blob)
-			, image.blob
-			, image.noteGuid
-			);
-	}
-
-	noteListModel.SetNotes(userModel.GetNotesByNotebook(notebook));
+	noteListModel.SetNotes(ImportNotes(file));
 }
 
 string EnImportPresenter::Hash(const Blob & blob)
@@ -91,4 +65,35 @@ string EnImportPresenter::Hash(const Blob & blob)
 	}
 
 	return hex;
+}
+
+const NoteList & EnImportPresenter::ImportNotes(wistream & file)
+{
+	Transaction transaction(userModel);
+
+	NoteList               notes;
+	NoteBodyList           bodies;
+	IEnImporter::ImageList images;
+	enImporter.ImportNotes(file, notes, bodies, images);
+	assert(notes.size() == bodies.size());
+
+	const Notebook & notebook = userModel.GetLastUsedNotebook();
+	for (int i(0); i != notes.size(); ++i)
+	{
+		const Note    & note     = notes.at(i);
+		const wstring & body     = bodies.at(i);
+		wstring         bodyText = L""; // TODO: produce body text
+		userModel.AddNote(note, body, bodyText, notebook);
+	}
+
+	foreach (const IEnImporter::Image & image, images)
+	{
+		userModel.AddImageResource
+			( Hash(image.blob)
+			, image.blob
+			, image.noteGuid
+			);
+	}
+
+	return userModel.GetNotesByNotebook(notebook);
 }
