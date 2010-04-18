@@ -14,15 +14,17 @@ using namespace std;
 using namespace Tools;
 
 NoteListPresenter::NoteListPresenter
-	( INoteListModel & noteListModel
-	, INoteListView  & noteListView
-	, INoteView      & noteView
-	, IUserModel     & userModel
+	( INoteListModel   & noteListModel
+	, INoteListView    & noteListView
+	, INoteView        & noteView
+	, IUserModel       & userModel
+	, EnNoteTranslator & enNoteTranslator
 	)
-	: noteListModel (noteListModel)
-	, noteListView  (noteListView)
-	, noteView      (noteView)
-	, userModel     (userModel)
+	: noteListModel    (noteListModel)
+	, noteListView     (noteListView)
+	, noteView         (noteView)
+	, userModel        (userModel)
+	, enNoteTranslator (enNoteTranslator)
 {
 	noteListView.ConnectLoadThumbnail(bind(&NoteListPresenter::OnLoadThumbnail, this, _1, _2));
 	noteListModel.ConnectChanged(bind(&NoteListPresenter::OnNoteListChanged, this));
@@ -44,9 +46,12 @@ void NoteListPresenter::OnLoadThumbnail(const Guid & guid, Blob *& blob)
 		wstring body;
 		userModel.GetNoteBody(guid, body);
 
+		wstring html;
+		enNoteTranslator.ConvertToHtml(body, html);
+
 		noteView.SetTitle(L"");
 		noteView.SetSubtitle(L"");
-		noteView.SetBody(body);
+		noteView.SetBody(html);
 
 		thumbnail.Width  = size.cx;
 		thumbnail.Height = size.cy;

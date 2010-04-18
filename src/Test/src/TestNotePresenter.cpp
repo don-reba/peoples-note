@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "EnNoteTranslator.h"
 #include "MockUserModel.h"
 #include "MockNoteListView.h"
 #include "MockNoteView.h"
@@ -9,10 +10,16 @@ using namespace std;
 
 BOOST_AUTO_TEST_CASE(NotePresenterLoadingData_Test)
 {
+	EnNoteTranslator enNoteTranslator;
 	MockNoteListView noteListView;
 	MockNoteView     noteView;
 	MockUserModel    userModel;
-	NotePresenter notePresenter(noteListView, noteView, userModel);
+	NotePresenter notePresenter
+		( noteListView
+		, noteView
+		, userModel
+		, enNoteTranslator
+		);
 
 	Blob data;
 	data.push_back(2);
@@ -28,62 +35,28 @@ BOOST_AUTO_TEST_CASE(NotePresenterLoadingData_Test)
 	BOOST_CHECK_EQUAL(result.at(2), 5);
 }
 
-BOOST_AUTO_TEST_CASE(NotePresenterMedia_Test)
+BOOST_AUTO_TEST_CASE(NotePresenter_Content_Test)
 {
+	EnNoteTranslator enNoteTranslator;
 	MockNoteListView noteListView;
 	MockNoteView     noteView;
 	MockUserModel    userModel;
-	NotePresenter notePresenter(noteListView, noteView, userModel);
+	NotePresenter notePresenter
+		( noteListView
+		, noteView
+		, userModel
+		, enNoteTranslator
+		);
 
 	Guid guid;
 	userModel.notes.push_back(Note(guid, L"note-title", Timestamp(0)));
 	noteListView.selectedNoteGuid = guid;
-	userModel.noteBodies[guid] =
-		L"<en-note>"
-		L"note"
-		L"<en-media border=\"1\" hash=\"d978\" type=\"image/jpeg\" />"
-		L"</en-note>";
+	userModel.noteBodies[guid] = L"<en-note>test-note</en-note>";
 
 	noteListView.SignalOpenNote();
 
-	BOOST_CHECK_EQUAL
-		( noteView.body
-		, L"<en-note>"
-			L"note"
-			L"<img src=\"img:d978\" border=\"1\"/>"
-			L"</en-note>"
-		);
+	BOOST_CHECK_EQUAL(noteView.body, L"<div>test-note</div>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
 	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 00:00");
-	BOOST_CHECK(noteView.isShown);
-}
-
-BOOST_AUTO_TEST_CASE(NotePresenterTodo_Test)
-{
-	MockNoteListView noteListView;
-	MockNoteView     noteView;
-	MockUserModel    userModel;
-	NotePresenter notePresenter(noteListView, noteView, userModel);
-
-	Guid guid;
-	userModel.notes.push_back(Note(guid, L"", Timestamp(0)));
-	noteListView.selectedNoteGuid = guid;
-	userModel.noteBodies[guid] =
-		L"<en-note>"
-		L"note"
-		L"<en-todo checked=\"true\" />"
-		L"<en-todo checked=\"false\" />"
-		L"</en-note>";
-
-	noteListView.SignalOpenNote();
-
-	BOOST_CHECK_EQUAL
-		( noteView.body
-		, L"<en-note>"
-			L"note"
-			L"<input type=\"checkbox\" checked=\"\"/>"
-			L"<input type=\"checkbox\"/>"
-			L"</en-note>"
-		);
 	BOOST_CHECK(noteView.isShown);
 }

@@ -6,6 +6,7 @@
 #include "DataStore.h"
 #include "EnImportPresenter.h"
 #include "EnImporter.h"
+#include "EnNoteTranslator.h"
 #include "EnService.h"
 #include "LastUserModel.h"
 #include "NoteListModel.h"
@@ -98,11 +99,12 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
-		Animator    animator;
-		RegistryKey registryKey(L"Software\\People's Note");
-		DataStore   dataStore;
-		EnImporter  enImporter;
-		EnService   enService;
+		Animator         animator;
+		RegistryKey      registryKey(L"Software\\People's Note");
+		DataStore        dataStore;
+		EnImporter       enImporter;
+		EnNoteTranslator enNoteTranslator;
+		EnService        enService;
 
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
@@ -129,11 +131,13 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListView
 			, noteView
 			, userModel
+			, enNoteTranslator
 			);
 		NotePresenter notePresenter
 			( noteListView
 			, noteView
 			, userModel
+			, enNoteTranslator
 			);
 		SearchPresenter searchPresenter
 			( noteListModel

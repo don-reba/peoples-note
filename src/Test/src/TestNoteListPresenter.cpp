@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "EnNoteTranslator.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockNoteView.h"
@@ -14,6 +15,7 @@ using namespace std;
 
 BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 {
+	EnNoteTranslator  enNoteTranslator;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockNoteView      noteView;
@@ -23,6 +25,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 		, noteListView
 		, noteView
 		, userModel
+		, enNoteTranslator
 		);
 
 	TagList tags0;
@@ -58,6 +61,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 
 BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 {
+	EnNoteTranslator  enNoteTranslator;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockNoteView      noteView;
@@ -67,6 +71,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 		, noteListView
 		, noteView
 		, userModel
+		, enNoteTranslator
 		);
 
 	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
@@ -82,6 +87,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 
 BOOST_AUTO_TEST_CASE(NotListPresenter_LoadThumbnail_Test)
 {
+	EnNoteTranslator  enNoteTranslator;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockNoteView      noteView;
@@ -91,6 +97,7 @@ BOOST_AUTO_TEST_CASE(NotListPresenter_LoadThumbnail_Test)
 		, noteListView
 		, noteView
 		, userModel
+		, enNoteTranslator
 		);
 
 	userModel.notes.push_back(Note(Guid("{0}"), L"note-0", Timestamp(0)));
@@ -106,6 +113,7 @@ BOOST_AUTO_TEST_CASE(NotListPresenter_LoadThumbnail_Test)
 
 BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
 {
+	EnNoteTranslator  enNoteTranslator;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockNoteView      noteView;
@@ -115,6 +123,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_UpdateNotebookList_Test)
 		, noteListView
 		, noteView
 		, userModel
+		, enNoteTranslator
 		);
 
 	userModel.notebooks.push_back(Notebook(Guid(), L"notebook-0"));

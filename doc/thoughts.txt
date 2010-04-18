@@ -977,7 +977,7 @@ credentials
 	so, we can create a POD credentials object
 transactions
 	which operations are performed with UserModel?
-		EnImporter::OnImport
+		EnImportPresenter::OnImport
 			get last used notebook
 			add a bunch of notes
 			add a bunch of resources
@@ -1009,3 +1009,18 @@ transactions
 		UserSignInPresenter::OnSignIn
 			get credentials
 	transactions clearly have to be handled outside UserModel
+		need to create RAII transaction objects
+	imortantly, how to test transactions?
+		have to create two UserModel instances
+		the instances have to access the database concurrently
+		on different threads
+		have to make sure the database blocks properly
+		one thread needs to
+			enter a transaction
+			make a write
+			spin off another thread
+		the second thread needs to
+			enter a transaction
+			try to make a write
+		the first thread needs to
+			make sure the second thread is blocked

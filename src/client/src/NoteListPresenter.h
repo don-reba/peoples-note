@@ -1,32 +1,35 @@
 #pragma once
 
-#include "Note.h"
-#include "Tag.h"
-#include "Timestamp.h"
+#include "EnNoteTranslator.h"
 #include "INoteListModel.h"
 #include "INoteListView.h"
 #include "INoteView.h"
 #include "IUserModel.h"
+#include "Note.h"
+#include "Tag.h"
 #include "Thumbnail.h"
+#include "Timestamp.h"
 
 class NoteListPresenter
 {
 private:
 
-	INoteListModel & noteListModel;
-	INoteListView  & noteListView;
-	INoteView      & noteView;
-	IUserModel     & userModel;
+	INoteListModel   & noteListModel;
+	INoteListView    & noteListView;
+	INoteView        & noteView;
+	IUserModel       & userModel;
+	EnNoteTranslator & enNoteTranslator;
 
 	Thumbnail thumbnail;
 
 public:
 
 	NoteListPresenter
-		( INoteListModel & noteListModel
-		, INoteListView  & noteListView
-		, INoteView      & noteView
-		, IUserModel     & userModel
+		( INoteListModel   & noteListModel
+		, INoteListView    & noteListView
+		, INoteView        & noteView
+		, IUserModel       & userModel
+		, EnNoteTranslator & enNoteTranslator
 		);
 
 // event handlers

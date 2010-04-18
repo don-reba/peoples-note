@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EnNoteTranslator.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Guid.cpp"
 				>
 			</File>
@@ -313,6 +317,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestEnImportPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestEnNoteTranslator.cpp"
 				>
 			</File>
 			<File

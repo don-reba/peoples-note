@@ -44,6 +44,9 @@ AUTO_TEST_CASE(TestUserModelTransactions)
 
 		model.AddNotebook(Notebook(Guid(), L"notebook-0"));
 
+		
+		Transaction nestedTransaction(model);
+
 		HANDLE otherThread(::CreateThread(NULL, 0, &OtherThread, NULL, 0, NULL));
 		TEST_CHECK(otherThread != 0);
 		::Sleep(100);

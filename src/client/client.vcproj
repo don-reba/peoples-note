@@ -419,6 +419,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EnNoteTranslator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\EnService.cpp"
 				>
 			</File>
@@ -634,6 +638,10 @@
 			</File>
 			<File
 				RelativePath=".\src\EnImportPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EnNoteTranslator.h"
 				>
 			</File>
 			<File
