@@ -20,10 +20,21 @@ UserLoader::UserLoader
 void UserLoader::Run()
 {
 	const wstring & username(lastUserModel.GetUsername());
-	if (username.empty())
-		userModel.LoadOrCreate(L"[anonymous]");
-	else
-		userModel.Load(username);
+		if (username.empty())
+		{
+			userModel.LoadOrCreate(L"[anonymous]");
+		}
+		else
+		{
+			try
+			{
+				userModel.Load(username);
+			}
+			catch (const std::exception & e)
+			{
+				userModel.LoadOrCreate(L"[anonymous]");
+			}
+		}
 }
 
 void UserLoader::Save()
