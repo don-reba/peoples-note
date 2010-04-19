@@ -9,7 +9,7 @@ const wchar_t * const storeName   = L"test";
 const wchar_t * const storeFolder = L"Program Files\\MobileTest";
 const wchar_t * const storeFile   = L"Program Files\\MobileTest\\test.db";
 
-DWORD WINAPI OtherThread(LPVOID)
+DWORD WINAPI UserModelTransactionsrThread(LPVOID)
 {
 	try
 	{
@@ -47,7 +47,7 @@ AUTO_TEST_CASE(TestUserModelTransactions)
 		
 		Transaction nestedTransaction(model);
 
-		HANDLE otherThread(::CreateThread(NULL, 0, &OtherThread, NULL, 0, NULL));
+		HANDLE otherThread(::CreateThread(NULL, 0, &UserModelTransactionsrThread, NULL, 0, NULL));
 		TEST_CHECK(otherThread != 0);
 		::Sleep(100);
 		TEST_CHECK_EQUAL(model.GetNotebookCount(), 2);

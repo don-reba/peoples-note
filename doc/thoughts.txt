@@ -877,6 +877,16 @@ sync
 				raises the credentials.Updating event
 				checks whether credentials were set
 				restarts sync, if they were
+	too much logic inside the model
+	need to split this into a model and a controller
+	SyncController
+		initiates and controls sync
+		displays credentials requests
+	SyncPresenter
+		runs the Sync method
+		posts events to the window message queue
+	instead of using Windows messaging, SyncModel can have its own
+	much of the syncing code would be in EnService
 signin
 	two sources
 		sync needs new credentials
@@ -1024,3 +1034,5 @@ transactions
 			try to make a write
 		the first thread needs to
 			make sure the second thread is blocked
+signin is broken
+	TODO

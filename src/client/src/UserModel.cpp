@@ -347,7 +347,11 @@ void UserModel::LoadAs
 	wstring newPath = CreatePathFromName(newUsername);
 	if (!::MoveFile(oldPath.c_str(), newPath.c_str()))
 		throw std::exception("Database could not be renamed.");
-	Load(newUsername);
+	if (!TryLoad(newPath))
+		throw std::exception("Database could not be loaded.");
+	Update();
+	SetProperty(L"username", newUsername);
+	SignalLoaded();
 }
 
 void UserModel::LoadOrCreate(const wstring & username)

@@ -33,6 +33,8 @@ public:
 
 	virtual void ConnectSignIn(slot_type OnSignin) = 0;
 
+	virtual void ConnectSync(slot_type OnSync) = 0;
+
 	virtual void ClearNotes() = 0;
 
 	virtual void ClearNotebooks() = 0;

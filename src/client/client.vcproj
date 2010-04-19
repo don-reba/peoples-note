@@ -487,6 +487,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ScopedLock.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SearchPresenter.cpp"
 				>
 			</File>
@@ -553,6 +557,14 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\SyncModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SyncPresenter.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\src\Tag.cpp"
@@ -721,6 +733,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ISyncModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\IUserModel.h"
 				>
 			</File>
@@ -769,6 +785,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ScopedLock.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SearchPresenter.h"
 				>
 			</File>
@@ -786,6 +806,14 @@
 			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SyncModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SyncPresenter.h"
 				>
 			</File>
 			<File

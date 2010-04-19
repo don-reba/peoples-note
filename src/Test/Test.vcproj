@@ -255,6 +255,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockSyncModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockUserModel.cpp"
 				>
 			</File>
@@ -272,6 +276,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\NotePresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\ScopedLock.cpp"
 				>
 			</File>
 			<File
@@ -298,6 +306,14 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\client\src\SyncModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\SyncPresenter.cpp"
+				>
 			</File>
 			<File
 				RelativePath="..\client\src\Tag.cpp"
@@ -345,6 +361,14 @@
 			</File>
 			<File
 				RelativePath=".\src\TestSearchPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestSyncModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestSyncPresenter.cpp"
 				>
 			</File>
 			<File
@@ -435,6 +459,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockSyncModel.h"
 				>
 			</File>
 			<File

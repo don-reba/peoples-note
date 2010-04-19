@@ -69,6 +69,7 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
+	ConnectBehavior("#sync",          BUTTON_CLICK,             &NoteListView::OnSync);
 
 	element root(element::root_element(hwnd_));
 	noteList = root.find_first("#note-list");
@@ -148,6 +149,11 @@ void NoteListView::ConnectSearch(slot_type OnSearch)
 void NoteListView::ConnectSignIn(slot_type OnSignIn)
 {
 	SignalSignIn.connect(OnSignIn);
+}
+
+void NoteListView::ConnectSync(slot_type OnSync)
+{
+	SignalSync.connect(OnSync);
 }
 
 bool NoteListView::GetEnexPath(wstring & path)
@@ -460,4 +466,9 @@ void NoteListView::OnNote()
 void NoteListView::OnSearch()
 {
 	SignalSearch();
+}
+
+void NoteListView::OnSync()
+{
+	SignalSync();
 }

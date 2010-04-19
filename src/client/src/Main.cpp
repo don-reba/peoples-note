@@ -15,6 +15,8 @@
 #include "NotePresenter.h"
 #include "RegistryKey.h"
 #include "SearchPresenter.h"
+#include "SyncModel.h"
+#include "SyncPresenter.h"
 #include "UserLoader.h"
 #include "UserModel.h"
 #include "UserSignInPresenter.h"
@@ -61,7 +63,10 @@ bool SwitchToPreviousInstance(HINSTANCE instance)
 
 // Main message loop.
 // Switches between two modes: normal and animation.
-int RunMessageLoop(IAnimator & animator)
+int RunMessageLoop
+	( IAnimator & animator
+	, SyncModel & syncModel
+	)
 {
 	MSG msg;
 	while (::GetMessage(&msg, NULL, 0, 0)) 
@@ -69,6 +74,7 @@ int RunMessageLoop(IAnimator & animator)
 		if (!::HTMLayoutTranslateMessage(&msg))
 			::TranslateMessage(&msg);
 		::DispatchMessage(&msg);
+		syncModel.ProcessMessages();
 		while (animator.IsRunning())
 		{
 			while (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -109,6 +115,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
 		NoteListModel    noteListModel;
+		SyncModel        syncModel;
 		UserModel        userModel(dataStore, GetDocumentPath());
 
 		CredentialsView credentialsView (instance);
@@ -144,6 +151,12 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			, noteListView
 			);
+		SyncPresenter syncPresenter
+			( noteListModel
+			, noteListView
+			, syncModel
+			, userModel
+			);
 		UserLoader userLoader
 			( userModel
 			, lastUserModel
@@ -159,8 +172,10 @@ int WINAPI WinMain(HINSTANCE instance,
 		credentialsView.Create(noteListView.hwnd_);
 
 		userLoader.Run();
-		int result(RunMessageLoop(animator));
+		int result(RunMessageLoop(animator, syncModel));
 		userLoader.Save();
+
+		syncModel.StopSync();
 
 		CoUninitialize();
 

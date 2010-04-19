@@ -416,6 +416,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\ScopedLock.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\SqlBlob.cpp"
 				>
 			</File>
@@ -473,6 +477,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestRegistryKey.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestScopedLock.cpp"
 				>
 			</File>
 			<File

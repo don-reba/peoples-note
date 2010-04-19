@@ -48,6 +48,7 @@ private:
 	signal SignalOpenNote;
 	signal SignalSearch;
 	signal SignalSignIn;
+	signal SignalSync;
 
 	DataSignal  SignalLoadThumbnail;
 
@@ -86,6 +87,8 @@ public:
 	virtual void ConnectSearch(slot_type OnSearch);
 
 	virtual void ConnectSignIn(slot_type OnSignin);
+
+	virtual void ConnectSync(slot_type OnSync);
 
 	virtual bool GetEnexPath(std::wstring & path);
 
@@ -147,4 +150,5 @@ private:
 	void OnMenuSignIn();
 	void OnNote();
 	void OnSearch();
+	void OnSync();
 };
