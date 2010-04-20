@@ -23,6 +23,6 @@ Constants::Constants()
 {
 	EDAM_VERSION_MAJOR = 1;
 
-	EDAM_VERSION_MINOR = 14;
+	EDAM_VERSION_MINOR = 15;
 
 }

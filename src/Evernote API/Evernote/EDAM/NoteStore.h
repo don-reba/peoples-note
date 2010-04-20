@@ -6,4 +6,5 @@
 #include "NoteStore/AdImpressions.h"
 #include "NoteStore/AdParameters.h"
 #include "NoteStore/NoteEmailParameters.h"
+#include "NoteStore/NoteVersionId.h"
 #include "NoteStore/NoteStore.h"

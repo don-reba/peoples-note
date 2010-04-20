@@ -56,6 +56,7 @@ public:
 		bool groupName;
 		bool recognitionLanguage;
 		bool customerProfileId;
+		bool referralProof;
 	};
 
 	Thrift::Protocol::TString defaultLocationName;
@@ -83,6 +84,7 @@ public:
 	Thrift::Protocol::TString groupName;
 	Thrift::Protocol::TString recognitionLanguage;
 	__int64 customerProfileId;
+	Thrift::Protocol::TString referralProof;
 
 	Isset __isset;
 

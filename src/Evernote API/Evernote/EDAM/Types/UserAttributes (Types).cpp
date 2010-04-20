@@ -342,6 +342,18 @@ void UserAttributes::Read(Thrift::Protocol::TProtocol & iprot)
 				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
 			}
 			break;
+		case 28:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				this->referralProof;
+				iprot.ReadString(this->referralProof);
+				this->__isset.referralProof = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
 		default: 
 			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
 			break;
@@ -624,6 +636,16 @@ void UserAttributes::Write(Thrift::Protocol::TProtocol & oprot)
 		field.SetID(27);
 		oprot.WriteFieldBegin(field);
 		oprot.WriteI64(this->customerProfileId);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.referralProof)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"referralProof");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(28);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->referralProof);
 		oprot.WriteFieldEnd();
 	}
 	oprot.WriteFieldStop();

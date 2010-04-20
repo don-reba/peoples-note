@@ -60,10 +60,13 @@ public:
 		virtual std::vector<Thrift::Protocol::TString > getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
 		virtual Evernote::EDAM::Types::Note createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note) = 0;
 		virtual Evernote::EDAM::Types::Note updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note) = 0;
+		virtual __int32 deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
 		virtual __int32 expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
 		virtual __int32 expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Types::Guid > noteGuids) = 0;
 		virtual __int32 expungeInactiveNotes(Thrift::Protocol::TString authenticationToken) = 0;
 		virtual Evernote::EDAM::Types::Note copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid) = 0;
+		virtual std::vector<NoteVersionId > listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid) = 0;
+		virtual Evernote::EDAM::Types::Note getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData) = 0;
 		virtual Evernote::EDAM::Types::Resource getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData) = 0;
 		virtual __int32 updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Resource resource) = 0;
 		virtual Thrift::Protocol::TBinary getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
@@ -192,6 +195,9 @@ public:
 		Evernote::EDAM::Types::Note updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note);
 		void send_updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note);
 		Evernote::EDAM::Types::Note recv_updateNote();
+		__int32 deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		void send_deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		__int32 recv_deleteNote();
 		__int32 expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
 		void send_expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
 		__int32 recv_expungeNote();
@@ -204,6 +210,12 @@ public:
 		Evernote::EDAM::Types::Note copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid);
 		void send_copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid);
 		Evernote::EDAM::Types::Note recv_copyNote();
+		std::vector<NoteVersionId > listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid);
+		void send_listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid);
+		std::vector<NoteVersionId > recv_listNoteVersions();
+		Evernote::EDAM::Types::Note getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
+		void send_getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
+		Evernote::EDAM::Types::Note recv_getNoteVersion();
 		Evernote::EDAM::Types::Resource getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData);
 		void send_getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData);
 		Evernote::EDAM::Types::Resource recv_getResource();
@@ -311,10 +323,13 @@ public:
 		void getNoteTagNames_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void createNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void updateNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void deleteNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void expungeNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void expungeNotes_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void expungeInactiveNotes_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void copyNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void listNoteVersions_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void getNoteVersion_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getResource_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void updateResource_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getResourceData_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
@@ -1310,11 +1325,13 @@ public:
 			bool success;
 			bool userException;
 			bool systemException;
+			bool notFoundException;
 		};
 
 		NoteList success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 
 		Isset __isset;
 
@@ -1358,11 +1375,13 @@ public:
 			bool success;
 			bool userException;
 			bool systemException;
+			bool notFoundException;
 		};
 
 		NoteCollectionCounts success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 
 		Isset __isset;
 
@@ -1669,6 +1688,54 @@ public:
 		void Write(Thrift::Protocol::TProtocol & oprot);
 	};
 
+	class deleteNote_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool guid;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Types::Guid guid;
+
+		Isset __isset;
+
+		deleteNote_args();
+		virtual ~deleteNote_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class deleteNote_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		__int32 success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		deleteNote_result();
+		virtual ~deleteNote_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
 	class expungeNote_args	
 	{
 	public:
@@ -1854,6 +1921,110 @@ public:
 
 		copyNote_result();
 		virtual ~copyNote_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class listNoteVersions_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool noteGuid;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Types::Guid noteGuid;
+
+		Isset __isset;
+
+		listNoteVersions_args();
+		virtual ~listNoteVersions_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class listNoteVersions_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		std::vector<NoteVersionId > success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		listNoteVersions_result();
+		virtual ~listNoteVersions_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class getNoteVersion_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool noteGuid;
+			bool updateSequenceNum;
+			bool withResourcesData;
+			bool withResourcesRecognition;
+			bool withResourcesAlternateData;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Types::Guid noteGuid;
+		__int32 updateSequenceNum;
+		bool withResourcesData;
+		bool withResourcesRecognition;
+		bool withResourcesAlternateData;
+
+		Isset __isset;
+
+		getNoteVersion_args();
+		virtual ~getNoteVersion_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class getNoteVersion_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		Evernote::EDAM::Types::Note success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		getNoteVersion_result();
+		virtual ~getNoteVersion_result() throw() {}
 
 		void Read(Thrift::Protocol::TProtocol & iprot);
 		void Write(Thrift::Protocol::TProtocol & oprot);

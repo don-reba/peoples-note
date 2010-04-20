@@ -396,7 +396,7 @@ UserStore::checkVersion_args::checkVersion_args()
 {
 	edamVersionMajor = 1;
 
-	edamVersionMinor = 14;
+	edamVersionMinor = 15;
 
 	memset(&__isset, 0, sizeof(Isset));
 }
