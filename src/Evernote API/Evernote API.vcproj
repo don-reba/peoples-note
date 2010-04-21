@@ -597,6 +597,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId (NoteStore).cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo (UserStore).cpp"
 					>
 					<FileConfiguration
@@ -846,11 +858,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
+					RelativePath=".\Evernote\EDAM\NoteStore.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\NoteStore.h"
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
 					>
 				</File>
 				<File
@@ -922,11 +934,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\UserStore.h"
+					RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
+					RelativePath=".\Evernote\EDAM\UserStore.h"
 					>
 				</File>
 			</Filter>

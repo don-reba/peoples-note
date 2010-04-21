@@ -10,4 +10,6 @@ public:
 		( const std::wstring & username
 		, const std::wstring & password
 		);
+
+	virtual void GetState(ServerState & state);
 };

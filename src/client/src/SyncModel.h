@@ -4,6 +4,8 @@
 
 #include <queue>
 
+class IEnService;
+
 class SyncModel : public ISyncModel
 {
 // nested types
@@ -19,6 +21,8 @@ private:
 
 private:
 
+	IEnService & enService;
+
 	HANDLE syncThread;
 
 	CRITICAL_SECTION lock;
@@ -33,7 +37,7 @@ private:
 
 public:
 
-	SyncModel();
+	SyncModel(IEnService & enService);
 
 	~SyncModel();
 

@@ -1,15 +1,17 @@
 #include "stdafx.h"
 #include "SyncModel.h"
 
+#include "IEnService.h"
 #include "ScopedLock.h"
 
 //----------
 // interface
 //----------
 
-SyncModel::SyncModel()
+SyncModel::SyncModel(IEnService & enService)
 	: stopRequested (false)
 	, syncThread    (NULL)
+	, enService     (enService)
 {
 	::InitializeCriticalSection(&lock);
 }
@@ -81,6 +83,15 @@ void SyncModel::CloseThread()
 
 DWORD SyncModel::Sync()
 {
+	IEnService::ServerState state;
+	enService.GetState(state);
+
+	foreach (Notebook & notebook, state.notebooks)
+		DEBUGMSG(true, (L"notebook: %s\n", notebook.GetName().c_str()));
+
+	foreach (Note & note, state.notes)
+		DEBUGMSG(true, (L"note: %s\n", note.GetTitle().c_str()));
+
 	{
 		ScopedLock lock(lock);
 		messages.push(MessageSyncComplete);

@@ -71,3 +71,73 @@ IEnService::CredentialsValidity EnService::CheckCredentials
 	}
 	return validity;
 }
+
+void EnService::GetState(IEnService::ServerState & state)
+{
+	const wchar_t * consumerKey      = L"donreba";
+	const wchar_t * consumerSecret   = L"3d764d03e2b1c7c4";
+	const wchar_t * userStoreUrl     = L"https://sandbox.evernote.com/edam/user";
+	const wchar_t * noteStoreUrlBase = L"http://sandbox.evernote.com/edam/note/";
+
+	try
+	{
+		THttpTransport  userStoreTransport (userStoreUrl);
+		TBinaryProtocol userStoreProtocol  (userStoreTransport);
+		userStoreTransport.Open();
+
+		UserStore::UserStore::Client userStore(userStoreProtocol);
+
+		bool versionOk = userStore.checkVersion
+			( L"Peoples' Note"
+			, UserStore::constants.EDAM_VERSION_MAJOR
+			, UserStore::constants.EDAM_VERSION_MINOR
+			);
+		if (!versionOk)
+			return;
+
+		UserStore::AuthenticationResult authenticationResult
+			= userStore.authenticate
+			( L"don_reba"
+			, L"6eZxZ5"
+			, consumerKey
+			, consumerSecret
+			);
+
+		THttpTransport  noteStoreTransport ((noteStoreUrlBase + authenticationResult.user.shardId).c_str());
+		TBinaryProtocol noteStoreProtocol  (noteStoreTransport);
+		noteStoreTransport.Open();
+
+		NoteStore::NoteStore::Client noteStore(noteStoreProtocol);
+
+		NoteStore::SyncChunk chunk = noteStore.getSyncChunk
+			( authenticationResult.authenticationToken
+			, 0
+			, 10
+			, true
+			);
+
+		foreach (const Types::Note & note, chunk.notes)
+		{
+			Note x(note.guid, note.title, (time_t)note.created);
+			state.notes.push_back(x);
+		}
+
+		foreach (const Types::Notebook & notebook, chunk.notebooks)
+		{
+			Notebook x(notebook.guid, notebook.name);
+			state.notebooks.push_back(x);
+		}
+	}
+	catch (const Error::EDAMUserException & e)
+	{
+		DEBUGMSG(true, (L"EDAMUserException: %s\n", e.parameter.c_str()));
+	}
+	catch (const Error::EDAMSystemException & e)
+	{
+		DEBUGMSG(true, (L"EDAMSystemException: %s\n", e.message.c_str()));
+	}
+	catch (const TException & e)
+	{
+		DEBUGMSG(true, (L"TException: %s\n", e.GetMessage()));
+	}
+}

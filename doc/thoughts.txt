@@ -887,6 +887,8 @@ sync
 		posts events to the window message queue
 	instead of using Windows messaging, SyncModel can have its own
 	much of the syncing code would be in EnService
+	how much?
+		download/upload notes, notebooks, resources
 signin
 	two sources
 		sync needs new credentials
@@ -1034,5 +1036,17 @@ transactions
 			try to make a write
 		the first thread needs to
 			make sure the second thread is blocked
-signin is broken
-	TODO
+EnService sync interface
+	tasks
+		download notebooks
+		download notes
+		download resources
+	no, wait, server state is retrieved in chunks
+	therefore we can't make separate requests like this
+	tasks
+		download state
+		download resources
+	both the client and the server can change during synchronization
+	what we want to do is
+		download the data at the moment of sync
+		minus those pieces that are deleted during sync

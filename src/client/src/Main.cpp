@@ -115,7 +115,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
 		NoteListModel    noteListModel;
-		SyncModel        syncModel;
+		SyncModel        syncModel(enService);
 		UserModel        userModel(dataStore, GetDocumentPath());
 
 		CredentialsView credentialsView (instance);
