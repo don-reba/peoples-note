@@ -161,6 +161,11 @@ Notebook UserModel::GetDefaultNotebook()
 	return Notebook(guid, name);
 }
 
+wstring UserModel::GetFolder() const
+{
+	return folder;
+}
+
 void UserModel::GetImageResource(string hash, Blob & blob)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement

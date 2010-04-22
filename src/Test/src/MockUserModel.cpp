@@ -69,15 +69,20 @@ Notebook MockUserModel::GetDefaultNotebook()
 	return defaultNotebook;
 }
 
-Notebook MockUserModel::GetLastUsedNotebook()
+wstring MockUserModel::GetFolder() const
 {
-	return lastUsedNotebook;
+	return folder;
 }
 
 void MockUserModel::GetImageResource(string hash, Blob & blob)
 {
 	if (images.find(hash) != images.end())
 		blob = images[hash];
+}
+
+Notebook MockUserModel::GetLastUsedNotebook()
+{
+	return lastUsedNotebook;
 }
 
 Note MockUserModel::GetNote(Guid guid)

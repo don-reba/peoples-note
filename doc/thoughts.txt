@@ -1050,3 +1050,12 @@ EnService sync interface
 	what we want to do is
 		download the data at the moment of sync
 		minus those pieces that are deleted during sync
+empty notes
+	occur during partial sync
+	can either
+		show them somehow specially
+		not show
+	the latter option is preferrable
+		fewer user distractions
+		less program logic
+	better yet, don't commit empty notes

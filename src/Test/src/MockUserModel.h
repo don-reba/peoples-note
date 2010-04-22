@@ -88,6 +88,8 @@ public:
 
 	mutable std::wstring notebookSelection;
 	mutable std::wstring searchSelection;
+
+	std::wstring folder;
 	
 	signal SignalLoaded;
 
@@ -128,9 +130,11 @@ public:
 
 	virtual Notebook GetDefaultNotebook();
 
-	virtual Notebook GetLastUsedNotebook();
+	virtual std::wstring GetFolder() const;
 
 	virtual void GetImageResource(std::string hash, Blob & blob);
+
+	virtual Notebook GetLastUsedNotebook();
 
 	virtual Note GetNote(Guid guid);
 

@@ -13,11 +13,13 @@ SyncPresenter::SyncPresenter
 	, INoteListView  & noteListView
 	, ISyncModel     & syncModel
 	, IUserModel     & userModel
+	, IUserModel     & syncUserModel
 	)
 	: noteListModel (noteListModel)
 	, noteListView  (noteListView)
 	, syncModel     (syncModel)
 	, userModel     (userModel)
+	, syncUserModel (syncUserModel)
 {
 	noteListView.ConnectSync(bind(&SyncPresenter::OnSync, this));
 	syncModel.ConnectSyncComplete(bind(&SyncPresenter::OnSyncComplete, this));
@@ -25,7 +27,9 @@ SyncPresenter::SyncPresenter
 
 void SyncPresenter::OnSync()
 {
-	syncModel.BeginSync();
+	// TODO: unload
+	syncUserModel.Load(userModel.GetCredentials().GetUsername());
+	syncModel.BeginSync(syncUserModel);
 }
 
 void SyncPresenter::OnSyncComplete()

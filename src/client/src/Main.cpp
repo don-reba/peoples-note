@@ -105,9 +105,12 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
+		wstring documentPath(GetDocumentPath());
+
 		Animator         animator;
 		RegistryKey      registryKey(L"Software\\People's Note");
 		DataStore        dataStore;
+		DataStore        syncDataStore;
 		EnImporter       enImporter;
 		EnNoteTranslator enNoteTranslator;
 		EnService        enService;
@@ -116,7 +119,8 @@ int WINAPI WinMain(HINSTANCE instance,
 		LastUserModel    lastUserModel(registryKey);
 		NoteListModel    noteListModel;
 		SyncModel        syncModel(enService);
-		UserModel        userModel(dataStore, GetDocumentPath());
+		UserModel        userModel(dataStore, documentPath);
+		UserModel        syncUserModel(syncDataStore, documentPath);
 
 		CredentialsView credentialsView (instance);
 		NoteView        noteView        (instance);
@@ -156,6 +160,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListView
 			, syncModel
 			, userModel
+			, syncUserModel
 			);
 		UserLoader userLoader
 			( userModel

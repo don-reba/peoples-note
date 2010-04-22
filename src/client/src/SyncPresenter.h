@@ -13,6 +13,7 @@ private:
 	INoteListView  & noteListView;
 	ISyncModel     & syncModel;
 	IUserModel     & userModel;
+	IUserModel     & syncUserModel;
 
 public:
 
@@ -21,6 +22,7 @@ public:
 		, INoteListView  & noteListView
 		, ISyncModel     & syncModel
 		, IUserModel     & userModel
+		, IUserModel     & syncUserModel
 		);
 
 private:

@@ -11,5 +11,5 @@ public:
 		, const std::wstring & password
 		);
 
-	virtual void GetState(ServerState & state);
+	virtual void Sync(IUserModel & userModel);
 };

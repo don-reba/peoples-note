@@ -10,11 +10,14 @@ public:
 
 	bool syncBegan;
 
+	std::wstring documentPath;
+	std::wstring username;
+
 public:
 
 	MockSyncModel();
 
-	virtual void BeginSync();
+	virtual void BeginSync(IUserModel & userModel);
 
 	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
 };

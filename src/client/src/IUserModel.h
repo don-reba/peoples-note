@@ -43,6 +43,8 @@ public:
 
 	virtual Notebook GetDefaultNotebook() = 0;
 
+	virtual std::wstring GetFolder() const = 0;
+
 	virtual void GetImageResource(std::string hash, Blob & blob) = 0;
 
 	virtual Notebook GetLastUsedNotebook() = 0;

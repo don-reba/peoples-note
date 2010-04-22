@@ -1,17 +1,21 @@
 #include "stdafx.h"
 #include "SyncModel.h"
 
+#include "DataStore.h"
 #include "IEnService.h"
 #include "ScopedLock.h"
+#include "Tools.h"
+#include "IUserModel.h"
+
+using namespace std;
 
 //----------
 // interface
 //----------
 
 SyncModel::SyncModel(IEnService & enService)
-	: stopRequested (false)
-	, syncThread    (NULL)
-	, enService     (enService)
+	: syncThread (NULL)
+	, enService  (enService)
 {
 	::InitializeCriticalSection(&lock);
 }
@@ -31,6 +35,8 @@ void SyncModel::ProcessMessages()
 		case MessageSyncComplete:
 			SignalSyncComplete();
 			break;
+		default:
+			break;
 		}
 		messages.pop();
 	}
@@ -38,26 +44,25 @@ void SyncModel::ProcessMessages()
 
 void SyncModel::StopSync()
 {
-	{
-		ScopedLock lock(lock);
-		stopRequested = true;
-	}
-	::WaitForSingleObject(syncThread, INFINITE);
+	if (syncContext)
+		syncContext->SetStopRequested(true);
+	if (syncThread)
+		::WaitForSingleObject(syncThread, INFINITE);
 }
 
 //--------------------------
 // ISyncModel implementation
 //--------------------------
 
-void SyncModel::BeginSync()
+void SyncModel::BeginSync(IUserModel & userModel)
 {
 	CloseThread();
-	stopRequested = false;
+	syncContext.reset(new SyncContext(*this, userModel));
 	syncThread = ::CreateThread
 		( NULL             // lpsa
 		, 0                // cbStack
 		, &SyncModel::Sync // lpStartAddr
-		, this             // lpvThreadParam
+		, &*syncContext    // lpvThreadParam
 		, 0                // fdwCreate
 		, NULL             // lpIDThread
 		);
@@ -81,25 +86,63 @@ void SyncModel::CloseThread()
 	syncThread = NULL;
 }
 
-DWORD SyncModel::Sync()
+DWORD WINAPI SyncModel::Sync(LPVOID param)
 {
-	IEnService::ServerState state;
-	enService.GetState(state);
-
-	foreach (Notebook & notebook, state.notebooks)
-		DEBUGMSG(true, (L"notebook: %s\n", notebook.GetName().c_str()));
-
-	foreach (Note & note, state.notes)
-		DEBUGMSG(true, (L"note: %s\n", note.GetTitle().c_str()));
-
+	SyncContext * context(reinterpret_cast<SyncContext*>(param));
+	try
 	{
-		ScopedLock lock(lock);
-		messages.push(MessageSyncComplete);
+		context->GetEnService().Sync(context->GetUserModel());
 	}
+	catch (const std::exception &)
+	{
+		context->EnqueueMessage(MessageSyncFailed);
+		return 0;
+	}
+	context->EnqueueMessage(MessageSyncComplete);
 	return 0;
 }
 
-DWORD WINAPI SyncModel::Sync(LPVOID param)
+//---------------------------
+// SyncContext implementation
+//---------------------------
+
+SyncModel::SyncContext::SyncContext
+	( SyncModel  & syncModel
+	, IUserModel & userModel
+	)
+	: syncModel (syncModel)
+	, userModel (userModel)
 {
-	return reinterpret_cast<SyncModel*>(param)->Sync();
+}
+
+void SyncModel::SyncContext::EnqueueMessage(Message message)
+{
+	ScopedLock lock(syncModel.lock);
+	syncModel.messages.push(message);
+}
+
+IEnService & SyncModel::SyncContext::GetEnService()
+{
+	return syncModel.enService;
+}
+
+bool SyncModel::SyncContext::GetStopRequested() const
+{
+	bool stopRequested;
+	{
+		ScopedLock lock(syncModel.lock);
+		stopRequested = this->stopRequested;
+	}
+	return stopRequested;
+}
+
+void SyncModel::SyncContext::SetStopRequested(bool value)
+{
+	ScopedLock lock(syncModel.lock);
+	stopRequested = value;
+}
+
+IUserModel & SyncModel::SyncContext::GetUserModel()
+{
+	return userModel;
 }

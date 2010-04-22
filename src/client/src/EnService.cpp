@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EnService.h"
 
+#include "IUserModel.h"
+
 #include "Thrift/Thrift.h"
 #include "Evernote/EDAM/NoteStore.h"
 
@@ -72,7 +74,7 @@ IEnService::CredentialsValidity EnService::CheckCredentials
 	return validity;
 }
 
-void EnService::GetState(IEnService::ServerState & state)
+void EnService::Sync(IUserModel & userModel)
 {
 	const wchar_t * consumerKey      = L"donreba";
 	const wchar_t * consumerSecret   = L"3d764d03e2b1c7c4";
@@ -95,10 +97,12 @@ void EnService::GetState(IEnService::ServerState & state)
 		if (!versionOk)
 			return;
 
+		Credentials credentials(userModel.GetCredentials());
+
 		UserStore::AuthenticationResult authenticationResult
 			= userStore.authenticate
-			( L"don_reba"
-			, L"6eZxZ5"
+			( credentials.GetUsername()
+			, credentials.GetPassword()
 			, consumerKey
 			, consumerSecret
 			);
@@ -116,16 +120,17 @@ void EnService::GetState(IEnService::ServerState & state)
 			, true
 			);
 
+		Notebook lastUsedNotebook(userModel.GetLastUsedNotebook());
 		foreach (const Types::Note & note, chunk.notes)
 		{
 			Note x(note.guid, note.title, (time_t)note.created);
-			state.notes.push_back(x);
+			userModel.AddNote(x, L"", L"", lastUsedNotebook);
 		}
 
 		foreach (const Types::Notebook & notebook, chunk.notebooks)
 		{
 			Notebook x(notebook.guid, notebook.name);
-			state.notebooks.push_back(x);
+			userModel.AddNotebook(x);
 		}
 	}
 	catch (const Error::EDAMUserException & e)

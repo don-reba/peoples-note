@@ -3,6 +3,8 @@
 #include "Note.h"
 #include "Notebook.h"
 
+class IUserModel;
+
 class IEnService
 {
 public:
@@ -13,12 +15,6 @@ public:
 		std::wstring Message;
 	};
 
-	struct ServerState
-	{
-		NotebookList notebooks;
-		NoteList     notes;
-	};
-
 public:
 
 	virtual CredentialsValidity CheckCredentials
@@ -26,5 +22,5 @@ public:
 		, const std::wstring & password
 		) = 0;
 
-	virtual void GetState(ServerState & state) = 0;
+	virtual void Sync(IUserModel & userModel) = 0;
 };

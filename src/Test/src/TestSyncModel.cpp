@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "SyncModel.h"
 
+#include "MockEnService.h"
+#include "MockUserModel.h"
+
 #include <boost/ref.hpp>
 
 using namespace boost;
@@ -15,11 +18,13 @@ struct SignalCheck
 
 BOOST_AUTO_TEST_CASE(SyncModel_Test)
 {
-	SignalCheck check;
+	MockEnService enService;
+	MockUserModel userModel;
+	SyncModel syncModel(enService);
 
-	SyncModel syncModel;
+	SignalCheck check;
 	syncModel.ConnectSyncComplete(boost::ref(check));
-	syncModel.BeginSync();
+	syncModel.BeginSync(userModel);
 
 	::Sleep(10);
 	BOOST_CHECK(!check.signalled);

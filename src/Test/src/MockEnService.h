@@ -11,6 +11,8 @@ public:
 	std::wstring username;
 	std::wstring password;
 
+	bool hasSynced;
+
 public:
 
 	MockEnService();
@@ -21,4 +23,6 @@ public:
 		( const std::wstring & username
 		, const std::wstring & password
 		);
+
+	virtual void Sync(IUserModel & userModel);
 };

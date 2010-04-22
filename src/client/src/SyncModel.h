@@ -2,6 +2,7 @@
 
 #include "ISyncModel.h"
 
+#include <boost/scoped_ptr.hpp>
 #include <queue>
 
 class IEnService;
@@ -14,7 +15,30 @@ private:
 
 	enum Message
 	{
-		MessageSyncComplete
+		MessageSyncFailed,
+		MessageSyncComplete,
+	};
+
+	class SyncContext
+	{
+	private:
+
+		SyncModel  & syncModel;
+		IUserModel & userModel;
+		bool stopRequested;
+
+	public:
+
+		SyncContext
+			( SyncModel  & syncModel
+			, IUserModel & userModel
+			);
+
+		void EnqueueMessage(Message message);
+		IEnService & GetEnService();
+		IUserModel & GetUserModel();
+		bool GetStopRequested() const;
+		void SetStopRequested(bool vaue);
 	};
 
 // data
@@ -27,7 +51,7 @@ private:
 
 	CRITICAL_SECTION lock;
 
-	bool stopRequested;
+	boost::scoped_ptr<SyncContext> syncContext;
 
 	std::queue<Message> messages;
 
@@ -49,7 +73,7 @@ public:
 
 public:
 
-	virtual void BeginSync();
+	virtual void BeginSync(IUserModel & userModel);
 
 	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
 
@@ -58,8 +82,6 @@ public:
 private:
 
 	void CloseThread();
-
-	DWORD Sync();
 
 	static DWORD WINAPI Sync(LPVOID param);
 };
