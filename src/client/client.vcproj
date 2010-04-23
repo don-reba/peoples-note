@@ -435,6 +435,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ImagingException.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\LastUserModel.cpp"
 				>
 			</File>
@@ -706,6 +710,10 @@
 			</File>
 			<File
 				RelativePath=".\src\ILastUserModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ImagingException.h"
 				>
 			</File>
 			<File

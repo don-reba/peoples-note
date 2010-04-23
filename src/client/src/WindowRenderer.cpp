@@ -2,6 +2,7 @@
 #include "WindowRenderer.h"
 
 #include "CComPtr.h"
+#include "ImagingException.h"
 
 #include <imaging.h>
 #include <initguid.h>
@@ -116,6 +117,8 @@ void WindowRenderer::ResizeAndCompress
 		( &bitmapData  // bitmapData
 		, &image.Ptr() // bitmap
 		);
+	if (FAILED(result))
+		throw ImagingException(result);
 
 	CComPtr<IImage> image2;
 	result = image.QueryInterface(image2);
@@ -125,6 +128,8 @@ void WindowRenderer::ResizeAndCompress
 
 	CComPtr<IImage> thumb;
 	result = image2->GetThumbnail(endSize.cx, endSize.cy, &thumb.Ptr());
+	if (FAILED(result))
+		throw ImagingException(result);
 
 	ImageCodecInfo * infos(NULL);
 	UINT             infoCount(0);
@@ -143,6 +148,8 @@ void WindowRenderer::ResizeAndCompress
 		, TRUE          // fDeleteOnRelease
 		, &stream.Ptr() // ppstm
 		);
+	if (FAILED(result))
+		throw ImagingException(result);
 
 	CComPtr<IImageEncoder> encoder;
 	result = imageFactory->CreateImageEncoderToStream
@@ -150,12 +157,18 @@ void WindowRenderer::ResizeAndCompress
 		, stream            // stream
 		, &encoder.Ptr()    // encoder
 		);
+	if (FAILED(result))
+		throw ImagingException(result);
 	encoder->InitEncoder(stream);
 
 	CComPtr<IImageSink> sink;
 	result = encoder->GetEncodeSink(&sink.Ptr());
+	if (FAILED(result))
+		throw ImagingException(result);
 
 	result = thumb->PushIntoSink(sink);
+	if (FAILED(result))
+		throw ImagingException(result);
 
 	LARGE_INTEGER  zero = { 0 };
 	ULARGE_INTEGER pos  = { 0 };

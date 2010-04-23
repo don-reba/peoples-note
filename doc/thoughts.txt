@@ -930,6 +930,8 @@ thumbnailer
 	went with the Imaging option — it works
 	the note view shoud hide its UI when not shown
 		TODO
+	error handling needs testing
+		TODO
 thumbnail storage
 	store the thumbnail with the other note data
 	record the size, to update, if size requirements change
@@ -1062,3 +1064,9 @@ empty notes
 an unhandled exception is raised at startup
 	the "Database could not be loaded." exception
 	TODO
+notes are not synced until I click anywhere
+	because sync messages are only processed after windows messages
+	if no windows message arrives, sync waits
+	solutions
+		send windows messages
+		wake up the thread on sending
