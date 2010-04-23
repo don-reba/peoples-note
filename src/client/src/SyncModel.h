@@ -6,6 +6,7 @@
 #include <queue>
 
 class IEnService;
+class IMessagePump;
 
 class SyncModel : public ISyncModel
 {
@@ -45,7 +46,8 @@ private:
 
 private:
 
-	IEnService & enService;
+	IEnService   & enService;
+	IMessagePump & messagePump;
 
 	HANDLE syncThread;
 
@@ -61,7 +63,7 @@ private:
 
 public:
 
-	SyncModel(IEnService & enService);
+	SyncModel(IEnService & enService, IMessagePump & messagePump);
 
 	~SyncModel();
 

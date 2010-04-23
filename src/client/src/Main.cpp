@@ -9,6 +9,7 @@
 #include "EnNoteTranslator.h"
 #include "EnService.h"
 #include "LastUserModel.h"
+#include "MessagePump.h"
 #include "NoteListModel.h"
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
@@ -114,11 +115,12 @@ int WINAPI WinMain(HINSTANCE instance,
 		EnImporter       enImporter;
 		EnNoteTranslator enNoteTranslator;
 		EnService        enService;
+		MessagePump      messagePump;
 
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
 		NoteListModel    noteListModel;
-		SyncModel        syncModel(enService);
+		SyncModel        syncModel(enService, messagePump);
 		UserModel        userModel(dataStore, documentPath);
 		UserModel        syncUserModel(syncDataStore, documentPath);
 

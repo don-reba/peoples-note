@@ -2,6 +2,7 @@
 #include "SyncModel.h"
 
 #include "MockEnService.h"
+#include "MockMessagePump.h"
 #include "MockUserModel.h"
 
 #include <boost/ref.hpp>
@@ -18,9 +19,12 @@ struct SignalCheck
 
 BOOST_AUTO_TEST_CASE(SyncModel_Test)
 {
-	MockEnService enService;
-	MockUserModel userModel;
-	SyncModel syncModel(enService);
+	MockEnService   enService;
+	MockMessagePump messagePump;
+	MockUserModel   userModel;
+	SyncModel syncModel(enService, messagePump);
+
+	BOOST_CHECK(!messagePump.wokeUp);
 
 	SignalCheck check;
 	syncModel.ConnectSyncComplete(boost::ref(check));
@@ -28,6 +32,7 @@ BOOST_AUTO_TEST_CASE(SyncModel_Test)
 
 	::Sleep(10);
 	BOOST_CHECK(!check.signalled);
+	BOOST_CHECK(messagePump.wokeUp);
 
 	syncModel.ProcessMessages();
 	BOOST_CHECK(check.signalled);

@@ -239,6 +239,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockMessagePump.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockNoteListModel.cpp"
 				>
 			</File>
@@ -443,6 +447,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockLastUserModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockMessagePump.h"
 				>
 			</File>
 			<File

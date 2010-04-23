@@ -1059,3 +1059,6 @@ empty notes
 		fewer user distractions
 		less program logic
 	better yet, don't commit empty notes
+an unhandled exception is raised at startup
+	the "Database could not be loaded." exception
+	TODO

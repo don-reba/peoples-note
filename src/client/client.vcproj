@@ -455,6 +455,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\MessagePump.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Note.cpp"
 				>
 			</File>
@@ -705,6 +709,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\IMessagePump.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\INoteListModel.h"
 				>
 			</File>
@@ -746,6 +754,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MD5\md5.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MessagePump.h"
 				>
 			</File>
 			<File

@@ -3,6 +3,7 @@
 
 #include "DataStore.h"
 #include "IEnService.h"
+#include "IMessagePump.h"
 #include "ScopedLock.h"
 #include "Tools.h"
 #include "IUserModel.h"
@@ -13,9 +14,13 @@ using namespace std;
 // interface
 //----------
 
-SyncModel::SyncModel(IEnService & enService)
-	: syncThread (NULL)
-	, enService  (enService)
+SyncModel::SyncModel
+	( IEnService   & enService
+	, IMessagePump & messagePump
+	)
+	: syncThread  (NULL)
+	, enService   (enService)
+	, messagePump (messagePump)
 {
 	::InitializeCriticalSection(&lock);
 }
@@ -119,6 +124,7 @@ void SyncModel::SyncContext::EnqueueMessage(Message message)
 {
 	ScopedLock lock(syncModel.lock);
 	syncModel.messages.push(message);
+	syncModel.messagePump.WakeUp();
 }
 
 IEnService & SyncModel::SyncContext::GetEnService()
