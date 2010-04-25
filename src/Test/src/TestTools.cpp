@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(ToolsConvertToUnicode_Test2)
 
 BOOST_AUTO_TEST_CASE(ToolsDecodeBase64)
 {
-	const int count(5);
+	const int count(6);
 
 	vector<const wchar_t *> in  (count);
 	vector<Blob>            out (count);
@@ -71,6 +71,9 @@ BOOST_AUTO_TEST_CASE(ToolsDecodeBase64)
 	out.at(4).push_back(3);
 	out.at(4).push_back(5);
 	out.at(4).push_back(7);
+
+	in.at(5) = L"Ag==\r\n";
+	out.at(5).push_back(2);
 
 	for (int i(0); i != count; ++i)
 	{
