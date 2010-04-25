@@ -819,6 +819,8 @@ note preview
 	maybe main should initiate user loading manually
 	image creation
 		there seems to be no way of getting the bits
+		CreateDIBSection hands out the pointer
+		Imaging library can be used for processing
 sync
 	when sync connects to EN, the password might be rejected
 	then sync brings up the signin window to get a new password
@@ -1070,3 +1072,23 @@ notes are not synced until I click anywhere
 	solutions
 		send windows messages
 		wake up the thread on sending
+layout problem
+	menu moves if I click before notes appear
+	the body keeps its size
+	the window keeps its size
+	list view mouse handlers play no role
+	the culprit is the hiding of the profile name
+	how about we do not hide it?
+	but instead set it to some neutral string
+	after all, even the anonymous user might want to see some profile info
+note images
+	only the last image is displayed
+	because of the way caching works
+	cache all the images
+	clear the cache when the page clears
+	actually, this might not be the problem
+	need to convert gif images to png
+		no, the base64 decoder was incorrect
+		need to add a test for trailing newline
+		TODO
+	now, there is an encoding problem

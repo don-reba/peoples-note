@@ -96,13 +96,11 @@ public:
 	
 	virtual std::wstring GetSearchString();
 
-	virtual void HideProfileText();
-
 	virtual void HideSyncButton();
 
-	virtual void SetSigninText(const std::wstring & text);
+	virtual void SetProfileText(const std::wstring & text);
 
-	virtual void ShowProfileText(const std::wstring & text);
+	virtual void SetSigninText(const std::wstring & text);
 
 	virtual void ShowSyncButton();
 

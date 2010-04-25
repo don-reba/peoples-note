@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 		);
 }
 
-BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
+BOOST_AUTO_TEST_CASE(NoteListPresenter_AnonymousUserLoaded_Test)
 {
 	EnNoteTranslator  enNoteTranslator;
 	MockNoteListModel noteListModel;
@@ -74,6 +74,7 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 		, enNoteTranslator
 		);
 
+	userModel.SetCredentials(L"[anonymous]", L"");
 	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
 	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
 
@@ -82,8 +83,41 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_LoadLastUsedNotebook_Test)
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
+
+	BOOST_CHECK_EQUAL(noteListView.profileText, L"Profile");
+	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign in");
+	BOOST_CHECK_EQUAL(noteListView.isSyncButtonShown, false);
 }
 
+BOOST_AUTO_TEST_CASE(NoteListPresenter_NamedUserLoaded_Test)
+{
+	EnNoteTranslator  enNoteTranslator;
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockNoteView      noteView;
+	MockUserModel     userModel;
+	NoteListPresenter presenter
+		( noteListModel
+		, noteListView
+		, noteView
+		, userModel
+		, enNoteTranslator
+		);
+
+	userModel.SetCredentials(L"test-usr", L"");
+	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
+	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
+
+	userModel.SignalLoaded();
+
+	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
+
+	BOOST_CHECK_EQUAL(noteListView.profileText, L"test-usr");
+	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign out");
+	BOOST_CHECK_EQUAL(noteListView.isSyncButtonShown, true);
+}
 
 BOOST_AUTO_TEST_CASE(NotListPresenter_LoadThumbnail_Test)
 {

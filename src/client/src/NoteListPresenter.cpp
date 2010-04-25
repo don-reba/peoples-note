@@ -89,13 +89,13 @@ void NoteListPresenter::OnUserLoaded()
 
 	if (username == L"[anonymous]")
 	{
-		noteListView.HideProfileText();
+		noteListView.SetProfileText(L"Profile");
 		noteListView.SetSigninText(L"Sign in");
 		noteListView.HideSyncButton();
 	}
 	else
 	{
-		noteListView.ShowProfileText(username);
+		noteListView.SetProfileText(username);
 		noteListView.SetSigninText(L"Sign out");
 		noteListView.ShowSyncButton();
 	}

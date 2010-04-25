@@ -96,8 +96,14 @@ void EnNoteTranslator::ReplaceMedia
 	GetXmlAttributes(child, map);
 
 	wstring type = map[L"type"];
-	if (type != L"image/png" && type != L"image/jpeg")
+	if
+		(  type != L"image/png"
+		&& type != L"image/jpeg"
+		&& type != L"image/gif"
+		)
+	{
 		return;
+	}
 	map.erase(L"type");
 
 	wstring src = L"img:";

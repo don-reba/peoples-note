@@ -3,6 +3,7 @@
 #include "Tools.h"
 
 #include <algorithm>
+#include <sstream>
 
 using namespace Tools;
 using namespace std;
@@ -229,12 +230,145 @@ void Tools::DecodeBase64(const wchar_t * text, Blob & data)
 	}
 
 	// remove padding
-	if (text[-1] == L'=')
+	--text;
+	while (IsBase64Whitespace(*text))
+		--text;
+	if (text[0] == L'=')
 		--size;
-	if (text[-2] == L'=')
+	if (text[-1] == L'=')
 		--size;
 	data.resize(size);
 }
+
+#ifdef _DEBUG
+wstring Tools::GetMessageName(int id)
+{
+	switch (id)
+	{
+	case 0x0000: return L"WM_NULL";
+	case 0x0001: return L"WM_CREATE";
+	case 0x0002: return L"WM_DESTROY";
+	case 0x0003: return L"WM_MOVE";
+	case 0x0004: return L"SW_ERASE";
+	case 0x0005: return L"WM_SIZE";
+	case 0x0006: return L"WM_ACTIVATE";
+	case 0x0007: return L"WM_SETFOCUS";
+	case 0x0008: return L"WM_KILLFOCUS";
+	case 0x000A: return L"WM_ENABLE";
+	case 0x000B: return L"WM_SETREDRAW";
+	case 0x000C: return L"WM_SETTEXT";
+	case 0x000D: return L"WM_GETTEXT";
+	case 0x000E: return L"WM_GETTEXTLENGTH";
+	case 0x000F: return L"WM_PAINT";
+	case 0x0010: return L"WM_CLOSE";
+	case 0x0012: return L"WM_QUIT";
+	case 0x0014: return L"WM_ERASEBKGND";
+	case 0x0015: return L"WM_SYSCOLORCHANGE";
+	case 0x0018: return L"WM_SHOWWINDOW";
+	case 0x001A: return L"WM_SETTINGCHANGE";
+	case 0x001D: return L"WM_FONTCHANGE";
+	case 0x001F: return L"WM_CANCELMODE";
+	case 0x0020: return L"WM_SETCURSOR";
+	case 0x0028: return L"WM_NEXTDLGCTL";
+	case 0x002B: return L"WM_DRAWITEM";
+	case 0x002C: return L"WM_MEASUREITEM";
+	case 0x002D: return L"WM_DELETEITEM";
+	case 0x002E: return L"WM_VKEYTOITEM";
+	case 0x002F: return L"WM_CHARTOITEM";
+	case 0x0030: return L"WM_SETFONT";
+	case 0x0031: return L"WM_GETFONT";
+	case 0x0037: return L"WM_QUERYDRAGICON";
+	case 0x0039: return L"WM_COMPAREITEM";
+	case 0x0047: return L"WM_WINDOWPOSCHANGED";
+	case 0x004A: return L"WM_COPYDATA";
+	case 0x004E: return L"WM_NOTIFY";
+	case 0x0050: return L"WM_INPUTLANGCHANGEREQUEST";
+	case 0x0051: return L"WM_INPUTLANGCHANGE";
+	case 0x0053: return L"WM_HELP";
+	case 0x007B: return L"WM_CONTEXTMENU";
+	case 0x007D: return L"WM_STYLECHANGED";
+	case 0x007F: return L"WM_GETICON";
+	case 0x0080: return L"WM_SETICON";
+	case 0x0087: return L"WM_GETDLGCODE";
+	case 0x0100: return L"WM_KEYDOWN";
+	case 0x0101: return L"WM_KEYUP";
+	case 0x0102: return L"WM_CHAR";
+	case 0x0103: return L"WM_DEADCHAR";
+	case 0x0104: return L"WM_SYSKEYDOWN";
+	case 0x0105: return L"WM_SYSKEYUP";
+	case 0x0106: return L"WM_SYSCHAR";
+	case 0x0107: return L"WM_SYSDEADCHAR";
+	case 0x0108: return L"WM_KEYLAST";
+	case 0x010C: return L"WM_IM_INFO";
+	case 0x010D: return L"WM_IME_STARTCOMPOSITION";
+	case 0x010E: return L"WM_IME_ENDCOMPOSITION";
+	case 0x010F: return L"WM_IME_KEYLAST";
+	case 0x0110: return L"WM_INITDIALOG";
+	case 0x0111: return L"WM_COMMAND";
+	case 0x0112: return L"WM_SYSCOMMAND";
+	case 0x0113: return L"WM_TIMER";
+	case 0x0114: return L"WM_HSCROLL";
+	case 0x0115: return L"WM_VSCROLL";
+	case 0x0117: return L"WM_INITMENUPOPUP";
+	case 0x0120: return L"WM_MENUCHAR";
+	case 0x0132: return L"WM_CTLCOLORMSGBOX";
+	case 0x0133: return L"WM_CTLCOLOREDIT";
+	case 0x0134: return L"WM_CTLCOLORLISTBOX";
+	case 0x0135: return L"WM_CTLCOLORBTN";
+	case 0x0136: return L"WM_CTLCOLORDLG";
+	case 0x0137: return L"WM_CTLCOLORSCROLLBAR";
+	case 0x0138: return L"WM_CTLCOLORSTATIC";
+	case 0x0200: return L"WM_MOUSEMOVE";
+	case 0x0201: return L"WM_LBUTTONDOWN";
+	case 0x0202: return L"WM_LBUTTONUP";
+	case 0x0203: return L"WM_LBUTTONDBLCLK";
+	case 0x0204: return L"WM_RBUTTONDOWN";
+	case 0x0205: return L"WM_RBUTTONUP";
+	case 0x0206: return L"WM_RBUTTONDBLCLK";
+	case 0x0207: return L"WM_MBUTTONDOWN";
+	case 0x0208: return L"WM_MBUTTONUP";
+	case 0x0209: return L"WM_MBUTTONDBLCLK";
+	case 0x020A: return L"WM_MOUSEWHEEL";
+	case 0x020B: return L"WM_XBUTTONDOWN";
+	case 0x020C: return L"WM_XBUTTONUP";
+	case 0x020D: return L"WM_XBUTTONDBLCLK";
+	case 0x0211: return L"WM_ENTERMENULOOP";
+	case 0x0212: return L"WM_EXITMENULOOP";
+	case 0x0215: return L"WM_CAPTURECHANGED";
+	case 0x0281: return L"WM_IME_SETCONTEXT";
+	case 0x0282: return L"WM_IME_NOTIFY";
+	case 0x0283: return L"WM_IME_CONTROL";
+	case 0x0284: return L"WM_IME_COMPOSITIONFULL";
+	case 0x0285: return L"WM_IME_SELECT";
+	case 0x0286: return L"WM_IME_CHAR";
+	case 0x0287: return L"WM_IME_SYSTEM";
+	case 0x0288: return L"WM_IME_REQUEST";
+	case 0x0290: return L"WM_IME_KEYDOWN";
+	case 0x0291: return L"WM_IME_KEYUP";
+	case 0x0300: return L"WM_CUT";
+	case 0x0301: return L"WM_COPY";
+	case 0x0302: return L"WM_PASTE";
+	case 0x0303: return L"WM_CLEAR";
+	case 0x0304: return L"WM_UNDO";
+	case 0x0305: return L"WM_RENDERFORMAT";
+	case 0x0306: return L"WM_RENDERALLFORMATS";
+	case 0x0307: return L"WM_DESTROYCLIPBOARD";
+	case 0x030F: return L"WM_QUERYNEWPALETTE";
+	case 0x0311: return L"WM_PALETTECHANGED";
+	case 0x0312: return L"WM_HOTKEY";
+	case 0x03FD: return L"WM_DBNOTIFICATION";
+	case 0x03FE: return L"WM_NETCONNECT";
+	case 0x03FF: return L"WM_HIBERNATE";
+	case 0x0400: return L"WM_USER";
+	case 0x0401: return L"DM_SETDEFID";
+	case 0x0402: return L"DM_RESERVED0x2";
+	case 0x8000: return L"WM_APP";
+	}
+	vector<wchar_t> number(12);
+	swprintf(&number[0], L"0x%X", id);
+	return &number[0];
+}
+#endif
 
 HtmlResource Tools::LoadHtmlResource(LPCWSTR id)
 {

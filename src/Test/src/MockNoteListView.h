@@ -29,7 +29,6 @@ public:
 	std::wstring profileText;
 	std::wstring signinText;
 
-	bool isProfileTextShown;
 	bool isSyncButtonShown;
 
 	signal SignalCreated;
@@ -73,13 +72,11 @@ public:
 	
 	virtual std::wstring GetSearchString();
 
-	virtual void HideProfileText();
-
 	virtual void HideSyncButton();
 
-	virtual void SetSigninText(const std::wstring & text);
+	virtual void SetProfileText(const std::wstring & text);
 
-	virtual void ShowProfileText(const std::wstring & text);
+	virtual void SetSigninText(const std::wstring & text);
 
 	virtual void ShowSyncButton();
 
