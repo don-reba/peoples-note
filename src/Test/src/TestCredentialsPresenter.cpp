@@ -112,7 +112,16 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_Validation_Test)
 
 	BOOST_CHECK_EQUAL(credentialsView.message, L"Please, enter a username.");
 
+	credentialsView.username = L"[anonymous]";
+	credentialsView.SignalOk();
+
+	BOOST_CHECK_EQUAL(credentialsView.message, L"Invalid username.");
+
 	credentialsView.username = L"test-usr";
+	credentialsView.SignalOk();
+
+	BOOST_CHECK_EQUAL(credentialsView.message, L"");
+
 	credentialsView.password = L"";
 	credentialsView.SignalOk();
 

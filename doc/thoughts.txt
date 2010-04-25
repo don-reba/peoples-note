@@ -943,9 +943,9 @@ thumbnail storage
 anonymous user
 	now called [anonymous]
 	disallow signing in with this username
-		TODO
+		done
 	add a test for this
-		TODO
+		done
 user management
 	right now, the Evernote credentials are used for user's credentials
 	what if I decide to add support for another note service, such as OneNote?
@@ -1065,7 +1065,7 @@ empty notes
 	better yet, don't commit empty notes
 an unhandled exception is raised at startup
 	the "Database could not be loaded." exception
-	TODO
+	fixed
 notes are not synced until I click anywhere
 	because sync messages are only processed after windows messages
 	if no windows message arrives, sync waits
@@ -1090,5 +1090,5 @@ note images
 	need to convert gif images to png
 		no, the base64 decoder was incorrect
 		need to add a test for trailing newline
-		TODO
+		done
 	now, there is an encoding problem

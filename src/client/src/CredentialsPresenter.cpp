@@ -39,7 +39,11 @@ void CredentialsPresenter::OnOk()
 	wstring username(credentialsView.GetUsername());
 	wstring password(credentialsView.GetPassword());
 
-	if (username.empty())
+	if (username == L"[anonymous]")
+	{
+		credentialsView.SetMessage(L"Invalid username.");
+	}
+	else if (username.empty())
 	{
 		credentialsView.SetMessage(L"Please, enter a username.");
 	}
