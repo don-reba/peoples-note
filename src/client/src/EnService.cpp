@@ -5,6 +5,7 @@
 
 #include "Thrift/Thrift.h"
 #include "Evernote/EDAM/NoteStore.h"
+#include "Transaction.h"
 
 using namespace std;
 
@@ -106,6 +107,7 @@ void EnService::Sync(IUserModel & userModel)
 			, consumerKey
 			, consumerSecret
 			);
+		TString token(authenticationResult.authenticationToken);
 
 		THttpTransport  noteStoreTransport ((noteStoreUrlBase + authenticationResult.user.shardId).c_str());
 		TBinaryProtocol noteStoreProtocol  (noteStoreTransport);
@@ -114,23 +116,53 @@ void EnService::Sync(IUserModel & userModel)
 		NoteStore::NoteStore::Client noteStore(noteStoreProtocol);
 
 		NoteStore::SyncChunk chunk = noteStore.getSyncChunk
-			( authenticationResult.authenticationToken
-			, 0
-			, 10
-			, true
+			( token // authenticationToken
+			, 0     // afterUSN
+			, 10    // max
+			, true  // fullSyncOnly
 			);
 
 		Notebook lastUsedNotebook(userModel.GetLastUsedNotebook());
-		foreach (const Types::Note & note, chunk.notes)
-		{
-			Note x(note.guid, note.title, (time_t)note.created);
-			userModel.AddNote(x, L"", L"", lastUsedNotebook);
-		}
+		//foreach (const Types::Note & note, chunk.notes)
+		//{
+		//	wstring body = noteStore.getNoteContent(token, note.guid);
+		//	Note x(note.guid, note.title, (time_t)note.created);
 
-		foreach (const Types::Notebook & notebook, chunk.notebooks)
+		//	userModel.AddNote(x, body, L"", lastUsedNotebook);
+		//}
+
+		//foreach (const Types::Notebook & notebook, chunk.notebooks)
+		//{
+		//	Notebook x(notebook.guid, notebook.name);
+		//	userModel.AddNotebook(x);
+		//}
+
+		// upload
+
+		const NoteList & localNotes(userModel.GetNotesByNotebook(lastUsedNotebook));
+		foreach (const Note & localNote, localNotes)
 		{
-			Notebook x(notebook.guid, notebook.name);
-			userModel.AddNotebook(x);
+			Types::Note note;
+			note.__isset.title     = true;
+			note.__isset.content   = true;
+			note.__isset.resources = true;
+
+			note.title = localNote.GetTitle();
+
+			userModel.GetNoteBody(localNote.GetGuid(), note.content);
+
+			vector<Blob> resources;
+			userModel.GetNoteImageResources(localNote.GetGuid(), resources);
+			note.resources.resize(resources.size());
+			for (int i(0); i != resources.size(); ++i)
+			{
+				Types::Resource & resource(note.resources.at(i));
+				resource.__isset.data      = true;
+				resource.data.__isset.body = true;
+				resource.data.body = resources.at(i);
+			}
+
+			Types::Note replacement = noteStore.createNote(token, note);
 		}
 	}
 	catch (const Error::EDAMUserException & e)

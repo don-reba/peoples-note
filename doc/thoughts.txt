@@ -1092,3 +1092,10 @@ note images
 		need to add a test for trailing newline
 		done
 	now, there is an encoding problem
+resource upload
+	need to return several pieces of information for each
+		data
+		hash
+		mime
+	also, it would be better to copy to the final array right away
+	TODO

@@ -53,6 +53,8 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body) = 0;
 
+	virtual void GetNoteImageResources(Guid guid, std::vector<Blob> & resources) = 0;
+
 	virtual void GetNoteThumbnail
 		( const Guid & guid
 		, Thumbnail  & thumbnail

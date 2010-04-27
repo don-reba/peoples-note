@@ -1,4 +1,4 @@
-#include "stdafx.h"/*
+#include "stdafx.h"
 #include "DataStore.h"
 #include "Note.h"
 #include "Notebook.h"
@@ -368,6 +368,30 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes1.at(0).GetTitle(), L"software use");
 }
 
+FIXTURE_TEST_CASE(TestUserModelNoteImageResources, DataStoreFixture)
+{
+	Notebook & notebook(userModel.GetDefaultNotebook());
+
+	Blob data0(2);
+	Blob data1(3);
+	Blob data2(5);
+	Guid guid0;
+	Guid guid1;
+	wstring empty;
+
+	userModel.AddNote(Note(guid0, empty, Timestamp(0)), empty, empty, notebook);
+	userModel.AddNote(Note(guid1, empty, Timestamp(0)), empty, empty, notebook);
+	userModel.AddImageResource("0", data0, guid0);
+	userModel.AddImageResource("1", data1, guid1);
+	userModel.AddImageResource("2", data2, guid0);
+
+	vector<Blob> resources;
+	userModel.GetNoteImageResources(guid0, resources);
+	TEST_CHECK_EQUAL(resources.size(), 2);
+	TEST_CHECK_EQUAL(resources.at(0).size(), 2);
+	TEST_CHECK_EQUAL(resources.at(1).size(), 5);
+}
+
 FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
 {
 	Notebook notebook = userModel.GetDefaultNotebook();
@@ -407,4 +431,3 @@ FIXTURE_TEST_CASE(TestUserModelUnload, DataStoreFixture)
 	userModel.Unload();
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), TRUE);
 }
-*/

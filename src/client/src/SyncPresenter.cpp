@@ -27,7 +27,7 @@ SyncPresenter::SyncPresenter
 
 void SyncPresenter::OnSync()
 {
-	// TODO: unload
+	syncUserModel.Unload();
 	syncUserModel.Load(userModel.GetCredentials().GetUsername());
 	syncModel.BeginSync(syncUserModel);
 }

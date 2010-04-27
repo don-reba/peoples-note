@@ -237,6 +237,30 @@ void UserModel::GetNoteBody(Guid guid, wstring & body)
 	statement->Get(0, body);
 }
 
+void UserModel::GetNoteImageResources(Guid guid, std::vector<Blob> & resources)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT rowid"
+		"  FROM   ImageResources"
+		"  WHERE  note = ?"
+		);
+	statement->Bind(1, guid);
+	while (!statement->Execute())
+	{
+		__int64 row(0);
+		statement->Get(0, row);
+
+		resources.push_back(Blob());
+
+		IDataStore::Blob sqlBlob = dataStore.MakeBlob
+			( "ImageResources"
+			, "data"
+			, row
+			);
+		sqlBlob->Read(resources.back());
+	}
+}
+
 void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
