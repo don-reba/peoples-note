@@ -567,6 +567,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\SyncLogic.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SyncModel.cpp"
 				>
 			</File>
@@ -826,6 +830,10 @@
 			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SyncLogic.h"
 				>
 			</File>
 			<File

@@ -5,6 +5,7 @@
 
 #include "Thrift/Thrift.h"
 #include "Evernote/EDAM/NoteStore.h"
+#include "SyncLogic.h"
 #include "Transaction.h"
 
 using namespace std;

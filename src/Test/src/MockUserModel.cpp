@@ -101,6 +101,13 @@ void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
 	if (noteBodies.find(guid) != noteBodies.end())
 		resource = noteBodies[guid];
 }
+void MockUserModel::GetNoteImageResources
+	( Guid                guid
+	, std::vector<Blob> & resources
+	)
+{
+	// TODO: implement
+}
 
 void MockUserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 {

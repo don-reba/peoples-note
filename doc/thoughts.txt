@@ -1099,3 +1099,63 @@ resource upload
 		mime
 	also, it would be better to copy to the final array right away
 	TODO
+sync logic
+	want a separate component
+		that will make decisions to follow
+	full sync
+		logic
+			if remote, not local
+				add local
+			if remote, local conflict
+				if dirty
+					merge
+				else
+					rename local
+			if local, not remote
+				if dirty
+					upload
+				else
+					delete
+			if remote and local
+				if same USN and clean
+					do nothing
+				if same USN and dirty
+					upload
+				if remote USN higher and clean
+					replace with remote
+				if remote USN higher and dirty
+					merge
+		data
+			remote: availability, GUID, USN
+			local: availability, GUID, USN, dirty flag
+		decisions
+			add
+			merge
+			rename
+			upload
+			delete
+			do nothing
+	incremental sync
+		logic
+			if remote, not local
+				add local
+			if remote, local conflict
+				if dirty
+					merge
+				else
+					rename local
+			if local and remote
+				if dirty
+					merge
+				else
+					replace with remote
+	difference between full sync and incremental
+		starting USN
+		same USN handling
+	EnService should contain as little logic as possible
+		factor it out later
+		TODO
+	SyncLogic usage
+		build the remote resource list
+		build the local resource list
+		process remote-only, local-only, and conflicting

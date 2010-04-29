@@ -312,6 +312,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\client\src\SyncLogic.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\SyncModel.cpp"
 				>
 			</File>
@@ -365,6 +369,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestSearchPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestSyncLogic.cpp"
 				>
 			</File>
 			<File

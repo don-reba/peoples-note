@@ -140,6 +140,11 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
+	virtual void GetNoteImageResources
+		( Guid                guid
+		, std::vector<Blob> & resources
+		);
+
 	virtual void GetNoteThumbnail
 		( const Guid & guid
 		, Thumbnail  & thumbnail
