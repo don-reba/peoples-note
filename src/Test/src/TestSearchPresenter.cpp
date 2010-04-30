@@ -8,6 +8,11 @@
 using namespace boost;
 using namespace std;
 
+Note MakeNote(const wchar_t * name)
+{
+	return Note(Guid(), name, Timestamp(0), -1, true);
+}
+
 BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 {
 	MockNoteListModel noteListModel;
@@ -15,8 +20,8 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 	MockNoteListView  noteListView;
 	SearchPresenter   searchPresenter(noteListModel, userModel, noteListView);
 
-	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
-	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
+	userModel.notes.push_back(MakeNote(L"note-0"));
+	userModel.notes.push_back(MakeNote(L"note-1"));
 
 	noteListView.searchString = L"search";
 	noteListView.SignalSearch();
@@ -24,8 +29,8 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 	BOOST_CHECK_EQUAL(userModel.searchSelection, L"search");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-1");
 }
 
 BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
@@ -35,13 +40,13 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
 	MockNoteListView  noteListView;
 	SearchPresenter   searchPresenter(noteListModel, userModel, noteListView);
 
-	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
-	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
+	userModel.notes.push_back(MakeNote(L"note-0"));
+	userModel.notes.push_back(MakeNote(L"note-1"));
 
 	noteListView.searchString = L"";
 	noteListView.SignalSearch();
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-1");
 }

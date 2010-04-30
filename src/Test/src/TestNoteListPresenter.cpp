@@ -13,6 +13,21 @@
 using namespace boost;
 using namespace std;
 
+Note MakeNote(const Guid & guid, const wchar_t * name, int timestamp, const TagList & tags)
+{
+	return Note(guid, name, Timestamp(timestamp), -1, true, tags);
+}
+
+Note MakeNote(const Guid & guid, const wchar_t * name, int timestamp)
+{
+	return Note(guid, name, Timestamp(timestamp), -1, true);
+}
+
+Note MakeNote(const wchar_t * name, int timestamp)
+{
+	return Note(Guid(), name, Timestamp(timestamp), -1, true);
+}
+
 BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 {
 	EnNoteTranslator  enNoteTranslator;
@@ -36,9 +51,9 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NoteListChanged_Test)
 	tags2.push_back(Tag(L"&amp;"));
 	tags2.push_back(Tag(L"<strong>not bold</strong"));
 
-	noteListModel.notes.push_back(Note(Guid("{0}"), L"Note",      Timestamp(0), tags0));
-	noteListModel.notes.push_back(Note(Guid("{1}"), L"",          Timestamp(0), tags1));
-	noteListModel.notes.push_back(Note(Guid("{2}"), L"<td id=\"", Timestamp(0), tags2));
+	noteListModel.notes.push_back(MakeNote(Guid("{0}"), L"Note",      0, tags0));
+	noteListModel.notes.push_back(MakeNote(Guid("{1}"), L"",          0, tags1));
+	noteListModel.notes.push_back(MakeNote(Guid("{2}"), L"<td id=\"", 0, tags2));
 
 	noteListModel.Reset();
 
@@ -75,14 +90,14 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_AnonymousUserLoaded_Test)
 		);
 
 	userModel.SetCredentials(L"[anonymous]", L"");
-	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
-	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
+	userModel.notes.push_back(MakeNote(L"note-0", 0));
+	userModel.notes.push_back(MakeNote(L"note-1", 0));
 
 	userModel.SignalLoaded();
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-1");
 
 	BOOST_CHECK_EQUAL(noteListView.profileText, L"Profile");
 	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign in");
@@ -105,14 +120,14 @@ BOOST_AUTO_TEST_CASE(NoteListPresenter_NamedUserLoaded_Test)
 		);
 
 	userModel.SetCredentials(L"test-usr", L"");
-	userModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
-	userModel.notes.push_back(Note(Guid(), L"note-1", Timestamp(0)));
+	userModel.notes.push_back(MakeNote(L"note-0", 0));
+	userModel.notes.push_back(MakeNote(L"note-1", 0));
 
 	userModel.SignalLoaded();
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-1");
 
 	BOOST_CHECK_EQUAL(noteListView.profileText, L"test-usr");
 	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign out");
@@ -134,8 +149,8 @@ BOOST_AUTO_TEST_CASE(NotListPresenter_LoadThumbnail_Test)
 		, enNoteTranslator
 		);
 
-	userModel.notes.push_back(Note(Guid("{0}"), L"note-0", Timestamp(0)));
-	userModel.notes.push_back(Note(Guid("{1}"), L"note-1", Timestamp(0)));
+	userModel.notes.push_back(MakeNote(Guid("{0}"), L"note-0", 0));
+	userModel.notes.push_back(MakeNote(Guid("{1}"), L"note-1", 0));
 
 	Blob * blob(NULL);
 	noteListView.SignalLoadThumbnail(Guid("{1}"), blob);

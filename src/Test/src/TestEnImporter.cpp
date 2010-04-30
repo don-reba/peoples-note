@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(EnImporter_Test)
 	enImporter.ImportNotes(file, notes, bodies, images);
 
 	BOOST_CHECK_EQUAL(notes.size(), 1);
-	BOOST_CHECK_EQUAL(notes.at(0).GetTitle(), L"Mixed note");
+	BOOST_CHECK_EQUAL(notes.at(0).GetName(), L"Mixed note");
 
 	BOOST_CHECK_EQUAL(bodies.size(), 1);
 	BOOST_CHECK(StartsWith(bodies.at(0), wstring(L"<?xml version")));

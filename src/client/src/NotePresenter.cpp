@@ -63,6 +63,6 @@ void NotePresenter::OnOpenNote()
 
 	noteView.SetBody(html);
 	noteView.SetSubtitle(subtitle);
-	noteView.SetTitle(note.GetTitle());
+	noteView.SetTitle(note.GetName());
 	noteView.Show();
 }

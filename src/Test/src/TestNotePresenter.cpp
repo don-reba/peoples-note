@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(NotePresenter_Content_Test)
 		);
 
 	Guid guid;
-	userModel.notes.push_back(Note(guid, L"note-title", Timestamp(0)));
+	userModel.notes.push_back(Note(guid, L"note-title", Timestamp(0), -1, true));
 	noteListView.selectedNoteGuid = guid;
 	userModel.noteBodies[guid] = L"<en-note>test-note</en-note>";
 

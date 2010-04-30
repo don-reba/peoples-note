@@ -8,24 +8,32 @@ using namespace std;
 
 Note::Note
 	( Guid      guid
-	, wstring   title
+	, wstring   name
 	, Timestamp creationDate
+	, int       usn
+	, bool      isDirty
 	)
 	: guid         (guid)
-	, title        (title)
+	, name         (name)
 	, creationDate (creationDate)
+	, usn          (usn)
+	, isDirty      (isDirty)
 {
 }
 
 Note::Note
 	( Guid            guid
-	, std::wstring    title
+	, std::wstring    name
 	, Timestamp       creationDate
+	, int             usn
+	, bool            isDirty
 	, const TagList & tags
 	)
 	: guid         (guid)
-	, title        (title)
+	, name         (name)
 	, creationDate (creationDate)
+	, usn          (usn)
+	, isDirty      (isDirty)
 	, tags         (tags)
 {
 }
@@ -35,9 +43,9 @@ Guid Note::GetGuid() const
 	return guid;
 }
 
-wstring Note::GetTitle() const
+wstring Note::GetName() const
 {
-	return title;
+	return name;
 }
 
 const TagList & Note::GetTags() const
@@ -48,4 +56,14 @@ const TagList & Note::GetTags() const
 const Timestamp & Note::GetCreationDate() const
 {
 	return creationDate;
+}
+
+int Note::GetUsn() const
+{
+	return usn;
+}
+
+bool Note::IsDirty() const
+{
+	return isDirty;
 }

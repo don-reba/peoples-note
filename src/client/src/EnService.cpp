@@ -148,7 +148,7 @@ void EnService::Sync(IUserModel & userModel)
 			note.__isset.content   = true;
 			note.__isset.resources = true;
 
-			note.title = localNote.GetTitle();
+			note.title = localNote.GetName();
 
 			userModel.GetNoteBody(localNote.GetGuid(), note.content);
 

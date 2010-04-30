@@ -112,7 +112,7 @@ wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid
 	stream << L"<div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:";
 	stream << guid;
 	stream << L"\"/></div></td><td>";
-	stream << FormatTitle(note.GetTitle());
+	stream << FormatTitle(note.GetName());
 	stream << L"</td></tr><tr><td>";
 	stream << FormatTags(note.GetTags());
 	stream << L"</td></tr><tr><td>";

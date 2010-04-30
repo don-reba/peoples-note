@@ -19,6 +19,16 @@ void PushArray(vector<T> & v, const T (&a)[N])
 		v.push_back(a[i]);
 }
 
+Note MakeNote(wchar_t * name, int timestamp)
+{
+	return Note(Guid(), name, timestamp, -1, true);
+}
+
+Note MakeNote(const Guid & guid, wchar_t * name, int timestamp)
+{
+	return Note(guid, name, timestamp, -1, true);
+}
+
 BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 {
 	MockEnImporter    enImporter;
@@ -33,10 +43,10 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 		, userModel
 		);
 
-	noteListModel.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
+	noteListModel.notes.push_back(MakeNote(L"note-0", 0));
 
-	enImporter.notes.push_back(Note(Guid(), L"note-1", Timestamp(1)));
-	enImporter.notes.push_back(Note(Guid(), L"note-2", Timestamp(2)));
+	enImporter.notes.push_back(MakeNote(L"note-1", 1));
+	enImporter.notes.push_back(MakeNote(L"note-2", 2));
 	enImporter.bodies.push_back(L"body-1");
 	enImporter.bodies.push_back(L"body-2");
 
@@ -50,16 +60,16 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 	typedef vector<MockUserModel::NoteRecord> NoteRecordList;
 	const NoteRecordList & addedNotes = userModel.addedNotes;
 	BOOST_REQUIRE_EQUAL(addedNotes.size(), 2);
-	BOOST_CHECK_EQUAL(addedNotes.at(0).note.GetTitle(), L"note-1");
-	BOOST_CHECK_EQUAL(addedNotes.at(1).note.GetTitle(), L"note-2");
+	BOOST_CHECK_EQUAL(addedNotes.at(0).note.GetName(), L"note-1");
+	BOOST_CHECK_EQUAL(addedNotes.at(1).note.GetName(), L"note-2");
 	BOOST_CHECK_EQUAL(addedNotes.at(0).body, L"body-1");
 	BOOST_CHECK_EQUAL(addedNotes.at(1).body, L"body-2");
 	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook.GetName(), L"notebook");
 	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook.GetName(), L"notebook");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetTitle(), L"note-1");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetTitle(), L"note-2");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-2");
 }
 
 BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test1)
@@ -76,7 +86,7 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test1)
 		, userModel
 		);
 
-	enImporter.notes.push_back(Note(Guid(), L"note-0", Timestamp(0)));
+	enImporter.notes.push_back(MakeNote(L"note-0", 0));
 
 	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
 
@@ -104,7 +114,7 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
 		);
 
 	Guid guid;
-	enImporter.notes.push_back(Note(guid, L"note-0", Timestamp(0)));
+	enImporter.notes.push_back(MakeNote(guid, L"note-0", 0));
 	enImporter.bodies.push_back(L"");
 
 	IEnImporter::Image image;

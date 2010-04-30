@@ -49,13 +49,28 @@ struct SignalCheck
 	void operator () () { signalled = true; }
 };
 
+Note MakeNote(const wchar_t * name)
+{
+	return Note(Guid(), name, Timestamp(0), -1, true);
+}
+
+Note MakeNote(const wchar_t * name, int timestamp)
+{
+	return Note(Guid(), name, Timestamp(timestamp), -1, true);
+}
+
+Note MakeNote(const Guid & guid, const wchar_t * name = L"")
+{
+	return Note(guid, name, Timestamp(0), -1, true);
+}
+
 //-----------
 // test suite
 //-----------
 
 FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 {
-	Note note        (Guid(), L"note-0", Timestamp(0));
+	Note note        (MakeNote(L"note-0"));
 	wstring body     (L"<html>note body</html>");
 	wstring bodyText (L"");
 	const Notebook & notebook = userModel.GetLastUsedNotebook();
@@ -85,7 +100,7 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 
 	wstring empty;
 	userModel.AddNote
-		( Note(Guid(), L"note-0", Timestamp(0))
+		( MakeNote(L"note-0")
 		, empty
 		, empty
 		, notebook
@@ -95,7 +110,7 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 
 	TEST_CHECK_EXCEPTION
 		( userModel.AddNote
-			( Note(Guid(), L"note-1", Timestamp(1))
+			( MakeNote(L"note-1")
 			, empty
 			, empty
 			, fakeNotebook
@@ -132,7 +147,7 @@ FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
 {
-	Note note(Guid(), L"note-0", Timestamp(0));
+	Note note(MakeNote(L"note-0"));
 
 	Blob blob;
 	blob.push_back(2);
@@ -150,7 +165,7 @@ FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
 FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
 {
 	std::string hash ("hash");
-	Note        note (Guid(), L"note-0", Timestamp(0));
+	Note        note (MakeNote(L"note-0"));
 
 	Blob blob;
 	blob.push_back(2);
@@ -314,19 +329,19 @@ FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
 	wstring empty;
 
 	userModel.AddNote
-		( Note(Guid(), L"note-0", Timestamp(0))
+		( MakeNote(L"note-0")
 		, empty
 		, empty
 		, notebooks.at(0)
 		);
 	userModel.AddNote
-		( Note(Guid(), L"note-1", Timestamp(1))
+		( MakeNote(L"note-1")
 		, empty
 		, empty
 		, notebooks.at(1)
 		);
 	userModel.AddNote
-		( Note(Guid(), L"note-2", Timestamp(2))
+		( MakeNote(L"note-2")
 		, empty
 		, empty
 		, notebooks.at(0)
@@ -334,8 +349,8 @@ FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
 
 	const NoteList & notes = userModel.GetNotesByNotebook(notebooks.at(0));
 	TEST_CHECK_EQUAL(notes.size(), 2);
-	TEST_CHECK_EQUAL(notes.at(0).GetTitle(), L"note-0");
-	TEST_CHECK_EQUAL(notes.at(1).GetTitle(), L"note-2");
+	TEST_CHECK_EQUAL(notes.at(0).GetName(), L"note-0");
+	TEST_CHECK_EQUAL(notes.at(1).GetName(), L"note-2");
 }
 
 FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
@@ -346,13 +361,13 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 	wstring empty;
 
 	userModel.AddNote
-		( Note(Guid(), L"useful software", Timestamp(0))
+		( MakeNote(L"useful software", 0)
 		, empty
 		, empty
 		, notebook
 		);
 	userModel.AddNote
-		( Note(Guid(), L"software use", Timestamp(1))
+		( MakeNote(L"software use", 1)
 		, empty
 		, empty
 		, notebook
@@ -360,12 +375,12 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 
 	const NoteList & notes0 = userModel.GetNotesBySearch(L"software");
 	TEST_CHECK_EQUAL(notes0.size(), 2);
-	TEST_CHECK_EQUAL(notes0.at(0).GetTitle(), L"useful software");
-	TEST_CHECK_EQUAL(notes0.at(1).GetTitle(), L"software use");
+	TEST_CHECK_EQUAL(notes0.at(0).GetName(), L"useful software");
+	TEST_CHECK_EQUAL(notes0.at(1).GetName(), L"software use");
 
 	const NoteList & notes1 = userModel.GetNotesBySearch(L"use");
 	TEST_CHECK_EQUAL(notes1.size(), 1);
-	TEST_CHECK_EQUAL(notes1.at(0).GetTitle(), L"software use");
+	TEST_CHECK_EQUAL(notes1.at(0).GetName(), L"software use");
 }
 
 FIXTURE_TEST_CASE(TestUserModelNoteImageResources, DataStoreFixture)
@@ -379,8 +394,8 @@ FIXTURE_TEST_CASE(TestUserModelNoteImageResources, DataStoreFixture)
 	Guid guid1;
 	wstring empty;
 
-	userModel.AddNote(Note(guid0, empty, Timestamp(0)), empty, empty, notebook);
-	userModel.AddNote(Note(guid1, empty, Timestamp(0)), empty, empty, notebook);
+	userModel.AddNote(MakeNote(guid0), empty, empty, notebook);
+	userModel.AddNote(MakeNote(guid1), empty, empty, notebook);
 	userModel.AddImageResource("0", data0, guid0);
 	userModel.AddImageResource("1", data1, guid1);
 	userModel.AddImageResource("2", data2, guid0);
@@ -401,7 +416,7 @@ FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
 	Guid guid;
 
 	userModel.AddNote
-		( Note(guid, L"note", Timestamp(0))
+		( MakeNote(guid, L"note")
 		, empty
 		, empty
 		, notebook

@@ -75,7 +75,7 @@ void UserModel::AddNote
 	IDataStore::Statement insertContents = dataStore.MakeStatement
 		( "INSERT INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
 		);
-	insertContents->Bind(1, note.GetTitle());
+	insertContents->Bind(1, note.GetName());
 	insertContents->Bind(2, bodyText);
 	insertContents->Execute();
 	insertContents->Finalize();
@@ -86,7 +86,7 @@ void UserModel::AddNote
 		);
 	insertInfo->Bind(1, note.GetGuid());
 	insertInfo->Bind(2, note.GetCreationDate().GetTime());
-	insertInfo->Bind(3, note.GetTitle());
+	insertInfo->Bind(3, note.GetName());
 	insertInfo->Bind(4, body);
 	insertInfo->Bind(5, dataStore.GetLastInsertRowid());
 	insertInfo->Bind(6, notebook.GetGuid());
@@ -220,7 +220,7 @@ Note UserModel::GetNote(Guid guid)
 	int     creationDate;
 	statement->Get(0, title);
 	statement->Get(1, creationDate);
-	return Note(guid, title, Timestamp(creationDate));
+	return Note(guid, title, Timestamp(creationDate), -1, true);
 }
 
 void UserModel::GetNoteBody(Guid guid, wstring & body)
@@ -330,7 +330,7 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 		statement->Get(0, guid);
 		statement->Get(1, title);
 		statement->Get(2, creationDate);
-		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate)));
+		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), -1, true));
 	}
 	return notes;
 }
@@ -353,7 +353,7 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 		statement->Get(0, guid);
 		statement->Get(1, title);
 		statement->Get(2, creationDate);
-		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate)));
+		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), -1, true));
 	}
 	return notes;
 }
