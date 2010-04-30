@@ -119,6 +119,7 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncNoConflict_Test)
 
 	BOOST_CHECK_EQUAL(local.at(0).status, MockResource::StatusUploaded);
 	BOOST_CHECK_EQUAL(local.at(1).status, MockResource::StatusDeleted);
+
 	BOOST_CHECK_EQUAL(remote.at(0).status, MockResource::StatusAdded);
 }
 
@@ -141,6 +142,7 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncBasicMerge_Test)
 
 	BOOST_CHECK_EQUAL(local.at(0).status, MockResource::StatusDeleted);
 	BOOST_CHECK_EQUAL(local.at(1).status, MockResource::StatusClear);
+
 	BOOST_CHECK_EQUAL(remote.at(0).status, MockResource::StatusClear);
 	BOOST_CHECK_EQUAL(remote.at(1).status, MockResource::StatusAdded);
 }
@@ -188,6 +190,7 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncConflict_Test)
 	BOOST_CHECK_EQUAL(local.at(3).status, MockResource::StatusClear);
 	BOOST_CHECK_EQUAL(local.at(4).status, MockResource::StatusMerged);
 	BOOST_CHECK_EQUAL(local.at(5).status, MockResource::StatusClear);
+
 	BOOST_CHECK_EQUAL(remote.at(0).status, MockResource::StatusMerged);
 	BOOST_CHECK_EQUAL(remote.at(1).status, MockResource::StatusClear);
 	BOOST_CHECK_EQUAL(remote.at(2).status, MockResource::StatusClear);
