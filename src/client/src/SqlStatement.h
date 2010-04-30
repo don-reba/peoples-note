@@ -32,6 +32,7 @@ public:
 	virtual void Bind(int index, const std::wstring & text);
 	virtual void Bind(int index, const Blob         & blob);
 
+	virtual void Get(int index, bool         & n);
 	virtual void Get(int index, __int32      & n);
 	virtual void Get(int index, __int64      & n);
 	virtual void Get(int index, std::string  & text);

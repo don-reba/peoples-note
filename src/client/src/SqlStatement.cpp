@@ -97,6 +97,11 @@ void SqlStatement::Bind(int index, const Blob & blob)
 		throw std::exception(sqlite3_errmsg(db));
 }
 
+void SqlStatement::Get(int index, bool & n)
+{
+	n = (sqlite3_column_int(statement, index) != 0);
+}
+
 void SqlStatement::Get(int index, __int32 & n)
 {
 	n = sqlite3_column_int(statement, index);

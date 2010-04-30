@@ -1159,3 +1159,19 @@ sync logic
 		build the remote resource list
 		build the local resource list
 		process remote-only, local-only, and conflicting
+	resources to sync
+		notes
+		tags
+		notebooks
+	resource list building
+		identity via guid
+		build full local and remote lists
+		build a guid set for each of the lists
+		traverse each list
+			checking the guid sets
+			calling the appropriate sync function
+	data types
+		locally, we have Note, Notebook, and Tag classes
+		each has a GetGuid method
+		EnService could return same classes
+		the classes then also need to have GetUsn and IsDirty methods

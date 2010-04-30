@@ -70,15 +70,46 @@ Note MakeNote(const Guid & guid, const wchar_t * name = L"")
 
 FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 {
-	Note note        (MakeNote(L"note-0"));
-	wstring body     (L"<html>note body</html>");
-	wstring bodyText (L"");
-	const Notebook & notebook = userModel.GetLastUsedNotebook();
-	userModel.AddNote(note, body, bodyText, notebook);
+	Guid guid0;
+	Guid guid1;
+	{
+		Note note        (guid0, L"note-0", Timestamp(2), 3, true);
+		wstring body     (L"<html>note body 0</html>");
+		wstring bodyText (L"note body 0");
+		const Notebook & notebook = userModel.GetLastUsedNotebook();
+		userModel.AddNote(note, body, bodyText, notebook);
+	}
+	{
+		Note note        (guid1, L"note-1", Timestamp(5), 7, false);
+		wstring body     (L"<html>note body 1</html>");
+		wstring bodyText (L"note body 1");
+		const Notebook & notebook = userModel.GetLastUsedNotebook();
+		userModel.AddNote(note, body, bodyText, notebook);
+	}
+	{
+		Note result = userModel.GetNote(guid0);
+		TEST_CHECK_EQUAL(result.GetGuid(),                   guid0);
+		TEST_CHECK_EQUAL(result.GetCreationDate().GetTime(), 2L);
+		TEST_CHECK_EQUAL(result.GetUsn(),                    3);
+		TEST_CHECK_EQUAL(result.GetName(),                   L"note-0");
+		TEST_CHECK_EQUAL(result.IsDirty(),                   true);
 
-	wstring loaded;
-	userModel.GetNoteBody(note.GetGuid(), loaded);
-	TEST_CHECK_EQUAL(loaded, body);
+		wstring loaded;
+		userModel.GetNoteBody(guid0, loaded);
+		TEST_CHECK_EQUAL(loaded, L"<html>note body 0</html>");
+	}
+	{
+		Note result = userModel.GetNote(guid1);
+		TEST_CHECK_EQUAL(result.GetGuid(),                   guid1);
+		TEST_CHECK_EQUAL(result.GetCreationDate().GetTime(), 5L);
+		TEST_CHECK_EQUAL(result.GetUsn(),                    7);
+		TEST_CHECK_EQUAL(result.GetName(),                   L"note-1");
+		TEST_CHECK_EQUAL(result.IsDirty(),                   false);
+
+		wstring loaded;
+		userModel.GetNoteBody(guid1, loaded);
+		TEST_CHECK_EQUAL(loaded, L"<html>note body 1</html>");
+	}
 }
 
 AUTO_TEST_CASE(TestUserModelExists)

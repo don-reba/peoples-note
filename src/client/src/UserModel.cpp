@@ -81,15 +81,17 @@ void UserModel::AddNote
 	insertContents->Finalize();
 
 	IDataStore::Statement insertInfo = dataStore.MakeStatement
-		( "INSERT INTO Notes(guid, creationDate, title, body, search, notebook)"
-		"  VALUES (?, ?, ?, ?, ?, ?)"
+		( "INSERT INTO Notes(guid, usn, creationDate, title, body, isDirty, search, notebook)"
+		"  VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 		);
 	insertInfo->Bind(1, note.GetGuid());
-	insertInfo->Bind(2, note.GetCreationDate().GetTime());
-	insertInfo->Bind(3, note.GetName());
-	insertInfo->Bind(4, body);
-	insertInfo->Bind(5, dataStore.GetLastInsertRowid());
-	insertInfo->Bind(6, notebook.GetGuid());
+	insertInfo->Bind(2, note.GetUsn());
+	insertInfo->Bind(3, note.GetCreationDate().GetTime());
+	insertInfo->Bind(4, note.GetName());
+	insertInfo->Bind(5, body);
+	insertInfo->Bind(6, note.IsDirty());
+	insertInfo->Bind(7, dataStore.GetLastInsertRowid());
+	insertInfo->Bind(8, notebook.GetGuid());
 	insertInfo->Execute();
 	insertInfo->Finalize();
 }
@@ -208,7 +210,7 @@ Notebook UserModel::GetLastUsedNotebook()
 Note UserModel::GetNote(Guid guid)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT title, creationDate"
+		( "SELECT title, usn, creationDate, isDirty"
 		"  FROM Notes"
 		"  WHERE guid = ?"
 		"  LIMIT 1"
@@ -217,10 +219,14 @@ Note UserModel::GetNote(Guid guid)
 	if (statement->Execute())
 		throw std::exception("Note not found.");
 	wstring title;
+	int     usn;
 	int     creationDate;
+	bool    isDirty;
 	statement->Get(0, title);
-	statement->Get(1, creationDate);
-	return Note(guid, title, Timestamp(creationDate), -1, true);
+	statement->Get(1, usn);
+	statement->Get(2, creationDate);
+	statement->Get(3, isDirty);
+	return Note(guid, title, Timestamp(creationDate), usn, isDirty);
 }
 
 void UserModel::GetNoteBody(Guid guid, wstring & body)
@@ -315,7 +321,7 @@ const NotebookList & UserModel::GetNotebooks()
 const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, title, creationDate"
+		( "SELECT guid, usn, title, creationDate, isDirty"
 		"  FROM Notes"
 		"  WHERE notebook = ?"
 		"  ORDER BY creationDate"
@@ -325,12 +331,16 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 	while (!statement->Execute())
 	{
 		string  guid;
+		int     usn;
 		wstring title;
 		int     creationDate;
+		bool    isDirty;
 		statement->Get(0, guid);
-		statement->Get(1, title);
-		statement->Get(2, creationDate);
-		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), -1, true));
+		statement->Get(1, usn);
+		statement->Get(2, title);
+		statement->Get(3, creationDate);
+		statement->Get(4, isDirty);
+		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), usn, isDirty));
 	}
 	return notes;
 }
@@ -338,7 +348,7 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 const NoteList & UserModel::GetNotesBySearch(wstring search)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, title, creationDate"
+		( "SELECT guid, usn, title, creationDate, isDirty"
 		"  FROM Notes, NoteContents"
 		"  WHERE search = docid AND NoteContents MATCH ?"
 		"  ORDER BY creationDate"
@@ -348,12 +358,16 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 	while (!statement->Execute())
 	{
 		string  guid;
+		int     usn;
 		wstring title;
 		int     creationDate;
+		bool    isDirty;
 		statement->Get(0, guid);
-		statement->Get(1, title);
-		statement->Get(2, creationDate);
-		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), -1, true));
+		statement->Get(1, usn);
+		statement->Get(2, title);
+		statement->Get(3, creationDate);
+		statement->Get(4, isDirty);
+		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), usn, isDirty));
 	}
 	return notes;
 }
@@ -545,9 +559,11 @@ void UserModel::Initialize(wstring name)
 	CreateTable
 		( "CREATE TABLE Notes"
 			"( guid PRIMARY KEY"
+			", usn"
 			", creationDate"
 			", title"
 			", body"
+			", isDirty"
 			", thumbnail"
 			", thumbnailWidth  DEFAULT 0"
 			", thumbnailHeight DEFAULT 0"
