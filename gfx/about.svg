@@ -600,6 +600,13 @@
      style="display:inline"
      sodipodi:insensitive="true">
     <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline"
+       id="rect2928"
+       width="480"
+       height="640"
+       x="0"
+       y="0" />
+    <rect
        transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,718.8205,-442.02774)"
        style="fill:#000000;stroke:#000000;stroke-width:1;stroke-opacity:1;filter:url(#filter3802)"
        id="rect3713"
@@ -667,7 +674,7 @@
          id="tspan2919"
          x="19.06543"
          y="592.09143"
-         style="font-size:29">Copyright © 2010, Alexey Badalov</tspan></text>
+         style="font-size:29px">Copyright © 2010, Alexey Badalov</tspan></text>
     <text
        id="text3450"
        y="668.09143"
