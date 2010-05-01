@@ -251,6 +251,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockNoteStore.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockNoteView.cpp"
 				>
 			</File>
@@ -264,6 +268,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockUserModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockUserStore.cpp"
 				>
 			</File>
 			<File
@@ -470,6 +478,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockNoteStore.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockNoteView.h"
 				>
 			</File>
@@ -483,6 +495,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockUserModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockUserStore.h"
 				>
 			</File>
 			<File

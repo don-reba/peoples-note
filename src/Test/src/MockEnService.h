@@ -1,28 +1,20 @@
 #pragma once
 
 #include "IEnService.h"
+#include "MockNoteStore.h"
+#include "MockUserStore.h"
 
 class MockEnService : public IEnService
 {
 public:
 
-	CredentialsValidity credentialsValidity;
-
-	std::wstring username;
-	std::wstring password;
-
-	bool hasSynced;
+	boost::shared_ptr<MockUserStore> userStore;
+	boost::shared_ptr<MockNoteStore> noteStore;
 
 public:
 
 	MockEnService();
 
-public:
-
-	virtual CredentialsValidity CheckCredentials
-		( const std::wstring & username
-		, const std::wstring & password
-		);
-
-	virtual void Sync(IUserModel & userModel);
+	virtual UserStore GetUserStore();
+	virtual NoteStore GetNoteStore();
 };

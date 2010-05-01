@@ -26,11 +26,11 @@ public:
 
 public:
 
-	wstring name;
-	Guid    guid;
-	int     usn;
-	bool    isDirty;
-	Status  status;
+	mutable wstring name;
+	mutable Guid    guid;
+	mutable int     usn;
+	mutable bool    isDirty;
+	mutable Status  status;
 
 public:
 
@@ -62,31 +62,36 @@ public:
 	}
 };
 
-void Add(MockResource & r)
+class ResourceProcessor : public SyncLogic::IResourceProcessor<MockResource>
 {
-	r.status = MockResource::StatusAdded;
-}
+public:
 
-void Delete(MockResource & l)
-{
-	l.status = MockResource::StatusDeleted;
-}
+	virtual void Add(const MockResource & r)
+	{
+		r.status = MockResource::StatusAdded;
+	}
 
-void Rename(MockResource & l)
-{
-	l.status = MockResource::StatusRenamed;
-}
+	virtual void Delete(const MockResource & l)
+	{
+		l.status = MockResource::StatusDeleted;
+	}
 
-void Upload(MockResource & l)
-{
-	l.status = MockResource::StatusUploaded;
-}
+	virtual void Rename(const MockResource & l)
+	{
+		l.status = MockResource::StatusRenamed;
+	}
 
-void Merge(MockResource & l, MockResource & r)
-{
-	l.status = MockResource::StatusMerged;
-	r.status = MockResource::StatusMerged;
-}
+	virtual void Upload(const MockResource & l)
+	{
+		l.status = MockResource::StatusUploaded;
+	}
+
+	virtual void Merge(const MockResource & l, const MockResource & r)
+	{
+		l.status = MockResource::StatusMerged;
+		r.status = MockResource::StatusMerged;
+	}
+};
 
 //-----------
 // test suite
@@ -94,17 +99,19 @@ void Merge(MockResource & l, MockResource & r)
 
 BOOST_AUTO_TEST_CASE(SyncLogic_Empty_Test)
 {
-	SyncLogic syncLogic;
+	SyncLogic         syncLogic;
+	ResourceProcessor resourceProcessor;
 
 	vector<MockResource> local;
 	vector<MockResource> remote;
 
-	syncLogic.FullSync(remote, local, Add, Delete, Rename, Upload, Merge);
+	syncLogic.FullSync(remote, local, resourceProcessor);
 }
 
 BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncNoConflict_Test)
 {
-	SyncLogic syncLogic;
+	SyncLogic         syncLogic;
+	ResourceProcessor resourceProcessor;
 
 	vector<MockResource> local;
 	local.push_back(MockResource());
@@ -115,7 +122,7 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncNoConflict_Test)
 
 	local.at(0).isDirty = true;
 
-	syncLogic.FullSync(remote, local, Add, Delete, Rename, Upload, Merge);
+	syncLogic.FullSync(remote, local, resourceProcessor);
 
 	BOOST_CHECK_EQUAL(local.at(0).status, MockResource::StatusUploaded);
 	BOOST_CHECK_EQUAL(local.at(1).status, MockResource::StatusDeleted);
@@ -125,7 +132,8 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncNoConflict_Test)
 
 BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncBasicMerge_Test)
 {
-	SyncLogic syncLogic;
+	SyncLogic         syncLogic;
+	ResourceProcessor resourceProcessor;
 
 	vector<MockResource> local;
 	local.push_back(MockResource());
@@ -138,7 +146,7 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncBasicMerge_Test)
 	remote.at(0).guid = local.at(1).guid;
 	local.at(1).name = L"other";
 
-	syncLogic.FullSync(remote, local, Add, Delete, Rename, Upload, Merge);
+	syncLogic.FullSync(remote, local, resourceProcessor);
 
 	BOOST_CHECK_EQUAL(local.at(0).status, MockResource::StatusDeleted);
 	BOOST_CHECK_EQUAL(local.at(1).status, MockResource::StatusClear);
@@ -149,7 +157,8 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncBasicMerge_Test)
 
 BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncConflict_Test)
 {
-	SyncLogic syncLogic;
+	SyncLogic         syncLogic;
+	ResourceProcessor resourceProcessor;
 
 	vector<MockResource> local;
 	local.push_back(MockResource());
@@ -182,7 +191,7 @@ BOOST_AUTO_TEST_CASE(SyncLogic_FullSyncConflict_Test)
 	for (int i = 0; i != min(local.size(), remote.size()); ++i)
 		remote.at(i).guid = local.at(i).guid;
 
-	syncLogic.FullSync(remote, local, Add, Delete, Rename, Upload, Merge);
+	syncLogic.FullSync(remote, local, resourceProcessor);
 
 	BOOST_CHECK_EQUAL(local.at(0).status, MockResource::StatusMerged);
 	BOOST_CHECK_EQUAL(local.at(1).status, MockResource::StatusRenamed);

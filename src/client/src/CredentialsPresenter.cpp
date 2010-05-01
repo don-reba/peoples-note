@@ -4,6 +4,7 @@
 #include "ICredentialsModel.h"
 #include "ICredentialsView.h"
 #include "IEnService.h"
+#include "IUserStore.h"
 
 using namespace boost;
 using namespace std;
@@ -53,9 +54,9 @@ void CredentialsPresenter::OnOk()
 	}
 	else
 	{
-		IEnService::CredentialsValidity validity
-			= enService.CheckCredentials(username, password);
-		if (validity.IsGood)
+		IUserStore::AuthenticationResult authenticationResult =
+			enService.GetUserStore()->GetAuthenticationToken(username, password);
+		if (authenticationResult.IsGood)
 		{
 			credentialsModel.SetCredentials(username, password);
 			credentialsView.Close();
@@ -64,7 +65,7 @@ void CredentialsPresenter::OnOk()
 		{
 			wstring emptyPassword(L"");
 			credentialsView.SetPassword(emptyPassword);
-			credentialsView.SetMessage(validity.Message);
+			credentialsView.SetMessage(authenticationResult.Message);
 		}
 	}
 }

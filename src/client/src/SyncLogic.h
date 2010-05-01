@@ -8,17 +8,28 @@ class SyncLogic
 {
 public:
 
+	template <typename T>
+	class IResourceProcessor
+	{
+	public:
+		virtual void Add    (const T & remote) = 0;
+		virtual void Delete (const T & local)  = 0;
+		virtual void Rename (const T & local)  = 0;
+		virtual void Upload (const T & local)  = 0;
+		virtual void Merge
+			( const T & local
+			, const T & remote
+			) = 0;
+	};
+
+public:
+
 	template<typename T>
 	void FullSync
-		( std::vector<T> & remote
-		, std::vector<T> & local
-		, void (*Add)(T&)
-		, void (*Delete)(T&)
-		, void (*Rename)(T&)
-		, void (*Upload)(T&)
-		, void (*Merge)(T&, T&)
+		( const std::vector<T>  & remote
+		, const std::vector<T>  & local
+		, IResourceProcessor<T> & processor
 		);
-
 	//template<typename T>
 	//void IncrementalSync
 	//	( std::vector<T> & remote
@@ -33,69 +44,65 @@ public:
 
 template<typename T>
 void SyncLogic::FullSync
-	( std::vector<T> & remote
-	, std::vector<T> & local
-	, void (*Add)(T&)
-	, void (*Delete)(T&)
-	, void (*Rename)(T&)
-	, void (*Upload)(T&)
-	, void (*Merge)(T&, T&)
+	( const std::vector<T>  & remote
+	, const std::vector<T>  & local
+	, IResourceProcessor<T> & processor
 	)
 {
-	typedef std::map<std::string, T*> Map;
+	typedef std::map<std::string, const T*> Map;
 
 	Map localGuids;
-	foreach (T & l, local)
+	foreach (const T & l, local)
 		localGuids[l.GetGuid()] = &l;
 
 	Map remoteGuids;
-	foreach (T & r, remote)
+	foreach (const T & r, remote)
 		remoteGuids[r.GetGuid()] = &r;
 
-	foreach (T & r, remote)
+	foreach (const T & r, remote)
 	{
 		Map::iterator l(localGuids.find(r.GetGuid()));
 		if (l == localGuids.end())
 		{
-			Add(r);
+			processor.Add(r);
 		}
 		else
 		{
-			T & l(*l->second);
+			const T & l(*l->second);
 			if (l.GetName() == r.GetName())
 			{
 				if (l.IsDirty())
-					Merge(l, r);
+					processor.Merge(l, r);
 				else
-					Rename(l);
+					processor.Rename(l);
 			}
 			else
 			{
 				if (l.GetUsn() == r.GetUsn())
 				{
 					if (l.IsDirty())
-						Upload(l);
+						processor.Upload(l);
 				}
 				else
 				{
 					if (l.IsDirty())
-						Merge(l, r);
+						processor.Merge(l, r);
 					else
-						Add(r);
+						processor.Add(r);
 				}
 			}
 		}
 	}
 
-	foreach (T & l, local)
+	foreach (const T & l, local)
 	{
 		Map::iterator r(remoteGuids.find(l.GetGuid()));
 		if (r == remoteGuids.end())
 		{
 			if (l.IsDirty())
-				Upload(l);
+				processor.Upload(l);
 			else
-				Delete(l);
+				processor.Delete(l);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "stdafx.h"/*
 #include "EnService.h"
 
 #include "IUserModel.h"
@@ -6,6 +6,7 @@
 #include "Thrift/Thrift.h"
 #include "Evernote/EDAM/NoteStore.h"
 #include "SyncLogic.h"
+#include "Tools.h"
 #include "Transaction.h"
 
 using namespace std;
@@ -76,6 +77,86 @@ IEnService::CredentialsValidity EnService::CheckCredentials
 	return validity;
 }
 
+class NoteProcessor : public SyncLogic::IResourceProcessor<Note>
+{
+private:
+
+	IUserModel & userModel;
+	NoteStore::NoteStore::Client & noteStore;
+	TString & token;
+
+public:
+
+	NoteProcessor
+		( IUserModel                   & userModel
+		, NoteStore::NoteStore::Client & noteStore
+		, TString                      & token
+		)
+		: userModel (userModel)
+		, noteStore (noteStore)
+		, token     (token)
+	{
+	}
+
+	virtual void Add(const Note & remoteNote)
+	{
+		Notebook notebook(userModel.GetLastUsedNotebook());
+		Types::Guid guid = Tools::ConvertToUnicode(remoteNote.GetGuid());
+		wstring body = noteStore.getNoteContent(token, guid);
+		userModel.AddNote(remoteNote, body, L"", notebook);
+	}
+
+	virtual void Delete(const Note & localNote)
+	{
+		//userModel.DeleteNote(localNote);
+	}
+
+	virtual void Rename(const Note & localNote)
+	{
+	}
+
+	virtual void Upload(const Note & localNote)
+	{
+		Types::Note note;
+		note.__isset.title     = true;
+		note.__isset.content   = true;
+		note.__isset.resources = true;
+
+		note.title = localNote.GetName();
+
+		userModel.GetNoteBody(localNote.GetGuid(), note.content);
+
+		vector<Blob> resources;
+		userModel.GetNoteImageResources(localNote.GetGuid(), resources);
+		note.resources.resize(resources.size());
+		for (int i(0); i != resources.size(); ++i)
+		{
+			Types::Resource & resource(note.resources.at(i));
+			resource.__isset.data      = true;
+			resource.data.__isset.body = true;
+			resource.data.body = resources.at(i);
+		}
+
+		Types::Note replacement = noteStore.createNote(token, note);
+		userModel.AddNote
+			( Note
+				( replacement.guid
+				, replacement.title
+				, static_cast<time_t>(replacement.created)
+				, replacement.updateSequenceNum
+				, false
+				)
+			, note.content
+			, L""
+			, userModel.GetLastUsedNotebook()
+			);
+	}
+
+	virtual void Merge(const Note & localNote, const Note & remoteNote)
+	{
+	}
+};
+
 void EnService::Sync(IUserModel & userModel)
 {
 	const wchar_t * consumerKey      = L"donreba";
@@ -124,6 +205,25 @@ void EnService::Sync(IUserModel & userModel)
 			);
 
 		Notebook lastUsedNotebook(userModel.GetLastUsedNotebook());
+
+		NoteList remoteNotes;
+		foreach (const Types::Note & note, chunk.notes)
+		{
+			remoteNotes.push_back(Note
+				( note.guid
+				, note.title
+				, static_cast<time_t>(note.created)
+				, note.updateSequenceNum
+				, false
+				));
+		}
+
+		const NoteList & localNotes(userModel.GetNotesByNotebook(lastUsedNotebook));
+
+		SyncLogic syncLogic;
+		NoteProcessor noteProcessor(userModel, noteStore, token);
+		syncLogic.FullSync(remoteNotes, localNotes, noteProcessor);
+
 		//foreach (const Types::Note & note, chunk.notes)
 		//{
 		//	wstring body = noteStore.getNoteContent(token, note.guid);
@@ -140,31 +240,31 @@ void EnService::Sync(IUserModel & userModel)
 
 		// upload
 
-		const NoteList & localNotes(userModel.GetNotesByNotebook(lastUsedNotebook));
-		foreach (const Note & localNote, localNotes)
-		{
-			Types::Note note;
-			note.__isset.title     = true;
-			note.__isset.content   = true;
-			note.__isset.resources = true;
+		//const NoteList & localNotes(userModel.GetNotesByNotebook(lastUsedNotebook));
+		//foreach (const Note & localNote, localNotes)
+		//{
+		//	Types::Note note;
+		//	note.__isset.title     = true;
+		//	note.__isset.content   = true;
+		//	note.__isset.resources = true;
 
-			note.title = localNote.GetName();
+		//	note.title = localNote.GetName();
 
-			userModel.GetNoteBody(localNote.GetGuid(), note.content);
+		//	userModel.GetNoteBody(localNote.GetGuid(), note.content);
 
-			vector<Blob> resources;
-			userModel.GetNoteImageResources(localNote.GetGuid(), resources);
-			note.resources.resize(resources.size());
-			for (int i(0); i != resources.size(); ++i)
-			{
-				Types::Resource & resource(note.resources.at(i));
-				resource.__isset.data      = true;
-				resource.data.__isset.body = true;
-				resource.data.body = resources.at(i);
-			}
+		//	vector<Blob> resources;
+		//	userModel.GetNoteImageResources(localNote.GetGuid(), resources);
+		//	note.resources.resize(resources.size());
+		//	for (int i(0); i != resources.size(); ++i)
+		//	{
+		//		Types::Resource & resource(note.resources.at(i));
+		//		resource.__isset.data      = true;
+		//		resource.data.__isset.body = true;
+		//		resource.data.body = resources.at(i);
+		//	}
 
-			Types::Note replacement = noteStore.createNote(token, note);
-		}
+		//	Types::Note replacement = noteStore.createNote(token, note);
+		//}
 	}
 	catch (const Error::EDAMUserException & e)
 	{
@@ -179,3 +279,4 @@ void EnService::Sync(IUserModel & userModel)
 		DEBUGMSG(true, (L"TException: %s\n", e.GetMessage()));
 	}
 }
+*/

@@ -1,26 +1,17 @@
 #pragma once
 
-#include "Note.h"
-#include "Notebook.h"
-
-class IUserModel;
+class IUserStore;
+class INoteStore;
 
 class IEnService
 {
 public:
 
-	struct CredentialsValidity
-	{
-		bool         IsGood;
-		std::wstring Message;
-	};
+	typedef boost::shared_ptr<IUserStore> UserStore;
+	typedef boost::shared_ptr<INoteStore> NoteStore;
 
 public:
 
-	virtual CredentialsValidity CheckCredentials
-		( const std::wstring & username
-		, const std::wstring & password
-		) = 0;
-
-	virtual void Sync(IUserModel & userModel) = 0;
+	virtual UserStore GetUserStore() = 0;
+	virtual NoteStore GetNoteStore() = 0;
 };

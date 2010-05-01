@@ -625,6 +625,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\AuthenticationToken.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Blob.h"
 				>
 			</File>
@@ -654,6 +658,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DataStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EnConnectionException.h"
 				>
 			</File>
 			<File
@@ -733,6 +741,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\INoteStore.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\INoteView.h"
 				>
 			</File>
@@ -758,6 +770,10 @@
 			</File>
 			<File
 				RelativePath=".\src\IUserModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IUserStore.h"
 				>
 			</File>
 			<File

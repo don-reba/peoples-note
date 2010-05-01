@@ -7,7 +7,7 @@
 #include "EnImportPresenter.h"
 #include "EnImporter.h"
 #include "EnNoteTranslator.h"
-#include "EnService.h"
+//#include "EnService.h"
 #include "LastUserModel.h"
 #include "MessagePump.h"
 #include "NoteListModel.h"
@@ -16,8 +16,8 @@
 #include "NotePresenter.h"
 #include "RegistryKey.h"
 #include "SearchPresenter.h"
-#include "SyncModel.h"
-#include "SyncPresenter.h"
+//#include "SyncModel.h"
+//#include "SyncPresenter.h"
 #include "UserLoader.h"
 #include "UserModel.h"
 #include "UserSignInPresenter.h"
@@ -66,7 +66,7 @@ bool SwitchToPreviousInstance(HINSTANCE instance)
 // Switches between two modes: normal and animation.
 int RunMessageLoop
 	( IAnimator & animator
-	, SyncModel & syncModel
+	//, SyncModel & syncModel
 	)
 {
 	MSG msg;
@@ -75,7 +75,7 @@ int RunMessageLoop
 		if (!::HTMLayoutTranslateMessage(&msg))
 			::TranslateMessage(&msg);
 		::DispatchMessage(&msg);
-		syncModel.ProcessMessages();
+		//syncModel.ProcessMessages();
 		while (animator.IsRunning())
 		{
 			while (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -114,13 +114,13 @@ int WINAPI WinMain(HINSTANCE instance,
 		DataStore        syncDataStore;
 		EnImporter       enImporter;
 		EnNoteTranslator enNoteTranslator;
-		EnService        enService;
+		//EnService        enService;
 		MessagePump      messagePump;
 
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
 		NoteListModel    noteListModel;
-		SyncModel        syncModel(enService, messagePump);
+		//SyncModel        syncModel(enService, messagePump);
 		UserModel        userModel(dataStore, documentPath);
 		UserModel        syncUserModel(syncDataStore, documentPath);
 
@@ -128,11 +128,11 @@ int WINAPI WinMain(HINSTANCE instance,
 		NoteView        noteView        (instance);
 		NoteListView    noteListView    (animator, instance, nCmdShow);
 
-		CredentialsPresenter credentialsPresenter
-			( newCredentials
-			, credentialsView
-			, enService
-			);
+		//CredentialsPresenter credentialsPresenter
+		//	( newCredentials
+		//	, credentialsView
+		//	, enService
+		//	);
 		EnImportPresenter enImportPresenter
 			( enImporter
 			, noteListModel
@@ -157,13 +157,13 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			, noteListView
 			);
-		SyncPresenter syncPresenter
-			( noteListModel
-			, noteListView
-			, syncModel
-			, userModel
-			, syncUserModel
-			);
+		//SyncPresenter syncPresenter
+		//	( noteListModel
+		//	, noteListView
+		//	, syncModel
+		//	, userModel
+		//	, syncUserModel
+		//	);
 		UserLoader userLoader
 			( userModel
 			, lastUserModel
@@ -179,10 +179,10 @@ int WINAPI WinMain(HINSTANCE instance,
 		credentialsView.Create(noteListView.hwnd_);
 
 		userLoader.Run();
-		int result(RunMessageLoop(animator, syncModel));
+		int result(RunMessageLoop(animator/*, syncModel*/));
 		userLoader.Save();
 
-		syncModel.StopSync();
+		//syncModel.StopSync();
 
 		CoUninitialize();
 

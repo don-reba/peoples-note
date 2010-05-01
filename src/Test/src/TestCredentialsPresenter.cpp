@@ -29,8 +29,8 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_OkPass_Test)
 	BOOST_CHECK_EQUAL(credentialsView.username, L"initial-usr");
 	BOOST_CHECK_EQUAL(credentialsView.password, L"initial-pwd");
 
-	enService.credentialsValidity.IsGood  = true;
-	enService.credentialsValidity.Message = L"test-msg";
+	enService.userStore->authenticationResult.IsGood  = true;
+	enService.userStore->authenticationResult.Message = L"test-msg";
 	credentialsView.username = L"test-usr";
 	credentialsView.password = L"test-pwd";
 	credentialsView.SignalOk();
@@ -54,8 +54,8 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_OkFail_Test)
 	credentialsModel.SignalUpdating();
 	credentialsView.SignalCreated();
 
-	enService.credentialsValidity.IsGood  = false;
-	enService.credentialsValidity.Message = L"test-msg";
+	enService.userStore->authenticationResult.IsGood  = false;
+	enService.userStore->authenticationResult.Message = L"test-msg";
 	credentialsView.username = L"test-usr";
 	credentialsView.password = L"test-pwd";
 	credentialsView.SignalOk();

@@ -3,26 +3,21 @@
 
 #include "IUserModel.h"
 
+using namespace boost;
 using namespace std;
 
 MockEnService::MockEnService()
-	: hasSynced (false)
+	: userStore (make_shared<MockUserStore>())
+	, noteStore (make_shared<MockNoteStore>())
 {
-	credentialsValidity.IsGood  = false;
-	credentialsValidity.Message = L"";
 }
 
-IEnService::CredentialsValidity MockEnService::CheckCredentials
-	( const wstring & username
-	, const wstring & password
-	)
+IEnService::UserStore MockEnService::GetUserStore()
 {
-	this->username = username;
-	this->password = password;
-	return credentialsValidity;
+	return userStore;
 }
 
-void MockEnService::Sync(IUserModel & userModel)
+IEnService::NoteStore MockEnService::GetNoteStore()
 {
-	hasSynced = true;
+	return noteStore;
 }

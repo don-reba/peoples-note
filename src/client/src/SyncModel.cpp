@@ -96,7 +96,7 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 	SyncContext * context(reinterpret_cast<SyncContext*>(param));
 	try
 	{
-		context->GetEnService().Sync(context->GetUserModel());
+		//context->GetEnService().Sync(context->GetUserModel());
 	}
 	catch (const std::exception &)
 	{
