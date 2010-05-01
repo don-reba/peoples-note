@@ -1,5 +1,58 @@
 // REFERENCE: System.Drawing.dll
 // REFERENCE: System.Windows.Forms.dll
+// TARGET: winexe
+
+using System.IO;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using System;
+
+def BitmapToData(bmp)
+{
+	def data = array(bmp.Width * bmp.Height);
+	mutable i = 0;
+	foreach (y in [0 .. bmp.Height - 1])
+	foreach (x in [0 .. bmp.Width  - 1])
+	{
+		def color = bmp.GetPixel(x, y);
+		data[i] = (color.R : int, color.G : int, color.B : int);
+		++i;
+	}
+	(data, bmp.Width, bmp.Height);
+}
+def DataToBitmap(a : array[int * int * int], w : int, h : int)
+{
+	def bmp = Bitmap(w, h);
+	mutable i = 0;
+	foreach (y in [0 .. h-1])
+	foreach (x in [0 .. w-1])
+	{
+		bmp.SetPixel
+			( x     = x
+			, y     = y
+			, color = Color.FromArgb(a[i])
+			);
+		++i;
+	}
+	bmp;
+}
+
+def Clamp(data, w, h)
+{
+	def result = array(w * h);
+	foreach (y in [0 .. h - 1])
+	foreach (x in [0 .. w - 1])
+	{
+		def i = y * w + x;
+		def (oldR, oldG, oldB) = data[i];
+		def r = oldR & 0xF8;
+		def g = oldG & 0xFC;
+		def b = oldB & 0xF8;
+		result[i] = (r, g, b);
+	}
+	(result, w, h);
+}
 
 // Floyd–Steinberg dithering
 // for each y from top to bottom
@@ -12,23 +65,66 @@
 //       pixel[x-1][y+1] := pixel[x-1][y+1] + 3/16 * quant_error
 //       pixel[x][y+1] := pixel[x][y+1] + 5/16 * quant_error
 //       pixel[x+1][y+1] := pixel[x+1][y+1] + 1/16 * quant_error
+def Dither(data, w, h)
+{
+	def result = array(w * h);
+	foreach (y in [0 .. h - 2])
+	foreach (x in [0 .. w - 2])
+	{
+		def i = y * w + x;
+		def (oldR, oldG, oldB) = data[i];
+		def r = oldR & 0xF8;
+		def g = oldG & 0xFC;
+		def b = oldB & 0xF8;
+		result[i] = (r, g, b);
+	}
+	(result, w, h);
+}
 
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
-using System;
+def CreateApp(form : Form, pictureBox)
+{
+	def bmp = Bitmap("main.png");
+	def data = BitmapToData(bmp);
+	def clamped  = DataToBitmap(Clamp(data));
+	def dithered = DataToBitmap(Dither(data));
+
+	def OnKeyDown(_, args)
+	{
+		match (args.KeyCode)
+		{
+			| Keys.D1 => pictureBox.Image = bmp
+			| Keys.D2 => pictureBox.Image = dithered
+			| Keys.D3 => pictureBox.Image = clamped
+			| _       => ()
+		}
+	}
+
+	pictureBox.Image = bmp;
+	form.KeyDown += KeyEventHandler(OnKeyDown);
+	form;
+}
 
 def CreateForm()
 {
+	def picture = PictureBox();
+	picture.BackColor = Color.Black;
+	picture.Dock      = DockStyle.Fill;
+	picture.SizeMode  = PictureBoxSizeMode.CenterImage;
+
 	def form = Form();
-	form.Text = "565 Dithering demo";
-	form;
+	form.SuspendLayout();
+	form.Controls.Add(picture);
+	form.Text        = "565 Dithering demo";
+	form.WindowState = FormWindowState.Maximized;
+	form.ResumeLayout(true);
+
+	(form, picture);
 }
 
 def Run()
 {
 	Application.EnableVisualStyles();
-	Application.Run(CreateForm());
+	Application.Run(CreateApp(CreateForm()));
 }
 
 def mainThread = Thread(ThreadStart(Run));
