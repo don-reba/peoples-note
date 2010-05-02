@@ -16,9 +16,9 @@ public:
 		, TagList      & tags
 		) = 0;
 
-	virtual void UploadNote() = 0;
+	virtual void UploadNote(const Note & note) = 0;
 
-	virtual void UploadNotebook() = 0;
+	virtual void UploadNotebook(const Notebook & notebook) = 0;
 
-	virtual void UploadTag() = 0;
+	virtual void UploadTag(const Tag & tag) = 0;
 };

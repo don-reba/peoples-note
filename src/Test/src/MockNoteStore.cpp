@@ -11,16 +11,19 @@ void MockNoteStore::ListEntries
 	, TagList      & tags
 	)
 {
+	notes     = remoteNotes;
+	notebooks = remoteNotebooks;
+	tags      = remoteTags;
 }
 
-void MockNoteStore::UploadNote()
+void MockNoteStore::UploadNote(const Note & note)
 {
 }
 
-void MockNoteStore::UploadNotebook()
+void MockNoteStore::UploadNotebook(const Notebook & notebook)
 {
 }
 
-void MockNoteStore::UploadTag()
+void MockNoteStore::UploadTag(const Tag & tag)
 {
 }
