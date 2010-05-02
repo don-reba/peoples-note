@@ -9,6 +9,8 @@ public:
 
 public:
 
+	MockUserStore();
+
 	virtual AuthenticationResult GetAuthenticationToken
 		( std::wstring username
 		, std::wstring password

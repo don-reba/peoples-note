@@ -24,6 +24,8 @@ BOOST_AUTO_TEST_CASE(SyncModel_Test)
 	MockUserModel   userModel;
 	SyncModel syncModel(enService, messagePump);
 
+	enService.userStore->authenticationResult.IsGood = true;
+
 	BOOST_CHECK(!messagePump.wokeUp);
 
 	SignalCheck check;
