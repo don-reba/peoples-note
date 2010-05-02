@@ -5,13 +5,13 @@ class MockNoteStore : public INoteStore
 {
 public:
 
-	virtual void DownloadNoteResources
+	virtual void DownloadNoteResources();
+
+	virtual void ListEntries
 		( NoteList     & notes
 		, NotebookList & notebooks
 		, TagList      & tags
 		);
-
-	virtual void ListEntries();
 
 	virtual void UploadNote();
 

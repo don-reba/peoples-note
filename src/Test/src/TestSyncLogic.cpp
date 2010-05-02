@@ -2,6 +2,7 @@
 #include "SyncLogic.h"
 
 #include "Guid.h"
+#include "IResourceProcessor.h"
 
 using namespace boost;
 using namespace std;
@@ -62,7 +63,7 @@ public:
 	}
 };
 
-class ResourceProcessor : public SyncLogic::IResourceProcessor<MockResource>
+class ResourceProcessor : public IResourceProcessor<MockResource>
 {
 public:
 

@@ -283,11 +283,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\NotebookProcessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\NoteListPresenter.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\client\src\NotePresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\NoteProcessor.cpp"
 				>
 			</File>
 			<File
@@ -333,6 +341,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Tag.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\TagProcessor.cpp"
 				>
 			</File>
 			<File

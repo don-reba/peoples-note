@@ -8,13 +8,13 @@ class INoteStore
 {
 public:
 
-	virtual void DownloadNoteResources
+	virtual void DownloadNoteResources() = 0;
+
+	virtual void ListEntries
 		( NoteList     & notes
 		, NotebookList & notebooks
 		, TagList      & tags
 		) = 0;
-
-	virtual void ListEntries() = 0;
 
 	virtual void UploadNote() = 0;
 

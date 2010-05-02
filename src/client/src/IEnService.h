@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AuthenticationToken.h"
+
 class IUserStore;
 class INoteStore;
 
@@ -13,5 +15,8 @@ public:
 public:
 
 	virtual UserStore GetUserStore() = 0;
-	virtual NoteStore GetNoteStore() = 0;
+
+	virtual NoteStore GetNoteStore
+		( const AuthenticationToken & token
+		) = 0;
 };

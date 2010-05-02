@@ -1175,3 +1175,74 @@ sync logic
 		each has a GetGuid method
 		EnService could return same classes
 		the classes then also need to have GetUsn and IsDirty methods
+	need to know which notebook to upload a note to
+		should sync by notebook
+		then I can set the notebook for the whole NoteProcessor
+	this ad-hoc "getting it to run" approach results is messy
+		suspect much wasted effort
+	need to refactor EnService
+		should provide only basic services
+			login requires credential verification
+			SyncModel needs to fetch remote resource lists
+			SyncLogic performs the following operations
+				Add(remote)
+				Delete(local)
+				Rename(local)
+				Upload(local)
+				Merge(local, remote)
+			note addition entails resource download
+			uploading entails local note replacement
+		this requires the following 
+			CheckCredentials
+			ListEntities
+			DownloadNoteResources
+			UploadNote
+			UploadNotebook
+			UploadTag
+		many of these operations are interdependent
+			sync resources determine what gets downloaded and uploaded
+			need to upload and download notebooks and tags before notes
+		there should be a minimum of logic in EnService
+		it should be a dumb adapter between app logic and EN API
+			it should handle EN exceptions
+		EN works by sessions, therefore EnService has to expose sessions
+			can expose user store and note store sessions
+	sketch
+		EnService
+			GetUserStore
+			GetNoteStore
+			UserStore
+				GetAuthenticationToken
+			NoteStore
+				ListEntities
+				DownloadNoteResources
+				UploadNote
+				UploadNotebook
+				UploadTag
+	exceptions
+		maybe EnService should catch exceptions and return error codes
+		to avoid building CheckCredentials logic on exceptions
+		if the stores are RAII objects, then they cannot be returned
+		overall, connection problems are entirely expected
+		adding an error handler for broken connection is another alternative
+		we don't want to keep working with a store, if the connection is lost
+		so, throw on connection lost
+		GetAuthenticationToken should return an error message
+	sync sequence
+		tags and notebooks are independent
+		they get synced first
+		we only want to sync notes in the current notebook
+		however, the current notebook might not exist on the server
+		it might even get deleted
+			ohi, sync dis notebook plz
+			nowai! i deletd it
+		in such a case, deleting the notebook is all that's needed
+		if the notebook did not exist and was uploaded, populate it
+		in either case, the remote note list will be empty
+		how do I find out that the current notebook was deleted?
+			in such a case, lastusednotebook should return the default
+		do I need to find this out?
+			if  the notebook is deleted, the remote note list is empty
+			the local note list is also empty
+			syncing is then a NOP
+			as long as I get the current notebook before deleting it

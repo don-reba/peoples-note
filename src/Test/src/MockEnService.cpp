@@ -17,7 +17,8 @@ IEnService::UserStore MockEnService::GetUserStore()
 	return userStore;
 }
 
-IEnService::NoteStore MockEnService::GetNoteStore()
+IEnService::NoteStore MockEnService::GetNoteStore(const AuthenticationToken & token)
 {
+	authenticationToken = token;
 	return noteStore;
 }

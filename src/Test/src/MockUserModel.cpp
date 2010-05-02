@@ -132,6 +132,11 @@ const NoteList & MockUserModel::GetNotesBySearch(wstring search)
 	return notes;
 }
 
+const TagList & MockUserModel::GetTags()
+{
+	return tags;
+}
+
 void MockUserModel::Load(const wstring & username)
 {
 	if (loadMethod != LoadMethodNone)

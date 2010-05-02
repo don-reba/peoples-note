@@ -372,6 +372,12 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 	return notes;
 }
 
+const TagList & UserModel::GetTags()
+{
+	// TODO: implement
+	return tags;
+}
+
 void UserModel::Load(const wstring & username)
 {
 	wstring path = CreatePathFromName(username);

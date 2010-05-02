@@ -69,6 +69,8 @@ public:
 
 	virtual const NoteList & GetNotesBySearch(std::wstring search) = 0;
 
+	virtual const TagList & GetTags() = 0;
+
 	virtual void Load(const std::wstring & username) = 0;
 
 	virtual void LoadAs

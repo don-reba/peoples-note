@@ -4,7 +4,13 @@
 #include "DataStore.h"
 #include "IEnService.h"
 #include "IMessagePump.h"
+#include "INoteStore.h"
+#include "IUserStore.h"
+#include "NotebookProcessor.h"
+#include "NoteProcessor.h"
 #include "ScopedLock.h"
+#include "SyncLogic.h"
+#include "TagProcessor.h"
 #include "Tools.h"
 #include "IUserModel.h"
 
@@ -96,7 +102,56 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 	SyncContext * context(reinterpret_cast<SyncContext*>(param));
 	try
 	{
-		//context->GetEnService().Sync(context->GetUserModel());
+		IUserModel & userModel (context->GetUserModel());
+		IEnService & enService (context->GetEnService());
+
+		IEnService::UserStore userStore(enService.GetUserStore());
+		Credentials credentials(userModel.GetCredentials());
+		IUserStore::AuthenticationResult authenticationResult
+			( userStore->GetAuthenticationToken
+				( credentials.GetUsername()
+				, credentials.GetPassword()
+				)
+			);
+		if (!authenticationResult.IsGood)
+		{
+			context->EnqueueMessage(MessageSyncFailed);
+			return 0;
+		}
+
+		IEnService::NoteStore noteStore
+			( enService.GetNoteStore(authenticationResult.Token)
+			);
+
+		Notebook notebook(userModel.GetLastUsedNotebook());
+
+		NoteList     remoteNotes;
+		NotebookList remoteNotebooks;
+		TagList      remoteTags;
+		noteStore->ListEntries(remoteNotes, remoteNotebooks, remoteTags);
+
+		SyncLogic syncLogic;
+
+		const NotebookList & localNotebooks(userModel.GetNotebooks());
+		syncLogic.FullSync
+			( remoteNotebooks
+			, localNotebooks
+			, NotebookProcessor(enService, userModel)
+			);
+
+		const TagList & localTags(userModel.GetTags());
+		syncLogic.FullSync
+			( remoteTags
+			, localTags
+			, TagProcessor(enService, userModel)
+			);
+
+		const NoteList & localNotes(userModel.GetNotesByNotebook(notebook));
+		syncLogic.FullSync
+			( remoteNotes
+			, localNotes
+			, NoteProcessor(enService, userModel, notebook)
+			);
 	}
 	catch (const std::exception &)
 	{

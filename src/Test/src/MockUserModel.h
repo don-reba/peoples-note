@@ -71,6 +71,7 @@ public:
 	NotebookList notebooks;
 	NoteList     notes;
 	ImageList    images;
+	TagList      tags;
 	
 
 	std::map<std::string, std::wstring> noteBodies;
@@ -155,6 +156,8 @@ public:
 	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook);
 
 	virtual const NoteList & GetNotesBySearch(std::wstring search);
+
+	virtual const TagList & GetTags();
 
 	virtual void Load(const std::wstring & username);
 

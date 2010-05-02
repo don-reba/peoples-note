@@ -471,6 +471,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NotebookProcessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteListModel.cpp"
 				>
 			</File>
@@ -484,6 +488,10 @@
 			</File>
 			<File
 				RelativePath=".\src\NotePresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NoteProcessor.cpp"
 				>
 			</File>
 			<File
@@ -580,6 +588,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Tag.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TagProcessor.cpp"
 				>
 			</File>
 			<File
@@ -753,6 +765,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\IResourceProcessor.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ISignalProvider.h"
 				>
 			</File>
@@ -797,6 +813,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NotebookProcessor.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteListModel.h"
 				>
 			</File>
@@ -810,6 +830,10 @@
 			</File>
 			<File
 				RelativePath=".\src\NotePresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NoteProcessor.h"
 				>
 			</File>
 			<File
@@ -862,6 +886,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Tag.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TagProcessor.h"
 				>
 			</File>
 			<File
