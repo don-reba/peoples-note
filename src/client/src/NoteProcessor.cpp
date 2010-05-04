@@ -55,6 +55,7 @@ void NoteProcessor::Delete(const EnInteropNote & local)
 
 void NoteProcessor::Rename(const EnInteropNote &)
 {
+	// note names need not be unique
 }
 
 void NoteProcessor::Upload(const EnInteropNote & local)
@@ -70,4 +71,5 @@ void NoteProcessor::Merge
 	, const EnInteropNote & remote
 	)
 {
+	// keep local
 }
