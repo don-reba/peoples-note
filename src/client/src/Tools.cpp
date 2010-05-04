@@ -367,7 +367,7 @@ wstring Tools::GetMessageName(int id)
 	case 0x8000: return L"WM_APP";
 	}
 	vector<wchar_t> number(12);
-	swprintf(&number[0], L"0x%X", id);
+	swprintf(&number[0], number.size(), L"0x%X", id);
 	return &number[0];
 }
 #endif // _DEBUG
@@ -378,7 +378,8 @@ string Tools::HashWithMD5(const Blob & data)
 	md5_byte_t  digest[16];
 
 	md5_init(&state);
-	md5_append(&state, &data[0], data.size());
+	if (!data.empty())
+		md5_append(&state, &data[0], data.size());
 	md5_finish(&state, digest);
 
 	char digits[] =

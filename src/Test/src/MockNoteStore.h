@@ -1,18 +1,31 @@
 #pragma once
 #include "INoteStore.h"
 
+#include "Guid.h"
+#include "Resource.h"
+
+#include <map>
+
 class MockNoteStore : public INoteStore
 {
+public:
+
+	typedef std::map<std::string, std::wstring> NoteBodyMap;
+
 public:
 
 	EnInteropNoteList remoteNotes;
 	NotebookList      remoteNotebooks;
 	TagList           remoteTags;
 
+	NoteBodyMap noteBodies;
+
+	std::vector<Resource> resources;
+
 public:
 
 	virtual void GetNoteBody
-		( const Note   & Note
+		( const Note   & note
 		, std::wstring & content
 		);
 

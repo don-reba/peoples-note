@@ -10,7 +10,7 @@ class INoteStore
 public:
 
 	virtual void GetNoteBody
-		( const Note   & Note
+		( const Note   & note
 		, std::wstring & content
 		) = 0;
 

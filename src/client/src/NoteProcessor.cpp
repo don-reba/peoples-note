@@ -26,28 +26,32 @@ NoteProcessor::NoteProcessor
 void NoteProcessor::Add(const EnInteropNote & remote)
 {
 	wstring body;
-	noteStore.GetNoteBody(remote.GetNote(), body);
+	noteStore.GetNoteBody(remote.note, body);
 
 	Transaction transaction(userModel);
-	userModel.AddNote(remote.GetNote(), body, L"", notebook);
-	foreach (const Guid & guid, remote.GetResources())
+	userModel.AddNote(remote.note, body, L"", notebook);
+	foreach (const Guid & guid, remote.resources)
 	{
 		Resource resource;
 		noteStore.GetNoteResource
 			( guid
 			, resource
 			);
-		userModel.AddImageResource
-			( HashWithMD5(resource.Data)
-			, resource.Data
-			, remote.GetNote().GetGuid()
-			);
+		string checkHash = HashWithMD5(resource.Data);
+		if (checkHash == resource.Hash)
+		{
+			userModel.AddImageResource
+				( HashWithMD5(resource.Data)
+				, resource.Data
+				, remote.note.GetGuid()
+				);
+		}
 	}
 }
 
 void NoteProcessor::Delete(const EnInteropNote & local)
 {
-	userModel.DeleteNote(local.GetNote());
+	userModel.DeleteNote(local.note);
 }
 
 void NoteProcessor::Rename(const EnInteropNote &)
@@ -57,8 +61,8 @@ void NoteProcessor::Rename(const EnInteropNote &)
 void NoteProcessor::Upload(const EnInteropNote & local)
 {
 	vector<Resource> resources;
-	userModel.GetNoteResources(local.GetNote(), resources);
-	noteStore.CreateNote(local.GetNote(), resources);
+	userModel.GetNoteResources(local.note, resources);
+	noteStore.CreateNote(local.note, resources);
 }
 
 void NoteProcessor::Merge

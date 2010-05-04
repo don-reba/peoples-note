@@ -5,7 +5,7 @@
 
 class EnInteropNote
 {
-private:
+public:
 
 	Note note;
 	std::vector<Guid> resources;
@@ -19,10 +19,6 @@ public:
 	int GetUsn() const;
 
 	bool IsDirty() const;
-
-	const Note & GetNote() const;
-
-	const std::vector<Guid> & GetResources() const;
 };
 
 typedef std::vector<EnInteropNote> EnInteropNoteList;

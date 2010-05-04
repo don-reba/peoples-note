@@ -22,13 +22,3 @@ bool EnInteropNote::IsDirty() const
 {
 	return note.IsDirty();
 }
-
-const Note & EnInteropNote::GetNote() const
-{
-	return note;
-}
-
-const vector<Guid> & EnInteropNote::GetResources() const
-{
-	return resources;
-}

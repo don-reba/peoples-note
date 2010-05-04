@@ -2,10 +2,14 @@
 #include "MockNoteStore.h"
 
 void MockNoteStore::GetNoteBody
-	( const Note   & Note
+	( const Note   & note
 	, std::wstring & content
 	)
 {
+	Guid guid(note.GetGuid());
+	NoteBodyMap::iterator i(noteBodies.find(guid));
+	if (i != noteBodies.end())
+		content = i->second;
 }
 
 void MockNoteStore::GetNoteResource
@@ -13,6 +17,14 @@ void MockNoteStore::GetNoteResource
 	, Resource   & resource
 	)
 {
+	foreach (Resource & r, this->resources)
+	{
+		if (r.Guid == guid)
+		{
+			resource = r;
+			return;
+		}
+	}
 }
 
 void MockNoteStore::ListEntries

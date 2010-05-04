@@ -1246,3 +1246,40 @@ sync logic
 			the local note list is also empty
 			syncing is then a NOP
 			as long as I get the current notebook before deleting it
+	note resources
+		once a decision to add a note is made, its data needs fetching
+		getNoteContent requires note Guid — easy
+		getResource requires data Guid
+			these are not stored in our Note classes
+			this is the only place in which they are needed
+			so, it does not make sense to add them to the Note class
+			could add a class to package note with resources
+			peform sync logic on that
+			what to call it?
+				NoteWithResources
+				EnNote
+				TransferNote
+				NotePackage
+			something to say that it includes everything for EN interop
+				EnInteropNote
+		upload requires several pieces of information
+			data
+			guid
+			mime format
+			hash
+		need more sophisticated resource objects
+			blobs not sufficient
+		this could be useful in other places, too
+		these would be large imuutable objects
+			do they really have to be immutable?
+			what if I want to dither a bitmap before rendering it?
+			I am not sharing it with anyone, if I hold the memory
+		need to return them via shared pointers or pointer arrays
+			is there another way?
+			want to avoid reference counting and memory allocations
+immutable class storage
+	returning an immutable class copies it
+	an immutable parameter cannot be initialized via reference
+		because it is constracted before function call
+	this means that these can only be returned by reference
+	would like to have a class that is mutable until fully constructed
