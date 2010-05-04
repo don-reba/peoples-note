@@ -6,7 +6,7 @@
 
 class Note
 {
-private:
+public:
 
 	Guid         guid;
 	Timestamp    creationDate;
@@ -16,6 +16,8 @@ private:
 	bool         isDirty;
 
 public:
+
+	Note();
 
 	Note
 		( Guid         guid

@@ -1,34 +1,34 @@
 #pragma once
 
 #include "IResourceProcessor.h"
-#include "Note.h"
+#include "EnInteropNote.h"
 
-class IEnService;
+class INoteStore;
 class IUserModel;
 class Notebook;
 
-class NoteProcessor : public IResourceProcessor<Note>
+class NoteProcessor : public IResourceProcessor<EnInteropNote>
 {
 private:
 
-	IEnService & enService;
+	INoteStore & noteStore;
 	IUserModel & userModel;
 	Notebook   & notebook;
 
 public:
 
 	NoteProcessor
-		( IEnService & enService
+		( INoteStore & noteStore
 		, IUserModel & userModel
 		, Notebook   & notebook
 		);
 
-	virtual void Add    (const Note & remote);
-	virtual void Delete (const Note & local);
-	virtual void Rename (const Note & local);
-	virtual void Upload (const Note & local);
+	virtual void Add    (const EnInteropNote & remote);
+	virtual void Delete (const EnInteropNote & local);
+	virtual void Rename (const EnInteropNote & local);
+	virtual void Upload (const EnInteropNote & local);
 	virtual void Merge
-		( const Note & local
-		, const Note & remote
+		( const EnInteropNote & local
+		, const EnInteropNote & remote
 		);
 };

@@ -52,7 +52,7 @@ int UserModel::GetVersion()
 void UserModel::AddImageResource
 	( std::string  hash
 	, const Blob & data
-	, Guid         note
+	, const Guid & noteGuid
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -60,7 +60,7 @@ void UserModel::AddImageResource
 		);
 	statement->Bind(1, hash);
 	statement->Bind(2, data);
-	statement->Bind(3, note);
+	statement->Bind(3, noteGuid);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -120,6 +120,16 @@ void UserModel::BeginTransaction()
 void UserModel::ConnectLoaded(slot_type OnLoaded)
 {
 	SignalLoaded.connect(OnLoaded);
+}
+
+void UserModel::DeleteNote(const Note & note)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "DELETE FROM Notes WHERE guid = ?"
+		);
+	statement->Bind(1, note.GetGuid());
+	statement->Execute();
+	statement->Finalize();
 }
 
 void UserModel::EndTransaction()
@@ -243,27 +253,31 @@ void UserModel::GetNoteBody(Guid guid, wstring & body)
 	statement->Get(0, body);
 }
 
-void UserModel::GetNoteImageResources(Guid guid, std::vector<Blob> & resources)
+void UserModel::GetNoteResources
+	( const Note       & note
+	, vector<Resource> & resources
+	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid"
+		( "SELECT rowid, hash"
 		"  FROM   ImageResources"
 		"  WHERE  note = ?"
 		);
-	statement->Bind(1, guid);
+	statement->Bind(1, note.GetGuid());
 	while (!statement->Execute())
 	{
+		resources.push_back(Resource());
+
 		__int64 row(0);
 		statement->Get(0, row);
-
-		resources.push_back(Blob());
+		statement->Get(1, resources.back().Hash);
 
 		IDataStore::Blob sqlBlob = dataStore.MakeBlob
 			( "ImageResources"
 			, "data"
 			, row
 			);
-		sqlBlob->Read(resources.back());
+		sqlBlob->Read(resources.back().Data);
 	}
 }
 

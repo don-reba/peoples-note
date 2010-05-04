@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EnInteropNote.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\EnNoteTranslator.cpp"
 				>
 			</File>
@@ -385,6 +389,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestNotePresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestNoteProcessor.cpp"
 				>
 			</File>
 			<File

@@ -6,6 +6,13 @@
 
 using namespace std;
 
+Note::Note()
+	: creationDate (0)
+	, usn          (-1)
+	, isDirty      (true)
+{
+}
+
 Note::Note
 	( Guid      guid
 	, wstring   name

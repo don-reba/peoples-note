@@ -1,40 +1,69 @@
 #include "stdafx.h"
 #include "NoteProcessor.h"
 
-#include "IEnService.h"
+#include "INoteStore.h"
 #include "IUserModel.h"
+#include "Note.h"
 #include "Notebook.h"
+#include "Resource.h"
+#include "Tools.h"
+#include "Transaction.h"
+
+using namespace std;
+using namespace Tools;
 
 NoteProcessor::NoteProcessor
-	( IEnService & enService
+	( INoteStore & noteStore
 	, IUserModel & userModel
 	, Notebook   & notebook
 	)
-	: enService (enService)
+	: noteStore (noteStore)
 	, userModel (userModel)
 	, notebook  (notebook)
 {
 }
 
-void NoteProcessor::Add(const Note & remote)
+void NoteProcessor::Add(const EnInteropNote & remote)
+{
+	wstring body;
+	noteStore.GetNoteBody(remote.GetNote(), body);
+
+	Transaction transaction(userModel);
+	userModel.AddNote(remote.GetNote(), body, L"", notebook);
+	foreach (const Guid & guid, remote.GetResources())
+	{
+		Resource resource;
+		noteStore.GetNoteResource
+			( guid
+			, resource
+			);
+		userModel.AddImageResource
+			( HashWithMD5(resource.Data)
+			, resource.Data
+			, remote.GetNote().GetGuid()
+			);
+	}
+}
+
+void NoteProcessor::Delete(const EnInteropNote & local)
+{
+	userModel.DeleteNote(local.GetNote());
+}
+
+void NoteProcessor::Rename(const EnInteropNote &)
 {
 }
 
-void NoteProcessor::Delete(const Note & local)
+void NoteProcessor::Upload(const EnInteropNote & local)
 {
-}
-
-void NoteProcessor::Rename(const Note & local)
-{
-}
-
-void NoteProcessor::Upload(const Note & local)
-{
+	vector<Resource> resources;
+	userModel.GetNoteResources(local.GetNote(), resources);
+	noteStore.CreateNote(local.GetNote(), resources);
 }
 
 void NoteProcessor::Merge
-	( const Note & local
-	, const Note & remote
+	( const EnInteropNote & local
+	, const EnInteropNote & remote
 	)
 {
 }

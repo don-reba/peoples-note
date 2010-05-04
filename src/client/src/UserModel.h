@@ -36,7 +36,7 @@ public:
 	virtual void AddImageResource
 		( std::string  hash
 		, const Blob & data
-		, Guid         note
+		, const Guid & noteGuid
 		);
 
 	virtual void AddNote
@@ -51,6 +51,8 @@ public:
 	virtual void BeginTransaction();
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
+
+	virtual void DeleteNote(const Note & note);
 
 	virtual void EndTransaction();
 
@@ -70,7 +72,10 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
-	virtual void GetNoteImageResources(Guid guid, std::vector<Blob> & resources);
+	virtual void GetNoteResources
+		( const Note            & note
+		, std::vector<Resource> & resources
+		);
 
 	virtual void GetNoteThumbnail
 		( const Guid & guid

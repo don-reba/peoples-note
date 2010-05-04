@@ -18,7 +18,11 @@ namespace Tools
 
 	void DecodeBase64(const wchar_t * text, Blob & data);
 
+#ifdef _DEBUG
 	std::wstring GetMessageName(int id);
+#endif // _DEBUG
+
+	std::string HashWithMD5(const Blob & data);
 
 	HtmlResource LoadHtmlResource(LPCWSTR id);
 

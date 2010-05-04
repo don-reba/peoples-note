@@ -6,6 +6,7 @@
 #include "Guid.h"
 #include "Note.h"
 #include "Notebook.h"
+#include "Resource.h"
 #include "Thumbnail.h"
 
 class ICredentialsModel;
@@ -19,7 +20,7 @@ public:
 	virtual void AddImageResource
 		( std::string  hash
 		, const Blob & data
-		, Guid         note
+		, const Guid & noteGuid
 		) = 0;
 
 	virtual void AddNote
@@ -34,6 +35,8 @@ public:
 	virtual void BeginTransaction() = 0;
 
 	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
+
+	virtual void DeleteNote(const Note & note) = 0;
 
 	virtual void EndTransaction() = 0;
 
@@ -53,9 +56,9 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body) = 0;
 
-	virtual void GetNoteImageResources
-		( Guid                guid
-		, std::vector<Blob> & resources
+	virtual void GetNoteResources
+		( const Note            & note
+		, std::vector<Resource> & resources
 		) = 0;
 
 	virtual void GetNoteThumbnail

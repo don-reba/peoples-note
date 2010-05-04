@@ -5,23 +5,38 @@ class MockNoteStore : public INoteStore
 {
 public:
 
-	NoteList     remoteNotes;
-	NotebookList remoteNotebooks;
-	TagList      remoteTags;
+	EnInteropNoteList remoteNotes;
+	NotebookList      remoteNotebooks;
+	TagList           remoteTags;
 
 public:
 
-	virtual void DownloadNoteResources();
-
-	virtual void ListEntries
-		( NoteList     & notes
-		, NotebookList & notebooks
-		, TagList      & tags
+	virtual void GetNoteBody
+		( const Note   & Note
+		, std::wstring & content
 		);
 
-	virtual void UploadNote(const Note & note);
+	virtual void GetNoteResource
+		( const Guid & guid
+		, Resource   & resource
+		);
 
-	virtual void UploadNotebook(const Notebook & notebook);
+	virtual void ListEntries
+		( EnInteropNoteList & notes
+		, NotebookList      & notebooks
+		, TagList           & tags
+		);
 
-	virtual void UploadTag(const Tag & tag);
+	virtual void CreateNote
+		( const Note                  & note
+		, const std::vector<Resource> & resources
+		);
+
+	virtual void CreateNotebook
+		( const Notebook & notebook
+		);
+
+	virtual void CreateTag
+		( const Tag & tag
+		);
 };

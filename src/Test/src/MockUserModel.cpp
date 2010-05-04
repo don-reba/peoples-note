@@ -15,10 +15,10 @@ MockUserModel::MockUserModel()
 void MockUserModel::AddImageResource
 	( string       hash
 	, const Blob & data
-	, Guid         note
+	, const Guid & noteGuid
 	)
 {
-	addedImages.push_back(ImageRecord(hash, data, note));
+	addedImages.push_back(ImageRecord(hash, data, noteGuid));
 	images[hash] = data;
 }
 
@@ -47,6 +47,11 @@ void MockUserModel::BeginTransaction()
 void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 {
 	SignalLoaded.connect(OnLoaded);
+}
+
+void MockUserModel::DeleteNote(const Note & note)
+{
+	deletedNotes.push_back(note);
 }
 
 void MockUserModel::EndTransaction()
@@ -101,9 +106,9 @@ void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
 	if (noteBodies.find(guid) != noteBodies.end())
 		resource = noteBodies[guid];
 }
-void MockUserModel::GetNoteImageResources
-	( Guid                guid
-	, std::vector<Blob> & resources
+void MockUserModel::GetNoteResources
+	( const Note       & note
+	, vector<Resource> & resources
 	)
 {
 	// TODO: implement

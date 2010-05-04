@@ -1,14 +1,24 @@
 #include "stdafx.h"
 #include "MockNoteStore.h"
 
-void MockNoteStore::DownloadNoteResources()
+void MockNoteStore::GetNoteBody
+	( const Note   & Note
+	, std::wstring & content
+	)
+{
+}
+
+void MockNoteStore::GetNoteResource
+	( const Guid & guid
+	, Resource   & resource
+	)
 {
 }
 
 void MockNoteStore::ListEntries
-	( NoteList     & notes
-	, NotebookList & notebooks
-	, TagList      & tags
+	( EnInteropNoteList & notes
+	, NotebookList      & notebooks
+	, TagList           & tags
 	)
 {
 	notes     = remoteNotes;
@@ -16,14 +26,23 @@ void MockNoteStore::ListEntries
 	tags      = remoteTags;
 }
 
-void MockNoteStore::UploadNote(const Note & note)
+void MockNoteStore::CreateNote
+	( const Note                  & note
+	, const std::vector<Resource> & resources
+	)
 {
 }
 
-void MockNoteStore::UploadNotebook(const Notebook & notebook)
+void MockNoteStore::CreateNotebook
+	( const Notebook & notebook
+	)
 {
 }
 
-void MockNoteStore::UploadTag(const Tag & tag)
+void MockNoteStore::CreateTag
+	( const Tag & tag
+	)
 {
 }
+
+

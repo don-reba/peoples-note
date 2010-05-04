@@ -125,9 +125,9 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 
 		Notebook notebook(userModel.GetLastUsedNotebook());
 
-		NoteList     remoteNotes;
-		NotebookList remoteNotebooks;
-		TagList      remoteTags;
+		EnInteropNoteList remoteNotes;
+		NotebookList      remoteNotebooks;
+		TagList           remoteTags;
 		noteStore->ListEntries(remoteNotes, remoteNotebooks, remoteTags);
 
 		SyncLogic syncLogic;
@@ -146,11 +146,11 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 			, TagProcessor(enService, userModel)
 			);
 
-		const NoteList & localNotes(userModel.GetNotesByNotebook(notebook));
+		const EnInteropNoteList localNotes; // TODO: initialize
 		syncLogic.FullSync
 			( remoteNotes
 			, localNotes
-			, NoteProcessor(enService, userModel, notebook)
+			, NoteProcessor(*noteStore, userModel, notebook)
 			);
 	}
 	catch (const std::exception &)

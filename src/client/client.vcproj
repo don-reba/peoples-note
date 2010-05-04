@@ -419,6 +419,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EnInteropNote.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\EnNoteTranslator.cpp"
 				>
 			</File>
@@ -685,6 +689,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EnInteropNote.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\EnNoteTranslator.h"
 				>
 			</File>
@@ -842,6 +850,10 @@
 			</File>
 			<File
 				RelativePath=".\src\RegistryKey.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Resource.h"
 				>
 			</File>
 			<File
