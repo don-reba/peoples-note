@@ -37,15 +37,14 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 			( guid
 			, resource
 			);
-		string checkHash = HashWithMD5(resource.Data);
-		if (checkHash == resource.Hash)
-		{
-			userModel.AddImageResource
-				( HashWithMD5(resource.Data)
-				, resource.Data
-				, remote.note.GetGuid()
-				);
-		}
+		// TODO: check the hash here
+		// handle incomplete downloads somehow
+		// string checkHash = HashWithMD5(resource.Data);
+		userModel.AddImageResource
+			( resource.Hash
+			, resource.Data
+			, remote.note.GetGuid()
+			);
 	}
 }
 
