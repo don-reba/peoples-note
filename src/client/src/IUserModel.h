@@ -56,11 +56,6 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body) = 0;
 
-	virtual void GetNoteResources
-		( const Note            & note
-		, std::vector<Resource> & resources
-		) = 0;
-
 	virtual void GetNoteThumbnail
 		( const Guid & guid
 		, Thumbnail  & thumbnail
@@ -71,6 +66,8 @@ public:
 	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook) = 0;
 
 	virtual const NoteList & GetNotesBySearch(std::wstring search) = 0;
+
+	virtual void GetResource(const Guid & guid, Resource & resource) = 0;
 
 	virtual const TagList & GetTags() = 0;
 

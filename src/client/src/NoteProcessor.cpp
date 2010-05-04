@@ -60,8 +60,9 @@ void NoteProcessor::Rename(const EnInteropNote &)
 
 void NoteProcessor::Upload(const EnInteropNote & local)
 {
-	vector<Resource> resources;
-	userModel.GetNoteResources(local.note, resources);
+	vector<Resource> resources(local.resources.size());
+	for (int i(0); i != resources.size(); ++i)
+		userModel.GetResource(local.resources[i], resources[i]);
 	noteStore.CreateNote(local.note, resources);
 }
 

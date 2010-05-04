@@ -49,7 +49,9 @@ public:
 		Guid        note;
 	};
 
-	typedef std::map<std::string, Blob> ImageList;
+	typedef std::map<std::string, Blob> ImageMap;
+
+	typedef std::map<std::string, Resource> ResourceMap;
 
 	enum LoadMethod
 	{
@@ -70,8 +72,9 @@ public:
 
 	NotebookList notebooks;
 	NoteList     notes;
-	ImageList    images;
+	ImageMap     images;
 	TagList      tags;
+	ResourceMap  resources;
 	
 
 	std::map<std::string, std::wstring> noteBodies;
@@ -144,11 +147,6 @@ public:
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body);
 
-	virtual void GetNoteResources
-		( const Note            & note
-		, std::vector<Resource> & resources
-		);
-
 	virtual void GetNoteThumbnail
 		( const Guid & guid
 		, Thumbnail  & thumbnail
@@ -159,6 +157,8 @@ public:
 	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook);
 
 	virtual const NoteList & GetNotesBySearch(std::wstring search);
+
+	virtual void GetResource(const Guid & guid, Resource & resource);
 
 	virtual const TagList & GetTags();
 

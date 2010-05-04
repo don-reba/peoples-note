@@ -5,6 +5,8 @@
 #include "MockUserModel.h"
 #include "Notebook.h"
 
+#include <algorithm>
+
 using namespace std;
 
 BOOST_AUTO_TEST_CASE(NoteProcessor_Add_Test)
@@ -60,4 +62,56 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Add_Test)
 		( userModel.addedImages.at(1).hash
 		, "4816b20bbb2673692f5d8327d331fc00"
 		);
+}
+
+BOOST_AUTO_TEST_CASE(NoteProcessor_Delete_Test)
+{
+	MockNoteStore noteStore;
+	MockUserModel userModel;
+	Notebook notebook(Guid(), L"test-notebook");
+
+	NoteProcessor noteProcessor
+		( noteStore
+		, userModel
+		, notebook
+		);
+
+	EnInteropNote note;
+	note.note.name = L"test-note";
+
+	noteProcessor.Delete(note);
+
+	BOOST_CHECK_EQUAL(userModel.deletedNotes.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.deletedNotes.at(0).name, L"test-note");
+}
+
+BOOST_AUTO_TEST_CASE(NoteProcessor_Upload_Test)
+{
+	MockNoteStore noteStore;
+	MockUserModel userModel;
+	Notebook notebook(Guid(), L"test-notebook");
+
+	NoteProcessor noteProcessor
+		( noteStore
+		, userModel
+		, notebook
+		);
+
+	EnInteropNote note;
+	note.note.name = L"test-note";
+	note.note.guid = Guid("{0}");
+	note.resources.push_back(Guid("{1}"));
+	note.resources.push_back(Guid("{2}"));
+
+	userModel.resources["{1}"].Hash = "1";
+	userModel.resources["{2}"].Hash = "2";
+
+	noteProcessor.Upload(note);
+
+	BOOST_CHECK_EQUAL(noteStore.createdNotes.size(), 1);
+	BOOST_CHECK_EQUAL(noteStore.createdNotes.at(0).name, L"test-note");
+
+	BOOST_CHECK_EQUAL(noteStore.createdResources.size(), 2);
+	BOOST_CHECK_EQUAL(noteStore.createdResources.at(0).Hash, "1");
+	BOOST_CHECK_EQUAL(noteStore.createdResources.at(1).Hash, "2");
 }

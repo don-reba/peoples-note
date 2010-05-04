@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "MockUserModel.h"
 
+#include <algorithm>
+
 using namespace boost;
 using namespace std;
 
@@ -106,15 +108,10 @@ void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
 	if (noteBodies.find(guid) != noteBodies.end())
 		resource = noteBodies[guid];
 }
-void MockUserModel::GetNoteResources
-	( const Note       & note
-	, vector<Resource> & resources
-	)
-{
-	// TODO: implement
-}
 
-void MockUserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
+void MockUserModel::GetNoteThumbnail
+	( const Guid & guid
+	, Thumbnail & thumbnail)
 {
 	if (noteThumbnails.end() != noteThumbnails.find(guid))
 		thumbnail = noteThumbnails[guid];
@@ -135,6 +132,13 @@ const NoteList & MockUserModel::GetNotesBySearch(wstring search)
 {
 	searchSelection = search;
 	return notes;
+}
+
+void MockUserModel::GetResource(const Guid & guid, Resource & resource)
+{
+	ResourceMap::iterator i(resources.find(guid));
+	if (i != resources.end())
+		resource = i->second;
 }
 
 const TagList & MockUserModel::GetTags()

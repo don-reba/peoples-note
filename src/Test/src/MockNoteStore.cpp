@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "MockNoteStore.h"
 
+#include <algorithm>
+
+using namespace std;
+
 void MockNoteStore::GetNoteBody
 	( const Note   & note
 	, std::wstring & content
@@ -43,6 +47,12 @@ void MockNoteStore::CreateNote
 	, const std::vector<Resource> & resources
 	)
 {
+	createdNotes.push_back(note);
+	copy
+		( resources.begin()
+		, resources.end()
+		, back_inserter(createdResources)
+		);
 }
 
 void MockNoteStore::CreateNotebook

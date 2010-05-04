@@ -2,6 +2,7 @@
 #include "INoteStore.h"
 
 #include "Guid.h"
+#include "Note.h"
 #include "Resource.h"
 
 #include <map>
@@ -19,6 +20,9 @@ public:
 	TagList           remoteTags;
 
 	NoteBodyMap noteBodies;
+
+	NoteList     createdNotes;
+	ResourceList createdResources;
 
 	std::vector<Resource> resources;
 

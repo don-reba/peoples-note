@@ -253,34 +253,6 @@ void UserModel::GetNoteBody(Guid guid, wstring & body)
 	statement->Get(0, body);
 }
 
-void UserModel::GetNoteResources
-	( const Note       & note
-	, vector<Resource> & resources
-	)
-{
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid, hash"
-		"  FROM   ImageResources"
-		"  WHERE  note = ?"
-		);
-	statement->Bind(1, note.GetGuid());
-	while (!statement->Execute())
-	{
-		resources.push_back(Resource());
-
-		__int64 row(0);
-		statement->Get(0, row);
-		statement->Get(1, resources.back().Hash);
-
-		IDataStore::Blob sqlBlob = dataStore.MakeBlob
-			( "ImageResources"
-			, "data"
-			, row
-			);
-		sqlBlob->Read(resources.back().Data);
-	}
-}
-
 void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -384,6 +356,31 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), usn, isDirty));
 	}
 	return notes;
+}
+
+void UserModel::GetResource(const Guid & guid, Resource & resource)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT rowid, hash"
+		"  FROM   ImageResources"
+		"  WHERE  guid = ?"
+		);
+	statement->Bind(1, guid);
+	if (statement->Execute())
+		throw std::exception("Resource not found.");
+
+	__int64 row(0);
+	statement->Get(0, row);
+	statement->Get(1, resource.Hash);
+
+	IDataStore::Blob sqlBlob = dataStore.MakeBlob
+		( "ImageResources"
+		, "data"
+		, row
+		);
+	sqlBlob->Read(resource.Data);
+
+	resource.Guid = guid;
 }
 
 const TagList & UserModel::GetTags()

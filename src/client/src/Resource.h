@@ -11,3 +11,5 @@ public:
 	Blob        Data;
 	Guid        Guid;
 };
+
+typedef std::vector<Resource> ResourceList;
