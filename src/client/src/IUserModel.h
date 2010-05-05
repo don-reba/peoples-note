@@ -48,15 +48,15 @@ public:
 
 	virtual bool Exists(const std::wstring & username) = 0;
 
-	virtual Credentials GetCredentials() = 0;
+	virtual void GetCredentials(Credentials & credentials) = 0;
 
-	virtual Notebook GetDefaultNotebook() = 0;
+	virtual void GetDefaultNotebook(Notebook & notebook) = 0;
 
 	virtual std::wstring GetFolder() const = 0;
 
 	virtual void GetImageResource(std::string hash, Blob & blob) = 0;
 
-	virtual Notebook GetLastUsedNotebook() = 0;
+	virtual void GetLastUsedNotebook(Notebook & notebook) = 0;
 
 	virtual Note GetNote(Guid guid) = 0;
 
@@ -67,15 +67,21 @@ public:
 		, Thumbnail  & thumbnail
 		) = 0;
 
-	virtual const NotebookList & GetNotebooks() = 0;
+	virtual void GetNotebooks(NotebookList & notebooks) = 0;
 
-	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook) = 0;
+	virtual void GetNotesByNotebook
+		( const Notebook & notebook
+		, NoteList       & notes
+		) = 0;
 
-	virtual const NoteList & GetNotesBySearch(std::wstring search) = 0;
+	virtual void GetNotesBySearch
+		( const std::wstring & search
+		, NoteList           & notes
+		) = 0;
 
 	virtual void GetResource(const Guid & guid, Resource & resource) = 0;
 
-	virtual const TagList & GetTags() = 0;
+	virtual void GetTags(TagList & tags) = 0;
 
 	virtual void Load(const std::wstring & username) = 0;
 

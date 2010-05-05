@@ -30,7 +30,8 @@ void NotebookProcessor::Delete(const Notebook & local)
 
 void NotebookProcessor::Rename(const Notebook & local)
 {
-	const NotebookList & notebooks(userModel.GetNotebooks());
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
 
 	vector<wstring> names;
 	names.reserve(notebooks.size());

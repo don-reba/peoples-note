@@ -106,7 +106,8 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 		IEnService & enService (context->GetEnService());
 
 		IEnService::UserStore userStore(enService.GetUserStore());
-		Credentials credentials(userModel.GetCredentials());
+		Credentials credentials;
+		userModel.GetCredentials(credentials);
 		IUserStore::AuthenticationResult authenticationResult
 			( userStore->GetAuthenticationToken
 				( credentials.GetUsername()
@@ -123,7 +124,8 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 			( enService.GetNoteStore(authenticationResult.Token)
 			);
 
-		Notebook notebook(userModel.GetLastUsedNotebook());
+		Notebook notebook;
+		userModel.GetLastUsedNotebook(notebook);
 
 		EnInteropNoteList remoteNotes;
 		NotebookList      remoteNotebooks;
@@ -132,14 +134,16 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 
 		SyncLogic syncLogic;
 
-		const NotebookList & localNotebooks(userModel.GetNotebooks());
+		NotebookList localNotebooks;
+		userModel.GetNotebooks(localNotebooks);
 		syncLogic.FullSync
 			( remoteNotebooks
 			, localNotebooks
 			, NotebookProcessor(*noteStore, userModel)
 			);
 
-		const TagList & localTags(userModel.GetTags());
+		TagList localTags;
+		userModel.GetTags(localTags);
 		syncLogic.FullSync
 			( remoteTags
 			, localTags

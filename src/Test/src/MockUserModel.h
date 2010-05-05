@@ -142,15 +142,15 @@ public:
 
 	virtual bool Exists(const std::wstring & username);
 
-	virtual Credentials GetCredentials();
+	virtual void GetCredentials(Credentials & credentials);
 
-	virtual Notebook GetDefaultNotebook();
+	virtual void GetDefaultNotebook(Notebook & notebook);
 
 	virtual std::wstring GetFolder() const;
 
 	virtual void GetImageResource(std::string hash, Blob & blob);
 
-	virtual Notebook GetLastUsedNotebook();
+	virtual void GetLastUsedNotebook(Notebook & notebook);
 
 	virtual Note GetNote(Guid guid);
 
@@ -161,15 +161,21 @@ public:
 		, Thumbnail  & thumbnail
 		);
 
-	virtual const NotebookList & GetNotebooks();
+	virtual void GetNotebooks(NotebookList & notebooks);
 
-	virtual const NoteList & GetNotesByNotebook(const Notebook & notebook);
+	virtual void GetNotesByNotebook
+		( const Notebook & notebook
+		, NoteList       & notes
+		);
 
-	virtual const NoteList & GetNotesBySearch(std::wstring search);
+	virtual void GetNotesBySearch
+		( const std::wstring & search
+		, NoteList           & notes
+		);
 
 	virtual void GetResource(const Guid & guid, Resource & resource);
 
-	virtual const TagList & GetTags();
+	virtual void GetTags(TagList & tags);
 
 	virtual void Load(const std::wstring & username);
 

@@ -40,7 +40,8 @@ BOOST_FIXTURE_TEST_CASE
 	credentialsModel.SignalUpdated();
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadAs);
 
-	Credentials credentials(userModel.GetCredentials());
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
 	BOOST_CHECK_EQUAL(credentials.GetUsername(), L"test-usr");
 	BOOST_CHECK_EQUAL(credentials.GetPassword(), L"test-pwd");
 }

@@ -181,15 +181,13 @@ bool UserModel::Exists(const wstring & username)
 }
 
 
-Credentials UserModel::GetCredentials()
+void UserModel::GetCredentials(Credentials & credentials)
 {
-	return Credentials
-		( GetProperty(L"username")
-		, GetProperty(L"password")
-		);
+	credentials.SetPassword(GetProperty(L"password"));
+	credentials.SetUsername(GetProperty(L"username"));
 }
 
-Notebook UserModel::GetDefaultNotebook()
+void UserModel::GetDefaultNotebook(Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, name"
@@ -203,10 +201,8 @@ Notebook UserModel::GetDefaultNotebook()
 	wstring name;
 	statement->Get(0, guid);
 	statement->Get(1, name);
-	Notebook notebook;
 	notebook.guid = guid;
 	notebook.name = name;
-	return notebook;
 }
 
 wstring UserModel::GetFolder() const
@@ -236,7 +232,7 @@ void UserModel::GetImageResource(string hash, Blob & blob)
 	sqlBlob->Read(blob);
 }
 
-Notebook UserModel::GetLastUsedNotebook()
+void UserModel::GetLastUsedNotebook(Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, name"
@@ -250,10 +246,8 @@ Notebook UserModel::GetLastUsedNotebook()
 	wstring name;
 	statement->Get(0, guid);
 	statement->Get(1, name);
-	Notebook notebook;
 	notebook.guid = guid;
 	notebook.name = name;
-	return notebook;
 }
 
 Note UserModel::GetNote(Guid guid)
@@ -330,14 +324,13 @@ void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 	}
 }
 
-const NotebookList & UserModel::GetNotebooks()
+void UserModel::GetNotebooks(NotebookList & notebooks)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, name"
 		"  FROM Notebooks"
 		"  ORDER BY name"
 		);
-	notebooks.clear();
 	while (!statement->Execute())
 	{
 		wstring guid;
@@ -348,10 +341,12 @@ const NotebookList & UserModel::GetNotebooks()
 		notebooks.back().guid = guid;
 		notebooks.back().name = name;
 	}
-	return notebooks;
 }
 
-const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
+void UserModel::GetNotesByNotebook
+	( const Notebook & notebook
+	, NoteList       & notes
+	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, usn, title, creationDate, isDirty"
@@ -360,7 +355,6 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 		"  ORDER BY creationDate"
 		);
 	statement->Bind(1, notebook.guid);
-	notes.clear();
 	while (!statement->Execute())
 	{
 		string  guid;
@@ -380,10 +374,12 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 		notes.back().creationDate = creationDate;
 		notes.back().isDirty      = isDirty;
 	}
-	return notes;
 }
 
-const NoteList & UserModel::GetNotesBySearch(wstring search)
+void UserModel::GetNotesBySearch
+	( const std::wstring & search
+	, NoteList           & notes
+	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, usn, title, creationDate, isDirty"
@@ -392,7 +388,6 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 		"  ORDER BY creationDate"
 		);
 	statement->Bind(1, search);
-	notes.clear();
 	while (!statement->Execute())
 	{
 		string  guid;
@@ -412,7 +407,6 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 		notes.back().creationDate = creationDate;
 		notes.back().isDirty      = isDirty;
 	}
-	return notes;
 }
 
 void UserModel::GetResource(const Guid & guid, Resource & resource)
@@ -440,7 +434,7 @@ void UserModel::GetResource(const Guid & guid, Resource & resource)
 	resource.Guid = guid;
 }
 
-const TagList & UserModel::GetTags()
+void UserModel::GetTags(TagList & tags)
 {
 	//IDataStore::Statement statement = dataStore.MakeStatement
 	//	( "SELECT guid, name"
@@ -457,8 +451,6 @@ const TagList & UserModel::GetTags()
 	//	notebooks.push_back(Notebook(guid, name));
 	//}
 	//return notebooks;
-
-	return tags;
 }
 
 void UserModel::Load(const wstring & username)

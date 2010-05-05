@@ -30,7 +30,8 @@ void TagProcessor::Delete(const Tag & local)
 
 void TagProcessor::Rename(const Tag & local)
 {
-	const TagList & tags(userModel.GetTags());
+	TagList tags;
+	userModel.GetTags(tags);
 
 	vector<wstring> names;
 	names.reserve(tags.size());

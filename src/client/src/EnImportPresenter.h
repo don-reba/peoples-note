@@ -34,5 +34,5 @@ private:
 
 	static std::string Hash(const Blob & blob);
 
-	const NoteList & ImportNotes(std::wistream & file);
+	void ImportNotes(std::wistream & file, NoteList & notes);
 };

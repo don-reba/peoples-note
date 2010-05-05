@@ -78,14 +78,21 @@ void NoteListPresenter::OnUserLoaded()
 	Transaction transaction(userModel);
 
 	noteListView.ClearNotebooks();
-	const NotebookList & notebooks = userModel.GetNotebooks();
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
 	foreach (const Notebook & notebook, notebooks)
 		noteListView.AddNotebook(notebook.name);
 	noteListView.UpdateNotebooks();
 
-	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	noteListModel.SetNotes(notes);
 
-	wstring username(userModel.GetCredentials().GetUsername());
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
+	wstring username(credentials.GetUsername());
 
 	if (username == L"[anonymous]")
 	{

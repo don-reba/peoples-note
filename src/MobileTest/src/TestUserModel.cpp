@@ -101,14 +101,16 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 		Note note        (MakeNote(guid0, L"note-0", Timestamp(2), 3, true));
 		wstring body     (L"<html>note body 0</html>");
 		wstring bodyText (L"note body 0");
-		const Notebook & notebook = userModel.GetLastUsedNotebook();
+		Notebook notebook;
+		userModel.GetLastUsedNotebook(notebook);
 		userModel.AddNote(note, body, bodyText, notebook);
 	}
 	{
 		Note note        (MakeNote(guid1, L"note-1", Timestamp(5), 7, false));
 		wstring body     (L"<html>note body 1</html>");
 		wstring bodyText (L"note body 1");
-		const Notebook & notebook = userModel.GetLastUsedNotebook();
+		Notebook notebook;
+		userModel.GetLastUsedNotebook(notebook);
 		userModel.AddNote(note, body, bodyText, notebook);
 	}
 	{
@@ -202,7 +204,9 @@ FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 	userModel.AddNotebook(notebook);
 	userModel.MakeNotebookDefault(notebook);
 
-	TEST_CHECK_EQUAL(userModel.GetDefaultNotebook().name, L"test-notebook");
+	Notebook defaultNotebook;
+	userModel.GetDefaultNotebook(defaultNotebook);
+	TEST_CHECK_EQUAL(defaultNotebook.name, L"test-notebook");
 }
 
 FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
@@ -233,7 +237,9 @@ FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
 	blob.push_back(5);
 	blob.push_back(7);
 
-	userModel.AddNote(note, L"", L"", userModel.GetLastUsedNotebook());
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	userModel.AddNote(note, L"", L"", notebook);
 	userModel.AddImageResource(hash, blob, note.guid);
 
 	Blob loaded;
@@ -256,7 +262,9 @@ FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
 	userModel.AddNotebook(notebook2);
 	userModel.MakeNotebookLastUsed(notebook1);
 
-	TEST_CHECK_EQUAL(userModel.GetLastUsedNotebook().name, L"notebook1");
+	Notebook lastUsedNotebook;
+	userModel.GetLastUsedNotebook(lastUsedNotebook);
+	TEST_CHECK_EQUAL(lastUsedNotebook.name, L"notebook1");
 }
 
 AUTO_TEST_CASE(TestUserModelLoad)
@@ -283,7 +291,10 @@ AUTO_TEST_CASE(TestUserModelLoad)
 
 	userModel.Load(storeName);
 	TEST_CHECK(check.signalled);
-	TEST_CHECK_EQUAL(userModel.GetCredentials().GetUsername(), storeName);
+
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
+	TEST_CHECK_EQUAL(credentials.GetUsername(), storeName);
 }
 
 AUTO_TEST_CASE(TestUserModelLoadAs)
@@ -322,7 +333,10 @@ AUTO_TEST_CASE(TestUserModelLoadAs)
 	::DeleteFile(dstFile);
 	userModel.LoadAs(storeName, dstName);
 	TEST_CHECK(check.signalled);
-	TEST_CHECK_EQUAL(userModel.GetCredentials().GetUsername(), dstName);
+
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
+	TEST_CHECK_EQUAL(credentials.GetUsername(), dstName);
 }
 
 AUTO_TEST_CASE(TestUserModelLoadOrCreate)
@@ -340,7 +354,8 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 		TEST_CHECK(FileExists(storeFile));
 		TEST_CHECK(check.signalled);
 
-		Credentials credentials(userModel.GetCredentials());
+		Credentials credentials;
+		userModel.GetCredentials(credentials);
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
 		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
@@ -359,7 +374,8 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 		userModel.LoadOrCreate(storeName);
 		TEST_CHECK(check.signalled);
 
-		Credentials credentials(userModel.GetCredentials());
+		Credentials credentials;
+		userModel.GetCredentials(credentials);
 		TEST_CHECK_EQUAL(userModel.GetVersion(),       0);
 		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
 		TEST_CHECK_EQUAL(credentials.GetPassword(),    L"test-pwd");
@@ -379,7 +395,8 @@ FIXTURE_TEST_CASE(TestUserModelNotebooks, DataStoreFixture)
 	userModel.AddNotebook(notebook0);
 	userModel.AddNotebook(notebook2);
 
-	const NotebookList & notebooks = userModel.GetNotebooks();
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
 	TEST_CHECK_EQUAL(notebooks.size(), 4);
 	TEST_CHECK_EQUAL(notebooks.at(0).name, L"Notes");
 	TEST_CHECK_EQUAL(notebooks.at(1).name, L"notebook0");
@@ -418,7 +435,8 @@ FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
 		, notebooks.at(0)
 		);
 
-	const NoteList & notes = userModel.GetNotesByNotebook(notebooks.at(0));
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebooks.at(0), notes);
 	TEST_CHECK_EQUAL(notes.size(), 2);
 	TEST_CHECK_EQUAL(notes.at(0).name, L"note-0");
 	TEST_CHECK_EQUAL(notes.at(1).name, L"note-2");
@@ -445,19 +463,22 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 		, notebook
 		);
 
-	const NoteList & notes0 = userModel.GetNotesBySearch(L"software");
+	NoteList notes0;
+	userModel.GetNotesBySearch(L"software", notes0);
 	TEST_CHECK_EQUAL(notes0.size(), 2);
 	TEST_CHECK_EQUAL(notes0.at(0).name, L"useful software");
 	TEST_CHECK_EQUAL(notes0.at(1).name, L"software use");
 
-	const NoteList & notes1 = userModel.GetNotesBySearch(L"use");
+	NoteList notes1;
+	userModel.GetNotesBySearch(L"use", notes1);
 	TEST_CHECK_EQUAL(notes1.size(), 1);
 	TEST_CHECK_EQUAL(notes1.at(0).name, L"software use");
 }
 
 FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
 {
-	Notebook notebook = userModel.GetDefaultNotebook();
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
 
 	wstring empty;
 

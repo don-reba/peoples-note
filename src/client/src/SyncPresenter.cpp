@@ -27,12 +27,19 @@ SyncPresenter::SyncPresenter
 
 void SyncPresenter::OnSync()
 {
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
+
 	syncUserModel.Unload();
-	syncUserModel.Load(userModel.GetCredentials().GetUsername());
+	syncUserModel.Load(credentials.GetUsername());
 	syncModel.BeginSync(syncUserModel);
 }
 
 void SyncPresenter::OnSyncComplete()
 {
-	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	noteListModel.SetNotes(notes);
 }

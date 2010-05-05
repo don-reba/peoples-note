@@ -81,14 +81,14 @@ bool MockUserModel::Exists(const wstring & username)
 	return validUsernames.find(username) != validUsernames.end();
 }
 
-Credentials MockUserModel::GetCredentials()
+void MockUserModel::GetCredentials(Credentials & credentials)
 {
-	return credentials;
+	credentials = this->credentials;
 }
 
-Notebook MockUserModel::GetDefaultNotebook()
+void MockUserModel::GetDefaultNotebook(Notebook & notebook)
 {
-	return defaultNotebook;
+	notebook = defaultNotebook;
 }
 
 wstring MockUserModel::GetFolder() const
@@ -102,9 +102,9 @@ void MockUserModel::GetImageResource(string hash, Blob & blob)
 		blob = images[hash];
 }
 
-Notebook MockUserModel::GetLastUsedNotebook()
+void MockUserModel::GetLastUsedNotebook(Notebook & notebook)
 {
-	return lastUsedNotebook;
+	notebook = lastUsedNotebook;
 }
 
 Note MockUserModel::GetNote(Guid guid)
@@ -132,21 +132,31 @@ void MockUserModel::GetNoteThumbnail
 		thumbnail = noteThumbnails[guid];
 }
 
-const NotebookList & MockUserModel::GetNotebooks()
+void MockUserModel::GetNotebooks(NotebookList & notebooks)
 {
-	return notebooks;
+	copy
+		( this->notebooks.begin()
+		, this->notebooks.end()
+		, back_inserter(notebooks)
+		);
 }
 
-const NoteList & MockUserModel::GetNotesByNotebook(const Notebook & notebook)
+void MockUserModel::GetNotesByNotebook
+	( const Notebook & notebook
+	, NoteList       & notes
+	)
 {
 	notebookSelection = notebook.name;
-	return notes;
+	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
 }
 
-const NoteList & MockUserModel::GetNotesBySearch(wstring search)
+void MockUserModel::GetNotesBySearch
+	( const std::wstring & search
+	, NoteList           & notes
+	)
 {
 	searchSelection = search;
-	return notes;
+	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
 }
 
 void MockUserModel::GetResource(const Guid & guid, Resource & resource)
@@ -156,9 +166,9 @@ void MockUserModel::GetResource(const Guid & guid, Resource & resource)
 		resource = i->second;
 }
 
-const TagList & MockUserModel::GetTags()
+void MockUserModel::GetTags(TagList & tags)
 {
-	return tags;
+	copy(this->tags.begin(), this->tags.end(), back_inserter(tags));
 }
 
 void MockUserModel::Load(const wstring & username)

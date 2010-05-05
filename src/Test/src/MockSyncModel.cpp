@@ -10,9 +10,12 @@ MockSyncModel::MockSyncModel()
 
 void MockSyncModel::BeginSync(IUserModel & userModel)
 {
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
+
 	this->syncBegan    = true;
 	this->documentPath = userModel.GetFolder();
-	this->username     = userModel.GetCredentials().GetUsername();
+	this->username     = credentials.GetUsername();
 }
 
 void MockSyncModel::ConnectSyncComplete(slot_type OnSyncComplete)

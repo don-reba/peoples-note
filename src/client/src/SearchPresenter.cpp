@@ -31,11 +31,17 @@ void SearchPresenter::OnSearch()
 void SearchPresenter::ResetNotes()
 {
 	Transaction transaction(userModel);
-	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	noteListModel.SetNotes(notes);
 }
 
 void SearchPresenter::SearchNotes(wstring search)
 {
 	Transaction transaction(userModel);
-	noteListModel.SetNotes(userModel.GetNotesBySearch(search));
+	NoteList notes;
+	userModel.GetNotesBySearch(search, notes);
+	noteListModel.SetNotes(notes);
 }

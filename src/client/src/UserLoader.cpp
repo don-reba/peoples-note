@@ -39,5 +39,7 @@ void UserLoader::Run()
 
 void UserLoader::Save()
 {
-	lastUserModel.SetUsername(userModel.GetCredentials().GetUsername());
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
+	lastUserModel.SetUsername(credentials.GetUsername());
 }
