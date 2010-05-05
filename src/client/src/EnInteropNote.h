@@ -9,16 +9,10 @@ public:
 
 	Note note;
 	std::vector<Guid> resources;
-
-public:
-
-	Guid GetGuid() const;
-
-	std::wstring GetName() const;
-
-	int GetUsn() const;
-
-	bool IsDirty() const;
+	std::wstring name;
+	Guid guid;
+	int  usn;
+	bool isDirty;
 };
 
 typedef std::vector<EnInteropNote> EnInteropNoteList;

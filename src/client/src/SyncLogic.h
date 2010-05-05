@@ -38,15 +38,15 @@ void SyncLogic::FullSync
 
 	Map localGuids;
 	foreach (const T & l, local)
-		localGuids[l.GetGuid()] = &l;
+		localGuids[l.guid] = &l;
 
 	Map remoteGuids;
 	foreach (const T & r, remote)
-		remoteGuids[r.GetGuid()] = &r;
+		remoteGuids[r.guid] = &r;
 
 	foreach (const T & r, remote)
 	{
-		Map::iterator l(localGuids.find(r.GetGuid()));
+		Map::iterator l(localGuids.find(r.guid));
 		if (l == localGuids.end())
 		{
 			processor.Add(r);
@@ -54,23 +54,23 @@ void SyncLogic::FullSync
 		else
 		{
 			const T & l(*l->second);
-			if (l.GetName() == r.GetName())
+			if (l.name == r.name)
 			{
-				if (l.IsDirty())
+				if (l.isDirty)
 					processor.Merge(l, r);
 				else
 					processor.Rename(l);
 			}
 			else
 			{
-				if (l.GetUsn() == r.GetUsn())
+				if (l.usn == r.usn)
 				{
-					if (l.IsDirty())
+					if (l.isDirty)
 						processor.Upload(l);
 				}
 				else
 				{
-					if (l.IsDirty())
+					if (l.isDirty)
 						processor.Merge(l, r);
 					else
 						processor.Add(r);
@@ -81,10 +81,10 @@ void SyncLogic::FullSync
 
 	foreach (const T & l, local)
 	{
-		Map::iterator r(remoteGuids.find(l.GetGuid()));
+		Map::iterator r(remoteGuids.find(l.guid));
 		if (r == remoteGuids.end())
 		{
-			if (l.IsDirty())
+			if (l.isDirty)
 				processor.Upload(l);
 			else
 				processor.Delete(l);
@@ -107,15 +107,15 @@ void SyncLogic::FullSync
 //
 //	Map localGuids;
 //	foreach (T & l, local)
-//		localGuids[l.GetGuid()] = &l;
+//		localGuids[l.guid] = &l;
 //
 //	Map remoteGuids;
 //	foreach (T & r, remote)
-//		remoteGuids[r.GetGuid()] = &r;
+//		remoteGuids[r.guid] = &r;
 //
 //	foreach (T & r, remote)
 //	{
-//		Map::iterator l(localGuids.find(r.GetGuid()));
+//		Map::iterator l(localGuids.find(r.guid));
 //		if (l == localGuids.end())
 //		{
 //			Add(r);
@@ -123,16 +123,16 @@ void SyncLogic::FullSync
 //		else
 //		{
 //			T & l(*l->second);
-//			if (l.GetName() == r.GetName())
+//			if (l.name == r.name)
 //			{
-//				if (l.IsDirty())
+//				if (l.isDirty)
 //					Merge(l, r);
 //				else
 //					Rename(l);
 //			}
 //			else
 //			{
-//				if (l.IsDirty())
+//				if (l.isDirty)
 //					Merge(l, r);
 //				else
 //					Add(r);
@@ -142,10 +142,10 @@ void SyncLogic::FullSync
 //
 //	foreach (T & l, local)
 //	{
-//		Map::iterator r(remoteGuids.find(l.GetGuid()));
+//		Map::iterator r(remoteGuids.find(l.guid));
 //		if (r == remoteGuids.end())
 //		{
-//			if (l.IsDirty())
+//			if (l.isDirty)
 //				Upload(l);
 //			else
 //				Delete(l);

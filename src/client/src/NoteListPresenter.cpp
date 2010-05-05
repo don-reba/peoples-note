@@ -67,7 +67,7 @@ void NoteListPresenter::OnNoteListChanged()
 	noteListView.ClearNotes();
 	foreach (const Note & note, notes)
 	{
-		wstring guid(ConvertToUnicode(note.GetGuid()));
+		wstring guid(ConvertToUnicode(note.guid));
 		noteListView.AddNote(ConvertToHtml(note, guid), guid);
 	}
 	noteListView.UpdateNotes();
@@ -80,7 +80,7 @@ void NoteListPresenter::OnUserLoaded()
 	noteListView.ClearNotebooks();
 	const NotebookList & notebooks = userModel.GetNotebooks();
 	foreach (const Notebook & notebook, notebooks)
-		noteListView.AddNotebook(notebook.GetName());
+		noteListView.AddNotebook(notebook.name);
 	noteListView.UpdateNotebooks();
 
 	noteListModel.SetNotes(userModel.GetNotesByNotebook(userModel.GetLastUsedNotebook()));
@@ -112,11 +112,11 @@ wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid
 	stream << L"<div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:";
 	stream << guid;
 	stream << L"\"/></div></td><td>";
-	stream << FormatTitle(note.GetName());
+	stream << FormatTitle(note.name);
 	stream << L"</td></tr><tr><td>";
-	stream << FormatTags(note.GetTags());
+	stream << FormatTags(note.tags);
 	stream << L"</td></tr><tr><td>";
-	stream << FormatDate(note.GetCreationDate());
+	stream << FormatDate(note.creationDate);
 	stream << L"</td></tr></table>";
 	return stream.str();
 }
@@ -135,7 +135,7 @@ wstring NoteListPresenter::FormatTags(const TagList & tags)
 		if (!first)
 			stream << L", ";
 		first = false;
-		stream << EscapeHtml(tag.GetName());
+		stream << EscapeHtml(tag.name);
 	}
 	return stream.str();
 }

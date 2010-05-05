@@ -19,7 +19,9 @@ DWORD WINAPI UserModelTransactionsrThread(LPVOID)
 		model.LoadOrCreate(storeName);
 
 		Transaction transaction(model);
-		model.AddNotebook(Notebook(Guid(), L"notebook-1"));
+		Notebook notebook;
+		notebook.name = L"notebook-1";
+		model.AddNotebook(notebook);
 	}
 	catch (...)
 	{
@@ -42,7 +44,7 @@ AUTO_TEST_CASE(TestUserModelTransactions)
 	{
 		Transaction transaction(model);
 
-		model.AddNotebook(Notebook(Guid(), L"notebook-0"));
+		model.AddNotebook(Notebook());
 
 		
 		Transaction nestedTransaction(model);

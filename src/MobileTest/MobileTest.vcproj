@@ -396,19 +396,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\MD5\md5.c"
+				>
+				<FileConfiguration
+					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\src\MobileTest.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\Test\src\MockCredentialsModel.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\Note.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\Notebook.cpp"
 				>
 			</File>
 			<File
@@ -526,11 +530,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File

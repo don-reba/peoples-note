@@ -10,6 +10,8 @@ private:
 
 public:
 
+	Timestamp();
+
 	Timestamp(time_t unixTime);
 
 	std::wstring GetFormattedDateTime() const;

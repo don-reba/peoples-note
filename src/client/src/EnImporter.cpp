@@ -93,7 +93,12 @@ void EnImporter::ImportNotes
 			}
 
 			Timestamp timestamp = Timestamp(ParseTime(created));
-			notes.push_back(Note(guid, title, timestamp, -1, true));
+			notes.push_back(Note());
+			notes.back().guid         = guid;
+			notes.back().name         = title;
+			notes.back().creationDate = timestamp;
+			notes.back().usn          = -1;
+			notes.back().isDirty      = true;
 			bodies.push_back(body);
 
 			node = node->next_sibling();

@@ -35,7 +35,7 @@ void NotebookProcessor::Rename(const Notebook & local)
 	vector<wstring> names;
 	names.reserve(notebooks.size());
 	foreach (const Notebook & notebook, notebooks)
-		names.push_back(notebook.GetName());
+		names.push_back(notebook.name);
 	sort(names.begin(), names.end());
 
 	int n(2);
@@ -43,12 +43,14 @@ void NotebookProcessor::Rename(const Notebook & local)
 	do
 	{
 		name.str(wstring());
-		name << local.GetName() << L'(' << n << L')';
+		name << local.name << L'(' << n << L')';
 		++n;
 	}
 	while (binary_search(names.begin(), names.end(), name.str()));
 
-	userModel.AddNotebook(Notebook(local.GetGuid(), name.str()));
+	Notebook notebook = local;
+	notebook.name = name.str();
+	userModel.AddNotebook(notebook);
 }
 
 void NotebookProcessor::Upload(const Notebook & local)

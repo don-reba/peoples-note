@@ -56,13 +56,13 @@ void NotePresenter::OnOpenNote()
 	Note note(userModel.GetNote(guid));
 
 	wstring subtitle(L"created on ");
-	subtitle.append(note.GetCreationDate().GetFormattedDateTime());
+	subtitle.append(note.creationDate.GetFormattedDateTime());
 
 	wstring html;
 	enNoteTranslator.ConvertToHtml(body, html);
 
 	noteView.SetBody(html);
 	noteView.SetSubtitle(subtitle);
-	noteView.SetTitle(note.GetName());
+	noteView.SetTitle(note.name);
 	noteView.Show();
 }

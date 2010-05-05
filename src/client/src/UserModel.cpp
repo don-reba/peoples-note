@@ -75,7 +75,7 @@ void UserModel::AddNote
 	IDataStore::Statement insertContents = dataStore.MakeStatement
 		( "INSERT INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
 		);
-	insertContents->Bind(1, note.GetName());
+	insertContents->Bind(1, note.name);
 	insertContents->Bind(2, bodyText);
 	insertContents->Execute();
 	insertContents->Finalize();
@@ -84,14 +84,14 @@ void UserModel::AddNote
 		( "INSERT INTO Notes(guid, usn, creationDate, title, body, isDirty, search, notebook)"
 		"  VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 		);
-	insertInfo->Bind(1, note.GetGuid());
-	insertInfo->Bind(2, note.GetUsn());
-	insertInfo->Bind(3, note.GetCreationDate().GetTime());
-	insertInfo->Bind(4, note.GetName());
+	insertInfo->Bind(1, note.guid);
+	insertInfo->Bind(2, note.usn);
+	insertInfo->Bind(3, note.creationDate.GetTime());
+	insertInfo->Bind(4, note.name);
 	insertInfo->Bind(5, body);
-	insertInfo->Bind(6, note.IsDirty());
+	insertInfo->Bind(6, note.isDirty);
 	insertInfo->Bind(7, dataStore.GetLastInsertRowid());
-	insertInfo->Bind(8, notebook.GetGuid());
+	insertInfo->Bind(8, notebook.guid);
 	insertInfo->Execute();
 	insertInfo->Finalize();
 }
@@ -102,8 +102,8 @@ void UserModel::AddNotebook(const Notebook & notebook)
 		( "INSERT INTO Notebooks(guid, name, isDefault, isLastUsed)"
 		"  VALUES (?, ?, 0, 0)"
 		);
-	statement->Bind(1, notebook.GetGuid());
-	statement->Bind(2, notebook.GetName());
+	statement->Bind(1, notebook.guid);
+	statement->Bind(2, notebook.name);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -114,9 +114,9 @@ void UserModel::AddTag(const Tag & tag)
 		( "INSERT INTO Tags(guid, usn, name)"
 		"  VALUES (?, ?, 0, 0)"
 		);
-	statement->Bind(1, tag.GetGuid());
-	statement->Bind(2, tag.GetUsn());
-	statement->Bind(3, tag.GetName());
+	statement->Bind(1, tag.guid);
+	statement->Bind(2, tag.usn);
+	statement->Bind(3, tag.name);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -140,7 +140,7 @@ void UserModel::DeleteNote(const Note & note)
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "DELETE FROM Notes WHERE guid = ?"
 		);
-	statement->Bind(1, note.GetGuid());
+	statement->Bind(1, note.guid);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -150,7 +150,7 @@ void UserModel::DeleteNotebook(const Notebook & notebook)
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "DELETE FROM Notebooks WHERE guid = ?"
 		);
-	statement->Bind(1, notebook.GetGuid());
+	statement->Bind(1, notebook.guid);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -160,7 +160,7 @@ void UserModel::DeleteTag(const Tag & tag)
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "DELETE FROM Tags WHERE guid = ?"
 		);
-	statement->Bind(1, tag.GetGuid());
+	statement->Bind(1, tag.guid);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -203,7 +203,10 @@ Notebook UserModel::GetDefaultNotebook()
 	wstring name;
 	statement->Get(0, guid);
 	statement->Get(1, name);
-	return Notebook(guid, name);
+	Notebook notebook;
+	notebook.guid = guid;
+	notebook.name = name;
+	return notebook;
 }
 
 wstring UserModel::GetFolder() const
@@ -247,7 +250,10 @@ Notebook UserModel::GetLastUsedNotebook()
 	wstring name;
 	statement->Get(0, guid);
 	statement->Get(1, name);
-	return Notebook(guid, name);
+	Notebook notebook;
+	notebook.guid = guid;
+	notebook.name = name;
+	return notebook;
 }
 
 Note UserModel::GetNote(Guid guid)
@@ -269,7 +275,13 @@ Note UserModel::GetNote(Guid guid)
 	statement->Get(1, usn);
 	statement->Get(2, creationDate);
 	statement->Get(3, isDirty);
-	return Note(guid, title, Timestamp(creationDate), usn, isDirty);
+	Note note;
+	note.guid         = guid;
+	note.name         = title;
+	note.usn          = usn;
+	note.creationDate = creationDate;
+	note.isDirty      = isDirty;
+	return note;
 }
 
 void UserModel::GetNoteBody(Guid guid, wstring & body)
@@ -332,7 +344,9 @@ const NotebookList & UserModel::GetNotebooks()
 		wstring name;
 		statement->Get(0, guid);
 		statement->Get(1, name);
-		notebooks.push_back(Notebook(guid, name));
+		notebooks.push_back(Notebook());
+		notebooks.back().guid = guid;
+		notebooks.back().name = name;
 	}
 	return notebooks;
 }
@@ -345,7 +359,7 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 		"  WHERE notebook = ?"
 		"  ORDER BY creationDate"
 		);
-	statement->Bind(1, notebook.GetGuid());
+	statement->Bind(1, notebook.guid);
 	notes.clear();
 	while (!statement->Execute())
 	{
@@ -359,7 +373,12 @@ const NoteList & UserModel::GetNotesByNotebook(const Notebook & notebook)
 		statement->Get(2, title);
 		statement->Get(3, creationDate);
 		statement->Get(4, isDirty);
-		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), usn, isDirty));
+		notes.push_back(Note());
+		notes.back().guid         = guid;
+		notes.back().usn          = usn;
+		notes.back().name         = title;
+		notes.back().creationDate = creationDate;
+		notes.back().isDirty      = isDirty;
 	}
 	return notes;
 }
@@ -386,7 +405,12 @@ const NoteList & UserModel::GetNotesBySearch(wstring search)
 		statement->Get(2, title);
 		statement->Get(3, creationDate);
 		statement->Get(4, isDirty);
-		notes.push_back(Note(Guid(guid), title, Timestamp(creationDate), usn, isDirty));
+		notes.push_back(Note());
+		notes.back().guid         = guid;
+		notes.back().usn          = usn;
+		notes.back().name         = title;
+		notes.back().creationDate = creationDate;
+		notes.back().isDirty      = isDirty;
 	}
 	return notes;
 }
@@ -418,7 +442,22 @@ void UserModel::GetResource(const Guid & guid, Resource & resource)
 
 const TagList & UserModel::GetTags()
 {
-	// TODO: implement
+	//IDataStore::Statement statement = dataStore.MakeStatement
+	//	( "SELECT guid, name"
+	//	"  FROM Tags"
+	//	"  ORDER BY name"
+	//	);
+	//notebooks.clear();
+	//while (!statement->Execute())
+	//{
+	//	wstring guid;
+	//	wstring name;
+	//	statement->Get(0, guid);
+	//	statement->Get(1, name);
+	//	notebooks.push_back(Notebook(guid, name));
+	//}
+	//return notebooks;
+
 	return tags;
 }
 
@@ -478,7 +517,7 @@ void UserModel::MakeNotebookDefault(const Notebook & notebook)
 		"  SET isDefault = 1"
 		"  WHERE guid = ?"
 		);
-	setNew->Bind(1, notebook.GetGuid());
+	setNew->Bind(1, notebook.guid);
 	setNew->Execute();
 }
 
@@ -496,7 +535,7 @@ void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
 		"  SET isLastUsed = 1"
 		"  WHERE guid = ?"
 		);
-	setNew->Bind(1, notebook.GetGuid());
+	setNew->Bind(1, notebook.guid);
 	setNew->Execute();
 }
 
@@ -655,7 +694,8 @@ void UserModel::Update()
 	SetPragma("PRAGMA foreign_keys = ON");
 	if (GetNotebookCount() == 0)
 	{
-		Notebook notebook(Guid(), L"Notes");
+		Notebook notebook;
+		notebook.name = L"Notes";
 		AddNotebook(notebook);
 		MakeNotebookDefault(notebook);
 		MakeNotebookLastUsed(notebook);

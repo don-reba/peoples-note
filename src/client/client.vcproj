@@ -419,10 +419,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\EnInteropNote.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\EnNoteTranslator.cpp"
 				>
 			</File>
@@ -464,14 +460,6 @@
 			</File>
 			<File
 				RelativePath=".\src\MessagePump.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\Note.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\Notebook.cpp"
 				>
 			</File>
 			<File
@@ -588,10 +576,6 @@
 			</File>
 			<File
 				RelativePath=".\src\SyncPresenter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\Tag.cpp"
 				>
 			</File>
 			<File

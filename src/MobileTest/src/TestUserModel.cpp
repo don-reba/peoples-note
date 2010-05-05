@@ -51,17 +51,42 @@ struct SignalCheck
 
 Note MakeNote(const wchar_t * name)
 {
-	return Note(Guid(), name, Timestamp(0), -1, true);
+	Note note;
+	note.name = name;
+	return note;
 }
 
 Note MakeNote(const wchar_t * name, int timestamp)
 {
-	return Note(Guid(), name, Timestamp(timestamp), -1, true);
+	Note note;
+	note.name = name;
+	note.creationDate = timestamp;
+	return note;
 }
 
 Note MakeNote(const Guid & guid, const wchar_t * name = L"")
 {
-	return Note(guid, name, Timestamp(0), -1, true);
+	Note note;
+	note.guid = guid;
+	note.name = name;
+	return note;
+}
+
+Note MakeNote
+	( const Guid    & guid
+	, const wchar_t * name
+	, Timestamp       creationDate
+	, int             usn
+	, bool            isDirty
+	)
+{
+	Note note;
+	note.guid         = guid;
+	note.name         = name;
+	note.creationDate = creationDate;
+	note.usn          = usn;
+	note.isDirty      = isDirty;
+	return note;
 }
 
 //-----------
@@ -73,14 +98,14 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 	Guid guid0;
 	Guid guid1;
 	{
-		Note note        (guid0, L"note-0", Timestamp(2), 3, true);
+		Note note        (MakeNote(guid0, L"note-0", Timestamp(2), 3, true));
 		wstring body     (L"<html>note body 0</html>");
 		wstring bodyText (L"note body 0");
 		const Notebook & notebook = userModel.GetLastUsedNotebook();
 		userModel.AddNote(note, body, bodyText, notebook);
 	}
 	{
-		Note note        (guid1, L"note-1", Timestamp(5), 7, false);
+		Note note        (MakeNote(guid1, L"note-1", Timestamp(5), 7, false));
 		wstring body     (L"<html>note body 1</html>");
 		wstring bodyText (L"note body 1");
 		const Notebook & notebook = userModel.GetLastUsedNotebook();
@@ -88,11 +113,11 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 	}
 	{
 		Note result = userModel.GetNote(guid0);
-		TEST_CHECK_EQUAL(result.GetGuid(),                   guid0);
-		TEST_CHECK_EQUAL(result.GetCreationDate().GetTime(), 2L);
-		TEST_CHECK_EQUAL(result.GetUsn(),                    3);
-		TEST_CHECK_EQUAL(result.GetName(),                   L"note-0");
-		TEST_CHECK_EQUAL(result.IsDirty(),                   true);
+		TEST_CHECK_EQUAL(result.guid,                   guid0);
+		TEST_CHECK_EQUAL(result.creationDate.GetTime(), 2L);
+		TEST_CHECK_EQUAL(result.usn,                    3);
+		TEST_CHECK_EQUAL(result.name,                   L"note-0");
+		TEST_CHECK_EQUAL(result.isDirty,                true);
 
 		wstring loaded;
 		userModel.GetNoteBody(guid0, loaded);
@@ -100,11 +125,11 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 	}
 	{
 		Note result = userModel.GetNote(guid1);
-		TEST_CHECK_EQUAL(result.GetGuid(),                   guid1);
-		TEST_CHECK_EQUAL(result.GetCreationDate().GetTime(), 5L);
-		TEST_CHECK_EQUAL(result.GetUsn(),                    7);
-		TEST_CHECK_EQUAL(result.GetName(),                   L"note-1");
-		TEST_CHECK_EQUAL(result.IsDirty(),                   false);
+		TEST_CHECK_EQUAL(result.guid,                   guid1);
+		TEST_CHECK_EQUAL(result.creationDate.GetTime(), 5L);
+		TEST_CHECK_EQUAL(result.usn,                    7);
+		TEST_CHECK_EQUAL(result.name,                   L"note-1");
+		TEST_CHECK_EQUAL(result.isDirty,                false);
 
 		wstring loaded;
 		userModel.GetNoteBody(guid1, loaded);
@@ -126,7 +151,8 @@ AUTO_TEST_CASE(TestUserModelExists)
 
 FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 {
-	Notebook notebook(Guid(), L"test-notebook");
+	Notebook notebook;
+	notebook.name = L"test-notebook";
 	userModel.AddNotebook(notebook);
 
 	wstring empty;
@@ -137,7 +163,8 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 		, notebook
 		);
 
-	Notebook fakeNotebook(Guid(), L"fake-notebook");
+	Notebook fakeNotebook;
+	fakeNotebook.name = L"fake-notebook";
 
 	TEST_CHECK_EXCEPTION
 		( userModel.AddNote
@@ -153,7 +180,8 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
 {
-	Notebook notebook(Guid(), L"test-notebook");
+	Notebook notebook;
+	notebook.name = L"test-notebook";
 	userModel.AddNotebook(notebook);
 
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
@@ -169,11 +197,12 @@ FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 {
-	Notebook notebook(Guid(), L"test-notebook");
+	Notebook notebook;
+	notebook.name = L"test-notebook";
 	userModel.AddNotebook(notebook);
 	userModel.MakeNotebookDefault(notebook);
 
-	TEST_CHECK_EQUAL(userModel.GetDefaultNotebook().GetName(), L"test-notebook");
+	TEST_CHECK_EQUAL(userModel.GetDefaultNotebook().name, L"test-notebook");
 }
 
 FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
@@ -187,7 +216,7 @@ FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
 	blob.push_back(7);
 
 	TEST_CHECK_EXCEPTION
-		( userModel.AddImageResource("hash", blob, note.GetGuid())
+		( userModel.AddImageResource("hash", blob, note.guid)
 		, std::exception
 		, MESSAGE_EQUALS("foreign key constraint failed")
 		);
@@ -205,7 +234,7 @@ FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
 	blob.push_back(7);
 
 	userModel.AddNote(note, L"", L"", userModel.GetLastUsedNotebook());
-	userModel.AddImageResource(hash, blob, note.GetGuid());
+	userModel.AddImageResource(hash, blob, note.guid);
 
 	Blob loaded;
 	userModel.GetImageResource(hash, loaded);
@@ -216,15 +245,18 @@ FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
 
 FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
 {
-	vector<Notebook> notebooks;
-	notebooks.push_back(Notebook(Guid(), L"notebook0"));
-	notebooks.push_back(Notebook(Guid(), L"notebook1"));
-	notebooks.push_back(Notebook(Guid(), L"notebook2"));
-	foreach (Notebook & notebook, notebooks)
-		userModel.AddNotebook(notebook);
-	userModel.MakeNotebookLastUsed(notebooks.at(1));
+	Notebook notebook0;
+	notebook0.name = L"notebook0";
+	Notebook notebook1;
+	notebook1.name = L"notebook1";
+	Notebook notebook2;
+	notebook2.name = L"notebook2";
+	userModel.AddNotebook(notebook0);
+	userModel.AddNotebook(notebook1);
+	userModel.AddNotebook(notebook2);
+	userModel.MakeNotebookLastUsed(notebook1);
 
-	TEST_CHECK_EQUAL(userModel.GetLastUsedNotebook().GetName(), L"notebook1");
+	TEST_CHECK_EQUAL(userModel.GetLastUsedNotebook().name, L"notebook1");
 }
 
 AUTO_TEST_CASE(TestUserModelLoad)
@@ -315,7 +347,7 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 
 		userModel.SetCredentials(storeName, L"test-pwd");
 
-		userModel.AddNotebook(Notebook(Guid(), L""));
+		userModel.AddNotebook(Notebook());
 	}
 	{
 		DataStore store;
@@ -337,23 +369,31 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 
 FIXTURE_TEST_CASE(TestUserModelNotebooks, DataStoreFixture)
 {
-	userModel.AddNotebook(Notebook(Guid(), L"notebook1"));
-	userModel.AddNotebook(Notebook(Guid(), L"notebook0"));
-	userModel.AddNotebook(Notebook(Guid(), L"notebook2"));
+	Notebook notebook0;
+	notebook0.name = L"notebook0";
+	Notebook notebook1;
+	notebook1.name = L"notebook1";
+	Notebook notebook2;
+	notebook2.name = L"notebook2";
+	userModel.AddNotebook(notebook1);
+	userModel.AddNotebook(notebook0);
+	userModel.AddNotebook(notebook2);
 
 	const NotebookList & notebooks = userModel.GetNotebooks();
 	TEST_CHECK_EQUAL(notebooks.size(), 4);
-	TEST_CHECK_EQUAL(notebooks.at(0).GetName(), L"Notes");
-	TEST_CHECK_EQUAL(notebooks.at(1).GetName(), L"notebook0");
-	TEST_CHECK_EQUAL(notebooks.at(2).GetName(), L"notebook1");
-	TEST_CHECK_EQUAL(notebooks.at(3).GetName(), L"notebook2");
+	TEST_CHECK_EQUAL(notebooks.at(0).name, L"Notes");
+	TEST_CHECK_EQUAL(notebooks.at(1).name, L"notebook0");
+	TEST_CHECK_EQUAL(notebooks.at(2).name, L"notebook1");
+	TEST_CHECK_EQUAL(notebooks.at(3).name, L"notebook2");
 }
 
 FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
 {
 	vector<Notebook> notebooks;
-	notebooks.push_back(Notebook(Guid(), L"notebook-0"));
-	notebooks.push_back(Notebook(Guid(), L"notebook-1"));
+	notebooks.push_back(Notebook());
+	notebooks.back().name = L"notebook-0";
+	notebooks.push_back(Notebook());
+	notebooks.back().name = L"notebook-1";
 	foreach (const Notebook & notebook, notebooks)
 		userModel.AddNotebook(notebook);
 
@@ -380,13 +420,14 @@ FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
 
 	const NoteList & notes = userModel.GetNotesByNotebook(notebooks.at(0));
 	TEST_CHECK_EQUAL(notes.size(), 2);
-	TEST_CHECK_EQUAL(notes.at(0).GetName(), L"note-0");
-	TEST_CHECK_EQUAL(notes.at(1).GetName(), L"note-2");
+	TEST_CHECK_EQUAL(notes.at(0).name, L"note-0");
+	TEST_CHECK_EQUAL(notes.at(1).name, L"note-2");
 }
 
 FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 {
-	Notebook notebook(Guid(), L"notebook");
+	Notebook notebook;
+	notebook.name = L"notebook";
 	userModel.AddNotebook(notebook);
 
 	wstring empty;
@@ -406,36 +447,12 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 
 	const NoteList & notes0 = userModel.GetNotesBySearch(L"software");
 	TEST_CHECK_EQUAL(notes0.size(), 2);
-	TEST_CHECK_EQUAL(notes0.at(0).GetName(), L"useful software");
-	TEST_CHECK_EQUAL(notes0.at(1).GetName(), L"software use");
+	TEST_CHECK_EQUAL(notes0.at(0).name, L"useful software");
+	TEST_CHECK_EQUAL(notes0.at(1).name, L"software use");
 
 	const NoteList & notes1 = userModel.GetNotesBySearch(L"use");
 	TEST_CHECK_EQUAL(notes1.size(), 1);
-	TEST_CHECK_EQUAL(notes1.at(0).GetName(), L"software use");
-}
-
-FIXTURE_TEST_CASE(TestUserModelNoteImageResources, DataStoreFixture)
-{
-	Notebook & notebook(userModel.GetDefaultNotebook());
-
-	Blob data0(2);
-	Blob data1(3);
-	Blob data2(5);
-	Guid guid0;
-	Guid guid1;
-	wstring empty;
-
-	userModel.AddNote(MakeNote(guid0), empty, empty, notebook);
-	userModel.AddNote(MakeNote(guid1), empty, empty, notebook);
-	userModel.AddImageResource("0", data0, guid0);
-	userModel.AddImageResource("1", data1, guid1);
-	userModel.AddImageResource("2", data2, guid0);
-
-	vector<Blob> resources;
-	userModel.GetNoteImageResources(guid0, resources);
-	TEST_CHECK_EQUAL(resources.size(), 2);
-	TEST_CHECK_EQUAL(resources.at(0).size(), 2);
-	TEST_CHECK_EQUAL(resources.at(1).size(), 5);
+	TEST_CHECK_EQUAL(notes1.at(0).name, L"software use");
 }
 
 FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)

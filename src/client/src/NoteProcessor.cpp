@@ -43,7 +43,7 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 		userModel.AddImageResource
 			( resource.Hash
 			, resource.Data
-			, remote.note.GetGuid()
+			, remote.note.guid
 			);
 	}
 }
