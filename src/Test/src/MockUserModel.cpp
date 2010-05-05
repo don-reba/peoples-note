@@ -41,6 +41,11 @@ void MockUserModel::AddNotebook(const Notebook & notebook)
 	notebooks.push_back(notebook);
 }
 
+void MockUserModel::AddTag(const Tag & tag)
+{
+	tags.push_back(tag);
+}
+
 void MockUserModel::BeginTransaction()
 {
 	isInTransaction = true;
@@ -54,6 +59,16 @@ void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 void MockUserModel::DeleteNote(const Note & note)
 {
 	deletedNotes.push_back(note);
+}
+
+void MockUserModel::DeleteNotebook(const Notebook & notebook)
+{
+	deletedNotebooks.push_back(notebook);
+}
+
+void MockUserModel::DeleteTag(const Tag & tag)
+{
+	deletedTags.push_back(tag);
 }
 
 void MockUserModel::EndTransaction()

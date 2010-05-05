@@ -48,11 +48,17 @@ public:
 
 	virtual void AddNotebook(const Notebook & notebook);
 
+	virtual void AddTag(const Tag & tag);
+
 	virtual void BeginTransaction();
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
 	virtual void DeleteNote(const Note & note);
+
+	virtual void DeleteNotebook(const Notebook & notebook);
+
+	virtual void DeleteTag(const Tag & tag);
 
 	virtual void EndTransaction();
 

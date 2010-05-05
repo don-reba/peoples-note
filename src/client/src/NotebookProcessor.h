@@ -3,20 +3,20 @@
 #include "IResourceProcessor.h"
 #include "Notebook.h"
 
-class IEnService;
+class INoteStore;
 class IUserModel;
 
 class NotebookProcessor : public IResourceProcessor<Notebook>
 {
 private:
 
-	IEnService & enService;
+	INoteStore & noteStore;
 	IUserModel & userModel;
 
 public:
 
 	NotebookProcessor
-		( IEnService & enService
+		( INoteStore & noteStore
 		, IUserModel & userModel
 		);
 

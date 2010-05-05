@@ -59,12 +59,14 @@ void MockNoteStore::CreateNotebook
 	( const Notebook & notebook
 	)
 {
+	createdNotebooks.push_back(notebook);
 }
 
 void MockNoteStore::CreateTag
 	( const Tag & tag
 	)
 {
+	createdTags.push_back(tag);
 }
 
 

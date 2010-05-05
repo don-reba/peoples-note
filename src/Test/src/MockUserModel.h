@@ -82,7 +82,10 @@ public:
 
 	std::vector<ImageRecord> addedImages;
 	std::vector<NoteRecord>  addedNotes;
-	std::vector<Note>        deletedNotes;
+
+	NoteList     deletedNotes;
+	NotebookList deletedNotebooks;
+	TagList      deletedTags;
 
 	std::set<std::wstring> validUsernames;
 
@@ -123,11 +126,17 @@ public:
 
 	virtual void AddNotebook(const Notebook & notebook);
 
+	virtual void AddTag(const Tag & tag);
+
 	virtual void BeginTransaction();
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
 	virtual void DeleteNote(const Note & note);
+
+	virtual void DeleteNotebook(const Notebook & notebook);
+
+	virtual void DeleteTag(const Tag & tag);
 
 	virtual void EndTransaction();
 

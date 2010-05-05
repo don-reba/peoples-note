@@ -3,7 +3,9 @@
 
 #include "Guid.h"
 #include "Note.h"
+#include "Notebook.h"
 #include "Resource.h"
+#include "Tag.h"
 
 #include <map>
 
@@ -22,7 +24,9 @@ public:
 	NoteBodyMap noteBodies;
 
 	NoteList     createdNotes;
+	NotebookList createdNotebooks;
 	ResourceList createdResources;
+	TagList      createdTags;
 
 	std::vector<Resource> resources;
 

@@ -3,20 +3,20 @@
 #include "IResourceProcessor.h"
 #include "Tag.h"
 
-class IEnService;
+class INoteStore;
 class IUserModel;
 
 class TagProcessor : public IResourceProcessor<Tag>
 {
 private:
 
-	IEnService & enService;
+	INoteStore & noteStore;
 	IUserModel & userModel;
 
 public:
 
 	TagProcessor
-		( IEnService & enService
+		( INoteStore & noteStore
 		, IUserModel & userModel
 		);
 

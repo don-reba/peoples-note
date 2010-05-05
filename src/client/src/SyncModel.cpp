@@ -136,14 +136,14 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 		syncLogic.FullSync
 			( remoteNotebooks
 			, localNotebooks
-			, NotebookProcessor(enService, userModel)
+			, NotebookProcessor(*noteStore, userModel)
 			);
 
 		const TagList & localTags(userModel.GetTags());
 		syncLogic.FullSync
 			( remoteTags
 			, localTags
-			, TagProcessor(enService, userModel)
+			, TagProcessor(*noteStore, userModel)
 			);
 
 		const EnInteropNoteList localNotes; // TODO: initialize

@@ -108,6 +108,19 @@ void UserModel::AddNotebook(const Notebook & notebook)
 	statement->Finalize();
 }
 
+void UserModel::AddTag(const Tag & tag)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "INSERT INTO Tags(guid, usn, name)"
+		"  VALUES (?, ?, 0, 0)"
+		);
+	statement->Bind(1, tag.GetGuid());
+	statement->Bind(2, tag.GetUsn());
+	statement->Bind(3, tag.GetName());
+	statement->Execute();
+	statement->Finalize();
+}
+
 void UserModel::BeginTransaction()
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -128,6 +141,26 @@ void UserModel::DeleteNote(const Note & note)
 		( "DELETE FROM Notes WHERE guid = ?"
 		);
 	statement->Bind(1, note.GetGuid());
+	statement->Execute();
+	statement->Finalize();
+}
+
+void UserModel::DeleteNotebook(const Notebook & notebook)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "DELETE FROM Notebooks WHERE guid = ?"
+		);
+	statement->Bind(1, notebook.GetGuid());
+	statement->Execute();
+	statement->Finalize();
+}
+
+void UserModel::DeleteTag(const Tag & tag)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "DELETE FROM Tags WHERE guid = ?"
+		);
+	statement->Bind(1, tag.GetGuid());
 	statement->Execute();
 	statement->Finalize();
 }
@@ -594,6 +627,14 @@ void UserModel::Initialize(wstring name)
 			"( hash PRIMARY KEY"
 			", data"
 			", note REFERENCES Notes"
+			")"
+		);
+
+	CreateTable
+		( "CREATE TABLE Tags"
+			"( guid PRIMARY KEY"
+			", usn"
+			", name"
 			")"
 		);
 }

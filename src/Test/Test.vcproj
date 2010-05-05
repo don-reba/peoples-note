@@ -384,6 +384,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestNotebookProcessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestNoteListPresenter.cpp"
 				>
 			</File>
@@ -409,6 +413,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestSyncPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestTagProcessor.cpp"
 				>
 			</File>
 			<File
