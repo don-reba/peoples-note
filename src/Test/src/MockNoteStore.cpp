@@ -10,8 +10,7 @@ void MockNoteStore::GetNoteBody
 	, std::wstring & content
 	)
 {
-	Guid guid(note.GetGuid());
-	NoteBodyMap::iterator i(noteBodies.find(guid));
+	NoteBodyMap::iterator i(noteBodies.find(note.guid));
 	if (i != noteBodies.end())
 		content = i->second;
 }

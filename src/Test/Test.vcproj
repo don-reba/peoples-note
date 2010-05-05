@@ -195,10 +195,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\EnInteropNote.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\EnNoteTranslator.cpp"
 				>
 			</File>
@@ -279,14 +275,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\Note.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\Notebook.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\NotebookProcessor.cpp"
 				>
 			</File>
@@ -344,10 +332,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\Tag.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\TagProcessor.cpp"
 				>
 			</File>
@@ -373,14 +357,6 @@
 			</File>
 			<File
 				RelativePath=".\src\TestLastUserModel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\TestNote.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\TestNotebook.cpp"
 				>
 			</File>
 			<File

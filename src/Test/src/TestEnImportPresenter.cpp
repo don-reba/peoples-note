@@ -19,14 +19,21 @@ void PushArray(vector<T> & v, const T (&a)[N])
 		v.push_back(a[i]);
 }
 
-Note MakeNote(wchar_t * name, int timestamp)
+Note MakeNote(wchar_t * name, int creationDate)
 {
-	return Note(Guid(), name, timestamp, -1, true);
+	Note note;
+	note.name = name;
+	note.creationDate = creationDate;
+	return note;
 }
 
-Note MakeNote(const Guid & guid, wchar_t * name, int timestamp)
+Note MakeNote(const Guid & guid, wchar_t * name, int creationDate)
 {
-	return Note(guid, name, timestamp, -1, true);
+	Note note;
+	note.guid = guid;
+	note.name = name;
+	note.creationDate = creationDate;
+	return note;
 }
 
 BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
@@ -50,8 +57,6 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 	enImporter.bodies.push_back(L"body-1");
 	enImporter.bodies.push_back(L"body-2");
 
-	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
-
 	noteListView.hasEnexPath = true;
 	noteListView.enexPath    = L"data\\Mixed.enex";
 
@@ -60,16 +65,16 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 	typedef vector<MockUserModel::NoteRecord> NoteRecordList;
 	const NoteRecordList & addedNotes = userModel.addedNotes;
 	BOOST_REQUIRE_EQUAL(addedNotes.size(), 2);
-	BOOST_CHECK_EQUAL(addedNotes.at(0).note.GetName(), L"note-1");
-	BOOST_CHECK_EQUAL(addedNotes.at(1).note.GetName(), L"note-2");
+	BOOST_CHECK_EQUAL(addedNotes.at(0).note.name, L"note-1");
+	BOOST_CHECK_EQUAL(addedNotes.at(1).note.name, L"note-2");
 	BOOST_CHECK_EQUAL(addedNotes.at(0).body, L"body-1");
 	BOOST_CHECK_EQUAL(addedNotes.at(1).body, L"body-2");
-	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook.GetName(), L"notebook");
-	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook.GetName(), L"notebook");
+	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook.name, L"last-used-notebook");
+	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook.name, L"last-used-notebook");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-1");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-2");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-2");
 }
 
 BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test1)
@@ -87,8 +92,6 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test1)
 		);
 
 	enImporter.notes.push_back(MakeNote(L"note-0", 0));
-
-	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
 
 	noteListView.hasEnexPath = false;
 	noteListView.enexPath    = L"test-path";
@@ -122,8 +125,6 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
 	PushArray(image.blob, data);
 	image.noteGuid = guid;
 	enImporter.images.push_back(image);
-
-	userModel.lastUsedNotebook = Notebook(Guid(), L"notebook");
 
 	noteListView.hasEnexPath = true;
 	noteListView.enexPath    = L"data\\Mixed.enex";

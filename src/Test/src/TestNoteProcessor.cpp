@@ -13,7 +13,8 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Add_Test)
 {
 	MockNoteStore noteStore;
 	MockUserModel userModel;
-	Notebook notebook(Guid(), L"test-notebook");
+	Notebook notebook;
+	notebook.name = L"test-notebook";
 
 	NoteProcessor noteProcessor
 		( noteStore
@@ -66,7 +67,8 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Delete_Test)
 {
 	MockNoteStore noteStore;
 	MockUserModel userModel;
-	Notebook notebook(Guid(), L"test-notebook");
+	Notebook notebook;
+	notebook.name = L"test-notebook";
 
 	NoteProcessor noteProcessor
 		( noteStore
@@ -87,7 +89,8 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Upload_Test)
 {
 	MockNoteStore noteStore;
 	MockUserModel userModel;
-	Notebook notebook(Guid(), L"test-notebook");
+	Notebook notebook;
+	notebook.name = L"test-notebook";
 
 	NoteProcessor noteProcessor
 		( noteStore

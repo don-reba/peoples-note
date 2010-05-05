@@ -10,7 +10,9 @@ using namespace std;
 
 Note MakeNote(const wchar_t * name)
 {
-	return Note(Guid(), name, Timestamp(0), -1, true);
+	Note note;
+	note.name = name;
+	return note;
 }
 
 BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
@@ -29,8 +31,8 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 	BOOST_CHECK_EQUAL(userModel.searchSelection, L"search");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
 }
 
 BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
@@ -47,6 +49,6 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
 	noteListView.SignalSearch();
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).GetName(), L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
 }

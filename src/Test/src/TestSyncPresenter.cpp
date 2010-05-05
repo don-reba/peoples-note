@@ -54,13 +54,13 @@ BOOST_AUTO_TEST_CASE(SyncPresenter_SyncComplete_Test)
 		, syncUserModel
 		);
 
-	userModel.lastUsedNotebook = Notebook(Guid(), L"test-notebook");
-	userModel.notes.push_back(Note(Guid(), L"test-note", Timestamp(0), -1, true));
+	userModel.notes.push_back(Note());
+	userModel.notes.back().name = L"test-note";
 
 	syncModel.SignalSyncComplete();
 
-	BOOST_CHECK_EQUAL(userModel.notebookSelection, L"test-notebook");
+	BOOST_CHECK_EQUAL(userModel.notebookSelection, L"last-used-notebook");
 
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 1);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).GetName(), L"test-note");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"test-note");
 }

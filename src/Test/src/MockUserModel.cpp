@@ -7,11 +7,11 @@ using namespace boost;
 using namespace std;
 
 MockUserModel::MockUserModel()
-	: defaultNotebook  (Guid(), L"default-notebook")
-	, isInTransaction  (false)
-	, lastUsedNotebook (Guid(), L"last-used-notebook")
+	: isInTransaction  (false)
 	, loadMethod       (LoadMethodNone)
 {
+	defaultNotebook.name  = L"default-notebook";
+	lastUsedNotebook.name = L"last-used-notebook";
 }
 
 void MockUserModel::AddImageResource
@@ -33,7 +33,7 @@ void MockUserModel::AddNote
 {
 	addedNotes.push_back(NoteRecord(note, body, bodyText, notebook));
 	notes.push_back(note);
-	noteBodies[note.GetGuid()] = body;
+	noteBodies[note.guid] = body;
 }
 
 void MockUserModel::AddNotebook(const Notebook & notebook)
@@ -112,7 +112,7 @@ Note MockUserModel::GetNote(Guid guid)
 	const string & guidString = static_cast<const string &>(guid);
 	foreach (Note & note, notes)
 	{
-		if (guidString == static_cast<const string &>(note.GetGuid()))
+		if (guidString == static_cast<const string &>(note.guid))
 			return note;
 	}
 	throw std::exception("Note not found.");
@@ -139,7 +139,7 @@ const NotebookList & MockUserModel::GetNotebooks()
 
 const NoteList & MockUserModel::GetNotesByNotebook(const Notebook & notebook)
 {
-	notebookSelection = notebook.GetName();
+	notebookSelection = notebook.name;
 	return notes;
 }
 
