@@ -109,7 +109,7 @@ void UserModel::AddTag(const Tag & tag)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "INSERT INTO Tags(guid, usn, name)"
-		"  VALUES (?, ?, 0, 0)"
+		"  VALUES (?, ?, ?)"
 		);
 	statement->Bind(1, tag.guid);
 	statement->Bind(2, tag.usn);
@@ -443,21 +443,24 @@ void UserModel::GetResource
 
 void UserModel::GetTags(TagList & tags)
 {
-	//IDataStore::Statement statement = dataStore.MakeStatement
-	//	( "SELECT guid, name"
-	//	"  FROM Tags"
-	//	"  ORDER BY name"
-	//	);
-	//notebooks.clear();
-	//while (!statement->Execute())
-	//{
-	//	wstring guid;
-	//	wstring name;
-	//	statement->Get(0, guid);
-	//	statement->Get(1, name);
-	//	notebooks.push_back(Notebook(guid, name));
-	//}
-	//return notebooks;
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT guid, usn, name"
+		"  FROM Tags"
+		"  ORDER BY name"
+		);
+	while (!statement->Execute())
+	{
+		wstring guid;
+		wstring name;
+		int     usn;
+		statement->Get(0, guid);
+		statement->Get(1, usn);
+		statement->Get(2, name);
+		tags.push_back(Tag());
+		tags.back().guid = guid;
+		tags.back().usn  = usn;
+		tags.back().name = name;
+	}
 }
 
 void UserModel::Load(const wstring & username)

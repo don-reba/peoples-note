@@ -479,6 +479,27 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes1.at(0).name, L"software use");
 }
 
+FIXTURE_TEST_CASE(TestUserModelTags, DataStoreFixture)
+{
+	TagList tags1;
+	tags1.push_back(Tag());
+	tags1.back().name = L"tag-c";
+	tags1.push_back(Tag());
+	tags1.back().name = L"tag-a";
+	tags1.push_back(Tag());
+	tags1.back().name = L"tag-b";
+
+	foreach (const Tag & tag, tags1)
+		userModel.AddTag(tag);
+
+	TagList tags2;
+	userModel.GetTags(tags2);
+	TEST_CHECK_EQUAL(tags2.size(), 3);
+	TEST_CHECK_EQUAL(tags2.at(0).name, L"tag-a");
+	TEST_CHECK_EQUAL(tags2.at(1).name, L"tag-b");
+	TEST_CHECK_EQUAL(tags2.at(2).name, L"tag-c");
+}
+
 FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
 {
 	Notebook notebook;
