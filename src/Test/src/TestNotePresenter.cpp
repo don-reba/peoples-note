@@ -21,11 +21,11 @@ BOOST_AUTO_TEST_CASE(NotePresenterLoadingData_Test)
 		, enNoteTranslator
 		);
 
-	Blob data;
-	data.push_back(2);
-	data.push_back(3);
-	data.push_back(5);
-	userModel.images["test"] = data;
+	userModel.resources.push_back(Resource());
+	userModel.resources.back().Data.push_back(2);
+	userModel.resources.back().Data.push_back(3);
+	userModel.resources.back().Data.push_back(5);
+	userModel.resources.back().Hash = "test";
 
 	Blob result;
 	noteView.SignalLoadingData(L"img:test", result);

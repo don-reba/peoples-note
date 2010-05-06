@@ -120,22 +120,17 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
 	enImporter.notes.push_back(MakeNote(guid, L"note-0", 0));
 	enImporter.bodies.push_back(L"");
 
-	IEnImporter::Image image;
+	enImporter.resources.push_back(Resource());
 	BYTE data[] = { 2, 3, 5, 7 };
-	PushArray(image.blob, data);
-	image.noteGuid = guid;
-	enImporter.images.push_back(image);
+	PushArray(enImporter.resources.back().Data, data);
+	enImporter.resources.back().Note = guid;
 
 	noteListView.hasEnexPath = true;
 	noteListView.enexPath    = L"data\\Mixed.enex";
 
 	noteListView.SignalImport();
 
-	BOOST_REQUIRE_EQUAL(userModel.addedImages.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.addedImages.at(0).data.size(), 4);
-	BOOST_CHECK_EQUAL(userModel.addedImages.at(0).note, guid);
-	BOOST_CHECK_EQUAL
-		( userModel.addedImages.at(0).hash
-		, "6d480b125139b3506fbaba5e84f9fece"
-		);
+	BOOST_REQUIRE_EQUAL(userModel.resources.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.resources.at(0).Data.size(), 4);
+	BOOST_CHECK_EQUAL(userModel.resources.at(0).Note, guid);
 }

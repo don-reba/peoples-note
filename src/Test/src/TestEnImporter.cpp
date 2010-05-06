@@ -67,9 +67,9 @@ BOOST_AUTO_TEST_CASE(EnImporter_Test)
 	BOOST_REQUIRE(file.is_open());
 
 	NoteBodyList bodies;
-	NoteList notes;
-	EnImporter::ImageList images;
-	enImporter.ImportNotes(file, notes, bodies, images);
+	NoteList     notes;
+	ResourceList resources;
+	enImporter.ImportNotes(file, notes, bodies, resources);
 
 	BOOST_CHECK_EQUAL(notes.size(), 1);
 	BOOST_CHECK_EQUAL(notes.at(0).name, L"Mixed note");
@@ -78,9 +78,9 @@ BOOST_AUTO_TEST_CASE(EnImporter_Test)
 	BOOST_CHECK(StartsWith(bodies.at(0), wstring(L"<?xml version")));
 	BOOST_CHECK(EndsWith(bodies.at(0),   wstring(L"</en-note>\n")));
 
-	BOOST_CHECK_EQUAL(images.size(), 1);
-	BYTE imageStart[] = { 0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46 };
-	BYTE imageEnd[]   = { 0x76, 0xC4, 0x6B, 0x1D, 0x28, 0x87, 0xFF, 0xD9 };
-	BOOST_CHECK(StartsWith (images.at(0).blob, imageStart, imageStart + 8));
-	BOOST_CHECK(EndsWith   (images.at(0).blob, imageEnd,   imageEnd   + 8));
+	BOOST_CHECK_EQUAL(resources.size(), 1);
+	BYTE resourceStart[] = { 0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46 };
+	BYTE resourceEnd[]   = { 0x76, 0xC4, 0x6B, 0x1D, 0x28, 0x87, 0xFF, 0xD9 };
+	BOOST_CHECK(StartsWith (resources.at(0).Data, resourceStart, resourceStart + 8));
+	BOOST_CHECK(EndsWith   (resources.at(0).Data, resourceEnd,   resourceEnd   + 8));
 }

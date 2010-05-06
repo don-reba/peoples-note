@@ -17,12 +17,6 @@ public:
 
 	virtual ~IUserModel() {}
 
-	virtual void AddImageResource
-		( std::string  hash
-		, const Blob & data
-		, const Guid & noteGuid
-		) = 0;
-
 	virtual void AddNote
 		( const Note          & note
 		, const std::wstring  & body
@@ -31,6 +25,8 @@ public:
 		) = 0;
 
 	virtual void AddNotebook(const Notebook & notebook) = 0;
+
+	virtual void AddResource(const Resource & resource) = 0;
 
 	virtual void AddTag(const Tag & tag) = 0;
 
@@ -53,8 +49,6 @@ public:
 	virtual void GetDefaultNotebook(Notebook & notebook) = 0;
 
 	virtual std::wstring GetFolder() const = 0;
-
-	virtual void GetImageResource(std::string hash, Blob & blob) = 0;
 
 	virtual void GetLastUsedNotebook(Notebook & notebook) = 0;
 
@@ -79,7 +73,15 @@ public:
 		, NoteList           & notes
 		) = 0;
 
-	virtual void GetResource(const Guid & guid, Resource & resource) = 0;
+	virtual void GetResource
+		( const std::string & hash
+		, Blob              & blob
+		) = 0;
+
+	virtual void GetResource
+		( const Guid & guid
+		, Resource   & resource
+		) = 0;
 
 	virtual void GetTags(TagList & tags) = 0;
 

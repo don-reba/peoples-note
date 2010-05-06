@@ -1283,6 +1283,7 @@ immutable class storage
 		because it is constracted before function call
 	this means that these can only be returned by reference
 	would like to have a class that is mutable until fully constructed
-images are broken
+errors
 	smileys do not show up
 	thumbnails do not scale
+	an unnamed database is created

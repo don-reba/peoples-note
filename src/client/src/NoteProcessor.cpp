@@ -33,18 +33,11 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 	foreach (const Guid & guid, remote.resources)
 	{
 		Resource resource;
-		noteStore.GetNoteResource
-			( guid
-			, resource
-			);
+		noteStore.GetNoteResource(guid, resource);
 		// TODO: check the hash here
 		// handle incomplete downloads somehow
 		// string checkHash = HashWithMD5(resource.Data);
-		userModel.AddImageResource
-			( resource.Hash
-			, resource.Data
-			, remote.note.guid
-			);
+		userModel.AddResource(resource);
 	}
 }
 

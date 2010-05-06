@@ -5,7 +5,6 @@
 #include "INoteListModel.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
-#include "Tools.h"
 #include "Transaction.h"
 
 #include <fstream>
@@ -13,7 +12,6 @@
 
 using namespace boost;
 using namespace std;
-using namespace Tools;
 
 EnImportPresenter::EnImportPresenter
 	( IEnImporter    & enImporter
@@ -54,10 +52,10 @@ void EnImportPresenter::ImportNotes
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
 	{
-		NoteList               notes;
-		NoteBodyList           bodies;
-		IEnImporter::ImageList images;
-		enImporter.ImportNotes(file, notes, bodies, images);
+		NoteList     notes;
+		NoteBodyList bodies;
+		ResourceList resources;
+		enImporter.ImportNotes(file, notes, bodies, resources);
 		assert(notes.size() == bodies.size());
 
 		for (int i(0); i != notes.size(); ++i)
@@ -68,14 +66,8 @@ void EnImportPresenter::ImportNotes
 			userModel.AddNote(note, body, bodyText, notebook);
 		}
 
-		foreach (const IEnImporter::Image & image, images)
-		{
-			userModel.AddImageResource
-				( HashWithMD5(image.blob)
-				, image.blob
-				, image.noteGuid
-				);
-		}
+		foreach (const Resource & resource, resources)
+			userModel.AddResource(resource);
 	}
 	userModel.GetNotesByNotebook(notebook, notes);
 }

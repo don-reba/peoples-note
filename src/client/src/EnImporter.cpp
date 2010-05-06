@@ -18,7 +18,7 @@ void EnImporter::ImportNotes
 	( wistream     & stream
 	, NoteList     & notes
 	, NoteBodyList & bodies
-	, ImageList    & images
+	, ResourceList & resources
 	)
 {
 	vector<wchar_t> text
@@ -73,13 +73,13 @@ void EnImporter::ImportNotes
 					{
 						if (0 == wcscmp(resourceNode->name(), L"data"))
 						{
-							images.push_back(Image());
-							Image & image(images.back());
-							image.noteGuid = guid;
+							resources.push_back(Resource());
+							resources.back().Note = guid;
 							Tools::DecodeBase64
 								( resourceNode->value()
-								, image.blob
+								, resources.back().Data
 								);
+							resources.back().Hash = HashWithMD5(resources.back().Data);
 							break;
 						}
 						resourceNode = resourceNode->next_sibling();

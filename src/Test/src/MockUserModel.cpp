@@ -14,16 +14,6 @@ MockUserModel::MockUserModel()
 	lastUsedNotebook.name = L"last-used-notebook";
 }
 
-void MockUserModel::AddImageResource
-	( string       hash
-	, const Blob & data
-	, const Guid & noteGuid
-	)
-{
-	addedImages.push_back(ImageRecord(hash, data, noteGuid));
-	images[hash] = data;
-}
-
 void MockUserModel::AddNote
 	( const Note     & note
 	, const wstring  & body
@@ -39,6 +29,11 @@ void MockUserModel::AddNote
 void MockUserModel::AddNotebook(const Notebook & notebook)
 {
 	notebooks.push_back(notebook);
+}
+
+void MockUserModel::AddResource(const Resource & resource)
+{
+	resources.push_back(resource);
 }
 
 void MockUserModel::AddTag(const Tag & tag)
@@ -94,12 +89,6 @@ void MockUserModel::GetDefaultNotebook(Notebook & notebook)
 wstring MockUserModel::GetFolder() const
 {
 	return folder;
-}
-
-void MockUserModel::GetImageResource(string hash, Blob & blob)
-{
-	if (images.find(hash) != images.end())
-		blob = images[hash];
 }
 
 void MockUserModel::GetLastUsedNotebook(Notebook & notebook)
@@ -159,11 +148,25 @@ void MockUserModel::GetNotesBySearch
 	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
 }
 
+void MockUserModel::GetResource
+	( const string & hash
+	, Blob         & blob
+	)
+{
+	foreach (const Resource & resource, resources)
+	{
+		if (resource.Hash == hash)
+			blob = resource.Data;
+	}
+}
+
 void MockUserModel::GetResource(const Guid & guid, Resource & resource)
 {
-	ResourceMap::iterator i(resources.find(guid));
-	if (i != resources.end())
-		resource = i->second;
+	foreach (const Resource & r, resources)
+	{
+		if (r.Guid == guid)
+			resource = r;
+	}
 }
 
 void MockUserModel::GetTags(TagList & tags)

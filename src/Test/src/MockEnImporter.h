@@ -9,7 +9,7 @@ public:
 
 	NoteBodyList bodies;
 	NoteList     notes;
-	ImageList    images;
+	ResourceList resources;
 
 public:
 
@@ -17,6 +17,6 @@ public:
 		( std::wistream & stream
 		, NoteList      & notes
 		, NoteBodyList  & bodies
-		, ImageList     & images
+		, ResourceList  & resources
 		);
 };

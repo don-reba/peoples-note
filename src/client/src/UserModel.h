@@ -29,12 +29,6 @@ public:
 
 public:
 
-	virtual void AddImageResource
-		( std::string  hash
-		, const Blob & data
-		, const Guid & noteGuid
-		);
-
 	virtual void AddNote
 		( const Note          & note
 		, const std::wstring  & body
@@ -43,6 +37,8 @@ public:
 		);
 
 	virtual void AddNotebook(const Notebook & notebook);
+
+	virtual void AddResource(const Resource & resource);
 
 	virtual void AddTag(const Tag & tag);
 
@@ -66,8 +62,6 @@ public:
 
 	virtual std::wstring GetFolder() const;
 
-	virtual void GetImageResource(std::string hash, Blob & blob);
-
 	virtual void GetLastUsedNotebook(Notebook & notebook);
 
 	virtual Note GetNote(Guid guid);
@@ -76,7 +70,7 @@ public:
 
 	virtual void GetNoteThumbnail
 		( const Guid & guid
-		, Thumbnail & thumbnail
+		, Thumbnail  & thumbnail
 		);
 
 	virtual void GetNotebooks(NotebookList & notebooks);
@@ -91,7 +85,15 @@ public:
 		, NoteList           & notes
 		);
 
-	virtual void GetResource(const Guid & guid, Resource & resource);
+	virtual void GetResource
+		( const std::string & hash
+		, Blob              & blob
+		);
+
+	virtual void GetResource
+		( const Guid & guid
+		, Resource   & resource
+		);
 
 	virtual void GetTags(TagList & tags);
 

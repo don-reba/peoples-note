@@ -49,22 +49,6 @@ int UserModel::GetVersion()
 // IUuserModel implementaion
 //--------------------------
 
-void UserModel::AddImageResource
-	( std::string  hash
-	, const Blob & data
-	, const Guid & noteGuid
-	)
-{
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT INTO ImageResources(hash, data, note) VALUES (?, ?, ?)"
-		);
-	statement->Bind(1, hash);
-	statement->Bind(2, data);
-	statement->Bind(3, noteGuid);
-	statement->Execute();
-	statement->Finalize();
-}
-
 void UserModel::AddNote
 	( const Note     & note
 	, const wstring  & body
@@ -104,6 +88,19 @@ void UserModel::AddNotebook(const Notebook & notebook)
 		);
 	statement->Bind(1, notebook.guid);
 	statement->Bind(2, notebook.name);
+	statement->Execute();
+	statement->Finalize();
+}
+
+void UserModel::AddResource(const Resource & resource)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "INSERT INTO Resources(guid, hash, data, note) VALUES (?, ?, ?, ?)"
+		);
+	statement->Bind(1, resource.Guid);
+	statement->Bind(2, resource.Hash);
+	statement->Bind(3, resource.Data);
+	statement->Bind(4, resource.Note);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -208,28 +205,6 @@ void UserModel::GetDefaultNotebook(Notebook & notebook)
 wstring UserModel::GetFolder() const
 {
 	return folder;
-}
-
-void UserModel::GetImageResource(string hash, Blob & blob)
-{
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid"
-		"  FROM   ImageResources"
-		"  WHERE  hash = ?"
-		"  LIMIT  1"
-		);
-	statement->Bind(1, hash);
-	if (statement->Execute())
-		throw std::exception("Image resource not found.");
-	__int64 row(0);
-	statement->Get(0, row);
-
-	IDataStore::Blob sqlBlob = dataStore.MakeBlob
-		( "ImageResources"
-		, "data"
-		, row
-		);
-	sqlBlob->Read(blob);
 }
 
 void UserModel::GetLastUsedNotebook(Notebook & notebook)
@@ -409,11 +384,39 @@ void UserModel::GetNotesBySearch
 	}
 }
 
-void UserModel::GetResource(const Guid & guid, Resource & resource)
+void UserModel::GetResource
+	( const string & hash
+	, Blob         & blob
+	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid, hash"
-		"  FROM   ImageResources"
+		( "SELECT rowid"
+		"  FROM   Resources"
+		"  WHERE  hash = ?"
+		"  LIMIT  1"
+		);
+	statement->Bind(1, hash);
+	if (statement->Execute())
+		throw std::exception("Image resource not found.");
+	__int64 row(0);
+	statement->Get(0, row);
+
+	IDataStore::Blob sqlBlob = dataStore.MakeBlob
+		( "Resources"
+		, "data"
+		, row
+		);
+	sqlBlob->Read(blob);
+}
+
+void UserModel::GetResource
+	( const Guid & guid
+	, Resource   & resource
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT rowid, hash, note"
+		"  FROM   Resources"
 		"  WHERE  guid = ?"
 		);
 	statement->Bind(1, guid);
@@ -421,11 +424,15 @@ void UserModel::GetResource(const Guid & guid, Resource & resource)
 		throw std::exception("Resource not found.");
 
 	__int64 row(0);
+	wstring noteGuid;
 	statement->Get(0, row);
 	statement->Get(1, resource.Hash);
+	statement->Get(2, noteGuid);
+
+	resource.Note = noteGuid;
 
 	IDataStore::Blob sqlBlob = dataStore.MakeBlob
-		( "ImageResources"
+		( "Resources"
 		, "data"
 		, row
 		);
@@ -624,7 +631,9 @@ void UserModel::Initialize(wstring name)
 	CreateTable
 		( "CREATE TABLE Notebooks"
 			"( guid PRIMARY KEY"
+			", usn"
 			", name"
+			", isDirty"
 			", isDefault"
 			", isLastUsed"
 			")"
@@ -654,8 +663,9 @@ void UserModel::Initialize(wstring name)
 		);
 
 	CreateTable
-		( "CREATE TABLE ImageResources"
-			"( hash PRIMARY KEY"
+		( "CREATE TABLE Resources"
+			"( guid PRIMARY KEY"
+			", hash UNIQUE"
 			", data"
 			", note REFERENCES Notes"
 			")"

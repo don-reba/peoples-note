@@ -42,7 +42,7 @@ void NotePresenter::OnLoadingData
 		return;
 	++hash;
 	Transaction transaction(userModel);
-	userModel.GetImageResource(ConvertToAnsi(hash), blob);
+	userModel.GetResource(ConvertToAnsi(hash), blob);
 }
 
 void NotePresenter::OnOpenNote()

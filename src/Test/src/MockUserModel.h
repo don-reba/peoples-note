@@ -32,27 +32,6 @@ public:
 		Notebook     notebook;
 	};
 
-	struct ImageRecord
-	{
-		ImageRecord
-			( std::string  hash
-			, const Blob & data
-			, Guid         note
-			)
-			: hash (hash)
-			, data (data)
-			, note (note)
-		{
-		}
-		std::string hash;
-		Blob        data;
-		Guid        note;
-	};
-
-	typedef std::map<std::string, Blob> ImageMap;
-
-	typedef std::map<std::string, Resource> ResourceMap;
-
 	enum LoadMethod
 	{
 		LoadMethodNone,
@@ -72,16 +51,14 @@ public:
 
 	NotebookList notebooks;
 	NoteList     notes;
-	ImageMap     images;
 	TagList      tags;
-	ResourceMap  resources;
+	ResourceList resources;
 	
 
 	std::map<std::string, std::wstring> noteBodies;
 	std::map<std::string, Thumbnail>    noteThumbnails;
 
-	std::vector<ImageRecord> addedImages;
-	std::vector<NoteRecord>  addedNotes;
+	std::vector<NoteRecord> addedNotes;
 
 	NoteList     deletedNotes;
 	NotebookList deletedNotebooks;
@@ -111,12 +88,6 @@ public:
 
 public:
 
-	virtual void AddImageResource
-		( std::string  hash
-		, const Blob & data
-		, const Guid & noteGuid
-		);
-
 	virtual void AddNote
 		( const Note          & note
 		, const std::wstring  & body
@@ -125,6 +96,8 @@ public:
 		);
 
 	virtual void AddNotebook(const Notebook & notebook);
+
+	virtual void AddResource(const Resource & resource);
 
 	virtual void AddTag(const Tag & tag);
 
@@ -147,8 +120,6 @@ public:
 	virtual void GetDefaultNotebook(Notebook & notebook);
 
 	virtual std::wstring GetFolder() const;
-
-	virtual void GetImageResource(std::string hash, Blob & blob);
 
 	virtual void GetLastUsedNotebook(Notebook & notebook);
 
@@ -173,7 +144,15 @@ public:
 		, NoteList           & notes
 		);
 
-	virtual void GetResource(const Guid & guid, Resource & resource);
+	virtual void GetResource
+		( const std::string & hash
+		, Blob              & blob
+		);
+
+	virtual void GetResource
+		( const Guid & guid
+		, Resource   & resource
+		);
 
 	virtual void GetTags(TagList & tags);
 

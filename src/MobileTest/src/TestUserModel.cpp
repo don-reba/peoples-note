@@ -213,14 +213,16 @@ FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
 {
 	Note note(MakeNote(L"note-0"));
 
-	Blob blob;
-	blob.push_back(2);
-	blob.push_back(3);
-	blob.push_back(5);
-	blob.push_back(7);
+	Resource resource;
+	resource.Data.push_back(2);
+	resource.Data.push_back(3);
+	resource.Data.push_back(5);
+	resource.Data.push_back(7);
+	resource.Hash = "hash";
+	resource.Note = note.guid;
 
 	TEST_CHECK_EXCEPTION
-		( userModel.AddImageResource("hash", blob, note.guid)
+		( userModel.AddResource(resource)
 		, std::exception
 		, MESSAGE_EQUALS("foreign key constraint failed")
 		);
@@ -231,22 +233,24 @@ FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
 	std::string hash ("hash");
 	Note        note (MakeNote(L"note-0"));
 
-	Blob blob;
-	blob.push_back(2);
-	blob.push_back(3);
-	blob.push_back(5);
-	blob.push_back(7);
+	Resource resource;
+	resource.Data.push_back(2);
+	resource.Data.push_back(3);
+	resource.Data.push_back(5);
+	resource.Data.push_back(7);
+	resource.Hash = hash;
+	resource.Note = note.guid;
 
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
 	userModel.AddNote(note, L"", L"", notebook);
-	userModel.AddImageResource(hash, blob, note.guid);
+	userModel.AddResource(resource);
 
 	Blob loaded;
-	userModel.GetImageResource(hash, loaded);
-	TEST_CHECK_EQUAL(blob.size(), loaded.size());
-	for (int i = 0; i != blob.size(); ++i)
-		TEST_CHECK_EQUAL(blob.at(i), loaded.at(i));
+	userModel.GetResource(hash, loaded);
+	TEST_CHECK_EQUAL(resource.Data.size(), loaded.size());
+	for (int i = 0; i != resource.Data.size(); ++i)
+		TEST_CHECK_EQUAL(resource.Data.at(i), loaded.at(i));
 }
 
 FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
