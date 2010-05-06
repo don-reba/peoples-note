@@ -16,7 +16,11 @@ def BitmapToData(bmp)
 	foreach (x in [0 .. bmp.Width  - 1])
 	{
 		def color = bmp.GetPixel(x, y);
-		data[i] = (color.R : int, color.G : int, color.B : int);
+		data[i] =
+			( color.R : int
+			, color.G : int
+			, color.B : int
+			);
 		++i;
 	}
 	(data, bmp.Width, bmp.Height);
@@ -67,16 +71,61 @@ def Clamp(data, w, h)
 //       pixel[x+1][y+1] := pixel[x+1][y+1] + 1/16 * quant_error
 def Dither(data, w, h)
 {
-	def result = array(w * h);
+	def result = array(data.Length);
+	def AddError(i, dr, dg, db, factor)
+	{
+		def (r, g, b) = result[i];
+		result[i] =
+			( Math.Max(0x00, Math.Min(0xFF, r + dr * factor / 16))
+			, Math.Max(0x00, Math.Min(0xFF, g + dg * factor / 16))
+			, Math.Max(0x00, Math.Min(0xFF, b + db * factor / 16))
+			);
+	}
+	def FindClosestColor(r, g, b)
+	{
+		def candidates = array
+			[ (r + 0x0 & 0xF8, g + 0x0 & 0xFC, b + 0x0 & 0xF8)
+			, (r + 0x0 & 0xF8, g + 0x0 & 0xFC, b + 0x8 & 0xF8)
+			, (r + 0x0 & 0xF8, g + 0x4 & 0xFC, b + 0x0 & 0xF8)
+			, (r + 0x0 & 0xF8, g + 0x4 & 0xFC, b + 0x8 & 0xF8)
+			, (r + 0x8 & 0xF8, g + 0x0 & 0xFC, b + 0x0 & 0xF8)
+			, (r + 0x8 & 0xF8, g + 0x0 & 0xFC, b + 0x8 & 0xF8)
+			, (r + 0x8 & 0xF8, g + 0x4 & 0xFC, b + 0x0 & 0xF8)
+			, (r + 0x8 & 0xF8, g + 0x4 & 0xFC, b + 0x8 & 0xF8)
+			];
+		mutable minR, minG, minB;
+		mutable min = int.MaxValue;
+		foreach ((newR, newG, newB) in candidates)
+		{
+			def dr = newR - r;
+			def dg = newG - g;
+			def db = newB - b;
+			def d = dr * dr + dg * dg + db * db;
+			when (d < min)
+			{
+				min = d;
+				minR = newR;
+				minG = newG;
+				minB = newB;
+			}
+		}
+		(minR, minG, minB);
+	}
+	Array.Copy(data, result, data.Length);
 	foreach (y in [0 .. h - 2])
 	foreach (x in [0 .. w - 2])
 	{
 		def i = y * w + x;
-		def (oldR, oldG, oldB) = data[i];
-		def r = oldR & 0xF8;
-		def g = oldG & 0xFC;
-		def b = oldB & 0xF8;
+		def (oldR, oldG, oldB) = result[i];
+		def (r, g, b) = FindClosestColor(oldR, oldG, oldB);
 		result[i] = (r, g, b);
+		def dr = oldR - r;
+		def dg = oldG - g;
+		def db = oldB - b;
+		AddError(i + 0 + 1, dr, dg, db, 7);
+		AddError(i + w - 1, dr, dg, db, 3);
+		AddError(i + w + 0, dr, dg, db, 5);
+		AddError(i + w + 1, dr, dg, db, 1);
 	}
 	(result, w, h);
 }
