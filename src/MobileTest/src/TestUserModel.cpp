@@ -209,7 +209,7 @@ FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(defaultNotebook.name, L"test-notebook");
 }
 
-FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelResource0, DataStoreFixture)
 {
 	Note note(MakeNote(L"note-0"));
 
@@ -228,7 +228,7 @@ FIXTURE_TEST_CASE(TestUserModelImageResource0, DataStoreFixture)
 		);
 }
 
-FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelResource1, DataStoreFixture)
 {
 	std::string hash ("hash");
 	Note        note (MakeNote(L"note-0"));
@@ -251,6 +251,31 @@ FIXTURE_TEST_CASE(TestUserModelImageResource1, DataStoreFixture)
 	TEST_CHECK_EQUAL(resource.Data.size(), loaded.size());
 	for (int i = 0; i != resource.Data.size(); ++i)
 		TEST_CHECK_EQUAL(resource.Data.at(i), loaded.at(i));
+}
+
+FIXTURE_TEST_CASE(TestUserModelResource2, DataStoreFixture)
+{
+	Note note;
+
+	Resource r1;
+	r1.Hash = "hash";
+	r1.Note = note.guid;
+
+	Resource r2;
+	r2.Hash = "hash";
+	r2.Note = note.guid;
+
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
+
+	userModel.AddNote(note, L"", L"", notebook);
+	userModel.AddResource(r1);
+	
+	TEST_CHECK_EXCEPTION
+		( userModel.AddResource(r2);
+		, std::exception
+		, MESSAGE_EQUALS("column hash is not unique")
+		);
 }
 
 FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
