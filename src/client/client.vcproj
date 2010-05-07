@@ -611,6 +611,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\UserStore.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\WindowRenderer.cpp"
 				>
 			</File>
@@ -914,6 +918,10 @@
 			</File>
 			<File
 				RelativePath=".\src\UserSignInPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\UserStore.h"
 				>
 			</File>
 			<File

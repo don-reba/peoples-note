@@ -7,7 +7,7 @@
 #include "EnImportPresenter.h"
 #include "EnImporter.h"
 #include "EnNoteTranslator.h"
-//#include "EnService.h"
+#include "EnService.h"
 #include "LastUserModel.h"
 #include "MessagePump.h"
 #include "NoteListModel.h"
@@ -114,7 +114,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		DataStore        syncDataStore;
 		EnImporter       enImporter;
 		EnNoteTranslator enNoteTranslator;
-		//EnService        enService;
+		EnService        enService;
 		MessagePump      messagePump;
 
 		CredentialsModel newCredentials;
@@ -128,11 +128,11 @@ int WINAPI WinMain(HINSTANCE instance,
 		NoteView        noteView        (instance);
 		NoteListView    noteListView    (animator, instance, nCmdShow);
 
-		//CredentialsPresenter credentialsPresenter
-		//	( newCredentials
-		//	, credentialsView
-		//	, enService
-		//	);
+		CredentialsPresenter credentialsPresenter
+			( newCredentials
+			, credentialsView
+			, enService
+			);
 		EnImportPresenter enImportPresenter
 			( enImporter
 			, noteListModel

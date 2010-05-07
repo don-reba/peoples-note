@@ -6,10 +6,9 @@ class EnService : public IEnService
 {
 public:
 
-	virtual CredentialsValidity CheckCredentials
-		( const std::wstring & username
-		, const std::wstring & password
-		);
+	virtual UserStore GetUserStore();
 
-	virtual void Sync(IUserModel & userModel);
+	virtual NoteStore GetNoteStore
+		( const AuthenticationToken & token
+		);
 };

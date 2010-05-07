@@ -1,7 +1,24 @@
-#include "stdafx.h"/*
+#include "stdafx.h"
 #include "EnService.h"
 
-#include "IUserModel.h"
+//#include "NoteStore.h"
+#include "UserStore.h"
+
+using namespace boost;
+
+IEnService::UserStore EnService::GetUserStore()
+{
+	return make_shared<::UserStore>();
+}
+
+IEnService::NoteStore EnService::GetNoteStore
+	( const AuthenticationToken & token
+	)
+{
+	return IEnService::NoteStore();
+}
+
+/*#include "IUserModel.h"
 
 #include "Thrift/Thrift.h"
 #include "Evernote/EDAM/NoteStore.h"
