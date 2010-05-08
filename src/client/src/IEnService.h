@@ -9,14 +9,15 @@ class IEnService
 {
 public:
 
-	typedef boost::shared_ptr<IUserStore> UserStore;
-	typedef boost::shared_ptr<INoteStore> NoteStore;
+	typedef boost::shared_ptr<IUserStore> UserStorePtr;
+	typedef boost::shared_ptr<INoteStore> NoteStorePtr;
 
 public:
 
-	virtual UserStore GetUserStore() = 0;
+	virtual UserStorePtr GetUserStore() = 0;
 
-	virtual NoteStore GetNoteStore
+	virtual NoteStorePtr GetNoteStore
 		( const AuthenticationToken & token
+		, const std::wstring        & shardId
 		) = 0;
 };

@@ -11,6 +11,7 @@ public:
 	public:
 		bool                IsGood;
 		std::wstring        Message;
+		std::wstring        ShardId;
 		AuthenticationToken Token;
 	};
 

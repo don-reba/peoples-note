@@ -53,10 +53,20 @@ void NoteProcessor::Rename(const EnInteropNote &)
 
 void NoteProcessor::Upload(const EnInteropNote & local)
 {
+	Transaction transaction(userModel);
+
 	vector<Resource> resources(local.resources.size());
 	for (int i(0); i != resources.size(); ++i)
 		userModel.GetResource(local.resources[i], resources[i]);
-	noteStore.CreateNote(local.note, resources);
+
+	wstring body;
+	userModel.GetNoteBody(local.guid, body);
+
+	Note replacement;
+	noteStore.CreateNote(local.note, body, resources, replacement);
+
+	userModel.DeleteNote(local.note);
+	userModel.AddNote(replacement, body, L"", notebook);
 }
 
 void NoteProcessor::Merge

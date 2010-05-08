@@ -1,42 +1,62 @@
 #pragma once
 
-#include "EnInteropNote.h"
-#include "Notebook.h"
-#include "Resource.h"
-#include "Tag.h"
+#include "INoteStore.h"
 
-class INoteStore
+#include "AuthenticationToken.h"
+
+#include "Thrift/Thrift.h"
+#include "Evernote/EDAM/NoteStore.h"
+
+class NoteStore : public INoteStore
 {
+private:
+
+	static const wchar_t * const baseUrl;
+
+	AuthenticationToken token;
+
+	Thrift::Protocol::TBinaryProtocol protocol;
+	Thrift::Transport::THttpTransport transport;
+
+	Evernote::EDAM::NoteStore::NoteStore::Client noteStore;
+
+public:
+
+	NoteStore
+		( const AuthenticationToken & token
+		, const std::wstring        & shardId
+		);
+
 public:
 
 	virtual void GetNoteBody
 		( const Note   & note
 		, std::wstring & content
-		) = 0;
+		);
 
 	virtual void GetNoteResource
 		( const Guid & guid
 		, Resource   & resource
-		) = 0;
+		);
 
 	virtual void ListEntries
 		( EnInteropNoteList & notes
 		, NotebookList      & notebooks
 		, TagList           & tags
-		) = 0;
+		);
 
 	virtual void CreateNote
 		( const Note                  & note
 		, const std::wstring          & body
 		, const std::vector<Resource> & resources
 		, Note                        & replacement
-		) = 0;
+		);
 
 	virtual void CreateNotebook
 		( const Notebook & notebook
-		) = 0;
+		);
 
 	virtual void CreateTag
 		( const Tag & tag
-		) = 0;
+		);
 };

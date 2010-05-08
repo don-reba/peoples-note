@@ -105,7 +105,7 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 		IUserModel & userModel (context->GetUserModel());
 		IEnService & enService (context->GetEnService());
 
-		IEnService::UserStore userStore(enService.GetUserStore());
+		IEnService::UserStorePtr userStore(enService.GetUserStore());
 		Credentials credentials;
 		userModel.GetCredentials(credentials);
 		IUserStore::AuthenticationResult authenticationResult
@@ -120,8 +120,11 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 			return 0;
 		}
 
-		IEnService::NoteStore noteStore
-			( enService.GetNoteStore(authenticationResult.Token)
+		IEnService::NoteStorePtr noteStore
+			( enService.GetNoteStore
+				( authenticationResult.Token
+				, authenticationResult.ShardId
+				)
 			);
 
 		Notebook notebook;

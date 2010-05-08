@@ -6,9 +6,10 @@ class EnService : public IEnService
 {
 public:
 
-	virtual UserStore GetUserStore();
+	virtual UserStorePtr GetUserStore();
 
-	virtual NoteStore GetNoteStore
+	virtual NoteStorePtr GetNoteStore
 		( const AuthenticationToken & token
+		, const std::wstring        & shardId
 		);
 };

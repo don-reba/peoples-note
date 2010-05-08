@@ -1,24 +1,27 @@
 #include "stdafx.h"
 #include "EnService.h"
 
-//#include "NoteStore.h"
+#include "NoteStore.h"
 #include "UserStore.h"
 
 using namespace boost;
+using namespace std;
 
-IEnService::UserStore EnService::GetUserStore()
+IEnService::UserStorePtr EnService::GetUserStore()
 {
-	return make_shared<::UserStore>();
+	return make_shared<UserStore>();
 }
 
-IEnService::NoteStore EnService::GetNoteStore
+IEnService::NoteStorePtr EnService::GetNoteStore
 	( const AuthenticationToken & token
+	, const wstring             & shardId
 	)
 {
-	return IEnService::NoteStore();
+	return make_shared<NoteStore>(token, shardId);
 }
 
-/*#include "IUserModel.h"
+#if 0
+#include "IUserModel.h"
 
 #include "Thrift/Thrift.h"
 #include "Evernote/EDAM/NoteStore.h"
@@ -296,4 +299,4 @@ void EnService::Sync(IUserModel & userModel)
 		DEBUGMSG(true, (L"TException: %s\n", e.GetMessage()));
 	}
 }
-*/
+#endif // 0

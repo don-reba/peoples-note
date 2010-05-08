@@ -4,7 +4,7 @@
 #include "IUserModel.h"
 
 #include "Thrift/Thrift.h"
-#include "Evernote/EDAM/NoteStore.h"
+#include "Evernote/EDAM/UserStore.h"
 #include "SyncLogic.h"
 #include "Tools.h"
 #include "Transaction.h"
@@ -57,8 +57,9 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 			, consumerSecret
 			);
 
-		result.IsGood = true;
-		result.Token = authenticationResult.authenticationToken; 
+		result.IsGood  = true;
+		result.ShardId = authenticationResult.user.shardId;
+		result.Token   = authenticationResult.authenticationToken; 
 	}
 	catch (const EDAM::Error::EDAMUserException & e)
 	{

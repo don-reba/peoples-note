@@ -487,6 +487,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NoteStore.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NoteView.cpp"
 				>
 			</File>
@@ -830,6 +834,10 @@
 			</File>
 			<File
 				RelativePath=".\src\NoteProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NoteStore.h"
 				>
 			</File>
 			<File
