@@ -43,29 +43,37 @@ void MockNoteStore::ListEntries
 
 void MockNoteStore::CreateNote
 	( const Note                  & note
+	, const wstring               & body
 	, const std::vector<Resource> & resources
+	, Note                        & replacement
 	)
 {
 	createdNotes.push_back(note);
+	noteBodies[note.guid] = body;
 	copy
 		( resources.begin()
 		, resources.end()
 		, back_inserter(createdResources)
 		);
+	replacement = replacementNote;
 }
 
 void MockNoteStore::CreateNotebook
 	( const Notebook & notebook
+	, Notebook       & replacement
 	)
 {
 	createdNotebooks.push_back(notebook);
+	replacement = replacementNotebook;
 }
 
 void MockNoteStore::CreateTag
 	( const Tag & tag
+	, Tag       & replacement
 	)
 {
 	createdTags.push_back(tag);
+	replacement = replacementTag;
 }
 
 

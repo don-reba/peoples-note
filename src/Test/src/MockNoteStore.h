@@ -28,7 +28,11 @@ public:
 	ResourceList createdResources;
 	TagList      createdTags;
 
-	std::vector<Resource> resources;
+	ResourceList resources;
+
+	Note     replacementNote;
+	Notebook replacementNotebook;
+	Tag      replacementTag;
 
 public:
 
@@ -50,14 +54,18 @@ public:
 
 	virtual void CreateNote
 		( const Note                  & note
+		, const std::wstring          & body
 		, const std::vector<Resource> & resources
+		, Note                        & replacement
 		);
 
 	virtual void CreateNotebook
 		( const Notebook & notebook
+		, Notebook       & replacement
 		);
 
 	virtual void CreateTag
 		( const Tag & tag
+		, Tag       & replacement
 		);
 };

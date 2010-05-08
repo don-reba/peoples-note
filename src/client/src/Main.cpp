@@ -190,12 +190,14 @@ int WINAPI WinMain(HINSTANCE instance,
 	}
 	catch(std::exception e)
 	{
+#ifdef _DEBUG
 		MessageBox
 			( NULL
 			, ConvertToUnicode(e.what()).c_str()
 			, L"Error"
 			, MB_OK | MB_ICONERROR
 			);
+#endif // _DEBUG
 		return 1;
 	}
 }

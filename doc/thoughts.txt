@@ -1287,3 +1287,12 @@ errors
 	smileys do not show up
 	thumbnails do not scale
 	an unnamed database is created
+	cause: freak VS error
+	cause:
+		restarting the device emulator with old code
+		not selecting client for deployment
+		running client
+testing
+	need to update tests for update processor upload functions
+	replacements need testing
+	can't test NoteProcessor, since it talks to the server

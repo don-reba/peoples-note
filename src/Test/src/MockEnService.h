@@ -17,6 +17,10 @@ public:
 
 	MockEnService();
 
-	virtual UserStore GetUserStore();
-	virtual NoteStore GetNoteStore(const AuthenticationToken & token);
+	virtual UserStorePtr GetUserStore();
+
+	virtual NoteStorePtr GetNoteStore
+		( const AuthenticationToken & token
+		, const std::wstring        & shardId
+		);
 };

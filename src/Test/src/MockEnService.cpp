@@ -12,12 +12,15 @@ MockEnService::MockEnService()
 {
 }
 
-IEnService::UserStore MockEnService::GetUserStore()
+IEnService::UserStorePtr MockEnService::GetUserStore()
 {
 	return userStore;
 }
 
-IEnService::NoteStore MockEnService::GetNoteStore(const AuthenticationToken & token)
+IEnService::NoteStorePtr MockEnService::GetNoteStore
+	( const AuthenticationToken & token
+	, const wstring             & shardId
+	)
 {
 	authenticationToken = token;
 	return noteStore;
