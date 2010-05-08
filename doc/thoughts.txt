@@ -1296,3 +1296,12 @@ testing
 	need to update tests for update processor upload functions
 	replacements need testing
 	can't test NoteProcessor, since it talks to the server
+notebook deletion
+	deletion of the default notebook should not be possible
+		throw on attempt
+		the alternative would be to just delete all notes
+		but this is not a necessary user story, for now
+	deletion of the last used notebook should reset it to default
+		handle this in the user model itself
+	add tests
+		TODO

@@ -5,6 +5,7 @@
 #include "ISqlBlob.h"
 #include "ISqlStatement.h"
 #include "Notebook.h"
+#include "Transaction.h"
 
 #include "SQLite/sqlite3.h"
 
@@ -108,12 +109,13 @@ void UserModel::AddResource(const Resource & resource)
 void UserModel::AddTag(const Tag & tag)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT INTO Tags(guid, usn, name)"
-		"  VALUES (?, ?, ?)"
+		( "INSERT INTO Tags(guid, usn, name, isDirty)"
+		"  VALUES (?, ?, ?, ?)"
 		);
 	statement->Bind(1, tag.guid);
 	statement->Bind(2, tag.usn);
 	statement->Bind(3, tag.name);
+	statement->Bind(4, tag.isDirty);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -144,12 +146,38 @@ void UserModel::DeleteNote(const Note & note)
 
 void UserModel::DeleteNotebook(const Notebook & notebook)
 {
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "DELETE FROM Notebooks WHERE guid = ?"
-		);
-	statement->Bind(1, notebook.guid);
-	statement->Execute();
-	statement->Finalize();
+	Transaction transaction(*this);
+
+	bool isDefault, isLastUsed;
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "SELECT isDefault, isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
+			);
+		statement->Bind(1, notebook.guid);
+		if (statement->Execute())
+			return;
+		statement->Get(0, isDefault);
+		statement->Get(1, isLastUsed);
+	}
+
+	if (isDefault)
+		throw std::exception("Cannot delete the default notebook.");
+
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "DELETE FROM Notebooks WHERE guid = ?"
+			);
+		statement->Bind(1, notebook.guid);
+		statement->Execute();
+		statement->Finalize();
+	}
+
+	if (isLastUsed)
+	{
+		Notebook notebook;
+		GetDefaultNotebook(notebook);
+		MakeNotebookLastUsed(notebook);
+	}
 }
 
 void UserModel::DeleteTag(const Tag & tag)
@@ -444,7 +472,7 @@ void UserModel::GetResource
 void UserModel::GetTags(TagList & tags)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name"
+		( "SELECT guid, usn, name, isDirty"
 		"  FROM Tags"
 		"  ORDER BY name"
 		);
@@ -453,13 +481,16 @@ void UserModel::GetTags(TagList & tags)
 		wstring guid;
 		wstring name;
 		int     usn;
+		bool    isDirty;
 		statement->Get(0, guid);
 		statement->Get(1, usn);
 		statement->Get(2, name);
+		statement->Get(3, isDirty);
 		tags.push_back(Tag());
-		tags.back().guid = guid;
-		tags.back().usn  = usn;
-		tags.back().name = name;
+		tags.back().guid    = guid;
+		tags.back().usn     = usn;
+		tags.back().name    = name;
+		tags.back().isDirty = isDirty;
 	}
 }
 
@@ -679,6 +710,7 @@ void UserModel::Initialize(wstring name)
 			"( guid PRIMARY KEY"
 			", usn"
 			", name"
+			", isDirty"
 			")"
 		);
 }

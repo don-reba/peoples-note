@@ -139,6 +139,77 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 	}
 }
 
+FIXTURE_TEST_CASE(TestUserModelAddTag, DataStoreFixture)
+{
+	Tag tag;
+	tag.name    = L"test-tag";
+	tag.usn     = 2;
+	tag.isDirty = true;
+	userModel.AddTag(tag);
+
+	TagList tags;
+	userModel.GetTags(tags);
+
+	TEST_CHECK_EQUAL(tags.size(), 1);
+	TEST_CHECK_EQUAL(tags.at(0).guid,    tag.guid);
+	TEST_CHECK_EQUAL(tags.at(0).name,    tag.name);
+	TEST_CHECK_EQUAL(tags.at(0).isDirty, tag.isDirty);
+}
+
+FIXTURE_TEST_CASE(TestUserModelDeleteNote, DataStoreFixture)
+{
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
+
+	Note note;
+	userModel.AddNote(note, L"", L"", notebook);
+	userModel.DeleteNote(note);
+	
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	TEST_CHECK(notes.empty());
+}
+
+FIXTURE_TEST_CASE(TestUserModelDeleteNotebook, DataStoreFixture)
+{
+	Notebook defaultNotebook;
+	userModel.GetDefaultNotebook(defaultNotebook);
+
+	TEST_CHECK_EXCEPTION
+		( userModel.DeleteNotebook(defaultNotebook)
+		, std::exception
+		, MESSAGE_EQUALS("Cannot delete the default notebook.")
+		);
+
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
+
+	Notebook newNotebook;
+	userModel.AddNotebook(newNotebook);
+	userModel.MakeNotebookLastUsed(newNotebook);
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
+
+	Notebook lastUsedNotebook;
+	userModel.GetLastUsedNotebook(lastUsedNotebook);
+	TEST_CHECK_EQUAL(lastUsedNotebook.guid, newNotebook.guid);
+
+	userModel.DeleteNotebook(lastUsedNotebook);
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
+
+	userModel.GetLastUsedNotebook(lastUsedNotebook);
+	TEST_CHECK_EQUAL(lastUsedNotebook.guid, defaultNotebook.guid);
+}
+
+FIXTURE_TEST_CASE(TestUserModelDeleteTag, DataStoreFixture)
+{
+	Tag tag;
+	userModel.AddTag(tag);
+	userModel.DeleteTag(tag);
+	
+	TagList tags;
+	userModel.GetTags(tags);
+	TEST_CHECK(tags.empty());
+}
+
 AUTO_TEST_CASE(TestUserModelExists)
 {
 	DataStore store;
