@@ -95,8 +95,20 @@ void NoteStore::CreateNote
 
 void NoteStore::CreateNotebook
 	( const Notebook & notebook
+	, Notebook       & replacement
 	)
 {
+	EDAM::Types::Notebook enNotebook;
+	enNotebook.__isset.name = true;
+
+	enNotebook.name = notebook.name;
+
+	EDAM::Types::Notebook enReplacement
+		( noteStore.createNotebook(token, enNotebook)
+		);
+	replacement.guid = enReplacement.guid;
+	replacement.name = enReplacement.name;
+	replacement.usn  = enReplacement.updateSequenceNum;
 }
 
 void NoteStore::CreateTag

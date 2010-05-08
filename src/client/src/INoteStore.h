@@ -34,6 +34,7 @@ public:
 
 	virtual void CreateNotebook
 		( const Notebook & notebook
+		, Notebook       & replacement
 		) = 0;
 
 	virtual void CreateTag

@@ -3,6 +3,7 @@
 
 #include "INoteStore.h"
 #include "IUserModel.h"
+#include "Transaction.h"
 
 #include <algorithm>
 #include <sstream>
@@ -56,7 +57,12 @@ void NotebookProcessor::Rename(const Notebook & local)
 
 void NotebookProcessor::Upload(const Notebook & local)
 {
-	noteStore.CreateNotebook(local);
+	Transaction transaction(userModel);
+
+	Notebook replacement;
+	noteStore.CreateNotebook(local, replacement);
+	userModel.DeleteNotebook(local);
+	userModel.AddNotebook(replacement);
 }
 
 void NotebookProcessor::Merge

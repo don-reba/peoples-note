@@ -54,6 +54,7 @@ public:
 
 	virtual void CreateNotebook
 		( const Notebook & notebook
+		, Notebook       & replacement
 		);
 
 	virtual void CreateTag
