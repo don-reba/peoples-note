@@ -4,9 +4,154 @@
 
 using System.IO;
 using System.Drawing;
+using System.Math;
 using System.Threading;
 using System.Windows.Forms;
 using System;
+
+public module ColorEx
+{
+	public LuvToXyz
+		( l : double
+		, u : double
+		, v : double
+		) : double * double * double
+	{
+		| (0.0, _, _) =>
+			(0.0, 0.0, 0.0);
+		| _ =>
+			def e = 216.0 / 24389.0;
+			def k = 24389.0 / 27.0;
+			def y =
+				if (l > k * e)
+					Pow((l + 16.0) / 116.0, 3.0)
+				else
+					l / k;
+			def a = (52.0 * l / (u + 13.0 * l * 4.0 / 19.0) - 1.0) / 3.0;
+			def b = -5.0 * y;
+			def c = -1.0 / 3.0;
+			def d = (39.0 * l / (v + 13.0 * l * 9.0 / 19.0) - 5.0) * y;
+			def x = (d - b) / (a - c);
+			def z = x * a + b;
+			(x, y, z);
+	}
+
+	public XyzToRgb
+		( x : double
+		, y : double
+		, z : double
+		) : Color
+	{
+		def Scale(x)
+		{
+			def x =
+				if (x <= 0.0031308)
+					x * 12.92
+				else
+					1.055 * Pow(x, 1.0 / 2.4) - 0.055;
+			Min(Max(Round(x * 255.0) :> int, 0), 255);
+		}
+		def (m11, m12, m13) = (3.24071,   -0.969258, 0.0556352);
+		def (m21, m22, m23) = (-1.53726,  1.87599,   -0.203996);
+		def (m31, m32, m33) = (-0.498571, 0.0415557, 1.05707);
+		def r = m11 * x + m21 * y + m31 * z;
+		def g = m12 * x + m22 * y + m32 * z;
+		def b = m13 * x + m23 * y + m33 * z;
+		Color.FromArgb
+			( red   = Scale(r)
+			, green = Scale(g)
+			, blue  = Scale(b)
+			)
+	}
+
+	public RgbToXyz
+		( color : Color
+		) : double * double * double
+	{
+		def Scale(x : byte)
+		{
+			def x = x / 255.0;
+			if (x <= 0.04045)
+				x / 12.92
+			else
+				Pow((x + 0.055) / 1.055, 2.4)
+		}
+		def r = Scale(color.R);
+		def g = Scale(color.G);
+		def b = Scale(color.B);
+		def (m11, m12, m13) = (0.412424, 0.212656,  0.0193324);
+		def (m21, m22, m23) = (0.357579, 0.715158,  0.119193);
+		def (m31, m32, m33) = (0.180464, 0.0721856, 0.950444);
+		def x = m11 * r + m21 * g + m31 * b;
+		def y = m12 * r + m22 * g + m32 * b;
+		def z = m13 * r + m23 * g + m33 * b;
+		(x, y, z);
+	}
+
+	public XyzToLuv
+		( x : double
+		, y : double
+		, z : double
+		) : double * double * double
+	{
+		| (0.0, 0.0, 0.0) =>
+			(0.0, 0.0, 0.0);
+		| _ =>
+			def e = 216.0 / 24389.0;
+			def k = 24389.0 / 27.0;
+			def l =
+				if (y > e)
+					116.0 * Pow(y, 1.0 / 3.0) - 16.0
+				else
+					k * y;
+			def u = 13.0 * l * (4.0 * x / (x + 15.0 * y + 3.0 * z) - 4.0 / 19.0);
+			def v = 13.0 * l * (9.0 * y / (x + 15.0 * y + 3.0 * z) - 9.0 / 19.0);
+			(l, u, v);
+	}
+
+	// Given h,s,l in the range of 0-1
+	// Returns a Color (RGB struct) in range of 0-255
+	public HslToRgb
+		( h : double
+		, s : double
+		, l : double
+		) : Color
+	{
+		def v = if (l <= 0.5) l * (1.0 + s) else (l + s - l * s);
+		if (v > 0.0)
+		{
+			def m       = l + l - v;
+			def sv      = (v - m) / v;
+			def sextant = Floor(h * 6.0);
+			def fract   = (h * 6.0) - sextant;
+			def vsf     = v * sv * fract;
+			def mid1    = m + vsf;
+			def mid2    = v - vsf;
+			def (r, g, b) =
+				match (sextant :> int)
+				{
+					| 0 => (v, mid1, m)
+					| 1 => (mid2, v, m)
+					| 2 => (m, v, mid1)
+					| 3 => (m, mid2, v)
+					| 4 => (mid1, m, v)
+					| 5 => (v, m, mid2)
+					| 6 => (v, mid1, m)
+					| x => throw Exception($"Invalid sextant value: $x.");
+				};
+			Color.FromArgb
+				( red   = (255.0 * r) :> int
+				, green = (255.0 * g) :> int
+				, blue  = (255.0 * b) :> int
+				);
+		}
+		else
+		{
+			def value = (255.0 * l) :> int;
+			Color.FromArgb(value, value, value);
+		}
+	}
+}
 
 def BitmapToData(bmp)
 {
@@ -42,6 +187,23 @@ def DataToBitmap(a : array[int * int * int], w : int, h : int)
 	bmp;
 }
 
+def RgbDistance(r1, g1, b1, r2, g2, b2)
+{
+	def dr = r2 - r1;
+	def dg = g2 - g1;
+	def db = b2 - b1;
+	(dr * dr + dg * dg + db * db) :> double;
+}
+def LuvDistance(r1, g1, b1, r2, g2, b2)
+{
+	def (l1, u1, v1) = ColorEx.XyzToLuv(ColorEx.RgbToXyz(Color.FromArgb(r1, g1, b1)));
+	def (l2, u2, v2) = ColorEx.XyzToLuv(ColorEx.RgbToXyz(Color.FromArgb(r2, g2, b2)));
+	def dl = l2 - l1;
+	def du = u2 - u1;
+	def dv = v2 - v1;
+	dl * dl + du * du + dv * dv;
+}
+
 def Clamp(data, w, h)
 {
 	def result = array(w * h);
@@ -69,18 +231,49 @@ def Clamp(data, w, h)
 //       pixel[x-1][y+1] := pixel[x-1][y+1] + 3/16 * quant_error
 //       pixel[x][y+1] := pixel[x][y+1] + 5/16 * quant_error
 //       pixel[x+1][y+1] := pixel[x+1][y+1] + 1/16 * quant_error
-def Dither(data, w, h)
+def FloydSteinbergDistribution(data, w, i, r, g, b)
 {
-	def result = array(data.Length);
 	def AddError(i, dr, dg, db, factor)
 	{
-		def (r, g, b) = result[i];
-		result[i] =
-			( Math.Max(0x00, Math.Min(0xFF, r + dr * factor / 16))
-			, Math.Max(0x00, Math.Min(0xFF, g + dg * factor / 16))
-			, Math.Max(0x00, Math.Min(0xFF, b + db * factor / 16))
+		def (r, g, b) = data[i];
+		data[i] =
+			( Max(0x00, Min(0xFF, r + dr * factor / 16))
+			, Max(0x00, Min(0xFF, g + dg * factor / 16))
+			, Max(0x00, Min(0xFF, b + db * factor / 16))
 			);
 	}
+	AddError(i + 0 + 1, r, g, b, 7);
+	AddError(i + w - 1, r, g, b, 3);
+	AddError(i + w + 0, r, g, b, 5);
+	AddError(i + w + 1, r, g, b, 1);
+}
+
+def Sierra3Distribution(data, w, i, r, g, b)
+{
+	def AddError(i, dr, dg, db, factor)
+	{
+		def (r, g, b) = data[i];
+		data[i] =
+			( Max(0x00, Min(0xFF, r + dr * factor / 32))
+			, Max(0x00, Min(0xFF, g + dg * factor / 32))
+			, Max(0x00, Min(0xFF, b + db * factor / 32))
+			);
+	}
+	AddError(i + 0 * w + 1, r, g, b, 5);
+	AddError(i + 0 * w + 2, r, g, b, 3);
+	AddError(i + 1 * w - 2, r, g, b, 2);
+	AddError(i + 1 * w - 1, r, g, b, 4);
+	AddError(i + 1 * w + 0, r, g, b, 5);
+	AddError(i + 1 * w + 1, r, g, b, 4);
+	AddError(i + 1 * w + 2, r, g, b, 2);
+	AddError(i + 2 * w - 1, r, g, b, 2);
+	AddError(i + 2 * w + 0, r, g, b, 3);
+	AddError(i + 2 * w + 1, r, g, b, 2);
+}
+
+def Dither((data, w, h), dw, dh, Distance, DistributeError)
+{
+	def result = array(data.Length);
 	def FindClosestColor(r, g, b)
 	{
 		def candidates = array
@@ -94,13 +287,10 @@ def Dither(data, w, h)
 			, (r + 0x8 & 0xF8, g + 0x4 & 0xFC, b + 0x8 & 0xF8)
 			];
 		mutable minR, minG, minB;
-		mutable min = int.MaxValue;
+		mutable min = double.MaxValue;
 		foreach ((newR, newG, newB) in candidates)
 		{
-			def dr = newR - r;
-			def dg = newG - g;
-			def db = newB - b;
-			def d = dr * dr + dg * dg + db * db;
+			def d = Distance(r, g, b, newR, newG, newB);
 			when (d < min)
 			{
 				min = d;
@@ -112,8 +302,8 @@ def Dither(data, w, h)
 		(minR, minG, minB);
 	}
 	Array.Copy(data, result, data.Length);
-	foreach (y in [0 .. h - 2])
-	foreach (x in [0 .. w - 2])
+	foreach (y in [0 .. h - dh - 1])
+	foreach (x in [0 .. w - dw - 1])
 	{
 		def i = y * w + x;
 		def (oldR, oldG, oldB) = result[i];
@@ -122,10 +312,7 @@ def Dither(data, w, h)
 		def dr = oldR - r;
 		def dg = oldG - g;
 		def db = oldB - b;
-		AddError(i + 0 + 1, dr, dg, db, 7);
-		AddError(i + w - 1, dr, dg, db, 3);
-		AddError(i + w + 0, dr, dg, db, 5);
-		AddError(i + w + 1, dr, dg, db, 1);
+		DistributeError(result, w, i, dr, dg, db);
 	}
 	(result, w, h);
 }
@@ -134,16 +321,22 @@ def CreateApp(form : Form, pictureBox)
 {
 	def bmp = Bitmap("main.png");
 	def data = BitmapToData(bmp);
-	def clamped  = DataToBitmap(Clamp(data));
-	def dithered = DataToBitmap(Dither(data));
+	def clamped     = DataToBitmap(Clamp(data));
+	def rgbFsDithered = DataToBitmap(Dither(data, 1, 1, RgbDistance, FloydSteinbergDistribution));
+	def luvFsDithered = DataToBitmap(Dither(data, 1, 1, LuvDistance, FloydSteinbergDistribution));
+	def rgbS3Dithered = DataToBitmap(Dither(data, 2, 2, RgbDistance, Sierra3Distribution));
+	def luvS3Dithered = DataToBitmap(Dither(data, 2, 2, LuvDistance, Sierra3Distribution));
 
 	def OnKeyDown(_, args)
 	{
 		match (args.KeyCode)
 		{
 			| Keys.D1 => pictureBox.Image = bmp
-			| Keys.D2 => pictureBox.Image = dithered
-			| Keys.D3 => pictureBox.Image = clamped
+			| Keys.D2 => pictureBox.Image = clamped
+			| Keys.D3 => pictureBox.Image = rgbFsDithered
+			| Keys.D4 => pictureBox.Image = luvFsDithered
+			| Keys.D5 => pictureBox.Image = rgbS3Dithered
+			| Keys.D6 => pictureBox.Image = luvS3Dithered
 			| _       => ()
 		}
 	}
