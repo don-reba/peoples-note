@@ -45,6 +45,22 @@ void NoteStore::GetNoteResource
 	, Resource   & resource
 	)
 {
+	EDAM::Types::Resource enResource = noteStore.getResource
+		( token                  // authenticationToken
+		, ConvertToUnicode(guid) // guid
+		, true                   // withData
+		, false                  // withRecognition
+		, false                  // withAttributes
+		, false                  // withAlternateData
+		);
+	copy
+		( enResource.data.body.begin()
+		, enResource.data.body.end()
+		, back_inserter(resource.Data)
+		);
+	resource.Hash = HashWithMD5(resource.Data);
+	resource.Guid = enResource.guid;
+	resource.Note = enResource.noteGuid;
 }
 
 void NoteStore::ListEntries
@@ -74,6 +90,7 @@ void NoteStore::ListEntries
 		notes.back().usn     = notes.back().note.usn;
 		notes.back().isDirty = notes.back().note.isDirty;
 
+		// WARN: might be slow for large resource counts
 		foreach (const EDAM::Types::Resource & resource, note.resources)
 		{
 			if (resource.noteGuid == note.guid)
