@@ -3,6 +3,7 @@
 
 #include "INoteStore.h"
 #include "IUserModel.h"
+#include "Transaction.h"
 
 #include <algorithm>
 #include <sstream>
@@ -56,7 +57,12 @@ void TagProcessor::Rename(const Tag & local)
 
 void TagProcessor::Upload(const Tag & local)
 {
-	noteStore.CreateTag(local);
+	Transaction transacction(userModel);
+
+	Tag replacement;
+	noteStore.CreateTag(local, replacement);
+	userModel.DeleteTag(local);
+	userModel.AddTag(replacement);
 }
 
 void TagProcessor::Merge

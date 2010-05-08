@@ -39,5 +39,6 @@ public:
 
 	virtual void CreateTag
 		( const Tag & tag
+		, Tag       & replacement
 		) = 0;
 };

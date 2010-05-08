@@ -14,7 +14,8 @@ using namespace Thrift::Transport;
 using namespace Evernote;
 
 const wchar_t * const NoteStore::baseUrl
-	= L"http://sandbox.evernote.com/edam/note/";
+	( L"http://sandbox.evernote.com/edam/note/"
+	);
 
 NoteStore::NoteStore
 	( const AuthenticationToken & token
@@ -52,6 +53,50 @@ void NoteStore::ListEntries
 	, TagList           & tags
 	)
 {
+	EDAM::NoteStore::SyncChunk chunk = noteStore.getSyncChunk
+		( token // authenticationToken
+		, 0     // afterUSN
+		, 20    // max
+		, true  // fullSyncOnly
+		);
+	foreach (const EDAM::Types::Note & note, chunk.notes)
+	{
+		notes.push_back(EnInteropNote());
+
+		notes.back().note.guid         = note.guid;
+		notes.back().note.name         = note.title;
+		notes.back().note.creationDate = static_cast<time_t>(note.created);
+		notes.back().note.usn          = note.updateSequenceNum;
+		notes.back().note.isDirty      = false;
+
+		notes.back().guid    = notes.back().note.guid;
+		notes.back().name    = notes.back().note.name;
+		notes.back().usn     = notes.back().note.usn;
+		notes.back().isDirty = notes.back().note.isDirty;
+
+		foreach (const EDAM::Types::Resource & resource, note.resources)
+		{
+			if (resource.noteGuid == note.guid)
+				notes.back().resources.push_back(resource.guid);
+		}
+	}
+	foreach (const EDAM::Types::Notebook & notebook, chunk.notebooks)
+	{
+		notebooks.push_back(Notebook());
+		notebooks.back().guid    = notebook.guid;
+		notebooks.back().name    = notebook.name;
+		notebooks.back().usn     = notebook.updateSequenceNum;
+		notebooks.back().isDirty = false;
+	}
+	foreach (const EDAM::Types::Tag & tag, chunk.tags)
+	{
+		tags.push_back(Tag());
+		tags.back().guid    = tag.guid;
+		tags.back().name    = tag.name;
+		tags.back().usn     = tag.updateSequenceNum;
+		tags.back().isDirty = false;
+	}
+
 }
 
 void NoteStore::CreateNote
@@ -106,13 +151,27 @@ void NoteStore::CreateNotebook
 	EDAM::Types::Notebook enReplacement
 		( noteStore.createNotebook(token, enNotebook)
 		);
-	replacement.guid = enReplacement.guid;
-	replacement.name = enReplacement.name;
-	replacement.usn  = enReplacement.updateSequenceNum;
+	replacement.guid    = enReplacement.guid;
+	replacement.name    = enReplacement.name;
+	replacement.usn     = enReplacement.updateSequenceNum;
+	replacement.isDirty = false;
 }
 
 void NoteStore::CreateTag
 	( const Tag & tag
+	, Tag       & replacement
 	)
 {
+	EDAM::Types::Tag enTag;
+	enTag.__isset.name = true;
+
+	enTag.name = tag.name;
+
+	EDAM::Types::Tag enReplacement
+		( noteStore.createTag(token, enTag)
+		);
+	replacement.guid    = enReplacement.guid;
+	replacement.name    = enReplacement.name;
+	replacement.usn     = enReplacement.updateSequenceNum;
+	replacement.isDirty = false;
 }
