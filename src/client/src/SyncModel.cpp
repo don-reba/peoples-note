@@ -5,6 +5,7 @@
 #include "IEnService.h"
 #include "IMessagePump.h"
 #include "INoteStore.h"
+#include "ISyncLogger.h"
 #include "IUserStore.h"
 #include "NotebookProcessor.h"
 #include "NoteProcessor.h"
@@ -15,6 +16,7 @@
 #include "IUserModel.h"
 
 using namespace std;
+using namespace Tools;
 
 //----------
 // interface
@@ -23,9 +25,11 @@ using namespace std;
 SyncModel::SyncModel
 	( IEnService   & enService
 	, IMessagePump & messagePump
+	, ISyncLogger  & logger
 	)
 	: syncThread  (NULL)
 	, enService   (enService)
+	, syncLogger  (logger)
 	, messagePump (messagePump)
 {
 	::InitializeCriticalSection(&lock);
@@ -68,7 +72,7 @@ void SyncModel::StopSync()
 void SyncModel::BeginSync(IUserModel & userModel)
 {
 	CloseThread();
-	syncContext.reset(new SyncContext(*this, userModel));
+	syncContext.reset(new SyncContext(*this, userModel, syncLogger));
 	syncThread = ::CreateThread
 		( NULL             // lpsa
 		, 0                // cbStack
@@ -100,6 +104,7 @@ void SyncModel::CloseThread()
 DWORD WINAPI SyncModel::Sync(LPVOID param)
 {
 	SyncContext * context(reinterpret_cast<SyncContext*>(param));
+	ISyncLogger & syncLogger = context->GetSyncLogger();
 	try
 	{
 		IUserModel & userModel (context->GetUserModel());
@@ -135,10 +140,17 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 		TagList           remoteTags;
 		noteStore->ListEntries(remoteNotes, remoteNotebooks, remoteTags);
 
-		SyncLogic syncLogic;
+		syncLogger.ListRemoteNotes     (remoteNotes);
+		syncLogger.ListRemoteNotebooks (remoteNotebooks);
+		syncLogger.ListRemoteTags      (remoteTags);
+
+		SyncLogic syncLogic(syncLogger);
 
 		NotebookList localNotebooks;
 		userModel.GetNotebooks(localNotebooks);
+		syncLogger.ListLocalNotebooks(localNotebooks);
+
+		syncLogger.BeginSyncStage(L"notebooks");
 		syncLogic.FullSync
 			( remoteNotebooks
 			, localNotebooks
@@ -147,6 +159,9 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 
 		TagList localTags;
 		userModel.GetTags(localTags);
+		syncLogger.ListLocalTags(localTags);
+
+		syncLogger.BeginSyncStage(L"tags");
 		syncLogic.FullSync
 			( remoteTags
 			, localTags
@@ -154,14 +169,18 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 			);
 
 		const EnInteropNoteList localNotes; // TODO: initialize
+		syncLogger.ListLocalNotes(localNotes);
+
+		syncLogger.BeginSyncStage(L"notes");
 		syncLogic.FullSync
 			( remoteNotes
 			, localNotes
 			, NoteProcessor(*noteStore, userModel, notebook)
 			);
 	}
-	catch (const std::exception &)
+	catch (const std::exception & e)
 	{
+		syncLogger.Error(ConvertToUnicode(e.what()));
 		context->EnqueueMessage(MessageSyncFailed);
 		return 0;
 	}
@@ -174,11 +193,13 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 //---------------------------
 
 SyncModel::SyncContext::SyncContext
-	( SyncModel  & syncModel
-	, IUserModel & userModel
+	( SyncModel   & syncModel
+	, IUserModel  & userModel
+	, ISyncLogger & syncLogger
 	)
-	: syncModel (syncModel)
-	, userModel (userModel)
+	: syncModel  (syncModel)
+	, userModel  (userModel)
+	, syncLogger (syncLogger)
 {
 }
 
@@ -213,4 +234,9 @@ void SyncModel::SyncContext::SetStopRequested(bool value)
 IUserModel & SyncModel::SyncContext::GetUserModel()
 {
 	return userModel;
+}
+
+ISyncLogger & SyncModel::SyncContext::GetSyncLogger()
+{
+	return syncLogger;
 }

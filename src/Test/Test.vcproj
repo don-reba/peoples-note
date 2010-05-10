@@ -263,6 +263,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockSyncLogger.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockSyncModel.cpp"
 				>
 			</File>
@@ -491,6 +495,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockSyncLogger.h"
 				>
 			</File>
 			<File

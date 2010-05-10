@@ -16,6 +16,7 @@
 #include "NotePresenter.h"
 #include "RegistryKey.h"
 #include "SearchPresenter.h"
+#include "SyncLogger.h"
 #include "SyncModel.h"
 #include "SyncPresenter.h"
 #include "UserLoader.h"
@@ -116,11 +117,12 @@ int WINAPI WinMain(HINSTANCE instance,
 		EnNoteTranslator enNoteTranslator;
 		EnService        enService;
 		MessagePump      messagePump;
+		SyncLogger       syncLogger(documentPath);
 
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
 		NoteListModel    noteListModel;
-		SyncModel        syncModel(enService, messagePump);
+		SyncModel        syncModel(enService, messagePump, syncLogger);
 		UserModel        userModel(dataStore, documentPath);
 		UserModel        syncUserModel(syncDataStore, documentPath);
 

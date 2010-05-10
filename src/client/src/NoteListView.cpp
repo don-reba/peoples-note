@@ -394,9 +394,9 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 		&NoteListView::OnActivate,
 		&NoteListView::OnCaptureChanged,
 		&NoteListView::OnDestroy,
-		//&NoteListView::OnMouseDown,
-		//&NoteListView::OnMouseMove,
-		//&NoteListView::OnMouseUp,
+		&NoteListView::OnMouseDown,
+		&NoteListView::OnMouseMove,
+		&NoteListView::OnMouseUp,
 	};
 	try
 	{

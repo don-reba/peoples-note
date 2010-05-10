@@ -3,6 +3,7 @@
 
 #include "MockEnService.h"
 #include "MockMessagePump.h"
+#include "MockSyncLogger.h"
 #include "MockUserModel.h"
 
 #include <boost/ref.hpp>
@@ -21,8 +22,9 @@ BOOST_AUTO_TEST_CASE(SyncModel_Test)
 {
 	MockEnService   enService;
 	MockMessagePump messagePump;
+	MockSyncLogger  syncLogger;
 	MockUserModel   userModel;
-	SyncModel syncModel(enService, messagePump);
+	SyncModel syncModel(enService, messagePump, syncLogger);
 
 	enService.userStore->authenticationResult.IsGood = true;
 

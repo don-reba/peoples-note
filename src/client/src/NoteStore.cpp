@@ -77,6 +77,8 @@ void NoteStore::ListEntries
 		);
 	foreach (const EDAM::Types::Note & note, chunk.notes)
 	{
+		if (note.__isset.active && !note.active)
+			continue;
 		notes.push_back(EnInteropNote());
 
 		notes.back().note.guid         = note.guid;

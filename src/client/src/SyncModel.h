@@ -7,6 +7,7 @@
 
 class IEnService;
 class IMessagePump;
+class ISyncLogger;
 
 class SyncModel : public ISyncModel
 {
@@ -24,20 +25,23 @@ private:
 	{
 	private:
 
-		SyncModel  & syncModel;
-		IUserModel & userModel;
+		SyncModel   & syncModel;
+		IUserModel  & userModel;
+		ISyncLogger & syncLogger;
 		bool stopRequested;
 
 	public:
 
 		SyncContext
-			( SyncModel  & syncModel
-			, IUserModel & userModel
+			( SyncModel   & syncModel
+			, IUserModel  & userModel
+			, ISyncLogger & syncLogger
 			);
 
 		void EnqueueMessage(Message message);
-		IEnService & GetEnService();
-		IUserModel & GetUserModel();
+		IEnService  & GetEnService();
+		IUserModel  & GetUserModel();
+		ISyncLogger & GetSyncLogger();
 		bool GetStopRequested() const;
 		void SetStopRequested(bool vaue);
 	};
@@ -48,6 +52,7 @@ private:
 
 	IEnService   & enService;
 	IMessagePump & messagePump;
+	ISyncLogger  & syncLogger;
 
 	HANDLE syncThread;
 
@@ -63,7 +68,11 @@ private:
 
 public:
 
-	SyncModel(IEnService & enService, IMessagePump & messagePump);
+	SyncModel
+		( IEnService   & enService
+		, IMessagePump & messagePump
+		, ISyncLogger  & logger
+		);
 
 	~SyncModel();
 

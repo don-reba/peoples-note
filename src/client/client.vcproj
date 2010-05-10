@@ -571,6 +571,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\SyncLogger.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SyncLogic.cpp"
 				>
 			</File>
@@ -781,6 +785,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ISyncLogger.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ISyncModel.h"
 				>
 			</File>
@@ -878,6 +886,10 @@
 			</File>
 			<File
 				RelativePath=".\src\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SyncLogger.h"
 				>
 			</File>
 			<File

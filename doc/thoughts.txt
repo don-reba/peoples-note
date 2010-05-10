@@ -1304,4 +1304,24 @@ notebook deletion
 	deletion of the last used notebook should reset it to default
 		handle this in the user model itself
 	add tests
-		TODO
+		done
+sync logging
+	need to record data going in and the operations performed on it
+	it should be possible to disable it
+	keep in mind that other parts of the application may also need logging
+	I want to view information in a file
+		this file can either have sync-specific format
+			or a neutral format
+			or a mix of formats
+	say, I am logging performance data, as well as sync
+		I don't want them to mix
+		therefore they can't be writing to the same stream
+	if they have different streams, do they have anything in common at all?
+	if not, instantiate a bunch of logger objects in main
+		pass them to appropriate classes by reference
+	the objects could be initialized in main
+		then adjusted at runtime
+	seems like a flexible approach
+need to refactor SyncModel
+	the SyncContext looks like a really bad idea
+	TODO
