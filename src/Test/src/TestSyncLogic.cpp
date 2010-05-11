@@ -119,9 +119,14 @@ struct SyncLogicFixture
 	{
 	}
 
-	void Sync()
+	void FullSync()
 	{
 		syncLogic.FullSync(remote, local, resourceProcessor);
+	}
+
+	void IncrementalSync()
+	{
+		syncLogic.IncrementalSync(remote, local, resourceProcessor);
 	}
 };
 
@@ -131,7 +136,15 @@ struct SyncLogicFixture
 
 BOOST_FIXTURE_TEST_CASE(SyncLogic_Empty_Test, SyncLogicFixture)
 {
-	Sync();
+	FullSync();
+
+	BOOST_CHECK(local.empty());
+	BOOST_CHECK(remote.empty());
+
+	IncrementalSync();
+
+	BOOST_CHECK(local.empty());
+	BOOST_CHECK(remote.empty());
 }
 
 BOOST_FIXTURE_TEST_CASE(SyncLogic_FullSync_Test, SyncLogicFixture)
@@ -164,7 +177,37 @@ BOOST_FIXTURE_TEST_CASE(SyncLogic_FullSync_Test, SyncLogicFixture)
 
 	local.push_back(MockResource(L"8", Guid(), 0, false, StatusDeleted));
 
-	Sync();
+	FullSync();
+
+	foreach (const MockResource & resource, local)
+		BOOST_CHECK_EQUAL(resource.status, resource.goal);
+	foreach (const MockResource & resource, remote)
+		BOOST_CHECK_EQUAL(resource.status, resource.goal);
+}
+
+BOOST_FIXTURE_TEST_CASE(SyncLogic_IncrementalSyncTest, SyncLogicFixture)
+{
+	remote.push_back(MockResource(L"remote", Guid(), 0, false, StatusAdded));
+
+	remote.push_back(MockResource(L"0", Guid(), 0, false, StatusMerged));
+	local.push_back(MockResource(L"0", Guid(), 0, true, StatusMerged));
+
+	remote.push_back(MockResource(L"1", Guid(), 0, false, StatusClear));
+	local.push_back(MockResource(L"1", Guid(), 0, false, StatusRenamed));
+
+	Guid guid0;
+	remote.push_back(MockResource(L"2", guid0, 0, false, StatusMerged));
+	local.push_back(MockResource(L"3", guid0, 0, true, StatusMerged));
+
+	Guid guid1;
+	remote.push_back(MockResource(L"4", guid1, 0, false, StatusAdded));
+	local.push_back(MockResource(L"5", guid1, 0, false, StatusClear));
+
+	local.push_back(MockResource(L"6", Guid(), 0, true, StatusUploaded));
+
+	local.push_back(MockResource(L"7", Guid(), 0, false, StatusClear));
+
+	IncrementalSync();
 
 	foreach (const MockResource & resource, local)
 		BOOST_CHECK_EQUAL(resource.status, resource.goal);
