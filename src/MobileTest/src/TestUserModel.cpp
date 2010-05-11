@@ -156,6 +156,42 @@ FIXTURE_TEST_CASE(TestUserModelAddTag, DataStoreFixture)
 	TEST_CHECK_EQUAL(tags.at(0).isDirty, tag.isDirty);
 }
 
+FIXTURE_TEST_CASE(TestUserModelCascade, DataStoreFixture)
+{
+	Notebook notebook;
+	Note note0;
+	Note note1;
+	Resource resource0;
+	Resource resource1;
+
+	resource0.Note = note0.guid;
+	resource1.Note = note0.guid;
+	resource0.Hash = "0";
+	resource1.Hash = "1";
+
+	userModel.AddNotebook(notebook);
+	userModel.AddNote(note0, L"", L"", notebook);
+	userModel.AddNote(note1, L"", L"", notebook);
+	userModel.AddResource(resource0);
+	userModel.AddResource(resource1);
+
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
+	TEST_CHECK_EQUAL(userModel.GetNoteCount(),     2);
+	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 2);
+
+	userModel.DeleteNote(note0);
+
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
+	TEST_CHECK_EQUAL(userModel.GetNoteCount(),     1);
+	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 0);
+
+	userModel.DeleteNotebook(notebook);
+
+	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
+	TEST_CHECK_EQUAL(userModel.GetNoteCount(),     0);
+	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 0);
+}
+
 FIXTURE_TEST_CASE(TestUserModelDeleteNote, DataStoreFixture)
 {
 	Notebook notebook;
@@ -278,6 +314,82 @@ FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 	Notebook defaultNotebook;
 	userModel.GetDefaultNotebook(defaultNotebook);
 	TEST_CHECK_EQUAL(defaultNotebook.name, L"test-notebook");
+}
+
+FIXTURE_TEST_CASE(TesetUserModelReplacement, DataStoreFixture)
+{
+	Notebook notebook0;
+	Notebook notebook1;
+	Note note0;
+	Note note1;
+	Tag tag0;
+	Tag tag1;
+	Resource resource0;
+	Resource resource1;
+	Resource resource2;
+	Resource resource;
+
+	notebook1.guid = notebook0.guid;
+	notebook0.name = L"notebook-0";
+	notebook1.name = L"notebook-1";
+	note1.guid     = note0.guid;
+	note0.name     = L"note-0";
+	note1.name     = L"note-1";
+	tag1.guid      = tag0.guid;
+	tag0.name      = L"tag-0";
+	tag1.name      = L"tag-1";
+	resource1.Guid = resource0.Guid;
+	resource0.Hash = "0";
+	resource1.Hash = "1";
+	resource2.Hash = "1";
+	resource0.Note = note1.guid;
+	resource1.Note = note1.guid;
+	resource2.Note = note1.guid;
+
+	resource0.Data.push_back(2);
+	resource1.Data.push_back(3);
+	resource2.Data.push_back(5);
+
+	userModel.AddNotebook(notebook0);
+	userModel.AddNotebook(notebook1);
+
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
+	TEST_CHECK_EQUAL(notebooks.size(), 2);
+	TEST_CHECK_EQUAL(notebooks.at(1).name, L"notebook-1");
+
+	userModel.AddNote(note0, L"", L"", notebook1);
+	userModel.AddNote(note1, L"", L"", notebook1);
+
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook1, notes);
+	TEST_CHECK_EQUAL(notes.size(), 1);
+	TEST_CHECK_EQUAL(notes.at(0).name, L"note-1");
+
+	userModel.AddTag(tag0);
+	userModel.AddTag(tag1);
+
+	TagList tags;
+	userModel.GetTags(tags);
+	TEST_CHECK_EQUAL(tags.size(), 1);
+	TEST_CHECK_EQUAL(tags.at(0).name, L"tag-1");
+
+	userModel.AddResource(resource0);
+	userModel.AddResource(resource1);
+
+	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 1);
+
+	userModel.GetResource(resource0.Guid, resource);
+	TEST_CHECK_EQUAL(resource.Hash, "1");
+	TEST_CHECK_EQUAL(resource.Data.at(0), 3);
+
+	userModel.AddResource(resource2);
+
+	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 1);
+
+	userModel.GetResource(resource2.Guid, resource);
+	TEST_CHECK_EQUAL(resource.Hash, "1");
+	TEST_CHECK_EQUAL(resource.Data.at(0), 5);
 }
 
 FIXTURE_TEST_CASE(TestUserModelResource0, DataStoreFixture)

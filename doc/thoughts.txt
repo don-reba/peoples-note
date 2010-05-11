@@ -1322,6 +1322,29 @@ sync logging
 	the objects could be initialized in main
 		then adjusted at runtime
 	seems like a flexible approach
+	how do I display item actions?
+		items need to be identified somehow
+		GUID is not a convenient identifier
+		but it is the only one that is unique
+		therefore we'll use it
+		no use in shortening it
+		can always scan by the first characters visually
 need to refactor SyncModel
 	the SyncContext looks like a really bad idea
+	it duplicates most SyncModel members
 	TODO
+sync troubles
+	have a remote notebok and a local notebook
+	same name, different Guids
+	the algorithm downloads the remote and uploads the local
+	yet, names have to be unique
+	same thing with tags
+	the algorithm has no provision for this
+	fixed
+database constraints
+	notebook deletion should cascade to notes
+	note deletion should cascade to resources and FT3 data
+	tag names should be unique
+	notebook names should be unique
+	adding a note, noteboo, or tag should replace the one with the same key
+		do INSERT OR REPLACE

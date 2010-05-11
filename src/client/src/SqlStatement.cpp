@@ -121,3 +121,8 @@ void SqlStatement::Get(int index, wstring & text)
 {
 	text = ConvertToUnicode(sqlite3_column_text(statement, index));
 }
+
+bool SqlStatement::IsNull(int index)
+{
+	return SQLITE_NULL == sqlite3_column_type(statement, index);
+}

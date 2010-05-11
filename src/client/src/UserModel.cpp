@@ -29,11 +29,35 @@ UserModel::UserModel
 {
 }
 
+int UserModel::GetNoteCount()
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT COUNT(*)"
+		"  FROM Notes"
+		);
+	statement->Execute();
+	int count(0);
+	statement->Get(0, count);
+	return count;
+}
+
 int UserModel::GetNotebookCount()
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT COUNT(*)"
 		"  FROM Notebooks"
+		);
+	statement->Execute();
+	int count(0);
+	statement->Get(0, count);
+	return count;
+}
+
+int UserModel::GetResourceCount()
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT COUNT(*)"
+		"  FROM Resources"
 		);
 	statement->Execute();
 	int count(0);
@@ -57,6 +81,8 @@ void UserModel::AddNote
 	, const Notebook & notebook
 	)
 {
+	Transaction transaction(*this);
+
 	IDataStore::Statement insertContents = dataStore.MakeStatement
 		( "INSERT INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
 		);
@@ -66,7 +92,7 @@ void UserModel::AddNote
 	insertContents->Finalize();
 
 	IDataStore::Statement insertInfo = dataStore.MakeStatement
-		( "INSERT INTO Notes(guid, usn, creationDate, title, body, isDirty, search, notebook)"
+		( "INSERT OR REPLACE INTO Notes(guid, usn, creationDate, title, body, isDirty, search, notebook)"
 		"  VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 		);
 	insertInfo->Bind(1, note.guid);
@@ -84,7 +110,7 @@ void UserModel::AddNote
 void UserModel::AddNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT INTO Notebooks(guid, name, isDefault, isLastUsed)"
+		( "INSERT OR REPLACE INTO Notebooks(guid, name, isDefault, isLastUsed)"
 		"  VALUES (?, ?, 0, 0)"
 		);
 	statement->Bind(1, notebook.guid);
@@ -96,7 +122,7 @@ void UserModel::AddNotebook(const Notebook & notebook)
 void UserModel::AddResource(const Resource & resource)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT INTO Resources(guid, hash, data, note) VALUES (?, ?, ?, ?)"
+		( "INSERT OR REPLACE INTO Resources(guid, hash, data, note) VALUES (?, ?, ?, ?)"
 		);
 	statement->Bind(1, resource.Guid);
 	statement->Bind(2, resource.Hash);
@@ -109,7 +135,7 @@ void UserModel::AddResource(const Resource & resource)
 void UserModel::AddTag(const Tag & tag)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT INTO Tags(guid, usn, name, isDirty)"
+		( "INSERT OR REPLACE INTO Tags(guid, usn, name, isDirty)"
 		"  VALUES (?, ?, ?, ?)"
 		);
 	statement->Bind(1, tag.guid);
@@ -418,7 +444,7 @@ void UserModel::GetResource
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid"
+		( "SELECT rowid, data"
 		"  FROM   Resources"
 		"  WHERE  hash = ?"
 		"  LIMIT  1"
@@ -429,12 +455,19 @@ void UserModel::GetResource
 	__int64 row(0);
 	statement->Get(0, row);
 
-	IDataStore::Blob sqlBlob = dataStore.MakeBlob
-		( "Resources"
-		, "data"
-		, row
-		);
-	sqlBlob->Read(blob);
+	if (statement->IsNull(1))
+	{
+		blob.clear();
+	}
+	else
+	{
+		IDataStore::Blob sqlBlob = dataStore.MakeBlob
+			( "Resources"
+			, "data"
+			, row
+			);
+		sqlBlob->Read(blob);
+	}
 }
 
 void UserModel::GetResource
@@ -443,7 +476,7 @@ void UserModel::GetResource
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid, hash, note"
+		( "SELECT rowid, hash, note, data"
 		"  FROM   Resources"
 		"  WHERE  guid = ?"
 		);
@@ -459,12 +492,19 @@ void UserModel::GetResource
 
 	resource.Note = noteGuid;
 
-	IDataStore::Blob sqlBlob = dataStore.MakeBlob
-		( "Resources"
-		, "data"
-		, row
-		);
-	sqlBlob->Read(resource.Data);
+	if (statement->IsNull(3))
+	{
+		resource.Data.clear();
+	}
+	else
+	{
+		IDataStore::Blob sqlBlob = dataStore.MakeBlob
+			( "Resources"
+			, "data"
+			, row
+			);
+		sqlBlob->Read(resource.Data);
+	}
 
 	resource.Guid = guid;
 }
@@ -692,7 +732,7 @@ void UserModel::Initialize(wstring name)
 			", thumbnailWidth  DEFAULT 0"
 			", thumbnailHeight DEFAULT 0"
 			", search"
-			", notebook REFERENCES Notebooks"
+			", notebook REFERENCES Notebooks(guid) ON DELETE CASCADE"
 			")"
 		);
 
@@ -701,7 +741,7 @@ void UserModel::Initialize(wstring name)
 			"( guid PRIMARY KEY"
 			", hash UNIQUE"
 			", data"
-			", note REFERENCES Notes"
+			", note REFERENCES Notes(guid) ON DELETE CASCADE"
 			")"
 		);
 

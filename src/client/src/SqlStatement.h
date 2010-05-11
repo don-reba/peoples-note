@@ -37,4 +37,6 @@ public:
 	virtual void Get(int index, __int64      & n);
 	virtual void Get(int index, std::string  & text);
 	virtual void Get(int index, std::wstring & text);
+
+	virtual bool IsNull(int index);
 };

@@ -21,7 +21,11 @@ public:
 
 	UserModel(IDataStore & dataStore, std::wstring folder);
 
+	int GetNoteCount();
+
 	int GetNotebookCount();
+
+	int GetResourceCount();
 
 	int GetVersion();
 
