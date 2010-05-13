@@ -83,6 +83,8 @@ void SyncLogic::FullSync
 				{
 					syncLogger.Rename(l.guid);
 					processor.Rename(l);
+					syncLogger.Add(r.guid);
+					processor.Add(r);
 				}
 			}
 		}
@@ -185,6 +187,8 @@ void SyncLogic::IncrementalSync
 				{
 					syncLogger.Rename(l.guid);
 					processor.Rename(l);
+					syncLogger.Add(r.guid);
+					processor.Add(r);
 				}
 			}
 		}

@@ -154,7 +154,7 @@ BOOST_FIXTURE_TEST_CASE(SyncLogic_FullSync_Test, SyncLogicFixture)
 	remote.push_back(MockResource(L"commonDirty", Guid(), 0, false, StatusMerged));
 	local.push_back(MockResource(L"commonDirty", Guid(), 0, true, StatusMerged));
 
-	remote.push_back(MockResource(L"commonFresh", Guid(), 0, false, StatusClear));
+	remote.push_back(MockResource(L"commonFresh", Guid(), 0, false, StatusAdded));
 	local.push_back(MockResource(L"commonFresh", Guid(), 0, false, StatusRenamed));
 
 	Guid guid0;
@@ -192,7 +192,7 @@ BOOST_FIXTURE_TEST_CASE(SyncLogic_IncrementalSyncTest, SyncLogicFixture)
 	remote.push_back(MockResource(L"0", Guid(), 0, false, StatusMerged));
 	local.push_back(MockResource(L"0", Guid(), 0, true, StatusMerged));
 
-	remote.push_back(MockResource(L"1", Guid(), 0, false, StatusClear));
+	remote.push_back(MockResource(L"1", Guid(), 0, false, StatusAdded));
 	local.push_back(MockResource(L"1", Guid(), 0, false, StatusRenamed));
 
 	Guid guid0;
