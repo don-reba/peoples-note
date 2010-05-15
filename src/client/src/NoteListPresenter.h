@@ -4,6 +4,7 @@
 #include "INoteListModel.h"
 #include "INoteListView.h"
 #include "INoteView.h"
+#include "ISyncModel.h"
 #include "IUserModel.h"
 #include "Note.h"
 #include "Tag.h"
@@ -17,6 +18,7 @@ private:
 	INoteListModel   & noteListModel;
 	INoteListView    & noteListView;
 	INoteView        & noteView;
+	ISyncModel       & syncModel;
 	IUserModel       & userModel;
 	EnNoteTranslator & enNoteTranslator;
 
@@ -29,6 +31,7 @@ public:
 		, INoteListView    & noteListView
 		, INoteView        & noteView
 		, IUserModel       & userModel
+		, ISyncModel       & syncModel
 		, EnNoteTranslator & enNoteTranslator
 		);
 
@@ -36,15 +39,37 @@ public:
 
 private:
 
+	void OnDirtyChanged();
+
 	void OnLoadThumbnail(const Guid & guid, Blob *& blob);
 
+	void OnNotesChanged();
+
+	void OnNotebooksChanged();
+
+	void OnTagsChanged();
+
+	void OnNotebookSelected();
+
 	void OnNoteListChanged();
+
+	void OnSyncBegin();
+
+	void OnSyncEnd();
 
 	void OnUserLoaded();
 
 // utility functions
 
 private:
+
+	void UpdateActiveNotebook();
+
+	void UpdateNotebookListView();
+
+	void UpdateNoteList();
+
+	void UpdateSyncCounter();
 
 	static std::wstring ConvertToHtml(const Note & note, const std::wstring & guid);
 

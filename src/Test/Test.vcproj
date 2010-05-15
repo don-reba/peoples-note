@@ -328,6 +328,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\SyncMessageQueue.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\SyncModel.cpp"
 				>
 			</File>

@@ -316,7 +316,39 @@ FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(defaultNotebook.name, L"test-notebook");
 }
 
-FIXTURE_TEST_CASE(TesetUserModelReplacement, DataStoreFixture)
+FIXTURE_TEST_CASE(TestUserModelGetDirtyNoteCount, DataStoreFixture)
+{
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
+
+	Note notes[3];
+	notes[0].name    = L"note-0";
+	notes[0].isDirty = true;
+	notes[1].name    = L"note-1";
+	notes[1].isDirty = false;
+	notes[2].name    = L"note-2";
+	notes[2].isDirty = true;
+
+	for (int i(0); i != 3; ++i)
+		userModel.AddNote(notes[i], L"", L"", notebook);
+
+	int dirtyNoteCount(userModel.GetDirtyNoteCount(notebook));
+	TEST_CHECK_EQUAL(dirtyNoteCount, 2);
+}
+
+FIXTURE_TEST_CASE(TestUserModelGetNotebook, DataStoreFixture)
+{
+	Notebook notebook;
+	notebook.name = L"test-notebook";
+	userModel.AddNotebook(notebook);
+
+	Notebook result;
+	userModel.GetNotebook(notebook.guid, result);
+
+	TEST_CHECK_EQUAL(result.name, L"test-notebook");
+}
+
+FIXTURE_TEST_CASE(TestUserModelReplacement, DataStoreFixture)
 {
 	Notebook notebook0;
 	Notebook notebook1;
@@ -466,7 +498,9 @@ FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
 	Notebook notebook0;
 	notebook0.name = L"notebook0";
 	Notebook notebook1;
-	notebook1.name = L"notebook1";
+	notebook1.name    = L"notebook1";
+	notebook1.isDirty = true;
+	notebook1.usn     = 2;
 	Notebook notebook2;
 	notebook2.name = L"notebook2";
 	userModel.AddNotebook(notebook0);
@@ -475,8 +509,12 @@ FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
 	userModel.MakeNotebookLastUsed(notebook1);
 
 	Notebook lastUsedNotebook;
+	lastUsedNotebook.isDirty = false;
 	userModel.GetLastUsedNotebook(lastUsedNotebook);
-	TEST_CHECK_EQUAL(lastUsedNotebook.name, L"notebook1");
+	TEST_CHECK_EQUAL(lastUsedNotebook.guid,    notebook1.guid);
+	TEST_CHECK_EQUAL(lastUsedNotebook.name,    L"notebook1");
+	TEST_CHECK_EQUAL(lastUsedNotebook.isDirty, true);
+	TEST_CHECK_EQUAL(lastUsedNotebook.usn,     2);
 }
 
 AUTO_TEST_CASE(TestUserModelLoad)

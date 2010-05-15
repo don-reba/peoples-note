@@ -64,6 +64,8 @@ public:
 
 	virtual void GetDefaultNotebook(Notebook & notebook);
 
+	virtual int GetDirtyNoteCount(const Notebook & notebook);
+
 	virtual std::wstring GetFolder() const;
 
 	virtual void GetLastUsedNotebook(Notebook & notebook);
@@ -75,6 +77,11 @@ public:
 	virtual void GetNoteThumbnail
 		( const Guid & guid
 		, Thumbnail  & thumbnail
+		);
+
+	virtual void GetNotebook
+		( const Guid & guid
+		, Notebook   & notebook
 		);
 
 	virtual void GetNotebooks(NotebookList & notebooks);

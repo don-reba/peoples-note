@@ -7,6 +7,7 @@ MockNoteListView::MockNoteListView()
 	: notesUpdated      (true)
 	, notebooksUpdated  (true)
 	, isSyncButtonShown (false)
+	, isSyncEnabled     (true)
 {
 }
 
@@ -52,6 +53,11 @@ void MockNoteListView::ConnectLoadThumbnail(DataSlot OnLoadThumbnail)
 	SignalLoadThumbnail.connect(OnLoadThumbnail);
 }
 
+void MockNoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
+{
+	SignalNotebookSelected.connect(OnNotebookSelected);
+}
+
 void MockNoteListView::ConnectOpenNote(slot_type OnOpenNote)
 {
 	SignalOpenNote.connect(OnOpenNote);
@@ -72,6 +78,16 @@ void MockNoteListView::ConnectSync(slot_type OnSync)
 	SignalSync.connect(OnSync);
 }
 
+void MockNoteListView::DisableSync()
+{
+	isSyncEnabled = false;
+}
+
+void MockNoteListView::EnableSync()
+{
+	isSyncEnabled = true;
+}
+
 bool MockNoteListView::GetEnexPath(std::wstring & path)
 {
 	if (hasEnexPath)
@@ -82,6 +98,11 @@ bool MockNoteListView::GetEnexPath(std::wstring & path)
 Guid MockNoteListView::GetSelectedNoteGuid()
 {
 	return selectedNoteGuid;
+}
+
+Guid MockNoteListView::GetSelectedNotebookGuid()
+{
+	return selectedNotebookGuid;
 }
 
 std::wstring MockNoteListView::GetSearchString()
@@ -102,6 +123,11 @@ void MockNoteListView::SetProfileText(const wstring & text)
 void MockNoteListView::SetSigninText(const wstring & text)
 {
 	signinText = text;
+}
+
+void MockNoteListView::SetSyncText(const wstring & text)
+{
+	syncText = text;
 }
 
 void MockNoteListView::ShowSyncButton()

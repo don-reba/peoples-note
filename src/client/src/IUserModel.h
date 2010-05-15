@@ -48,11 +48,19 @@ public:
 
 	virtual void GetDefaultNotebook(Notebook & notebook) = 0;
 
+	virtual int GetDirtyNoteCount(const Notebook & notebook) = 0;
+
 	virtual std::wstring GetFolder() const = 0;
 
 	virtual void GetLastUsedNotebook(Notebook & notebook) = 0;
 
+	// TODO: changed Note to a reference parameter
 	virtual Note GetNote(Guid guid) = 0;
+
+	virtual void GetNotebook
+		( const Guid & guid
+		, Notebook   & notebook
+		) = 0;
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body) = 0;
 

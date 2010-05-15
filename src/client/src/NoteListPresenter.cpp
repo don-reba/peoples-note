@@ -18,17 +18,42 @@ NoteListPresenter::NoteListPresenter
 	, INoteListView    & noteListView
 	, INoteView        & noteView
 	, IUserModel       & userModel
+	, ISyncModel       & syncModel
 	, EnNoteTranslator & enNoteTranslator
 	)
 	: noteListModel    (noteListModel)
 	, noteListView     (noteListView)
 	, noteView         (noteView)
 	, userModel        (userModel)
+	, syncModel        (syncModel)
 	, enNoteTranslator (enNoteTranslator)
 {
-	noteListView.ConnectLoadThumbnail(bind(&NoteListPresenter::OnLoadThumbnail, this, _1, _2));
-	noteListModel.ConnectChanged(bind(&NoteListPresenter::OnNoteListChanged, this));
-	userModel.ConnectLoaded(bind(&NoteListPresenter::OnUserLoaded, this));
+	noteListModel.ConnectChanged
+		(bind(&NoteListPresenter::OnNoteListChanged, this));
+
+	noteListView.ConnectLoadThumbnail
+		(bind(&NoteListPresenter::OnLoadThumbnail, this, _1, _2));
+
+	noteListView.ConnectNotebookSelected
+		(bind(&NoteListPresenter::OnNotebookSelected, this));
+
+	noteListView.ConnectSync
+		(bind(&NoteListPresenter::OnSyncBegin, this));
+
+	syncModel.ConnectNotesChanged
+		(bind(&NoteListPresenter::OnNotesChanged, this));
+
+	syncModel.ConnectNotebooksChanged
+		(bind(&NoteListPresenter::OnNotebooksChanged, this));
+
+	syncModel.ConnectSyncComplete
+		(bind(&NoteListPresenter::OnSyncEnd, this));
+
+	syncModel.ConnectTagsChanged
+		(bind(&NoteListPresenter::OnTagsChanged, this));
+
+	userModel.ConnectLoaded
+		(bind(&NoteListPresenter::OnUserLoaded, this));
 }
 
 //---------------
@@ -61,6 +86,34 @@ void NoteListPresenter::OnLoadThumbnail(const Guid & guid, Blob *& blob)
 	blob = &thumbnail.Data;
 }
 
+void NoteListPresenter::OnNotesChanged()
+{
+	Transaction transaction(userModel);
+	UpdateSyncCounter();
+	UpdateNoteList();
+}
+
+void NoteListPresenter::OnNotebooksChanged()
+{
+	Transaction transaction(userModel);
+	UpdateSyncCounter();
+	UpdateNotebookListView();
+}
+
+void NoteListPresenter::OnTagsChanged()
+{
+	Transaction transaction(userModel);
+	UpdateSyncCounter();
+}
+
+void NoteListPresenter::OnNotebookSelected()
+{
+	Transaction transaction(userModel);
+	UpdateActiveNotebook();
+	UpdateNoteList();
+	UpdateSyncCounter();
+}
+
 void NoteListPresenter::OnNoteListChanged()
 {
 	const NoteList & notes = noteListModel.GetNotes();
@@ -71,24 +124,26 @@ void NoteListPresenter::OnNoteListChanged()
 		noteListView.AddNote(ConvertToHtml(note, guid), guid);
 	}
 	noteListView.UpdateNotes();
+	UpdateSyncCounter();
+}
+
+void NoteListPresenter::OnSyncBegin()
+{
+	noteListView.DisableSync();
+}
+
+void NoteListPresenter::OnSyncEnd()
+{
+	noteListView.EnableSync();
 }
 
 void NoteListPresenter::OnUserLoaded()
 {
 	Transaction transaction(userModel);
 
-	noteListView.ClearNotebooks();
-	NotebookList notebooks;
-	userModel.GetNotebooks(notebooks);
-	foreach (const Notebook & notebook, notebooks)
-		noteListView.AddNotebook(notebook.name);
-	noteListView.UpdateNotebooks();
+	UpdateNotebookListView();
 
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-	NoteList notes;
-	userModel.GetNotesByNotebook(notebook, notes);
-	noteListModel.SetNotes(notes);
+	UpdateNoteList();
 
 	Credentials credentials;
 	userModel.GetCredentials(credentials);
@@ -106,11 +161,58 @@ void NoteListPresenter::OnUserLoaded()
 		noteListView.SetSigninText(L"Sign out");
 		noteListView.ShowSyncButton();
 	}
+
+	UpdateSyncCounter();
 }
 
-//------------------
+//--------------------------------------------------
 // utility functions
-//------------------
+//
+// Note: transactions are managed at a higher level.
+//--------------------------------------------------
+
+void NoteListPresenter::UpdateActiveNotebook()
+{
+	Notebook notebook;
+	userModel.GetNotebook
+		( noteListView.GetSelectedNotebookGuid()
+		, notebook
+		);
+	userModel.MakeNotebookLastUsed(notebook);
+}
+
+void NoteListPresenter::UpdateNotebookListView()
+{
+	noteListView.ClearNotebooks();
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
+	foreach (const Notebook & notebook, notebooks)
+		noteListView.AddNotebook(notebook.name);
+	noteListView.UpdateNotebooks();
+}
+
+void NoteListPresenter::UpdateNoteList()
+{
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	noteListModel.SetNotes(notes);
+}
+
+void NoteListPresenter::UpdateSyncCounter()
+{
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+
+	int noteCount (userModel.GetDirtyNoteCount(notebook));
+
+	int totalCount(noteCount);
+
+	wostringstream stream;
+	stream << totalCount;
+	noteListView.SetSyncText(stream.str());
+}
 
 wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid)
 {

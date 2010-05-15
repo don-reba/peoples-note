@@ -579,6 +579,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SyncMessageQueue.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SyncModel.cpp"
 				>
 			</File>
@@ -894,6 +898,10 @@
 			</File>
 			<File
 				RelativePath=".\src\SyncLogic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SyncMessageQueue.h"
 				>
 			</File>
 			<File

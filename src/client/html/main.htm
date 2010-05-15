@@ -46,6 +46,7 @@
 			{
 				background-color: silver;
 				behavior:         popup-menu;
+				border:           1px solid black;
 				bottom:           0px;
 				padding:          12px;
 				position:         fixed;
@@ -99,20 +100,30 @@
 				vertical-align:   middle;
 				width:            64px;
 			}
-			#sync
+			#sync-panel
+			{
+				background-color: white;
+				bottom:           0px;
+				border:           1px solid black;
+				display:          none;
+				left:             0px;
+				margin:           0px;
+				padding:          0px;
+				position:         fixed;
+			}
+			#sync-button
 			{
 				background-color: silver;
 				background-image: none;
 				border:           0px;
-				bottom:           0px;
-				display:          none;
-				height:           1.2em;
-				left:             0px;
+				height:           100%%;
 				margin:           0px;
-				padding:          0px;
 				padding:          12px;
-				position:         fixed;
 				width:            1.2em;
+			}
+			#sync-text
+			{
+				white-space: nowrap;
 			}
 		</style>
 	</head>
@@ -136,7 +147,12 @@
 				<li id="menu-exit">Exit</li>
 			</menu>
 		</div>
-		<button id="sync">S</button>
+		<table id="sync-panel" cellspacing="0px" cellpadding="0px">
+			<tr>
+				<td><button id="sync-button">S</button></td>
+				<td id="sync-text"></td>
+			</tr>
+		</table>
 		<widget type="select" id="note-list">
 			<div id="new-note-note">
 				<table cellspacing="0px" cellpadding="0px" width="100%">

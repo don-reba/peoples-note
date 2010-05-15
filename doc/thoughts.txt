@@ -1348,3 +1348,103 @@ database constraints
 	notebook names should be unique
 	adding a note, noteboo, or tag should replace the one with the same key
 		do INSERT OR REPLACE
+sync ui
+	which presenter should be responsible for updating the sync indicator?
+	which ones shows it in the first place?
+		NoteListPresenter
+			OnUserLoaded
+	same entity should keep track of its contents
+	the dirty note count is a property of the notebook
+		what about dirty notebook count?
+		what about dirty tag count?
+		they should be added together
+	the total dirty count is a combined measurement
+notebook selection event
+	notebook list is modified dynamically
+		during loading and during sync
+	ConnectBehavior might be called any time after loading
+		this seems to be consistent with current implementation
+	there might be a need for a NotebookListModel
+		SyncPresenter would update it
+			on the UI thread
+		NoteListPresenter would react to the updates
+			by updating the menu and the behaviour connections
+	notebook removal invalidates behavior connection records
+		need DisconnectBehavior
+		can work similarly to ConnectBehavior
+item change events
+	item processors need to be able to enqueue messages
+	they can't use SyncContext directly
+		because it is a private nested class
+	maybe this is the time to reform SyncModel
+	it only needs to synchronize some actions
+		EnqueueMessage
+			ProcessMessages
+		GetStopRequested
+			StopSync
+	could make the message queue a separate class
+		then the processors will be able to use it
+		then its locking would be transparent
+			and the context only needed for the stop flag
+delayed sync logic
+	there are a few problems with the current approach
+		operations might have to be reordered
+		ui needs to be updated with progress
+		the actions might need to be halted midway
+	all of these things would be easy, if action processing was delayed
+	then there would be no need for processors
+	SyncLogic would generate a list of actions, instead
+	but this should be done after the sync indicator is up
+		TODO
+updating dirty note list on note edit
+	there is currently no signal for committing note edits
+	this should be a note list model signal
+	how would it be triggered?
+		importing notes
+			trigger after updating the note list
+		note edit
+			trigger after updating the note
+			acts on the note, not the list
+			is it possible for the note to not belong to the list?
+				the note would be selected from the list
+					could be false for linked notes
+					depends on linked note implementation
+					not immediately relevant
+				the list can't change during editing
+				therefore the note has to belong to the list
+		could set a flag, instead of signal
+	could instead make it a UserModel signal
+		then there would be no possible problems with linked notes
+		the signal could be triggered automatically
+			on note add
+			on note update
+		the notes are not the only thing that may become dirty
+		therefore, the signal has to be triggered by the database
+			when anything dirty is added
+			except that changing dirty to clean is also significant
+			when anything is added
+		it does not make sense to send the signal from inside a transaction
+		need to set a flag, signal at transaction end
+		the database can be modified from multiple threads
+		therefore, can't rely on SQLite to signal changes
+		signalling from UserModel won't prevent reliance on SyncModel signals
+			because the signals need to be sent through the UI thread
+	what if I trigger the signal through EnImportPresenter?
+		presenters can't expose events themselves
+		therefore, it would trigger the event on something else
+			user model
+				should not be done without automating, I guess
+			note list model
+				lets do that
+		then it should be a flag, not a signal
+			a flag visible to SignalChanged subscribers
+			reset after the signal is fired
+	this is all stupid
+	I only need to update the sync counter on note list update
+		that's all
+	no special signal is needed
+	why didn't I recognize this immediately?
+		thought I need to know whenever a resource was changed
+		in actuality, the event of the note list changing was needed
+		_note list_ presenter should not deal with resource events
+			did not think of that

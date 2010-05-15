@@ -122,9 +122,10 @@ int WINAPI WinMain(HINSTANCE instance,
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
 		NoteListModel    noteListModel;
-		SyncModel        syncModel(enService, messagePump, syncLogger);
 		UserModel        userModel(dataStore, documentPath);
 		UserModel        syncUserModel(syncDataStore, documentPath);
+
+		SyncModel syncModel(enService, messagePump, syncUserModel, syncLogger);
 
 		CredentialsView credentialsView (instance);
 		NoteView        noteView        (instance);
@@ -146,6 +147,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListView
 			, noteView
 			, userModel
+			, syncModel
 			, enNoteTranslator
 			);
 		NotePresenter notePresenter
@@ -163,7 +165,6 @@ int WINAPI WinMain(HINSTANCE instance,
 			( noteListModel
 			, noteListView
 			, syncModel
-			, userModel
 			, syncUserModel
 			);
 		UserLoader userLoader

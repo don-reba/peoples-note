@@ -8,6 +8,7 @@ using namespace std;
 
 MockUserModel::MockUserModel()
 	: isInTransaction  (false)
+	, loadCount        (0)
 	, loadMethod       (LoadMethodNone)
 {
 	defaultNotebook.name  = L"default-notebook";
@@ -86,6 +87,17 @@ void MockUserModel::GetDefaultNotebook(Notebook & notebook)
 	notebook = defaultNotebook;
 }
 
+int MockUserModel::GetDirtyNoteCount(const Notebook & notebook)
+{
+	int count(0);
+	foreach (const Note & note, notes)
+	{
+		if (note.isDirty)
+			++count;
+	}
+	return count;
+}
+
 wstring MockUserModel::GetFolder() const
 {
 	return folder;
@@ -113,12 +125,19 @@ void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
 		resource = noteBodies[guid];
 }
 
-void MockUserModel::GetNoteThumbnail
+void MockUserModel::GetNotebook
 	( const Guid & guid
-	, Thumbnail & thumbnail)
+	, Notebook   & notebook
+	)
 {
-	if (noteThumbnails.end() != noteThumbnails.find(guid))
-		thumbnail = noteThumbnails[guid];
+	foreach (const Notebook & n, notebooks)
+	{
+		if (n.guid == guid)
+		{
+			notebook = n;
+			return;
+		}
+	}
 }
 
 void MockUserModel::GetNotebooks(NotebookList & notebooks)
@@ -146,6 +165,14 @@ void MockUserModel::GetNotesBySearch
 {
 	searchSelection = search;
 	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
+}
+
+void MockUserModel::GetNoteThumbnail
+	( const Guid & guid
+	, Thumbnail & thumbnail)
+{
+	if (noteThumbnails.end() != noteThumbnails.find(guid))
+		thumbnail = noteThumbnails[guid];
 }
 
 void MockUserModel::GetResource
@@ -181,6 +208,7 @@ void MockUserModel::Load(const wstring & username)
 		loadMethod = LoadMethodNone;
 		return;
 	}
+	++loadCount;
 	loadedAs   = username;
 	loadMethod = LoadMethodLoad;
 }
@@ -195,6 +223,7 @@ void MockUserModel::LoadAs
 		loadMethod = LoadMethodNone;
 		return;
 	}
+	++loadCount;
 	loadedAs   = newUsername;
 	loadMethod = LoadMethodLoadAs;
 }
@@ -206,6 +235,7 @@ void MockUserModel::LoadOrCreate(const wstring & username)
 		loadMethod = LoadMethodNone;
 		return;
 	}
+	++loadCount;
 	loadedAs   = username;
 	loadMethod = LoadMethodLoadOrCreate;
 }

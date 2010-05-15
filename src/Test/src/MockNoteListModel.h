@@ -5,17 +5,15 @@
 
 class MockNoteListModel : public INoteListModel
 {
-private:
+public:
 
-	signal SignalReset;
+	signal SignalChanged;
 
 public:
 
 	NoteList notes;
 
-	void Reset();
-
-	virtual void ConnectChanged(slot_type OnReset);
+	virtual void ConnectChanged(slot_type OnChanged);
 
 	virtual const NoteList & GetNotes();
 

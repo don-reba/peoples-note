@@ -45,6 +45,7 @@ private:
 	State     state;
 
 	signal SignalImport;
+	signal SignalNotebookSelected;
 	signal SignalOpenNote;
 	signal SignalSearch;
 	signal SignalSignIn;
@@ -82,6 +83,8 @@ public:
 
 	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail);
 
+	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
+
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 
 	virtual void ConnectSearch(slot_type OnSearch);
@@ -90,7 +93,13 @@ public:
 
 	virtual void ConnectSync(slot_type OnSync);
 
+	virtual void DisableSync();
+
+	virtual void EnableSync();
+
 	virtual bool GetEnexPath(std::wstring & path);
+
+	virtual Guid GetSelectedNotebookGuid();
 
 	virtual Guid GetSelectedNoteGuid();
 	
@@ -101,6 +110,8 @@ public:
 	virtual void SetProfileText(const std::wstring & text);
 
 	virtual void SetSigninText(const std::wstring & text);
+
+	virtual void SetSyncText(const std::wstring & text);
 
 	virtual void ShowSyncButton();
 

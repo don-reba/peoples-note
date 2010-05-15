@@ -24,7 +24,12 @@ BOOST_AUTO_TEST_CASE(SyncModel_Test)
 	MockMessagePump messagePump;
 	MockSyncLogger  syncLogger;
 	MockUserModel   userModel;
-	SyncModel syncModel(enService, messagePump, syncLogger);
+	SyncModel syncModel
+		( enService
+		, messagePump
+		, userModel
+		, syncLogger
+		);
 
 	enService.userStore->authenticationResult.IsGood = true;
 
@@ -32,7 +37,7 @@ BOOST_AUTO_TEST_CASE(SyncModel_Test)
 
 	SignalCheck check;
 	syncModel.ConnectSyncComplete(boost::ref(check));
-	syncModel.BeginSync(userModel);
+	syncModel.BeginSync(L"test-usr");
 
 	::Sleep(10);
 	BOOST_CHECK(!check.signalled);
@@ -40,4 +45,6 @@ BOOST_AUTO_TEST_CASE(SyncModel_Test)
 
 	syncModel.ProcessMessages();
 	BOOST_CHECK(check.signalled);
+
+	BOOST_CHECK_EQUAL(userModel.loadCount, 1);
 }

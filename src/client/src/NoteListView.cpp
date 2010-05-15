@@ -69,7 +69,7 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
-	ConnectBehavior("#sync",          BUTTON_CLICK,             &NoteListView::OnSync);
+	ConnectBehavior("#sync-button",   BUTTON_CLICK,             &NoteListView::OnSync);
 
 	element root(element::root_element(hwnd_));
 	noteList = root.find_first("#note-list");
@@ -134,6 +134,11 @@ void NoteListView::ConnectLoadThumbnail(DataSlot OnLoadThumbnail)
 	SignalLoadThumbnail.connect(OnLoadThumbnail);
 }
 
+void NoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
+{
+	SignalNotebookSelected.connect(OnNotebookSelected);
+}
+
 void NoteListView::ConnectOpenNote(slot_type OnOpenNote)
 {
 	SignalOpenNote.connect(OnOpenNote);
@@ -152,6 +157,16 @@ void NoteListView::ConnectSignIn(slot_type OnSignIn)
 void NoteListView::ConnectSync(slot_type OnSync)
 {
 	SignalSync.connect(OnSync);
+}
+
+void NoteListView::DisableSync()
+{
+	// TODO: implement
+}
+
+void NoteListView::EnableSync()
+{
+	// TODO: implement
 }
 
 bool NoteListView::GetEnexPath(wstring & path)
@@ -177,6 +192,12 @@ bool NoteListView::GetEnexPath(wstring & path)
 	return false;
 }
 
+Guid NoteListView::GetSelectedNotebookGuid()
+{
+	// TODO: implement
+	return Guid();
+}
+
 Guid NoteListView::GetSelectedNoteGuid()
 {
 	element root     (element::root_element(hwnd_));
@@ -196,9 +217,9 @@ wstring NoteListView::GetSearchString()
 void NoteListView::HideSyncButton()
 {
 	element root (element::root_element(hwnd_));
-	element sync (root.find_first("#sync"));
+	element sync (root.find_first("#sync-panel"));
 	if (!sync)
-		throw std::exception("'#sync' not found.");
+		throw std::exception("'#sync-panel' not found.");
 	sync.set_style_attribute("display", L"none");
 }
 
@@ -223,10 +244,19 @@ void NoteListView::SetSigninText(const wstring & text)
 void NoteListView::ShowSyncButton()
 {
 	element root (element::root_element(hwnd_));
-	element sync (root.find_first("#sync"));
+	element sync (root.find_first("#sync-panel"));
 	if (!sync)
-		throw std::exception("'#sync' not found.");
+		throw std::exception("'#sync-panel' not found.");
 	sync.set_style_attribute("display", L"block");
+}
+
+void NoteListView::SetSyncText(const wstring & text)
+{
+	element root (element::root_element(hwnd_));
+	element sync (root.find_first("#sync-text"));
+	if (!sync)
+		throw std::exception("'#sync-text' not found.");
+	sync.set_text(text.c_str());
 }
 
 void NoteListView::UpdateNotebooks()

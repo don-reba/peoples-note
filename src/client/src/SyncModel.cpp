@@ -25,12 +25,14 @@ using namespace Tools;
 SyncModel::SyncModel
 	( IEnService   & enService
 	, IMessagePump & messagePump
+	, IUserModel   & userModel
 	, ISyncLogger  & logger
 	)
 	: syncThread  (NULL)
 	, enService   (enService)
-	, syncLogger  (logger)
 	, messagePump (messagePump)
+	, userModel   (userModel)
+	, syncLogger  (logger)
 {
 	::InitializeCriticalSection(&lock);
 }
@@ -43,24 +45,32 @@ SyncModel::~SyncModel()
 void SyncModel::ProcessMessages()
 {
 	ScopedLock lock(lock);
-	while (!messages.empty())
+	while (!messages.IsEmpty())
 	{
-		switch (messages.front())
+		switch (messages.Dequeue())
 		{
-		case MessageSyncComplete:
+		case SyncMessageQueue::MessageNotebooksChanged:
+			SignalNotebooksChanged();
+			break;
+		case SyncMessageQueue::MessageNotesChanged:
+			SignalNotesChanged();
+			break;
+		case SyncMessageQueue::MessageTagsChanged:
+			SignalTagsChanged();
+			break;
+		case SyncMessageQueue::MessageSyncComplete:
 			SignalSyncComplete();
 			break;
 		default:
 			break;
 		}
-		messages.pop();
 	}
 }
 
 void SyncModel::StopSync()
 {
-	if (syncContext)
-		syncContext->SetStopRequested(true);
+	ScopedLock lock(lock);
+	stopRequested = true;
 	if (syncThread)
 		::WaitForSingleObject(syncThread, INFINITE);
 }
@@ -69,23 +79,38 @@ void SyncModel::StopSync()
 // ISyncModel implementation
 //--------------------------
 
-void SyncModel::BeginSync(IUserModel & userModel)
+void SyncModel::BeginSync(const wstring & username)
 {
 	CloseThread();
-	syncContext.reset(new SyncContext(*this, userModel, syncLogger));
+	userModel.Load(username);
 	syncThread = ::CreateThread
 		( NULL             // lpsa
 		, 0                // cbStack
 		, &SyncModel::Sync // lpStartAddr
-		, &*syncContext    // lpvThreadParam
+		, this             // lpvThreadParam
 		, 0                // fdwCreate
 		, NULL             // lpIDThread
 		);
 }
 
+void SyncModel::ConnectNotebooksChanged(slot_type OnNotebooksChanged)
+{
+	SignalNotebooksChanged.connect(OnNotebooksChanged);
+}
+
+void SyncModel::ConnectNotesChanged(slot_type OnNotesChanged)
+{
+	SignalNotesChanged.connect(OnNotesChanged);
+}
+
 void SyncModel::ConnectSyncComplete(slot_type OnSyncComplete)
 {
 	SignalSyncComplete.connect(OnSyncComplete);
+}
+
+void SyncModel::ConnectTagsChanged(slot_type OnTagsChanged)
+{
+	SignalTagsChanged.connect(OnTagsChanged);
 }
 
 //------------------
@@ -94,22 +119,21 @@ void SyncModel::ConnectSyncComplete(slot_type OnSyncComplete)
 
 void SyncModel::CloseThread()
 {
-	if (!syncThread)
-		return;
 	StopSync();
 	::CloseHandle(syncThread);
 	syncThread = NULL;
 }
 
-DWORD WINAPI SyncModel::Sync(LPVOID param)
+void SyncModel::PostMessage(SyncMessageQueue::Message message)
 {
-	SyncContext * context(reinterpret_cast<SyncContext*>(param));
-	ISyncLogger & syncLogger = context->GetSyncLogger();
+	messages.Enqueue(message);
+	messagePump.WakeUp();
+}
+
+void SyncModel::Sync()
+{
 	try
 	{
-		IUserModel & userModel (context->GetUserModel());
-		IEnService & enService (context->GetEnService());
-
 		IEnService::UserStorePtr userStore(enService.GetUserStore());
 		Credentials credentials;
 		userModel.GetCredentials(credentials);
@@ -121,8 +145,8 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 			);
 		if (!authenticationResult.IsGood)
 		{
-			context->EnqueueMessage(MessageSyncFailed);
-			return 0;
+			PostMessage(SyncMessageQueue::MessageSyncFailed);
+			return;
 		}
 
 		IEnService::NoteStorePtr noteStore
@@ -177,66 +201,21 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 			, localNotes
 			, NoteProcessor(*noteStore, userModel, notebook)
 			);
+
+		PostMessage(SyncMessageQueue::MessageSyncComplete);
+
+		userModel.Unload();
 	}
 	catch (const std::exception & e)
 	{
 		syncLogger.Error(ConvertToUnicode(e.what()));
-		context->EnqueueMessage(MessageSyncFailed);
-		return 0;
+		PostMessage(SyncMessageQueue::MessageSyncFailed);
+		userModel.Unload();
 	}
-	context->EnqueueMessage(MessageSyncComplete);
+}
+
+DWORD WINAPI SyncModel::Sync(LPVOID param)
+{
+	reinterpret_cast<SyncModel*>(param)->Sync();
 	return 0;
-}
-
-//---------------------------
-// SyncContext implementation
-//---------------------------
-
-SyncModel::SyncContext::SyncContext
-	( SyncModel   & syncModel
-	, IUserModel  & userModel
-	, ISyncLogger & syncLogger
-	)
-	: syncModel  (syncModel)
-	, userModel  (userModel)
-	, syncLogger (syncLogger)
-{
-}
-
-void SyncModel::SyncContext::EnqueueMessage(Message message)
-{
-	ScopedLock lock(syncModel.lock);
-	syncModel.messages.push(message);
-	syncModel.messagePump.WakeUp();
-}
-
-IEnService & SyncModel::SyncContext::GetEnService()
-{
-	return syncModel.enService;
-}
-
-bool SyncModel::SyncContext::GetStopRequested() const
-{
-	bool stopRequested;
-	{
-		ScopedLock lock(syncModel.lock);
-		stopRequested = this->stopRequested;
-	}
-	return stopRequested;
-}
-
-void SyncModel::SyncContext::SetStopRequested(bool value)
-{
-	ScopedLock lock(syncModel.lock);
-	stopRequested = value;
-}
-
-IUserModel & SyncModel::SyncContext::GetUserModel()
-{
-	return userModel;
-}
-
-ISyncLogger & SyncModel::SyncContext::GetSyncLogger()
-{
-	return syncLogger;
 }

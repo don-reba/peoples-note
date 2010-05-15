@@ -4,14 +4,9 @@
 using namespace boost;
 using namespace std;
 
-void MockNoteListModel::Reset()
+void MockNoteListModel::ConnectChanged(slot_type OnChanged)
 {
-	SignalReset();
-}
-
-void MockNoteListModel::ConnectChanged(slot_type OnReset)
-{
-	SignalReset.connect(OnReset);
+	SignalChanged.connect(OnChanged);
 }
 
 const NoteList & MockNoteListModel::GetNotes()

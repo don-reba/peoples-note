@@ -14,28 +14,20 @@ BOOST_AUTO_TEST_CASE(SyncPresenter_Sync_Test)
 	MockNoteListView  noteListView;
 	MockSyncModel     syncModel;
 	MockUserModel     userModel;
-	MockUserModel     syncUserModel;
 
 	SyncPresenter syncPresenter
 		( noteListModel
 		, noteListView
 		, syncModel
 		, userModel
-		, syncUserModel
 		);
 
 	userModel.credentials.SetUsername(L"test-usr");
-	syncUserModel.credentials.SetUsername(L"test-usr");
-	syncUserModel.folder = L"test-path";
 
 	noteListView.SignalSync();
 
-	BOOST_CHECK_EQUAL(syncUserModel.loadedAs, L"test-usr");
-	BOOST_CHECK_EQUAL(syncUserModel.loadMethod, MockUserModel::LoadMethodLoad);
-
 	BOOST_CHECK(syncModel.syncBegan);
-	BOOST_CHECK_EQUAL(syncModel.username,     L"test-usr");
-	BOOST_CHECK_EQUAL(syncModel.documentPath, L"test-path");
+	BOOST_CHECK_EQUAL(syncModel.username, L"test-usr");
 }
 
 BOOST_AUTO_TEST_CASE(SyncPresenter_SyncComplete_Test)
@@ -44,14 +36,12 @@ BOOST_AUTO_TEST_CASE(SyncPresenter_SyncComplete_Test)
 	MockNoteListView  noteListView;
 	MockSyncModel     syncModel;
 	MockUserModel     userModel;
-	MockUserModel     syncUserModel;
 
 	SyncPresenter syncPresenter
 		( noteListModel
 		, noteListView
 		, syncModel
 		, userModel
-		, syncUserModel
 		);
 
 	userModel.notes.push_back(Note());

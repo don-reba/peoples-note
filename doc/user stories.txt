@@ -25,13 +25,17 @@ note creation
 	when a note is created, it should be added to the note list and persisted
 	when creation is aborted, no note should be created
 sync
-	when unsynced files are available, their number should be displayed on the sync button
 	√ when the sync button is pressed, sync should begin
 	√ when sync completes, the note list should be updated
-	when a note is synced, the number of unsynced files displayed should decrease
+	√ when the user signs in, the number of unsynced items should be displayed on the sync button
+		unsynced notebooks
+		unsynced tags
+		unsynced notes in the active notebook
+	√ when the active notebook is changed, the number of unsynced items should be updated
+	√ when syncing, the number of unsynced items should be updated
 	when connection is lost, sync is stopped and disabled
 	when sync is impossible, the sync button should be disabled
-		sync in progress
+		√ sync in progress
 		no connection
 	when EN rejects the user's password at sync, the signin screen should be displayed with his username
 		the username should be read-only

@@ -110,11 +110,13 @@ void UserModel::AddNote
 void UserModel::AddNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Notebooks(guid, name, isDefault, isLastUsed)"
-		"  VALUES (?, ?, 0, 0)"
+		( "INSERT OR REPLACE INTO Notebooks(guid, usn, name, isDirty, isDefault, isLastUsed)"
+		"  VALUES (?, ?, ?, ?, 0, 0)"
 		);
 	statement->Bind(1, notebook.guid);
-	statement->Bind(2, notebook.name);
+	statement->Bind(2, notebook.usn);
+	statement->Bind(3, notebook.name);
+	statement->Bind(4, notebook.isDirty);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -241,19 +243,34 @@ void UserModel::GetCredentials(Credentials & credentials)
 void UserModel::GetDefaultNotebook(Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, name"
+		( "SELECT guid, usn, name, isDirty"
 		"  FROM Notebooks"
 		"  WHERE isDefault = 1"
 		"  LIMIT 1"
 		);
 	if (statement->Execute())
 		throw std::exception("No default notebook.");
-	wstring guid;
-	wstring name;
-	statement->Get(0, guid);
-	statement->Get(1, name);
-	notebook.guid = guid;
-	notebook.name = name;
+	wstring guidString;
+	statement->Get(0, guidString);
+	statement->Get(1, notebook.usn);
+	statement->Get(2, notebook.name);
+	statement->Get(3, notebook.isDirty);
+	notebook.guid = guidString;
+}
+
+int UserModel::GetDirtyNoteCount(const Notebook & notebook)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT Count(*)"
+		"  FROM Notes"
+		"  WHERE isDirty = 1 AND notebook = ?"
+		);
+	statement->Bind(1, notebook.guid);
+	if (statement->Execute())
+		throw std::exception("Could not count dirty notes.");
+	int count;
+	statement->Get(0, count);
+	return count;
 }
 
 wstring UserModel::GetFolder() const
@@ -264,19 +281,19 @@ wstring UserModel::GetFolder() const
 void UserModel::GetLastUsedNotebook(Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, name"
+		( "SELECT guid, usn, name, isDirty"
 		"  FROM Notebooks"
 		"  WHERE isLastUsed = 1"
 		"  LIMIT 1"
 		);
 	if (statement->Execute())
 		throw std::exception("No last used notebook.");
-	wstring guid;
-	wstring name;
-	statement->Get(0, guid);
-	statement->Get(1, name);
-	notebook.guid = guid;
-	notebook.name = name;
+	wstring guidString;
+	statement->Get(0, guidString);
+	statement->Get(1, notebook.usn);
+	statement->Get(2, notebook.name);
+	statement->Get(3, notebook.isDirty);
+	notebook.guid = guidString;
 }
 
 Note UserModel::GetNote(Guid guid)
@@ -321,6 +338,27 @@ void UserModel::GetNoteBody(Guid guid, wstring & body)
 	statement->Get(0, body);
 }
 
+void UserModel::GetNotebook
+	( const Guid & guid
+	, Notebook   & notebook
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT guid, usn, name, isDirty"
+		"  FROM Notebooks"
+		"  WHERE guid = ?"
+		);
+	statement->Bind(1, guid);
+	if (statement->Execute())
+		throw std::exception("Notebook not found.");
+	wstring guidString;
+	statement->Get(0, guidString);
+	statement->Get(1, notebook.usn);
+	statement->Get(2, notebook.name);
+	statement->Get(3, notebook.isDirty);
+	notebook.guid = guidString;
+}
+
 void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -356,19 +394,19 @@ void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 void UserModel::GetNotebooks(NotebookList & notebooks)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, name"
+		( "SELECT guid, usn, name, isDirty"
 		"  FROM Notebooks"
 		"  ORDER BY name"
 		);
 	while (!statement->Execute())
 	{
-		wstring guid;
-		wstring name;
-		statement->Get(0, guid);
-		statement->Get(1, name);
 		notebooks.push_back(Notebook());
-		notebooks.back().guid = guid;
-		notebooks.back().name = name;
+		wstring guidString;
+		statement->Get(0, guidString);
+		statement->Get(1, notebooks.back().usn);
+		statement->Get(2, notebooks.back().name);
+		statement->Get(3, notebooks.back().isDirty);
+		notebooks.back().guid = guidString;
 	}
 }
 

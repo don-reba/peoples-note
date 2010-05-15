@@ -67,6 +67,7 @@ public:
 	std::set<std::wstring> validUsernames;
 
 	std::wstring loadedAs;
+	int          loadCount;
 	LoadMethod   loadMethod;
 
 	bool isInTransaction;
@@ -119,6 +120,8 @@ public:
 
 	virtual void GetDefaultNotebook(Notebook & notebook);
 
+	virtual int GetDirtyNoteCount(const Notebook & notebook);
+
 	virtual std::wstring GetFolder() const;
 
 	virtual void GetLastUsedNotebook(Notebook & notebook);
@@ -126,6 +129,11 @@ public:
 	virtual Note GetNote(Guid guid);
 
 	virtual void GetNoteBody(Guid guid, std::wstring & body);
+
+	virtual void GetNotebook
+		( const Guid & guid
+		, Notebook   & notebook
+		);
 
 	virtual void GetNoteThumbnail
 		( const Guid & guid

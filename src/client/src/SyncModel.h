@@ -2,50 +2,15 @@
 
 #include "ISyncModel.h"
 
-#include <boost/scoped_ptr.hpp>
-#include <queue>
+#include "SyncMessageQueue.h"
 
 class IEnService;
 class IMessagePump;
 class ISyncLogger;
+class IUserModel;
 
 class SyncModel : public ISyncModel
 {
-// nested types
-
-private:
-
-	enum Message
-	{
-		MessageSyncFailed,
-		MessageSyncComplete,
-	};
-
-	class SyncContext
-	{
-	private:
-
-		SyncModel   & syncModel;
-		IUserModel  & userModel;
-		ISyncLogger & syncLogger;
-		bool stopRequested;
-
-	public:
-
-		SyncContext
-			( SyncModel   & syncModel
-			, IUserModel  & userModel
-			, ISyncLogger & syncLogger
-			);
-
-		void EnqueueMessage(Message message);
-		IEnService  & GetEnService();
-		IUserModel  & GetUserModel();
-		ISyncLogger & GetSyncLogger();
-		bool GetStopRequested() const;
-		void SetStopRequested(bool vaue);
-	};
-
 // data
 
 private:
@@ -53,15 +18,19 @@ private:
 	IEnService   & enService;
 	IMessagePump & messagePump;
 	ISyncLogger  & syncLogger;
+	IUserModel   & userModel;
 
 	HANDLE syncThread;
 
 	CRITICAL_SECTION lock;
 
-	boost::scoped_ptr<SyncContext> syncContext;
+	SyncMessageQueue messages;
 
-	std::queue<Message> messages;
+	bool stopRequested;
 
+	signal SignalNotebooksChanged;
+	signal SignalNotesChanged;
+	signal SignalTagsChanged;
 	signal SignalSyncComplete;
 
 // interface
@@ -71,6 +40,7 @@ public:
 	SyncModel
 		( IEnService   & enService
 		, IMessagePump & messagePump
+		, IUserModel   & userModel
 		, ISyncLogger  & logger
 		);
 
@@ -84,15 +54,25 @@ public:
 
 public:
 
-	virtual void BeginSync(IUserModel & userModel);
+	virtual void BeginSync(const std::wstring & username);
+
+	virtual void ConnectNotebooksChanged(slot_type OnNotebooksChanged);
+
+	virtual void ConnectNotesChanged(slot_type OnNotesChanged);
 
 	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
+
+	virtual void ConnectTagsChanged(slot_type OnTagsChanged);
 
 // utility functions
 
 private:
 
 	void CloseThread();
+
+	void PostMessage(SyncMessageQueue::Message message);
+
+	void Sync();
 
 	static DWORD WINAPI Sync(LPVOID param);
 };

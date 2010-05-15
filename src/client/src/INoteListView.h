@@ -27,6 +27,8 @@ public:
 
 	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail) = 0;
 
+	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected) = 0;
+
 	virtual void ConnectOpenNote(slot_type OnOpenNote) = 0;
 
 	virtual void ConnectSearch(slot_type OnSearch) = 0;
@@ -39,7 +41,13 @@ public:
 
 	virtual void ClearNotebooks() = 0;
 
+	virtual void DisableSync() = 0;
+
+	virtual void EnableSync() = 0;
+
 	virtual bool GetEnexPath(std::wstring & path) = 0;
+
+	virtual Guid GetSelectedNotebookGuid() = 0;
 
 	virtual Guid GetSelectedNoteGuid() = 0;
 
@@ -50,6 +58,8 @@ public:
 	virtual void SetProfileText(const std::wstring & text) = 0;
 
 	virtual void SetSigninText(const std::wstring & text) = 0;
+
+	virtual void SetSyncText(const std::wstring & text) = 0;
 
 	virtual void ShowSyncButton() = 0;
 
