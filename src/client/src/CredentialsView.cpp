@@ -169,12 +169,12 @@ void CredentialsView::ProcessMessage(WndMsg &msg)
 // HTMLayout message handlers
 //---------------------------
 
-void CredentialsView::OnCancel()
+void CredentialsView::OnCancel(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalCancel();
 }
 
-void CredentialsView::OnOk()
+void CredentialsView::OnOk(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalOk();
 }

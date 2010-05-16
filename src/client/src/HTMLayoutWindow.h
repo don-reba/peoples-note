@@ -20,13 +20,18 @@ class HTMLayoutWindow : public Window, public ISignalProvider
 
 private:
 
-	typedef void (HTMLayoutWindow::*EventType)();
+	typedef void (HTMLayoutWindow::*EventType)(BEHAVIOR_EVENT_PARAMS*);
 
 	struct EventRecord
 	{
 		HELEMENT  element;
 		UINT      command;
 		EventType event;
+
+		bool operator == (HELEMENT element)
+		{
+			return this->element == element;
+		}
 	};
 
 // data
@@ -51,10 +56,20 @@ protected:
 	void ConnectBehavior
 		( const char * path
 		, UINT         command
-		, void (T::*event)()
+		, void (T::*event)(BEHAVIOR_EVENT_PARAMS*)
 		)
 	{
 		ConnectBehavior(path, command, static_cast<EventType>(event));
+	}
+
+	template <typename T>
+	void ConnectBehavior
+		( HELEMENT  element
+		, UINT      command
+		, void (T::*event)(BEHAVIOR_EVENT_PARAMS*)
+		)
+	{
+		ConnectBehavior(element, command, static_cast<EventType>(event));
 	}
 
 	void ConnectBehavior
@@ -62,6 +77,14 @@ protected:
 		, UINT         command
 		, EventType    event
 		);
+
+	void ConnectBehavior
+		( HELEMENT  element
+		, UINT      command
+		, EventType event
+		);
+
+	void DisconnectBehavior(HELEMENT element);
 
 	virtual void RegisterEventHandlers() {}
 

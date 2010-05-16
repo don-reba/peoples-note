@@ -187,7 +187,10 @@ void NoteListPresenter::UpdateNotebookListView()
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
 	foreach (const Notebook & notebook, notebooks)
-		noteListView.AddNotebook(notebook.name);
+	{
+		wstring guid(ConvertToUnicode(notebook.guid));
+		noteListView.AddNotebook(notebook.name, guid);
+	}
 	noteListView.UpdateNotebooks();
 }
 

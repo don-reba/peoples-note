@@ -21,7 +21,7 @@ public:
 
 	virtual void AddNote(std::wstring html, std::wstring value) = 0;
 
-	virtual void AddNotebook(std::wstring html) = 0;
+	virtual void AddNotebook(std::wstring html, std::wstring value) = 0;
 
 	virtual void ConnectImport(slot_type OnImport) = 0;
 

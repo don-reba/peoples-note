@@ -67,6 +67,6 @@ private:
 
 private:
 
-	void OnCancel();
-	void OnOk();
+	void OnCancel (BEHAVIOR_EVENT_PARAMS * params);
+	void OnOk     (BEHAVIOR_EVENT_PARAMS * params);
 };

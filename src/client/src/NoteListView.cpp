@@ -96,14 +96,17 @@ void NoteListView::AddNote(wstring html, wstring value)
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
 }
 
-void NoteListView::AddNotebook(wstring html)
+void NoteListView::AddNotebook(wstring html, wstring value)
 {
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
 
 	element notebook = element::create("li");
 	notebookList.append(notebook);
+	notebook.set_attribute("guid", value.c_str());
 	notebook.set_html(htmlUtf8, htmlUtf8Chars.size());
+
+	ConnectBehavior(static_cast<HELEMENT>(notebook), MENU_ITEM_CLICK, &NoteListView::OnMenuNotebook);
 }
 
 void NoteListView::ClearNotebooks()
@@ -111,7 +114,10 @@ void NoteListView::ClearNotebooks()
 	vector<element> notebooks;
 	notebookList.find_all(notebooks, "li");
 	foreach (element & notebook, notebooks)
+	{
+		DisconnectBehavior(notebook);
 		notebook.destroy();
+	}
 }
 
 void NoteListView::ClearNotes()
@@ -194,8 +200,7 @@ bool NoteListView::GetEnexPath(wstring & path)
 
 Guid NoteListView::GetSelectedNotebookGuid()
 {
-	// TODO: implement
-	return Guid();
+	return selectedNotebookGuid;
 }
 
 Guid NoteListView::GetSelectedNoteGuid()
@@ -461,32 +466,39 @@ BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
 	return __super::OnLoadData(params);
 }
 
-void NoteListView::OnMenuExit()
+void NoteListView::OnMenuExit(BEHAVIOR_EVENT_PARAMS * params)
 {
 	CloseWindow(hwnd_);
 }
 
-void NoteListView::OnMenuSignIn()
-{
-	SignalSignIn();
-}
-
-void NoteListView::OnMenuImport()
+void NoteListView::OnMenuImport(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalImport();
 }
 
-void NoteListView::OnNote()
+void NoteListView::OnMenuNotebook(BEHAVIOR_EVENT_PARAMS * params)
+{
+	element notebook(params->heTarget);
+	selectedNotebookGuid = Guid(notebook.get_attribute("guid"));
+	SignalNotebookSelected();
+}
+
+void NoteListView::OnMenuSignIn(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalSignIn();
+}
+
+void NoteListView::OnNote(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalOpenNote();
 }
 
-void NoteListView::OnSearch()
+void NoteListView::OnSearch(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalSearch();
 }
 
-void NoteListView::OnSync()
+void NoteListView::OnSync(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalSync();
 }

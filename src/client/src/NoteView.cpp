@@ -228,12 +228,12 @@ void NoteView::ProcessMessage(WndMsg &msg)
 // HTMLayout message handlers
 //---------------------------
 
-void NoteView::OnFullScreen()
+void NoteView::OnFullScreen(BEHAVIOR_EVENT_PARAMS * params)
 {
 	ToggleFullScreen();
 }
 
-void NoteView::OnHome()
+void NoteView::OnHome(BEHAVIOR_EVENT_PARAMS * params)
 {
 	CloseWindow(hwnd_);
 }

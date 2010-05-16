@@ -3,6 +3,7 @@
 #include "resourceppc.h"
 #endif 
 
+#include "Guid.h"
 #include "HTMLayoutWindow.h"
 #include "IAnimator.h"
 #include "INoteListView.h"
@@ -36,6 +37,8 @@ private:
 
 	element noteList;
 	element notebookList;
+
+	Guid selectedNotebookGuid;
 
 	WndMsgPtr lButtonDown;
 	int       lButtonDownY;
@@ -73,7 +76,7 @@ public:
 
 	virtual void AddNote(std::wstring html, std::wstring value);
 
-	virtual void AddNotebook(std::wstring html);
+	virtual void AddNotebook(std::wstring html, std::wstring value);
 
 	virtual void ClearNotebooks();
 
@@ -154,10 +157,11 @@ private:
 
 	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
 
-	void OnMenuExit();
-	void OnMenuImport();
-	void OnMenuSignIn();
-	void OnNote();
-	void OnSearch();
-	void OnSync();
+	void OnMenuExit     (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuImport   (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuNotebook (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuSignIn   (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNote         (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSearch       (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSync         (BEHAVIOR_EVENT_PARAMS * params);
 };

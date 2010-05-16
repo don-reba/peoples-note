@@ -28,10 +28,22 @@ void HTMLayoutWindow::ConnectBehavior
 	vector<dom::element> elements;
 	root.find_all(elements, path);
 	foreach (dom::element element, elements)
-	{
-		EventRecord record = { element, command, event };
-		eventRecords.push_back(record);
-	}
+		ConnectBehavior(element, command, event);
+}
+
+void HTMLayoutWindow::ConnectBehavior
+	( HELEMENT  element
+	, UINT      command
+	, EventType event
+	)
+{
+	EventRecord record = { element, command, event };
+	eventRecords.push_back(record);
+}
+
+void HTMLayoutWindow::DisconnectBehavior(HELEMENT element)
+{
+	eventRecords.erase(find(eventRecords.begin(), eventRecords.end(), element));
 }
 
 //------------------------
@@ -104,7 +116,7 @@ BOOL HTMLayoutWindow::OnBehavior(BEHAVIOR_EVENT_PARAMS * params)
 	{
 		if (record.element == element && record.command == command)
 		{
-			(this->*record.event)();
+			(this->*record.event)(params);
 			return TRUE;
 		}
 	}

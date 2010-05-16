@@ -1364,6 +1364,8 @@ notebook selection event
 		during loading and during sync
 	ConnectBehavior might be called any time after loading
 		this seems to be consistent with current implementation
+	however, ConnectBehavior takes a path
+		I have a handle, instead
 	there might be a need for a NotebookListModel
 		SyncPresenter would update it
 			on the UI thread
@@ -1448,3 +1450,40 @@ updating dirty note list on note edit
 		in actuality, the event of the note list changing was needed
 		_note list_ presenter should not deal with resource events
 			did not think of that
+SyncModel refactor
+	need to delay action processing
+	SyncLogic should generate an array of actions
+	SyncModel should process the actions once they are generated
+	the processing might involve reordering
+	actions would be little structs
+		all the same type
+			enum type
+			T * local (nullable)
+			T * remote (nullable)
+checkbox support
+	general idea
+		keep a list of the checkboxes
+		when the note is opened
+			record the initial state
+		when the note is closed
+			compare state with the initial
+		if the checkboxes have been changed
+			update the note body
+			store it in the database
+			mark the note as dirty
+			update the note list
+	parsing
+		can either parse the notes twice or keep track of offsets
+	can this be somehow generalized to regular note editing?
+		checkboxes would have to be active then, also
+		generally
+			we would be editing HTML DOM
+			then serializing it into EN's format
+		we might still want to keep a list of checkboxes
+			to recognize changes
+			the alternative is to subscribe to events
+				would enable immediate visual feedback
+				we might want to let the user know the note is dirty
+		editing requires complete note information in DOM
+sync raises exception
+	TODO

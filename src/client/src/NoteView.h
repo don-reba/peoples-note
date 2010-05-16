@@ -71,8 +71,8 @@ private:
 
 private:
 
-	void OnFullScreen();
-	void OnHome();
+	void OnFullScreen (BEHAVIOR_EVENT_PARAMS * params);
+	void OnHome       (BEHAVIOR_EVENT_PARAMS * params);
 
 	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };
