@@ -6,14 +6,15 @@
 #include "IMessagePump.h"
 #include "INoteStore.h"
 #include "ISyncLogger.h"
+#include "IUserModel.h"
 #include "IUserStore.h"
-#include "NotebookProcessor.h"
-#include "NoteProcessor.h"
 #include "ScopedLock.h"
 #include "SyncLogic.h"
-#include "TagProcessor.h"
 #include "Tools.h"
-#include "IUserModel.h"
+#include "Transaction.h"
+
+#include <algorithm>
+#include <sstream>
 
 using namespace std;
 using namespace Tools;
@@ -162,45 +163,16 @@ void SyncModel::Sync()
 		EnInteropNoteList remoteNotes;
 		NotebookList      remoteNotebooks;
 		TagList           remoteTags;
+
 		noteStore->ListEntries(remoteNotes, remoteNotebooks, remoteTags);
 
 		syncLogger.ListRemoteNotes     (remoteNotes);
 		syncLogger.ListRemoteNotebooks (remoteNotebooks);
 		syncLogger.ListRemoteTags      (remoteTags);
 
-		SyncLogic syncLogic(syncLogger);
-
-		NotebookList localNotebooks;
-		userModel.GetNotebooks(localNotebooks);
-		syncLogger.ListLocalNotebooks(localNotebooks);
-
-		syncLogger.BeginSyncStage(L"notebooks");
-		syncLogic.FullSync
-			( remoteNotebooks
-			, localNotebooks
-			, NotebookProcessor(*noteStore, userModel)
-			);
-
-		TagList localTags;
-		userModel.GetTags(localTags);
-		syncLogger.ListLocalTags(localTags);
-
-		syncLogger.BeginSyncStage(L"tags");
-		syncLogic.FullSync
-			( remoteTags
-			, localTags
-			, TagProcessor(*noteStore, userModel)
-			);
-
-		const EnInteropNoteList localNotes; // TODO: initialize
-		syncLogger.ListLocalNotes(localNotes);
-
-		syncLogger.BeginSyncStage(L"notes");
-		syncLogic.FullSync
-			( remoteNotes
-			, localNotes
-			, NoteProcessor(*noteStore, userModel, notebook)
-			);
+		ProcessNotebooks (remoteNotebooks, *noteStore);
+		ProcessTags      (remoteTags,      *noteStore);
+		ProcessNotes     (remoteNotes,     *noteStore, notebook);
 
 		PostMessage(SyncMessageQueue::MessageSyncComplete);
 
@@ -218,4 +190,332 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 {
 	reinterpret_cast<SyncModel*>(param)->Sync();
 	return 0;
+}
+
+//----------------
+// note processing
+//----------------
+
+void SyncModel::ProcessNotes
+	( const EnInteropNoteList & remote
+	, INoteStore              & noteStore
+	, Notebook                & notebook
+	)
+{
+	const EnInteropNoteList local; // TODO: initialize
+	syncLogger.ListLocalNotes(local);
+
+	vector<SyncLogic::Action<EnInteropNote> > actions;
+	SyncLogic::FullSync(remote, local, actions);
+
+	syncLogger.BeginSyncStage(L"notes");
+	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
+	{
+		switch (action.Type)
+		{
+		case SyncLogic::ActionAdd:
+			syncLogger.Add(action.Remote->guid);
+			AddNote(*action.Remote, noteStore, notebook);
+			break;
+		case SyncLogic::ActionDelete:
+			syncLogger.Delete(action.Local->guid);
+			DeleteNote(*action.Local);
+			break;
+		case SyncLogic::ActionRenameAdd:
+			syncLogger.Rename(action.Local->guid);
+			syncLogger.Add(action.Remote->guid);
+			RenameAddNotes(*action.Local, *action.Remote, noteStore, notebook);
+			break;
+		case SyncLogic::ActionUpload:
+			syncLogger.Upload(action.Local->guid);
+			UploadNote(*action.Local, noteStore, notebook);
+			break;
+		case SyncLogic::ActionMerge:
+			syncLogger.Merge(action.Local->guid, action.Remote->guid);
+			MergeNotes(*action.Local, *action.Remote);
+			break;
+		}
+	}
+}
+
+void SyncModel::AddNote
+	( const EnInteropNote & remote
+	, INoteStore          & noteStore
+	, Notebook            & notebook
+	)
+{
+	wstring body;
+	noteStore.GetNoteBody(remote.note, body);
+
+	Transaction transaction(userModel);
+	userModel.AddNote(remote.note, body, L"", notebook);
+	foreach (const Guid & guid, remote.resources)
+	{
+		Resource resource;
+		noteStore.GetNoteResource(guid, resource);
+		// TODO: check the hash here
+		// handle incomplete downloads somehow
+		// string checkHash = HashWithMD5(resource.Data);
+		userModel.AddResource(resource);
+	}
+}
+
+void SyncModel::DeleteNote(const EnInteropNote & local)
+{
+	userModel.DeleteNote(local.note);
+}
+
+void SyncModel::RenameAddNotes
+	( const EnInteropNote & local
+	, const EnInteropNote & remote
+	, INoteStore          & noteStore
+	, Notebook            & notebook
+	)
+{
+	// note names need not be unique
+	AddNote(remote, noteStore, notebook);
+}
+
+void SyncModel::UploadNote
+	( const EnInteropNote & local
+	, INoteStore          & noteStore
+	, Notebook            & notebook
+	)
+{
+	Transaction transaction(userModel);
+
+	vector<Resource> resources(local.resources.size());
+	for (int i(0); i != resources.size(); ++i)
+		userModel.GetResource(local.resources[i], resources[i]);
+
+	wstring body;
+	userModel.GetNoteBody(local.guid, body);
+
+	Note replacement;
+	noteStore.CreateNote(local.note, body, resources, replacement);
+
+	userModel.DeleteNote(local.note);
+	userModel.AddNote(replacement, body, L"", notebook);
+}
+
+void SyncModel::MergeNotes
+	( const EnInteropNote & local
+	, const EnInteropNote & remote
+	)
+{
+	// keep local
+}
+
+//--------------------
+// notebook processing
+//--------------------
+
+void SyncModel::ProcessNotebooks
+	( const NotebookList & remote
+	, INoteStore         & noteStore
+	)
+{
+	NotebookList local;
+	userModel.GetNotebooks(local);
+	syncLogger.ListLocalNotebooks(local);
+
+	vector<SyncLogic::Action<Notebook> > actions;
+	SyncLogic::FullSync(remote, local, actions);
+
+	syncLogger.BeginSyncStage(L"notebooks");
+	foreach (const SyncLogic::Action<Notebook> action, actions)
+	{
+		switch (action.Type)
+		{
+		case SyncLogic::ActionAdd:
+			syncLogger.Add(action.Remote->guid);
+			AddNotebook(*action.Remote);
+			break;
+		case SyncLogic::ActionDelete:
+			syncLogger.Delete(action.Local->guid);
+			DeleteNotebook(*action.Local);
+			break;
+		case SyncLogic::ActionRenameAdd:
+			syncLogger.Rename(action.Local->guid);
+			syncLogger.Add(action.Remote->guid);
+			RenameAddNotebooks(*action.Local, *action.Remote);
+			break;
+		case SyncLogic::ActionUpload:
+			syncLogger.Upload(action.Local->guid);
+			UploadNotebook(*action.Local, noteStore);
+			break;
+		case SyncLogic::ActionMerge:
+			syncLogger.Merge(action.Local->guid, action.Remote->guid);
+			MergeNotebooks(*action.Local, *action.Remote);
+			break;
+		}
+	}
+}
+
+void SyncModel::AddNotebook(const Notebook & remote)
+{
+	userModel.AddNotebook(remote);
+}
+
+void SyncModel::DeleteNotebook(const Notebook & local)
+{
+	userModel.DeleteNotebook(local);
+}
+
+void SyncModel::RenameAddNotebooks
+	( const Notebook & local
+	, const Notebook & remote
+	)
+{
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
+
+	vector<wstring> names;
+	names.reserve(notebooks.size());
+	foreach (const Notebook & notebook, notebooks)
+		names.push_back(notebook.name);
+	sort(names.begin(), names.end());
+
+	int n(2);
+	wstringstream name;
+	do
+	{
+		name.str(wstring());
+		name << local.name << L'(' << n << L')';
+		++n;
+	}
+	while (binary_search(names.begin(), names.end(), name.str()));
+
+	Notebook notebook = local;
+	notebook.name = name.str();
+	userModel.AddNotebook(notebook);
+	userModel.AddNotebook(remote);
+}
+
+void SyncModel::UploadNotebook
+	( const Notebook & local
+	, INoteStore     & noteStore
+	)
+{
+	Transaction transaction(userModel);
+
+	Notebook replacement;
+	noteStore.CreateNotebook(local, replacement);
+	userModel.DeleteNotebook(local);
+	userModel.AddNotebook(replacement);
+}
+
+void SyncModel::MergeNotebooks
+	( const Notebook & local
+	, const Notebook & remote
+	)
+{
+	// keep local
+}
+
+
+//---------------
+// tag processing
+//---------------
+
+void SyncModel::ProcessTags
+	( const TagList & remote
+	, INoteStore    & noteStore
+	)
+{
+	TagList local;
+	userModel.GetTags(local);
+	syncLogger.ListLocalTags(local);
+
+	vector<SyncLogic::Action<Tag> > actions;
+	SyncLogic::FullSync(remote, local, actions);
+
+	foreach (const SyncLogic::Action<Tag> action, actions)
+	{
+		switch (action.Type)
+		{
+		case SyncLogic::ActionAdd:
+			syncLogger.Add(action.Remote->guid);
+			AddTag(*action.Remote);
+			break;
+		case SyncLogic::ActionDelete:
+			syncLogger.Delete(action.Local->guid);
+			DeleteTag(*action.Local);
+			break;
+		case SyncLogic::ActionRenameAdd:
+			syncLogger.Rename(action.Local->guid);
+			syncLogger.Add(action.Remote->guid);
+			RenameAddTags(*action.Local, *action.Remote);
+			break;
+		case SyncLogic::ActionUpload:
+			syncLogger.Upload(action.Local->guid);
+			UploadTag(*action.Local, noteStore);
+			break;
+		case SyncLogic::ActionMerge:
+			syncLogger.Merge(action.Local->guid, action.Remote->guid);
+			MergeTags(*action.Local, *action.Remote);
+			break;
+		}
+	}
+}
+
+void SyncModel::AddTag(const Tag & remote)
+{
+	userModel.AddTag(remote);
+}
+
+void SyncModel::DeleteTag(const Tag & local)
+{
+	userModel.DeleteTag(local);
+}
+
+void SyncModel::RenameAddTags
+		( const Tag & local
+		, const Tag & remote
+		)
+{
+	TagList tags;
+	userModel.GetTags(tags);
+
+	vector<wstring> names;
+	names.reserve(tags.size());
+	foreach (const Tag & tag, tags)
+		names.push_back(tag.name);
+	sort(names.begin(), names.end());
+
+	int n(2);
+	wstringstream name;
+	do
+	{
+		name.str(wstring());
+		name << local.name << L'(' << n << L')';
+		++n;
+	}
+	while (binary_search(names.begin(), names.end(), name.str()));
+
+	Tag tag;
+	tag.name = name.str();
+	userModel.AddTag(tag);
+	userModel.AddTag(remote);
+}
+
+void SyncModel::UploadTag
+		( const Tag & local
+		, INoteStore          & noteStore
+		)
+{
+	Transaction transacction(userModel);
+
+	Tag replacement;
+	noteStore.CreateTag(local, replacement);
+	userModel.DeleteTag(local);
+	userModel.AddTag(replacement);
+}
+
+void SyncModel::MergeTags
+		( const Tag & local
+		, const Tag & remote
+		)
+{
+	// keep local
 }

@@ -3,7 +3,6 @@
 
 #include "Guid.h"
 #include "IResourceProcessor.h"
-#include "MockSyncLogger.h"
 
 using namespace boost;
 using namespace std;
@@ -74,59 +73,50 @@ public:
 	}
 };
 
-class ResourceProcessor : public IResourceProcessor<MockResource>
-{
-public:
-
-	virtual void Add(const MockResource & r)
-	{
-		r.status = StatusAdded;
-	}
-
-	virtual void Delete(const MockResource & l)
-	{
-		l.status = StatusDeleted;
-	}
-
-	virtual void Rename(const MockResource & l)
-	{
-		l.status = StatusRenamed;
-	}
-
-	virtual void Upload(const MockResource & l)
-	{
-		l.status = StatusUploaded;
-	}
-
-	virtual void Merge(const MockResource & l, const MockResource & r)
-	{
-		l.status = StatusMerged;
-		r.status = StatusMerged;
-	}
-};
-
 struct SyncLogicFixture
 {
-	MockSyncLogger    syncLogger;
-	SyncLogic         syncLogic;
-	ResourceProcessor resourceProcessor;
-
 	vector<MockResource> local;
 	vector<MockResource> remote;
 
-	SyncLogicFixture()
-		: syncLogic(syncLogger)
-	{
-	}
+	vector<SyncLogic::Action<MockResource> > actions;
 
 	void FullSync()
 	{
-		syncLogic.FullSync(remote, local, resourceProcessor);
+		SyncLogic::FullSync(remote, local, actions);
+		ProcessActions();
 	}
 
 	void IncrementalSync()
 	{
-		syncLogic.IncrementalSync(remote, local, resourceProcessor);
+		SyncLogic::IncrementalSync(remote, local, actions);
+		ProcessActions();
+	}
+
+	void ProcessActions()
+	{
+		foreach (const SyncLogic::Action<MockResource> action, actions)
+		{
+			switch (action.Type)
+			{
+			case SyncLogic::ActionAdd:
+				action.Remote->status = StatusAdded;
+				break;
+			case SyncLogic::ActionDelete:
+				action.Local->status = StatusDeleted;
+				break;
+			case SyncLogic::ActionMerge:
+				action.Local->status  = StatusMerged;
+				action.Remote->status = StatusMerged;
+				break;
+			case SyncLogic::ActionRenameAdd:
+				action.Local->status  = StatusRenamed;
+				action.Remote->status = StatusAdded;
+				break;
+			case SyncLogic::ActionUpload:
+				action.Local->status = StatusUploaded;
+				break;
+			}
+		}
 	}
 };
 

@@ -1,44 +1,66 @@
 #pragma once
 
 #include "Guid.h"
-#include "IResourceProcessor.h"
-#include "ISyncLogger.h"
 
 #include <map>
 
 class SyncLogic
 {
-private:
+public:
 
-	ISyncLogger & syncLogger;
+	enum ActionType
+	{
+		ActionAdd,
+		ActionDelete,
+		ActionRenameAdd,
+		ActionUpload,
+		ActionMerge,
+	};
+
+	template<typename T>
+	struct Action
+	{
+		ActionType Type;
+		const T  * Local;
+		const T  * Remote;
+
+		Action(ActionType type, const T * local, const T * remote);
+	};
 
 public:
 
-	SyncLogic(ISyncLogger & syncLogger)
-		: syncLogger (syncLogger)
-	{
-	}
-
 	template<typename T>
-	void FullSync
-		( const std::vector<T>  & remote
-		, const std::vector<T>  & local
-		, IResourceProcessor<T> & processor
+	static void FullSync
+		( const std::vector<T>    & remote
+		, const std::vector<T>    & local
+		, std::vector<Action<T> > & actions
 		);
 
 	template<typename T>
-	void IncrementalSync
-		( const std::vector<T>  & remote
-		, const std::vector<T>  & local
-		, IResourceProcessor<T> & processor
+	static void IncrementalSync
+		( const std::vector<T>    & remote
+		, const std::vector<T>    & local
+		, std::vector<Action<T> > & actions
 		);
 };
 
 template<typename T>
+SyncLogic::Action<T>::Action
+	( ActionType type
+	, const T  * local
+	, const T  * remote
+	)
+	: Type   (type)
+	, Local  (local)
+	, Remote (remote)
+{
+}
+
+template<typename T>
 void SyncLogic::FullSync
-	( const std::vector<T>  & remote
-	, const std::vector<T>  & local
-	, IResourceProcessor<T> & processor
+	( const std::vector<T>    & remote
+	, const std::vector<T>    & local
+	, std::vector<Action<T> > & actions
 	)
 {
 	typedef std::map<std::string,  const T*> GuidMap;
@@ -68,24 +90,15 @@ void SyncLogic::FullSync
 			NameMap::iterator l(localNames.find(r.name));
 			if (l == localNames.end())
 			{
-				syncLogger.Add(r.guid);
-				processor.Add(r);
+				actions.push_back(Action<T>(ActionAdd, NULL, &r));
 			}
 			else
 			{
 				const T & l(*l->second);
 				if (l.isDirty)
-				{
-					syncLogger.Merge(l.guid, r.guid);
-					processor.Merge(l, r);
-				}
+					actions.push_back(Action<T>(ActionMerge, &l, &r));
 				else
-				{
-					syncLogger.Rename(l.guid);
-					processor.Rename(l);
-					syncLogger.Add(r.guid);
-					processor.Add(r);
-				}
+					actions.push_back(Action<T>(ActionRenameAdd, &l, &r));
 			}
 		}
 		else
@@ -94,23 +107,14 @@ void SyncLogic::FullSync
 			if (l.usn == r.usn)
 			{
 				if (l.isDirty)
-				{
-					syncLogger.Upload(l.guid);
-					processor.Upload(l);
-				}
+					actions.push_back(Action<T>(ActionUpload, &l, NULL));
 			}
 			else
 			{
 				if (l.isDirty)
-				{
-					syncLogger.Merge(l.guid, r.guid);
-					processor.Merge(l, r);
-				}
+					actions.push_back(Action<T>(ActionMerge, &l, &r));
 				else
-				{
-					syncLogger.Add(r.guid);
-					processor.Add(r);
-				}
+					actions.push_back(Action<T>(ActionAdd, NULL, &r));
 			}
 		}
 	}
@@ -124,15 +128,9 @@ void SyncLogic::FullSync
 			if (r == remoteNames.end())
 			{
 				if (l.isDirty)
-				{
-					syncLogger.Upload(l.guid);
-					processor.Upload(l);
-				}
+					actions.push_back(Action<T>(ActionUpload, &l, NULL));
 				else
-				{
-					syncLogger.Delete(l.guid);
-					processor.Delete(l);
-				}
+					actions.push_back(Action<T>(ActionDelete, &l, NULL));
 			}
 		}
 	}
@@ -140,9 +138,9 @@ void SyncLogic::FullSync
 
 template<typename T>
 void SyncLogic::IncrementalSync
-	( const std::vector<T>  & remote
-	, const std::vector<T>  & local
-	, IResourceProcessor<T> & processor
+	( const std::vector<T>    & remote
+	, const std::vector<T>    & local
+	, std::vector<Action<T> > & actions
 	)
 {
 	typedef std::map<std::string,  const T*> GuidMap;
@@ -171,40 +169,23 @@ void SyncLogic::IncrementalSync
 		{
 			NameMap::iterator l(localNames.find(r.name));
 			if (l == localNames.end())
-			{
-				syncLogger.Add(r.guid);
-				processor.Add(r);
-			}
+				actions.push_back(Action<T>(ActionAdd, NULL, &r));
 			else
 			{
 				const T & l(*l->second);
 				if (l.isDirty)
-				{
-					syncLogger.Merge(l.guid, r.guid);
-					processor.Merge(l, r);
-				}
+					actions.push_back(Action<T>(ActionMerge, &l, &r));
 				else
-				{
-					syncLogger.Rename(l.guid);
-					processor.Rename(l);
-					syncLogger.Add(r.guid);
-					processor.Add(r);
-				}
+					actions.push_back(Action<T>(ActionRenameAdd, &l, &r));
 			}
 		}
 		else
 		{
 			const T & l(*l->second);
 			if (l.isDirty)
-			{
-				syncLogger.Merge(l.guid, r.guid);
-				processor.Merge(l, r);
-			}
+				actions.push_back(Action<T>(ActionMerge, &l, &r));
 			else
-			{
-				syncLogger.Add(r.guid);
-				processor.Add(r);
-			}
+				actions.push_back(Action<T>(ActionAdd, NULL, &r));
 		}
 	}
 
@@ -217,10 +198,7 @@ void SyncLogic::IncrementalSync
 			if (r == remoteNames.end())
 			{
 				if (l.isDirty)
-				{
-					syncLogger.Upload(l.guid);
-					processor.Upload(l);
-				}
+					actions.push_back(Action<T>(ActionUpload, &l, NULL));
 			}
 		}
 	}
