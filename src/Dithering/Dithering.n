@@ -1,12 +1,7 @@
 // REFERENCE: System.Drawing.dll
-// REFERENCE: System.Windows.Forms.dll
-// TARGET: winexe
 
-using System.IO;
 using System.Drawing;
 using System.Math;
-using System.Threading;
-using System.Windows.Forms;
 using System;
 
 
@@ -84,20 +79,17 @@ def DistributeError(data, w, i, r, g, b)
 	{
 		def (r, g, b) = data[i];
 		data[i] =
-			( r + dr * factor / 16.0
-			, g + dg * factor / 16.0
-			, b + db * factor / 16.0
+			( r + dr * factor
+			, g + dg * factor
+			, b + db * factor
 			);
 	}
-	AddError(i + 0 + 1, r, g, b, 7.0);
-	AddError(i + w - 1, r, g, b, 3.0);
-	AddError(i + w + 0, r, g, b, 5.0);
-	AddError(i + w + 1, r, g, b, 1.0);
+	AddError(i + 0 + 1, r, g, b, 7.0 / 16.0);
+	AddError(i + w - 1, r, g, b, 3.0 / 16.0);
+	AddError(i + w + 0, r, g, b, 5.0 / 16.0);
+	AddError(i + w + 1, r, g, b, 1.0 / 16.0);
 }
 
-// NOTE
-// output and input have different types,
-// requiring separate arrays for input, output, and error distribution
 def Dither(data, w, h)
 {
 	def input      = array(data.Length);
@@ -125,66 +117,26 @@ def Dither(data, w, h)
 		(minR, minG, minB);
 	}
 	Array.Copy(data, input,  data.Length);
-	Array.Copy(data, output, data.Length);
-	foreach (y in [0 .. h - 2])
-	foreach (x in [0 .. w - 2])
+	mutable i = 0;
+	repeat (h - 2)
 	{
-		def i = y * w + x;
-		def (oldR, oldG, oldB) = input[i];
-		def (r, g, b) = FindClosestColor(oldR, oldG, oldB);
-		output[i] = (r, g, b);
-		def dr = Min(50, Max(-50, oldR - r));
-		def dg = Min(50, Max(-50, oldG - g));
-		def db = Min(50, Max(-50, oldB - b));
-		DistributeError(input, w, i, dr, dg, db);
+		repeat (w - 2)
+		{
+			def (oldR, oldG, oldB) = input[i];
+			def (r, g, b) = FindClosestColor(oldR, oldG, oldB);
+			output[i] = (r, g, b);
+			def dr = oldR - r;
+			def dg = oldG - g;
+			def db = oldB - b;
+			DistributeError(input, w, i, dr, dg, db);
+			++i;
+		}
+		output[i] = input[i]; ++i;
+		output[i] = input[i]; ++i;
 	}
+	Array.Copy(data, i, input, i, 2 * w);
 	(output, w, h);
 }
 
-def CreateApp(form : Form, pictureBox)
-{
-	def rgbFsDithered = 
-		using (bmp = Bitmap("main.png"))
-			RgbToBitmap(Dither(BitmapToRgb(bmp)));
-
-	def OnKeyDown(_, args)
-	{
-		match (args.KeyCode)
-		{
-			| Keys.D1 => pictureBox.Image = bmp
-			| Keys.D2 => pictureBox.Image = rgbFsDithered
-			| _       => ()
-		}
-	}
-
-	pictureBox.Image = bmp;
-	form.KeyDown += KeyEventHandler(OnKeyDown);
-	form;
-}
-
-def CreateForm()
-{
-	def picture = PictureBox();
-	picture.BackColor = Color.Black;
-	picture.Dock      = DockStyle.Fill;
-	picture.SizeMode  = PictureBoxSizeMode.CenterImage;
-
-	def form = Form();
-	form.SuspendLayout();
-	form.Controls.Add(picture);
-	form.Text        = "565 Dithering demo";
-	form.WindowState = FormWindowState.Maximized;
-	form.ResumeLayout(true);
-
-	(form, picture);
-}
-
-def Run()
-{
-	Application.EnableVisualStyles();
-	Application.Run(CreateApp(CreateForm()));
-}
-
-def mainThread = Thread(ThreadStart(Run));
-mainThread.SetApartmentState(ApartmentState.STA);
-mainThread.Start();
+def args = Environment.GetCommandLineArgs();
+RgbToBitmap(Dither(BitmapToRgb(Bitmap(args[1])))).Save(args[2]);
