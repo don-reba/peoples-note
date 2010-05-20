@@ -8,8 +8,6 @@ user management
 	√ when signing into an existing account, load the new account
 	√ when signing into a new account, rename the anonymous account
 	when the program is closed, the user name is stored in the registry
-notebook management
-	√ when a user without a notebook is loaded, an empty default notebook should be created
 sign in window
 	√ when the window is displayed, the user should be able to enter username and password, accept, or cancel
 	√ when the user chooses to accept, the username and password should be verified
@@ -58,8 +56,10 @@ note view
 	√ when the user clicks a TODO checkbox, the checkbox should be toggled
 	when a TODO checkbox is toggled, the changed should be persisted
 notebooks
+	√ when a user without a notebook is loaded, an empty default notebook should be created
 	when the user changes notebooks, search should be cleared and the note list filled from the new notebook
 		notebook choice should be persisted
+	when the user changes notebooks, the main window title should be set to notebook name
 about
 	when the user selects "about" from the menu, the "about" window should be shown
 storage
@@ -76,6 +76,7 @@ database
 Evernote import
 	√ when the "Import" menu option is selected, dispaly an ".enex" file open dialog
 	√ when an .enex file is imported, add the notes from it to the last used notebook
+	when notes are imported, the sync counter should be updated
 text note viewing
 	when an HTTP url is clicked, open it in the browser
 text note editing

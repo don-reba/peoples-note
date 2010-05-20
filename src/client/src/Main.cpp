@@ -165,7 +165,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			( noteListModel
 			, noteListView
 			, syncModel
-			, syncUserModel
+			, userModel
 			);
 		UserLoader userLoader
 			( userModel
