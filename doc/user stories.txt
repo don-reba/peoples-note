@@ -57,9 +57,9 @@ note view
 	when a TODO checkbox is toggled, the changed should be persisted
 notebooks
 	√ when a user without a notebook is loaded, an empty default notebook should be created
-	when the user changes notebooks, search should be cleared and the note list filled from the new notebook
+	√ when the user changes notebooks, search should be cleared and the note list filled from the new notebook
 		notebook choice should be persisted
-	when the user changes notebooks, the main window title should be set to notebook name
+	√ when the user changes notebooks, the main window title should be set to notebook name
 about
 	when the user selects "about" from the menu, the "about" window should be shown
 storage

@@ -83,7 +83,7 @@ void NoteView::Render(Thumbnail & thumbnail)
 	windowRenderer.Render(hwnd_, thumbnail);
 }
 
-void NoteView::SetBody(wstring html)
+void NoteView::SetBody(const wstring & html)
 {
 	element root (element::root_element(hwnd_));
 	element body (root.find_first("#body"));
@@ -96,7 +96,7 @@ void NoteView::SetBody(wstring html)
 	body.set_html(htmlUtf8, htmlUtf8Chars.size());
 }
 
-void NoteView::SetSubtitle(wstring text)
+void NoteView::SetSubtitle(const wstring & text)
 {
 	element root = element::root_element(hwnd_);
 	element body = root.find_first("#subtitle");
@@ -105,13 +105,18 @@ void NoteView::SetSubtitle(wstring text)
 	body.set_text(text.c_str(), text.size());
 }
 
-void NoteView::SetTitle(wstring text)
+void NoteView::SetTitle(const wstring & text)
 {
 	element root = element::root_element(hwnd_);
 	element body = root.find_first("#title");
 	if (!body)
 		throw std::exception("#title not found.");
 	body.set_text(text.c_str(), text.size());
+}
+
+void NoteView::SetWindowTitle(const std::wstring & text)
+{
+	::SetWindowText(hwnd_, text.c_str());
 }
 
 void NoteView::Show()

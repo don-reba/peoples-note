@@ -131,6 +131,11 @@ void MockNoteListView::SetSyncText(const wstring & text)
 	syncText = text;
 }
 
+void MockNoteListView::SetWindowTitle(const wstring & text)
+{
+	windowTitle = text;
+}
+
 void MockNoteListView::ShowSyncButton()
 {
 	isSyncButtonShown = true;

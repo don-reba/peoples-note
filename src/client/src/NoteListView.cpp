@@ -264,6 +264,11 @@ void NoteListView::SetSyncText(const wstring & text)
 	sync.set_text(text.c_str());
 }
 
+void NoteListView::SetWindowTitle(const std::wstring & text)
+{
+	::SetWindowText(hwnd_, text.c_str());
+}
+
 void NoteListView::UpdateNotebooks()
 {
 	notebookList.update(true);

@@ -77,7 +77,6 @@ BOOST_FIXTURE_TEST_CASE
 	, NoteListPresenterFixture
 	)
 {
-
 	userModel.notes.push_back(Note());
 	userModel.notes.back().name = L"Note";
 	userModel.notes.back().guid = Guid("{0}");
@@ -152,6 +151,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.profileText, L"Profile");
 	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign in");
 	BOOST_CHECK_EQUAL(noteListView.isSyncButtonShown, false);
+
+	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -175,6 +176,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.profileText, L"test-usr");
 	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign out");
 	BOOST_CHECK_EQUAL(noteListView.isSyncButtonShown, true);
+
+	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -231,6 +234,7 @@ BOOST_FIXTURE_TEST_CASE
 	)
 {
 	userModel.notebooks.push_back(Notebook());
+	userModel.notebooks.back().name = L"notebook-0";
 	userModel.notebooks.back().guid = noteListView.selectedNotebookGuid;
 
 	userModel.notes.push_back(Note());
@@ -251,6 +255,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
+
+	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"notebook-0");
 }
 
 BOOST_FIXTURE_TEST_CASE

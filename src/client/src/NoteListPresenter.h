@@ -71,6 +71,8 @@ private:
 
 	void UpdateSyncCounter();
 
+	void UpdateTitle();
+
 	static std::wstring ConvertToHtml(const Note & note, const std::wstring & guid);
 
 	static std::wstring FormatTitle(const std::wstring & title);

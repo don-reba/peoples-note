@@ -61,6 +61,8 @@ public:
 
 	virtual void SetSyncText(const std::wstring & text) = 0;
 
+	virtual void SetWindowTitle(const std::wstring & text) = 0;
+
 	virtual void ShowSyncButton() = 0;
 
 	virtual void UpdateNotes() = 0;

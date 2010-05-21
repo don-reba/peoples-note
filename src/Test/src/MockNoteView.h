@@ -9,6 +9,7 @@ public:
 	std::wstring body;
 	std::wstring subtitle;
 	std::wstring title;
+	std::wstring windowTitle;
 	bool         isShown;
 
 	SIZE renderSize;
@@ -23,11 +24,13 @@ public:
 
 	virtual void Render(Thumbnail & thumbnail);
 
-	virtual void SetBody(std::wstring html);
+	virtual void SetBody(const std::wstring & html);
 
-	virtual void SetSubtitle(std::wstring html);
+	virtual void SetSubtitle(const std::wstring & html);
 
-	virtual void SetTitle(std::wstring html);
+	virtual void SetTitle(const std::wstring & text);
+
+	virtual void SetWindowTitle(const std::wstring & text);
 
 	virtual void Show();
 };

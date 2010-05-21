@@ -41,11 +41,13 @@ public:
 
 	virtual void Render(Thumbnail & thumbnail);
 
-	virtual void SetBody(std::wstring html);
+	virtual void SetBody(const std::wstring & html);
 
-	virtual void SetSubtitle(std::wstring text);
+	virtual void SetSubtitle(const std::wstring & text);
 
-	virtual void SetTitle(std::wstring text);
+	virtual void SetTitle(const std::wstring & text);
+
+	virtual void SetWindowTitle(const std::wstring & text);
 
 	virtual void Show();
 

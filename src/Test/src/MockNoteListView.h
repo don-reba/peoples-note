@@ -35,6 +35,7 @@ public:
 	std::wstring profileText;
 	std::wstring signinText;
 	std::wstring syncText;
+	std::wstring windowTitle;
 
 	bool isSyncButtonShown;
 	bool isSyncEnabled;
@@ -96,6 +97,8 @@ public:
 	virtual void SetSigninText(const std::wstring & text);
 
 	virtual void SetSyncText(const std::wstring & text);
+
+	virtual void SetWindowTitle(const std::wstring & text);
 
 	virtual void ShowSyncButton();
 

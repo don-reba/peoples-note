@@ -116,6 +116,8 @@ public:
 
 	virtual void SetSyncText(const std::wstring & text);
 
+	virtual void SetWindowTitle(const std::wstring & text);
+
 	virtual void ShowSyncButton();
 
 	virtual void UpdateNotebooks();

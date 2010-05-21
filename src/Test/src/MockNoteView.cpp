@@ -19,19 +19,24 @@ void MockNoteView::Render(Thumbnail & thumbnail)
 	renderSize.cy = thumbnail.Height;
 }
 
-void MockNoteView::SetBody(wstring html)
+void MockNoteView::SetBody(const wstring & html)
 {
 	body = html;
 }
 
-void MockNoteView::SetSubtitle(wstring html)
+void MockNoteView::SetSubtitle(const wstring & html)
 {
 	subtitle = html;
 }
 
-void MockNoteView::SetTitle(wstring html)
+void MockNoteView::SetTitle(const wstring & html)
 {
 	title = html;
+}
+
+void MockNoteView::SetWindowTitle(const wstring & text)
+{
+	windowTitle = text;
 }
 
 void MockNoteView::Show()

@@ -110,6 +110,7 @@ void NoteListPresenter::OnNotebookSelected()
 {
 	Transaction transaction(userModel);
 	UpdateActiveNotebook();
+	UpdateTitle();
 	UpdateNoteList();
 	UpdateSyncCounter();
 }
@@ -141,6 +142,7 @@ void NoteListPresenter::OnUserLoaded()
 {
 	Transaction transaction(userModel);
 
+	UpdateTitle();
 	UpdateNotebookListView();
 
 	UpdateNoteList();
@@ -208,13 +210,22 @@ void NoteListPresenter::UpdateSyncCounter()
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
 
-	int noteCount (userModel.GetDirtyNoteCount(notebook));
+	int noteCount(userModel.GetDirtyNoteCount(notebook));
 
 	int totalCount(noteCount);
 
 	wostringstream stream;
 	stream << totalCount;
 	noteListView.SetSyncText(stream.str());
+}
+
+void NoteListPresenter::UpdateTitle()
+{
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+
+	noteListView.SetWindowTitle(notebook.name);
+	noteView.SetWindowTitle(notebook.name);
 }
 
 wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid)

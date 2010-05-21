@@ -22,11 +22,13 @@ public:
 
 	virtual void Render(Thumbnail & thumbnail) = 0;
 
-	virtual void SetBody(std::wstring html) = 0;
+	virtual void SetBody(const std::wstring & html) = 0;
 
-	virtual void SetSubtitle(std::wstring text) = 0;
+	virtual void SetSubtitle(const std::wstring & text) = 0;
 
-	virtual void SetTitle(std::wstring text) = 0;
+	virtual void SetTitle(const std::wstring & text) = 0;
+
+	virtual void SetWindowTitle(const std::wstring & text) = 0;
 
 	virtual void Show() = 0;
 };
