@@ -128,116 +128,28 @@ void SyncModel::CloseThread()
 	syncThread = NULL;
 }
 
+void SyncModel::GetNotes
+	( const Notebook    & notebook
+	, EnInteropNoteList & notes
+	)
+{
+	NoteList source;
+	userModel.GetNotesByNotebook(notebook, source);
+	foreach (const Note & note, source)
+	{
+		notes.push_back(EnInteropNote());
+		notes.back().note    = note;
+		notes.back().guid    = note.guid;
+		notes.back().isDirty = note.isDirty;
+		notes.back().name    = note.name;
+		notes.back().usn     = note.usn;
+	}
+}
+
 void SyncModel::PostMessage(SyncMessageQueue::Message message)
 {
 	messages.Enqueue(message);
 	messagePump.WakeUp();
-}
-
-void SyncModel::Sync()
-{
-	try
-	{
-		IEnService::UserStorePtr userStore(enService.GetUserStore());
-		Credentials credentials;
-		userModel.GetCredentials(credentials);
-		IUserStore::AuthenticationResult authenticationResult
-			( userStore->GetAuthenticationToken
-				( credentials.GetUsername()
-				, credentials.GetPassword()
-				)
-			);
-		if (!authenticationResult.IsGood)
-		{
-			PostMessage(SyncMessageQueue::MessageSyncFailed);
-			return;
-		}
-
-		IEnService::NoteStorePtr noteStore
-			( enService.GetNoteStore
-				( authenticationResult.Token
-				, authenticationResult.ShardId
-				)
-			);
-
-		EnInteropNoteList remoteNotes;
-		NotebookList      remoteNotebooks;
-		TagList           remoteTags;
-
-		noteStore->ListEntries(remoteNotes, remoteNotebooks, remoteTags);
-
-		syncLogger.ListRemoteNotes     (remoteNotes);
-		syncLogger.ListRemoteNotebooks (remoteNotebooks);
-		syncLogger.ListRemoteTags      (remoteTags);
-
-		ProcessNotebooks (remoteNotebooks, *noteStore);
-		ProcessTags      (remoteTags,      *noteStore);
-
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-
-		ProcessNotes(remoteNotes, *noteStore, notebook);
-
-		PostMessage(SyncMessageQueue::MessageSyncComplete);
-
-		userModel.Unload();
-	}
-	catch (const std::exception & e)
-	{
-		syncLogger.Error(ConvertToUnicode(e.what()));
-		PostMessage(SyncMessageQueue::MessageSyncFailed);
-		userModel.Unload();
-	}
-}
-
-DWORD WINAPI SyncModel::Sync(LPVOID param)
-{
-	reinterpret_cast<SyncModel*>(param)->Sync();
-	return 0;
-}
-
-void SyncModel::ProcessNotes
-	( const EnInteropNoteList & remote
-	, INoteStore              & noteStore
-	, Notebook                & notebook
-	)
-{
-	const EnInteropNoteList local; // TODO: initialize
-	syncLogger.ListLocalNotes(local);
-
-	vector<SyncLogic::Action<EnInteropNote> > actions;
-	SyncLogic::FullSync(remote, local, actions);
-
-	NoteProcessor processor(userModel);
-
-	syncLogger.BeginSyncStage(L"notes");
-	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
-	{
-		switch (action.Type)
-		{
-		case SyncLogic::ActionAdd:
-			syncLogger.Add(action.Remote->guid);
-			processor.Add(*action.Remote, noteStore, notebook);
-			break;
-		case SyncLogic::ActionDelete:
-			syncLogger.Delete(action.Local->guid);
-			processor.Delete(*action.Local);
-			break;
-		case SyncLogic::ActionRenameAdd:
-			syncLogger.Rename(action.Local->guid);
-			syncLogger.Add(action.Remote->guid);
-			processor.RenameAdd(*action.Local, *action.Remote, noteStore, notebook);
-			break;
-		case SyncLogic::ActionUpload:
-			syncLogger.Upload(action.Local->guid);
-			processor.Upload(*action.Local, noteStore, notebook);
-			break;
-		case SyncLogic::ActionMerge:
-			syncLogger.Merge(action.Local->guid, action.Remote->guid);
-			processor.Merge(*action.Local, *action.Remote);
-			break;
-		}
-	}
 }
 
 void SyncModel::ProcessNotebooks
@@ -298,6 +210,7 @@ void SyncModel::ProcessTags
 
 	TagProcessor processor(userModel);
 
+	syncLogger.BeginSyncStage(L"tags");
 	foreach (const SyncLogic::Action<Tag> action, actions)
 	{
 		switch (action.Type)
@@ -318,6 +231,115 @@ void SyncModel::ProcessTags
 		case SyncLogic::ActionUpload:
 			syncLogger.Upload(action.Local->guid);
 			processor.Upload(*action.Local, noteStore);
+			break;
+		case SyncLogic::ActionMerge:
+			syncLogger.Merge(action.Local->guid, action.Remote->guid);
+			processor.Merge(*action.Local, *action.Remote);
+			break;
+		}
+	}
+}
+
+void SyncModel::Sync()
+{
+	try
+	{
+		IEnService::UserStorePtr userStore(enService.GetUserStore());
+		Credentials credentials;
+		userModel.GetCredentials(credentials);
+		IUserStore::AuthenticationResult authenticationResult
+			( userStore->GetAuthenticationToken
+				( credentials.GetUsername()
+				, credentials.GetPassword()
+				)
+			);
+		if (!authenticationResult.IsGood)
+		{
+			userModel.Unload();
+			syncLogger.Error(L"Authentication failed.");
+			PostMessage(SyncMessageQueue::MessageSyncFailed);
+			return;
+		}
+
+		IEnService::NoteStorePtr noteStore
+			( enService.GetNoteStore
+				( authenticationResult.Token
+				, authenticationResult.ShardId
+				)
+			);
+
+		EnInteropNoteList remoteNotes;
+		NotebookList      remoteNotebooks;
+		TagList           remoteTags;
+
+		noteStore->ListEntries(remoteNotes, remoteNotebooks, remoteTags);
+
+		syncLogger.ListRemoteNotes     (remoteNotes);
+		syncLogger.ListRemoteNotebooks (remoteNotebooks);
+		syncLogger.ListRemoteTags      (remoteTags);
+
+		ProcessNotebooks (remoteNotebooks, *noteStore);
+		ProcessTags      (remoteTags,      *noteStore);
+
+		Notebook notebook;
+		userModel.GetLastUsedNotebook(notebook);
+
+		ProcessNotes(remoteNotes, *noteStore, notebook);
+
+		PostMessage(SyncMessageQueue::MessageSyncComplete);
+
+		userModel.Unload();
+	}
+	catch (const std::exception & e)
+	{
+		syncLogger.Error(ConvertToUnicode(e.what()));
+		userModel.Unload();
+		PostMessage(SyncMessageQueue::MessageSyncFailed);
+	}
+}
+
+DWORD WINAPI SyncModel::Sync(LPVOID param)
+{
+	reinterpret_cast<SyncModel*>(param)->Sync();
+	return 0;
+}
+
+void SyncModel::ProcessNotes
+	( const EnInteropNoteList & remote
+	, INoteStore              & noteStore
+	, Notebook                & notebook
+	)
+{
+	EnInteropNoteList local;
+	GetNotes(notebook, local);
+	syncLogger.ListLocalNotes(local);
+
+	vector<SyncLogic::Action<EnInteropNote> > actions;
+	SyncLogic::FullSync(remote, local, actions);
+
+	NoteProcessor processor(userModel);
+
+	syncLogger.BeginSyncStage(L"notes");
+	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
+	{
+		switch (action.Type)
+		{
+		case SyncLogic::ActionAdd:
+			syncLogger.Add(action.Remote->guid);
+			processor.Add(*action.Remote, noteStore, notebook);
+			break;
+		case SyncLogic::ActionDelete:
+			syncLogger.Delete(action.Local->guid);
+			processor.Delete(*action.Local);
+			break;
+		case SyncLogic::ActionRenameAdd:
+			syncLogger.Rename(action.Local->guid);
+			syncLogger.Add(action.Remote->guid);
+			processor.RenameAdd(*action.Local, *action.Remote, noteStore, notebook);
+			break;
+		case SyncLogic::ActionUpload:
+			syncLogger.Upload(action.Local->guid);
+			processor.Upload(*action.Local, noteStore, notebook);
 			break;
 		case SyncLogic::ActionMerge:
 			syncLogger.Merge(action.Local->guid, action.Remote->guid);

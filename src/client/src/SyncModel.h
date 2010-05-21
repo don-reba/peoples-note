@@ -75,11 +75,12 @@ private:
 
 	void CloseThread();
 
+	void GetNotes
+		( const Notebook    & notebook
+		, EnInteropNoteList & notes
+		);
+
 	void PostMessage(SyncMessageQueue::Message message);
-
-	void Sync();
-
-	static DWORD WINAPI Sync(LPVOID param);
 
 	void ProcessNotes
 		( const EnInteropNoteList & remoteNotes
@@ -96,4 +97,8 @@ private:
 		( const TagList & remoteTags
 		, INoteStore    & noteStore
 		);
+
+	void Sync();
+
+	static DWORD WINAPI Sync(LPVOID param);
 };
