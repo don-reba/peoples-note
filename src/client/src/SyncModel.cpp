@@ -157,9 +157,6 @@ void SyncModel::Sync()
 				)
 			);
 
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-
 		EnInteropNoteList remoteNotes;
 		NotebookList      remoteNotebooks;
 		TagList           remoteTags;
@@ -172,7 +169,11 @@ void SyncModel::Sync()
 
 		ProcessNotebooks (remoteNotebooks, *noteStore);
 		ProcessTags      (remoteTags,      *noteStore);
-		ProcessNotes     (remoteNotes,     *noteStore, notebook);
+
+		Notebook notebook;
+		userModel.GetLastUsedNotebook(notebook);
+
+		ProcessNotes(remoteNotes, *noteStore, notebook);
 
 		PostMessage(SyncMessageQueue::MessageSyncComplete);
 
@@ -410,9 +411,8 @@ void SyncModel::MergeNotebooks
 	, const Notebook & remote
 	)
 {
-	// keep local
+	userModel.UpdateNotebook(local, remote);
 }
-
 
 //---------------
 // tag processing
@@ -504,7 +504,7 @@ void SyncModel::UploadTag
 		, INoteStore          & noteStore
 		)
 {
-	Transaction transacction(userModel);
+	Transaction transaction(userModel);
 
 	Tag replacement;
 	noteStore.CreateTag(local, replacement);
@@ -517,5 +517,5 @@ void SyncModel::MergeTags
 		, const Tag & remote
 		)
 {
-	// keep local
+	userModel.UpdateTag(local, remote);
 }

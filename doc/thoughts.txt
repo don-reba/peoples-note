@@ -1485,5 +1485,13 @@ checkbox support
 				would enable immediate visual feedback
 				we might want to let the user know the note is dirty
 		editing requires complete note information in DOM
-sync raises exception
+merging
+	changing a notebook's guid requires an update operation, not delete/add
+	otherwise, the notes in it will be deleted
+sqlite init
+	might want to call these explicitely
+		sqlite3_initialize()
+		sqlite3_shutdown()
+	TODO
+update processor tests
 	TODO

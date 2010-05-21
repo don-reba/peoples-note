@@ -678,6 +678,42 @@ void UserModel::Unload()
 	dataStore.Close();
 }
 
+void UserModel::UpdateNotebook
+	( const Notebook & notebook
+	, const Notebook & replacement
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "UPDATE Notebooks"
+		"  SET guid = ?, usn = ?, name = ?, isDirty = ?"
+		"  WHERE guid = ?"
+		);
+	statement->Bind(1, replacement.guid);
+	statement->Bind(2, replacement.usn);
+	statement->Bind(3, replacement.name);
+	statement->Bind(4, replacement.isDirty);
+	statement->Bind(5, notebook.guid);
+	statement->Execute();
+}
+
+void UserModel::UpdateTag
+	( const Tag & tag
+	, const Tag & replacement
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "UPDATE Tags"
+		"  SET guid = ?, usn = ?, name = ?, isDirty = ?"
+		"  WHERE guid = ?"
+		);
+	statement->Bind(1, replacement.guid);
+	statement->Bind(2, replacement.usn);
+	statement->Bind(3, replacement.name);
+	statement->Bind(4, replacement.isDirty);
+	statement->Bind(5, tag.guid);
+	statement->Execute();
+}
+
 //------------------
 // utility functions
 //------------------
@@ -770,7 +806,7 @@ void UserModel::Initialize(wstring name)
 			", thumbnailWidth  DEFAULT 0"
 			", thumbnailHeight DEFAULT 0"
 			", search"
-			", notebook REFERENCES Notebooks(guid) ON DELETE CASCADE"
+			", notebook REFERENCES Notebooks(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
 		);
 
@@ -779,7 +815,7 @@ void UserModel::Initialize(wstring name)
 			"( guid PRIMARY KEY"
 			", hash UNIQUE"
 			", data"
-			", note REFERENCES Notes(guid) ON DELETE CASCADE"
+			", note REFERENCES Notes(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
 		);
 

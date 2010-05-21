@@ -786,3 +786,72 @@ FIXTURE_TEST_CASE(TestUserModelUnload, DataStoreFixture)
 	userModel.Unload();
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), TRUE);
 }
+
+FIXTURE_TEST_CASE(TestUserModelUpdateNotebook, DataStoreFixture)
+{
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
+
+	Note note;
+	note.name = L"note-0";
+	userModel.AddNote(note, L"", L"", notebook);
+
+	Notebook replacementNotebook;
+	replacementNotebook.guid    = Guid("{1}");
+	replacementNotebook.isDirty = false;
+	replacementNotebook.name    = L"notebook-1";
+	replacementNotebook.usn     = 1;
+
+	userModel.UpdateNotebook(notebook, replacementNotebook);
+
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
+
+	TEST_CHECK_EQUAL(notebooks.size(), 1);
+	TEST_CHECK_EQUAL(notebooks.at(0).guid,    replacementNotebook.guid);
+	TEST_CHECK_EQUAL(notebooks.at(0).isDirty, replacementNotebook.isDirty);
+	TEST_CHECK_EQUAL(notebooks.at(0).name,    replacementNotebook.name);
+	TEST_CHECK_EQUAL(notebooks.at(0).usn,     replacementNotebook.usn);
+
+	Notebook defaultNotebook;
+	userModel.GetDefaultNotebook(defaultNotebook);
+	TEST_CHECK_EQUAL(defaultNotebook.guid, replacementNotebook.guid);
+
+	Notebook lastUsedNotebook;
+	userModel.GetLastUsedNotebook(lastUsedNotebook);
+	TEST_CHECK_EQUAL(lastUsedNotebook.guid, replacementNotebook.guid);
+
+	NoteList notes;
+	userModel.GetNotesByNotebook(replacementNotebook, notes);
+
+	TEST_CHECK_EQUAL(notes.size(), 1);
+	TEST_CHECK_EQUAL(notes.at(0).name, L"note-0");
+}
+
+FIXTURE_TEST_CASE(TestUserModelUpdateTag, DataStoreFixture)
+{
+	Tag tag;
+	tag.guid    = Guid("{0}");
+	tag.isDirty = true;
+	tag.name    = L"tag-0";
+	tag.usn     = 0;
+
+	userModel.AddTag(tag);
+
+	Tag replacementTag;
+	replacementTag.guid    = Guid("{1}");
+	replacementTag.isDirty = false;
+	replacementTag.name    = L"tag-1";
+	replacementTag.usn     = 1;
+
+	userModel.UpdateTag(tag, replacementTag);
+
+	TagList tags;
+	userModel.GetTags(tags);
+
+	TEST_CHECK_EQUAL(tags.size(), 1);
+	TEST_CHECK_EQUAL(tags.at(0).guid,    replacementTag.guid);
+	TEST_CHECK_EQUAL(tags.at(0).isDirty, replacementTag.isDirty);
+	TEST_CHECK_EQUAL(tags.at(0).name,    replacementTag.name);
+	TEST_CHECK_EQUAL(tags.at(0).usn,     replacementTag.usn);
+}

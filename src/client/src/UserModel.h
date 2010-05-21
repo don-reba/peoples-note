@@ -133,6 +133,16 @@ public:
 
 	virtual void Unload();
 
+	virtual void UpdateNotebook
+		( const Notebook & notebook
+		, const Notebook & replacement
+		);
+
+	virtual void UpdateTag
+		( const Tag & tag
+		, const Tag & replacement
+		);
+
 // utility functions
 
 private:

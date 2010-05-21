@@ -117,4 +117,14 @@ public:
 		) = 0;
 
 	virtual void Unload() = 0;
+
+	virtual void UpdateNotebook
+		( const Notebook & notebook
+		, const Notebook & replacement
+		) = 0;
+
+	virtual void UpdateTag
+		( const Tag & tag
+		, const Tag & replacement
+		) = 0;
 };
