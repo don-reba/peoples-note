@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#if 0
 #include "NotebookProcessor.h"
 
 #include "MockNoteStore.h"
@@ -10,54 +9,42 @@
 
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(NotebookProcessor_Add_Test)
+struct NotebookProcessorFixture
 {
-	MockNoteStore noteStore;
 	MockUserModel userModel;
 
-	NotebookProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
+	NotebookProcessor notebookProcessor;
 
+	NotebookProcessorFixture()
+		: notebookProcessor (userModel)
+	{
+	}
+};
+
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Add_Test, NotebookProcessorFixture)
+{
 	Notebook notebook;
 	notebook.name = L"test";
 
-	noteProcessor.Add(notebook);
+	notebookProcessor.Add(notebook);
 
 	BOOST_CHECK_EQUAL(userModel.notebooks.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.notebooks.at(0).name, L"test");
 }
 
-BOOST_AUTO_TEST_CASE(NotebookProcessor_Delete_Test)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Delete_Test, NotebookProcessorFixture)
 {
-	MockNoteStore noteStore;
-	MockUserModel userModel;
-
-	NotebookProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
-
 	Notebook notebook;
 	notebook.name = L"test";
 
-	noteProcessor.Delete(notebook);
+	notebookProcessor.Delete(notebook);
 
 	BOOST_CHECK_EQUAL(userModel.deletedNotebooks.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.deletedNotebooks.at(0).name, L"test");
 }
 
-BOOST_AUTO_TEST_CASE(NotebookProcessor_Rename_Test)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Rename_Test, NotebookProcessorFixture)
 {
-	MockNoteStore noteStore;
-	MockUserModel userModel;
-
-	NotebookProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
-
 	userModel.notebooks.push_back(Notebook());
 	userModel.notebooks.back().name = L"test";
 	userModel.notebooks.push_back(Notebook());
@@ -70,28 +57,22 @@ BOOST_AUTO_TEST_CASE(NotebookProcessor_Rename_Test)
 	Notebook notebook;
 	notebook.name = L"test";
 
-	noteProcessor.Rename(notebook);
+	notebookProcessor.RenameAdd(userModel.notebooks.at(0), notebook);
 
 	BOOST_CHECK_EQUAL(userModel.notebooks.size(), 5);
-	BOOST_CHECK_EQUAL(userModel.notebooks.at(4).name, L"test(4)");
+	BOOST_CHECK_EQUAL(userModel.notebooks.at(0).name, L"test(4)");
+	BOOST_CHECK_EQUAL(userModel.notebooks.at(4).name, L"test");
 }
 
-BOOST_AUTO_TEST_CASE(NotebookProcessor_Upload_Test)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Upload_Test, NotebookProcessorFixture)
 {
 	MockNoteStore noteStore;
-	MockUserModel userModel;
-
-	NotebookProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
 
 	Notebook notebook;
 	notebook.name = L"test";
 
-	noteProcessor.Upload(notebook);
+	notebookProcessor.Upload(notebook, noteStore);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name, L"test");
 }
-#endif // 0

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#if 0
 #include "TagProcessor.h"
 
 #include "MockNoteStore.h"
@@ -10,54 +9,42 @@
 
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(TagProcessor_Add_Test)
+struct TagProcessorFixture
 {
-	MockNoteStore noteStore;
 	MockUserModel userModel;
 
-	TagProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
+	TagProcessor tagProcessor;
 
+	TagProcessorFixture()
+		: tagProcessor (userModel)
+	{
+	}
+};
+
+BOOST_FIXTURE_TEST_CASE(TagProcessor_Add_Test, TagProcessorFixture)
+{
 	Tag tag;
 	tag.name = L"test";
 
-	noteProcessor.Add(tag);
+	tagProcessor.Add(tag);
 
 	BOOST_CHECK_EQUAL(userModel.tags.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.tags.at(0).name, L"test");
 }
 
-BOOST_AUTO_TEST_CASE(TagProcessor_Delete_Test)
+BOOST_FIXTURE_TEST_CASE(TagProcessor_Delete_Test, TagProcessorFixture)
 {
-	MockNoteStore noteStore;
-	MockUserModel userModel;
-
-	TagProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
-
 	Tag tag;
 	tag.name = L"test";
 
-	noteProcessor.Delete(tag);
+	tagProcessor.Delete(tag);
 
 	BOOST_CHECK_EQUAL(userModel.deletedTags.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.deletedTags.at(0).name, L"test");
 }
 
-BOOST_AUTO_TEST_CASE(TagProcessor_Rename_Test)
+BOOST_FIXTURE_TEST_CASE(TagProcessor_Rename_Test, TagProcessorFixture)
 {
-	MockNoteStore noteStore;
-	MockUserModel userModel;
-
-	TagProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
-
 	userModel.tags.push_back(Tag());
 	userModel.tags.back().name = L"test";
 	userModel.tags.push_back(Tag());
@@ -70,28 +57,22 @@ BOOST_AUTO_TEST_CASE(TagProcessor_Rename_Test)
 	Tag tag;
 	tag.name = L"test";
 
-	noteProcessor.Rename(tag);
+	tagProcessor.RenameAdd(userModel.tags.at(0), tag);
 
 	BOOST_CHECK_EQUAL(userModel.tags.size(), 5);
-	BOOST_CHECK_EQUAL(userModel.tags.at(4).name, L"test(4)");
+	BOOST_CHECK_EQUAL(userModel.tags.at(0).name, L"test(4)");
+	BOOST_CHECK_EQUAL(userModel.tags.at(4).name, L"test");
 }
 
-BOOST_AUTO_TEST_CASE(TagProcessor_Upload_Test)
+BOOST_FIXTURE_TEST_CASE(TagProcessor_Upload_Test, TagProcessorFixture)
 {
 	MockNoteStore noteStore;
-	MockUserModel userModel;
-
-	TagProcessor noteProcessor
-		( noteStore
-		, userModel
-		);
-
+	
 	Tag tag;
 	tag.name = L"test";
 
-	noteProcessor.Upload(tag);
+	tagProcessor.Upload(tag, noteStore);
 
 	BOOST_CHECK_EQUAL(noteStore.createdTags.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdTags.at(0).name, L"test");
 }
-#endif // 0

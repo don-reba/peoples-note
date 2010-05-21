@@ -81,89 +81,19 @@ private:
 
 	static DWORD WINAPI Sync(LPVOID param);
 
-// note processing
-
 	void ProcessNotes
 		( const EnInteropNoteList & remoteNotes
 		, INoteStore              & noteStore
 		, Notebook                & notebook
 		);
 
-	void AddNote
-		( const EnInteropNote & remote
-		, INoteStore          & noteStore
-		, Notebook            & notebook
-		);
-
-	void DeleteNote(const EnInteropNote & local);
-
-	void RenameAddNotes
-		( const EnInteropNote & local
-		, const EnInteropNote & remote
-	, INoteStore          & noteStore
-		, Notebook            & notebook
-		);
-
-	void UploadNote
-		( const EnInteropNote & local
-		, INoteStore          & noteStore
-		, Notebook            & notebook
-		);
-
-	void MergeNotes
-		( const EnInteropNote & local
-		, const EnInteropNote & remote
-		);
-
-// notebook processing
-
 	void ProcessNotebooks
 		( const NotebookList & remoteNotebooks
 		, INoteStore         & noteStore
 		);
 
-	void AddNotebook(const Notebook & remote);
-
-	void DeleteNotebook(const Notebook & local);
-
-	void RenameAddNotebooks
-		( const Notebook & local
-		, const Notebook & remote
-		);
-
-	void UploadNotebook
-		( const Notebook & local
-		, INoteStore     & noteStore
-		);
-
-	void MergeNotebooks
-		( const Notebook & local
-		, const Notebook & remote
-		);
-
-// tag processing
-
 	void ProcessTags
 		( const TagList & remoteTags
 		, INoteStore    & noteStore
-		);
-
-	void AddTag(const Tag & remote);
-
-	void DeleteTag(const Tag & local);
-
-	void RenameAddTags
-		( const Tag & local
-		, const Tag & remote
-		);
-
-	void UploadTag
-		( const Tag & local
-		, INoteStore          & noteStore
-		);
-
-	void MergeTags
-		( const Tag & local
-		, const Tag & remote
 		);
 };

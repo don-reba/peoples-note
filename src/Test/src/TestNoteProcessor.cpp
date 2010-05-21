@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#if 0
 #include "NoteProcessor.h"
 
 #include "MockNoteStore.h"
@@ -10,18 +9,22 @@
 
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(NoteProcessor_Add_Test)
+struct NoteProcessorFixture
 {
-	MockNoteStore noteStore;
 	MockUserModel userModel;
+
+	NoteProcessor noteProcessor;
+
+	NoteProcessorFixture()
+		: noteProcessor (userModel)
+	{
+	}
+};
+
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
+{
 	Notebook notebook;
 	notebook.name = L"test-notebook";
-
-	NoteProcessor noteProcessor
-		( noteStore
-		, userModel
-		, notebook
-		);
 
 	EnInteropNote note;
 	note.note.guid = Guid("{0}");
@@ -29,6 +32,7 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Add_Test)
 	note.resources.push_back(Guid("{1}"));
 	note.resources.push_back(Guid("{2}"));
 
+	MockNoteStore noteStore;
 	noteStore.noteBodies["{0}"] = L"test-body";
 	noteStore.resources.resize(2);
 	noteStore.resources.at(0).Data.push_back(2);
@@ -41,7 +45,7 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Add_Test)
 	noteStore.resources.at(1).Hash = "4816b20bbb2673692f5d8327d331fc00";
 	noteStore.resources.at(1).Note = Guid("{0}");
 
-	noteProcessor.Add(note);
+	noteProcessor.Add(note, noteStore, notebook);
 
 	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).body, L"test-body");
@@ -66,19 +70,8 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Add_Test)
 		);
 }
 
-BOOST_AUTO_TEST_CASE(NoteProcessor_Delete_Test)
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_Delete_Test, NoteProcessorFixture)
 {
-	MockNoteStore noteStore;
-	MockUserModel userModel;
-	Notebook notebook;
-	notebook.name = L"test-notebook";
-
-	NoteProcessor noteProcessor
-		( noteStore
-		, userModel
-		, notebook
-		);
-
 	EnInteropNote note;
 	note.note.name = L"test-note";
 
@@ -88,18 +81,12 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Delete_Test)
 	BOOST_CHECK_EQUAL(userModel.deletedNotes.at(0).name, L"test-note");
 }
 
-BOOST_AUTO_TEST_CASE(NoteProcessor_Upload_Test)
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_Upload_Test, NoteProcessorFixture)
 {
 	MockNoteStore noteStore;
-	MockUserModel userModel;
+
 	Notebook notebook;
 	notebook.name = L"test-notebook";
-
-	NoteProcessor noteProcessor
-		( noteStore
-		, userModel
-		, notebook
-		);
 
 	EnInteropNote note;
 	note.note.name = L"test-note";
@@ -113,7 +100,7 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Upload_Test)
 	userModel.resources.at(1).Guid = Guid("{2}");
 	userModel.resources.at(1).Hash = "2";
 
-	noteProcessor.Upload(note);
+	noteProcessor.Upload(note, noteStore, notebook);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotes.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotes.at(0).name, L"test-note");
@@ -122,4 +109,3 @@ BOOST_AUTO_TEST_CASE(NoteProcessor_Upload_Test)
 	BOOST_CHECK_EQUAL(noteStore.createdResources.at(0).Hash, "1");
 	BOOST_CHECK_EQUAL(noteStore.createdResources.at(1).Hash, "2");
 }
-#endif // 0

@@ -18,21 +18,29 @@ struct SignalCheck
 	void operator () () { signalled = true; }
 };
 
-BOOST_AUTO_TEST_CASE(SyncModel_Test)
+struct SyncModelFixture
 {
 	MockEnService   enService;
 	MockMessagePump messagePump;
 	MockSyncLogger  syncLogger;
 	MockUserModel   userModel;
-	SyncModel syncModel
-		( enService
-		, messagePump
-		, userModel
-		, syncLogger
-		);
 
-	enService.userStore->authenticationResult.IsGood = true;
+	SyncModel syncModel;
 
+	SyncModelFixture()
+		: syncModel
+			( enService
+			, messagePump
+			, userModel
+			, syncLogger
+			)
+	{
+		enService.userStore->authenticationResult.IsGood = true;
+	}
+};
+
+BOOST_FIXTURE_TEST_CASE(SyncModel_Test, SyncModelFixture)
+{
 	BOOST_CHECK(!messagePump.wokeUp);
 
 	SignalCheck check;
