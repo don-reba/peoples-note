@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if 0
 #include "TagProcessor.h"
 
 #include "MockNoteStore.h"
@@ -93,3 +94,4 @@ BOOST_AUTO_TEST_CASE(TagProcessor_Upload_Test)
 	BOOST_CHECK_EQUAL(noteStore.createdTags.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdTags.at(0).name, L"test");
 }
+#endif // 0

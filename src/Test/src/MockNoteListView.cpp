@@ -13,16 +13,17 @@ MockNoteListView::MockNoteListView()
 
 void MockNoteListView::AddNote(wstring html, wstring value)
 {
-	NoteRecord record;
-	record.html  = html;
-	record.value = value;
-	notes.push_back(record);
+	notes.push_back(NoteRecord());
+	notes.back().html  = html;
+	notes.back().value = value;
 	notesUpdated = false;
 }
 
-void MockNoteListView::AddNotebook(wstring html)
+void MockNoteListView::AddNotebook(wstring html, wstring value)
 {
-	notebooks.push_back(html);
+	notebooks.push_back(NotebookRecord());
+	notebooks.back().html  = html;
+	notebooks.back().value = value;
 	notebooksUpdated = false;
 }
 

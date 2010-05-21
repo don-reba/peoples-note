@@ -15,4 +15,6 @@ public:
 	operator const std::string & () const;
 
 	bool operator == (const Guid & guid) const;
+
+	bool operator != (const Guid & guid) const;
 };

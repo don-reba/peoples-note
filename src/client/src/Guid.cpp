@@ -38,3 +38,8 @@ bool Guid::operator == (const Guid & guid) const
 {
 	return data == guid.data;
 }
+
+bool Guid::operator != (const Guid & guid) const
+{
+	return data != guid.data;
+}

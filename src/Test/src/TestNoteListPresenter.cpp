@@ -206,7 +206,8 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.push_back(Note());
 	userModel.notes.back().isDirty = true;
 
-	noteListView.notebooks.push_back(L"fake-notebook");
+	noteListView.notebooks.push_back(MockNoteListView::NotebookRecord());
+	noteListView.notebooks.back().html = L"fake-notebook";
 
 	userModel.notebooks.push_back(Notebook());
 	userModel.notebooks.back().name = L"notebook-0";
@@ -218,8 +219,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.syncText, L"2");
 
 	BOOST_CHECK_EQUAL(noteListView.notebooks.size(), 2);
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(0), L"notebook-0");
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(1), L"notebook-1");
+	BOOST_CHECK_EQUAL(noteListView.notebooks.at(0).html, L"notebook-0");
+	BOOST_CHECK_EQUAL(noteListView.notebooks.at(1).html, L"notebook-1");
 
 	BOOST_CHECK(noteListView.notebooksUpdated);
 }
@@ -332,6 +333,6 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.SignalLoaded();
 
 	BOOST_REQUIRE_EQUAL(noteListView.notebooks.size(), 2);
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(0), L"notebook-0");
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(1), L"notebook-1");
+	BOOST_CHECK_EQUAL(noteListView.notebooks.at(0).html, L"notebook-0");
+	BOOST_CHECK_EQUAL(noteListView.notebooks.at(1).html, L"notebook-1");
 }

@@ -269,3 +269,31 @@ void MockUserModel::Unload()
 	loadMethod = LoadMethodNone;
 	loadedAs.clear();
 }
+
+void MockUserModel::UpdateNotebook
+	( const Notebook & notebook
+	, const Notebook & replacement
+	)
+{
+	foreach (Notebook & n, notebooks)
+	{
+		if (n.guid != notebook.guid)
+			continue;
+		n = replacement;
+		return;
+	}
+}
+
+void MockUserModel::UpdateTag
+	( const Tag & tag
+	, const Tag & replacement
+	)
+{
+	foreach (Tag & t, tags)
+	{
+		if (t.guid != tag.guid)
+			continue;
+		t = replacement;
+		return;
+	}
+}

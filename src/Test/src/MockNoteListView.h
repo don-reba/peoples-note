@@ -11,11 +11,16 @@ public:
 		std::wstring html;
 		std::wstring value;
 	};
+	struct NotebookRecord
+	{
+		std::wstring html;
+		std::wstring value;
+	};
 
 public:
 
-	std::vector<NoteRecord>   notes;
-	std::vector<std::wstring> notebooks;
+	std::vector<NoteRecord>     notes;
+	std::vector<NotebookRecord> notebooks;
 
 	bool notesUpdated;
 	bool notebooksUpdated;
@@ -50,7 +55,7 @@ public:
 
 	virtual void AddNote(std::wstring html, std::wstring value);
 
-	virtual void AddNotebook(std::wstring html);
+	virtual void AddNotebook(std::wstring html, std::wstring value);
 
 	virtual void ClearNotebooks();
 
