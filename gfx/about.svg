@@ -521,6 +521,13 @@
          y="442.02774"
          transform="matrix(0.9949567,0.1003054,-0.1003054,0.9949567,0,0)" />
     </clipPath>
+    <inkscape:perspective
+       id="perspective3090"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -589,7 +596,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -644,9 +651,9 @@
        style="fill:#f0ec40;fill-opacity:1;stroke:none"
        id="rect3758"
        width="480"
-       height="604.99335"
+       height="588"
        x="-1.5654145e-13"
-       y="35.006653" />
+       y="52.000011" />
   </g>
   <g
      inkscape:label="Layer 1"
@@ -731,7 +738,8 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Page border"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
        d="m -66,-56 0,752 612,0 0,-752 -612,0 z M 0,0 480,0 480,640 0,640 0,0 z"
@@ -739,5 +747,24 @@
        inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
+    <rect
+       transform="translate(0,-412.36218)"
+       ry="0"
+       rx="0"
+       y="403.7912"
+       x="-12.937"
+       height="60.570992"
+       width="505.8735"
+       id="rect3078"
+       style="fill:#000000;fill-opacity:1;stroke:none;display:inline" />
+    <image
+       transform="translate(0,-412.36218)"
+       style="display:inline"
+       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/window%20title.png"
+       width="480"
+       height="52"
+       id="image3080"
+       x="-0.00024768067"
+       y="412.36218" />
   </g>
 </svg>
