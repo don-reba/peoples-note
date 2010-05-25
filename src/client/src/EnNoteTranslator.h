@@ -23,7 +23,8 @@ private:
 
 private:
 
-	TransformMap transforms;
+	TransformMap htmlTransforms;
+	TransformMap xmlTransforms;
 
 // interface
 
@@ -34,6 +35,11 @@ public:
 	void ConvertToHtml
 		( std::wstring   xml
 		, std::wstring & html
+		);
+
+	void ConvertToXml
+		( std::wstring   html
+		, std::wstring & xml
 		);
 
 // utility functions
@@ -51,10 +57,28 @@ private:
 		, AttributeMap                & map
 		);
 
-	static void ProcessNoteXml
+	void ProcessNode
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * node
-		, const TransformMap             & transforms
+		, TransformMap                   & transforms
+		);
+
+	static void ReplaceCheckbox
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
+		);
+
+	static void ReplaceDiv
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
+		);
+
+	static void ReplaceImg
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
 		);
 
 	static void ReplaceMedia

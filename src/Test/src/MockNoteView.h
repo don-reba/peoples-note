@@ -10,17 +10,27 @@ public:
 	std::wstring subtitle;
 	std::wstring title;
 	std::wstring windowTitle;
+	bool         isDirty;
 	bool         isShown;
 
 	SIZE renderSize;
 
+	signal     SignalClose;
 	DataSignal SignalLoadingData;
 
 public:
 
+	MockNoteView();
+
+	virtual void ConnectClose(slot_type OnClose);
+
 	virtual void ConnectLoadingData(DataSlot OnLoadingData);
 
+	virtual void GetBody(std::wstring & html);
+
 	virtual void Hide();
+
+	virtual bool IsDirty();
 
 	virtual void Render(Thumbnail & thumbnail);
 

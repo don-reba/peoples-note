@@ -84,6 +84,8 @@ protected:
 		, EventType event
 		);
 
+	void DisconnectBehavior(const char * path);
+
 	void DisconnectBehavior(HELEMENT element);
 
 	virtual void RegisterEventHandlers() {}

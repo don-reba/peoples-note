@@ -5,6 +5,8 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
+#include <fstream>
+
 using namespace htmlayout;
 using namespace htmlayout::dom;
 using namespace std;
@@ -16,6 +18,7 @@ using namespace Tools;
 
 NoteView::NoteView(HINSTANCE instance)
 	: instance        (instance)
+	, isDirty         (false)
 	, isFullScreen    (false)
 	, parent          (NULL)
 	, HTMLayoutWindow (L"note-view.htm")
@@ -63,15 +66,47 @@ void NoteView::RegisterEventHandlers()
 // INoteView implementation
 //-------------------------
 
+void NoteView::ConnectClose(slot_type OnClose)
+{
+	SignalClose.connect(OnClose);
+}
+
 void NoteView::ConnectLoadingData(DataSlot OnLoadingData)
 {
 	SignalLoadingData.connect(OnLoadingData);
 }
 
+static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
+{
+	wstring * dst(reinterpret_cast<wstring*>(param));
+	*dst = ConvertToUnicode(utf8);
+}
+
+void NoteView::GetBody(wstring & html)
+{
+	element root (element::root_element(hwnd_));
+	element body (root.find_first("#body"));
+	if (!body)
+		throw std::exception("#body not found.");
+
+	HTMLayoutGetElementHtmlCB(body, false, _writer_a, &html);
+
+	wofstream note(L"My Documents\\People's Note\\note.txt");
+	note << html;
+}
+
 void NoteView::Hide()
 {
+	if (!::IsWindowVisible(hwnd_))
+		return;
 	::EnableWindow(parent, TRUE);
 	::ShowWindow(hwnd_, SW_HIDE);
+	SignalClose();
+}
+
+bool NoteView::IsDirty()
+{
+	return isDirty;
 }
 
 void NoteView::Render(Thumbnail & thumbnail)
@@ -93,7 +128,11 @@ void NoteView::SetBody(const wstring & html)
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
 
+	DisconnectBehavior("#body input");
+
 	body.set_html(htmlUtf8, htmlUtf8Chars.size());
+
+	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
 }
 
 void NoteView::SetSubtitle(const wstring & text)
@@ -121,6 +160,9 @@ void NoteView::SetWindowTitle(const std::wstring & text)
 
 void NoteView::Show()
 {
+	if (::IsWindowVisible(hwnd_))
+		return;
+
 	::EnableWindow(parent, FALSE);
 	::ShowWindow(hwnd_, SW_SHOW);
 	::UpdateWindow(hwnd_);
@@ -241,6 +283,16 @@ void NoteView::OnFullScreen(BEHAVIOR_EVENT_PARAMS * params)
 void NoteView::OnHome(BEHAVIOR_EVENT_PARAMS * params)
 {
 	CloseWindow(hwnd_);
+}
+
+void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
+{
+	element e(params->heTarget);
+	if (e.get_value().get(false))
+		e.set_attribute("checked", L"");
+	else
+		e.remove_attribute("checked");
+	isDirty = true;
 }
 
 BOOL NoteView::OnLoadData(NMHL_LOAD_DATA * params)

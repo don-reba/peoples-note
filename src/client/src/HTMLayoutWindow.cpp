@@ -41,6 +41,15 @@ void HTMLayoutWindow::ConnectBehavior
 	eventRecords.push_back(record);
 }
 
+void HTMLayoutWindow::DisconnectBehavior(const char * path)
+{
+	dom::element root(dom::element::root_element(hwnd_));
+	vector<dom::element> elements;
+	root.find_all(elements, path);
+	foreach (dom::element element, elements)
+		DisconnectBehavior(element);
+}
+
 void HTMLayoutWindow::DisconnectBehavior(HELEMENT element)
 {
 	eventRecords.erase(find(eventRecords.begin(), eventRecords.end(), element));

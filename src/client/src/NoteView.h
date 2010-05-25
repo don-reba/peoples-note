@@ -11,12 +11,14 @@ private:
 	HINSTANCE instance;
 	HWND      parent;
 
+	bool isDirty;
 	bool isFullScreen;
 
 	WindowRenderer windowRenderer;
 
 	Blob blob;
 
+	signal     SignalClose;
 	DataSignal SignalLoadingData;
 
 // interface
@@ -35,9 +37,15 @@ public:
 
 public:
 
+	virtual void ConnectClose(slot_type OnClose);
+
 	virtual void ConnectLoadingData(DataSlot OnLoadingData);
 
+	virtual void GetBody(std::wstring & html);
+
 	virtual void Hide();
+
+	virtual bool IsDirty();
 
 	virtual void Render(Thumbnail & thumbnail);
 
@@ -75,6 +83,7 @@ private:
 
 	void OnFullScreen (BEHAVIOR_EVENT_PARAMS * params);
 	void OnHome       (BEHAVIOR_EVENT_PARAMS * params);
+	void OnInput      (BEHAVIOR_EVENT_PARAMS * params);
 
 	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };

@@ -1,16 +1,39 @@
 #include "stdafx.h"
 #include "MockNoteView.h"
 
+#include <algorithm>
+
 using namespace std;
+
+MockNoteView::MockNoteView()
+	: isDirty (false)
+	, isShown (false)
+{
+}
+
+void MockNoteView::ConnectClose(slot_type OnClose)
+{
+	SignalClose.connect(OnClose);
+}
 
 void MockNoteView::ConnectLoadingData(DataSlot OnLoadingData)
 {
 	SignalLoadingData.connect(OnLoadingData);
 }
 
+void MockNoteView::GetBody(wstring & html)
+{
+	html = body;
+}
+
 void MockNoteView::Hide()
 {
 	isShown = false;
+}
+
+bool MockNoteView::IsDirty()
+{
+	return isDirty;
 }
 
 void MockNoteView::Render(Thumbnail & thumbnail)

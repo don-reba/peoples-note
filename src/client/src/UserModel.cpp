@@ -84,7 +84,7 @@ void UserModel::AddNote
 	Transaction transaction(*this);
 
 	IDataStore::Statement insertContents = dataStore.MakeStatement
-		( "INSERT INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
+		( "INSERT OR REPLACE INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
 		);
 	insertContents->Bind(1, note.name);
 	insertContents->Bind(2, bodyText);

@@ -47,7 +47,7 @@ BOOST_FIXTURE_TEST_CASE(SyncModel_Test, SyncModelFixture)
 	syncModel.ConnectSyncComplete(boost::ref(check));
 	syncModel.BeginSync(L"test-usr");
 
-	::Sleep(10);
+	::Sleep(20);
 	BOOST_CHECK(!check.signalled);
 	BOOST_CHECK(messagePump.wokeUp);
 

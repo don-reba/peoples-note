@@ -25,12 +25,31 @@ NotePresenter::NotePresenter
 	, enNoteTranslator (enNoteTranslator)
 {
 	noteListView.ConnectOpenNote(bind(&NotePresenter::OnOpenNote, this));
+	noteView.ConnectClose(bind(&NotePresenter::OnCloseNote, this));
 	noteView.ConnectLoadingData(bind(&NotePresenter::OnLoadingData, this, _1, _2));
 }
 
 //---------------
 // event handlers
 //---------------
+
+void NotePresenter::OnCloseNote()
+{
+	if (!noteView.IsDirty())
+		return;
+
+	wstring bodyHtml;
+	noteView.GetBody(bodyHtml);
+
+	wstring bodyXml;
+	enNoteTranslator.ConvertToXml(bodyHtml, bodyXml);
+
+	Transaction transaction(userModel);
+	note.isDirty = true;
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	userModel.AddNote(note, bodyXml, L"", notebook);
+}
 
 void NotePresenter::OnLoadingData
 	( const wchar_t * uri
@@ -53,7 +72,7 @@ void NotePresenter::OnOpenNote()
 
 	wstring body;
 	userModel.GetNoteBody(guid, body);
-	Note note(userModel.GetNote(guid));
+	note = userModel.GetNote(guid);
 
 	wstring subtitle(L"created on ");
 	subtitle.append(note.creationDate.GetFormattedDateTime());

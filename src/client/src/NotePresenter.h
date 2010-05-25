@@ -14,6 +14,8 @@ private:
 	IUserModel       & userModel;
 	EnNoteTranslator & enNoteTranslator;
 
+	Note note;
+
 // interface
 
 public:
@@ -29,10 +31,7 @@ public:
 
 private:
 
-	void OnLoadingData
-		( const wchar_t * uri
-		, Blob          & blob
-		);
-
+	void OnCloseNote();
+	void OnLoadingData(const wchar_t * uri, Blob & blob);
 	void OnOpenNote();
 };

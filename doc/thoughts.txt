@@ -1334,7 +1334,7 @@ need to refactor SyncModel
 	it duplicates most SyncModel members
 	TODO
 sync troubles
-	have a remote notebok and a local notebook
+	have a remote notebook and a local notebook
 	same name, different Guids
 	the algorithm downloads the remote and uploads the local
 	yet, names have to be unique
@@ -1485,13 +1485,96 @@ checkbox support
 				would enable immediate visual feedback
 				we might want to let the user know the note is dirty
 		editing requires complete note information in DOM
+	hold that thought
+	checkbox is special
+		it does not clearly imply editing
+		the user would not expect any other changes to result
+	it seems, checkboxes should not be implemented as general editing
+	back to the conservative approach
+		keep a copy of the original note body
+		record offsets to checkboxes
+		record checkbox states
+		on exit, check states, option
+	implementation
+		notes are processed by EnNoteTranslator
+		can RapidXML return element positions?
+			possibly, with non-destructive parsing
+			then attribute value offset can be used
+			however, entities will not be translated
+				conversion is to HTML
+				entity translation unnecessary
+		this cannot be used during transformation, though
+			transformation implies destructive parsing
+			does it?
+			not necessarily
+			need to check
+				no it does not
+		record checkbox info during transformation
+			how to retrieve it
+				have value location, size, and content
+				need to convert location into offset
+					need main string location
+			how to represent it
+				need to store
+					state
+					value location
+					value size
+				add a POD class for this
+					used during translation
+					output from EnNoteTranslator
+					stored by the note
+						view, presenter, or model?
+						TODO
+					global class
+			how to store it
+				transformation function has fixed signature
+				therefore need to store it as class member
+				can also store the main string location there
+		new state retrieval
+			the note view gets a slab of HTML
+				no DOM elements to subscribe
+			can find them via a selector
+	problem: "checked" attribute is optional
+		should replace the whole element
+		RapidXml only stores name and value offsets
+		could search for opening and closing brackets from name
+		unless the tag has a separate closing tag part
+		in which case proper XML parsing is required
+	general editing is the only viable way to go
+	implementation
+		encoding
+			have EnNoteTranslator save as much information as possible
+		reset
+		decoding
+			new functionality for EnNoteTranslator
+		dirty tracking
+			"reset" reloads the note, makes it not dirty
+			subscribe to checkbox behaviors
+				mark note dirty on change
 merging
 	changing a notebook's guid requires an update operation, not delete/add
 	otherwise, the notes in it will be deleted
 sqlite init
-	might want to call these explicitely
+	might want to call these explicitly
 		sqlite3_initialize()
 		sqlite3_shutdown()
 	TODO
 update processor tests
-	TODO
+	testing is difficult now
+		mixed with threading
+		opaque
+	fixed
+note editor
+	commands
+		cancel
+		checkbox
+		ul
+		ol
+		bold
+		increase indent
+		decrease indent
+		italic
+exception handling
+	exceptions should be raised by models and views
+	presenters should be durable against exceptions
+	presenters should keep logs

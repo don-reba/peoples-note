@@ -8,19 +8,60 @@
 
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(NotePresenterLoadingData_Test)
+struct NotePresenterFixture
 {
 	EnNoteTranslator enNoteTranslator;
 	MockNoteListView noteListView;
 	MockNoteView     noteView;
 	MockUserModel    userModel;
-	NotePresenter notePresenter
-		( noteListView
-		, noteView
-		, userModel
-		, enNoteTranslator
-		);
 
+	NotePresenter notePresenter;
+
+	NotePresenterFixture()
+		: notePresenter
+			( noteListView
+			, noteView
+			, userModel
+			, enNoteTranslator
+			)
+	{
+	}
+};
+
+BOOST_FIXTURE_TEST_CASE
+	( NotePresenter_CloseNote_Test
+	, NotePresenterFixture
+	)
+{
+	Guid guid;
+	userModel.notes.push_back(Note());
+	userModel.notes.back().guid    = guid;
+	userModel.notes.back().isDirty = false;
+	noteListView.selectedNoteGuid = guid;
+	userModel.noteBodies[guid] = L"<en-note/>";
+
+	noteListView.SignalOpenNote();
+
+	noteView.isDirty = true;
+	noteView.body =
+		L"<div type=\"en-note\"><input type=\"checkbox\"/></div>";
+
+	noteView.SignalClose();
+
+	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).note.isDirty, true);
+
+	BOOST_CHECK_EQUAL
+		( userModel.addedNotes.at(0).body
+		, L"<en-note><en-todo checked=\"false\"/></en-note>"
+		);
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( NotePresenter_LoadingData_Test
+	, NotePresenterFixture
+	)
+{
 	userModel.resources.push_back(Resource());
 	userModel.resources.back().Data.push_back(2);
 	userModel.resources.back().Data.push_back(3);
@@ -35,19 +76,11 @@ BOOST_AUTO_TEST_CASE(NotePresenterLoadingData_Test)
 	BOOST_CHECK_EQUAL(result.at(2), 5);
 }
 
-BOOST_AUTO_TEST_CASE(NotePresenter_Content_Test)
+BOOST_FIXTURE_TEST_CASE
+	( NotePresenter_OpenNote_Test
+	, NotePresenterFixture
+	)
 {
-	EnNoteTranslator enNoteTranslator;
-	MockNoteListView noteListView;
-	MockNoteView     noteView;
-	MockUserModel    userModel;
-	NotePresenter notePresenter
-		( noteListView
-		, noteView
-		, userModel
-		, enNoteTranslator
-		);
-
 	Guid guid;
 	userModel.notes.push_back(Note());
 	userModel.notes.back().guid = guid;
@@ -57,7 +90,7 @@ BOOST_AUTO_TEST_CASE(NotePresenter_Content_Test)
 
 	noteListView.SignalOpenNote();
 
-	BOOST_CHECK_EQUAL(noteView.body, L"<div>test-note</div>");
+	BOOST_CHECK_EQUAL(noteView.body, L"<div type=\"en-note\">test-note</div>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
 	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 00:00");
 	BOOST_CHECK(noteView.isShown);
