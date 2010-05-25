@@ -49,6 +49,14 @@ void NotePresenter::OnCloseNote()
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
 	userModel.AddNote(note, bodyXml, L"", notebook);
+
+	Thumbnail thumbnail;
+	thumbnail.Width  = 164;
+	thumbnail.Height = 100;
+	noteView.Render(thumbnail);
+	userModel.SetNoteThumbnail(note.guid, thumbnail);
+
+	noteListView.UpdateThumbnail(note.guid);
 }
 
 void NotePresenter::OnLoadingData

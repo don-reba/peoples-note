@@ -3,7 +3,6 @@
 #include "resourceppc.h"
 #endif 
 
-#include "Guid.h"
 #include "HTMLayoutWindow.h"
 #include "IAnimator.h"
 #include "INoteListView.h"
@@ -123,6 +122,8 @@ public:
 	virtual void UpdateNotebooks();
 
 	virtual void UpdateNotes();
+
+	virtual void UpdateThumbnail(const Guid & guid);
 
 // utility functions
 

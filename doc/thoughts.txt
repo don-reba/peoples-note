@@ -1578,3 +1578,9 @@ exception handling
 	exceptions should be raised by models and views
 	presenters should be durable against exceptions
 	presenters should keep logs
+note update -> thumbnail update
+	need to trigger NoteListView::SignalLoadThumbnail
+	occurs at OnLoadData
+	when the note is updated, the note list thumbnail should be refreshed
+	"update" and "refresh" do not reload images
+	need a special method calling HTLayoutDataReadyAsync

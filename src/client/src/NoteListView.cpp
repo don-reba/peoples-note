@@ -279,6 +279,25 @@ void NoteListView::UpdateNotes()
 	noteList.update(true);
 }
 
+void NoteListView::UpdateThumbnail(const Guid & guid)
+{
+	wstring uri(L"thumb:");
+	uri.append(ConvertToUnicode(guid));
+
+	Blob * blob(NULL);
+	SignalLoadThumbnail(guid, blob);
+	if (blob && !blob->empty())
+	{
+		HTMLayoutDataReadyAsync
+			( hwnd_
+			, uri.c_str()
+			, &blob->at(0)
+			, blob->size()
+			, HLRT_DATA_IMAGE
+			);
+	}
+}
+
 //------------------
 // utility functions
 //------------------

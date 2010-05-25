@@ -55,7 +55,8 @@ note view
 		unless the note is the first
 	√ when the user clicks a TODO checkbox, the checkbox should be toggled
 	when a TODO checkbox is ticked, a "reset" button should appear
-	when a note is closed, the TODO checkbox state is persisted
+	√ when a note is closed, the TODO checkbox state is persisted
+	√ when a note is closed, its thumbnail should be updated
 notebooks
 	√ when a user without a notebook is loaded, an empty default notebook should be created
 	√ when the user changes notebooks, search should be cleared and the note list filled from the new notebook
