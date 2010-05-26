@@ -83,28 +83,71 @@ void UserModel::AddNote
 {
 	Transaction transaction(*this);
 
-	IDataStore::Statement insertContents = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO NoteContents(titleText, bodyText) VALUES (?, ?)"
+	IDataStore::Statement existenceCheck = dataStore.MakeStatement
+		( "SELECT rowid from Notes WHERE guid = ?"
 		);
-	insertContents->Bind(1, note.name);
-	insertContents->Bind(2, bodyText);
-	insertContents->Execute();
-	insertContents->Finalize();
+	existenceCheck->Bind(1, note.guid);
+	if (existenceCheck->Execute())
+	{
+		IDataStore::Statement insertNote = dataStore.MakeStatement
+			( "INSERT INTO Notes(guid, usn, creationDate, title, body, isDirty, notebook)"
+			"  VALUES (?, ?, ?, ?, ?, ?, ?)"
+			);
+		insertNote->Bind(1, note.guid);
+		insertNote->Bind(2, note.usn);
+		insertNote->Bind(3, note.creationDate.GetTime());
+		insertNote->Bind(4, note.name);
+		insertNote->Bind(5, body);
+		insertNote->Bind(6, note.isDirty);
+		insertNote->Bind(7, notebook.guid);
+		insertNote->Execute();
+		insertNote->Finalize();
 
-	IDataStore::Statement insertInfo = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Notes(guid, usn, creationDate, title, body, isDirty, search, notebook)"
-		"  VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-		);
-	insertInfo->Bind(1, note.guid);
-	insertInfo->Bind(2, note.usn);
-	insertInfo->Bind(3, note.creationDate.GetTime());
-	insertInfo->Bind(4, note.name);
-	insertInfo->Bind(5, body);
-	insertInfo->Bind(6, note.isDirty);
-	insertInfo->Bind(7, dataStore.GetLastInsertRowid());
-	insertInfo->Bind(8, notebook.guid);
-	insertInfo->Execute();
-	insertInfo->Finalize();
+		__int64 rowid(dataStore.GetLastInsertRowid());
+
+		IDataStore::Statement insertText = dataStore.MakeStatement
+			( "INSERT INTO NoteText(rowid, title, body)"
+			"  VALUES (?, ?, ?)"
+			);
+		insertText->Bind(1, rowid);
+		insertText->Bind(2, note.name);
+		insertText->Bind(3, bodyText);
+		insertText->Execute();
+		insertText->Finalize();
+	}
+	else
+	{
+		__int64 rowid(0);
+		existenceCheck->Get(0, rowid);
+
+		IDataStore::Statement updateText = dataStore.MakeStatement
+			( "UPDATE NoteText"
+			"  SET    title = ?, body = ?"
+			"  WHERE  rowid = ?"
+			);
+		updateText->Bind(1, note.name);
+		updateText->Bind(2, bodyText);
+		updateText->Bind(3, rowid);
+		updateText->Execute();
+		updateText->Finalize();
+
+		IDataStore::Statement updateNote = dataStore.MakeStatement
+			( "UPDATE Notes"
+			"  SET    guid = ?, usn = ?, creationDate = ?, title = ?,"
+			"         body = ?, isDirty = ?, notebook = ?"
+			"  WHERE  rowid = ?"
+			);
+		updateNote->Bind(1, note.guid);
+		updateNote->Bind(2, note.usn);
+		updateNote->Bind(3, note.creationDate.GetTime());
+		updateNote->Bind(4, note.name);
+		updateNote->Bind(5, body);
+		updateNote->Bind(6, note.isDirty);
+		updateNote->Bind(7, notebook.guid);
+		updateNote->Bind(8, rowid);
+		updateNote->Execute();
+		updateNote->Finalize();
+	}
 }
 
 void UserModel::AddNotebook(const Notebook & notebook)
@@ -124,7 +167,8 @@ void UserModel::AddNotebook(const Notebook & notebook)
 void UserModel::AddResource(const Resource & resource)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Resources(guid, hash, data, note) VALUES (?, ?, ?, ?)"
+		( "INSERT OR REPLACE INTO Resources(guid, hash, data, note)"
+		"  VALUES (?, ?, ?, ?)"
 		);
 	statement->Bind(1, resource.Guid);
 	statement->Bind(2, resource.Hash);
@@ -449,10 +493,10 @@ void UserModel::GetNotesBySearch
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, title, creationDate, isDirty"
-		"  FROM Notes, NoteContents"
-		"  WHERE search = docid AND NoteContents MATCH ?"
-		"  ORDER BY creationDate"
+		( "SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
+		"  FROM   Notes as n, NoteText"
+		"  WHERE  n.rowid = NoteText.rowid AND NoteText MATCH ?"
+		"  ORDER  BY n.creationDate"
 		);
 	statement->Bind(1, search);
 	while (!statement->Execute())
@@ -788,9 +832,9 @@ void UserModel::Initialize(wstring name)
 		);
 
 	CreateTable
-		( "CREATE VIRTUAL TABLE NoteContents USING fts3"
-			"( titleText"
-			", bodyText"
+		( "CREATE VIRTUAL TABLE NoteText USING fts3"
+			"( title"
+			", body"
 			")"
 		);
 
@@ -805,8 +849,7 @@ void UserModel::Initialize(wstring name)
 			", thumbnail"
 			", thumbnailWidth  DEFAULT 0"
 			", thumbnailHeight DEFAULT 0"
-			", search"
-			", notebook REFERENCES Notebooks(guid) ON DELETE CASCADE ON UPDATE CASCADE"
+			", notebook REFERENCES Notebooks(guid)  ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
 		);
 

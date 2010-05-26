@@ -1584,3 +1584,9 @@ note update -> thumbnail update
 	when the note is updated, the note list thumbnail should be refreshed
 	"update" and "refresh" do not reload images
 	need a special method calling HTLayoutDataReadyAsync
+full test search
+	should remove stopwords from the database
+		TODO
+	have to keep referential validity of the FTS table manually
+	therefore, can't do INSERT OR REPLACE
+		need to do SELECT, then INSERT/UPDATE

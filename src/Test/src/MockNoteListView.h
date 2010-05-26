@@ -1,6 +1,9 @@
 #pragma once
 
+#include "Guid.h"
 #include "INoteListView.h"
+
+#include <set>
 
 class MockNoteListView : public INoteListView
 {
@@ -21,6 +24,8 @@ public:
 
 	std::vector<NoteRecord>     notes;
 	std::vector<NotebookRecord> notebooks;
+
+	std::set<std::string> updatedThumbnails;
 
 	bool notesUpdated;
 	bool notebooksUpdated;
@@ -105,4 +110,6 @@ public:
 	virtual void UpdateNotebooks();
 
 	virtual void UpdateNotes();
+
+	virtual void UpdateThumbnail(const Guid & guid);
 };

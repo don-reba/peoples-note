@@ -150,3 +150,8 @@ void MockNoteListView::UpdateNotes()
 {
 	notesUpdated = true;
 }
+
+void MockNoteListView::UpdateThumbnail(const Guid & guid)
+{
+	updatedThumbnails.insert(guid);
+}

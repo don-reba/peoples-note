@@ -55,6 +55,15 @@ BOOST_FIXTURE_TEST_CASE
 		( userModel.addedNotes.at(0).body
 		, L"<en-note><en-todo checked=\"false\"/></en-note>"
 		);
+
+	BOOST_CHECK_EQUAL(noteView.renderSize.cx, 164);
+	BOOST_CHECK_EQUAL(noteView.renderSize.cy, 100);
+
+	bool isThumbnailUpdated
+		(  noteListView.updatedThumbnails.find(guid)
+		!= noteListView.updatedThumbnails.end()
+		);
+	BOOST_CHECK(isThumbnailUpdated);
 }
 
 BOOST_FIXTURE_TEST_CASE
