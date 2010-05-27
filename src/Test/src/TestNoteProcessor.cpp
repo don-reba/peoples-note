@@ -12,18 +12,19 @@ using namespace std;
 struct NoteProcessorFixture
 {
 	MockUserModel userModel;
+	MockNoteStore noteStore;
+	Notebook      notebook;
 
 	NoteProcessor noteProcessor;
 
 	NoteProcessorFixture()
-		: noteProcessor (userModel)
+		: noteProcessor (userModel, noteStore, notebook)
 	{
 	}
 };
 
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 {
-	Notebook notebook;
 	notebook.name = L"test-notebook";
 
 	EnInteropNote note;
@@ -32,7 +33,6 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 	note.resources.push_back(Guid("{1}"));
 	note.resources.push_back(Guid("{2}"));
 
-	MockNoteStore noteStore;
 	noteStore.noteBodies["{0}"] = L"test-body";
 	noteStore.resources.resize(2);
 	noteStore.resources.at(0).Data.push_back(2);
@@ -45,7 +45,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 	noteStore.resources.at(1).Hash = "4816b20bbb2673692f5d8327d331fc00";
 	noteStore.resources.at(1).Note = Guid("{0}");
 
-	noteProcessor.Add(note, noteStore, notebook);
+	noteProcessor.Add(note);
 
 	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).body, L"test-body");
@@ -81,11 +81,39 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Delete_Test, NoteProcessorFixture)
 	BOOST_CHECK_EQUAL(userModel.deletedNotes.at(0).name, L"test-note");
 }
 
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)
+{
+	EnInteropNote local;
+	local.note.name = local.name = L"local-note";
+
+	EnInteropNote remote;
+	remote.guid = remote.note.guid;
+	remote.note.name = remote.name = L"remote-note";
+	remote.resources.push_back(Guid("{0}"));
+	remote.resources.push_back(Guid("{1}"));
+
+	noteStore.noteBodies[remote.guid] = L"remote-body";
+	noteStore.resources.push_back(Resource());
+	noteStore.resources.back().Guid = Guid("{0}");
+	noteStore.resources.back().Note = remote.guid;
+	noteStore.resources.push_back(Resource());
+	noteStore.resources.back().Guid = Guid("{1}");
+	noteStore.resources.back().Note = remote.guid;
+
+	noteProcessor.Merge(local, remote);
+
+	BOOST_CHECK_EQUAL(userModel.notes.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.notes.at(0).name, L"remote-note");
+
+	BOOST_CHECK_EQUAL(userModel.resources.size(), 2);
+	BOOST_CHECK_EQUAL(userModel.resources.at(0).Guid, Guid("{0}"));
+	BOOST_CHECK_EQUAL(userModel.resources.at(1).Guid, Guid("{1}"));
+
+	BOOST_CHECK_EQUAL(userModel.noteBodies[remote.guid], L"remote-body");
+}
+
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_Upload_Test, NoteProcessorFixture)
 {
-	MockNoteStore noteStore;
-
-	Notebook notebook;
 	notebook.name = L"test-notebook";
 
 	EnInteropNote note;
@@ -100,7 +128,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Upload_Test, NoteProcessorFixture)
 	userModel.resources.at(1).Guid = Guid("{2}");
 	userModel.resources.at(1).Hash = "2";
 
-	noteProcessor.Upload(note, noteStore, notebook);
+	noteProcessor.Upload(note);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotes.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotes.at(0).name, L"test-note");

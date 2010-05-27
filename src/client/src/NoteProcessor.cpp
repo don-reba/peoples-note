@@ -3,22 +3,24 @@
 
 #include "EnInteropNote.h"
 #include "INoteStore.h"
+#include "IUserModel.h"
 #include "Notebook.h"
 #include "Transaction.h"
-#include "IUserModel.h"
 
 using namespace std;
 
-NoteProcessor::NoteProcessor(IUserModel & userModel)
+NoteProcessor::NoteProcessor
+	( IUserModel     & userModel
+	, INoteStore     & noteStore
+	, const Notebook & notebook
+	)
 	: userModel (userModel)
+	, noteStore (noteStore)
+	, notebook  (notebook)
 {
 }
 
-void NoteProcessor::Add
-	( const EnInteropNote & remote
-	, INoteStore          & noteStore
-	, Notebook            & notebook
-	)
+void NoteProcessor::Add(const EnInteropNote & remote)
 {
 	wstring body;
 	noteStore.GetNoteBody(remote.note, body);
@@ -44,19 +46,13 @@ void NoteProcessor::Delete(const EnInteropNote & local)
 void NoteProcessor::RenameAdd
 	( const EnInteropNote & local
 	, const EnInteropNote & remote
-	, INoteStore          & noteStore
-	, Notebook            & notebook
 	)
 {
 	// note names need not be unique
-	Add(remote, noteStore, notebook);
+	Add(remote);
 }
 
-void NoteProcessor::Upload
-	( const EnInteropNote & local
-	, INoteStore          & noteStore
-	, Notebook            & notebook
-	)
+void NoteProcessor::Upload(const EnInteropNote & local)
 {
 	Transaction transaction(userModel);
 
@@ -79,5 +75,19 @@ void NoteProcessor::Merge
 	, const EnInteropNote & remote
 	)
 {
-	// keep local
+	Transaction transaction(userModel);
+
+	userModel.DeleteNote(local.note);
+
+	wstring body;
+	noteStore.GetNoteBody(remote.note, body);
+
+	userModel.AddNote(remote.note, body, L"", notebook);
+
+	foreach (const Guid & guid, remote.resources)
+	{
+		Resource resource;
+		noteStore.GetNoteResource(guid, resource);
+		userModel.AddResource(resource);
+	}
 }

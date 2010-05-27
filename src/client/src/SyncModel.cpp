@@ -317,7 +317,7 @@ void SyncModel::ProcessNotes
 	vector<SyncLogic::Action<EnInteropNote> > actions;
 	SyncLogic::FullSync(remote, local, actions);
 
-	NoteProcessor processor(userModel);
+	NoteProcessor processor(userModel, noteStore, notebook);
 
 	syncLogger.BeginSyncStage(L"notes");
 	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
@@ -326,7 +326,7 @@ void SyncModel::ProcessNotes
 		{
 		case SyncLogic::ActionAdd:
 			syncLogger.Add(action.Remote->guid);
-			processor.Add(*action.Remote, noteStore, notebook);
+			processor.Add(*action.Remote);
 			break;
 		case SyncLogic::ActionDelete:
 			syncLogger.Delete(action.Local->guid);
@@ -335,11 +335,11 @@ void SyncModel::ProcessNotes
 		case SyncLogic::ActionRenameAdd:
 			syncLogger.Rename(action.Local->guid);
 			syncLogger.Add(action.Remote->guid);
-			processor.RenameAdd(*action.Local, *action.Remote, noteStore, notebook);
+			processor.RenameAdd(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionUpload:
 			syncLogger.Upload(action.Local->guid);
-			processor.Upload(*action.Local, noteStore, notebook);
+			processor.Upload(*action.Local);
 			break;
 		case SyncLogic::ActionMerge:
 			syncLogger.Merge(action.Local->guid, action.Remote->guid);
