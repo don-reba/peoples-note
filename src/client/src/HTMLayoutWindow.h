@@ -88,6 +88,8 @@ protected:
 
 	void DisconnectBehavior(HELEMENT element);
 
+	htmlayout::dom::element FindFirstElement(const char * selector);
+
 	virtual void RegisterEventHandlers() {}
 
 // window message handlers

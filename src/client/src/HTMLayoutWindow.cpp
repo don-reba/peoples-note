@@ -6,6 +6,7 @@
 #include "htmlayout.h"
 
 using namespace htmlayout;
+using namespace htmlayout::dom;
 using namespace std;
 using namespace Tools;
 
@@ -24,10 +25,10 @@ void HTMLayoutWindow::ConnectBehavior
 		, EventType    event
 		)
 {
-	dom::element root(dom::element::root_element(hwnd_));
-	vector<dom::element> elements;
+	element root(element::root_element(hwnd_));
+	vector<element> elements;
 	root.find_all(elements, path);
-	foreach (dom::element element, elements)
+	foreach (element element, elements)
 		ConnectBehavior(element, command, event);
 }
 
@@ -43,16 +44,29 @@ void HTMLayoutWindow::ConnectBehavior
 
 void HTMLayoutWindow::DisconnectBehavior(const char * path)
 {
-	dom::element root(dom::element::root_element(hwnd_));
-	vector<dom::element> elements;
+	element root(element::root_element(hwnd_));
+	vector<element> elements;
 	root.find_all(elements, path);
-	foreach (dom::element element, elements)
+	foreach (element element, elements)
 		DisconnectBehavior(element);
 }
 
 void HTMLayoutWindow::DisconnectBehavior(HELEMENT element)
 {
 	eventRecords.erase(find(eventRecords.begin(), eventRecords.end(), element));
+}
+
+element HTMLayoutWindow::FindFirstElement(const char * selector)
+{
+	element root(element::root_element(hwnd_));
+	element result(root.find_first(selector));
+	if (!result)
+	{
+		string message(selector);
+		message.append(" not found.");
+		throw std::exception(message.c_str());
+	}
+	return result;
 }
 
 //------------------------

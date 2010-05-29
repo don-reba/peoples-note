@@ -1590,3 +1590,14 @@ full test search
 	have to keep referential validity of the FTS table manually
 	therefore, can't do INSERT OR REPLACE
 		need to do SELECT, then INSERT/UPDATE
+note merging
+	simplest approach
+		replace local with remote
+			won't replace resources or tags
+		better approach
+			delete local
+				resources should be deleted automatically
+			add remote
+				and the resources
+"north east registry" image is not loading
+	TODO

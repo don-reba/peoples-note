@@ -71,13 +71,10 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 	ConnectBehavior("#sync-button",   BUTTON_CLICK,             &NoteListView::OnSync);
 
-	element root(element::root_element(hwnd_));
-	noteList = root.find_first("#note-list");
-	if (!noteList)
-		throw std::exception("#note-list not found.");
-	notebookList = root.find_first("#notebook-list");
-	if (!notebookList)
-		throw std::exception("#notebook-list not found.");
+	noteList     = FindFirstElement("#note-list");
+	notebookList = FindFirstElement("#notebook-list");
+	listScroll   = FindFirstElement("#scroll");
+	listSlider   = FindFirstElement("#slider");
 }
 
 //-----------------------------
@@ -276,7 +273,8 @@ void NoteListView::UpdateNotebooks()
 
 void NoteListView::UpdateNotes()
 {
-	noteList.update(true);
+	noteList.update(MEASURE_DEEP|REDRAW_NOW);
+	UpdateScrollbar();
 }
 
 void NoteListView::UpdateThumbnail(const Guid & guid)
@@ -362,7 +360,59 @@ void NoteListView::ResetUiSetup()
 void NoteListView::SetNoteListScrollPos(int pos)
 {
 	POINT point = { 0, pos };
-	noteList.set_scroll_pos(point);
+	noteList.set_scroll_pos(point, false);
+
+	POINT scrollPos;
+	RECT  viewRect;
+	SIZE  contentSize;
+	noteList.get_scroll_info(scrollPos, viewRect, contentSize);
+
+	RECT listRect(noteList.get_location(SCROLLABLE_AREA));
+	__int64 scrollableHeight(listRect.bottom - listRect.top);
+	if (scrollableHeight <= 0L)
+		return;
+
+	RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
+	__int64 scrollHeight(scrollRect.bottom - scrollRect.top);
+	if (scrollHeight <= 0L)
+		return;
+
+	RECT sliderRect(listSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
+	__int64 sliderHeight(sliderRect.bottom - sliderRect.top);
+	if (sliderHeight <= 0L || sliderHeight >= scrollHeight)
+		return;
+
+	__int64 scrollDistance(scrollHeight - sliderHeight);
+
+	point.y = -static_cast<int>(min(max(pos * scrollDistance / (contentSize.cy - scrollableHeight), 0L), scrollDistance));
+
+	listScroll.set_scroll_pos(point, false);
+}
+
+void NoteListView::UpdateScrollbar()
+{
+	POINT scrollPos;
+	RECT  viewRect;
+	SIZE  contentSize;
+	noteList.get_scroll_info(scrollPos, viewRect, contentSize);
+	if (contentSize.cy <= 0)
+		return;
+
+	RECT listRect(noteList.get_location(SCROLLABLE_AREA));
+	__int64 scrollableHeight(listRect.bottom - listRect.top);
+	if (scrollableHeight <= 0L)
+		return;
+
+	RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
+	__int64 scrollHeight(scrollRect.bottom - scrollRect.top);
+	if (scrollHeight <= 0L)
+		return;
+
+	__int64 sliderHeight(scrollHeight * scrollableHeight / contentSize.cy);
+
+	wchar_t heightText[16];
+	_itow_s(static_cast<int>(sliderHeight), heightText, 16, 10);
+	listSlider.set_style_attribute("height", heightText);
 }
 
 //------------------------
@@ -413,9 +463,7 @@ void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 	msg.handled_ = true;
 
 	if (state == StateDragging)
-	{
 		SetNoteListScrollPos(startScrollPos + lButtonDownY - msg.Position().y);
-	}
 
 }
 

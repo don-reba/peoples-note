@@ -36,6 +36,8 @@ private:
 
 	element noteList;
 	element notebookList;
+	element listScroll;
+	element listSlider;
 
 	Guid selectedNotebookGuid;
 
@@ -140,6 +142,8 @@ private:
 	void ResetUiSetup();
 
 	void SetNoteListScrollPos(int pos);
+
+	void UpdateScrollbar();
 
 // window message handlers
 
