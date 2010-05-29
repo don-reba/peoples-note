@@ -64,10 +64,13 @@ void NotePresenter::OnLoadingData
 	, Blob          & blob
 	)
 {
-	const wchar_t * hash = wcschr(uri, L':');
-	if (!hash)
+	const wchar_t * colonPosition = wcschr(uri, L':');
+	if (!colonPosition)
 		return;
-	++hash;
+	const wchar_t * dotPosition = wcschr(colonPosition + 1, L'.');
+	if (!dotPosition)
+		return;
+	wstring hash(colonPosition + 1, dotPosition - colonPosition - 1);
 	Transaction transaction(userModel);
 	userModel.GetResource(ConvertToAnsi(hash), blob);
 }

@@ -403,6 +403,16 @@ void NoteListView::UpdateScrollbar()
 	if (scrollableHeight <= 0L)
 		return;
 
+	if (contentSize.cy <= scrollableHeight)
+	{
+		listSlider.set_style_attribute("display", L"none");
+		return;
+	}
+	else
+	{
+		listSlider.set_style_attribute("display", L"block");
+	}
+
 	RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
 	__int64 scrollHeight(scrollRect.bottom - scrollRect.top);
 	if (scrollHeight <= 0L)
