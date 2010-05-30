@@ -359,33 +359,41 @@ void NoteListView::ResetUiSetup()
 
 void NoteListView::SetNoteListScrollPos(int pos)
 {
-	POINT point = { 0, pos };
-	noteList.set_scroll_pos(point, false);
-
 	POINT scrollPos;
 	RECT  viewRect;
 	SIZE  contentSize;
 	noteList.get_scroll_info(scrollPos, viewRect, contentSize);
+	int contentHeight(contentSize.cy);
 
 	RECT listRect(noteList.get_location(SCROLLABLE_AREA));
-	__int64 scrollableHeight(listRect.bottom - listRect.top);
-	if (scrollableHeight <= 0L)
+	int scrollableHeight(listRect.bottom - listRect.top);
+	if (scrollableHeight <= 0)
+		return;
+
+	int contentDistance(contentHeight - scrollableHeight);
+	if (contentDistance <= 0)
 		return;
 
 	RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-	__int64 scrollHeight(scrollRect.bottom - scrollRect.top);
-	if (scrollHeight <= 0L)
+	int scrollHeight(scrollRect.bottom - scrollRect.top);
+	if (scrollHeight <= 0)
 		return;
 
 	RECT sliderRect(listSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
-	__int64 sliderHeight(sliderRect.bottom - sliderRect.top);
-	if (sliderHeight <= 0L || sliderHeight >= scrollHeight)
+	int sliderHeight(sliderRect.bottom - sliderRect.top);
+	if (sliderHeight <= 0 || sliderHeight >= scrollHeight)
 		return;
 
-	__int64 scrollDistance(scrollHeight - sliderHeight);
+	int scrollDistance(scrollHeight - sliderHeight);
+	if (scrollDistance <= 0)
+		return;
 
-	point.y = -static_cast<int>(min(max(pos * scrollDistance / (contentSize.cy - scrollableHeight), 0L), scrollDistance));
+	pos = min(max(pos, 0), contentDistance);
 
+	POINT point = { 0, pos };
+	noteList.set_scroll_pos(point, false);
+
+	point.y = -static_cast<int>(static_cast<__int64>(pos) * scrollDistance / contentDistance);
 	listScroll.set_scroll_pos(point, false);
 }
 
