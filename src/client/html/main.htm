@@ -4,47 +4,14 @@
 			@import url(menu.css);
 			body
 			{
-				background-color: silver;
+				background-color: white;
 				margin:           0px;
 				padding:          0px;
 				text-align:       center;
 			}
-			#search-frame
-			{
-				background-color:    white;
-				background-image:    url(inputshadow.png);
-				background-repeat:   repeat-x;
-				background-position: left top;
-				border:              2px solid black;
-				margin:              10px;
-				padding:             4px;
-				width:               100%%;
-			}
-			#search-box
-			{
-				background-image: none;
-				border:           0px;
-				font-size:        1em;
-				height:           1.2em;
-				margin:           0px;
-				min-height:       0px;
-				min-width:        0px;
-				padding:          0px;
-				width:            100%%;
-			}
-			#search-button
-			{
-				background-color: silver;
-				background-image: none;
-				border:           0px;
-				height:           1.2em;
-				margin:           0 0 0 4px;
-				padding:          0px;
-				width:            1.2em;
-			}
 			#menu
 			{
-				background-color: silver;
+				background-color: white;
 				behavior:         popup-menu;
 				border:           1px solid black;
 				bottom:           0px;
@@ -59,66 +26,119 @@
 			}
 			#note-list
 			{
-				background-color:   white;
-				background-image:   none;
-				border:             none;
-				height:             100%;
-				padding:            0;
-				overflow:           hidden;
-				text-align:         left;
-				width:              100%%;
+				background-color: #f0ec40;
+				background-image: none;
+				border-style:     none;
+				height:           100%;
+				padding:          0;
+				overflow:         hidden;
+				text-align:       left;
+				width:            100%%;
 			}
 			#note-list .note
 			{
-				padding: 0px;
-			}
-			#note-list option
-			{
-				border-top: 1px solid black;
+				background-image:    url(corner.png);
+				background-position: right top;
+				background-repeat:   no-repeat;
+				border-top:          1px solid #606060;
+				margin:              0px;
+				padding:             0px;
+				height:              100px;
+				overflow:            hidden;
 			}
 			#note-list .note #thumb
 			{
-				background-color: silver;
-				height:           100px;
-				margin:           0px 4px 0px 0px;
-				width:            162px;
+				border-style: none;
+				border-right: 4px solid #f0ec40;
+				display:      block;
+				float:        left;
+				height:       100px;
+				width:        164px;
 			}
-			#note-list .note td
+			#note-list .note #time
 			{
-				white-space: nowrap;
+				height: 40px;
 			}
-			#note-list #new-note-note
+			#note-list .note #title
 			{
-				padding: 0;
+				white-space: normal;
 			}
-			#new-note-note td
+			#new-note-note #label
 			{
-				padding:    10px 0px;
-				text-align: center;
+				padding-left: 10px;
+				width:        100%%;
 			}
-			#new-text, #new-voice, #new-photo, #new-file
+			#new-note-note button
 			{
-				background-color: silver;
-				background-image: none;
-				height:           64px;
-				margin:           0px;
-				padding:          0px;
-				vertical-align:   middle;
-				width:            64px;
+				background-repeat: no-repeat;
+				border-style:      none;
+				height:            78px;
+				margin:            0px;
+				padding:           0px;
+				width:             78px;
+			}
+			#new-text
+			{
+				background-image: url(text-note.png);
+			}
+			#new-voice
+			{
+				background-image: url(voice-note.png);
+			}
+			#new-photo
+			{
+				background-image: url(photo-note.png);
+			}
+			#new-file
+			{
+				background-image: url(file-note.png);
 			}
 			#scroll
 			{
 				background-color: white;
 				height:           100%%;
+				overflow:         hidden;
 				width:            4px;
 			}
 			#scroll #slider
 			{
-				background-color: silver;
+				background-color: #606060;
 				border-radius:    2px;
 				display:          none;
 				height:           128px;
 				width:            100%%;
+			}
+			#search-frame
+			{
+				border-style:  none;
+				border-bottom: 1px solid #000000;
+				margin:        0px;
+				padding:       10px;
+				width:         100%%;
+			}
+			#search-box
+			{
+				background-image:    url(inputshadow.png);
+				background-position: 13px 13px 13px 13px;
+				background-repeat:   expand;
+				border-style:        none;
+				font-size:           1em;
+				height:              40px;
+				margin:              0px;
+				min-height:          0px;
+				min-width:           0px;
+				padding:             0px 10px;
+				width:               100%%;
+			}
+			#search-button
+			{
+				background-image:  url(search.png);
+				background-repeat: no-repeat;
+				border-style:      none;
+				height:            40px;
+				margin:            0px;
+				padding:           0px;
+				width:             40px;
 			}
 			#sync-panel
 			{
@@ -128,17 +148,15 @@
 				display:          none;
 				left:             0px;
 				margin:           0px;
-				padding:          0px;
+				padding:          9px;
 				position:         fixed;
 			}
 			#sync-button
 			{
-				background-color: silver;
+				background-color: white;
 				background-image: none;
-				border:           0px;
+				border-style:     none;
 				height:           100%%;
-				margin:           0px;
-				padding:          12px;
 				width:            1.2em;
 			}
 			#sync-text
@@ -180,11 +198,11 @@
 						<div id="new-note-note">
 							<table cellspacing="0px" cellpadding="0px" width="100%">
 								<tr>
-									<td id="label">Create note</td>
-									<td width="25%"><button id="new-text"  ><img src="text-note.png"  /></button></td>
-									<td width="25%"><button id="new-voice" ><img src="voice-note.png" /></button></td>
-									<td width="25%"><button id="new-photo" ><img src="photo-note.png" /></button></td>
-									<td width="25%"><button id="new-file"  ><img src="file-note.png"  /></button></td>
+									<td id="label">Create note:</td>
+									<td><button id="new-text"/></td>
+									<td><button id="new-voice"/></td>
+									<td><button id="new-photo"/></td>
+									<td><button id="new-file"/></td>
 								</tr>
 							</table>
 						</div>

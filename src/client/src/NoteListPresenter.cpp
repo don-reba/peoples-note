@@ -231,16 +231,13 @@ void NoteListPresenter::UpdateTitle()
 wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid)
 {
 	wostringstream stream;
-	stream << L"<table><tr><td rowspan=\"3\">";
-	stream << L"<div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:";
+	stream << L"<img id=\"thumb\" src=\"thumb:";
 	stream << guid;
-	stream << L"\"/></div></td><td>";
-	stream << FormatTitle(note.name);
-	stream << L"</td></tr><tr><td>";
-	stream << FormatTags(note.tags);
-	stream << L"</td></tr><tr><td>";
+	stream << L"\"/><div id=\"time\">";
 	stream << FormatDate(note.creationDate);
-	stream << L"</td></tr></table>";
+	stream << L"</div><div id=\"title\">";
+	stream << FormatTitle(note.name);
+	stream << L"</div>";
 	return stream.str();
 }
 

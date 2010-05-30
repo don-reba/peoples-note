@@ -967,6 +967,10 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\html\clear.png"
+				>
+			</File>
+			<File
 				RelativePath=".\client.ico"
 				>
 			</File>
@@ -979,7 +983,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html\corner.png"
+				>
+			</File>
+			<File
 				RelativePath=".\html\file-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\gradient-60.png"
 				>
 			</File>
 			<File
@@ -992,6 +1004,10 @@
 			</File>
 			<File
 				RelativePath=".\html\photo-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\search.png"
 				>
 			</File>
 			<File

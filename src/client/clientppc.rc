@@ -104,13 +104,17 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 //
 
 ABOUT.HTM               HTML                    "html\\about.htm"
+CLEAR.PNG               HTML                    "html\\clear.png"
+CORNER.PNG              HTML                    "html\\corner.png"
 FILE_NOTE.PNG           HTML                    "html\\file-note.png"
+GRADIENT_60.PNG         HTML                    "html\\gradient-60.png"
 HOME.PNG                HTML                    "html\\home.png"
 INPUTSHADOW.PNG         HTML                    "html\\inputshadow.png"
 MAIN.HTM                HTML                    "html\\main.htm"
 MENU.CSS                HTML                    "html\\menu.css"
 NOTE_VIEW.HTM           HTML                    "html\\note-view.htm"
 PHOTO_NOTE.PNG          HTML                    "html\\photo-note.png"
+SEARCH.PNG              HTML                    "html\\search.png"
 SIGNIN_VIEW.HTM         HTML                    "html\\signin-view.htm"
 TEXT_NOTE.PNG           HTML                    "html\\text-note.png"
 VIEW_FULLSCREEN.PNG     HTML                    "html\\view-fullscreen.png"
