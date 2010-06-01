@@ -7,6 +7,7 @@
 #include "Note.h"
 #include "Notebook.h"
 #include "Resource.h"
+#include "Tag.h"
 #include "Thumbnail.h"
 
 class ICredentialsModel;

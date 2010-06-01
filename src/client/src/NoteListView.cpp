@@ -302,17 +302,6 @@ void NoteListView::UpdateThumbnail(const Guid & guid)
 
 void NoteListView::AnimateScroll(DWORD time)
 {
-	++dbgFrames;
-	if (time - dbgStart >= 200)
-	{
-		wchar_t fps[16];
-		_itow_s(dbgFrames * 1000 / (time - dbgStart), fps, 16, 10);
-		::SetWindowText(hwnd_, fps);
-
-		dbgStart  = time;
-		dbgFrames = 0;
-	}
-
 	int    t   (time - startTime);
 	int    sgn ((dragSpeed >= 0.0) ? 1 : -1);
 	double s   (fabs(dragSpeed));
@@ -512,8 +501,6 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 			state     = StateAnimating;
 			dragSpeed = distance / static_cast<double>(time - startTime);
 			startTime = time;
-			dbgStart  = time;
-			dbgFrames = 0;
 			animation = animator.Subscribe(bind(&NoteListView::AnimateScroll, this, _1));
 		}
 		else

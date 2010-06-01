@@ -48,9 +48,6 @@ private:
 	int       startTime;
 	State     state;
 
-	int dbgStart;
-	int dbgFrames;
-
 	signal SignalImport;
 	signal SignalNotebookSelected;
 	signal SignalOpenNote;

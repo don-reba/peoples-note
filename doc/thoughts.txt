@@ -1601,3 +1601,33 @@ note merging
 				and the resources
 "north east registry" image is not loading
 	TODO
+elastic scrolling
+	goal
+		list can scroll past the limits
+		in that case, it should be attracted back
+	physics
+		dragging the list gives it a speed
+		there is acceleration due to friction against direction of movement
+		past an edge there should be acceleration towards the edge
+	discontinuity
+		can determine which edge the movement occurs towards
+		calculate time to reach the edge
+		calculate velocity at the edge
+		if velocity crossed zero
+			calculate position using the pre-edge acceleration
+		else
+			calculate position using post-edge acceleration
+		friction changes direction
+			when velocity changes direction
+			this happens past the edge
+	actually, there is very little need for any of this
+tags
+	rarely needed
+	should not be part of the note structure
+	should be retrieved like resources
+	tags are different from resources
+	in that a tag can be associated with 0-many notes
+	how to associate notes with tags, then?
+		NoteStore can retrieve tag names for a notebook
+		user model should associate by name, too, then
+			AddTagToNote(tagName, noteGuid);
