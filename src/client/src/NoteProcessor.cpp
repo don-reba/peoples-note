@@ -25,6 +25,9 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 	wstring body;
 	noteStore.GetNoteBody(remote.note, body);
 
+	vector<wstring> tagNames;
+	noteStore.GetNoteTagNames(remote.note, tagNames);
+
 	Transaction transaction(userModel);
 	userModel.AddNote(remote.note, body, L"", notebook);
 	foreach (const Guid & guid, remote.resources)
@@ -36,6 +39,8 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 		// string checkHash = HashWithMD5(resource.Data);
 		userModel.AddResource(resource);
 	}
+	foreach (const wstring & tagName, tagNames)
+		userModel.AddTagToNote(tagName, remote.note);
 }
 
 void NoteProcessor::Delete(const EnInteropNote & local)

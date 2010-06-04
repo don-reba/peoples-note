@@ -46,6 +46,11 @@ public:
 
 	virtual void AddTag(const Tag & tag);
 
+	virtual void AddTagToNote
+		( const std::wstring & tagName
+		, const Note         & note
+		);
+
 	virtual void BeginTransaction();
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
@@ -72,7 +77,15 @@ public:
 
 	virtual Note GetNote(Guid guid);
 
-	virtual void GetNoteBody(Guid guid, std::wstring & body);
+	virtual void GetNoteBody
+		( const Guid   & guid
+		, std::wstring & body
+		);
+
+	virtual void GetNoteTags
+		( const Note & note
+		, TagList    & tags
+		);
 
 	virtual void GetNoteThumbnail
 		( const Guid & guid

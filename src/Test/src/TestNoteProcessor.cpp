@@ -44,6 +44,15 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 	noteStore.resources.at(1).Guid = Guid("{2}");
 	noteStore.resources.at(1).Hash = "4816b20bbb2673692f5d8327d331fc00";
 	noteStore.resources.at(1).Note = Guid("{0}");
+	noteStore.noteTags.push_back(make_pair("{0}", L"tag-0"));
+	noteStore.noteTags.push_back(make_pair("{0}", L"tag-1"));
+
+	userModel.tags.push_back(Tag());
+	userModel.tags.back().guid = Guid("{0}");
+	userModel.tags.back().name = L"tag-0";
+	userModel.tags.push_back(Tag());
+	userModel.tags.back().guid = Guid("{1}");
+	userModel.tags.back().name = L"tag-1";
 
 	noteProcessor.Add(note);
 
@@ -67,6 +76,15 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 	BOOST_CHECK_EQUAL
 		( userModel.resources.at(1).Hash
 		, "4816b20bbb2673692f5d8327d331fc00"
+		);
+	BOOST_CHECK_EQUAL(userModel.noteTags.size(), 2);
+	BOOST_CHECK
+		(  userModel.noteTags.find(MockUserModel::NoteTag("{0}", "{0}"))
+		!= userModel.noteTags.end()
+		);
+	BOOST_CHECK
+		(  userModel.noteTags.find(MockUserModel::NoteTag("{0}", "{1}"))
+		!= userModel.noteTags.end()
 		);
 }
 

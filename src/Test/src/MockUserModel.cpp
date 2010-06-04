@@ -42,6 +42,21 @@ void MockUserModel::AddTag(const Tag & tag)
 	tags.push_back(tag);
 }
 
+void MockUserModel::AddTagToNote
+	( const std::wstring & tagName
+	, const Note         & note
+	)
+{
+	foreach (const Tag & tag, tags)
+	{
+		if (tag.name == tagName)
+		{
+			noteTags.insert(NoteTag(note.guid, tag.guid));
+			return;
+		}
+	}
+}
+
 void MockUserModel::BeginTransaction()
 {
 	isInTransaction = true;
@@ -119,10 +134,28 @@ Note MockUserModel::GetNote(Guid guid)
 	throw std::exception("Note not found.");
 }
 
-void MockUserModel::GetNoteBody(Guid guid, wstring & resource)
+void MockUserModel::GetNoteBody
+	( const Guid & guid
+	, wstring    & resource
+	)
 {
 	if (noteBodies.find(guid) != noteBodies.end())
 		resource = noteBodies[guid];
+}
+
+void MockUserModel::GetNoteTags
+	( const Note & note
+	, TagList    & tags
+	)
+{
+	NoteTag noteTag;
+	noteTag.note = note.guid;
+	foreach (Tag & tag, this->tags)
+	{
+		noteTag.tag = tag.guid;
+		if (noteTags.find(noteTag) != noteTags.end())
+			tags.push_back(tag);
+	}
 }
 
 void MockUserModel::GetNotebook

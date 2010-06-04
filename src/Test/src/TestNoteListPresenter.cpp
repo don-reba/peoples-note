@@ -41,33 +41,6 @@ struct NoteListPresenterFixture
 	}
 };
 
-Note MakeNote(const Guid & guid, const wchar_t * name, int creationDate, const TagList & tags)
-{
-	Note note;
-	note.guid         = guid;
-	note.name         = name;
-	note.creationDate = creationDate;
-	copy(tags.begin(), tags.end(), back_inserter(note.tags));
-	return note;
-}
-
-Note MakeNote(const Guid & guid, const wchar_t * name, int creationDate)
-{
-	Note note;
-	note.guid         = guid;
-	note.name         = name;
-	note.creationDate = creationDate;
-	return note;
-}
-
-Note MakeNote(const wchar_t * name, int creationDate)
-{
-	Note note;
-	note.name         = name;
-	note.creationDate = creationDate;
-	return note;
-}
-
 //-----------
 // test cases
 //-----------
@@ -82,11 +55,6 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.back().guid = Guid("{0}");
 	userModel.notes.back().isDirty = true;
 
-	userModel.notes.back().tags.push_back(Tag());
-	userModel.notes.back().tags.back().name = L"tag-0";
-	userModel.notes.back().tags.push_back(Tag());
-	userModel.notes.back().tags.back().name = L"tag-1";
-
 	userModel.notes.push_back(Note());
 	userModel.notes.back().name = L"";
 	userModel.notes.back().guid = Guid("{1}");
@@ -96,11 +64,6 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.back().name = L"<td id=\"";
 	userModel.notes.back().guid = Guid("{2}");
 	userModel.notes.back().isDirty = true;
-
-	userModel.notes.back().tags.push_back(Tag());
-	userModel.notes.back().tags.back().name = L"&amp;";
-	userModel.notes.back().tags.push_back(Tag());
-	userModel.notes.back().tags.back().name = L"<strong>not bold</strong";
 
 	copy
 		( userModel.notes.begin()
@@ -115,15 +78,15 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_REQUIRE_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(0).html
-		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:{0}\"/></div></td><td>Note</td></tr><tr><td>tag-0, tag-1</td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
+		, L"<img id=\"thumb\" src=\"thumb:{0}\"/><div id=\"time\">1970-01-01 00:00</div><div id=\"title\">Note</div>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(1).html
-		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:{1}\"/></div></td><td></td></tr><tr><td></td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
+		, L"<img id=\"thumb\" src=\"thumb:{1}\"/><div id=\"time\">1970-01-01 00:00</div><div id=\"title\"></div>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(2).html
-		, L"<table><tr><td rowspan=\"3\"><div id=\"thumb\"><img width=\"164\" height=\"100\" src=\"thumb:{2}\"/></div></td><td>&lt;td id=&quot;</td></tr><tr><td>&amp;amp;, &lt;strong&gt;not bold&lt;/strong</td></tr><tr><td>1970-01-01 00:00</td></tr></table>"
+		, L"<img id=\"thumb\" src=\"thumb:{2}\"/><div id=\"time\">1970-01-01 00:00</div><div id=\"title\">&lt;td id=&quot;</div>"
 		);
 
 	BOOST_CHECK_EQUAL(noteListView.syncText, L"3");

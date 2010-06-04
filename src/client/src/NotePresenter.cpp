@@ -88,6 +88,19 @@ void NotePresenter::OnOpenNote()
 	wstring subtitle(L"created on ");
 	subtitle.append(note.creationDate.GetFormattedDateTime());
 
+	TagList tags;
+	userModel.GetNoteTags(note, tags);
+	if (!tags.empty())
+	{
+		subtitle.append(L"\ntags: ");
+		subtitle.append(tags[0].name);
+		for (int i = 1; i != tags.size(); ++i)
+		{
+			subtitle.append(L", ");
+			subtitle.append(tags[i].name);
+		}
+	}
+
 	wstring html;
 	enNoteTranslator.ConvertToHtml(body, html);
 

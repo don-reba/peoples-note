@@ -95,65 +95,98 @@ Note MakeNote
 
 FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 {
-	Guid guid0;
-	Guid guid1;
+	Note note0;
+	note0.name         = L"note-0";
+	note0.creationDate = Timestamp(2);
+	note0.isDirty      = true;
+	note0.usn          = 3;
+	wstring body0(L"<html>note body 0</html>");
+
+	Note note1;
+	note1.name         = L"note-1";
+	note1.creationDate = Timestamp(5);
+	note1.isDirty      = false;
+	note1.usn          = 7;
+	wstring body1(L"<html>note body 1</html>");
+
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	userModel.AddNote(note0, body0, L"", notebook);
+	userModel.AddNote(note1, body1, L"", notebook);
+
+	Tag tag0;
+	tag0.name    = L"test-tag-0";
+	tag0.usn     = 2;
+	tag0.isDirty = true;
+
+	Tag tag1;
+	tag1.name    = L"test-tag-1";
+	tag1.usn     = 3;
+	tag1.isDirty = false;
+
+	Tag tag2;
+	tag2.name    = L"test-tag-2";
+
+	userModel.AddTag(tag2);
+	userModel.AddTag(tag0);
+	userModel.AddTag(tag1);
+
+	userModel.AddTagToNote(L"test-tag-2", note0);
+	userModel.AddTagToNote(L"test-tag-1", note0);
+
 	{
-		Note note        (MakeNote(guid0, L"note-0", Timestamp(2), 3, true));
-		wstring body     (L"<html>note body 0</html>");
-		wstring bodyText (L"note body 0");
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-		userModel.AddNote(note, body, bodyText, notebook);
-	}
-	{
-		Note note        (MakeNote(guid1, L"note-1", Timestamp(5), 7, false));
-		wstring body     (L"<html>note body 1</html>");
-		wstring bodyText (L"note body 1");
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-		userModel.AddNote(note, body, bodyText, notebook);
-	}
-	{
-		Note result = userModel.GetNote(guid0);
-		TEST_CHECK_EQUAL(result.guid,                   guid0);
+		Note result = userModel.GetNote(note0.guid);
+		TEST_CHECK_EQUAL(result.guid,                   note0.guid);
 		TEST_CHECK_EQUAL(result.creationDate.GetTime(), 2L);
 		TEST_CHECK_EQUAL(result.usn,                    3);
 		TEST_CHECK_EQUAL(result.name,                   L"note-0");
 		TEST_CHECK_EQUAL(result.isDirty,                true);
 
 		wstring loaded;
-		userModel.GetNoteBody(guid0, loaded);
+		userModel.GetNoteBody(note0.guid, loaded);
 		TEST_CHECK_EQUAL(loaded, L"<html>note body 0</html>");
 	}
 	{
-		Note result = userModel.GetNote(guid1);
-		TEST_CHECK_EQUAL(result.guid,                   guid1);
+		Note result = userModel.GetNote(note1.guid);
+		TEST_CHECK_EQUAL(result.guid,                   note1.guid);
 		TEST_CHECK_EQUAL(result.creationDate.GetTime(), 5L);
 		TEST_CHECK_EQUAL(result.usn,                    7);
 		TEST_CHECK_EQUAL(result.name,                   L"note-1");
 		TEST_CHECK_EQUAL(result.isDirty,                false);
 
 		wstring loaded;
-		userModel.GetNoteBody(guid1, loaded);
+		userModel.GetNoteBody(note1.guid, loaded);
 		TEST_CHECK_EQUAL(loaded, L"<html>note body 1</html>");
 	}
-}
+	{
+		TagList tags;
+		userModel.GetTags(tags);
+		TEST_CHECK_EQUAL(tags.size(), 3);
+		TEST_CHECK_EQUAL(tags.at(0).guid,    tag0.guid);
+		TEST_CHECK_EQUAL(tags.at(0).name,    L"test-tag-0");
+		TEST_CHECK_EQUAL(tags.at(0).usn,     2);
+		TEST_CHECK_EQUAL(tags.at(0).isDirty, true);
+		TEST_CHECK_EQUAL(tags.at(1).guid,    tag1.guid);
+		TEST_CHECK_EQUAL(tags.at(1).name,    L"test-tag-1");
+		TEST_CHECK_EQUAL(tags.at(1).usn,     3);
+		TEST_CHECK_EQUAL(tags.at(1).isDirty, false);
+		TEST_CHECK_EQUAL(tags.at(2).guid,    tag2.guid);
+	}
+	{
+		TagList tags;
+		userModel.GetNoteTags(note0, tags);
+		TEST_CHECK_EQUAL(tags.size(), 2);
+		TEST_CHECK_EQUAL(tags.at(0).guid,    tag1.guid);
+		TEST_CHECK_EQUAL(tags.at(0).name,    L"test-tag-1");
+		TEST_CHECK_EQUAL(tags.at(0).usn,     3);
+		TEST_CHECK_EQUAL(tags.at(0).isDirty, false);
+		TEST_CHECK_EQUAL(tags.at(1).guid,    tag2.guid);
+		TEST_CHECK_EQUAL(tags.at(1).name,    L"test-tag-2");
 
-FIXTURE_TEST_CASE(TestUserModelAddTag, DataStoreFixture)
-{
-	Tag tag;
-	tag.name    = L"test-tag";
-	tag.usn     = 2;
-	tag.isDirty = true;
-	userModel.AddTag(tag);
-
-	TagList tags;
-	userModel.GetTags(tags);
-
-	TEST_CHECK_EQUAL(tags.size(), 1);
-	TEST_CHECK_EQUAL(tags.at(0).guid,    tag.guid);
-	TEST_CHECK_EQUAL(tags.at(0).name,    tag.name);
-	TEST_CHECK_EQUAL(tags.at(0).isDirty, tag.isDirty);
+		tags.clear();
+		userModel.GetNoteTags(note1, tags);
+		TEST_CHECK(tags.empty());
+	}
 }
 
 FIXTURE_TEST_CASE(TestUserModelCascade, DataStoreFixture)

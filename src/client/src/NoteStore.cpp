@@ -63,6 +63,15 @@ void NoteStore::GetNoteResource
 	resource.Note = enResource.noteGuid;
 }
 
+void NoteStore::GetNoteTagNames
+	( const Note      & note
+	, vector<wstring> & names
+	)
+{
+	wstring guid(ConvertToUnicode(note.guid));
+	names.swap(noteStore.getNoteTagNames(token, guid));
+}
+
 void NoteStore::ListEntries
 	( EnInteropNoteList & notes
 	, NotebookList      & notebooks

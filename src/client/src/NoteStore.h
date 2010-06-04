@@ -39,6 +39,11 @@ public:
 		, Resource   & resource
 		);
 
+	virtual void GetNoteTagNames
+		( const Note                & note
+		, std::vector<std::wstring> & names
+		);
+
 	virtual void ListEntries
 		( EnInteropNoteList & notes
 		, NotebookList      & notebooks

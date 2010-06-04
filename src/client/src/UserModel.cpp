@@ -192,6 +192,23 @@ void UserModel::AddTag(const Tag & tag)
 	statement->Finalize();
 }
 
+void UserModel::AddTagToNote
+	( const wstring & tagName
+	, const Note    & note
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "INSERT OR REPLACE INTO NoteTags(note, tag)"
+			" SELECT ?, guid"
+			" FROM   tags"
+			" WHERE  upper(name) = upper(?)"
+		);
+	statement->Bind(1, note.guid);
+	statement->Bind(2, tagName);
+	statement->Execute();
+	statement->Finalize();
+}
+
 void UserModel::BeginTransaction()
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -368,7 +385,10 @@ Note UserModel::GetNote(Guid guid)
 	return note;
 }
 
-void UserModel::GetNoteBody(Guid guid, wstring & body)
+void UserModel::GetNoteBody
+	( const Guid & guid
+	, wstring    & body
+	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT body"
@@ -380,6 +400,30 @@ void UserModel::GetNoteBody(Guid guid, wstring & body)
 	if (statement->Execute())
 		throw std::exception("Note not found.");
 	statement->Get(0, body);
+}
+
+void UserModel::GetNoteTags
+	( const Note & note
+	, TagList    & tags
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT guid, usn, name, isDirty"
+		"  FROM Tags, NoteTags"
+		"  WHERE note = ? AND tag = guid"
+		"  ORDER BY name"
+		);
+	statement->Bind(1, note.guid);
+	while (!statement->Execute())
+	{
+		string  guid;
+		tags.push_back(Tag());
+		statement->Get(0, guid);
+		statement->Get(1, tags.back().usn);
+		statement->Get(2, tags.back().name);
+		statement->Get(3, tags.back().isDirty);
+		tags.back().guid = guid;
+	}
 }
 
 void UserModel::GetNotebook
@@ -868,6 +912,13 @@ void UserModel::Initialize(wstring name)
 			", usn"
 			", name"
 			", isDirty"
+			")"
+		);
+
+	CreateTable
+		( "CREATE TABLE NoteTags"
+			"( note REFERENCES Notes(guid)"
+			", tag  REFERENCES Tags(guid)"
 			")"
 		);
 }

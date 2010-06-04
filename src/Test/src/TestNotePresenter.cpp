@@ -78,7 +78,7 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.resources.back().Hash = "test";
 
 	Blob result;
-	noteView.SignalLoadingData(L"img:test", result);
+	noteView.SignalLoadingData(L"img:test.jpg", result);
 	BOOST_REQUIRE_EQUAL(result.size(), 3);
 	BOOST_CHECK_EQUAL(result.at(0), 2);
 	BOOST_CHECK_EQUAL(result.at(1), 3);
@@ -90,17 +90,36 @@ BOOST_FIXTURE_TEST_CASE
 	, NotePresenterFixture
 	)
 {
-	Guid guid;
+
+	userModel.tags.push_back(Tag());
+	userModel.tags.back().guid = Guid("{1}");
+	userModel.tags.back().name = L"tag-0";
+
+	userModel.tags.push_back(Tag());
+	userModel.tags.back().guid = Guid("{2}");
+	userModel.tags.back().name = L"tag-1";
+
 	userModel.notes.push_back(Note());
-	userModel.notes.back().guid = guid;
+	userModel.notes.back().guid = Guid("{0}");
 	userModel.notes.back().name = L"note-title";
-	noteListView.selectedNoteGuid = guid;
-	userModel.noteBodies[guid] = L"<en-note>test-note</en-note>";
+
+	noteListView.selectedNoteGuid = Guid("{0}");
+	userModel.noteBodies["{0}"] = L"<en-note>test-note</en-note>";
 
 	noteListView.SignalOpenNote();
 
 	BOOST_CHECK_EQUAL(noteView.body, L"<div type=\"en-note\">test-note</div>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
 	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 00:00");
+	BOOST_CHECK(noteView.isShown);
+
+	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{1}"));
+	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{2}"));
+
+	noteListView.SignalOpenNote();
+
+	BOOST_CHECK_EQUAL(noteView.body, L"<div type=\"en-note\">test-note</div>");
+	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
+	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 00:00\ntags: tag-0, tag-1");
 	BOOST_CHECK(noteView.isShown);
 }

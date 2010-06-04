@@ -31,6 +31,11 @@ public:
 
 	virtual void AddTag(const Tag & tag) = 0;
 
+	virtual void AddTagToNote
+		( const std::wstring & tagName
+		, const Note         & note
+		) = 0;
+
 	virtual void BeginTransaction() = 0;
 
 	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
@@ -63,7 +68,15 @@ public:
 		, Notebook   & notebook
 		) = 0;
 
-	virtual void GetNoteBody(Guid guid, std::wstring & body) = 0;
+	virtual void GetNoteBody
+		( const Guid   & guid
+		, std::wstring & body
+		) = 0;
+
+	virtual void GetNoteTags
+		( const Note & note
+		, TagList    & tags
+		) = 0;
 
 	virtual void GetNoteThumbnail
 		( const Guid & guid

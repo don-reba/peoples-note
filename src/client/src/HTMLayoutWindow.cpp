@@ -56,7 +56,7 @@ void HTMLayoutWindow::DisconnectBehavior(HELEMENT element)
 	eventRecords.erase(find(eventRecords.begin(), eventRecords.end(), element));
 }
 
-element HTMLayoutWindow::FindFirstElement(const char * selector)
+HELEMENT HTMLayoutWindow::FindFirstElement(const char * selector)
 {
 	element root(element::root_element(hwnd_));
 	element result(root.find_first(selector));

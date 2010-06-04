@@ -13,7 +13,8 @@ class MockNoteStore : public INoteStore
 {
 public:
 
-	typedef std::map<std::string, std::wstring> NoteBodyMap;
+	typedef std::map<std::string, std::wstring>                NoteBodyMap;
+	typedef std::vector<std::pair<std::string, std::wstring> > NoteTagMap;
 
 public:
 
@@ -22,6 +23,7 @@ public:
 	TagList           remoteTags;
 
 	NoteBodyMap noteBodies;
+	NoteTagMap  noteTags;
 
 	NoteList     createdNotes;
 	NotebookList createdNotebooks;
@@ -44,6 +46,11 @@ public:
 	virtual void GetNoteResource
 		( const Guid & guid
 		, Resource   & resource
+		);
+
+	virtual void GetNoteTagNames
+		( const Note                & note
+		, std::vector<std::wstring> & names
 		);
 
 	virtual void ListEntries

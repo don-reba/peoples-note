@@ -30,6 +30,19 @@ void MockNoteStore::GetNoteResource
 	}
 }
 
+void MockNoteStore::GetNoteTagNames
+	( const Note                & note
+	, std::vector<std::wstring> & names
+	)
+{
+	typedef pair<string, wstring> Pair;
+	foreach (Pair & p, noteTags)
+	{
+		if (p.first == static_cast<string>(note.guid))
+			names.push_back(p.second);
+	}
+}
+
 void MockNoteStore::ListEntries
 	( EnInteropNoteList & notes
 	, NotebookList      & notebooks
