@@ -29,12 +29,6 @@ void CredentialsView::Create(HWND parent)
 		throw std::exception("Class could not be registered.");
 }
 
-void CredentialsView::RegisterEventHandlers()
-{
-	ConnectBehavior("#ok",     BUTTON_CLICK, &CredentialsView::OnOk);
-	ConnectBehavior("#cancel", BUTTON_CLICK, &CredentialsView::OnCancel);
-}
-
 //--------------------------------
 // ICredentialsView implementation
 //--------------------------------
@@ -266,18 +260,4 @@ void CredentialsView::ProcessMessage(WndMsg &msg)
 		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
 		throw e;
 	}
-}
-
-//---------------------------
-// HTMLayout message handlers
-//---------------------------
-
-void CredentialsView::OnCancel(BEHAVIOR_EVENT_PARAMS * params)
-{
-	SignalCancel();
-}
-
-void CredentialsView::OnOk(BEHAVIOR_EVENT_PARAMS * params)
-{
-	SignalOk();
 }

@@ -33,11 +33,13 @@ private:
 	SHACTIVATEINFO activateInfo;
 	int            cmdShow;
 	HINSTANCE      instance;
+	DWORD          sipState;
 
 	element noteList;
 	element notebookList;
 	element listScroll;
 	element listSlider;
+	element searchBox;
 
 	Guid selectedNotebookGuid;
 
@@ -160,7 +162,8 @@ private:
 
 private:
 
-	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
+	virtual BOOL OnFocus    (FOCUS_PARAMS   * params);
+	virtual BOOL OnLoadData (NMHL_LOAD_DATA * params);
 
 	void OnMenuExit     (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuImport   (BEHAVIOR_EVENT_PARAMS * params);

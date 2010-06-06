@@ -24,8 +24,6 @@ public:
 
 	void Create(HWND parent);
 
-	virtual void RegisterEventHandlers();
-
 // ICredentialsView implementation
 
 public:
@@ -69,11 +67,4 @@ private:
 	void OnSettingChange (Msg<WM_SETTINGCHANGE> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
-
-// HTMLayout message handlers
-
-private:
-
-	void OnCancel (BEHAVIOR_EVENT_PARAMS * params);
-	void OnOk     (BEHAVIOR_EVENT_PARAMS * params);
 };

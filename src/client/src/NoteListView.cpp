@@ -26,6 +26,7 @@ NoteListView::NoteListView
 	, acceleration    (-0.001)
 	, cmdShow         (cmdShow)
 	, instance        (instance)
+	, sipState        (SHFS_HIDESIPBUTTON)
 	, HTMLayoutWindow (L"main.htm")
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
@@ -73,6 +74,7 @@ void NoteListView::RegisterEventHandlers()
 	notebookList = FindFirstElement("#notebook-list");
 	listScroll   = FindFirstElement("#scroll");
 	listSlider   = FindFirstElement("#slider");
+	searchBox    = FindFirstElement("#search-box");
 }
 
 //-----------------------------
@@ -205,10 +207,6 @@ Guid NoteListView::GetSelectedNoteGuid()
 
 wstring NoteListView::GetSearchString()
 {
-	element root      (element::root_element(hwnd_));
-	element searchBox (root.find_first("#search-box"));
-	if (!searchBox)
-		throw std::exception("'#search-box' not found.");
 	return searchBox.text().c_str();
 }
 
@@ -430,12 +428,9 @@ void NoteListView::UpdateScrollbar()
 
 void NoteListView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
-	if (msg.GetActiveState() != WA_INACTIVE)
-	{
-		::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
-		::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
-		msg.handled_ = true;
-	}
+	::SHFullScreen(hwnd_, sipState);
+	::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
+	msg.handled_ = true;
 }
 
 void NoteListView::OnCaptureChanged(Msg<WM_CAPTURECHANGED> & msg)
@@ -532,6 +527,18 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+BOOL NoteListView::OnFocus(FOCUS_PARAMS * params)
+{
+	DWORD oldSipState(sipState);
+	sipState
+		= (root_element::focus_element(hwnd_) == searchBox)
+		? SHFS_SHOWSIPBUTTON
+		: SHFS_HIDESIPBUTTON;
+	if (oldSipState != sipState)
+		::SHFullScreen(hwnd_, sipState);
+	return FALSE;
+}
 
 BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
 {
