@@ -63,8 +63,6 @@ public:
 
 private:
 
-	void CopyParentSize();
-
 	ATOM RegisterClass(const std::wstring & wndClass);
 
 	void ToggleFullScreen();

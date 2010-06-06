@@ -27,6 +27,8 @@ NoteView::NoteView(HINSTANCE instance)
 
 void NoteView::Create(HWND parent)
 {
+	this->parent = parent;
+
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_NOTE_VIEW);
 
@@ -50,10 +52,6 @@ void NoteView::Create(HWND parent)
 		);
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
-
-	this->parent = parent;
-
-	CopyParentSize();
 }
 
 void NoteView::RegisterEventHandlers()
@@ -175,20 +173,6 @@ void NoteView::Show()
 //------------------
 // utility functions
 //------------------
-
-void NoteView::CopyParentSize()
-{	
-	RECT rect;
-	::GetWindowRect(parent, &rect);
-	::MoveWindow
-		( hwnd_
-		, rect.left
-		, rect.top
-		, rect.right - rect.left
-		, rect.bottom - rect.top
-		, TRUE
-		);
-}
 
 ATOM NoteView::RegisterClass(const wstring & wndClass)
 {
