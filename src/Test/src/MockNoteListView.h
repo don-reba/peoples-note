@@ -45,6 +45,7 @@ public:
 	bool isSyncButtonShown;
 	bool isSyncEnabled;
 
+	signal SignalAbout;
 	signal SignalCreated;
 	signal SignalImport;
 	signal SignalNotebookSelected;
@@ -66,6 +67,8 @@ public:
 	virtual void ClearNotebooks();
 
 	virtual void ClearNotes();
+
+	virtual void ConnectAbout(slot_type OnAbout);
 
 	virtual void ConnectCreated(slot_type OnCreated);
 

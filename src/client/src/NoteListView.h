@@ -50,6 +50,7 @@ private:
 	int       startTime;
 	State     state;
 
+	signal SignalAbout;
 	signal SignalImport;
 	signal SignalNotebookSelected;
 	signal SignalOpenNote;
@@ -84,6 +85,8 @@ public:
 	virtual void ClearNotebooks();
 
 	virtual void ClearNotes();
+
+	virtual void ConnectAbout(slot_type OnAbout);
 
 	virtual void ConnectImport(slot_type OnImport);
 
@@ -165,6 +168,7 @@ private:
 	virtual BOOL OnFocus    (FOCUS_PARAMS   * params);
 	virtual BOOL OnLoadData (NMHL_LOAD_DATA * params);
 
+	void OnMenuAbout    (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuExit     (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuImport   (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuNotebook (BEHAVIOR_EVENT_PARAMS * params);

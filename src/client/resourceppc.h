@@ -13,6 +13,7 @@
 #define IDC_CREDENTIALS_VIEW            9
 #define IDS_SIGNIN                      10
 #define IDS_CANCEL                      11
+#define IDC_ABOUT_VIEW                  12
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104

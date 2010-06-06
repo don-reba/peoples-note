@@ -23,6 +23,8 @@ public:
 
 	virtual void AddNotebook(std::wstring html, std::wstring value) = 0;
 
+	virtual void ConnectAbout(slot_type OnAbout) = 0;
+
 	virtual void ConnectImport(slot_type OnImport) = 0;
 
 	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail) = 0;

@@ -383,6 +383,14 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\AboutPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\AboutView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Animator.cpp"
 				>
 			</File>
@@ -637,6 +645,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\src\AboutPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\AboutView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Animator.h"
 				>
 			</File>
@@ -714,6 +730,10 @@
 			</File>
 			<File
 				RelativePath=".\src\HtmlResource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IAboutView.h"
 				>
 			</File>
 			<File
@@ -1061,6 +1081,11 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\html\signin-view.htm"
+			DeploymentContent="true"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

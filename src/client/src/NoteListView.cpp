@@ -63,6 +63,7 @@ void NoteListView::Create()
 
 void NoteListView::RegisterEventHandlers()
 {
+	ConnectBehavior("#menu-about",    MENU_ITEM_CLICK,          &NoteListView::OnMenuAbout);
 	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
 	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
 	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
@@ -125,6 +126,11 @@ void NoteListView::ClearNotes()
 
 	foreach (element & note, notes)
 		note.destroy();
+}
+
+void NoteListView::ConnectAbout(slot_type OnAbout)
+{
+	SignalAbout.connect(OnAbout);
 }
 
 void NoteListView::ConnectImport(slot_type OnImport)
@@ -428,9 +434,12 @@ void NoteListView::UpdateScrollbar()
 
 void NoteListView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
-	::SHFullScreen(hwnd_, sipState);
-	::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
-	msg.handled_ = true;
+	if (msg.GetActiveState() != WA_INACTIVE)
+	{
+		::SHFullScreen(hwnd_, sipState);
+		::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
+		msg.handled_ = true;
+	}
 }
 
 void NoteListView::OnCaptureChanged(Msg<WM_CAPTURECHANGED> & msg)
@@ -555,6 +564,11 @@ BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
 		return LOAD_OK;
 	}
 	return __super::OnLoadData(params);
+}
+
+void NoteListView::OnMenuAbout(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalAbout();
 }
 
 void NoteListView::OnMenuExit(BEHAVIOR_EVENT_PARAMS * params)

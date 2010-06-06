@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "AboutPresenter.h"
+#include "AboutView.h"
 #include "Animator.h"
 #include "CredentialsPresenter.h"
 #include "CredentialsView.h"
@@ -127,10 +129,15 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		SyncModel syncModel(enService, messagePump, syncUserModel, syncLogger);
 
+		AboutView       aboutView       (instance);
 		CredentialsView credentialsView (instance);
 		NoteView        noteView        (instance);
 		NoteListView    noteListView    (animator, instance, nCmdShow);
 
+		AboutPresenter aboutPresenter
+			( aboutView
+			, noteListView
+			);
 		CredentialsPresenter credentialsPresenter
 			( newCredentials
 			, credentialsView
@@ -180,6 +187,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		noteListView.Create();
 		noteView.Create(noteListView.hwnd_);
 		credentialsView.Create(noteListView.hwnd_);
+		aboutView.Create(noteListView.hwnd_);
 
 		userLoader.Run();
 		int result(RunMessageLoop(animator, syncModel));

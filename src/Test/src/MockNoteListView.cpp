@@ -39,6 +39,11 @@ void MockNoteListView::ClearNotes()
 	notesUpdated = false;
 }
 
+void MockNoteListView::ConnectAbout(slot_type OnAbout)
+{
+	SignalAbout.connect(OnAbout);
+}
+
 void MockNoteListView::ConnectCreated(slot_type OnCreated)
 {
 	SignalCreated.connect(OnCreated);

@@ -85,6 +85,7 @@ BEGIN
     IDC_CREDENTIALS_VIEW    "CREDENTIALS-VIEW"
     IDS_SIGNIN              "Sign in"
     IDS_CANCEL              "Cancel"
+    IDC_ABOUT_VIEW          "ABOUT-VIEW"
 END
 
 #endif    // English (U.S.) resources

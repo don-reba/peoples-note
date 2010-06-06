@@ -157,7 +157,7 @@ ATOM CredentialsView::RegisterClass(const wstring & wndClass)
 	wc.lpfnWndProc   = &CredentialsView::WndProc<CredentialsView>;
 	wc.hInstance     = instance;
 	wc.hIcon         = LoadIcon(instance, MAKEINTRESOURCE(IDI_CLIENT));
-	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
+	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszClassName = wndClass.c_str();
 	return ::RegisterClass(&wc);
 }

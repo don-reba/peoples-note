@@ -614,7 +614,7 @@
        x="0"
        y="0" />
     <rect
-       transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,718.8205,-442.02774)"
+       transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,718.8205,-390.02773)"
        style="fill:#000000;stroke:#000000;stroke-width:1;stroke-opacity:1;filter:url(#filter3802)"
        id="rect3713"
        width="479"
@@ -629,7 +629,7 @@
        width="479"
        id="rect3711"
        style="fill:#696969;fill-opacity:1;stroke:none"
-       transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,0,0)"
+       transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,-1.4949933e-6,52.000007)"
        clip-path="url(#clipPath3750)" />
     <rect
        y="35.006653"
@@ -638,7 +638,8 @@
        width="479"
        id="rect3739"
        style="fill:#000000;stroke:none;filter:url(#filter3796)"
-       clip-path="url(#clipPath3746)" />
+       clip-path="url(#clipPath3746)"
+       transform="translate(-1.4949933e-6,52.000007)" />
     <rect
        style="fill:#6fb536;fill-opacity:1;stroke:none"
        id="rect3709"
@@ -646,14 +647,15 @@
        height="404.97934"
        x="0"
        y="35.006653"
-       clip-path="url(#clipPath3742)" />
+       clip-path="url(#clipPath3742)"
+       transform="translate(-665.3232,204.63242)" />
     <rect
        style="fill:#f0ec40;fill-opacity:1;stroke:none"
        id="rect3758"
        width="480"
-       height="588"
+       height="552.99335"
        x="-1.5654145e-13"
-       y="52.000011" />
+       y="87.00666" />
   </g>
   <g
      inkscape:label="Layer 1"
@@ -665,58 +667,58 @@
        xml:space="preserve"
        style="font-size:64.09456635px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
        x="15.274277"
-       y="539.26825"
+       y="575.26825"
        id="text3879"><tspan
          sodipodi:role="line"
          x="15.274277"
-         y="539.26825"
+         y="575.26825"
          id="tspan2915">People's Note</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:36.99126816px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
        x="19.06543"
-       y="592.09143"
+       y="628.09143"
        id="text2917"><tspan
          sodipodi:role="line"
          id="tspan2919"
          x="19.06543"
-         y="592.09143"
+         y="628.09143"
          style="font-size:29px">Copyright © 2010, Alexey Badalov</tspan></text>
     <text
        id="text3450"
-       y="668.09143"
+       y="704.09143"
        x="18.385742"
        style="font-size:36.99126816px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
        xml:space="preserve"
        sodipodi:linespacing="150%"><tspan
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         y="668.09143"
+         y="704.09143"
          x="18.385742"
          id="tspan3452"
          sodipodi:role="line">Parts of this app are based on:</tspan><tspan
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         y="711.59143"
+         y="747.59143"
          x="18.385742"
          sodipodi:role="line"
          id="tspan3456">• Apache Thrift</tspan><tspan
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         y="755.09143"
+         y="791.09143"
          x="18.385742"
          sodipodi:role="line"
          id="tspan3483">• Evernote API</tspan><tspan
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         y="798.59143"
+         y="834.59143"
          x="18.385742"
          sodipodi:role="line"
          id="tspan3479">• HTMLayout</tspan><tspan
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:150%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         y="842.09143"
+         y="878.09143"
          x="18.385742"
          sodipodi:role="line"
          id="tspan3475">• SQLite</tspan></text>
     <g
        id="g3470"
-       transform="translate(-14.066998,0)">
+       transform="translate(-14.066998,10)">
       <text
          transform="translate(0,412.36218)"
          id="text3464"
@@ -748,23 +750,21 @@
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
     <rect
-       transform="translate(0,-412.36218)"
        ry="0"
        rx="0"
-       y="403.7912"
-       x="-12.937"
+       y="-8.5709801"
+       x="-12.936752"
        height="60.570992"
        width="505.8735"
        id="rect3078"
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline" />
     <image
-       transform="translate(0,-412.36218)"
        style="display:inline"
        xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/window%20title.png"
        width="480"
        height="52"
        id="image3080"
-       x="-0.00024768067"
-       y="412.36218" />
+       x="0"
+       y="0" />
   </g>
 </svg>

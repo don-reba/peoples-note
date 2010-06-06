@@ -175,6 +175,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\client\src\AboutPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Credentials.cpp"
 				>
 			</File>
@@ -217,6 +221,10 @@
 						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\MockAboutView.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\src\MockCredentialsModel.cpp"
@@ -344,6 +352,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestAboutPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestCredentialsModel.cpp"
 				>
 			</File>
@@ -455,6 +467,10 @@
 			>
 			<File
 				RelativePath=".\src\foreach.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockAboutView.h"
 				>
 			</File>
 			<File
