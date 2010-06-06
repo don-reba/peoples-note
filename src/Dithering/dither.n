@@ -118,9 +118,9 @@ def Dither(data, w, h)
 	}
 	Array.Copy(data, input,  data.Length);
 	mutable i = 0;
-	repeat (h - 2)
+	repeat (h - 1)
 	{
-		repeat (w - 2)
+		repeat (w - 1)
 		{
 			def (oldR, oldG, oldB) = input[i];
 			def (r, g, b) = FindClosestColor(oldR, oldG, oldB);
@@ -132,9 +132,8 @@ def Dither(data, w, h)
 			++i;
 		}
 		output[i] = input[i]; ++i;
-		output[i] = input[i]; ++i;
 	}
-	Array.Copy(data, i, input, i, 2 * w);
+	Array.Copy(input, i, output, i, w);
 	(output, w, h);
 }
 

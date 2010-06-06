@@ -788,6 +788,46 @@
        y2="1002.3622"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.4532279,0,0,1,-43.226612,0)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3706"
+       id="linearGradient3221"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.91428571,0,0,0.91428571,40.742857,56.571055)"
+       x1="434.5"
+       y1="700.86218"
+       x2="452"
+       y2="683.3653" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3706"
+       id="linearGradient3247"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.91428571,0,0,0.91428571,40.742857,56.571055)"
+       x1="434.5"
+       y1="700.86218"
+       x2="452"
+       y2="683.3653" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3706"
+       id="linearGradient3273"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.91428571,0,0,0.91428571,40.742857,56.571055)"
+       x1="434.5"
+       y1="700.86218"
+       x2="452"
+       y2="683.3653" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3706"
+       id="linearGradient3299"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.91428571,0,0,0.91428571,40.742857,56.571055)"
+       x1="434.5"
+       y1="700.86218"
+       x2="452"
+       y2="683.3653" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -796,16 +836,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="68.785064"
-     inkscape:cy="303.88793"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="221.77315"
+     inkscape:cy="2.9470062"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="false"
      inkscape:showpageshadow="true"
      inkscape:snap-bbox="true"
-     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-bbox-edge-midpoints="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-bbox-midpoints="false"
      inkscape:snap-grids="false"
@@ -818,7 +858,7 @@
      inkscape:window-maximized="1"
      inkscape:snap-global="true"
      inkscape:snap-page="false"
-     inkscape:bbox-paths="false"
+     inkscape:bbox-paths="true"
      inkscape:snap-to-guides="true"
      inkscape:snap-nodes="true">
     <inkscape:grid
@@ -857,7 +897,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -884,80 +924,6 @@
        clip-path="none"
        d="m 0,464.36218 0,59.03125 480,0 0,-59.03125 -480,0 z m 10,10.03125 460,0 0,40 -460,0 0,-40 z"
        id="rect3045" />
-    <g
-       id="g3840">
-      <rect
-         inkscape:export-ydpi="360"
-         inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
-         style="fill:#606060;fill-opacity:1;stroke:none"
-         id="rect3988"
-         width="476"
-         height="1"
-         x="0"
-         y="614.36218"
-         ry="0" />
-      <path
-         style="fill:#f0ec40;fill-opacity:1;stroke:none"
-         d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
-         id="path3917"
-         sodipodi:nodetypes="ccccc" />
-      <text
-         xml:space="preserve"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         x="169.70264"
-         y="709.89001"
-         id="text3927"><tspan
-           sodipodi:role="line"
-           id="tspan3929"
-           x="169.70264"
-           y="709.89001">tag1, tag2</tspan></text>
-      <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
-         xlink:href="icons/preview.png"
-         width="164"
-         height="100"
-         id="image3931"
-         x="0"
-         y="615.32898" />
-      <g
-         id="g3933"
-         transform="translate(6.0000001,-49.966793)">
-        <path
-           clip-path="url(#clipPath3880)"
-           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
-           d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3935" />
-        <path
-           id="path3937"
-           d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:url(#linearGradient3837);fill-opacity:1;stroke:none" />
-        <path
-           style="fill:#f0ec40;fill-opacity:1;stroke:none"
-           d="m 470,697.32897 -32,-32 32,0 0,32"
-           id="path3939" />
-      </g>
-      <text
-         id="text3025"
-         y="675.61633"
-         x="167.86182"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="675.61633"
-           x="167.86182"
-           id="tspan3027"
-           sodipodi:role="line">Note title</tspan></text>
-      <text
-         id="text3029"
-         y="642.36218"
-         x="169.16455"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="642.36218"
-           x="169.16455"
-           id="tspan3031"
-           sodipodi:role="line">2010-03-21</tspan></text>
-    </g>
     <g
        id="g3997">
       <rect
@@ -1017,14 +983,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/text-note.png"
            xlink:href="icons/text-note.png"
-           y="487.36218"
-           x="184"
-           id="image3769"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3769"
+           x="184"
+           y="487.36218" />
       </g>
       <g
          transform="translate(-37.706059,51.999997)"
@@ -1056,14 +1022,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/voice-note.png"
            xlink:href="icons/voice-note.png"
-           y="487.36218"
-           x="255.66663"
-           id="image3783"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3783"
+           x="255.66663"
+           y="487.36218" />
       </g>
       <g
          transform="translate(-17.853261,51.999997)"
@@ -1095,14 +1061,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/photo-note.png"
            xlink:href="icons/photo-note.png"
-           y="487.36218"
-           x="331.33331"
-           id="image3797"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3797"
+           x="331.33331"
+           y="487.36218" />
       </g>
       <g
          transform="translate(3.9995832,51.999997)"
@@ -1133,14 +1099,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/file-note.png"
            xlink:href="icons/file-note.png"
-           y="491.36218"
-           x="409"
-           id="image3811"
-           height="48"
-           width="48"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="48"
+           height="48"
+           id="image3811"
+           x="409"
+           y="491.36218" />
       </g>
       <rect
          inkscape:export-ydpi="360"
@@ -1155,206 +1121,102 @@
          style="fill:#000000;fill-opacity:1;stroke:none" />
     </g>
     <g
-       id="g3855"
-       transform="translate(0,100.9668)">
-      <rect
-         ry="0"
-         y="614.36218"
-         x="0"
-         height="1"
-         width="476"
-         id="rect3857"
-         style="fill:#606060;fill-opacity:1;stroke:none"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
-         inkscape:export-xdpi="360"
-         inkscape:export-ydpi="360" />
+       id="g3208"
+       transform="translate(0,0.03320051)">
       <path
-         sodipodi:nodetypes="ccccc"
-         id="path3859"
+         style="fill:#f0ec40;fill-opacity:1;stroke:none"
          d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
-         style="fill:#f0ec40;fill-opacity:1;stroke:none" />
-      <text
-         id="text3861"
-         y="709.89001"
-         x="169.70264"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="709.89001"
-           x="169.70264"
-           id="tspan3863"
-           sodipodi:role="line">tag1, tag2</tspan></text>
+         id="path3917"
+         sodipodi:nodetypes="ccccc" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
          y="615.32898"
          x="0"
-         id="image3865"
+         id="image3931"
          height="100"
          width="164" />
       <g
-         transform="translate(6.0000001,-49.966793)"
-         id="g3867">
+         id="g3933"
+         transform="matrix(0.75,0,0,0.75,123.5,115.86546)">
         <path
-           id="path3869"
-           d="m 438,665.32897 32,32 -32,0 0,-32"
+           clip-path="url(#clipPath3880)"
            style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
-           clip-path="url(#clipPath3880)" />
-        <path
-           style="fill:url(#linearGradient3883);fill-opacity:1;stroke:none"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3871" />
+           id="path3935" />
         <path
-           id="path3873"
+           id="path3937"
+           d="m 438,665.32897 32,32 -32,0 0,-32"
+           style="fill:url(#linearGradient3221);fill-opacity:1;stroke:none" />
+        <path
+           style="fill:#f0ec40;fill-opacity:1;stroke:none"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+           id="path3939" />
       </g>
       <text
-         xml:space="preserve"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         id="text3025"
+         y="661.56256"
          x="167.86182"
-         y="675.61633"
-         id="text3875"><tspan
-           sodipodi:role="line"
-           id="tspan3877"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         xml:space="preserve"><tspan
+           style="font-size:20px;font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="661.56256"
            x="167.86182"
-           y="675.61633">Note title</tspan></text>
+           id="tspan3027"
+           sodipodi:role="line">Note title</tspan></text>
       <text
-         xml:space="preserve"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         id="text3029"
+         y="639.99268"
          x="169.16455"
-         y="642.36218"
-         id="text3879"><tspan
-           sodipodi:role="line"
-           id="tspan3881"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         xml:space="preserve"><tspan
+           style="font-size:20px"
+           y="639.99268"
            x="169.16455"
-           y="642.36218">2010-03-21</tspan></text>
-    </g>
-    <g
-       transform="translate(0,201.9336)"
-       id="g3885">
+           id="tspan3031"
+           sodipodi:role="line">2010-03-21</tspan></text>
       <rect
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
          inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
          style="fill:#606060;fill-opacity:1;stroke:none"
-         id="rect3887"
+         id="rect3988"
          width="476"
          height="1"
          x="0"
          y="614.36218"
          ry="0" />
+    </g>
+    <g
+       transform="translate(0,100.03321)"
+       id="g3223">
       <path
-         style="fill:#f0ec40;fill-opacity:1;stroke:none"
+         sodipodi:nodetypes="ccccc"
+         id="path3225"
          d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
-         id="path3889"
-         sodipodi:nodetypes="ccccc" />
-      <text
-         xml:space="preserve"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         x="169.70264"
-         y="709.89001"
-         id="text3891"><tspan
-           sodipodi:role="line"
-           id="tspan3893"
-           x="169.70264"
-           y="709.89001">tag1, tag2</tspan></text>
+         style="fill:#f0ec40;fill-opacity:1;stroke:none" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
          width="164"
          height="100"
-         id="image3895"
+         id="image3227"
          x="0"
          y="615.32898" />
       <g
-         id="g3897"
-         transform="translate(6.0000001,-49.966793)">
+         transform="matrix(0.75,0,0,0.75,123.5,115.86546)"
+         id="g3229">
         <path
-           clip-path="url(#clipPath3880)"
-           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
-           d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3899" />
-        <path
-           id="path3901"
-           d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:url(#linearGradient3913);fill-opacity:1;stroke:none" />
-        <path
-           style="fill:#f0ec40;fill-opacity:1;stroke:none"
-           d="m 470,697.32897 -32,-32 32,0 0,32"
-           id="path3903" />
-      </g>
-      <text
-         id="text3905"
-         y="675.61633"
-         x="167.86182"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="675.61633"
-           x="167.86182"
-           id="tspan3907"
-           sodipodi:role="line">Note title</tspan></text>
-      <text
-         id="text3909"
-         y="642.36218"
-         x="169.16455"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="642.36218"
-           x="169.16455"
-           id="tspan3911"
-           sodipodi:role="line">2010-03-21</tspan></text>
-    </g>
-    <g
-       id="g3915"
-       transform="translate(0,302.9004)">
-      <rect
-         ry="0"
-         y="614.36218"
-         x="0"
-         height="1"
-         width="476"
-         id="rect3917"
-         style="fill:#606060;fill-opacity:1;stroke:none"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
-         inkscape:export-xdpi="360"
-         inkscape:export-ydpi="360" />
-      <path
-         sodipodi:nodetypes="ccccc"
-         id="path3919"
-         d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
-         style="fill:#f0ec40;fill-opacity:1;stroke:none" />
-      <text
-         id="text3921"
-         y="709.89001"
-         x="169.70264"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           y="709.89001"
-           x="169.70264"
-           id="tspan3923"
-           sodipodi:role="line">tag1, tag2</tspan></text>
-      <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
-         xlink:href="icons/preview.png"
-         y="615.32898"
-         x="0"
-         id="image3925"
-         height="100"
-         width="164" />
-      <g
-         transform="translate(6.0000001,-49.966793)"
-         id="g3927">
-        <path
-           id="path3929"
+           id="path3231"
            d="m 438,665.32897 32,32 -32,0 0,-32"
            style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
            clip-path="url(#clipPath3880)" />
         <path
-           style="fill:url(#linearGradient3943);fill-opacity:1;stroke:none"
+           style="fill:url(#linearGradient3247);fill-opacity:1;stroke:none"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3931" />
+           id="path3233" />
         <path
-           id="path3933"
+           id="path3235"
            d="m 470,697.32897 -32,-32 32,0 0,32"
            style="fill:#f0ec40;fill-opacity:1;stroke:none" />
       </g>
@@ -1362,22 +1224,35 @@
          xml:space="preserve"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          x="167.86182"
-         y="675.61633"
-         id="text3935"><tspan
+         y="661.56256"
+         id="text3237"><tspan
            sodipodi:role="line"
-           id="tspan3937"
+           id="tspan3239"
            x="167.86182"
-           y="675.61633">Note title</tspan></text>
+           y="661.56256"
+           style="font-size:20px;font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold">Note title</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          x="169.16455"
-         y="642.36218"
-         id="text3939"><tspan
+         y="639.99268"
+         id="text3241"><tspan
            sodipodi:role="line"
-           id="tspan3941"
+           id="tspan3243"
            x="169.16455"
-           y="642.36218">2010-03-21</tspan></text>
+           y="639.99268"
+           style="font-size:20px">2010-03-21</tspan></text>
+      <rect
+         ry="0"
+         y="614.36218"
+         x="0"
+         height="1"
+         width="476"
+         id="rect3245"
+         style="fill:#606060;fill-opacity:1;stroke:none"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-xdpi="360"
+         inkscape:export-ydpi="360" />
     </g>
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -1387,6 +1262,73 @@
        x="476"
        y="524.36218"
        ry="0" />
+    <g
+       id="g3249"
+       transform="translate(0,200.03321)">
+      <path
+         style="fill:#f0ec40;fill-opacity:1;stroke:none"
+         d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
+         id="path3251"
+         sodipodi:nodetypes="ccccc" />
+      <image
+         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
+         xlink:href="icons/preview.png"
+         y="615.32898"
+         x="0"
+         id="image3253"
+         height="100"
+         width="164" />
+      <g
+         id="g3255"
+         transform="matrix(0.75,0,0,0.75,123.5,115.86546)">
+        <path
+           clip-path="url(#clipPath3880)"
+           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
+           d="m 438,665.32897 32,32 -32,0 0,-32"
+           id="path3257" />
+        <path
+           id="path3259"
+           d="m 438,665.32897 32,32 -32,0 0,-32"
+           style="fill:url(#linearGradient3273);fill-opacity:1;stroke:none" />
+        <path
+           style="fill:#f0ec40;fill-opacity:1;stroke:none"
+           d="m 470,697.32897 -32,-32 32,0 0,32"
+           id="path3261" />
+      </g>
+      <text
+         id="text3263"
+         y="661.56256"
+         x="167.86182"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         xml:space="preserve"><tspan
+           style="font-size:20px;font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold"
+           y="661.56256"
+           x="167.86182"
+           id="tspan3265"
+           sodipodi:role="line">Note title</tspan></text>
+      <text
+         id="text3267"
+         y="639.99268"
+         x="169.16455"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         xml:space="preserve"><tspan
+           style="font-size:20px"
+           y="639.99268"
+           x="169.16455"
+           id="tspan3269"
+           sodipodi:role="line">2010-03-21</tspan></text>
+      <rect
+         inkscape:export-ydpi="360"
+         inkscape:export-xdpi="360"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         style="fill:#606060;fill-opacity:1;stroke:none"
+         id="rect3271"
+         width="476"
+         height="1"
+         x="0"
+         y="614.36218"
+         ry="0" />
+    </g>
     <rect
        style="fill:#606060;fill-opacity:1;stroke:none"
        id="rect3648"
@@ -1458,6 +1400,73 @@
          style="fill:#606060;fill-opacity:1;stroke:none"
          d="m 462.44629,480.91592 c -5.18279,-5.18276 -13.58571,-5.18276 -18.76847,0 -4.74069,4.74068 -5.14406,12.17354 -1.21214,17.37384 l -10.25747,10.25748 c -0.72205,0.72206 -0.72205,1.88467 0,2.60672 0.72205,0.72207 1.88467,0.72207 2.60672,0 l 10.25748,-10.25746 c 5.2003,3.93193 12.63316,3.52854 17.37385,-1.21214 5.18275,-5.18276 5.18275,-13.58568 0,-18.76844 z m -2.60675,2.60672 c 3.74309,3.74311 3.74309,9.81188 0,13.55499 -3.74311,3.74311 -9.81188,3.74311 -13.555,0 -3.74309,-3.74311 -3.74309,-9.81188 0,-13.55499 3.74311,-3.7431 9.81188,-3.7431 13.555,0 z"
          id="path3950"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-xdpi="360"
+         inkscape:export-ydpi="360" />
+    </g>
+    <g
+       transform="translate(0,300.03322)"
+       id="g3275">
+      <path
+         sodipodi:nodetypes="ccccc"
+         id="path3277"
+         d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
+         style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+      <image
+         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
+         xlink:href="icons/preview.png"
+         width="164"
+         height="100"
+         id="image3279"
+         x="0"
+         y="615.32898" />
+      <g
+         transform="matrix(0.75,0,0,0.75,123.5,115.86546)"
+         id="g3281">
+        <path
+           id="path3283"
+           d="m 438,665.32897 32,32 -32,0 0,-32"
+           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
+           clip-path="url(#clipPath3880)" />
+        <path
+           style="fill:url(#linearGradient3299);fill-opacity:1;stroke:none"
+           d="m 438,665.32897 32,32 -32,0 0,-32"
+           id="path3285" />
+        <path
+           id="path3287"
+           d="m 470,697.32897 -32,-32 32,0 0,32"
+           style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         x="167.86182"
+         y="661.56256"
+         id="text3289"><tspan
+           sodipodi:role="line"
+           id="tspan3291"
+           x="167.86182"
+           y="661.56256"
+           style="font-size:20px;font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold">Note title</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         x="169.16455"
+         y="639.99268"
+         id="text3293"><tspan
+           sodipodi:role="line"
+           id="tspan3295"
+           x="169.16455"
+           y="639.99268"
+           style="font-size:20px">2010-03-21</tspan></text>
+      <rect
+         ry="0"
+         y="614.36218"
+         x="0"
+         height="1"
+         width="476"
+         id="rect3297"
+         style="fill:#606060;fill-opacity:1;stroke:none"
          inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
          inkscape:export-xdpi="360"
          inkscape:export-ydpi="360" />

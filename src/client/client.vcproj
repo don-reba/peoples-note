@@ -1080,12 +1080,12 @@
 				RelativePath=".\html\note-view.htm"
 				>
 			</File>
+			<File
+				RelativePath=".\html\signin-view.htm"
+				DeploymentContent="true"
+				>
+			</File>
 		</Filter>
-		<File
-			RelativePath=".\html\signin-view.htm"
-			DeploymentContent="true"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
