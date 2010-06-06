@@ -9,8 +9,9 @@ class CredentialsView : public HTMLayoutWindow, public ICredentialsView
 
 private:
 
-	HWND      parent;
-	HINSTANCE instance;
+	HWND           parent;
+	HINSTANCE      instance;
+	SHACTIVATEINFO activateInfo;
 
 	signal SignalCancel;
 	signal SignalOk;
@@ -57,9 +58,15 @@ private:
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 
+	void ResizeWindow();
+
 // window message handlers
 
 private:
+
+	void OnActivate      (Msg<WM_ACTIVATE>      & msg);
+	void OnCommand       (Msg<WM_COMMAND>       & msg);
+	void OnSettingChange (Msg<WM_SETTINGCHANGE> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 

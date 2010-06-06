@@ -56,8 +56,6 @@ void NoteListView::Create()
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
-	ResetUiSetup();
-
 	::ShowWindow(hwnd_, cmdShow);
 	::UpdateWindow(hwnd_);
 }
@@ -187,11 +185,9 @@ bool NoteListView::GetEnexPath(wstring & path)
 		;
 	if (::GetOpenFileName(&parameters))
 	{
-		ResetUiSetup();
 		path = &file[0];
 		return true;
 	}
-	ResetUiSetup();
 	return false;
 }
 
@@ -352,11 +348,6 @@ ATOM NoteListView::RegisterClass(wstring wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void NoteListView::ResetUiSetup()
-{
-	::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
-}
-
 void NoteListView::SetNoteListScrollPos(int pos)
 {
 	POINT scrollPos;
@@ -439,9 +430,12 @@ void NoteListView::UpdateScrollbar()
 
 void NoteListView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
-	::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
-	msg.result_  = 0;
-	msg.handled_ = true;
+	if (msg.GetActiveState() != WA_INACTIVE)
+	{
+		::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
+		::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
+		msg.handled_ = true;
+	}
 }
 
 void NoteListView::OnCaptureChanged(Msg<WM_CAPTURECHANGED> & msg)

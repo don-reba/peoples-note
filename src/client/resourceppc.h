@@ -11,20 +11,15 @@
 #define IDC_NOTE_VIEW                   7
 #define IDS_CLOSE                       8
 #define IDC_CREDENTIALS_VIEW            9
+#define IDS_SIGNIN                      10
+#define IDS_CANCEL                      11
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104
-#define IDB_BITMAP1                     133
-#define ID_ACCELERATOR32772             32772
-#define IDM_MENU                        32775
-#define ID_MENU_NOTEBOOK                32777
-#define ID_NOTEBOOK_DONREBA             32778
-#define ID_NOTEBOOK_DONREBA32779        32779
-#define ID_MENU_NOTEBOOK32780           32780
-#define IDM_NOTEBOOK                    32781
-#define ID_NOTEBOOK_FGFG                32782
-#define ID_MENU_IMPORTNOTES             32783
-#define IDM_CLOSE                       32785
+#define IDM_CLOSE                       32772
+#define IDM_SIGNIN                      32773
+#define IDM_CANCEL                      32774
+#define IDR_SIGNIN_MENUBAR              32775
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

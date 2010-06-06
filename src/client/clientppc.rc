@@ -83,6 +83,8 @@ BEGIN
     IDC_NOTE_VIEW           "NOTE-VIEW"
     IDS_CLOSE               "Close"
     IDC_CREDENTIALS_VIEW    "CREDENTIALS-VIEW"
+    IDS_SIGNIN              "Sign in"
+    IDS_CANCEL              "Cancel"
 END
 
 #endif    // English (U.S.) resources
@@ -105,6 +107,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 
 ABOUT.HTM               HTML                    "html\\about.htm"
 CLEAR.PNG               HTML                    "html\\clear.png"
+CARD_TOP.PNG            HTML                    "html\\card-top.png"
 CORNER.PNG              HTML                    "html\\corner.png"
 FILE_NOTE.PNG           HTML                    "html\\file-note.png"
 GRADIENT_60.PNG         HTML                    "html\\gradient-60.png"

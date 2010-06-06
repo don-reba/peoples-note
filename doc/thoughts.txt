@@ -1631,3 +1631,12 @@ tags
 		NoteStore can retrieve tag names for a notebook
 		user model should associate by name, too, then
 			AddTagToNote(tagName, noteGuid);
+input panel
+	API
+		SHHandleWMActivate
+			keeps the panel consistent between activations
+		SHFullScreen
+			determines which elements to show
+		SHACTIVATEINFO
+			used only by SHHandleWMActivate
+signing out is broken

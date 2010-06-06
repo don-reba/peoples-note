@@ -139,8 +139,6 @@ private:
 
 	ATOM RegisterClass(std::wstring wndClass);
 
-	void ResetUiSetup();
-
 	void SetNoteListScrollPos(int pos);
 
 	void UpdateScrollbar();

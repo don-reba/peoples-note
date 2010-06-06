@@ -15,3 +15,11 @@ HI_RES_AWARE CEUX {1}	// turn off the emulation layer
 			// Remove this resource to enable pixel-
 			// doubling on platforms that support it
 /////////////////////////////////////////////////////////////////////////////
+
+IDR_SIGNIN_MENUBAR RCDATA
+BEGIN
+	IDR_SIGNIN_MENUBAR,
+	2,
+	I_IMAGENONE, IDM_SIGNIN, TBSTATE_ENABLED, TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, IDS_SIGNIN, 0, NOMENU,
+	I_IMAGENONE, IDM_CANCEL, TBSTATE_ENABLED, TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, IDS_CANCEL, 0, NOMENU,
+END

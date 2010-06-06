@@ -3,9 +3,47 @@
 		<style>
 			body
 			{
-				background-color: white;
-				margin:           0px;
-				padding:          0px;
+				background-color:  #70b438;
+				background-image:  url(card-top.png);
+				background-repeat: no-repeat;
+				color:             white;
+				margin:            0px;
+				padding:           24px 0px 0px 0px;
+				text-align:        center;
+			}
+			input
+			{
+				background-image:    url(inputshadow.png);
+				background-position: 13px 13px 13px 13px;
+				background-repeat:   expand;
+				border-style:        none;
+				font-size:           24px;
+				height:              40px;
+				padding:             0px 10px;
+				margin:              16px 10px;
+			}
+			#heading
+			{
+				height:         100%%;
+				margin:         0px auto;
+				text-align:     left;
+				vertical-align: middle;
+			}
+			#h1
+			{
+				font-size: 36px;
+			}
+			#h2
+			{
+				font-size: 64px;
+			}
+			#message
+			{
+				font-size:      24px;
+				line-height:    25px;
+				height:         50px;
+				text-align:     center;
+				vertical-align: middle;
 			}
 			#username, #password
 			{
@@ -14,15 +52,13 @@
 		</style>
 	</head>
 	<body>
-		<p>Sign in to Evernote</p>
-		<br />
-		<widget type="text" id="username" />
-		<br />
-		<widget type="text" id="password" />
-		<br />
-		<button id="ok">OK</button> <button id="cancel">Cancel</button>
-		<br />
-		<p id="message" />
+		<div id="heading">
+			<div id="h1">sign into</div>
+			<div id="h2">Evernote</div>
+		</div>
+		<input type="text" id="username" />
+		<input type="password" id="password" />
+		<div id="message" />
 	</body>
 </html>
 

@@ -594,17 +594,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="132.03061"
-     inkscape:cy="333.44121"
+     inkscape:cx="-100.27779"
+     inkscape:cy="350.77672"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer3"
      showgrid="false"
      borderlayer="false"
      inkscape:showpageshadow="true"
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-edge-midpoints="true"
-     inkscape:bbox-nodes="false"
-     inkscape:snap-bbox-midpoints="false"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-midpoints="true"
      inkscape:snap-grids="true"
      showguides="false"
      inkscape:guide-bbox="true"
@@ -616,7 +616,10 @@
      inkscape:snap-global="true"
      inkscape:snap-page="true"
      inkscape:snap-to-guides="true"
-     inkscape:bbox-paths="true">
+     inkscape:bbox-paths="true"
+     inkscape:object-nodes="true"
+     inkscape:object-paths="false"
+     inkscape:snap-object-midpoints="false">
     <inkscape:grid
        type="xygrid"
        id="grid2820"
@@ -653,7 +656,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -661,8 +664,7 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Background"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline"
        id="rect2971"
@@ -697,7 +699,7 @@
        height="404.97934"
        width="479"
        id="rect3711"
-       style="fill:#696969;fill-opacity:1;stroke:none"
+       style="fill:#606060;fill-opacity:1;stroke:none"
        transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,0,42.000346)"
        clip-path="url(#clipPath3750)" />
     <rect
@@ -718,8 +720,8 @@
        y="35.006653"
        clip-path="url(#clipPath3742)" />
     <path
-       style="fill:#6fb536;fill-opacity:1;stroke:none"
-       d="M -2.3242188e-4,51.999997 0,640 l 480,0 -2.3e-4,-588.000003 -480.00000242188,0 z M 10,425.6875 l 460,0 0,40 -460,0 0,-40 z m 0,56.03125 460,0 0,40 -460,0 0,-40 z"
+       style="fill:#70b438;fill-opacity:1;stroke:none"
+       d="M 0,77.006999 0,632.007 l 480,0 0,-555.000001 -480,0 z m 10,348.680501 460,0 0,40 -460,0 0,-40 z m 0,56.03125 460,0 0,40 -460,0 0,-40 z"
        id="rect3758"
        sodipodi:nodetypes="ccccccccccccccc" />
   </g>

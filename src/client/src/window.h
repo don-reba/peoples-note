@@ -223,13 +223,13 @@ template <>
 struct Msg<WM_COMMAND> : Msg_
 {
 	Msg(WndMsg &msg) :Msg_(msg) {}
-	int GetCtrlId() const {
+	int CtrlId() const {
 		return LOWORD(wprm_);
 	}
-	UINT GetNotifyCode() const {
+	UINT NotifyCode() const {
 		return HIWORD(wprm_);
 	}
-	HWND GetCtrlHwnd() const {
+	HWND CtrlHwnd() const {
 		return reinterpret_cast<HWND>(lprm_);
 	}
 };
@@ -414,6 +414,18 @@ struct Msg<WM_SETCURSOR> : Msg_
 	}
 	UINT MouseMsg() const {
 		return HIWORD(lprm_);
+	}
+};
+
+template <>
+struct Msg<WM_SETTINGCHANGE> : Msg_
+{
+	Msg(WndMsg &msg) :Msg_(msg) {}
+	UINT Flag() {
+		return wprm_;
+	}	
+	LPCTSTR SectionName() {
+		return reinterpret_cast<LPCTSTR>(lprm_);
 	}
 };
 
