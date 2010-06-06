@@ -89,6 +89,37 @@ BOOST_AUTO_TEST_CASE(CredentialsPresenter_Cancel_Test)
 	BOOST_CHECK_EQUAL(credentialsModel.password, L"");
 }
 
+BOOST_AUTO_TEST_CASE(CredentialsPresenter_SpecialCredentials_Test)
+{
+	MockCredentialsModel credentialsModel;
+	MockCredentialsView  credentialsView;
+	MockEnService        enService;
+	CredentialsPresenter presenter
+		( credentialsModel
+		, credentialsView
+		, enService
+		);
+
+	credentialsModel.username = L"test-usr";
+	credentialsModel.password = L"test-pwd";
+	credentialsView.SignalCreated();
+
+	BOOST_CHECK_EQUAL(credentialsView.username, L"test-usr");
+	BOOST_CHECK_EQUAL(credentialsView.password, L"test-pwd");
+
+	credentialsModel.username = L"[anonymous]";
+	credentialsView.SignalCreated();
+
+	BOOST_CHECK_EQUAL(credentialsView.username, L"");
+	BOOST_CHECK_EQUAL(credentialsView.password, L"");
+
+	credentialsModel.username = L"";
+	credentialsView.SignalCreated();
+
+	BOOST_CHECK_EQUAL(credentialsView.username, L"");
+	BOOST_CHECK_EQUAL(credentialsView.password, L"");
+}
+
 BOOST_AUTO_TEST_CASE(CredentialsPresenter_Validation_Test)
 {
 	MockCredentialsModel credentialsModel;

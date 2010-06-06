@@ -31,8 +31,15 @@ void CredentialsPresenter::OnModelUpdating()
 
 void CredentialsPresenter::OnViewCreated()
 {
-	credentialsView.SetUsername(credentialsModel.GetUsername());
-	credentialsView.SetPassword(credentialsModel.GetPassword());
+	wstring username(credentialsModel.GetUsername());
+	wstring password(credentialsModel.GetPassword());
+	if (username.empty() || username == L"[anonymous]")
+	{
+		username = L"";
+		password = L"";
+	}
+	credentialsView.SetUsername(username);
+	credentialsView.SetPassword(password);
 }
 
 void CredentialsPresenter::OnOk()

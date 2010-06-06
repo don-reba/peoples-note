@@ -51,7 +51,6 @@ void UserSignInPresenter::OnCredentialsUpdated()
 
 void UserSignInPresenter::OnSignIn()
 {
-	Transaction transaction(userModel);
 	Credentials credentials;
 	userModel.GetCredentials(credentials);
 	if (credentials.GetUsername() == L"[anonymous]")
