@@ -467,7 +467,9 @@ void Tools::UnixTimeToSystemTime
 {
 	FILETIME fileTime;
 	UnixTimeToFileTime(unixTime, fileTime);
-	::FileTimeToSystemTime(&fileTime, &systemTime);
+	FILETIME localTime;
+	::FileTimeToLocalFileTime(&fileTime, &localTime);
+	::FileTimeToSystemTime(&localTime, &systemTime);
 }
 
 time_t Tools::FileTimeToUnixTime

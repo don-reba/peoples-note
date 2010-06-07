@@ -92,7 +92,7 @@ void NoteStore::ListEntries
 
 		notes.back().note.guid         = note.guid;
 		notes.back().note.name         = note.title;
-		notes.back().note.creationDate = static_cast<time_t>(note.created);
+		notes.back().note.creationDate = static_cast<time_t>(note.created / 1000);
 		notes.back().note.usn          = note.updateSequenceNum;
 		notes.back().note.isDirty      = false;
 
@@ -136,10 +136,12 @@ void NoteStore::CreateNote
 {
 	EDAM::Types::Note enNote;
 	enNote.__isset.title     = true;
+	enNote.__isset.created   = true;
 	enNote.__isset.content   = true;
 	enNote.__isset.resources = true;
 
 	enNote.title   = note.name;
+	enNote.created = note.creationDate.GetTime() * 1000;
 	enNote.content = body;
 
 	enNote.resources.resize(resources.size());
@@ -161,7 +163,7 @@ void NoteStore::CreateNote
 	EDAM::Types::Note enReplacement(noteStore.createNote(token, enNote));
 	replacement.guid         = Guid(enReplacement.guid);
 	replacement.name         = enReplacement.title;
-	replacement.creationDate = static_cast<time_t>(enReplacement.created);
+	replacement.creationDate = static_cast<time_t>(enReplacement.created / 1000);
 	replacement.usn          = enReplacement.updateSequenceNum;
 	replacement.isDirty      = false;
 }

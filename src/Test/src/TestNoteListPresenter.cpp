@@ -78,15 +78,15 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_REQUIRE_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(0).html
-		, L"<img id=\"thumb\" src=\"thumb:{0}\"/><div id=\"time\">1970-01-01 00:00</div><div id=\"title\">Note</div>"
+		, L"<img id=\"thumb\" src=\"thumb:{0}\"/><div id=\"time\">1969-12-31 18:00</div><div id=\"title\">Note</div>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(1).html
-		, L"<img id=\"thumb\" src=\"thumb:{1}\"/><div id=\"time\">1970-01-01 00:00</div><div id=\"title\"></div>"
+		, L"<img id=\"thumb\" src=\"thumb:{1}\"/><div id=\"time\">1969-12-31 18:00</div><div id=\"title\"></div>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(2).html
-		, L"<img id=\"thumb\" src=\"thumb:{2}\"/><div id=\"time\">1970-01-01 00:00</div><div id=\"title\">&lt;td id=&quot;</div>"
+		, L"<img id=\"thumb\" src=\"thumb:{2}\"/><div id=\"time\">1969-12-31 18:00</div><div id=\"title\">&lt;td id=&quot;</div>"
 		);
 
 	BOOST_CHECK_EQUAL(noteListView.syncText, L"3");

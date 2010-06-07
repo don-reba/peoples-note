@@ -49,6 +49,7 @@ BOOST_FIXTURE_TEST_CASE(SyncModel_Test, SyncModelFixture)
 
 	::Sleep(20);
 	BOOST_CHECK(!check.signalled);
+	
 	BOOST_CHECK(messagePump.wokeUp);
 
 	syncModel.ProcessMessages();
