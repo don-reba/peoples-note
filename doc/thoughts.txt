@@ -1600,7 +1600,7 @@ note merging
 			add remote
 				and the resources
 "north east registry" image is not loading
-	TODO
+	fixed
 elastic scrolling
 	goal
 		list can scroll past the limits
@@ -1640,3 +1640,19 @@ input panel
 		SHACTIVATEINFO
 			used only by SHHandleWMActivate
 signing out is broken
+	closed the database during a transaction
+incremental sync
+	if the server replaces a note with one with the same name
+		then it is duplicated on the client
+	not the desired behaviour
+	if the server deletes a tag, then creates another of the same name
+		then such behaviour is desired
+		wait, no
+		we want to delete the old flag on the client, also
+	what does the documentation have to say about that?
+		if a tag withe the same name, but different GUID exists
+		if the existing tag has no "dirty" flag
+		rename the existing client tag
+notebook list is not updated after sync
+	the update did not fit into one 20-element chank
+	implement a proper chunk retrieval loop

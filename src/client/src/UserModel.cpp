@@ -225,12 +225,31 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 
 void UserModel::DeleteNote(const Note & note)
 {
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "DELETE FROM Notes WHERE guid = ?"
-		);
-	statement->Bind(1, note.guid);
-	statement->Execute();
-	statement->Finalize();
+	Transaction transaction(*this);
+	__int64 rowid(0L);
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "SELECT rowid FROM Notes Where guid = ?"
+			);
+		statement->Bind(1, note.guid);
+		if (statement->Execute())
+			throw std::exception("Could not find the note to delete.");
+		statement->Get(0, rowid);
+	}
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "DELETE FROM Notes WHERE rowid = ?"
+			);
+		statement->Bind(1, rowid);
+		statement->Execute();
+	}
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "DELETE FROM NoteText WHERE rowid = ?"
+			);
+		statement->Bind(1, rowid);
+		statement->Execute();
+	}
 }
 
 void UserModel::DeleteNotebook(const Notebook & notebook)

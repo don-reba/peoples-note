@@ -7,12 +7,14 @@ class EnInteropNote
 {
 public:
 
-	Note note;
+	Note              note;
 	std::vector<Guid> resources;
+	Guid              notebook;
+
 	std::wstring name;
-	Guid guid;
-	int  usn;
-	bool isDirty;
+	Guid         guid;
+	int          usn;
+	bool         isDirty;
 };
 
 typedef std::vector<EnInteropNote> EnInteropNoteList;

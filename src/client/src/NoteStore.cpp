@@ -13,6 +13,10 @@ using namespace Thrift::Transport;
 
 using namespace Evernote;
 
+//----------
+// interface
+//----------
+
 const wchar_t * const NoteStore::baseUrl
 	( L"http://sandbox.evernote.com/edam/note/"
 	);
@@ -28,6 +32,10 @@ NoteStore::NoteStore
 {
 	transport.Open();
 }
+
+//--------------------------
+// INoteStore implementation
+//--------------------------
 
 void NoteStore::GetNoteBody
 	( const Note & note
@@ -78,53 +86,14 @@ void NoteStore::ListEntries
 	, TagList           & tags
 	)
 {
-	EDAM::NoteStore::SyncChunk chunk = noteStore.getSyncChunk
-		( token // authenticationToken
-		, 0     // afterUSN
-		, 20    // max
-		, true  // fullSyncOnly
-		);
-	foreach (const EDAM::Types::Note & note, chunk.notes)
+	EDAM::NoteStore::SyncChunk chunk;
+	chunk.chunkHighUSN = 0;
+	chunk.updateCount  = 1;
+	while (chunk.chunkHighUSN < chunk.updateCount)
 	{
-		if (note.__isset.active && !note.active)
-			continue;
-		notes.push_back(EnInteropNote());
-
-		notes.back().note.guid         = note.guid;
-		notes.back().note.name         = note.title;
-		notes.back().note.creationDate = static_cast<time_t>(note.created / 1000);
-		notes.back().note.usn          = note.updateSequenceNum;
-		notes.back().note.isDirty      = false;
-
-		notes.back().guid    = notes.back().note.guid;
-		notes.back().name    = notes.back().note.name;
-		notes.back().usn     = notes.back().note.usn;
-		notes.back().isDirty = notes.back().note.isDirty;
-
-		// WARN: might be slow for large resource counts
-		foreach (const EDAM::Types::Resource & resource, note.resources)
-		{
-			if (resource.noteGuid == note.guid)
-				notes.back().resources.push_back(resource.guid);
-		}
+		chunk = noteStore.getSyncChunk(token, chunk.chunkHighUSN, 20, true);
+		ListEntries(chunk, notes, notebooks, tags);
 	}
-	foreach (const EDAM::Types::Notebook & notebook, chunk.notebooks)
-	{
-		notebooks.push_back(Notebook());
-		notebooks.back().guid    = notebook.guid;
-		notebooks.back().name    = notebook.name;
-		notebooks.back().usn     = notebook.updateSequenceNum;
-		notebooks.back().isDirty = false;
-	}
-	foreach (const EDAM::Types::Tag & tag, chunk.tags)
-	{
-		tags.push_back(Tag());
-		tags.back().guid    = tag.guid;
-		tags.back().name    = tag.name;
-		tags.back().usn     = tag.updateSequenceNum;
-		tags.back().isDirty = false;
-	}
-
 }
 
 void NoteStore::CreateNote
@@ -204,4 +173,59 @@ void NoteStore::CreateTag
 	replacement.name    = enReplacement.name;
 	replacement.usn     = enReplacement.updateSequenceNum;
 	replacement.isDirty = false;
+}
+
+//------------------
+// utility functions
+//------------------
+
+void NoteStore::ListEntries
+	( EDAM::NoteStore::SyncChunk & chunk
+	, EnInteropNoteList          & notes
+	, NotebookList               & notebooks
+	, TagList                    & tags
+	)
+{
+	foreach (const EDAM::Types::Note & note, chunk.notes)
+	{
+		if (note.__isset.active && !note.active)
+			continue;
+		notes.push_back(EnInteropNote());
+
+		notes.back().notebook = note.notebookGuid;
+
+		notes.back().note.guid         = note.guid;
+		notes.back().note.name         = note.title;
+		notes.back().note.creationDate = static_cast<time_t>(note.created / 1000);
+		notes.back().note.usn          = note.updateSequenceNum;
+		notes.back().note.isDirty      = false;
+
+		notes.back().guid    = notes.back().note.guid;
+		notes.back().name    = notes.back().note.name;
+		notes.back().usn     = notes.back().note.usn;
+		notes.back().isDirty = notes.back().note.isDirty;
+
+		// WARN: might be slow for large resource counts
+		foreach (const EDAM::Types::Resource & resource, note.resources)
+		{
+			if (resource.noteGuid == note.guid)
+				notes.back().resources.push_back(resource.guid);
+		}
+	}
+	foreach (const EDAM::Types::Notebook & notebook, chunk.notebooks)
+	{
+		notebooks.push_back(Notebook());
+		notebooks.back().guid    = notebook.guid;
+		notebooks.back().name    = notebook.name;
+		notebooks.back().usn     = notebook.updateSequenceNum;
+		notebooks.back().isDirty = false;
+	}
+	foreach (const EDAM::Types::Tag & tag, chunk.tags)
+	{
+		tags.push_back(Tag());
+		tags.back().guid    = tag.guid;
+		tags.back().name    = tag.name;
+		tags.back().usn     = tag.updateSequenceNum;
+		tags.back().isDirty = false;
+	}
 }

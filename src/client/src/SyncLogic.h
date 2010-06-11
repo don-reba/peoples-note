@@ -96,9 +96,19 @@ void SyncLogic::FullSync
 			{
 				const T & l(*l->second);
 				if (l.isDirty)
+				{
 					actions.push_back(Action<T>(ActionMerge, &l, &r));
+				}
 				else
-					actions.push_back(Action<T>(ActionRenameAdd, &l, &r));
+				{
+					actions.push_back(Action<T>(ActionDelete, &l,   NULL));
+					actions.push_back(Action<T>(ActionAdd,    NULL, &r));
+					// The official document advises renaming,
+					// but that does not work well for notes.
+					// Replacement seems to be a more sensible
+					// approach in general.
+					// actions.push_back(Action<T>(ActionRenameAdd, &l, &r));
+				}
 			}
 		}
 		else

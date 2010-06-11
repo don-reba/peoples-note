@@ -42,6 +42,15 @@ search
 	√ when the user searches for a non-empty string, notebook should be filtered by full-text search
 	√ when the user searches for an empty string or whitespace, the note list should be reset
 	when a search is in progress, the note list should be grayed out and disabled
+	when the user clicks on the search box
+		the SIP pops up
+		the note list is faded and disabled
+		the toolbar with "Go" and "Cancel" buttons appears
+	when the search is initiated or cancelled
+		the SIP should be hidden
+		the toolbar should disappear
+	when the search completes or is cancelled
+		the note list should be returned to normal state
 note list navigation
 	√ when the user clicks on a note while the note list is still, note view for it should open up
 	√ when the user clicks on the note list while it is scrolling, the scrolling should stop

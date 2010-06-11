@@ -5,8 +5,11 @@
 #include "INoteListView.h"
 #include "ISyncModel.h"
 #include "IUserModel.h"
+#include "Tools.h"
 
 using namespace boost;
+using namespace std;
+using namespace Tools;
 
 SyncPresenter::SyncPresenter
 	( INoteListModel & noteListModel
@@ -35,7 +38,18 @@ void SyncPresenter::OnSyncComplete()
 {
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
+
 	NoteList notes;
 	userModel.GetNotesByNotebook(notebook, notes);
 	noteListModel.SetNotes(notes);
+
+	noteListView.ClearNotebooks();
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
+	foreach (const Notebook & notebook, notebooks)
+	{
+		wstring guid(ConvertToUnicode(notebook.guid));
+		noteListView.AddNotebook(notebook.name, guid);
+	}
+	noteListView.UpdateNotebooks();
 }

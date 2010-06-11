@@ -20,12 +20,16 @@ private:
 
 	Evernote::EDAM::NoteStore::NoteStore::Client noteStore;
 
+// interface
+
 public:
 
 	NoteStore
 		( const AuthenticationToken & token
 		, const std::wstring        & shardId
 		);
+
+// INoteStore implementation
 
 public:
 
@@ -65,5 +69,16 @@ public:
 	virtual void CreateTag
 		( const Tag & tag
 		, Tag       & replacement
+		);
+
+// utility functions
+
+private:
+
+	void ListEntries
+		( Evernote::EDAM::NoteStore::SyncChunk & chunk
+		, EnInteropNoteList                    & notes
+		, NotebookList                         & notebooks
+		, TagList                              & tags
 		);
 };
