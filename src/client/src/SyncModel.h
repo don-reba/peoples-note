@@ -86,16 +86,19 @@ private:
 		( const EnInteropNoteList & remoteNotes
 		, INoteStore              & noteStore
 		, Notebook                & notebook
+		, bool                      fullSync
 		);
 
 	void ProcessNotebooks
 		( const NotebookList & remoteNotebooks
 		, INoteStore         & noteStore
+		, bool                 fullSync
 		);
 
 	void ProcessTags
 		( const TagList & remoteTags
 		, INoteStore    & noteStore
+		, bool            fullSync
 		);
 
 	void Sync();

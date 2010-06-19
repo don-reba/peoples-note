@@ -3,27 +3,19 @@
 
 using namespace std;
 
-void MockSyncLogger::ListLocalNotes(const EnInteropNoteList & notes)
+void MockSyncLogger::ListNotes(const wstring & listTitle, const EnInteropNoteList & notes)
 {
 }
 
-void MockSyncLogger::ListRemoteNotes(const EnInteropNoteList & notes)
+void MockSyncLogger::ListNotebooks(const wstring & listTitle, const NotebookList & notebooks)
 {
 }
 
-void MockSyncLogger::ListLocalNotebooks(const NotebookList & notebooks)
+void MockSyncLogger::ListTags(const wstring & listTitle, const TagList & tags)
 {
 }
 
-void MockSyncLogger::ListRemoteNotebooks(const NotebookList & notebooks)
-{
-}
-
-void MockSyncLogger::ListLocalTags(const TagList & tags)
-{
-}
-
-void MockSyncLogger::ListRemoteTags(const TagList & tags)
+void MockSyncLogger::ListGuids(const wstring & listTitle, const vector<Guid> & guids)
 {
 }
 

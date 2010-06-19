@@ -21,6 +21,23 @@ enum Status
 	StatusClear,
 };
 
+namespace std
+{
+	ostream & operator << (ostream & stream, Status status)
+	{
+		switch (status)
+		{
+		case StatusAdded:    return stream << "Added";
+		case StatusDeleted:  return stream << "Deleted";
+		case StatusRenamed:  return stream << "Renamed";
+		case StatusUploaded: return stream << "Uploaded";
+		case StatusMerged:   return stream << "Merged";
+		case StatusClear:    return stream << "Clear";
+		}
+		return stream;
+	}
+}
+
 class MockResource
 {
 public:
@@ -82,13 +99,13 @@ struct SyncLogicFixture
 
 	void FullSync()
 	{
-		SyncLogic::FullSync(remote, local, actions);
+		SyncLogic::Sync(true, remote, local, actions);
 		ProcessActions();
 	}
 
 	void IncrementalSync()
 	{
-		SyncLogic::IncrementalSync(remote, local, actions);
+		SyncLogic::Sync(false, remote, local, actions);
 		ProcessActions();
 	}
 
@@ -145,7 +162,7 @@ BOOST_FIXTURE_TEST_CASE(SyncLogic_FullSync_Test, SyncLogicFixture)
 	local.push_back(MockResource(L"commonDirty", Guid(), 0, true, StatusMerged));
 
 	remote.push_back(MockResource(L"commonFresh", Guid(), 0, false, StatusAdded));
-	local.push_back(MockResource(L"commonFresh", Guid(), 0, false, StatusRenamed));
+	local.push_back(MockResource(L"commonFresh", Guid(), 0, false, StatusDeleted));
 
 	Guid guid0;
 	remote.push_back(MockResource(L"0", guid0, 2, false, StatusClear));
@@ -183,7 +200,7 @@ BOOST_FIXTURE_TEST_CASE(SyncLogic_IncrementalSyncTest, SyncLogicFixture)
 	local.push_back(MockResource(L"0", Guid(), 0, true, StatusMerged));
 
 	remote.push_back(MockResource(L"1", Guid(), 0, false, StatusAdded));
-	local.push_back(MockResource(L"1", Guid(), 0, false, StatusRenamed));
+	local.push_back(MockResource(L"1", Guid(), 0, false, StatusDeleted));
 
 	Guid guid0;
 	remote.push_back(MockResource(L"2", guid0, 0, false, StatusMerged));

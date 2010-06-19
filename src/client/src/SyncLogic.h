@@ -30,6 +30,16 @@ public:
 public:
 
 	template<typename T>
+	static void Sync
+		( bool                      fullSync
+		, const std::vector<T>    & remote
+		, const std::vector<T>    & local
+		, std::vector<Action<T> > & actions
+		);
+
+private:
+
+	template<typename T>
 	static void FullSync
 		( const std::vector<T>    & remote
 		, const std::vector<T>    & local
@@ -54,6 +64,22 @@ SyncLogic::Action<T>::Action
 	, Local  (local)
 	, Remote (remote)
 {
+}
+
+template<typename T>
+void SyncLogic::Sync
+	( bool                      fullSync
+	, const std::vector<T>    & remote
+	, const std::vector<T>    & local
+	, std::vector<Action<T> > & actions
+	)
+{
+	if (local.empty() && remote.empty())
+		return;
+	if (fullSync)
+		FullSync(remote, local, actions);
+	else
+		IncrementalSync(remote, local, actions);
 }
 
 template<typename T>
@@ -179,14 +205,26 @@ void SyncLogic::IncrementalSync
 		{
 			NameMap::iterator l(localNames.find(r.name));
 			if (l == localNames.end())
+			{
 				actions.push_back(Action<T>(ActionAdd, NULL, &r));
+			}
 			else
 			{
 				const T & l(*l->second);
 				if (l.isDirty)
+				{
 					actions.push_back(Action<T>(ActionMerge, &l, &r));
+				}
 				else
-					actions.push_back(Action<T>(ActionRenameAdd, &l, &r));
+				{
+					actions.push_back(Action<T>(ActionDelete, &l,   NULL));
+					actions.push_back(Action<T>(ActionAdd,    NULL, &r));
+					// The official document advises renaming,
+					// but that does not work well for notes.
+					// Replacement seems to be a more sensible
+					// approach in general.
+					// actions.push_back(Action<T>(ActionRenameAdd, &l, &r));
+				}
 			}
 		}
 		else

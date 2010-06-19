@@ -40,11 +40,11 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
 
-	virtual void DeleteNote(const Note & note) = 0;
+	virtual void DeleteNote(const Guid & note) = 0;
 
-	virtual void DeleteNotebook(const Notebook & notebook) = 0;
+	virtual void DeleteNotebook(const Guid & notebook) = 0;
 
-	virtual void DeleteTag(const Tag & tag) = 0;
+	virtual void DeleteTag(const Guid & tag) = 0;
 
 	virtual void EndTransaction() = 0;
 
@@ -57,6 +57,8 @@ public:
 	virtual int GetDirtyNoteCount(const Notebook & notebook) = 0;
 
 	virtual std::wstring GetFolder() const = 0;
+
+	virtual __int64 GetLastSyncEnTime() = 0;
 
 	virtual void GetLastUsedNotebook(Notebook & notebook) = 0;
 
@@ -85,6 +87,8 @@ public:
 
 	virtual void GetNotebooks(NotebookList & notebooks) = 0;
 
+	virtual int GetNotebookUpdateCount(const Guid & notebook) = 0;
+
 	virtual void GetNotesByNotebook
 		( const Notebook & notebook
 		, NoteList       & notes
@@ -107,6 +111,8 @@ public:
 
 	virtual void GetTags(TagList & tags) = 0;
 
+	virtual int GetUpdateCount() = 0;
+
 	virtual void Load(const std::wstring & username) = 0;
 
 	virtual void LoadAs
@@ -124,11 +130,20 @@ public:
 		( const std::wstring & username
 		, const std::wstring & password
 		) = 0;
+
+	virtual void SetLastSyncEnTime(__int64 enTime) = 0;
 	
 	virtual void SetNoteThumbnail
 		( const Guid      & guid
 		, const Thumbnail & thumbnail
 		) = 0;
+
+	virtual void SetNotebookUpdateCount
+		( const Guid & notebook
+		, int          updateCount
+		) = 0;
+
+	virtual void SetUpdateCount(int updateCount) = 0;
 
 	virtual void Unload() = 0;
 

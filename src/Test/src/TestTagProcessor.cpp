@@ -35,12 +35,11 @@ BOOST_FIXTURE_TEST_CASE(TagProcessor_Add_Test, TagProcessorFixture)
 BOOST_FIXTURE_TEST_CASE(TagProcessor_Delete_Test, TagProcessorFixture)
 {
 	Tag tag;
-	tag.name = L"test";
 
 	tagProcessor.Delete(tag);
 
 	BOOST_CHECK_EQUAL(userModel.deletedTags.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.deletedTags.at(0).name, L"test");
+	BOOST_CHECK_EQUAL(userModel.deletedTags.at(0), tag.guid);
 }
 
 BOOST_FIXTURE_TEST_CASE(TagProcessor_Rename_Test, TagProcessorFixture)

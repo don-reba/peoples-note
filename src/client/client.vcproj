@@ -933,6 +933,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SyncState.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Tag.h"
 				>
 			</File>

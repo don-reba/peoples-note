@@ -33,27 +33,6 @@ public:
 
 public:
 
-	virtual void GetNoteBody
-		( const Note   & note
-		, std::wstring & content
-		);
-
-	virtual void GetNoteResource
-		( const Guid & guid
-		, Resource   & resource
-		);
-
-	virtual void GetNoteTagNames
-		( const Note                & note
-		, std::vector<std::wstring> & names
-		);
-
-	virtual void ListEntries
-		( EnInteropNoteList & notes
-		, NotebookList      & notebooks
-		, TagList           & tags
-		);
-
 	virtual void CreateNote
 		( const Note                  & note
 		, const std::wstring          & body
@@ -71,14 +50,66 @@ public:
 		, Tag       & replacement
 		);
 
+	virtual void GetNoteBody
+		( const Note   & note
+		, std::wstring & content
+		);
+
+	virtual void GetNoteResource
+		( const Guid & guid
+		, Resource   & resource
+		);
+
+	virtual void GetNoteTagNames
+		( const Note                & note
+		, std::vector<std::wstring> & names
+		);
+
+	virtual void GetSyncState(SyncState & syncState);
+
+	virtual void ListEntries
+		( EnInteropNoteList & notes
+		, NotebookList      & notebooks
+		, TagList           & tags
+		, const Guid        & notebookFilter
+		);
+
+	virtual void ListEntries
+		( int                 globalUpdateCount
+		, int                 notebookUpdateCount
+		, EnInteropNoteList & notes
+		, NotebookList      & notebooks
+		, TagList           & tags
+		, std::vector<Guid> & expungedNotes
+		, std::vector<Guid> & expungedNotebooks
+		, std::vector<Guid> & expungedTags
+		, std::vector<Guid> & resources
+		, const Guid        & notebookFilter
+		);
+
 // utility functions
 
 private:
 
+	__int64 ConvertFromEnTime(__int64 enTime);
+
+	__int64 ConvertToEnTime(__int64 time);
+
 	void ListEntries
 		( Evernote::EDAM::NoteStore::SyncChunk & chunk
+		, int                                    globalUpdateCount
 		, EnInteropNoteList                    & notes
 		, NotebookList                         & notebooks
 		, TagList                              & tags
+		, const Guid                           & notebookFilter
+		);
+
+	void NoteStore::ListEntries
+		( Evernote::EDAM::NoteStore::SyncChunk & chunk
+		, std::vector<Guid>                    & expungedNotes
+		, std::vector<Guid>                    & expungedNotebooks
+		, std::vector<Guid>                    & expungedTags
+		, std::vector<Guid>                    & resources
+		, const Guid                           & notebookFilter
 		);
 };

@@ -45,7 +45,7 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 
 void NoteProcessor::Delete(const EnInteropNote & local)
 {
-	userModel.DeleteNote(local.note);
+	userModel.DeleteNote(local.note.guid);
 }
 
 void NoteProcessor::RenameAdd
@@ -71,7 +71,7 @@ void NoteProcessor::Upload(const EnInteropNote & local)
 	Note replacement;
 	noteStore.CreateNote(local.note, body, resources, replacement);
 
-	userModel.DeleteNote(local.note);
+	userModel.DeleteNote(local.note.guid);
 	userModel.AddNote(replacement, body, L"", notebook);
 }
 
@@ -82,7 +82,7 @@ void NoteProcessor::Merge
 {
 	Transaction transaction(userModel);
 
-	userModel.DeleteNote(local.note);
+	userModel.DeleteNote(local.note.guid);
 
 	wstring body;
 	noteStore.GetNoteBody(remote.note, body);

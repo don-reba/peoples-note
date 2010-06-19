@@ -23,7 +23,7 @@ void TagProcessor::Add(const Tag & remote)
 
 void TagProcessor::Delete(const Tag & local)
 {
-	userModel.DeleteTag(local);
+	userModel.DeleteTag(local.guid);
 }
 
 void TagProcessor::RenameAdd
@@ -66,7 +66,7 @@ void TagProcessor::Upload
 
 	Tag replacement;
 	noteStore.CreateTag(local, replacement);
-	userModel.DeleteTag(local);
+	userModel.DeleteTag(local.guid);
 	userModel.AddTag(replacement);
 }
 

@@ -157,14 +157,17 @@ void SyncModel::ProcessNotes
 	( const EnInteropNoteList & remote
 	, INoteStore              & noteStore
 	, Notebook                & notebook
+	, bool                      fullSync
 	)
 {
 	EnInteropNoteList local;
 	GetNotes(notebook, local);
-	syncLogger.ListLocalNotes(local);
+	syncLogger.ListNotes(L"Local notes", local);
 
 	vector<SyncLogic::Action<EnInteropNote> > actions;
-	SyncLogic::FullSync(remote, local, actions);
+	SyncLogic::Sync(fullSync, remote, local, actions);
+	if (actions.empty())
+		return;
 
 	NoteProcessor processor(userModel, noteStore, notebook);
 
@@ -207,14 +210,17 @@ void SyncModel::ProcessNotes
 void SyncModel::ProcessNotebooks
 	( const NotebookList & remote
 	, INoteStore         & noteStore
+	, bool                 fullSync
 	)
 {
 	NotebookList local;
 	userModel.GetNotebooks(local);
-	syncLogger.ListLocalNotebooks(local);
+	syncLogger.ListNotebooks(L"Local notebooks", local);
 
 	vector<SyncLogic::Action<Notebook> > actions;
-	SyncLogic::FullSync(remote, local, actions);
+	SyncLogic::Sync(fullSync, remote, local, actions);
+	if (actions.empty())
+		return;
 
 	NotebookProcessor processor(userModel);
 
@@ -251,18 +257,20 @@ void SyncModel::ProcessNotebooks
 void SyncModel::ProcessTags
 	( const TagList & remote
 	, INoteStore    & noteStore
+	, bool            fullSync
 	)
 {
 	TagList local;
 	userModel.GetTags(local);
-	syncLogger.ListLocalTags(local);
+	syncLogger.ListTags(L"Local tags", local);
 
 	vector<SyncLogic::Action<Tag> > actions;
-	SyncLogic::FullSync(remote, local, actions);
+	SyncLogic::Sync(fullSync, remote, local, actions);
+	if (actions.empty())
+		return;
 
 	TagProcessor processor(userModel);
 
-	syncLogger.BeginSyncStage(L"tags");
 	foreach (const SyncLogic::Action<Tag> action, actions)
 	{
 		switch (action.Type)
@@ -320,23 +328,100 @@ void SyncModel::Sync()
 				)
 			);
 
+		SyncState syncState;
+		noteStore->GetSyncState(syncState);
+		bool fullSync(userModel.GetLastSyncEnTime() < syncState.FullSyncBefore);
+
+		syncLogger.BeginSyncStage(fullSync ? L"full" : L"incremental");
+
 		EnInteropNoteList remoteNotes;
 		NotebookList      remoteNotebooks;
 		TagList           remoteTags;
 
-		noteStore->ListEntries(remoteNotes, remoteNotebooks, remoteTags);
-
-		syncLogger.ListRemoteNotes     (remoteNotes);
-		syncLogger.ListRemoteNotebooks (remoteNotebooks);
-		syncLogger.ListRemoteTags      (remoteTags);
-
-		ProcessNotebooks (remoteNotebooks, *noteStore);
-		ProcessTags      (remoteTags,      *noteStore);
-
 		Notebook notebook;
 		userModel.GetLastUsedNotebook(notebook);
 
-		ProcessNotes(remoteNotes, *noteStore, notebook);
+		if (fullSync)
+		{
+			int globalUpdateCount(userModel.GetUpdateCount());
+			if (globalUpdateCount < syncState.UpdateCount)
+			{
+				noteStore->ListEntries
+					( remoteNotes
+					, remoteNotebooks
+					, remoteTags
+					, notebook.guid
+					);
+			}
+		}
+		else
+		{
+			int notebookUpdateCount(userModel.GetNotebookUpdateCount(notebook.guid));
+			if (notebookUpdateCount < syncState.UpdateCount)
+			{
+				int globalUpdateCount(userModel.GetUpdateCount());
+
+				vector<Guid> expungedNotes;
+				vector<Guid> expungedNotebooks;
+				vector<Guid> expungedTags;
+				vector<Guid> resources;
+
+				noteStore->ListEntries
+					( globalUpdateCount
+					, notebookUpdateCount
+					, remoteNotes
+					, remoteNotebooks
+					, remoteTags
+					, expungedNotes
+					, expungedNotebooks
+					, expungedTags
+					, resources
+					, notebook.guid
+					);
+
+				syncLogger.ListGuids(L"Expunged notes",     expungedNotes);
+				syncLogger.ListGuids(L"Expunged notebooks", expungedNotebooks);
+				syncLogger.ListGuids(L"Expunged tags",      expungedTags);
+
+				foreach (Guid & guid, expungedNotes)
+				{
+					try
+					{
+						userModel.DeleteNote(guid);
+						syncLogger.Delete(guid);
+					}
+					catch (const std::exception &)
+					{
+						// eat deletion errors
+					}
+				}
+				foreach (Guid & guid, expungedNotebooks)
+				{
+					userModel.DeleteNotebook(guid);
+					syncLogger.Delete(guid);
+				}
+				foreach (Guid & guid, expungedTags)
+				{
+					userModel.DeleteTag(guid);
+					syncLogger.Delete(guid);
+				}
+			}
+		}
+
+		syncLogger.ListNotes     (L"Remote notes",     remoteNotes);
+		syncLogger.ListNotebooks (L"Remote notebooks", remoteNotebooks);
+		syncLogger.ListTags      (L"Remote tags",      remoteTags);
+
+		ProcessNotebooks (remoteNotebooks, *noteStore, fullSync);
+		ProcessTags      (remoteTags,      *noteStore, fullSync);
+
+		userModel.GetLastUsedNotebook(notebook);
+
+		ProcessNotes(remoteNotes, *noteStore, notebook, fullSync);
+
+		userModel.SetNotebookUpdateCount(notebook.guid, syncState.UpdateCount);
+		userModel.SetUpdateCount(syncState.UpdateCount);
+		userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
 
 		PostMessage(SyncMessageQueue::MessageSyncComplete);
 

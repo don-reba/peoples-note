@@ -67,7 +67,9 @@ int UserModel::GetResourceCount()
 
 int UserModel::GetVersion()
 {
-	return _wtoi(GetProperty(L"version").c_str());
+	int version(0);
+	GetProperty(L"version", version);
+	return version;
 }
 
 //--------------------------
@@ -223,7 +225,7 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
-void UserModel::DeleteNote(const Note & note)
+void UserModel::DeleteNote(const Guid & note)
 {
 	Transaction transaction(*this);
 	__int64 rowid(0L);
@@ -231,7 +233,7 @@ void UserModel::DeleteNote(const Note & note)
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "SELECT rowid FROM Notes Where guid = ?"
 			);
-		statement->Bind(1, note.guid);
+		statement->Bind(1, note);
 		if (statement->Execute())
 			throw std::exception("Could not find the note to delete.");
 		statement->Get(0, rowid);
@@ -252,7 +254,7 @@ void UserModel::DeleteNote(const Note & note)
 	}
 }
 
-void UserModel::DeleteNotebook(const Notebook & notebook)
+void UserModel::DeleteNotebook(const Guid & notebook)
 {
 	Transaction transaction(*this);
 
@@ -261,7 +263,7 @@ void UserModel::DeleteNotebook(const Notebook & notebook)
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "SELECT isDefault, isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
 			);
-		statement->Bind(1, notebook.guid);
+		statement->Bind(1, notebook);
 		if (statement->Execute())
 			return;
 		statement->Get(0, isDefault);
@@ -275,7 +277,7 @@ void UserModel::DeleteNotebook(const Notebook & notebook)
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "DELETE FROM Notebooks WHERE guid = ?"
 			);
-		statement->Bind(1, notebook.guid);
+		statement->Bind(1, notebook);
 		statement->Execute();
 		statement->Finalize();
 	}
@@ -288,12 +290,12 @@ void UserModel::DeleteNotebook(const Notebook & notebook)
 	}
 }
 
-void UserModel::DeleteTag(const Tag & tag)
+void UserModel::DeleteTag(const Guid & tag)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "DELETE FROM Tags WHERE guid = ?"
 		);
-	statement->Bind(1, tag.guid);
+	statement->Bind(1, tag);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -316,8 +318,12 @@ bool UserModel::Exists(const wstring & username)
 
 void UserModel::GetCredentials(Credentials & credentials)
 {
-	credentials.SetPassword(GetProperty(L"password"));
-	credentials.SetUsername(GetProperty(L"username"));
+	wstring password;
+	wstring username;
+	GetProperty(L"password", password);
+	GetProperty(L"username", username);
+	credentials.SetPassword(password);
+	credentials.SetUsername(username);
 }
 
 void UserModel::GetDefaultNotebook(Notebook & notebook)
@@ -356,6 +362,13 @@ int UserModel::GetDirtyNoteCount(const Notebook & notebook)
 wstring UserModel::GetFolder() const
 {
 	return folder;
+}
+
+__int64 UserModel::GetLastSyncEnTime()
+{
+	__int64 enTime(0);
+	GetProperty(L"lastSyncTime", enTime);
+	return enTime;
 }
 
 void UserModel::GetLastUsedNotebook(Notebook & notebook)
@@ -452,8 +465,8 @@ void UserModel::GetNotebook
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, usn, name, isDirty"
-		"  FROM Notebooks"
-		"  WHERE guid = ?"
+		"  FROM   Notebooks"
+		"  WHERE  guid = ?"
 		);
 	statement->Bind(1, guid);
 	if (statement->Execute())
@@ -464,6 +477,21 @@ void UserModel::GetNotebook
 	statement->Get(2, notebook.name);
 	statement->Get(3, notebook.isDirty);
 	notebook.guid = guidString;
+}
+
+int UserModel::GetNotebookUpdateCount(const Guid & notebook)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT updateCount"
+		"  FROM   notebooks"
+		"  WHERE  guid = ?"
+		);
+	statement->Bind(1, notebook);
+	if (statement->Execute())
+		throw std::exception("Notebook not found.");
+	int updateCount(0);
+	statement->Get(0, updateCount);
+	return updateCount;
 }
 
 void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
@@ -679,6 +707,13 @@ void UserModel::GetTags(TagList & tags)
 	}
 }
 
+int UserModel::GetUpdateCount()
+{
+	int updateCount(0);
+	GetProperty(L"updateCount", updateCount);
+	return updateCount;
+}
+
 void UserModel::Load(const wstring & username)
 {
 	wstring path = CreatePathFromName(username);
@@ -766,18 +801,43 @@ void UserModel::SetCredentials
 	SetProperty(L"password", password);
 }
 
+void UserModel::SetLastSyncEnTime(__int64 enTime)
+{
+	SetProperty(L"lastSyncTime", enTime);
+}
+
+void UserModel::SetNotebookUpdateCount
+	( const Guid & notebook
+	, int          updateCount
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "UPDATE Notebooks"
+		"  SET    updateCount = ?"
+		"  WHERE  guid = ?"
+		);
+	statement->Bind(1, updateCount);
+	statement->Bind(2, notebook);
+	statement->Execute();
+}
+
 void UserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "UPDATE Notes"
-		"  SET thumbnail = ?, thumbnailWidth = ?, thumbnailHeight = ?"
-		"  WHERE guid = ?"
+		"  SET    thumbnail = ?, thumbnailWidth = ?, thumbnailHeight = ?"
+		"  WHERE  guid = ?"
 		);
 	statement->Bind(1, thumbnail.Data);
 	statement->Bind(2, thumbnail.Width);
 	statement->Bind(3, thumbnail.Height);
 	statement->Bind(4, guid);
 	statement->Execute();
+}
+
+void UserModel::SetUpdateCount(int updateCount)
+{
+	SetProperty(L"updateCount", updateCount);
 }
 
 void UserModel::Unload()
@@ -825,16 +885,6 @@ void UserModel::UpdateTag
 // utility functions
 //------------------
 
-void UserModel::SetProperty(wstring key, wstring value)
-{
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Properties VALUES (?, ?)"
-		);
-	statement->Bind(1, key);
-	statement->Bind(2, value);
-	statement->Execute();
-}
-
 void UserModel::Create(wstring path)
 {
 	int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
@@ -855,22 +905,6 @@ void UserModel::CreateTable(const char * sql)
 	dataStore.MakeStatement(sql)->Execute();
 }
 
-std::wstring UserModel::GetProperty(std::wstring key)
-{
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT value"
-		"  FROM Properties"
-		"  WHERE key = ?"
-		"  LIMIT 1"
-		);
-	statement->Bind(1, key);
-	if (statement->Execute())
-		throw std::exception("Property not found.");
-	wstring value;
-	statement->Get(0, value);
-	return value;
-}
-
 void UserModel::Initialize(wstring name)
 {
 	CreateTable
@@ -879,15 +913,18 @@ void UserModel::Initialize(wstring name)
 			", value NOT NULL"
 			")"
 		);
-	SetProperty(L"version",  L"0");
-	SetProperty(L"username", name);
-	SetProperty(L"password", L"");
+	SetProperty(L"version",      0);
+	SetProperty(L"username",     name);
+	SetProperty(L"password",     L"");
+	SetProperty(L"lastSyncTime", 0);
+	SetProperty(L"updateCount",  0);
 
 	CreateTable
 		( "CREATE TABLE Notebooks"
 			"( guid PRIMARY KEY"
 			", usn"
 			", name"
+			", updateCount"
 			", isDirty"
 			", isDefault"
 			", isLastUsed"

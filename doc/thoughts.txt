@@ -1641,7 +1641,7 @@ input panel
 			used only by SHHandleWMActivate
 signing out is broken
 	closed the database during a transaction
-incremental sync
+note replacement problem
 	if the server replaces a note with one with the same name
 		then it is duplicated on the client
 	not the desired behaviour
@@ -1656,3 +1656,89 @@ incremental sync
 notebook list is not updated after sync
 	the update did not fit into one 20-element chank
 	implement a proper chunk retrieval loop
+incremental sync
+	some differences
+		starts from USN greater than 0
+		fullSyncOnly == false
+			chunks contain expunged objects and resources
+		assumes new resources have greater USNs
+		does not delete local resources absent in remote
+	implementation differences
+		start from a non-zero USN
+		specify fullSyncOnly == false
+		list resources
+		list expunged notes, notebooks, and tags
+		update resources
+		remove expunbed notes, notebooks, tags
+	affected code
+		new NoteStore.ListEntries function
+			calling getNextChunk differently
+			listing additional stuff
+		Sync needs to be split up into full and incremental parts
+		database needs to store last sync USN and time
+		noteStore needs to fetch fullSyncBefore and updateCount
+	updateCount
+		if we sync by notebook
+			we have to store updateCount by noteBook
+			except, notes are not the only synced entity
+			there are other things, like notebook deletions
+				we don't want to double-sync them
+			but note events want to be per-notebook
+			can keep both global and per-notebook USN counters
+			notebook USN ≤ global USN
+			could sync using notebook USN
+				sync notes with USN > notebook USN
+				but filter out global events with USN ≤ global USN
+			would this cause double-sync problems?
+				global USN always gets reset
+				therefore, no global double-sync
+				a note can only belong to one notebook
+				a notebook's USN gets reset when it is synced
+				therefore, no note double-sync
+			any other problems?
+				a note belongs to exactly one notebook
+				therefore, no missed notebooks
+				global resources are updated normally
+				therefore, no missed global resources
+				do global resources depend on notes?
+					tags      - no
+					notebooks - no
+					searches  - no
+					resources - yes
+				a resource belongs to at most one note
+				therefore, resources should be synced per-notebook
+				do global resources depend on resources?
+					tags      - no
+					notebooks - no
+					searches  - no
+				no other problems, then
+			expunged resources do not come with USNs
+				can't filter out glogal resources
+				might double-delete global resources then
+				is this a problem?
+				could be, if they can be restored
+					can't be
+					API ref says expunging is permanent
+				does not seem like a problem
+		what about sync time?
+			required to decide when to peform full sync
+		delete vs expunge
+			deleted notes can be restored
+			deleted notes have USNs
+			can I add deleted notes to the expunged notes list?
+				to simplify processing
+			either way, we remove the note
+				and all of its resources?
+		deletion
+			incremental sync sees deleted notes that were never added
+				if the note was added and removed before last sync
+			could attempt to delete them, just handle the exceptions
+	notebook note filter
+		should be at ListEntries level
+			for pulling changed
+			if it does not exist on the server
+				there will be no notes to pull
+		should be at ProcessNotes level
+			for pushing changes
+			if it does not exist on the server
+				it should be using updated data

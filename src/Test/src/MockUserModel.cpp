@@ -67,17 +67,17 @@ void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
-void MockUserModel::DeleteNote(const Note & note)
+void MockUserModel::DeleteNote(const Guid & note)
 {
 	deletedNotes.push_back(note);
 }
 
-void MockUserModel::DeleteNotebook(const Notebook & notebook)
+void MockUserModel::DeleteNotebook(const Guid & notebook)
 {
 	deletedNotebooks.push_back(notebook);
 }
 
-void MockUserModel::DeleteTag(const Tag & tag)
+void MockUserModel::DeleteTag(const Guid & tag)
 {
 	deletedTags.push_back(tag);
 }
@@ -116,6 +116,11 @@ int MockUserModel::GetDirtyNoteCount(const Notebook & notebook)
 wstring MockUserModel::GetFolder() const
 {
 	return folder;
+}
+
+__int64 MockUserModel::GetLastSyncEnTime()
+{
+	return lastSyncEnTime;
 }
 
 void MockUserModel::GetLastUsedNotebook(Notebook & notebook)
@@ -182,6 +187,11 @@ void MockUserModel::GetNotebooks(NotebookList & notebooks)
 		);
 }
 
+int MockUserModel::GetNotebookUpdateCount(const Guid & notebook)
+{
+	return notebookUpdateCounts[notebook];
+}
+
 void MockUserModel::GetNotesByNotebook
 	( const Notebook & notebook
 	, NoteList       & notes
@@ -232,6 +242,11 @@ void MockUserModel::GetResource(const Guid & guid, Resource & resource)
 void MockUserModel::GetTags(TagList & tags)
 {
 	copy(this->tags.begin(), this->tags.end(), back_inserter(tags));
+}
+
+int MockUserModel::GetUpdateCount()
+{
+	return updateCount;
 }
 
 void MockUserModel::Load(const wstring & username)
@@ -292,9 +307,30 @@ void MockUserModel::SetCredentials
 	credentials.SetPassword(password);
 }
 
-void MockUserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
+void MockUserModel::SetLastSyncEnTime(__int64 enTime)
+{
+	lastSyncEnTime = enTime;
+}
+
+void MockUserModel::SetNoteThumbnail
+	( const Guid      & guid
+	, const Thumbnail & thumbnail
+	)
 {
 	noteThumbnails[guid] = thumbnail;
+}
+
+void MockUserModel::SetNotebookUpdateCount
+	( const Guid & notebook
+	, int          updateCount
+	)
+{
+	notebookUpdateCounts[notebook] = updateCount;
+}
+
+void MockUserModel::SetUpdateCount(int updateCount)
+{
+	this->updateCount = updateCount;
 }
 
 void MockUserModel::Unload()

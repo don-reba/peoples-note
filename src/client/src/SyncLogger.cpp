@@ -15,46 +15,40 @@ SyncLogger::SyncLogger(const wstring & documentPath)
 // ISyncLogger implementation
 //---------------------------
 
-void SyncLogger::ListLocalNotes(const EnInteropNoteList & notes)
+void SyncLogger::ListNotes(const wstring & listTitle, const EnInteropNoteList & notes)
 {
-	WriteListHeader(L"Local notes");
+	if (notes.empty())
+		return;
+	WriteListHeader(listTitle);
 	foreach (const EnInteropNote & note, notes)
 		WriteListEntry(note.name, note.guid);
 }
 
-void SyncLogger::ListRemoteNotes(const EnInteropNoteList & notes)
+void SyncLogger::ListNotebooks(const wstring & listTitle, const NotebookList & notebooks)
 {
-	WriteListHeader(L"Remote notes");
-	foreach (const EnInteropNote & note, notes)
-		WriteListEntry(note.name, note.guid);
-}
-
-void SyncLogger::ListLocalNotebooks(const NotebookList & notebooks)
-{
-	WriteListHeader(L"Local notebooks");
+	if (notebooks.empty())
+		return;
+	WriteListHeader(listTitle);
 	foreach (const Notebook & notebook, notebooks)
 		WriteListEntry(notebook.name, notebook.guid);
 }
 
-void SyncLogger::ListRemoteNotebooks(const NotebookList & notebooks)
+void SyncLogger::ListTags(const wstring & listTitle, const TagList & tags)
 {
-	WriteListHeader(L"Remote notebooks");
-	foreach (const Notebook & notebook, notebooks)
-		WriteListEntry(notebook.name, notebook.guid);
-}
-
-void SyncLogger::ListLocalTags(const TagList & tags)
-{
-	WriteListHeader(L"Local tags");
+	if (tags.empty())
+		return;
+	WriteListHeader(listTitle);
 	foreach (const Tag & tag, tags)
 		WriteListEntry(tag.name, tag.guid);
 }
 
-void SyncLogger::ListRemoteTags(const TagList & tags)
+void SyncLogger::ListGuids(const wstring & listTitle, const vector<Guid> & guids)
 {
-	WriteListHeader(L"Remote tags");
-	foreach (const Tag & tag, tags)
-		WriteListEntry(tag.name, tag.guid);
+	if (guids.empty())
+		return;
+	WriteListHeader(listTitle);
+	foreach (const Guid & guid, guids)
+		WriteListEntry(L"", guid);
 }
 
 void SyncLogger::BeginSyncStage(const wstring & name)

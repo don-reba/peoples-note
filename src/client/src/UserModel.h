@@ -55,11 +55,11 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
-	virtual void DeleteNote(const Note & note);
+	virtual void DeleteNote(const Guid & note);
 
-	virtual void DeleteNotebook(const Notebook & notebook);
+	virtual void DeleteNotebook(const Guid & notebook);
 
-	virtual void DeleteTag(const Tag & tag);
+	virtual void DeleteTag(const Guid & tag);
 
 	virtual void EndTransaction();
 
@@ -72,6 +72,8 @@ public:
 	virtual int GetDirtyNoteCount(const Notebook & notebook);
 
 	virtual std::wstring GetFolder() const;
+
+	virtual __int64 GetLastSyncEnTime();
 
 	virtual void GetLastUsedNotebook(Notebook & notebook);
 
@@ -99,6 +101,8 @@ public:
 
 	virtual void GetNotebooks(NotebookList & notebooks);
 
+	virtual int GetNotebookUpdateCount(const Guid & notebook);
+
 	virtual void GetNotesByNotebook
 		( const Notebook & notebook
 		, NoteList       & notes
@@ -121,6 +125,8 @@ public:
 
 	virtual void GetTags(TagList & tags);
 
+	virtual int GetUpdateCount();
+
 	virtual void Load(const std::wstring & username);
 
 	virtual void LoadAs
@@ -138,11 +144,20 @@ public:
 		( const std::wstring & username
 		, const std::wstring & password
 		);
-	
+
+	virtual void SetLastSyncEnTime(__int64 enTime);
+
+	virtual void SetNotebookUpdateCount
+		( const Guid & notebook
+		, int          updateCount
+		);
+
 	virtual void SetNoteThumbnail
 		( const Guid      & guid
 		, const Thumbnail & thumbnail
 		);
+
+	virtual void SetUpdateCount(int updateCount);
 
 	virtual void Unload();
 
@@ -160,21 +175,49 @@ public:
 
 private:
 
-	void SetProperty(std::wstring key, std::wstring value);
-
 	void Create(std::wstring path);
 
 	std::wstring CreatePathFromName(std::wstring name);
 
 	void CreateTable(const char * sql);
 
-	std::wstring GetProperty(std::wstring name);
+	template<typename T>
+	void GetProperty(const std::wstring & name, T & value);
 
 	void Initialize(std::wstring name);
 
 	void SetPragma(const char * sql);
 
+	template <typename T>
+	void SetProperty(const std::wstring & key, const T & value);
+
 	bool TryLoad(std::wstring path);
 
 	void Update();
 };
+
+template <typename T>
+void UserModel::GetProperty(const std::wstring & key, T & value)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT value"
+		"  FROM Properties"
+		"  WHERE key = ?"
+		"  LIMIT 1"
+		);
+	statement->Bind(1, key);
+	if (statement->Execute())
+		throw std::exception("Property not found.");
+	statement->Get(0, value);
+}
+
+template <typename T>
+void UserModel::SetProperty(const std::wstring & key, const T & value)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "INSERT OR REPLACE INTO Properties VALUES (?, ?)"
+		);
+	statement->Bind(1, key);
+	statement->Bind(2, value);
+	statement->Execute();
+}

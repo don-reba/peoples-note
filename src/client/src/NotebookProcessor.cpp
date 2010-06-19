@@ -23,7 +23,7 @@ void NotebookProcessor::Add(const Notebook & remote)
 
 void NotebookProcessor::Delete(const Notebook & local)
 {
-	userModel.DeleteNotebook(local);
+	userModel.DeleteNotebook(local.guid);
 }
 
 void NotebookProcessor::RenameAdd
@@ -66,7 +66,7 @@ void NotebookProcessor::Upload
 
 	Notebook replacement;
 	noteStore.CreateNotebook(local, replacement);
-	userModel.DeleteNotebook(local);
+	userModel.DeleteNotebook(local.guid);
 	userModel.AddNotebook(replacement);
 }
 

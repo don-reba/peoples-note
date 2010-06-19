@@ -84,9 +84,9 @@ public:
 
 	std::vector<NoteRecord> addedNotes;
 
-	NoteList     deletedNotes;
-	NotebookList deletedNotebooks;
-	TagList      deletedTags;
+	std::vector<Guid> deletedNotes;
+	std::vector<Guid> deletedNotebooks;
+	std::vector<Guid> deletedTags;
 
 	std::set<std::wstring> validUsernames;
 
@@ -100,6 +100,11 @@ public:
 	mutable std::wstring searchSelection;
 
 	std::wstring folder;
+
+	__int64 lastSyncEnTime;
+	int     updateCount;
+
+	std::map<std::string, int> notebookUpdateCounts;
 	
 	signal SignalLoaded;
 
@@ -135,11 +140,11 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
-	virtual void DeleteNote(const Note & note);
+	virtual void DeleteNote(const Guid & note);
 
-	virtual void DeleteNotebook(const Notebook & notebook);
+	virtual void DeleteNotebook(const Guid & notebook);
 
-	virtual void DeleteTag(const Tag & tag);
+	virtual void DeleteTag(const Guid & tag);
 
 	virtual void EndTransaction();
 
@@ -152,6 +157,8 @@ public:
 	virtual int GetDirtyNoteCount(const Notebook & notebook);
 
 	virtual std::wstring GetFolder() const;
+
+	virtual __int64 GetLastSyncEnTime();
 
 	virtual void GetLastUsedNotebook(Notebook & notebook);
 
@@ -179,6 +186,8 @@ public:
 
 	virtual void GetNotebooks(NotebookList & notebooks);
 
+	virtual int GetNotebookUpdateCount(const Guid & notebook);
+
 	virtual void GetNotesByNotebook
 		( const Notebook & notebook
 		, NoteList       & notes
@@ -201,6 +210,8 @@ public:
 
 	virtual void GetTags(TagList & tags);
 
+	virtual int GetUpdateCount();
+
 	virtual void Load(const std::wstring & username);
 
 	virtual void LoadAs
@@ -218,11 +229,20 @@ public:
 		( const std::wstring & username
 		, const std::wstring & password
 		);
+
+	virtual void SetLastSyncEnTime(__int64 enTime);
 	
 	virtual void SetNoteThumbnail
 		( const Guid      & guid
 		, const Thumbnail & thumbnail
 		);
+
+	virtual void SetNotebookUpdateCount
+		( const Guid & notebook
+		, int          updateCount
+		);
+
+	virtual void SetUpdateCount(int updateCount);
 
 	virtual void Unload();
 

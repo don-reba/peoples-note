@@ -91,12 +91,12 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_Delete_Test, NoteProcessorFixture)
 {
 	EnInteropNote note;
-	note.note.name = L"test-note";
+	note.guid = note.note.guid;
 
 	noteProcessor.Delete(note);
 
 	BOOST_CHECK_EQUAL(userModel.deletedNotes.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.deletedNotes.at(0).name, L"test-note");
+	BOOST_CHECK_EQUAL(userModel.deletedNotes.at(0), note.guid);
 }
 
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)

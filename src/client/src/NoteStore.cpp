@@ -37,6 +37,85 @@ NoteStore::NoteStore
 // INoteStore implementation
 //--------------------------
 
+void NoteStore::CreateNote
+	( const Note             & note
+	, const wstring          & body
+	, const vector<Resource> & resources
+	, Note                   & replacement
+	)
+{
+	EDAM::Types::Note enNote;
+	enNote.__isset.title     = true;
+	enNote.__isset.created   = true;
+	enNote.__isset.content   = true;
+	enNote.__isset.resources = true;
+
+	enNote.title   = note.name;
+	enNote.created = ConvertToEnTime(note.creationDate.GetTime());
+	enNote.content = body;
+
+	enNote.resources.resize(resources.size());
+	for (int i(0); i != resources.size(); ++i)
+	{
+		EDAM::Types::Resource & resource(enNote.resources.at(i));
+		resource.__isset.data = true;
+		resource.data.__isset.body = true;
+		resource.data.__isset.size = true;
+
+		copy
+			( resources.at(i).Data.begin()
+			, resources.at(i).Data.end()
+			, back_inserter(resource.data.body)
+			);
+		resource.data.size = resources.at(i).Data.size();
+	}
+
+	EDAM::Types::Note enReplacement(noteStore.createNote(token, enNote));
+	replacement.guid         = Guid(enReplacement.guid);
+	replacement.name         = enReplacement.title;
+	replacement.creationDate = static_cast<time_t>(ConvertFromEnTime(enReplacement.created));
+	replacement.usn          = enReplacement.updateSequenceNum;
+	replacement.isDirty      = false;
+}
+
+void NoteStore::CreateNotebook
+	( const Notebook & notebook
+	, Notebook       & replacement
+	)
+{
+	EDAM::Types::Notebook enNotebook;
+	enNotebook.__isset.name = true;
+
+	enNotebook.name = notebook.name;
+
+	EDAM::Types::Notebook enReplacement
+		( noteStore.createNotebook(token, enNotebook)
+		);
+	replacement.guid    = enReplacement.guid;
+	replacement.name    = enReplacement.name;
+	replacement.usn     = enReplacement.updateSequenceNum;
+	replacement.isDirty = false;
+}
+
+void NoteStore::CreateTag
+	( const Tag & tag
+	, Tag       & replacement
+	)
+{
+	EDAM::Types::Tag enTag;
+	enTag.__isset.name = true;
+
+	enTag.name = tag.name;
+
+	EDAM::Types::Tag enReplacement
+		( noteStore.createTag(token, enTag)
+		);
+	replacement.guid    = enReplacement.guid;
+	replacement.name    = enReplacement.name;
+	replacement.usn     = enReplacement.updateSequenceNum;
+	replacement.isDirty = false;
+}
+
 void NoteStore::GetNoteBody
 	( const Note & note
 	, wstring    & content
@@ -80,10 +159,19 @@ void NoteStore::GetNoteTagNames
 	names.swap(noteStore.getNoteTagNames(token, guid));
 }
 
+void NoteStore::GetSyncState(SyncState & syncState)
+{
+	EDAM::NoteStore::SyncState enSyncState(noteStore.getSyncState(token));
+	syncState.UpdateCount    = enSyncState.updateCount;
+	syncState.FullSyncBefore = enSyncState.fullSyncBefore;
+	syncState.CurrentEnTime  = enSyncState.currentTime;
+}
+
 void NoteStore::ListEntries
 	( EnInteropNoteList & notes
 	, NotebookList      & notebooks
 	, TagList           & tags
+	, const Guid        & notebookFilter
 	)
 {
 	EDAM::NoteStore::SyncChunk chunk;
@@ -92,103 +180,77 @@ void NoteStore::ListEntries
 	while (chunk.chunkHighUSN < chunk.updateCount)
 	{
 		chunk = noteStore.getSyncChunk(token, chunk.chunkHighUSN, 20, true);
-		ListEntries(chunk, notes, notebooks, tags);
+		ListEntries(chunk, 0, notes, notebooks, tags, notebookFilter);
 	}
 }
 
-void NoteStore::CreateNote
-	( const Note             & note
-	, const wstring          & body
-	, const vector<Resource> & resources
-	, Note                   & replacement
+void NoteStore::ListEntries
+	( int                 globalUpdateCount
+	, int                 notebookUpdateCount
+	, EnInteropNoteList & notes
+	, NotebookList      & notebooks
+	, TagList           & tags
+	, vector<Guid>      & expungedNotes
+	, vector<Guid>      & expungedNotebooks
+	, vector<Guid>      & expungedTags
+	, vector<Guid>      & resources
+	, const Guid        & notebookFilter
 	)
 {
-	EDAM::Types::Note enNote;
-	enNote.__isset.title     = true;
-	enNote.__isset.created   = true;
-	enNote.__isset.content   = true;
-	enNote.__isset.resources = true;
-
-	enNote.title   = note.name;
-	enNote.created = note.creationDate.GetTime() * 1000;
-	enNote.content = body;
-
-	enNote.resources.resize(resources.size());
-	for (int i(0); i != resources.size(); ++i)
+	EDAM::NoteStore::SyncChunk chunk;
+	chunk.chunkHighUSN = notebookUpdateCount;
+	chunk.updateCount  = notebookUpdateCount + 1;
+	while (chunk.chunkHighUSN < chunk.updateCount)
 	{
-		EDAM::Types::Resource & resource(enNote.resources.at(i));
-		resource.__isset.data = true;
-		resource.data.__isset.body = true;
-		resource.data.__isset.size = true;
-
-		copy
-			( resources.at(i).Data.begin()
-			, resources.at(i).Data.end()
-			, back_inserter(resource.data.body)
+		chunk = noteStore.getSyncChunk(token, chunk.chunkHighUSN, 20, false);
+		ListEntries
+			( chunk
+			, globalUpdateCount
+			, notes
+			, notebooks
+			, tags
+			, notebookFilter
 			);
-		resource.data.size = resources.at(i).Data.size();
+		ListEntries
+			( chunk
+			, expungedNotes
+			, expungedNotebooks
+			, expungedTags
+			, resources
+			, notebookFilter
+			);
 	}
-
-	EDAM::Types::Note enReplacement(noteStore.createNote(token, enNote));
-	replacement.guid         = Guid(enReplacement.guid);
-	replacement.name         = enReplacement.title;
-	replacement.creationDate = static_cast<time_t>(enReplacement.created / 1000);
-	replacement.usn          = enReplacement.updateSequenceNum;
-	replacement.isDirty      = false;
-}
-
-void NoteStore::CreateNotebook
-	( const Notebook & notebook
-	, Notebook       & replacement
-	)
-{
-	EDAM::Types::Notebook enNotebook;
-	enNotebook.__isset.name = true;
-
-	enNotebook.name = notebook.name;
-
-	EDAM::Types::Notebook enReplacement
-		( noteStore.createNotebook(token, enNotebook)
-		);
-	replacement.guid    = enReplacement.guid;
-	replacement.name    = enReplacement.name;
-	replacement.usn     = enReplacement.updateSequenceNum;
-	replacement.isDirty = false;
-}
-
-void NoteStore::CreateTag
-	( const Tag & tag
-	, Tag       & replacement
-	)
-{
-	EDAM::Types::Tag enTag;
-	enTag.__isset.name = true;
-
-	enTag.name = tag.name;
-
-	EDAM::Types::Tag enReplacement
-		( noteStore.createTag(token, enTag)
-		);
-	replacement.guid    = enReplacement.guid;
-	replacement.name    = enReplacement.name;
-	replacement.usn     = enReplacement.updateSequenceNum;
-	replacement.isDirty = false;
 }
 
 //------------------
 // utility functions
 //------------------
 
+__int64 NoteStore::ConvertFromEnTime(__int64 enTime)
+{
+	return static_cast<time_t>(enTime / 1000L);
+}
+
+__int64 NoteStore::ConvertToEnTime(__int64 time)
+{
+	return static_cast<__int64>(time) * 1000L;
+}
+
 void NoteStore::ListEntries
 	( EDAM::NoteStore::SyncChunk & chunk
+	, int                          globalUpdateCount
 	, EnInteropNoteList          & notes
 	, NotebookList               & notebooks
 	, TagList                    & tags
+	, const Guid                 & notebookFilter
 	)
 {
+	wstring notebookFilterGuid(ConvertToUnicode(notebookFilter));
 	foreach (const EDAM::Types::Note & note, chunk.notes)
 	{
 		if (note.__isset.active && !note.active)
+			continue;
+		if (note.notebookGuid != notebookFilterGuid)
 			continue;
 		notes.push_back(EnInteropNote());
 
@@ -196,7 +258,7 @@ void NoteStore::ListEntries
 
 		notes.back().note.guid         = note.guid;
 		notes.back().note.name         = note.title;
-		notes.back().note.creationDate = static_cast<time_t>(note.created / 1000);
+		notes.back().note.creationDate = static_cast<time_t>(ConvertFromEnTime(note.created));
 		notes.back().note.usn          = note.updateSequenceNum;
 		notes.back().note.isDirty      = false;
 
@@ -214,6 +276,8 @@ void NoteStore::ListEntries
 	}
 	foreach (const EDAM::Types::Notebook & notebook, chunk.notebooks)
 	{
+		if (notebook.updateSequenceNum <= globalUpdateCount)
+			continue;
 		notebooks.push_back(Notebook());
 		notebooks.back().guid    = notebook.guid;
 		notebooks.back().name    = notebook.name;
@@ -222,10 +286,40 @@ void NoteStore::ListEntries
 	}
 	foreach (const EDAM::Types::Tag & tag, chunk.tags)
 	{
+		if (tag.updateSequenceNum <= globalUpdateCount)
+			continue;
 		tags.push_back(Tag());
 		tags.back().guid    = tag.guid;
 		tags.back().name    = tag.name;
 		tags.back().usn     = tag.updateSequenceNum;
 		tags.back().isDirty = false;
 	}
+}
+
+void NoteStore::ListEntries
+	( EDAM::NoteStore::SyncChunk & chunk
+	, vector<Guid>               & expungedNotes
+	, vector<Guid>               & expungedNotebooks
+	, vector<Guid>               & expungedTags
+	, vector<Guid>               & resources
+	, const Guid                 & notebookFilter
+	)
+{
+	wstring notebookFilterGuid(ConvertToUnicode(notebookFilter));
+	foreach (const EDAM::Types::Note & note, chunk.notes)
+	{
+		if (!note.__isset.active || note.active)
+			continue;
+		if (note.notebookGuid != notebookFilterGuid)
+			continue;
+		expungedNotes.push_back(note.guid);
+	}
+	foreach (const EDAM::Types::Resource & resource, chunk.resources)
+		resources.push_back(resource.guid);
+	foreach (const EDAM::Types::Guid & guid, chunk.expungedNotes)
+		expungedNotes.push_back(guid);
+	foreach (const EDAM::Types::Guid & guid, chunk.expungedNotebooks)
+		expungedNotebooks.push_back(guid);
+	foreach (const EDAM::Types::Guid & guid, chunk.expungedTags)
+		expungedTags.push_back(guid);
 }
