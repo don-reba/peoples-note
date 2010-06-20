@@ -1,11 +1,28 @@
 #pragma once
 
+#include <boost/function.hpp>
+
 class IAnimator
 {
 public:
 
-	typedef boost::signals2::signal<void(DWORD)> Signal;
-	typedef boost::signals2::connection Connection;
+	class Connection
+	{
+	private:
+
+		IAnimator * animator;
+		int         id;
+
+	public:
+
+		Connection();
+
+		Connection(IAnimator * animator, int id);
+
+		void Disconnect();
+	};
+
+	typedef boost::function<void(DWORD)> Animation;
 
 public:
 
@@ -13,7 +30,7 @@ public:
 
 	virtual bool IsRunning() = 0;
 
-	virtual Connection Subscribe(Signal::slot_type OnFrameStep) = 0;
+	virtual Connection Subscribe(Animation OnFrameStep) = 0;
 
-	virtual DWORD GetMilliseconds() = 0;
+	virtual void Unsubscribe(int connectionId) = 0;
 };

@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Animator.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Credentials.cpp"
 				>
 			</File>
@@ -204,6 +208,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Guid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\IAnimator.cpp"
 				>
 			</File>
 			<File
@@ -353,6 +361,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestAboutPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestAnimator.cpp"
 				>
 			</File>
 			<File

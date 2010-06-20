@@ -302,10 +302,10 @@ void NoteListView::UpdateThumbnail(const Guid & guid)
 
 void NoteListView::AnimateScroll(DWORD time)
 {
-	int    t   (time - startTime);
-	int    sgn ((dragSpeed >= 0.0) ? 1 : -1);
-	double s   (fabs(dragSpeed));
-	double a   (acceleration);
+	const int    t   (time);
+	const int    sgn ((dragSpeed >= 0.0) ? 1 : -1);
+	const double s   (fabs(dragSpeed));
+	const double a   (acceleration);
 	if (s + a * t > 0.001)
 	{
 		int offset(sgn * static_cast<int>(t * (s + 0.5 * a * t)));
@@ -314,7 +314,7 @@ void NoteListView::AnimateScroll(DWORD time)
 	else
 	{
 		state = StateIdle;
-		animation.disconnect();
+		animation.Disconnect();
 	}
 }
 
@@ -459,10 +459,10 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 		return;
 
 	if (state == StateAnimating)
-		animation.disconnect();
+		animation.Disconnect();
 
 	state = StateDragging;
-	startTime = animator.GetMilliseconds();
+	startTime = ::GetTickCount();
 
 	lButtonDown  = make_shared<WndMsg>(WM_LBUTTONDOWN, msg.lprm_, msg.wprm_);
 	lButtonDownY = msg.Position().y;
@@ -494,11 +494,8 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 		{
 			startScrollPos = GetNoteListScrollPos();
 
-			int time(animator.GetMilliseconds());
-
 			state     = StateAnimating;
-			dragSpeed = distance / static_cast<double>(time - startTime);
-			startTime = time;
+			dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
 			animation = animator.Subscribe(bind(&NoteListView::AnimateScroll, this, _1));
 		}
 		else

@@ -1742,3 +1742,26 @@ incremental sync
 			for pushing changes
 			if it does not exist on the server
 				it should be using updated data
+performance profiling
+	requirements
+		always on
+		little overhead
+		easy to maintain
+	targets
+		animation frame rate
+			for various animations
+		loading time
+	implementation
+		no string map
+			premature pessimization
+		animation
+			FPS = # of frames / seconds it takes to complete animation
+				record when an animation starts
+				count the frames in the animation
+				add a performance event when the animation ends
+			how to store this additional data?
+				currently done with a signal
+				would need to keep additional state with each connection
+				does the signal library allow this?
+	display
+		show in status bar

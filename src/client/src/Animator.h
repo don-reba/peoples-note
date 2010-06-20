@@ -2,11 +2,33 @@
 
 #include "IAnimator.h"
 
+#include <list>
+
 class Animator : public IAnimator
 {
+// types
+
 private:
 
-	Signal SignalFrameStep;
+	struct Record
+	{
+		int       id;
+		Animation animation;
+		DWORD     startTime;
+	};
+
+// data
+
+private:
+
+	std::list<Record> records;
+	int               lastId;
+
+// interface
+
+public:
+
+	Animator();
 
 // IAnimator implementation
 
@@ -16,7 +38,7 @@ public:
 
 	virtual bool IsRunning();
 
-	virtual Connection Subscribe(Signal::slot_type OnFrameStep);
+	virtual Connection Subscribe(Animation OnFrameStep);
 
-	virtual DWORD GetMilliseconds();
+	virtual void Unsubscribe(int connectionId);
 };
