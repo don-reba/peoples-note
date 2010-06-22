@@ -28,8 +28,6 @@ private:
 
 	IAnimator & animator;
 
-	IAnimator::Connection animation;
-
 	SHACTIVATEINFO activateInfo;
 	int            cmdShow;
 	HINSTANCE      instance;

@@ -314,7 +314,7 @@ void NoteListView::AnimateScroll(DWORD time)
 	else
 	{
 		state = StateIdle;
-		animation.Disconnect();
+		animator.Unsubscribe(IAnimator::AnimationNoteListScroll);
 	}
 }
 
@@ -459,7 +459,7 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 		return;
 
 	if (state == StateAnimating)
-		animation.Disconnect();
+		animator.Unsubscribe(IAnimator::AnimationNoteListScroll);
 
 	state = StateDragging;
 	startTime = ::GetTickCount();
@@ -496,7 +496,10 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 
 			state     = StateAnimating;
 			dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
-			animation = animator.Subscribe(bind(&NoteListView::AnimateScroll, this, _1));
+			animator.Subscribe
+				( IAnimator::AnimationNoteListScroll
+				, bind(&NoteListView::AnimateScroll, this, _1)
+				);
 		}
 		else
 		{

@@ -9,13 +9,33 @@ using namespace std;
 //----------
 
 Animator::Animator()
-	: lastId (0)
+	: lastId (AnimationNone)
 {
 }
 
 //-------------------------
 // IAnimator implementation
 //-------------------------
+
+void Animator::ConnectAnimationCompleted(slot_type OnAnimationCompleted)
+{
+	SignalAnimationCompleted.connect(OnAnimationCompleted);
+}
+
+int Animator::GetLastAnimationId()
+{
+	return lastId;
+}
+
+double Animator::GetLastAnimationFps()
+{
+	return lastFps;
+}
+
+bool Animator::IsRunning()
+{
+	return !records.empty();
+}
 
 void Animator::StepFrame()
 {
@@ -26,38 +46,34 @@ void Animator::StepFrame()
 	{
 		Record & record(*i);
 		++i;
+		++record.frameCount;
 		record.animation(time - record.startTime);
 	}
 }
 
-bool Animator::IsRunning()
-{
-	return !records.empty();
-}
-
-IAnimator::Connection Animator::Subscribe(Animation OnFrameStep)
+void Animator::Subscribe(AnimationId id, Animation OnFrameStep)
 {
 	Record record;
-	record.id        = lastId;
-	record.animation = OnFrameStep;
-	record.startTime = ::GetTickCount();
-
-	Connection connection(this, lastId);
-
-	++lastId;
+	record.id         = id;
+	record.animation  = OnFrameStep;
+	record.startTime  = ::GetTickCount();
+	record.frameCount = 0;
 
 	records.push_back(record);
-	return connection;
 }
 
-void Animator::Unsubscribe(int connectionId)
+void Animator::Unsubscribe(AnimationId connectionId)
 {
 	typedef list<Record>::iterator Iterator;
+
+	DWORD time(::GetTickCount());
 
 	for (Iterator i(records.begin()); i != records.end(); ++i)
 	{
 		if (i->id != connectionId)
 			continue;
+		lastId  = connectionId;
+		lastFps = static_cast<double>(i->frameCount) / (time - i->startTime);
 		records.erase(i);
 		return;
 	}

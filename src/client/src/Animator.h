@@ -12,9 +12,10 @@ private:
 
 	struct Record
 	{
-		int       id;
-		Animation animation;
-		DWORD     startTime;
+		AnimationId id;
+		Animation   animation;
+		DWORD       startTime;
+		int         frameCount;
 	};
 
 // data
@@ -22,7 +23,10 @@ private:
 private:
 
 	std::list<Record> records;
-	int               lastId;
+	AnimationId       lastId;
+	double            lastFps;
+
+	signal SignalAnimationCompleted;
 
 // interface
 
@@ -34,11 +38,17 @@ public:
 
 public:
 
-	virtual void StepFrame();
+	virtual void ConnectAnimationCompleted(slot_type OnAnimationCompleted);
+
+	virtual int GetLastAnimationId();
+
+	virtual double GetLastAnimationFps();
 
 	virtual bool IsRunning();
 
-	virtual Connection Subscribe(Animation OnFrameStep);
+	virtual void StepFrame();
 
-	virtual void Unsubscribe(int connectionId);
+	virtual void Subscribe(AnimationId id, Animation OnFrameStep);
+
+	virtual void Unsubscribe(AnimationId id);
 };

@@ -1,36 +1,34 @@
 #pragma once
 
+#include "ISignalProvider.h"
+
 #include <boost/function.hpp>
 
-class IAnimator
+class IAnimator : public ISignalProvider
 {
 public:
 
-	class Connection
+	enum AnimationId
 	{
-	private:
-
-		IAnimator * animator;
-		int         id;
-
-	public:
-
-		Connection();
-
-		Connection(IAnimator * animator, int id);
-
-		void Disconnect();
+		AnimationNone,
+		AnimationNoteListScroll,
 	};
 
 	typedef boost::function<void(DWORD)> Animation;
 
 public:
 
-	virtual void StepFrame() = 0;
+	virtual void ConnectAnimationCompleted(slot_type OnAnimationCompleted) = 0;
+
+	virtual int GetLastAnimationId() = 0;
+
+	virtual double GetLastAnimationFps() = 0;
 
 	virtual bool IsRunning() = 0;
 
-	virtual Connection Subscribe(Animation OnFrameStep) = 0;
+	virtual void StepFrame() = 0;
 
-	virtual void Unsubscribe(int connectionId) = 0;
+	virtual void Subscribe(AnimationId id, Animation OnFrameStep) = 0;
+
+	virtual void Unsubscribe(AnimationId id) = 0;
 };

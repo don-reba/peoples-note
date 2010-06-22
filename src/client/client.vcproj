@@ -443,10 +443,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\IAnimator.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\ImagingException.cpp"
 				>
 			</File>
