@@ -73,8 +73,9 @@ void Animator::Unsubscribe(AnimationId connectionId)
 		if (i->id != connectionId)
 			continue;
 		lastId  = connectionId;
-		lastFps = static_cast<double>(i->frameCount) / (time - i->startTime);
+		lastFps = 1000.0 * i->frameCount / (time - i->startTime);
 		records.erase(i);
+		SignalAnimationCompleted();
 		return;
 	}
 }

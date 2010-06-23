@@ -10,6 +10,7 @@
 #include "EnImporter.h"
 #include "EnNoteTranslator.h"
 #include "EnService.h"
+#include "InstrumentationPresenter.h"
 #include "LastUserModel.h"
 #include "MessagePump.h"
 #include "NoteListModel.h"
@@ -148,6 +149,9 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListModel
 			, noteListView
 			, userModel
+			);
+		InstrumentationPresenter instrumentationPresenter
+			( animator
 			);
 		NoteListPresenter noteListPresenter
 			( noteListModel

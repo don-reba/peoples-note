@@ -447,6 +447,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\InstrumentationPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\LastUserModel.cpp"
 				>
 			</File>
@@ -786,6 +790,10 @@
 			</File>
 			<File
 				RelativePath=".\src\INoteView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\InstrumentationPresenter.h"
 				>
 			</File>
 			<File

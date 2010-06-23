@@ -1763,5 +1763,55 @@ performance profiling
 				currently done with a signal
 				would need to keep additional state with each connection
 				does the signal library allow this?
+					no
+			if I don't use signals, what should I have?
+				connection creates a record with
+					id
+					active flag
+					the function to call
+					the object to call the function on
+					animation start
+					frame counter
+				connection returns an object for severing it
+					severing means removing the record
+					can't do it by index or pointer
+						because these get invalidated by other removals
+					type needs to be known to animation provider
+						entails type of list it is handling
+						entails type of record
+				animation id
+					could be supplied by animation source
+						assuming one animation of a kind plays at a time
+					knowing what ids there are, can preallocate the records
+						add a flag to mark active ones
+						does not seem like a good idea, though
+					does not seem like a clean solution
+						it leads to a clean solution, though
+				what's in a clean solution?
+					animation provider deals with the animator interface
+					provider given a connection object
+						without revealing animator implementation
+				solution
+					give the connection object
+						connection id
+						animator interface reference
+		collection
+			every time an animation finishes
+				record the frame rate for its type
+			this means I need to know the type of animation
+			also need a place to record the frame rate
+			MVP implementation
+				create a profile model and a profile presenter
+				the presenter would subscribe to various sources of profiling info
+					and record them to the profile model
+				the presenter might react to to changes in the model
+					and update some special debugging view
+				report presenter, or whatever, might also hook up to the profile model
+			animation signal
+				is it, really, appropriate?
+				would require methods like
+					ConnectAnimationCompleted
+					GetLastAnimationId
+					GetLastAnimationFps
 	display
 		show in status bar

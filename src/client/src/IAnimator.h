@@ -10,7 +10,7 @@ public:
 
 	enum AnimationId
 	{
-		AnimationNone,
+		AnimationNone = -1,
 		AnimationNoteListScroll,
 	};
 
