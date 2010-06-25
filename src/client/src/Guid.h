@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iterator>
+
 class Guid
 {
 private:
@@ -17,4 +19,11 @@ public:
 	bool operator == (const Guid & guid) const;
 
 	bool operator != (const Guid & guid) const;
+
+private:
+
+	static void FilterGuid
+		( const wchar_t * guid
+		, std::string   & result
+		);
 };

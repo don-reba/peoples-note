@@ -123,6 +123,8 @@
       DRAG_LEAVE  = 0xB, // drag left one of current drop targets. target is the drop target element.  
       DRAG_REQUEST = 0xC,  // drag src notification before drag start. To cancel - return true from handler.
 
+      MOUSE_CLICK = 0xFF, // mouse click event
+
       DRAGGING = 0x100, // This flag is 'ORed' with MOUSE_ENTER..MOUSE_DOWN codes if dragging operation is in effect.
                         // E.g. event DRAGGING | MOUSE_MOVE is sent to underlying DOM elements while dragging.
   };
@@ -365,6 +367,11 @@
       HISTORY_NEXT,
 
       HISTORY_STATE_CHANGED,         // behavior:history notification - history stack has changed
+
+      CLOSE_POPUP,                   // close popup request,
+      REQUEST_TOOLTIP,               // request tooltip, BEHAVIOR_EVENT_PARAMS.he <- is the tooltip element.
+
+      ANIMATION         = 0xA0,      // animation started (reason=1) or ended(reason=0) on the element.
 
 
       FIRST_APPLICATION_EVENT_CODE = 0x100 

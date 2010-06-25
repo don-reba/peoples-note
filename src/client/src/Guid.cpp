@@ -16,7 +16,8 @@ Guid::Guid()
 	if (0 == ::StringFromGUID2(guid, &str[0], str.size()))
 		throw exception("GUID to string conversion failed.");
 
-	data = ConvertToAnsi(&str[0]);
+	data.clear();
+	FilterGuid(&str[0], data);
 }
 
 Guid::Guid(string data)
@@ -42,4 +43,25 @@ bool Guid::operator == (const Guid & guid) const
 bool Guid::operator != (const Guid & guid) const
 {
 	return data != guid.data;
+}
+
+void Guid::FilterGuid
+	( const wchar_t * guid
+	, string        & result
+	)
+{
+	result.clear();
+	for (; *guid; ++guid)
+	{
+		wchar_t c(*guid);
+		if
+			(  (c >= L'A' && c <= L'F')
+			|| (c >= L'a' && c <= L'f')
+			|| (c >= L'0' && c <= L'9')
+			)
+		{
+			// these Unicode characters can be cast safely
+			result.push_back(static_cast<char>(c));
+		}
+	}
 }
