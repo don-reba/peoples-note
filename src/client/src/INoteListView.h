@@ -61,6 +61,8 @@ public:
 
 	virtual void SetSigninText(const std::wstring & text) = 0;
 
+	virtual void SetStatusText(const std::wstring & text) = 0;
+
 	virtual void SetSyncText(const std::wstring & text) = 0;
 
 	virtual void SetWindowTitle(const std::wstring & text) = 0;

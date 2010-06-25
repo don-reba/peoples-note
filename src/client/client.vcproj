@@ -1043,7 +1043,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html\reflection-48.png"
+				>
+			</File>
+			<File
 				RelativePath=".\html\search.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\sync.png"
 				>
 			</File>
 			<File

@@ -38,6 +38,7 @@ private:
 	element listScroll;
 	element listSlider;
 	element searchBox;
+	element status;
 
 	Guid selectedNotebookGuid;
 
@@ -117,6 +118,8 @@ public:
 	virtual void SetProfileText(const std::wstring & text);
 
 	virtual void SetSigninText(const std::wstring & text);
+
+	virtual void SetStatusText(const std::wstring & text);
 
 	virtual void SetSyncText(const std::wstring & text);
 

@@ -2,6 +2,7 @@
 #include "InstrumentationPresenter.h"
 
 #include "IAnimator.h"
+#include "INoteListView.h"
 
 #include <sstream>
 
@@ -9,9 +10,11 @@ using namespace boost;
 using namespace std;
 
 InstrumentationPresenter::InstrumentationPresenter
-	( IAnimator & animator
+	( IAnimator     & animator
+	, INoteListView & noteListView
 	)
-	: animator (animator)
+	: animator     (animator)
+	, noteListView (noteListView)
 {
 	animator.ConnectAnimationCompleted(bind
 		( &InstrumentationPresenter::OnAnimationCompleted
@@ -29,6 +32,6 @@ void InstrumentationPresenter::OnAnimationCompleted()
 	case IAnimator::AnimationNoteListScroll:
 		stream << L"NoteListScroll";
 	}
-	stream << L": " << animator.GetLastAnimationFps() << L" FPS";
-	DEBUGMSG(true, (L"%s\n", stream.str().c_str()));
+	stream << L": " << animator.GetLastAnimationFps() << L" fps";
+	noteListView.SetStatusText(stream.str());
 }

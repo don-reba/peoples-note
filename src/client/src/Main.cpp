@@ -152,6 +152,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 		InstrumentationPresenter instrumentationPresenter
 			( animator
+			, noteListView
 			);
 		NoteListPresenter noteListPresenter
 			( noteListModel

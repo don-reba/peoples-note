@@ -76,6 +76,7 @@ void NoteListView::RegisterEventHandlers()
 	listScroll   = FindFirstElement("#scroll");
 	listSlider   = FindFirstElement("#slider");
 	searchBox    = FindFirstElement("#search-box");
+	status       = FindFirstElement("#status");
 }
 
 //-----------------------------
@@ -252,6 +253,11 @@ void NoteListView::ShowSyncButton()
 	sync.set_style_attribute("display", L"block");
 }
 
+void NoteListView::SetStatusText(const wstring  & text)
+{
+	status.set_text(text.c_str());
+}
+
 void NoteListView::SetSyncText(const wstring & text)
 {
 	element root (element::root_element(hwnd_));
@@ -261,7 +267,7 @@ void NoteListView::SetSyncText(const wstring & text)
 	sync.set_text(text.c_str());
 }
 
-void NoteListView::SetWindowTitle(const std::wstring & text)
+void NoteListView::SetWindowTitle(const wstring & text)
 {
 	::SetWindowText(hwnd_, text.c_str());
 }
@@ -490,23 +496,29 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 	if (state == StateDragging)
 	{
 		int distance = msg.Position().y - lButtonDownY;
-		if (4 < abs(distance))
+		//if (4 < abs(distance))
 		{
 			startScrollPos = GetNoteListScrollPos();
 
+			POINT scrollPos;
+			RECT  viewRect;
+			SIZE  contentSize;
+			noteList.get_scroll_info(scrollPos, viewRect, contentSize);
+
 			state     = StateAnimating;
-			dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
+			//dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
+			dragSpeed = (startScrollPos < (contentSize.cy + viewRect.top - viewRect.bottom) / 2) ? -1.0 : 1.0;
 			animator.Subscribe
 				( IAnimator::AnimationNoteListScroll
 				, bind(&NoteListView::AnimateScroll, this, _1)
 				);
 		}
-		else
-		{
-			state = StateIdle;
-			__super::ProcessMessage(*lButtonDown);
-			lButtonDown.reset();
-		}
+		//else
+		//{
+			//state = StateIdle;
+			//__super::ProcessMessage(*lButtonDown);
+			//lButtonDown.reset();
+		//}
 	}
 }
 
