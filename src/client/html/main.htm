@@ -21,6 +21,7 @@
 			}
 			#note-list-panel
 			{
+				flow:   horizontal;
 				height: 100%%;
 				width:  100%;
 			}
@@ -149,22 +150,23 @@
 			}
 			#status
 			{
-				font-size:   20px;
-				line-height: 24px;
-				max-height:  48px;
-				overflow:    hidden;
-				padding:     0px 4px;
-				vertical-align: top;
+				border: 1px solid red;
+				font-size:      20px;
+				line-height:    24px;
+				max-height:     48px;
+				overflow:       hidden;
+				padding:        0px 4px;
+				width:          100%%;
 			}
 			#status-bar
 			{
 				background:     #e0e0e0 url(reflection-48.png) repeat-x;
+				flow:           horizontal;
 				height:         50px;
 				max-height:     50px;
 				overflow:       hidden;
 				vertical-align: middle;
 				width:          100%;
-				padding: 0px;
 			}
 			#sync-button
 			{
@@ -181,7 +183,6 @@
 			}
 			#sync-panel
 			{
-				display: none;
 			}
 			#sync-panel td
 			{
@@ -202,9 +203,7 @@
 				<td><button id="search-button" tabindex="3"/></td>
 			</tr>
 		</table>
-		<table id="note-list-panel" border="0px" cellspacing="0px" cellpadding="0px">
-			<tr>
-				<td width="100%">
+		<div id="note-list-panel">
 					<widget type="select" id="note-list" tabindex="0">
 						<div id="new-note-note">
 							<table cellspacing="0px" cellpadding="0px" width="100%">
@@ -218,37 +217,29 @@
 							</table>
 						</div>
 					</widget>
-				</td>
-				<td><div id="scroll"><div id="slider" /></div></td>
-			</tr>
-		</table>
-		<table id="status-bar">
-			<tr>
-				<td>
-					<table id="sync-panel" cellspacing="0px" cellpadding="0px">
-						<tr>
-							<td><button id="sync-button"/></td>
-							<td id="sync-text" />
-						</tr>
-					</table>
-				</td>
-				<td width="100%"><div id="status" /></td>
-				<td>
-					<div id="menu">
-						Menu
-						<menu>
-							<li id="menu-profile" />
-							<li id="menu-signin">Sign in</li>
-							<hr />
-							<li>Notebook <menu id="notebook-list" /></li>
-							<li id="menu-import">Import notes</li>
-							<hr />
-							<li id="menu-about">About</li>
-							<li id="menu-exit">Exit</li>
-						</menu>
-					</div>
-				</td>
-			</tr>
-		</table>
+				<div id="scroll"><div id="slider" /></div>
+		</div>
+		<div id="status-bar">
+				<table id="sync-panel" cellspacing="0px" cellpadding="0px">
+					<tr>
+						<td><button id="sync-button"/></td>
+						<td id="sync-text" />
+					</tr>
+				</table>
+				<div id="status" />
+				<div id="menu">
+					Menu
+					<menu>
+						<li id="menu-profile" />
+						<li id="menu-signin">Sign in</li>
+						<hr />
+						<li>Notebook <menu id="notebook-list" /></li>
+						<li id="menu-import">Import notes</li>
+						<hr />
+						<li id="menu-about">About</li>
+						<li id="menu-exit">Exit</li>
+					</menu>
+				</div>
+		</div>
 	</body>
 </html>

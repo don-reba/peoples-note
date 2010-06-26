@@ -219,11 +219,11 @@ wstring NoteListView::GetSearchString()
 
 void NoteListView::HideSyncButton()
 {
-	element root (element::root_element(hwnd_));
-	element sync (root.find_first("#sync-panel"));
-	if (!sync)
-		throw std::exception("'#sync-panel' not found.");
-	sync.set_style_attribute("display", L"none");
+	//element root (element::root_element(hwnd_));
+	//element sync (root.find_first("#sync-panel"));
+	//if (!sync)
+	//	throw std::exception("'#sync-panel' not found.");
+	//sync.set_style_attribute("display", L"none");
 }
 
 void NoteListView::SetProfileText(const wstring & text)

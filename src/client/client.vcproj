@@ -332,7 +332,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot;"
+				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot; wininet.lib Imaging.lib"
 				OutputFile="$(OutDir)/client.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
@@ -368,7 +368,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles=""
+				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\$(TargetName)|0"
 			/>
 			<DebuggerTool
 			/>
@@ -463,6 +463,14 @@
 				>
 				<FileConfiguration
 					Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Windows Mobile 6 Professional SDK (ARMV4I)"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
