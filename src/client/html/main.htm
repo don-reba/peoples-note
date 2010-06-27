@@ -15,8 +15,9 @@
 				behavior:          popup-menu;
 				border:            1px solid black;
 				height:            48px;
+				margin:            -1px;
 				padding:           0px 10px;
-				width:             0%%;
+				width:             0px;
 				vertical-align:    middle;
 			}
 			#note-list-panel
@@ -150,21 +151,22 @@
 			}
 			#status
 			{
-				border: 1px solid red;
-				font-size:      20px;
-				line-height:    24px;
-				max-height:     48px;
-				overflow:       hidden;
-				padding:        0px 4px;
-				width:          100%%;
+				font-size:   20px;
+				line-height: 24px;
+				margin:      0px 6px;
+				max-height:  48px;
+				overflow:    hidden;
+				text-align:  left;
+				width:       100%%;
 			}
 			#status-bar
 			{
 				background:     #e0e0e0 url(reflection-48.png) repeat-x;
+				border-top:     1px solid black;
 				flow:           horizontal;
-				height:         50px;
-				max-height:     50px;
+				height:         48px;
 				overflow:       hidden;
+				display:        table-cell;
 				vertical-align: middle;
 				width:          100%;
 			}
@@ -179,15 +181,17 @@
 			}
 			#sync-panel
 			{
-				border-spacing: -1px;
-			}
-			#sync-panel
-			{
-			}
-			#sync-panel td
-			{
 				background: url(gradient-60.png) repeat-x;
-				border:     1px solid black;
+				display:    none;
+				flow:       horizontal;
+				width:      0px;
+			}
+			#sync-panel > *
+			{
+				border:         1px solid black;
+				height:         48px;
+				margin:         -1px;
+				vertical-align: middle;
 			}
 			#sync-text
 			{
@@ -220,13 +224,11 @@
 				<div id="scroll"><div id="slider" /></div>
 		</div>
 		<div id="status-bar">
-				<table id="sync-panel" cellspacing="0px" cellpadding="0px">
-					<tr>
-						<td><button id="sync-button"/></td>
-						<td id="sync-text" />
-					</tr>
-				</table>
-				<div id="status" />
+				<div id="sync-panel">
+						<button id="sync-button"/>
+						<div id="sync-text" />
+				</div>
+				<div id="status">Re-enter the password — you better get it right.</div>
 				<div id="menu">
 					Menu
 					<menu>
