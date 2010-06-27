@@ -151,22 +151,24 @@
 			}
 			#status
 			{
-				font-size:   20px;
-				line-height: 24px;
-				margin:      0px 6px;
-				max-height:  48px;
-				overflow:    hidden;
-				text-align:  left;
-				width:       100%%;
+				display:        inline;
+				font-size:      20px;
+				line-height:    24px;
+				margin:         0px 6px;
+				max-height:     48px;
+				overflow:       hidden;
+				text-align:     left;
+				vertical-align: middle;
+				width:          100%%;
 			}
 			#status-bar
 			{
 				background:     #e0e0e0 url(reflection-48.png) repeat-x;
 				border-top:     1px solid black;
+				display:        table-cell;
 				flow:           horizontal;
 				height:         48px;
 				overflow:       hidden;
-				display:        table-cell;
 				vertical-align: middle;
 				width:          100%;
 			}
@@ -228,7 +230,7 @@
 						<button id="sync-button"/>
 						<div id="sync-text" />
 				</div>
-				<div id="status">Re-enter the password — you better get it right.</div>
+				<div id="status"/>
 				<div id="menu">
 					Menu
 					<menu>
