@@ -144,6 +144,11 @@ void NoteListView::ConnectLoadThumbnail(DataSlot OnLoadThumbnail)
 	SignalLoadThumbnail.connect(OnLoadThumbnail);
 }
 
+void NoteListView::ConnectNewNote(slot_type OnNewNote)
+{
+	SignalNewNote.connect(OnNewNote);
+}
+
 void NoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
 {
 	SignalNotebookSelected.connect(OnNotebookSelected);
@@ -219,11 +224,11 @@ wstring NoteListView::GetSearchString()
 
 void NoteListView::HideSyncButton()
 {
-	//element root (element::root_element(hwnd_));
-	//element sync (root.find_first("#sync-panel"));
-	//if (!sync)
-	//	throw std::exception("'#sync-panel' not found.");
-	//sync.set_style_attribute("display", L"none");
+	element root (element::root_element(hwnd_));
+	element sync (root.find_first("#sync-panel"));
+	if (!sync)
+		throw std::exception("'#sync-panel' not found.");
+	sync.set_style_attribute("display", L"none");
 }
 
 void NoteListView::SetProfileText(const wstring & text)
@@ -496,7 +501,7 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 	if (state == StateDragging)
 	{
 		int distance = msg.Position().y - lButtonDownY;
-		//if (4 < abs(distance))
+		if (6 < abs(distance))
 		{
 			startScrollPos = GetNoteListScrollPos();
 
@@ -506,19 +511,18 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 			noteList.get_scroll_info(scrollPos, viewRect, contentSize);
 
 			state     = StateAnimating;
-			//dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
-			dragSpeed = (startScrollPos < (contentSize.cy + viewRect.top - viewRect.bottom) / 2) ? -1.0 : 1.0;
+			dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
 			animator.Subscribe
 				( IAnimator::AnimationNoteListScroll
 				, bind(&NoteListView::AnimateScroll, this, _1)
 				);
 		}
-		//else
-		//{
-			//state = StateIdle;
-			//__super::ProcessMessage(*lButtonDown);
-			//lButtonDown.reset();
-		//}
+		else
+		{
+			state = StateIdle;
+			__super::ProcessMessage(*lButtonDown);
+			lButtonDown.reset();
+		}
 	}
 }
 

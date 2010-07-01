@@ -24,9 +24,9 @@ NotePresenter::NotePresenter
 	, userModel        (userModel)
 	, enNoteTranslator (enNoteTranslator)
 {
-	noteListView.ConnectOpenNote(bind(&NotePresenter::OnOpenNote, this));
-	noteView.ConnectClose(bind(&NotePresenter::OnCloseNote, this));
-	noteView.ConnectLoadingData(bind(&NotePresenter::OnLoadingData, this, _1, _2));
+	noteListView.ConnectOpenNote (bind(&NotePresenter::OnOpenNote,    this));
+	noteView.ConnectClose        (bind(&NotePresenter::OnCloseNote,   this));
+	noteView.ConnectLoadingData  (bind(&NotePresenter::OnLoadingData, this, _1, _2));
 }
 
 //---------------
@@ -57,6 +57,8 @@ void NotePresenter::OnCloseNote()
 	userModel.SetNoteThumbnail(note.guid, thumbnail);
 
 	noteListView.UpdateThumbnail(note.guid);
+
+	// TODO: hide note view
 }
 
 void NotePresenter::OnLoadingData

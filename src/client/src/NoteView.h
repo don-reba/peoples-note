@@ -19,6 +19,7 @@ private:
 	Blob blob;
 
 	signal     SignalClose;
+	signal     SignalEdit;
 	DataSignal SignalLoadingData;
 
 // interface
@@ -39,9 +40,13 @@ public:
 
 	virtual void ConnectClose(slot_type OnClose);
 
+	virtual void ConnectEdit(slot_type OnEdit);
+
 	virtual void ConnectLoadingData(DataSlot OnLoadingData);
 
 	virtual void GetBody(std::wstring & html);
+
+	virtual void GetTitle(std::wstring & text);
 
 	virtual void Hide();
 

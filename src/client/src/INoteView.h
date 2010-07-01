@@ -19,9 +19,13 @@ public:
 
 	virtual void ConnectClose(slot_type OnClose) = 0;
 
+	virtual void ConnectEdit(slot_type OnEdit) = 0;
+
 	virtual void ConnectLoadingData(DataSlot OnLoadingData) = 0;
 
 	virtual void GetBody(std::wstring & html) = 0;
+
+	virtual void GetTitle(std::wstring & text) = 0;
 
 	virtual void Hide() = 0;
 

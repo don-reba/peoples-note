@@ -69,6 +69,11 @@ void NoteView::ConnectClose(slot_type OnClose)
 	SignalClose.connect(OnClose);
 }
 
+void NoteView::ConnectEdit(slot_type OnEdit)
+{
+	SignalEdit.connect(OnEdit);
+}
+
 void NoteView::ConnectLoadingData(DataSlot OnLoadingData)
 {
 	SignalLoadingData.connect(OnLoadingData);
@@ -86,11 +91,16 @@ void NoteView::GetBody(wstring & html)
 	element body (root.find_first("#body"));
 	if (!body)
 		throw std::exception("#body not found.");
-
 	HTMLayoutGetElementHtmlCB(body, false, _writer_a, &html);
+}
 
-	wofstream note(L"My Documents\\People's Note\\note.txt");
-	note << html;
+void NoteView::GetTitle(std::wstring & text)
+{
+	element root  = element::root_element(hwnd_);
+	element title = root.find_first("#title");
+	if (!title)
+		throw std::exception("#title not found.");
+	text = title.text();
 }
 
 void NoteView::Hide()
@@ -144,11 +154,11 @@ void NoteView::SetSubtitle(const wstring & text)
 
 void NoteView::SetTitle(const wstring & text)
 {
-	element root = element::root_element(hwnd_);
-	element body = root.find_first("#title");
-	if (!body)
+	element root  = element::root_element(hwnd_);
+	element title = root.find_first("#title");
+	if (!title)
 		throw std::exception("#title not found.");
-	body.set_text(text.c_str(), text.size());
+	title.set_text(text.c_str(), text.size());
 }
 
 void NoteView::SetWindowTitle(const std::wstring & text)

@@ -419,6 +419,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EditorPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EditorView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\EnImporter.cpp"
 				>
 			</File>
@@ -705,6 +713,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\EditorPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\EditorView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\EnConnectionException.h"
 				>
 			</File>
@@ -762,6 +778,10 @@
 			</File>
 			<File
 				RelativePath=".\src\IDataStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IEditorView.h"
 				>
 			</File>
 			<File
@@ -1102,6 +1122,11 @@
 			</File>
 			<File
 				RelativePath=".\html\menu.css"
+				>
+			</File>
+			<File
+				RelativePath=".\html\note-edit.htm"
+				DeploymentContent="true"
 				>
 			</File>
 			<File

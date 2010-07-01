@@ -59,6 +59,11 @@ void MockNoteListView::ConnectLoadThumbnail(DataSlot OnLoadThumbnail)
 	SignalLoadThumbnail.connect(OnLoadThumbnail);
 }
 
+void MockNoteListView::ConnectNewNote(slot_type OnNewNote)
+{
+	SignalNewNote.connect(OnNewNote);
+}
+
 void MockNoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
 {
 	SignalNotebookSelected.connect(OnNotebookSelected);
@@ -129,6 +134,11 @@ void MockNoteListView::SetProfileText(const wstring & text)
 void MockNoteListView::SetSigninText(const wstring & text)
 {
 	signinText = text;
+}
+
+void MockNoteListView::SetStatusText(const std::wstring & text)
+{
+	statusText = text;
 }
 
 void MockNoteListView::SetSyncText(const wstring & text)

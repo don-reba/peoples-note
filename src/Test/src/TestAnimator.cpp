@@ -8,11 +8,29 @@ using namespace std;
 
 struct MockAnimation
 {
-	int count;
+	IAnimator              & animator;
+	IAnimator::AnimationId   id;
 
-	MockAnimation() : count(0) {}
+	int  count;
+	bool deleteSelf;
 
-	void operator () (DWORD) { ++count; }
+	MockAnimation
+		( IAnimator              & animator
+		, IAnimator::AnimationId   id
+		)
+		: animator   (animator)
+		, count      (0)
+		, deleteSelf (false)
+		, id         (id)
+	{
+	}
+
+	void operator () (DWORD)
+	{
+		++count;
+		if (deleteSelf)
+			animator.Unsubscribe(id);
+	}
 };
 
 BOOST_AUTO_TEST_CASE(Animator_Test)
@@ -25,38 +43,35 @@ BOOST_AUTO_TEST_CASE(Animator_Test)
 	animator.StepFrame();
 
 	// test one animation
-	MockAnimation animation0;
-
-	IAnimator::Connection connection0(animator.Subscribe(ref(animation0)));
+	MockAnimation animation0(animator, IAnimator::AnimationTest0);
+	animator.Subscribe(animation0.id, ref(animation0));
 
 	BOOST_CHECK(animator.IsRunning());
 
-	// test two animations with three connections
-	MockAnimation animation1;
+	// test two animations
+	MockAnimation animation1(animator, IAnimator::AnimationTest1);
+	animator.Subscribe(animation1.id, ref(animation1));
 
-	IAnimator::Connection connection1(animator.Subscribe(ref(animation0)));
-	IAnimator::Connection connection2(animator.Subscribe(ref(animation1)));
+	animator.StepFrame();
+
+	BOOST_CHECK_EQUAL(animation0.count, 1);
+	BOOST_CHECK_EQUAL(animation1.count, 1);
+
+	// test repeated stepping
+	animation0.deleteSelf = true;
 
 	animator.StepFrame();
 
 	BOOST_CHECK_EQUAL(animation0.count, 2);
-	BOOST_CHECK_EQUAL(animation1.count, 1);
-
-	// test repeated stepping
-	animator.StepFrame();
-
-	BOOST_CHECK_EQUAL(animation0.count, 4);
 	BOOST_CHECK_EQUAL(animation1.count, 2);
 
 	// test disconnection
-	connection1.Disconnect();
-	connection0.Disconnect();
-	connection2.Disconnect();
+	animator.Unsubscribe(IAnimator::AnimationTest1);
 
 	BOOST_CHECK(!animator.IsRunning());
 
 	animator.StepFrame();
 
-	BOOST_CHECK_EQUAL(animation0.count, 4);
+	BOOST_CHECK_EQUAL(animation0.count, 2);
 	BOOST_CHECK_EQUAL(animation1.count, 2);
 }

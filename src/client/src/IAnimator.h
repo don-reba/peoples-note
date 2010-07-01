@@ -12,6 +12,8 @@ public:
 	{
 		AnimationNone = -1,
 		AnimationNoteListScroll,
+		AnimationTest0,
+		AnimationTest1,
 	};
 
 	typedef boost::function<void(DWORD)> Animation;

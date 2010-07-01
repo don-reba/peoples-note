@@ -16,6 +16,11 @@ void MockNoteView::ConnectClose(slot_type OnClose)
 	SignalClose.connect(OnClose);
 }
 
+void MockNoteView::ConnectEdit(slot_type OnEdit)
+{
+	SignalEdit.connect(OnEdit);
+}
+
 void MockNoteView::ConnectLoadingData(DataSlot OnLoadingData)
 {
 	SignalLoadingData.connect(OnLoadingData);
@@ -24,6 +29,11 @@ void MockNoteView::ConnectLoadingData(DataSlot OnLoadingData)
 void MockNoteView::GetBody(wstring & html)
 {
 	html = body;
+}
+
+void MockNoteView::GetTitle(std::wstring & text)
+{
+	text = title;
 }
 
 void MockNoteView::Hide()

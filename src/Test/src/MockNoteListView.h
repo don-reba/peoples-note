@@ -39,6 +39,7 @@ public:
 
 	std::wstring profileText;
 	std::wstring signinText;
+	std::wstring statusText;
 	std::wstring syncText;
 	std::wstring windowTitle;
 
@@ -48,6 +49,7 @@ public:
 	signal SignalAbout;
 	signal SignalCreated;
 	signal SignalImport;
+	signal SignalNewNote;
 	signal SignalNotebookSelected;
 	signal SignalOpenNote;
 	signal SignalSearch;
@@ -76,6 +78,8 @@ public:
 
 	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail);
 
+	virtual void ConnectNewNote(slot_type OnNewNote);
+
 	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
@@ -103,6 +107,8 @@ public:
 	virtual void SetProfileText(const std::wstring & text);
 
 	virtual void SetSigninText(const std::wstring & text);
+
+	virtual void SetStatusText(const std::wstring & text);
 
 	virtual void SetSyncText(const std::wstring & text);
 

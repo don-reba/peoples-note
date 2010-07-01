@@ -51,6 +51,7 @@ private:
 
 	signal SignalAbout;
 	signal SignalImport;
+	signal SignalNewNote;
 	signal SignalNotebookSelected;
 	signal SignalOpenNote;
 	signal SignalSearch;
@@ -90,6 +91,8 @@ public:
 	virtual void ConnectImport(slot_type OnImport);
 
 	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail);
+
+	virtual void ConnectNewNote(slot_type OnNewNote);
 
 	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
 

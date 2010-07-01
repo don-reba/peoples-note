@@ -195,6 +195,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EditorPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\EnImporter.cpp"
 				>
 			</File>
@@ -208,10 +212,6 @@
 			</File>
 			<File
 				RelativePath="..\client\src\Guid.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\client\src\IAnimator.cpp"
 				>
 			</File>
 			<File
@@ -240,6 +240,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockCredentialsView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockEditorView.cpp"
 				>
 			</File>
 			<File
@@ -376,6 +380,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestEditorPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestEnImporter.cpp"
 				>
 			</File>
@@ -491,6 +499,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockCredentialsView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockEditorView.h"
 				>
 			</File>
 			<File

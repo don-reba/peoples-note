@@ -29,6 +29,8 @@ public:
 
 	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail) = 0;
 
+	virtual void ConnectNewNote(slot_type OnNewNote) = 0;
+
 	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected) = 0;
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote) = 0;

@@ -1815,3 +1815,15 @@ performance profiling
 					GetLastAnimationFps
 	display
 		show in status bar
+note editing
+	switch modes between editing and viewing
+		no, only go from viewing to editing
+		lets us use a separate editing window
+	layout
+		toolbar
+		title
+		tags
+		editing surface
+		ok-sip-cancel
+	separate window
+		separate MVP
