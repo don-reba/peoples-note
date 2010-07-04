@@ -14,13 +14,17 @@
 #define IDS_SIGNIN                      10
 #define IDS_CANCEL                      11
 #define IDC_ABOUT_VIEW                  12
+#define IDC_NOTE_EDIT                   13
+#define IDS_STRING14                    14
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104
 #define IDM_CLOSE                       32772
 #define IDM_SIGNIN                      32773
 #define IDM_CANCEL                      32774
-#define IDR_SIGNIN_MENUBAR              32775
+#define IDM_OK                          32775
+#define IDR_SIGNIN_MENUBAR              32776
+#define IDR_EDITOR_MENUBAR              32777
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

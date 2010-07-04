@@ -30,8 +30,6 @@ public:
 
 	void Create(HWND parent);
 
-	void Destroy();
-
 	virtual void RegisterEventHandlers();
 
 // INoteView implementation

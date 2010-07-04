@@ -22,10 +22,7 @@ CredentialsView::CredentialsView(HINSTANCE instance)
 void CredentialsView::Create(HWND parent)
 {
 	this->parent = parent;
-
-	wstring wndClass = LoadStringResource(IDC_CREDENTIALS_VIEW);
-
-	if (!RegisterClass(wndClass))
+	if (!RegisterClass(LoadStringResource(IDC_CREDENTIALS_VIEW)))
 		throw std::exception("Class could not be registered.");
 }
 
@@ -36,6 +33,7 @@ void CredentialsView::Create(HWND parent)
 void CredentialsView::Close()
 {
 	CloseWindow(hwnd_);
+	hwnd_ = NULL;
 }
 
 void CredentialsView::ConnectCancel(slot_type OnCancel)

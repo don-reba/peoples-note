@@ -7,6 +7,16 @@
 				margin:           0px;
 				padding:          0px;
 			}
+			#toolbar
+			{
+				flow: horizontal;
+				background-color: silver;
+			}
+			.tb-button
+			{
+				behavior: clickable;
+				background-color: orange;
+			}
 			#title
 			{
 				font-size: 1.2em;
@@ -20,39 +30,16 @@
 				width:  100%%;
 				height: 100%%;
 			}
-			#tools
-			{
-				bottom:     0px;
-				position:   fixed;
-				text-align: center;
-				width:      100%;
-			}
-			#home, #full-screen
-			{
-				background-color: silver;
-				background-image: none;
-				clear:            none;
-				margin:           0px;
-				opacity:          0.75;
-				padding:          0px;
-			}
-			#home
-			{
-				float: left;
-			}
-			#full-screen
-			{
-				float: right;
-			}
 		</style>
 	</head>
 	<body>
-		<div id="title" />
-		<div id="subtitle" />
-		<div id="body" />
-		<div id="tools">
-			<button id="home"><img src="home.png" /></button>
-			<button id="full-screen"><img src="view-fullscreen.png" /></button>
-		</div>
+		<widget #toolbar>
+			<widget .tb-button command="richtext:cut">Cut</widget>
+			<widget .tb-button command="richtext:copy">Copy</widget>
+			<widget .tb-button command="richtext:paste">Paste</widget>
+		</widget>
+		<div #title />
+		<div #subtitle />
+		<richtext #body toolbar="widget#toolbar" name="html" allow-clipboard-images="no"/>
 	</body>
 </html>

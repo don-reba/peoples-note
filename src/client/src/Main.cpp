@@ -6,6 +6,8 @@
 #include "CredentialsPresenter.h"
 #include "CredentialsView.h"
 #include "DataStore.h"
+#include "EditorPresenter.h"
+#include "EditorView.h"
 #include "EnImportPresenter.h"
 #include "EnImporter.h"
 #include "EnNoteTranslator.h"
@@ -132,6 +134,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		AboutView       aboutView       (instance);
 		CredentialsView credentialsView (instance);
+		EditorView      editorView      (instance);
 		NoteView        noteView        (instance);
 		NoteListView    noteListView    (animator, instance, nCmdShow);
 
@@ -143,6 +146,13 @@ int WINAPI WinMain(HINSTANCE instance,
 			( newCredentials
 			, credentialsView
 			, enService
+			);
+		EditorPresenter editorPresenter
+			( editorView
+			, noteListView
+			, noteView
+			, userModel
+			, enNoteTranslator
 			);
 		EnImportPresenter enImportPresenter
 			( enImporter
@@ -191,6 +201,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		noteListView.Create();
 		noteView.Create(noteListView.hwnd_);
+		editorView.Create(noteListView.hwnd_);
 		credentialsView.Create(noteListView.hwnd_);
 		aboutView.Create(noteListView.hwnd_);
 

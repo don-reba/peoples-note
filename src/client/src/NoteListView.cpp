@@ -67,6 +67,7 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
 	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
 	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
+	ConnectBehavior("#new-text",      BUTTON_CLICK,             &NoteListView::OnNewText);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 	ConnectBehavior("#sync-button",   BUTTON_CLICK,             &NoteListView::OnSync);
@@ -607,6 +608,11 @@ void NoteListView::OnMenuNotebook(BEHAVIOR_EVENT_PARAMS * params)
 void NoteListView::OnMenuSignIn(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalSignIn();
+}
+
+void NoteListView::OnNewText(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalNewNote();
 }
 
 void NoteListView::OnNote(BEHAVIOR_EVENT_PARAMS * params)

@@ -177,6 +177,7 @@ private:
 	void OnMenuImport   (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuNotebook (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuSignIn   (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNewText      (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNote         (BEHAVIOR_EVENT_PARAMS * params);
 	void OnSearch       (BEHAVIOR_EVENT_PARAMS * params);
 	void OnSync         (BEHAVIOR_EVENT_PARAMS * params);

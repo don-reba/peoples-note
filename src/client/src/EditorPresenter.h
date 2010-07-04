@@ -19,10 +19,10 @@ private:
 public:
 
 	EditorPresenter
-		( IEditorView   & editorView
-		, INoteListView & noteListView
-		, INoteView     & noteView
-		, IUserModel    & userModel
+		( IEditorView      & editorView
+		, INoteListView    & noteListView
+		, INoteView        & noteView
+		, IUserModel       & userModel
 		, EnNoteTranslator & enNoteTranslator
 		);
 

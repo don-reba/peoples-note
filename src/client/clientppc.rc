@@ -86,6 +86,12 @@ BEGIN
     IDS_SIGNIN              "Sign in"
     IDS_CANCEL              "Cancel"
     IDC_ABOUT_VIEW          "ABOUT-VIEW"
+    IDC_NOTE_EDIT           "NOTE-EDIT"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_OK                  "OK"
 END
 
 #endif    // English (U.S.) resources
@@ -106,29 +112,29 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 // HTML
 //
 
-ABOUT.HTM           HTML "html\\about.htm"
-CLEAR.PNG           HTML "html\\clear.png"
-CARD_TOP.PNG        HTML "html\\card-top.png"
-CORNER.PNG          HTML "html\\corner.png"
-FILE_NOTE.PNG       HTML "html\\file-note.png"
-GRADIENT_60.PNG     HTML "html\\gradient-60.png"
-HOME.PNG            HTML "html\\home.png"
-INPUTSHADOW.PNG     HTML "html\\inputshadow.png"
-MAIN.HTM            HTML "html\\main.htm"
-MENU.CSS            HTML "html\\menu.css"
-NOTE_VIEW.HTM       HTML "html\\note-view.htm"
-NOTE_EDIT.HTM       HTML "html\\note-edit.htm"
-PHOTO_NOTE.PNG      HTML "html\\photo-note.png"
-REFLECTION_48.PNG   HTML "html\\reflection-48.png"
-SEARCH.PNG          HTML "html\\search.png"
-SIGNIN_VIEW.HTM     HTML "html\\signin-view.htm"
-SYNC.PNG            HTML "html\\sync.png"
-TEXT_NOTE.PNG       HTML "html\\text-note.png"
-VIEW_FULLSCREEN.PNG HTML "html\\view-fullscreen.png"
-VIEW_RESTORE.PNG    HTML "html\\view-restore.png"
-VOICE_NOTE.PNG      HTML "html\\voice-note.png"
-ZOOM_IN.PNG         HTML "html\\zoom-in.png"
-ZOOM_OUT.PNG        HTML "html\\zoom-out.png"
+ABOUT.HTM               HTML                    "html\\about.htm"
+CLEAR.PNG               HTML                    "html\\clear.png"
+CARD_TOP.PNG            HTML                    "html\\card-top.png"
+CORNER.PNG              HTML                    "html\\corner.png"
+FILE_NOTE.PNG           HTML                    "html\\file-note.png"
+GRADIENT_60.PNG         HTML                    "html\\gradient-60.png"
+HOME.PNG                HTML                    "html\\home.png"
+INPUTSHADOW.PNG         HTML                    "html\\inputshadow.png"
+MAIN.HTM                HTML                    "html\\main.htm"
+MENU.CSS                HTML                    "html\\menu.css"
+NOTE_VIEW.HTM           HTML                    "html\\note-view.htm"
+NOTE_EDIT.HTM           HTML                    "html\\note-edit.htm"
+PHOTO_NOTE.PNG          HTML                    "html\\photo-note.png"
+REFLECTION_48.PNG       HTML                    "html\\reflection-48.png"
+SEARCH.PNG              HTML                    "html\\search.png"
+SIGNIN_VIEW.HTM         HTML                    "html\\signin-view.htm"
+SYNC.PNG                HTML                    "html\\sync.png"
+TEXT_NOTE.PNG           HTML                    "html\\text-note.png"
+VIEW_FULLSCREEN.PNG     HTML                    "html\\view-fullscreen.png"
+VIEW_RESTORE.PNG        HTML                    "html\\view-restore.png"
+VOICE_NOTE.PNG          HTML                    "html\\voice-note.png"
+ZOOM_IN.PNG             HTML                    "html\\zoom-in.png"
+ZOOM_OUT.PNG            HTML                    "html\\zoom-out.png"
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 
