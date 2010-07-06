@@ -53,8 +53,6 @@ BOOST_FIXTURE_TEST_CASE
 	editorView.SignalAccept();
 
 	BOOST_CHECK(!editorView.isShown);
-	BOOST_CHECK(editorView.body.empty());
-	BOOST_CHECK(editorView.title.empty());
 
 	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).note.isDirty, true);
@@ -101,8 +99,6 @@ BOOST_FIXTURE_TEST_CASE
 	editorView.SignalCancel();
 
 	BOOST_CHECK(!editorView.isShown);
-	BOOST_CHECK(editorView.body.empty());
-	BOOST_CHECK(editorView.title.empty());
 	BOOST_CHECK(userModel.addedNotes.empty());
 	BOOST_CHECK(noteListView.updatedThumbnails.empty());
 }

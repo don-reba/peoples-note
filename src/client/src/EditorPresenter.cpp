@@ -2,6 +2,7 @@
 #include "EditorPresenter.h"
 
 #include "IEditorView.h"
+#include "INoteListModel.h"
 #include "INoteListView.h"
 #include "INoteView.h"
 #include "IUserModel.h"
@@ -12,14 +13,16 @@ using namespace boost;
 using namespace std;
 
 EditorPresenter::EditorPresenter
-	( IEditorView   & editorView
-	, INoteListView & noteListView
-	, INoteView     & noteView
-	, IUserModel    & userModel
+	( IEditorView      & editorView
+	, INoteListModel   & noteListModel
+	, INoteListView    & noteListView
+	, INoteView        & noteView
+	, IUserModel       & userModel
 	, EnNoteTranslator & enNoteTranslator
 	)
 	: editorView       (editorView)
 	, enNoteTranslator (enNoteTranslator)
+	, noteListModel    (noteListModel)
 	, noteListView     (noteListView)
 	, noteView         (noteView)
 	, userModel        (userModel)
@@ -32,8 +35,6 @@ EditorPresenter::EditorPresenter
 
 void EditorPresenter::OnAccept()
 {
-	editorView.Hide();
-
 	wstring bodyHtml;
 	editorView.GetBody(bodyHtml);
 
@@ -41,8 +42,9 @@ void EditorPresenter::OnAccept()
 	enNoteTranslator.ConvertToXml(bodyHtml, bodyXml);
 
 	Transaction transaction(userModel);
-	Guid guid(noteListView.GetSelectedNoteGuid());
-	Note note(userModel.GetNote(guid));
+
+	Note note;
+	editorView.GetNote(note);
 	editorView.GetTitle(note.name);
 	note.isDirty = true;
 
@@ -50,43 +52,45 @@ void EditorPresenter::OnAccept()
 	userModel.GetLastUsedNotebook(notebook);
 	userModel.AddNote(note, bodyXml, L"", notebook);
 
+	noteView.SetNote(note, L"", L"", bodyHtml);
+
 	Thumbnail thumbnail;
 	thumbnail.Width  = 164;
 	thumbnail.Height = 100;
 	noteView.Render(thumbnail);
 	userModel.SetNoteThumbnail(note.guid, thumbnail);
 
-	noteListView.UpdateThumbnail(note.guid);
+	editorView.Hide();
 
-	editorView.SetTitle(L"");
-	editorView.SetBody(L"");
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	noteListModel.SetNotes(notes);
 }
 
 void EditorPresenter::OnCancel()
 {
 	editorView.Hide();
-	editorView.SetTitle(L"");
-	editorView.SetBody(L"");
 }
 
 void EditorPresenter::OnEditNote()
 {
-	wstring bodyHtml;
-	noteView.GetBody(bodyHtml);
-
-	wstring title;
-	noteView.GetTitle(title);
-
-	editorView.SetBody(bodyHtml);
-	editorView.SetTitle(title);
-
 	editorView.Show();
 	noteView.Hide();
+
+	Note note;
+	noteView.GetNote(note);
+
+	wstring body;
+	noteView.GetBody(body);
+
+	editorView.SetNote(note, body);
 }
 
 void EditorPresenter::OnNewNote()
 {
-	editorView.SetTitle(L"");
-	editorView.SetBody(L"");
 	editorView.Show();
+
+	Note    note;
+	wstring body;
+	editorView.SetNote(note, body);
 }

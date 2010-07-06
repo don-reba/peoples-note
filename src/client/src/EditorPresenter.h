@@ -1,7 +1,10 @@
 #pragma once
 
+#include "Note.h"
+
 class EnNoteTranslator;
 class IEditorView;
+class INoteListModel;
 class INoteListView;
 class INoteView;
 class IUserModel;
@@ -12,6 +15,7 @@ private:
 
 	IEditorView      & editorView;
 	EnNoteTranslator & enNoteTranslator;
+	INoteListModel   & noteListModel;
 	INoteListView    & noteListView;
 	INoteView        & noteView;
 	IUserModel       & userModel;
@@ -20,6 +24,7 @@ public:
 
 	EditorPresenter
 		( IEditorView      & editorView
+		, INoteListModel   & noteListModel
 		, INoteListView    & noteListView
 		, INoteView        & noteView
 		, IUserModel       & userModel

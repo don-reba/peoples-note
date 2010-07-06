@@ -2,6 +2,7 @@
 
 #include "HTMLayoutWindow.h"
 #include "INoteView.h"
+#include "Note.h"
 #include "WindowRenderer.h"
 
 class NoteView : public HTMLayoutWindow, public INoteView
@@ -10,6 +11,8 @@ private:
 
 	HINSTANCE instance;
 	HWND      parent;
+
+	Note note;
 
 	bool isDirty;
 	bool isFullScreen;
@@ -44,6 +47,8 @@ public:
 
 	virtual void GetBody(std::wstring & html);
 
+	virtual void GetNote(Note & note);
+
 	virtual void GetTitle(std::wstring & text);
 
 	virtual void Hide();
@@ -52,11 +57,12 @@ public:
 
 	virtual void Render(Thumbnail & thumbnail);
 
-	virtual void SetBody(const std::wstring & html);
-
-	virtual void SetSubtitle(const std::wstring & text);
-
-	virtual void SetTitle(const std::wstring & text);
+	virtual void SetNote
+		( const Note         & note
+		, const std::wstring & titleText
+		, const std::wstring & subtitleText
+		, const std::wstring & bodyHtml
+		);
 
 	virtual void SetWindowTitle(const std::wstring & text);
 

@@ -14,8 +14,6 @@ private:
 	IUserModel       & userModel;
 	EnNoteTranslator & enNoteTranslator;
 
-	Note note;
-
 // interface
 
 public:

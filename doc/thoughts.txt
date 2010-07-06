@@ -1827,3 +1827,37 @@ note editing
 		ok-sip-cancel
 	separate window
 		separate MVP
+note state for editing
+	problem
+		windows contain only partial note state
+	current solution
+		store remaining state in the presenter
+	make sense, because view does not need the full state to function
+	also, note body is not part of the Note structure
+	except
+		note is associated with exact combination of views and editors
+		event though it is specific to the view alone
+	if a note is to store complete note information
+		it would have the logic for saving state to it
+		this logic probably should not be in the presenter, anyway
+		since it does not reflect user stories
+		lets try it
+	note translation
+		should not be performed by the view
+		the view should get translated bodies
+		what about the subtitle?
+		it contains a formatted tag list
+	the view should take a Note in additiona to all the other data
+		not instead
+editor implementation plan
+	implement proper state saving
+		for editor, not viewer
+	test current implementation
+		creation
+		editing
+	standard formatting commands
+	checkbox insertion
+	presentation
+		command buttons
+probably should rename view.hide to view.close, where appropriate
+	TODO

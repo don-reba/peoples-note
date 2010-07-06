@@ -20,6 +20,7 @@
 			#title
 			{
 				font-size: 1.2em;
+				width:     100%;
 			}
 			#subtitle
 			{
@@ -38,8 +39,7 @@
 			<widget .tb-button command="richtext:copy">Copy</widget>
 			<widget .tb-button command="richtext:paste">Paste</widget>
 		</widget>
-		<div #title />
-		<div #subtitle />
+		<input #title />
 		<richtext #body toolbar="widget#toolbar" name="html" allow-clipboard-images="no"/>
 	</body>
 </html>

@@ -74,9 +74,8 @@ void NoteListPresenter::OnLoadThumbnail(const Guid & guid, Blob *& blob)
 		wstring html;
 		enNoteTranslator.ConvertToHtml(body, html);
 
-		noteView.SetTitle(L"");
-		noteView.SetSubtitle(L"");
-		noteView.SetBody(html);
+		Note note;
+		noteView.SetNote(note, L"", L"", html);
 
 		thumbnail.Width  = size.cx;
 		thumbnail.Height = size.cy;

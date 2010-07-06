@@ -149,6 +149,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 		EditorPresenter editorPresenter
 			( editorView
+			, noteListModel
 			, noteListView
 			, noteView
 			, userModel

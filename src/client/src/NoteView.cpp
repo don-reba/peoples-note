@@ -87,20 +87,22 @@ static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
 
 void NoteView::GetBody(wstring & html)
 {
-	element root (element::root_element(hwnd_));
-	element body (root.find_first("#body"));
-	if (!body)
-		throw std::exception("#body not found.");
-	HTMLayoutGetElementHtmlCB(body, false, _writer_a, &html);
+	HTMLayoutGetElementHtmlCB
+		( FindFirstElement("#body") // he
+		, false                     // outer
+		, _writer_a                 // cb
+		, &html                     // cb_param
+		);
+}
+
+void NoteView::GetNote(Note & note)
+{
+	note = this->note;
 }
 
 void NoteView::GetTitle(std::wstring & text)
 {
-	element root  = element::root_element(hwnd_);
-	element title = root.find_first("#title");
-	if (!title)
-		throw std::exception("#title not found.");
-	text = title.text();
+	text = element(FindFirstElement("#title")).text();
 }
 
 void NoteView::Hide()
@@ -126,39 +128,28 @@ void NoteView::Render(Thumbnail & thumbnail)
 	windowRenderer.Render(hwnd_, thumbnail);
 }
 
-void NoteView::SetBody(const wstring & html)
+void NoteView::SetNote
+	( const Note    & note
+	, const wstring & titleText
+	, const wstring & subtitleText
+	, const wstring & bodyHtml
+	)
 {
-	element root (element::root_element(hwnd_));
-	element body (root.find_first("#body"));
-	if (!body)
-		throw std::exception("#body not found.");
+	this->note = note;
 
-	vector<unsigned char> htmlUtf8Chars;
-	const unsigned char * htmlUtf8 = Tools::ConvertToUtf8(html, htmlUtf8Chars);
+	element title    (FindFirstElement("#title"));
+	element subtitle (FindFirstElement("#subtitle"));
+	element body     (FindFirstElement("#body"));
+
+	title.set_text    (titleText.c_str(),    titleText.size());
+	subtitle.set_text (subtitleText.c_str(), subtitleText.size());
+
+	vector<unsigned char> utf8Chars;
+	const unsigned char * utf8 = Tools::ConvertToUtf8(bodyHtml, utf8Chars);
 
 	DisconnectBehavior("#body input");
-
-	body.set_html(htmlUtf8, htmlUtf8Chars.size());
-
+	body.set_html(utf8, utf8Chars.size());
 	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
-}
-
-void NoteView::SetSubtitle(const wstring & text)
-{
-	element root = element::root_element(hwnd_);
-	element body = root.find_first("#subtitle");
-	if (!body)
-		throw std::exception("#subtitle not found.");
-	body.set_text(text.c_str(), text.size());
-}
-
-void NoteView::SetTitle(const wstring & text)
-{
-	element root  = element::root_element(hwnd_);
-	element title = root.find_first("#title");
-	if (!title)
-		throw std::exception("#title not found.");
-	title.set_text(text.c_str(), text.size());
 }
 
 void NoteView::SetWindowTitle(const std::wstring & text)
@@ -223,18 +214,14 @@ void NoteView::ToggleFullScreen()
 		, rect.bottom - rect.top
 		, TRUE
 		);
-	element root = element::root_element(hwnd_);
-	element img  = root.find_first("#full-screen img");
-	if (img)
-	{
-		img.set_attribute
-			( "src"
-			, isFullScreen
-			? L"view-restore.png"
-			: L"view-fullscreen.png"
-			);
-		img.update();
-	}
+	element img(FindFirstElement("#full-screen img"));
+	img.set_attribute
+		( "src"
+		, isFullScreen
+		? L"view-restore.png"
+		: L"view-fullscreen.png"
+		);
+	img.update();
 }
 
 //------------------------

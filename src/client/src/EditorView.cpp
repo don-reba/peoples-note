@@ -50,10 +50,19 @@ void EditorView::ConnectCancel(slot_type OnCancel)
 
 void EditorView::GetBody(std::wstring & html)
 {
+	html = L"<div type=\"en-note\">";
+	html.append(element(FindFirstElement("#body")).get_value().to_string());
+	html.append(L"</div>");
+}
+
+void EditorView::GetNote(Note & note)
+{
+	note = this->note;
 }
 
 void EditorView::GetTitle(std::wstring & text)
 {
+	text = element(FindFirstElement("#title")).text();
 }
 
 void EditorView::Hide()
@@ -62,12 +71,24 @@ void EditorView::Hide()
 	hwnd_ = NULL;
 }
 
-void EditorView::SetBody(const std::wstring & html)
+void EditorView::SetNote
+	( const Note    & note
+	, const wstring & bodyHtml
+	)
 {
-}
+	this->note = note;
 
-void EditorView::SetTitle(const std::wstring & text)
-{
+	element title (FindFirstElement("#title"));
+	element body  (FindFirstElement("#body"));
+
+	title.set_text(note.name.c_str(), note.name.size());
+
+	vector<unsigned char> utf8Chars;
+	const unsigned char * utf8 = Tools::ConvertToUtf8(bodyHtml, utf8Chars);
+
+	DisconnectBehavior("#body input");
+	body.set_html(utf8, utf8Chars.size());
+	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &EditorView::OnInput);
 }
 
 void EditorView::Show()
@@ -155,6 +176,14 @@ void EditorView::ProcessMessage(WndMsg &msg)
 		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
 		throw e;
 	}
+}
+
+//---------------------------
+// HTMLayout message handlers
+//---------------------------
+
+void EditorView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
+{
 }
 
 //------------------

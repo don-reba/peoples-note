@@ -2,6 +2,7 @@
 #include "IEditorView.h"
 
 #include "HTMLayoutWindow.h"
+#include "Note.h"
 
 class EditorView : public HTMLayoutWindow, public IEditorView
 {
@@ -13,6 +14,8 @@ private:
 	HWND           menuBar;
 	HINSTANCE      instance;
 	SHACTIVATEINFO activateInfo;
+
+	Note note;
 
 	signal SignalAccept;
 	signal SignalCancel;
@@ -37,13 +40,16 @@ public:
 
 	virtual void GetBody(std::wstring & html);
 
+	virtual void GetNote(Note & note);
+
 	virtual void GetTitle(std::wstring & text);
 
 	virtual void Hide();
 
-	virtual void SetBody(const std::wstring & html);
-
-	virtual void SetTitle(const std::wstring & text);
+	virtual void SetNote
+		( const Note         & note
+		, const std::wstring & bodyHtml
+		);
 
 	virtual void Show();
 
@@ -56,6 +62,12 @@ private:
 	void OnSettingChange (Msg<WM_SETTINGCHANGE> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
+
+// HTMLayout message handlers
+
+private:
+
+	void OnInput(BEHAVIOR_EVENT_PARAMS * params);
 
 // utility functions
 

@@ -45,7 +45,11 @@ void NotePresenter::OnCloseNote()
 	enNoteTranslator.ConvertToXml(bodyHtml, bodyXml);
 
 	Transaction transaction(userModel);
+
+	Note note;
+	noteView.GetNote(note);
 	note.isDirty = true;
+
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
 	userModel.AddNote(note, bodyXml, L"", notebook);
@@ -57,8 +61,6 @@ void NotePresenter::OnCloseNote()
 	userModel.SetNoteThumbnail(note.guid, thumbnail);
 
 	noteListView.UpdateThumbnail(note.guid);
-
-	// TODO: hide note view
 }
 
 void NotePresenter::OnLoadingData
@@ -85,7 +87,7 @@ void NotePresenter::OnOpenNote()
 
 	wstring body;
 	userModel.GetNoteBody(guid, body);
-	note = userModel.GetNote(guid);
+	Note note(userModel.GetNote(guid));
 
 	wstring subtitle(L"created on ");
 	subtitle.append(note.creationDate.GetFormattedDateTime());
@@ -106,8 +108,6 @@ void NotePresenter::OnOpenNote()
 	wstring html;
 	enNoteTranslator.ConvertToHtml(body, html);
 
-	noteView.SetBody(html);
-	noteView.SetSubtitle(subtitle);
-	noteView.SetTitle(note.name);
+	noteView.SetNote(note, note.name, subtitle, html);
 	noteView.Show();
 }
