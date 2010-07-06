@@ -56,8 +56,9 @@ void NoteView::Create(HWND parent)
 
 void NoteView::RegisterEventHandlers()
 {
-	ConnectBehavior("#home",        BUTTON_CLICK, &NoteView::OnHome);
+	ConnectBehavior("#edit",        BUTTON_CLICK, &NoteView::OnEdit);
 	ConnectBehavior("#full-screen", BUTTON_CLICK, &NoteView::OnFullScreen);
+	ConnectBehavior("#home",        BUTTON_CLICK, &NoteView::OnHome);
 }
 
 //-------------------------
@@ -255,6 +256,11 @@ void NoteView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void NoteView::OnEdit(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalEdit();
+}
 
 void NoteView::OnFullScreen(BEHAVIOR_EVENT_PARAMS * params)
 {

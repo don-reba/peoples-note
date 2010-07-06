@@ -88,6 +88,7 @@ private:
 
 private:
 
+	void OnEdit       (BEHAVIOR_EVENT_PARAMS * params);
 	void OnFullScreen (BEHAVIOR_EVENT_PARAMS * params);
 	void OnHome       (BEHAVIOR_EVENT_PARAMS * params);
 	void OnInput      (BEHAVIOR_EVENT_PARAMS * params);

@@ -83,11 +83,8 @@ void EditorView::SetNote
 
 	title.set_text(note.name.c_str(), note.name.size());
 
-	vector<unsigned char> utf8Chars;
-	const unsigned char * utf8 = Tools::ConvertToUtf8(bodyHtml, utf8Chars);
-
 	DisconnectBehavior("#body input");
-	body.set_html(utf8, utf8Chars.size());
+	body.set_value(json::value::from_string(bodyHtml));
 	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &EditorView::OnInput);
 }
 

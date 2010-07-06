@@ -22,37 +22,35 @@
 			}
 			#tools
 			{
+				flow:       horizontal;
 				bottom:     0px;
 				position:   fixed;
-				text-align: center;
 				width:      100%;
 			}
-			#home, #full-screen
+			#tools button
 			{
 				background-color: silver;
 				background-image: none;
-				clear:            none;
 				margin:           0px;
 				opacity:          0.75;
 				padding:          0px;
 			}
-			#home
+			#tools .spacer
 			{
-				float: left;
-			}
-			#full-screen
-			{
-				float: right;
+				width: 200%%;
 			}
 		</style>
 	</head>
 	<body>
-		<div id="title" />
-		<div id="subtitle" />
-		<div id="body" />
-		<div id="tools">
-			<button id="home"><img src="home.png" /></button>
-			<button id="full-screen"><img src="view-fullscreen.png" /></button>
+		<div #title />
+		<div #subtitle />
+		<div #body />
+		<div #tools>
+			<button #home><img src="home.png" /></button>
+			<div .spacer />
+			<button #edit><img src="edit.png" /></button>
+			<div .spacer />
+			<button #full-screen><img src="view-fullscreen.png" /></button>
 		</div>
 	</body>
 </html>
