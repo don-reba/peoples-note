@@ -99,5 +99,7 @@ text note editing
 	when the "collapse" button is clicked, the note should restore from full screen
 	when the editable surface is selected, enable the toolbar
 	when anything, but the editable surface is selected, disable the toolbar
+	when the note is unchanged, the "OK" button should be disabled
+	when the note is changed, the "OK" button should be enabled
 instrumentation
 	when an animation is completed, display the result in the status bar

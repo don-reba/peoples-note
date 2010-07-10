@@ -2,6 +2,7 @@
 #include "EditorPresenter.h"
 
 #include "MockEditorView.h"
+#include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockNoteView.h"
 #include "MockUserModel.h"
@@ -9,10 +10,11 @@
 
 struct EditorPresenterFixture
 {
-	MockEditorView   editorView;
-	MockNoteListView noteListView;
-	MockNoteView     noteView;
-	MockUserModel    userModel;
+	MockEditorView    editorView;
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockNoteView      noteView;
+	MockUserModel     userModel;
 	
 	EnNoteTranslator enNoteTranslator;
 
@@ -21,6 +23,7 @@ struct EditorPresenterFixture
 	EditorPresenterFixture()
 		: editorPresenter
 			( editorView
+			, noteListModel
 			, noteListView
 			, noteView
 			, userModel
@@ -37,18 +40,11 @@ BOOST_FIXTURE_TEST_CASE
 {
 	editorView.isShown = true;
 
-	Guid guid;
-	userModel.notes.push_back(Note());
-	userModel.notes.back().guid    = guid;
-	userModel.notes.back().isDirty = false;
-	noteListView.selectedNoteGuid = guid;
-	userModel.noteBodies[guid] = L"<en-note/>";
-
 	noteListView.SignalNewNote();
 
 	editorView.body =
 		L"<div type=\"en-note\"><input type=\"checkbox\"/></div>";
-	editorView.title = L"New Title";
+	editorView.note.name = L"New Title";
 
 	editorView.SignalAccept();
 
@@ -70,10 +66,12 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteView.renderSize.cy, 100);
 
 	bool isThumbnailUpdated
-		(  noteListView.updatedThumbnails.find(guid)
-		!= noteListView.updatedThumbnails.end()
+		(  userModel.noteThumbnails.find(editorView.note.guid)
+		!= userModel.noteThumbnails.end()
 		);
 	BOOST_CHECK(isThumbnailUpdated);
+
+	BOOST_CHECK_EQUAL(noteListModel.notes.size(), 1);
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -94,7 +92,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	editorView.body =
 		L"<div type=\"en-note\"><input type=\"checkbox\"/></div>";
-	editorView.title = L"New Title";
+	editorView.note.name = L"New Title";
 
 	editorView.SignalCancel();
 
@@ -112,7 +110,7 @@ BOOST_FIXTURE_TEST_CASE
 	editorView.isShown = false;
 
 	noteView.body  = L"<div type=\"en-note\"><input type=\"checkbox\"/></div>";
-	noteView.title = L"Note Title";
+	noteView.note.name = L"Note Title";
 
 	noteView.SignalEdit();
 
@@ -120,7 +118,7 @@ BOOST_FIXTURE_TEST_CASE
 		( editorView.body
 		, L"<div type=\"en-note\"><input type=\"checkbox\"/></div>"
 		);
-	BOOST_CHECK_EQUAL(editorView.title, L"Note Title");
+	BOOST_CHECK_EQUAL(editorView.note.name, L"Note Title");
 
 	BOOST_CHECK(!noteView.isShown);
 	BOOST_CHECK(editorView.isShown);
@@ -137,5 +135,8 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK(editorView.isShown);
 	BOOST_CHECK(editorView.body.empty());
-	BOOST_CHECK(editorView.title.empty());
+	BOOST_CHECK_EQUAL
+		( editorView.note.name
+		, L"New note in last-used-notebook"
+		);
 }

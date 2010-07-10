@@ -1,12 +1,14 @@
 #pragma once
 #include "IEditorView.h"
 
+#include "Note.h"
+
 class MockEditorView : public IEditorView
 {
 public:
 
+	Note         note;
 	std::wstring body;
-	std::wstring title;
 
 	bool isShown;
 
@@ -25,13 +27,16 @@ public:
 
 	virtual void GetBody(std::wstring & html);
 
+	virtual void GetNote(Note & note);
+
 	virtual void GetTitle(std::wstring & text);
 
 	virtual void Hide();
 
-	virtual void SetBody(const std::wstring & html);
-
-	virtual void SetTitle(const std::wstring & text);
+	virtual void SetNote
+		( const Note         & note
+		, const std::wstring & bodyHtml
+		);
 
 	virtual void Show();
 };

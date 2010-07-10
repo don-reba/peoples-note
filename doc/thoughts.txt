@@ -1850,14 +1850,19 @@ note state for editing
 	the view should take a Note in additiona to all the other data
 		not instead
 editor implementation plan
-	implement proper state saving
+	√ implement proper state saving
 		for editor, not viewer
-	test current implementation
+	√ test current implementation
 		creation
 		editing
+	update tests
 	standard formatting commands
 	checkbox insertion
 	presentation
 		command buttons
 probably should rename view.hide to view.close, where appropriate
+	TODO
+loosing formatting
+	open opening a created note
+		could be during opening or saving
 	TODO

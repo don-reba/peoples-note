@@ -89,8 +89,15 @@ void EditorPresenter::OnEditNote()
 void EditorPresenter::OnNewNote()
 {
 	editorView.Show();
+	
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
 
-	Note    note;
+	Note note;
+	note.name = L"New note in ";
+	note.name.append(notebook.name);
+
 	wstring body;
+
 	editorView.SetNote(note, body);
 }

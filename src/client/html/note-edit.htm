@@ -9,13 +9,24 @@
 			}
 			#toolbar
 			{
-				flow: horizontal;
+				flow:             h-flow;
 				background-color: silver;
+				text-align:       center;
+			}
+			#toolbar div
+			{
+				background-image:  url(gradient-60.png) repeat-x;
+				background-color: #606060;
+				border-right: 1px solid black;
+				flow: horizontal;
+				width: 0%%;
 			}
 			.tb-button
 			{
 				behavior: clickable;
-				background-color: orange;
+				padding:  0px;
+				margin:   0px 2px;
+				border:   none;
 			}
 			#title
 			{
@@ -35,9 +46,23 @@
 	</head>
 	<body>
 		<widget #toolbar>
-			<widget .tb-button command="richtext:cut">Cut</widget>
-			<widget .tb-button command="richtext:copy">Copy</widget>
-			<widget .tb-button command="richtext:paste">Paste</widget>
+			<div>
+				<widget .tb-button command="richtext:undo"><img src="rt-undo.png" /></widget>
+				<widget .tb-button command="richtext:redo"><img src="rt-redo.png" /></widget>
+				<widget .tb-button command="richtext:copy"><img src="rt-copy.png" /></widget>
+				<widget .tb-button command="richtext:paste"><img src="rt-paste.png" /></widget>
+			</div>
+			<div>
+				<widget .tb-button command="richtext:strong"><img src="rt-strong.png" /></widget>
+				<widget .tb-button command="richtext:em"><img src="rt-em.png" /></widget>
+				<widget .tb-button command="richtext:u"><img src="rt-u.png" /></widget>
+			</div>
+			<div>
+				<widget .tb-button command="richtext:li-ol"><img src="rt-li-ol.png" /></widget>
+				<widget .tb-button command="richtext:li-ul"><img src="rt-li-ul.png" /></widget>
+				<widget .tb-button command="richtext:indent-dec"><img src="rt-indent-dec.png" /></widget>
+				<widget .tb-button command="richtext:indent-inc"><img src="rt-indent-inc.png" /></widget>
+			</div>
 		</widget>
 		<input #title />
 		<richtext #body toolbar="widget#toolbar" name="html" allow-clipboard-images="no"/>

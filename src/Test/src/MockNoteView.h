@@ -2,6 +2,8 @@
 
 #include "INoteView.h"
 
+#include "Note.h"
+
 class MockNoteView : public INoteView
 {
 public:
@@ -12,6 +14,8 @@ public:
 	std::wstring windowTitle;
 	bool         isDirty;
 	bool         isShown;
+
+	Note note;
 
 	SIZE renderSize;
 
@@ -31,6 +35,8 @@ public:
 
 	virtual void GetBody(std::wstring & html);
 
+	virtual void GetNote(Note & note);
+
 	virtual void GetTitle(std::wstring & text);
 
 	virtual void Hide();
@@ -39,11 +45,12 @@ public:
 
 	virtual void Render(Thumbnail & thumbnail);
 
-	virtual void SetBody(const std::wstring & html);
-
-	virtual void SetSubtitle(const std::wstring & html);
-
-	virtual void SetTitle(const std::wstring & text);
+	virtual void SetNote
+		( const Note         & note
+		, const std::wstring & titleText
+		, const std::wstring & subtitleText
+		, const std::wstring & bodyHtml
+		);
 
 	virtual void SetWindowTitle(const std::wstring & text);
 

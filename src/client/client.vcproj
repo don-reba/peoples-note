@@ -1079,6 +1079,50 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html\rt-copy.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-em.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-indent-dec.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-indent-inc.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-li-ol.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-li-ul.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-paste.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-redo.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-strong.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-u.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-undo.png"
+				>
+			</File>
+			<File
 				RelativePath=".\html\search.png"
 				>
 			</File>

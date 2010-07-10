@@ -23,9 +23,14 @@ void MockEditorView::GetBody(wstring & html)
 	html = body;
 }
 
+void MockEditorView::GetNote(Note & note)
+{
+	note = this->note;
+}
+
 void MockEditorView::GetTitle(std::wstring & text)
 {
-	text = title;
+	text = note.name;
 }
 
 void MockEditorView::Hide()
@@ -33,14 +38,13 @@ void MockEditorView::Hide()
 	isShown = false;
 }
 
-void MockEditorView::SetBody(const wstring & html)
+void MockEditorView::SetNote
+	( const Note         & note
+	, const std::wstring & bodyHtml
+	)
 {
-	body = html;
-}
-
-void MockEditorView::SetTitle(const wstring & text)
-{
-	title = text;
+	this->note = note;
+	this->body = bodyHtml;
 }
 
 void MockEditorView::Show()

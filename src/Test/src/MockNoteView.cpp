@@ -31,6 +31,11 @@ void MockNoteView::GetBody(wstring & html)
 	html = body;
 }
 
+void MockNoteView::GetNote(Note & note)
+{
+	note = this->note;
+}
+
 void MockNoteView::GetTitle(std::wstring & text)
 {
 	text = title;
@@ -52,19 +57,17 @@ void MockNoteView::Render(Thumbnail & thumbnail)
 	renderSize.cy = thumbnail.Height;
 }
 
-void MockNoteView::SetBody(const wstring & html)
+void MockNoteView::SetNote
+	( const Note    & note
+	, const wstring & titleText
+	, const wstring & subtitleText
+	, const wstring & bodyHtml
+	)
 {
-	body = html;
-}
-
-void MockNoteView::SetSubtitle(const wstring & html)
-{
-	subtitle = html;
-}
-
-void MockNoteView::SetTitle(const wstring & html)
-{
-	title = html;
+	this->note     = note;
+	this->body     = bodyHtml;
+	this->subtitle = subtitleText;
+	this->title    = titleText;
 }
 
 void MockNoteView::SetWindowTitle(const wstring & text)
