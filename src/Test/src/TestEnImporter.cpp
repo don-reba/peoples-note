@@ -4,6 +4,7 @@
 #include "Note.h"
 
 #include <fstream>
+#include <iterator>
 
 using namespace boost;
 using namespace std;
@@ -62,14 +63,19 @@ BOOST_AUTO_TEST_CASE(EnImporter_Test)
 {
 	EnImporter enImporter;
 
-	wfstream file;
-	file.open(L"data\\Mixed.enex");
-	BOOST_REQUIRE(file.is_open());
+	wfstream stream;
+	stream.open(L"data\\Mixed.enex");
+	BOOST_REQUIRE(stream.is_open());
+	wstring text
+		( (istreambuf_iterator<wchar_t>(stream))
+		, istreambuf_iterator<wchar_t>()
+		);
+	text.push_back(0);
 
 	NoteBodyList bodies;
 	NoteList     notes;
 	ResourceList resources;
-	enImporter.ImportNotes(file, notes, bodies, resources);
+	enImporter.ImportNotes(text, notes, bodies, resources);
 
 	BOOST_CHECK_EQUAL(notes.size(), 1);
 	BOOST_CHECK_EQUAL(notes.at(0).name, L"Mixed note");

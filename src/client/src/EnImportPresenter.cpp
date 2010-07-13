@@ -5,13 +5,15 @@
 #include "INoteListModel.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
+#include "Tools.h"
 #include "Transaction.h"
 
 #include <fstream>
-#include <sstream>
+#include <iterator>
 
 using namespace boost;
 using namespace std;
+using namespace Tools;
 
 EnImportPresenter::EnImportPresenter
 	( IEnImporter    & enImporter
@@ -32,42 +34,55 @@ void EnImportPresenter::OnImport()
 	wstring path;
 	if (!noteListView.GetEnexPath(path))
 		return;
-	
-	wifstream file;
-	file.open(path.c_str());
-	if (!file.is_open())
-		throw std::exception("File could not be opened.");
+	ImportNotes(path.c_str());
+}
 
-	NoteList notes;
-	ImportNotes(file, notes);
+void EnImportPresenter::ImportNotes(const wchar_t * fileName)
+{
+	wstring fileContents;
+	ReadFile(fileName, fileContents);
+	if (fileContents.empty())
+		return;
+
+	Transaction transaction(userModel);
+
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+
+	NoteList     notes;
+	NoteBodyList bodies;
+	ResourceList resources;
+
+	enImporter.ImportNotes(fileContents, notes, bodies, resources);
+	assert(notes.size() == bodies.size());
+
+	for (int i(0); i != notes.size(); ++i)
+	{
+		const Note    & note     = notes.at(i);
+		const wstring & body     = bodies.at(i);
+		wstring         bodyText = L""; // TODO: produce body text
+		userModel.AddNote(note, body, bodyText, notebook);
+	}
+
+	foreach (const Resource & resource, resources)
+		userModel.AddResource(resource);
+
+	notes.clear();
+	userModel.GetNotesByNotebook(notebook, notes);
 	noteListModel.SetNotes(notes);
 }
 
-void EnImportPresenter::ImportNotes
-	( wistream & file
-	, NoteList & notes
+void EnImportPresenter::ReadFile
+	( const wchar_t * fileName
+	, std::wstring  & contents
 	)
 {
-	Transaction transaction(userModel);
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-	{
-		NoteList     notes;
-		NoteBodyList bodies;
-		ResourceList resources;
-		enImporter.ImportNotes(file, notes, bodies, resources);
-		assert(notes.size() == bodies.size());
-
-		for (int i(0); i != notes.size(); ++i)
-		{
-			const Note    & note     = notes.at(i);
-			const wstring & body     = bodies.at(i);
-			wstring         bodyText = L""; // TODO: produce body text
-			userModel.AddNote(note, body, bodyText, notebook);
-		}
-
-		foreach (const Resource & resource, resources)
-			userModel.AddResource(resource);
-	}
-	userModel.GetNotesByNotebook(notebook, notes);
+	basic_ifstream<unsigned char> stream(fileName, ios_base::in | ios_base::binary);
+	vector<unsigned char> text
+		( (istreambuf_iterator<unsigned char>(stream))
+		, istreambuf_iterator<unsigned char>()
+		);
+	text.reserve(text.size() + 1);
+	text.push_back(L'\0');
+	contents = ConvertToUnicode(&text[0]);
 }

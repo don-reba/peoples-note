@@ -15,27 +15,21 @@ using namespace std;
 using namespace Tools;
 
 void EnImporter::ImportNotes
-	( wistream     & stream
-	, NoteList     & notes
-	, NoteBodyList & bodies
-	, ResourceList & resources
+	( const std::wstring & text
+	, NoteList           & notes
+	, NoteBodyList       & bodies
+	, ResourceList       & resources
 	)
 {
-	vector<wchar_t> text
-		( (istreambuf_iterator<wchar_t>(stream))
-		, istreambuf_iterator<wchar_t>()
-		);
 	if (text.empty())
 		return;
-	text.reserve(text.size() + 1);
-	text.push_back(L'\0');
-
 	try
 	{
 		typedef xml_document<wchar_t> XmlDocument;
 		auto_ptr<XmlDocument> doc(new XmlDocument());
 
-		doc->parse<0>(&text[0]);
+		vector<wchar_t> textCopy(text.begin(), text.end());
+		doc->parse<0>(&textCopy[0]);
 
 		xml_node<wchar_t> * node(doc->first_node());
 		while (node && 0 != wcscmp(node->name(), L"en-export"))

@@ -13,9 +13,9 @@ public:
 	virtual ~IEnImporter() {}
 
 	virtual void ImportNotes
-		( std::wistream & stream
-		, NoteList      & notes
-		, NoteBodyList  & bodies
-		, ResourceList  & images
+		( const std::wstring & text
+		, NoteList           & notes
+		, NoteBodyList       & bodies
+		, ResourceList       & images
 		) = 0;
 };

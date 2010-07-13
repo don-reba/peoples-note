@@ -34,5 +34,10 @@ private:
 
 	static std::string Hash(const Blob & blob);
 
-	void ImportNotes(std::wistream & file, NoteList & notes);
+	void ImportNotes(const wchar_t * fileName);
+
+	void ReadFile
+		( const wchar_t * fileName
+		, std::wstring  & contents
+		);
 };

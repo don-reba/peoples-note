@@ -97,6 +97,7 @@ text note editing
 	when the screen is tilted, the editor should rotate
 	when the "full screen" button is clicked, the note should expand to full screen
 	when the "collapse" button is clicked, the note should restore from full screen
+	when a new note is open, the title screen should say "New note in %notebook%"
 	when the editable surface is selected, enable the toolbar
 	when anything, but the editable surface is selected, disable the toolbar
 	when the note is unchanged, the "OK" button should be disabled

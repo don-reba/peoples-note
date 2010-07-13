@@ -212,13 +212,13 @@ FIXTURE_TEST_CASE(TestUserModelCascade, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetNoteCount(),     2);
 	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 2);
 
-	userModel.DeleteNote(note0);
+	userModel.DeleteNote(note0.guid);
 
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 	TEST_CHECK_EQUAL(userModel.GetNoteCount(),     1);
 	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 0);
 
-	userModel.DeleteNotebook(notebook);
+	userModel.DeleteNotebook(notebook.guid);
 
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
 	TEST_CHECK_EQUAL(userModel.GetNoteCount(),     0);
@@ -232,7 +232,7 @@ FIXTURE_TEST_CASE(TestUserModelDeleteNote, DataStoreFixture)
 
 	Note note;
 	userModel.AddNote(note, L"", L"", notebook);
-	userModel.DeleteNote(note);
+	userModel.DeleteNote(note.guid);
 	
 	NoteList notes;
 	userModel.GetNotesByNotebook(notebook, notes);
@@ -245,7 +245,7 @@ FIXTURE_TEST_CASE(TestUserModelDeleteNotebook, DataStoreFixture)
 	userModel.GetDefaultNotebook(defaultNotebook);
 
 	TEST_CHECK_EXCEPTION
-		( userModel.DeleteNotebook(defaultNotebook)
+		( userModel.DeleteNotebook(defaultNotebook.guid)
 		, std::exception
 		, MESSAGE_EQUALS("Cannot delete the default notebook.")
 		);
@@ -261,7 +261,7 @@ FIXTURE_TEST_CASE(TestUserModelDeleteNotebook, DataStoreFixture)
 	userModel.GetLastUsedNotebook(lastUsedNotebook);
 	TEST_CHECK_EQUAL(lastUsedNotebook.guid, newNotebook.guid);
 
-	userModel.DeleteNotebook(lastUsedNotebook);
+	userModel.DeleteNotebook(lastUsedNotebook.guid);
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
 
 	userModel.GetLastUsedNotebook(lastUsedNotebook);
@@ -272,7 +272,7 @@ FIXTURE_TEST_CASE(TestUserModelDeleteTag, DataStoreFixture)
 {
 	Tag tag;
 	userModel.AddTag(tag);
-	userModel.DeleteTag(tag);
+	userModel.DeleteTag(tag.guid);
 	
 	TagList tags;
 	userModel.GetTags(tags);

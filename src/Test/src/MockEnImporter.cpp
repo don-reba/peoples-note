@@ -5,12 +5,13 @@ using namespace boost;
 using namespace std;
 
 void MockEnImporter::ImportNotes
-	( wistream     & stream
-	, NoteList     & notes
-	, NoteBodyList & bodies
-	, ResourceList & resources
+	( const std::wstring & text
+	, NoteList           & notes
+	, NoteBodyList       & bodies
+	, ResourceList       & resources
 	)
 {
+	this->text = text;
 	bodies    = this->bodies;
 	notes     = this->notes;
 	resources = this->resources;

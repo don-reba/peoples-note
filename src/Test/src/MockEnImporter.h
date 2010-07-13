@@ -10,13 +10,14 @@ public:
 	NoteBodyList bodies;
 	NoteList     notes;
 	ResourceList resources;
+	std::wstring text;
 
 public:
 
 	virtual void ImportNotes
-		( std::wistream & stream
-		, NoteList      & notes
-		, NoteBodyList  & bodies
-		, ResourceList  & resources
+		( const std::wstring & text
+		, NoteList           & notes
+		, NoteBodyList       & bodies
+		, ResourceList       & resources
 		);
 };
