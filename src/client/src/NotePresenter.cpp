@@ -1,7 +1,11 @@
 #include "stdafx.h"
 #include "NotePresenter.h"
 
+#include "EnNoteTranslator.h"
 #include "Guid.h"
+#include "INoteListView.h"
+#include "INoteView.h"
+#include "IUserModel.h"
 #include "Tools.h"
 #include "Transaction.h"
 
@@ -26,7 +30,6 @@ NotePresenter::NotePresenter
 {
 	noteListView.ConnectOpenNote (bind(&NotePresenter::OnOpenNote,    this));
 	noteView.ConnectClose        (bind(&NotePresenter::OnCloseNote,   this));
-	noteView.ConnectLoadingData  (bind(&NotePresenter::OnLoadingData, this, _1, _2));
 }
 
 //---------------
@@ -61,22 +64,6 @@ void NotePresenter::OnCloseNote()
 	userModel.SetNoteThumbnail(note.guid, thumbnail);
 
 	noteListView.UpdateThumbnail(note.guid);
-}
-
-void NotePresenter::OnLoadingData
-	( const wchar_t * uri
-	, Blob          & blob
-	)
-{
-	const wchar_t * colonPosition = wcschr(uri, L':');
-	if (!colonPosition)
-		return;
-	const wchar_t * dotPosition = wcschr(colonPosition + 1, L'.');
-	if (!dotPosition)
-		return;
-	wstring hash(colonPosition + 1, dotPosition - colonPosition - 1);
-	Transaction transaction(userModel);
-	userModel.GetResource(ConvertToAnsi(hash), blob);
 }
 
 void NotePresenter::OnOpenNote()

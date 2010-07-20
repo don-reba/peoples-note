@@ -15,7 +15,8 @@ using namespace Tools;
 //----------
 
 HTMLayoutWindow::HTMLayoutWindow(const wchar_t * resourceId)
-	: resourceId (resourceId)
+	: resourceId    (resourceId)
+	, isHtmlDataSet (false)
 {
 }
 
@@ -40,6 +41,11 @@ void HTMLayoutWindow::ConnectBehavior
 {
 	EventRecord record = { element, command, event };
 	eventRecords.push_back(record);
+}
+
+void HTMLayoutWindow::ConnectLoadHtmlData(slot_type OnLoadHtmlData)
+{
+	SignalLoadHtmlData.connect(OnLoadHtmlData);
 }
 
 void HTMLayoutWindow::DisconnectBehavior(const char * path)
@@ -67,6 +73,35 @@ HELEMENT HTMLayoutWindow::FindFirstElement(const char * selector)
 		throw std::exception(message.c_str());
 	}
 	return result;
+}
+
+const wchar_t * HTMLayoutWindow::GetHtmlUri()
+{
+	return htmlUri;
+}
+
+void HTMLayoutWindow::SetHtmlData(const BYTE * data, DWORD size)
+{
+	htmlData      = data;
+	htmlDataSize  = size;
+	isHtmlDataSet = true;
+}
+
+BYTE * HTMLayoutWindow::GetHtmlData()
+{
+	return const_cast<BYTE*>(htmlData);
+}
+
+DWORD HTMLayoutWindow::GetHtmlDataSize()
+{
+	return htmlDataSize;
+}
+
+bool HTMLayoutWindow::UseHtmlData()
+{
+	bool isHtmlDataSet = this->isHtmlDataSet;
+	this->isHtmlDataSet = false;
+	return isHtmlDataSet;
 }
 
 //------------------------
@@ -153,18 +188,15 @@ BOOL HTMLayoutWindow::OnFocus(FOCUS_PARAMS * params)
 
 BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 {
-	try
+	htmlUri = params->uri;
+	SignalLoadHtmlData();
+	if (UseHtmlData())
 	{
-		HtmlResource resource(LoadHtmlResource(params->uri));
-		params->outData     = resource.data;
-		params->outDataSize = resource.size;
+		params->outData     = const_cast<BYTE*>(htmlData);
+		params->outDataSize = htmlDataSize;
 		return LOAD_OK;
 	}
-	catch (const std::exception & e)
-	{
-		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
-		return LOAD_DISCARD;
-	}
+	return LOAD_DISCARD;
 }
 
 bool HTMLayoutWindow::ProcessHtmLayout(WndMsg & msg)

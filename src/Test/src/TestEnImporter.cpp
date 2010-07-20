@@ -70,7 +70,6 @@ BOOST_AUTO_TEST_CASE(EnImporter_Test)
 		( (istreambuf_iterator<wchar_t>(stream))
 		, istreambuf_iterator<wchar_t>()
 		);
-	text.push_back(0);
 
 	NoteBodyList bodies;
 	NoteList     notes;

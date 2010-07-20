@@ -29,6 +29,8 @@ void EnImporter::ImportNotes
 		auto_ptr<XmlDocument> doc(new XmlDocument());
 
 		vector<wchar_t> textCopy(text.begin(), text.end());
+		textCopy.reserve(textCopy.size() + 1);
+		textCopy.push_back(L'\0');
 		doc->parse<0>(&textCopy[0]);
 
 		xml_node<wchar_t> * node(doc->first_node());

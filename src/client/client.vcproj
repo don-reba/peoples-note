@@ -451,6 +451,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\HtmlDataLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\HtmlLayoutPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ImagingException.cpp"
 				>
 			</File>
@@ -757,6 +765,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\HtmlDataLoader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\HtmlLayoutPresenter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\HtmlResource.h"
 				>
 			</File>
@@ -790,6 +806,10 @@
 			</File>
 			<File
 				RelativePath=".\src\IEnService.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\IHtmlDataLoader.h"
 				>
 			</File>
 			<File
@@ -1076,6 +1096,10 @@
 			</File>
 			<File
 				RelativePath=".\html\reflection-48.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-check.png"
 				>
 			</File>
 			<File

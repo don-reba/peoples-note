@@ -8,15 +8,6 @@ class INoteListView : public ISignalProvider
 {
 public:
 
-	typedef boost::signals2::signal
-		< void(const Guid &, Blob *&)
-		> DataSignal;
-	typedef boost::signals2::signal
-		< void(const Guid &, Blob *&)
-		>::slot_type DataSlot;
-
-public:
-
 	virtual ~INoteListView() {}
 
 	virtual void AddNote(std::wstring html, std::wstring value) = 0;
@@ -26,8 +17,6 @@ public:
 	virtual void ConnectAbout(slot_type OnAbout) = 0;
 
 	virtual void ConnectImport(slot_type OnImport) = 0;
-
-	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail) = 0;
 
 	virtual void ConnectNewNote(slot_type OnNewNote) = 0;
 

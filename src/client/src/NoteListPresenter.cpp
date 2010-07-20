@@ -31,9 +31,6 @@ NoteListPresenter::NoteListPresenter
 	noteListModel.ConnectChanged
 		(bind(&NoteListPresenter::OnNoteListChanged, this));
 
-	noteListView.ConnectLoadThumbnail
-		(bind(&NoteListPresenter::OnLoadThumbnail, this, _1, _2));
-
 	noteListView.ConnectNotebookSelected
 		(bind(&NoteListPresenter::OnNotebookSelected, this));
 
@@ -59,31 +56,6 @@ NoteListPresenter::NoteListPresenter
 //---------------
 // event handlers
 //---------------
-
-void NoteListPresenter::OnLoadThumbnail(const Guid & guid, Blob *& blob)
-{
-	Transaction transaction(userModel);
-
-	const SIZE size = { 164, 100 };
-	userModel.GetNoteThumbnail(guid, thumbnail);
-	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
-	{
-		wstring body;
-		userModel.GetNoteBody(guid, body);
-
-		wstring html;
-		enNoteTranslator.ConvertToHtml(body, html);
-
-		Note note;
-		noteView.SetNote(note, L"", L"", html);
-
-		thumbnail.Width  = size.cx;
-		thumbnail.Height = size.cy;
-		noteView.Render(thumbnail);
-		userModel.SetNoteThumbnail(guid, thumbnail);
-	}
-	blob = &thumbnail.Data;
-}
 
 void NoteListPresenter::OnNotesChanged()
 {

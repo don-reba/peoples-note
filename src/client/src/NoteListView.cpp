@@ -140,11 +140,6 @@ void NoteListView::ConnectImport(slot_type OnImport)
 	SignalImport.connect(OnImport);
 }
 
-void NoteListView::ConnectLoadThumbnail(DataSlot OnLoadThumbnail)
-{
-	SignalLoadThumbnail.connect(OnLoadThumbnail);
-}
-
 void NoteListView::ConnectNewNote(slot_type OnNewNote)
 {
 	SignalNewNote.connect(OnNewNote);
@@ -294,15 +289,14 @@ void NoteListView::UpdateThumbnail(const Guid & guid)
 	wstring uri(L"thumb:");
 	uri.append(ConvertToUnicode(guid));
 
-	Blob * blob(NULL);
-	SignalLoadThumbnail(guid, blob);
-	if (blob && !blob->empty())
+	SignalLoadHtmlData();
+	if (UseHtmlData())
 	{
 		HTMLayoutDataReadyAsync
 			( hwnd_
 			, uri.c_str()
-			, &blob->at(0)
-			, blob->size()
+			, GetHtmlData()
+			, GetHtmlDataSize()
 			, HLRT_DATA_IMAGE
 			);
 	}
@@ -564,23 +558,6 @@ BOOL NoteListView::OnFocus(FOCUS_PARAMS * params)
 	if (oldSipState != sipState)
 		::SHFullScreen(hwnd_, sipState);
 	return FALSE;
-}
-
-BOOL NoteListView::OnLoadData(NMHL_LOAD_DATA * params)
-{
-	wstring prefix(L"thumb:");
-	if (0 == wcsncmp(params->uri, prefix.c_str(), prefix.size()))
-	{
-		Guid guid(params->uri + prefix.size());
-		Blob * blob(NULL);
-		SignalLoadThumbnail(guid, blob);
-		if (NULL == blob)
-			return LOAD_DISCARD;
-		params->outData     = &blob->at(0);
-		params->outDataSize = blob->size();
-		return LOAD_OK;
-	}
-	return __super::OnLoadData(params);
 }
 
 void NoteListView::OnMenuAbout(BEHAVIOR_EVENT_PARAMS * params)

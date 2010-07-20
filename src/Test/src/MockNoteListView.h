@@ -56,8 +56,6 @@ public:
 	signal SignalSignIn;
 	signal SignalSync;
 
-	DataSignal SignalLoadThumbnail;
-
 public:
 
 	MockNoteListView();
@@ -75,8 +73,6 @@ public:
 	virtual void ConnectCreated(slot_type OnCreated);
 
 	virtual void ConnectImport(slot_type OnImport);
-
-	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail);
 
 	virtual void ConnectNewNote(slot_type OnNewNote);
 

@@ -75,11 +75,6 @@ void NoteView::ConnectEdit(slot_type OnEdit)
 	SignalEdit.connect(OnEdit);
 }
 
-void NoteView::ConnectLoadingData(DataSlot OnLoadingData)
-{
-	SignalLoadingData.connect(OnLoadingData);
-}
-
 static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
 {
 	wstring * dst(reinterpret_cast<wstring*>(param));
@@ -280,22 +275,4 @@ void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 	else
 		e.remove_attribute("checked");
 	isDirty = true;
-}
-
-BOOL NoteView::OnLoadData(NMHL_LOAD_DATA * params)
-{
-	if (NULL == wcschr(params->uri, L':'))
-		return __super::OnLoadData(params);
-	try
-	{
-		SignalLoadingData(params->uri, blob);
-	}
-	catch (const std::exception & e)
-	{
-		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
-		return LOAD_DISCARD;
-	}
-	params->outData     = &blob[0];
-	params->outDataSize = blob.size();
-	return LOAD_OK;
 }

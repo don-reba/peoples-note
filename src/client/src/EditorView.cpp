@@ -32,6 +32,7 @@ void EditorView::Create(HWND parent)
 
 void EditorView::RegisterEventHandlers()
 {
+	ConnectBehavior("#check", BUTTON_CLICK, &EditorView::OnCheck);
 }
 
 //---------------------------
@@ -179,8 +180,19 @@ void EditorView::ProcessMessage(WndMsg &msg)
 // HTMLayout message handlers
 //---------------------------
 
+void EditorView::OnCheck(BEHAVIOR_EVENT_PARAMS * params)
+{
+	element body(FindFirstElement("#body"));
+	body.xcall("insert", json::string(L"<input type=\"checkbox\" />"));
+}
+
 void EditorView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 {
+	element e(params->heTarget);
+	if (e.get_value().get(false))
+		e.set_attribute("checked", L"");
+	else
+		e.remove_attribute("checked");
 }
 
 //------------------

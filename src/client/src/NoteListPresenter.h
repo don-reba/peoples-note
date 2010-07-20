@@ -40,23 +40,13 @@ public:
 private:
 
 	void OnDirtyChanged();
-
-	void OnLoadThumbnail(const Guid & guid, Blob *& blob);
-
 	void OnNotesChanged();
-
 	void OnNotebooksChanged();
-
 	void OnTagsChanged();
-
 	void OnNotebookSelected();
-
 	void OnNoteListChanged();
-
 	void OnSyncBegin();
-
 	void OnSyncEnd();
-
 	void OnUserLoaded();
 
 // utility functions

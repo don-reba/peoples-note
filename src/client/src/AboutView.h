@@ -3,6 +3,8 @@
 #include "HTMLayoutWindow.h"
 #include "IAboutView.h"
 
+class IHtmlDataLoader;
+
 class AboutView : public HTMLayoutWindow, public IAboutView
 {
 private:

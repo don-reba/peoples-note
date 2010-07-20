@@ -21,11 +21,6 @@ void MockNoteView::ConnectEdit(slot_type OnEdit)
 	SignalEdit.connect(OnEdit);
 }
 
-void MockNoteView::ConnectLoadingData(DataSlot OnLoadingData)
-{
-	SignalLoadingData.connect(OnLoadingData);
-}
-
 void MockNoteView::GetBody(wstring & html)
 {
 	html = body;

@@ -43,11 +43,25 @@ private:
 
 	std::vector<EventRecord>  eventRecords;
 
+	const BYTE    * htmlData;
+	DWORD           htmlDataSize;
+	bool            isHtmlDataSet;
+	const wchar_t * htmlUri;
+
 protected:
 
 	signal SignalCreated;
+	signal SignalLoadHtmlData;
 
 // interface
+
+public:
+
+	void ConnectLoadHtmlData(slot_type OnLoadHtmlData);
+
+	const wchar_t * GetHtmlUri();
+
+	void SetHtmlData(const BYTE * data, DWORD size);
 
 protected:
 
@@ -92,6 +106,12 @@ protected:
 	HELEMENT FindFirstElement(const char * selector);
 
 	virtual void RegisterEventHandlers() {}
+
+	BYTE * GetHtmlData();
+
+	DWORD GetHtmlDataSize();
+
+	bool UseHtmlData();
 
 // window message handlers
 

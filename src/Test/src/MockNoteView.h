@@ -19,9 +19,8 @@ public:
 
 	SIZE renderSize;
 
-	signal     SignalClose;
-	signal     SignalEdit;
-	DataSignal SignalLoadingData;
+	signal SignalClose;
+	signal SignalEdit;
 
 public:
 
@@ -30,8 +29,6 @@ public:
 	virtual void ConnectClose(slot_type OnClose);
 
 	virtual void ConnectEdit(slot_type OnEdit);
-
-	virtual void ConnectLoadingData(DataSlot OnLoadingData);
 
 	virtual void GetBody(std::wstring & html);
 

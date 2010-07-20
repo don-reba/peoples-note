@@ -58,8 +58,6 @@ private:
 	signal SignalSignIn;
 	signal SignalSync;
 
-	DataSignal  SignalLoadThumbnail;
-
 // interface
 
 public:
@@ -89,8 +87,6 @@ public:
 	virtual void ConnectAbout(slot_type OnAbout);
 
 	virtual void ConnectImport(slot_type OnImport);
-
-	virtual void ConnectLoadThumbnail(DataSlot OnLoadThumbnail);
 
 	virtual void ConnectNewNote(slot_type OnNewNote);
 
@@ -169,8 +165,7 @@ private:
 
 private:
 
-	virtual BOOL OnFocus    (FOCUS_PARAMS   * params);
-	virtual BOOL OnLoadData (NMHL_LOAD_DATA * params);
+	virtual BOOL OnFocus (FOCUS_PARAMS * params);
 
 	void OnMenuAbout    (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuExit     (BEHAVIOR_EVENT_PARAMS * params);

@@ -3,6 +3,8 @@
 #include "HTMLayoutWindow.h"
 #include "ICredentialsView.h"
 
+class IHtmlDataLoader;
+
 class CredentialsView : public HTMLayoutWindow, public ICredentialsView
 {
 // data

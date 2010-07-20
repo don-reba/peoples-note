@@ -12,6 +12,8 @@
 #include "EnImporter.h"
 #include "EnNoteTranslator.h"
 #include "EnService.h"
+#include "HtmlDataLoader.h"
+#include "HtmlLayoutPresenter.h"
 #include "InstrumentationPresenter.h"
 #include "LastUserModel.h"
 #include "MessagePump.h"
@@ -138,6 +140,12 @@ int WINAPI WinMain(HINSTANCE instance,
 		NoteView        noteView        (instance);
 		NoteListView    noteListView    (animator, instance, nCmdShow);
 
+		HtmlDataLoader htmlDataLoader
+			( enNoteTranslator
+			, noteView
+			, userModel
+			);
+
 		AboutPresenter aboutPresenter
 			( aboutView
 			, noteListView
@@ -160,6 +168,14 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListModel
 			, noteListView
 			, userModel
+			);
+		HtmlLayoutPresenter
+			( aboutView
+			, credentialsView
+			, editorView
+			, noteView
+			, noteListView
+			, htmlDataLoader
 			);
 		InstrumentationPresenter instrumentationPresenter
 			( animator

@@ -1,7 +1,28 @@
 #include "stdafx.h"
 #include "HtmlDataLoader.h"
 
-void * HtmlDataLoader::GetData()
+#include "EnNoteTranslator.h"
+#include "HtmlResource.h"
+#include "INoteView.h"
+#include "Tools.h"
+#include "Transaction.h"
+#include "IUserModel.h"
+
+using namespace std;
+using namespace Tools;
+
+HtmlDataLoader::HtmlDataLoader
+	( EnNoteTranslator & enNoteTranslator
+	, INoteView        & noteView
+	, IUserModel       & userModel
+	)
+	: enNoteTranslator (enNoteTranslator)
+	, noteView         (noteView)
+	, userModel        (userModel)
+{
+}
+
+BYTE * HtmlDataLoader::GetData()
 {
 	if (blob.empty())
 		return NULL;
@@ -13,59 +34,93 @@ DWORD HtmlDataLoader::GetDataSize()
 	return blob.size();
 }
 
-void HtmlDataLoader::LoadFromUri(const wchar_t * uri)
+bool HtmlDataLoader::LoadFromUri(const wchar_t * uri)
 {
-	//---------
-	// relative
-	//---------
-	
 	try
 	{
-		HtmlResource resource(LoadHtmlResource(params->uri));
-		params->outData     = resource.data;
-		params->outDataSize = resource.size;
-		return LOAD_OK;
+		switch (ClassifyUri(uri))
+		{
+		case UriTypeThumbnail: LoadThumbnailUri (uri); return true;
+		case UriTypeResource:  LoadResourceUri  (uri); return true;
+		case UriTypeHtml:      LoadHtmlUri      (uri); return true;
+		}
 	}
 	catch (const std::exception & e)
 	{
 		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
-		return LOAD_DISCARD;
 	}
+	return false;
+}
 
-	//---------
-	// NoteView
-	//---------
+HtmlDataLoader::UriType HtmlDataLoader::ClassifyUri(const wchar_t * uri)
+{
+	const wchar_t * colonPosition(wcschr(uri, L':'));
+	if (!colonPosition)
+		return UriTypeHtml;
+	if (IsPrefix(uri, colonPosition, L"thumb"))
+		return UriTypeThumbnail;
+	if (IsPrefix(uri, colonPosition, L"img"))
+		return UriTypeResource;
+	return UriTypeUnknown;
+}
 
-	if (NULL == wcschr(params->uri, L':'))
-		return __super::OnLoadData(params);
-	try
+bool HtmlDataLoader::IsPrefix
+	( const wchar_t * begin
+	, const wchar_t * end
+	, const wchar_t * prefix
+	)
+{
+	while (*prefix)
 	{
-		SignalLoadingData(params->uri, blob);
+		if (begin == end)
+			return false;
+		if (*begin != *prefix)
+			return false;
+		++begin;
+		++prefix;
 	}
-	catch (const std::exception & e)
-	{
-		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
-		return LOAD_DISCARD;
-	}
-	params->outData     = &blob[0];
-	params->outDataSize = blob.size();
-	return LOAD_OK;
+	return begin == end;
+}
 
-	//-------------
-	// NoteListView
-	//-------------
+void HtmlDataLoader::LoadHtmlUri(const wchar_t * uri)
+{
+	HtmlResource resource(LoadHtmlResource(uri));
+	blob.assign(resource.data, resource.data + resource.size);
+}
 
-	wstring prefix(L"thumb:");
-	if (0 == wcsncmp(params->uri, prefix.c_str(), prefix.size()))
+void HtmlDataLoader::LoadResourceUri(const wchar_t * uri)
+{
+	const wchar_t * colonPosition (wcschr(uri,               L':'));
+	const wchar_t * dotPosition   (wcschr(colonPosition + 1, L'.'));
+	wstring hash(colonPosition + 1, dotPosition - colonPosition - 1);
+	userModel.GetResource(ConvertToAnsi(hash), blob);
+}
+
+void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
+{
+	Guid guid(wcschr(uri, L':') + 1);
+
+	Transaction transaction(userModel);
+
+	Thumbnail thumbnail;
+	userModel.GetNoteThumbnail(guid, thumbnail);
+
+	const SIZE size = { 164, 100 };
+	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
 	{
-		Guid guid(params->uri + prefix.size());
-		Blob * blob(NULL);
-		SignalLoadThumbnail(guid, blob);
-		if (NULL == blob)
-			return LOAD_DISCARD;
-		params->outData     = &blob->at(0);
-		params->outDataSize = blob->size();
-		return LOAD_OK;
+		wstring body;
+		userModel.GetNoteBody(guid, body);
+
+		wstring html;
+		enNoteTranslator.ConvertToHtml(body, html);
+
+		Note note;
+		noteView.SetNote(note, L"", L"", html);
+
+		thumbnail.Width  = size.cx;
+		thumbnail.Height = size.cy;
+		noteView.Render(thumbnail);
+		userModel.SetNoteThumbnail(guid, thumbnail);
 	}
-	return __super::OnLoadData(params);
+	blob.swap(thumbnail.Data);
 }

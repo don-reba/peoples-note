@@ -152,13 +152,6 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.back().guid = Guid("{0}");
 	userModel.notes.push_back(Note());
 	userModel.notes.back().guid = Guid("{1}");
-
-	Blob * blob(NULL);
-	noteListView.SignalLoadThumbnail(Guid("{1}"), blob);
-
-	BOOST_CHECK(blob != NULL);
-	BOOST_CHECK_EQUAL(noteView.renderSize.cx, 164);
-	BOOST_CHECK_EQUAL(noteView.renderSize.cy, 100);
 }
 
 BOOST_FIXTURE_TEST_CASE

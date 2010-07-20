@@ -19,11 +19,8 @@ private:
 
 	WindowRenderer windowRenderer;
 
-	Blob blob;
-
-	signal     SignalClose;
-	signal     SignalEdit;
-	DataSignal SignalLoadingData;
+	signal SignalClose;
+	signal SignalEdit;
 
 // interface
 
@@ -42,8 +39,6 @@ public:
 	virtual void ConnectClose(slot_type OnClose);
 
 	virtual void ConnectEdit(slot_type OnEdit);
-
-	virtual void ConnectLoadingData(DataSlot OnLoadingData);
 
 	virtual void GetBody(std::wstring & html);
 
@@ -92,6 +87,4 @@ private:
 	void OnFullScreen (BEHAVIOR_EVENT_PARAMS * params);
 	void OnHome       (BEHAVIOR_EVENT_PARAMS * params);
 	void OnInput      (BEHAVIOR_EVENT_PARAMS * params);
-
-	virtual BOOL OnLoadData(NMHL_LOAD_DATA * params);
 };

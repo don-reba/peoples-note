@@ -76,13 +76,6 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.resources.back().Data.push_back(3);
 	userModel.resources.back().Data.push_back(5);
 	userModel.resources.back().Hash = "test";
-
-	Blob result;
-	noteView.SignalLoadingData(L"img:test.jpg", result);
-	BOOST_REQUIRE_EQUAL(result.size(), 3);
-	BOOST_CHECK_EQUAL(result.at(0), 2);
-	BOOST_CHECK_EQUAL(result.at(1), 3);
-	BOOST_CHECK_EQUAL(result.at(2), 5);
 }
 
 BOOST_FIXTURE_TEST_CASE

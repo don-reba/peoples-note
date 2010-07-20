@@ -1866,3 +1866,37 @@ loosing formatting
 	open opening a created note
 		could be during opening or saving
 	TODO
+should factor out URI loading
+	kinds of URIs
+		relative
+			no colon
+		thumbnails
+			thumb:
+		note images
+			img:hash.ext
+	what to do with asynchronous thumbnail updates?
+		use the loader
+	thumbnail updates
+		when the thumbnail is absent or has wrong size
+			it is created and stored in the database
+		this requires the note guid
+			embedded in the url
+	problem
+		thumbnail creation requires NoteView
+		NoteView requires html data loading
+		we have a recursive relationship
+	one solution is to
+		set the link
+			after iniitializing the views
+			but before showing them
+		would change the reference to a pointer
+	another solution is to
+		not generate thumbnails lazily
+		generate them on note creation and editing instead
+	yet another solution is to
+		hook up html data to views loading via a presenter
+		as a bonus, the views won't all have to change constructors
+		however, HTMLayout subclassing in an implementation detail
+		it would not be visible to a presenter
+		URL loading should not be exposed in the interface
+		however, the presenter could take HTMLayoutWidow references

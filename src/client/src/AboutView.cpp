@@ -2,6 +2,7 @@
 #include "AboutView.h"
 
 #include "crackers.h"
+#include "IHtmlDataLoader.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
