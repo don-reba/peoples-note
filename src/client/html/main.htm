@@ -73,12 +73,17 @@
 				line-height: 23px;
 				white-space: normal;
 			}
+			#new-note-note
+			{
+				flow: horizontal;
+			}
 			#new-note-note #label
 			{
 				padding-left: 10px;
+				vertical-align: middle;
 				width:        100%%;
 			}
-			#new-note-note button
+			#new-note-note widget
 			{
 				background-repeat: no-repeat;
 				border-style:      none;
@@ -122,21 +127,17 @@
 			{
 				border-style:  none;
 				border-bottom: 1px solid #000000;
-				margin:        0px;
-				padding:       8px;
-				width:         100%%;
+				flow:          horizontal;
+				width:         100%;
 			}
 			#search-box
 			{
-				background-image:    url(inputshadow.png) expand;
+				background-image:    url(inputshadow.png);
 				background-position: 13px 13px 13px 13px;
 				background-repeat:   expand;
-				border-style:        none;
 				font-size:           24px;
 				height:              40px;
-				margin:              0px;
-				min-height:          0px;
-				min-width:           0px;
+				margin:              8px 0px 8px 8px;
 				padding:             0px 10px;
 				width:               100%%;
 			}
@@ -145,7 +146,7 @@
 				background:   url(search.png) no-repeat;
 				border-style: none;
 				height:       40px;
-				margin:       0px;
+				margin:       8px 8px 8px 0px;
 				padding:      0px;
 				width:        40px;
 			}
@@ -203,24 +204,18 @@
 		</style>
 	</head>
 	<body>
-		<table id="search-frame" cellspacing="0px" cellpadding="0px">
-			<tr>
-				<td width="100%%"><widget type="text" id="search-box"  tabindex="2"/></td>
-				<td><button id="search-button" tabindex="3"/></td>
-			</tr>
-		</table>
+		<div #search-frame>
+			<widget #search-box    type="text"   tabindex="2" />
+			<widget #search-button type="button" tabindex="3" />
+		</div>
 		<div id="note-list-panel">
 					<widget type="select" id="note-list" tabindex="0">
-						<div id="new-note-note">
-							<table cellspacing="0px" cellpadding="0px" width="100%">
-								<tr>
-									<td id="label">Create note:</td>
-									<td><button id="new-text"/></td>
-									<td><button id="new-voice"/></td>
-									<td><button id="new-photo"/></td>
-									<td><button id="new-file"/></td>
-								</tr>
-							</table>
+						<div #new-note-note>
+							<div #label>Create note:</div>
+							<widget type="button" #new-text  />
+							<widget type="button" #new-voice />
+							<widget type="button" #new-photo />
+							<widget type="button" #new-file  />
 						</div>
 					</widget>
 				<div id="scroll"><div id="slider" /></div>
