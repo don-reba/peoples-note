@@ -43,6 +43,9 @@ NoteListPresenter::NoteListPresenter
 	syncModel.ConnectNotebooksChanged
 		(bind(&NoteListPresenter::OnNotebooksChanged, this));
 
+	syncModel.ConnectStatusUpdated
+		(bind(&NoteListPresenter::OnSyncStatusUpdated, this));
+
 	syncModel.ConnectSyncComplete
 		(bind(&NoteListPresenter::OnSyncEnd, this));
 
@@ -51,6 +54,7 @@ NoteListPresenter::NoteListPresenter
 
 	userModel.ConnectLoaded
 		(bind(&NoteListPresenter::OnUserLoaded, this));
+
 }
 
 //---------------
@@ -107,6 +111,11 @@ void NoteListPresenter::OnSyncBegin()
 void NoteListPresenter::OnSyncEnd()
 {
 	noteListView.EnableSync();
+}
+
+void NoteListPresenter::OnSyncStatusUpdated()
+{
+	noteListView.SetStatusText(syncModel.GetStatusText());
 }
 
 void NoteListPresenter::OnUserLoaded()

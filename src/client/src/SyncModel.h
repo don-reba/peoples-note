@@ -33,9 +33,12 @@ private:
 
 	bool stopRequested;
 
+	std::wstring statusText;
+
 	signal SignalNotebooksChanged;
 	signal SignalNotesChanged;
 	signal SignalTagsChanged;
+	signal SignalStatusUpdated;
 	signal SignalSyncComplete;
 
 // interface
@@ -65,9 +68,13 @@ public:
 
 	virtual void ConnectNotesChanged(slot_type OnNotesChanged);
 
-	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
+	virtual void ConnectStatusUpdated(slot_type OnStatusUpdated);
 
 	virtual void ConnectTagsChanged(slot_type OnTagsChanged);
+
+	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
+
+	virtual const wchar_t * GetStatusText();
 
 // utility functions
 
@@ -80,7 +87,8 @@ private:
 		, EnInteropNoteList & notes
 		);
 
-	void PostMessage(SyncMessageQueue::Message message);
+	void PostPlainMessage (SyncMessageQueue::MessageType type);
+	void PostTextMessage  (const wchar_t *               text);
 
 	void ProcessNotes
 		( const EnInteropNoteList & remoteNotes

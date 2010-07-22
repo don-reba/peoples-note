@@ -51,7 +51,8 @@ void SyncModel::ProcessMessages()
 	ScopedLock lock(lock);
 	while (!messages.IsEmpty())
 	{
-		switch (messages.Dequeue())
+		SyncMessageQueue::Message * message(messages.Dequeue());
+		switch (message->GetType())
 		{
 		case SyncMessageQueue::MessageNotebooksChanged:
 			SignalNotebooksChanged();
@@ -65,8 +66,11 @@ void SyncModel::ProcessMessages()
 		case SyncMessageQueue::MessageSyncComplete:
 			SignalSyncComplete();
 			break;
-		default:
-			break;
+		case SyncMessageQueue::MessageText:
+			statusText
+				= static_cast<SyncMessageQueue::TextMessage*>(message)
+				->GetText();
+			SignalStatusUpdated();
 		}
 	}
 }
@@ -107,14 +111,24 @@ void SyncModel::ConnectNotesChanged(slot_type OnNotesChanged)
 	SignalNotesChanged.connect(OnNotesChanged);
 }
 
-void SyncModel::ConnectSyncComplete(slot_type OnSyncComplete)
+void SyncModel::ConnectStatusUpdated(slot_type OnStatusUpdated)
 {
-	SignalSyncComplete.connect(OnSyncComplete);
+	SignalStatusUpdated.connect(OnStatusUpdated);
 }
 
 void SyncModel::ConnectTagsChanged(slot_type OnTagsChanged)
 {
 	SignalTagsChanged.connect(OnTagsChanged);
+}
+
+void SyncModel::ConnectSyncComplete(slot_type OnSyncComplete)
+{
+	SignalSyncComplete.connect(OnSyncComplete);
+}
+
+const wchar_t * SyncModel::GetStatusText()
+{
+	return statusText.c_str();
 }
 
 //------------------
@@ -147,9 +161,15 @@ void SyncModel::GetNotes
 	}
 }
 
-void SyncModel::PostMessage(SyncMessageQueue::Message message)
+void SyncModel::PostPlainMessage(SyncMessageQueue::MessageType type)
 {
-	messages.Enqueue(message);
+	messages.Enqueue(new SyncMessageQueue::PlainMessage(type));
+	messagePump.WakeUp();
+}
+
+void SyncModel::PostTextMessage(const wchar_t * text)
+{
+	messages.Enqueue(new SyncMessageQueue::TextMessage(text));
 	messagePump.WakeUp();
 }
 
@@ -304,6 +324,8 @@ void SyncModel::Sync()
 {
 	try
 	{
+		PostTextMessage(L"Connecting...");
+
 		IEnService::UserStorePtr userStore(enService.GetUserStore());
 		Credentials credentials;
 		userModel.GetCredentials(credentials);
@@ -317,7 +339,7 @@ void SyncModel::Sync()
 		{
 			userModel.Unload();
 			syncLogger.Error(L"Authentication failed.");
-			PostMessage(SyncMessageQueue::MessageSyncFailed);
+			PostPlainMessage(SyncMessageQueue::MessageSyncFailed);
 			return;
 		}
 
@@ -333,6 +355,8 @@ void SyncModel::Sync()
 		bool fullSync(userModel.GetLastSyncEnTime() < syncState.FullSyncBefore);
 
 		syncLogger.BeginSyncStage(fullSync ? L"full" : L"incremental");
+
+		PostTextMessage(fullSync ? L"Begin full sync..." : L"Begin incremental sync...");
 
 		EnInteropNoteList remoteNotes;
 		NotebookList      remoteNotebooks;
@@ -423,15 +447,19 @@ void SyncModel::Sync()
 		userModel.SetUpdateCount(syncState.UpdateCount);
 		userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
 
-		PostMessage(SyncMessageQueue::MessageSyncComplete);
+		PostPlainMessage(SyncMessageQueue::MessageSyncComplete);
+
+		PostTextMessage(L"");
 
 		userModel.Unload();
 	}
 	catch (const std::exception & e)
 	{
-		syncLogger.Error(ConvertToUnicode(e.what()));
+		wstring message(ConvertToUnicode(e.what()));
+		syncLogger.Error(message);
+		PostTextMessage(message.c_str());
 		userModel.Unload();
-		PostMessage(SyncMessageQueue::MessageSyncFailed);
+		PostPlainMessage(SyncMessageQueue::MessageSyncFailed);
 	}
 }
 

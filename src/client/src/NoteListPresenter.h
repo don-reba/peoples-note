@@ -47,6 +47,7 @@ private:
 	void OnNoteListChanged();
 	void OnSyncBegin();
 	void OnSyncEnd();
+	void OnSyncStatusUpdated();
 	void OnUserLoaded();
 
 // utility functions
