@@ -69,7 +69,7 @@ void NoteProcessor::Upload(const EnInteropNote & local)
 	userModel.GetNoteBody(local.guid, body);
 
 	Note replacement;
-	noteStore.CreateNote(local.note, body, resources, replacement);
+	noteStore.CreateNote(local.note, body, resources, notebook.guid, replacement);
 
 	userModel.DeleteNote(local.note.guid);
 	userModel.AddNote(replacement, body, L"", notebook);

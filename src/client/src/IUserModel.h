@@ -75,6 +75,11 @@ public:
 		, std::wstring & body
 		) = 0;
 
+	virtual void GetNoteResources
+		( const Guid        & note
+		, std::vector<Guid> & resources
+		) = 0;
+
 	virtual void GetNoteTags
 		( const Note & note
 		, TagList    & tags

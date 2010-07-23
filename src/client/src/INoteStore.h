@@ -6,6 +6,8 @@
 #include "SyncState.h"
 #include "Tag.h"
 
+class Guid;
+
 class INoteStore
 {
 public:
@@ -14,6 +16,7 @@ public:
 		( const Note                  & note
 		, const std::wstring          & body
 		, const std::vector<Resource> & resources
+		, const Guid                  & guid
 		, Note                        & replacement
 		) = 0;
 

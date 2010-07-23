@@ -434,6 +434,25 @@ void UserModel::GetNoteBody
 	statement->Get(0, body);
 }
 
+void UserModel::GetNoteResources
+	( const Guid   & note
+	, vector<Guid> & resources
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT Resources.guid"
+		"  FROM Resources"
+		"  WHERE note = ?"
+		);
+	statement->Bind(1, note);
+	while (!statement->Execute())
+	{
+		string guid;
+		statement->Get(0, guid);
+		resources.push_back(guid);
+	}
+}
+
 void UserModel::GetNoteTags
 	( const Note & note
 	, TagList    & tags

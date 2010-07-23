@@ -37,6 +37,7 @@ public:
 		( const Note                  & note
 		, const std::wstring          & body
 		, const std::vector<Resource> & resources
+		, const Guid                  & notebook
 		, Note                        & replacement
 		);
 

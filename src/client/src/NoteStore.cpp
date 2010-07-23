@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "NoteStore.h"
+
+#include "Guid.h"
 #include "Tools.h"
 
 #include <algorithm>
@@ -41,18 +43,21 @@ void NoteStore::CreateNote
 	( const Note             & note
 	, const wstring          & body
 	, const vector<Resource> & resources
+	, const Guid             & notebook
 	, Note                   & replacement
 	)
 {
 	EDAM::Types::Note enNote;
-	enNote.__isset.title     = true;
-	enNote.__isset.created   = true;
-	enNote.__isset.content   = true;
-	enNote.__isset.resources = true;
+	enNote.__isset.title        = true;
+	enNote.__isset.created      = true;
+	enNote.__isset.content      = true;
+	enNote.__isset.resources    = true;
+	enNote.__isset.notebookGuid = true;
 
-	enNote.title   = note.name;
-	enNote.created = ConvertToEnTime(note.creationDate.GetTime());
-	enNote.content = body;
+	enNote.title        = note.name;
+	enNote.created      = ConvertToEnTime(note.creationDate.GetTime());
+	enNote.content      = body;
+	enNote.notebookGuid = ConvertToUnicode(notebook);
 
 	enNote.resources.resize(resources.size());
 	for (int i(0); i != resources.size(); ++i)

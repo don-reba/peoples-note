@@ -1900,3 +1900,13 @@ should factor out URI loading
 		it would not be visible to a presenter
 		URL loading should not be exposed in the interface
 		however, the presenter could take HTMLayoutWidow references
+note resourses are not uploaded
+	after importing a second smiley note
+		the sync action is Add, not Upload
+	EnInteropNote lacks resources
+		they are not handled at all in SyncModel::GetNotes
+	fixed
+notes are uploaded to the wrong notebook
+	should set default notebook prior to upload
+	should be set in set in Note.notebookGuid
+	fixed

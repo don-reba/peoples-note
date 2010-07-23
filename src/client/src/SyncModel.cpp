@@ -154,10 +154,12 @@ void SyncModel::GetNotes
 		notes.push_back(EnInteropNote());
 		notes.back().note     = note;
 		notes.back().notebook = notebook.guid;
-		notes.back().guid    = note.guid;
-		notes.back().isDirty = note.isDirty;
-		notes.back().name    = note.name;
-		notes.back().usn     = note.usn;
+		notes.back().guid     = note.guid;
+		notes.back().isDirty  = note.isDirty;
+		notes.back().name     = note.name;
+		notes.back().usn      = note.usn;
+
+		userModel.GetNoteResources(note.guid, notes.back().resources);
 	}
 }
 
