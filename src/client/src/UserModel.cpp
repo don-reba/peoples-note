@@ -1012,10 +1012,13 @@ bool UserModel::TryLoad(wstring path)
 void UserModel::Update()
 {
 	SetPragma("PRAGMA foreign_keys = ON");
+	Transaction transaction(*this);
 	if (GetNotebookCount() == 0)
 	{
 		Notebook notebook;
-		notebook.name = L"Notes";
+		notebook.name    = L"Notes";
+		notebook.isDirty = true;
+		notebook.usn     = GetUpdateCount();
 		AddNotebook(notebook);
 		MakeNotebookDefault(notebook);
 		MakeNotebookLastUsed(notebook);

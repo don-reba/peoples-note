@@ -24,8 +24,8 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 {
 	const wchar_t * consumerKey      = L"donreba";
 	const wchar_t * consumerSecret   = L"3d764d03e2b1c7c4";
-	const wchar_t * userStoreUrl     = L"https://sandbox.evernote.com/edam/user";
-	const wchar_t * noteStoreUrlBase = L"http://sandbox.evernote.com/edam/note/";
+	const wchar_t * userStoreUrl     = L"https://www.evernote.com/edam/user";
+	const wchar_t * noteStoreUrlBase = L"http://www.evernote.com/edam/note/";
 
 	AuthenticationResult result;
 	result.IsGood = false;

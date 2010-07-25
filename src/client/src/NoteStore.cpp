@@ -20,7 +20,7 @@ using namespace Evernote;
 //----------
 
 const wchar_t * const NoteStore::baseUrl
-	( L"http://sandbox.evernote.com/edam/note/"
+	( L"http://www.evernote.com/edam/note/"
 	);
 
 NoteStore::NoteStore

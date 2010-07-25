@@ -1910,3 +1910,12 @@ notes are uploaded to the wrong notebook
 	should set default notebook prior to upload
 	should be set in set in Note.notebookGuid
 	fixed
+updating note title fails
+	ENML validation
+	double <en-note>
+	TODO
+Thrift malfunctions
+	getting a 1 GB message
+	actually a 405 error: GET not supported
+	strange, because I use POST
+	was using wrong URLs
