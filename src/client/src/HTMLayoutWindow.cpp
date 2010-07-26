@@ -194,9 +194,8 @@ BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 	{
 		params->outData     = const_cast<BYTE*>(htmlData);
 		params->outDataSize = htmlDataSize;
-		return LOAD_OK;
 	}
-	return LOAD_DISCARD;
+	return LOAD_OK;
 }
 
 bool HTMLayoutWindow::ProcessHtmLayout(WndMsg & msg)
