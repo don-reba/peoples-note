@@ -413,7 +413,8 @@ namespace htmlayout
       static HELEMENT root_element(HWND hHTMLayoutWnd)
       {
         HELEMENT h = 0;
-        HTMLayoutGetRootElement(hHTMLayoutWnd,&h);
+        HLDOM_RESULT r = HTMLayoutGetRootElement(hHTMLayoutWnd,&h);
+        assert(r == HLDOM_OK);r;
         return h;
       }
 
@@ -778,6 +779,14 @@ namespace htmlayout
       {
         HTMLayoutCombineURL(he,inOutURL,bufferSize);
       }
+
+      json::string url(const wchar_t* rel_url) const
+      {
+        wchar_t buffer[4096]; wcsncpy(buffer,rel_url,4096); buffer[4095] = 0;
+        HTMLayoutCombineURL(he,buffer,4096);
+        return buffer;
+      }
+
 
     /**Set inner or outer html of the element.
      * \param html \b const \b unsigned \b char*, UTF-8 encoded string containing html text
