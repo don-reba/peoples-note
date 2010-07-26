@@ -48,16 +48,7 @@ void NoteProcessor::Delete(const EnInteropNote & local)
 	userModel.DeleteNote(local.note.guid);
 }
 
-void NoteProcessor::RenameAdd
-	( const EnInteropNote & local
-	, const EnInteropNote & remote
-	)
-{
-	// note names need not be unique
-	Add(remote);
-}
-
-void NoteProcessor::Upload(const EnInteropNote & local)
+void NoteProcessor::Create(const EnInteropNote & local)
 {
 	Transaction transaction(userModel);
 
@@ -95,4 +86,31 @@ void NoteProcessor::Merge
 		noteStore.GetNoteResource(guid, resource);
 		userModel.AddResource(resource);
 	}
+}
+
+void NoteProcessor::RenameAdd
+	( const EnInteropNote & local
+	, const EnInteropNote & remote
+	)
+{
+	// note names need not be unique
+	Add(remote);
+}
+
+void NoteProcessor::Update(const EnInteropNote & local)
+{
+	Transaction transaction(userModel);
+
+	vector<Resource> resources(local.resources.size());
+	for (int i(0); i != resources.size(); ++i)
+		userModel.GetResource(local.resources[i], resources[i]);
+
+	wstring body;
+	userModel.GetNoteBody(local.guid, body);
+
+	Note replacement;
+	noteStore.UpdateNote(local.note, body, resources, notebook.guid, replacement);
+
+	userModel.DeleteNote(local.note.guid);
+	userModel.AddNote(replacement, body, L"", notebook);
 }

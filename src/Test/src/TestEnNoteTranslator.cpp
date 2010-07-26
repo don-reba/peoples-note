@@ -13,6 +13,8 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Media_Test)
 	EnNoteTranslator enNoteTranslator;
 
 	wstring xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 		L"<en-note>"
 			L"note"
 			L"<en-media border=\"1\" hash=\"d978\" type=\"image/jpeg\"/>"
@@ -39,6 +41,8 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 	EnNoteTranslator enNoteTranslator;
 
 	wstring xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 		L"<en-note>"
 			L"note"
 			L"<en-todo checked=\"true\"/>"

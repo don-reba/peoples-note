@@ -21,9 +21,30 @@ void TagProcessor::Add(const Tag & remote)
 	userModel.AddTag(remote);
 }
 
+void TagProcessor::Create
+		( const Tag & local
+		, INoteStore          & noteStore
+		)
+{
+	Transaction transaction(userModel);
+
+	Tag replacement;
+	noteStore.CreateTag(local, replacement);
+	userModel.DeleteTag(local.guid);
+	userModel.AddTag(replacement);
+}
+
 void TagProcessor::Delete(const Tag & local)
 {
 	userModel.DeleteTag(local.guid);
+}
+
+void TagProcessor::Merge
+		( const Tag & local
+		, const Tag & remote
+		)
+{
+	userModel.UpdateTag(local, remote);
 }
 
 void TagProcessor::RenameAdd
@@ -57,7 +78,7 @@ void TagProcessor::RenameAdd
 	userModel.AddTag(remote);
 }
 
-void TagProcessor::Upload
+void TagProcessor::Update
 		( const Tag & local
 		, INoteStore          & noteStore
 		)
@@ -65,15 +86,6 @@ void TagProcessor::Upload
 	Transaction transaction(userModel);
 
 	Tag replacement;
-	noteStore.CreateTag(local, replacement);
-	userModel.DeleteTag(local.guid);
-	userModel.AddTag(replacement);
-}
-
-void TagProcessor::Merge
-		( const Tag & local
-		, const Tag & remote
-		)
-{
-	userModel.UpdateTag(local, remote);
+	noteStore.UpdateTag(local, replacement);
+	userModel.UpdateTag(local, replacement);
 }

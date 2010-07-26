@@ -56,29 +56,26 @@ void SyncLogger::BeginSyncStage(const wstring & name)
 	stream << L"Sync " << name << L":\n";
 }
 
-void SyncLogger::Add(const Guid & remote)
+void SyncLogger::PerformAction
+	( const wchar_t * action
+	, const Guid    * local
+	, const Guid    * remote
+	)
 {
-	WriteOperation(L"Add", remote);
-}
-
-void SyncLogger::Delete(const Guid & local)
-{
-	WriteOperation(L"Delete", local);
-}
-
-void SyncLogger::Rename(const Guid & local)
-{
-	WriteOperation(L"Rename", local);
-}
-
-void SyncLogger::Upload(const Guid & local)
-{
-	WriteOperation(L"Upload", local);
-}
-
-void SyncLogger::Merge(const Guid & local, const Guid & remote)
-{
-	WriteOperation(L"Merge", local, remote);
+	if (local)
+	{
+		if (remote)
+			WriteOperation(action, *local, *remote);
+		else
+			WriteOperation(action, *local);
+	}
+	else
+	{
+		if (remote)
+			WriteOperation(action, *remote);
+		else
+			WriteOperation(action, Guid("NA"));
+	}
 }
 
 void SyncLogger::Error(const std::wstring & message)
@@ -100,13 +97,13 @@ void SyncLogger::WriteListEntry(const wstring & name, const Guid & guid)
 	stream << ConvertToUnicode(guid) << L" " << name << L"\n";
 }
 
-void SyncLogger::WriteOperation(const wstring & name, const Guid & guid)
+void SyncLogger::WriteOperation(const wchar_t * name, const Guid & guid)
 {
 	stream << name << L"( " << ConvertToUnicode(guid) << L" )\n";
 }
 
 void SyncLogger::WriteOperation
-	( const wstring & name
+	( const wchar_t * name
 	, const Guid    & guid1
 	, const Guid    & guid2
 	)

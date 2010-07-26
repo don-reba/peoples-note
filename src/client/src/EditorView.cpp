@@ -51,9 +51,7 @@ void EditorView::ConnectCancel(slot_type OnCancel)
 
 void EditorView::GetBody(std::wstring & html)
 {
-	html = L"<div type=\"en-note\">";
-	html.append(element(FindFirstElement("#body")).get_value().to_string());
-	html.append(L"</div>");
+	html = element(FindFirstElement("#body")).get_value().to_string();
 }
 
 void EditorView::GetNote(Note & note)

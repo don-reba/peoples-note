@@ -52,7 +52,7 @@ void EnNoteTranslator::ConvertToXml
 
 	ProcessNode(doc.get(), doc.get(), htmlTransforms);
 
-	xml.clear();
+	xml = L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n";
 	print(back_inserter(xml), *doc, print_no_indenting);
 }
 

@@ -88,6 +88,32 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 		);
 }
 
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_Create_Test, NoteProcessorFixture)
+{
+	notebook.name = L"test-notebook";
+
+	EnInteropNote note;
+	note.note.name = L"test-note";
+	note.note.guid = Guid("{0}");
+	note.resources.push_back(Guid("{1}"));
+	note.resources.push_back(Guid("{2}"));
+
+	userModel.resources.resize(2);
+	userModel.resources.at(0).Guid = Guid("{1}");
+	userModel.resources.at(0).Hash = "1";
+	userModel.resources.at(1).Guid = Guid("{2}");
+	userModel.resources.at(1).Hash = "2";
+
+	noteProcessor.Create(note);
+
+	BOOST_CHECK_EQUAL(noteStore.createdNotes.size(), 1);
+	BOOST_CHECK_EQUAL(noteStore.createdNotes.at(0).name, L"test-note");
+
+	BOOST_CHECK_EQUAL(noteStore.createdResources.size(), 2);
+	BOOST_CHECK_EQUAL(noteStore.createdResources.at(0).Hash, "1");
+	BOOST_CHECK_EQUAL(noteStore.createdResources.at(1).Hash, "2");
+}
+
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_Delete_Test, NoteProcessorFixture)
 {
 	EnInteropNote note;
@@ -130,28 +156,28 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)
 	BOOST_CHECK_EQUAL(userModel.noteBodies[remote.guid], L"remote-body");
 }
 
-BOOST_FIXTURE_TEST_CASE(NoteProcessor_Upload_Test, NoteProcessorFixture)
-{
-	notebook.name = L"test-notebook";
-
-	EnInteropNote note;
-	note.note.name = L"test-note";
-	note.note.guid = Guid("{0}");
-	note.resources.push_back(Guid("{1}"));
-	note.resources.push_back(Guid("{2}"));
-
-	userModel.resources.resize(2);
-	userModel.resources.at(0).Guid = Guid("{1}");
-	userModel.resources.at(0).Hash = "1";
-	userModel.resources.at(1).Guid = Guid("{2}");
-	userModel.resources.at(1).Hash = "2";
-
-	noteProcessor.Upload(note);
-
-	BOOST_CHECK_EQUAL(noteStore.createdNotes.size(), 1);
-	BOOST_CHECK_EQUAL(noteStore.createdNotes.at(0).name, L"test-note");
-
-	BOOST_CHECK_EQUAL(noteStore.createdResources.size(), 2);
-	BOOST_CHECK_EQUAL(noteStore.createdResources.at(0).Hash, "1");
-	BOOST_CHECK_EQUAL(noteStore.createdResources.at(1).Hash, "2");
-}
+//BOOST_FIXTURE_TEST_CASE(NoteProcessor_Update_Test, NoteProcessorFixture)
+//{
+//	notebook.name = L"test-notebook";
+//
+//	EnInteropNote note;
+//	note.note.name = L"test-note";
+//	note.note.guid = Guid("{0}");
+//	note.resources.push_back(Guid("{1}"));
+//	note.resources.push_back(Guid("{2}"));
+//
+//	userModel.resources.resize(2);
+//	userModel.resources.at(0).Guid = Guid("{1}");
+//	userModel.resources.at(0).Hash = "1";
+//	userModel.resources.at(1).Guid = Guid("{2}");
+//	userModel.resources.at(1).Hash = "2";
+//
+//	noteProcessor.Update(note);
+//
+//	BOOST_CHECK_EQUAL(noteStore.createdNotes.size(), 1);
+//	BOOST_CHECK_EQUAL(noteStore.createdNotes.at(0).name, L"test-note");
+//
+//	BOOST_CHECK_EQUAL(noteStore.createdResources.size(), 2);
+//	BOOST_CHECK_EQUAL(noteStore.createdResources.at(0).Hash, "1");
+//	BOOST_CHECK_EQUAL(noteStore.createdResources.at(1).Hash, "2");
+//}

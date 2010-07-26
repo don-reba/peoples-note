@@ -6,10 +6,11 @@
 using namespace std;
 
 void MockNoteStore::CreateNote
-	( const Note                  & note
-	, const wstring               & body
-	, const std::vector<Resource> & resources
-	, Note                        & replacement
+	( const Note             & note
+	, const wstring          & body
+	, const vector<Resource> & resources
+	, const Guid             & notebook
+	, Note                   & replacement
 	)
 {
 	createdNotes.push_back(note);
@@ -134,6 +135,65 @@ void MockNoteStore::ListEntries
 		resources.push_back(resource.Guid);
 }
 
+void MockNoteStore::UpdateNote
+	( const Note             & note
+	, const wstring          & body
+	, const vector<Resource> & resources
+	, const Guid             & notebook
+	, Note                   & replacement
+	)
+{
+	foreach (Note & n, createdNotes)
+	{
+		if (n.guid != note.guid)
+			continue;
+		n = note;
+		break;
+	}
+	noteBodies[note.guid] = body;
+	for (int i = 0; i != this->resources.size(); ++i)
+	{
+		const Resource & r(resources.at(i));
+		if (r.Note != note.guid)
+			continue;
+		this->resources.erase(this->resources.begin() + i);
+		--i;
+	}
+	foreach (const Resource & r, resources)
+		std::copy
+			( resources.begin()
+			, resources.end()
+			, back_inserter(this->resources)
+			);
+	replacement = replacementNote;
+}
 
+void MockNoteStore::UpdateNotebook
+	( const Notebook & notebook
+	, Notebook       & replacement
+	)
+{
+	foreach (Notebook & n, createdNotebooks)
+	{
+		if (n.guid != notebook.guid)
+			continue;
+		n = notebook;
+		break;
+	}
+	replacement = replacementNotebook;
+}
 
-
+void MockNoteStore::UpdateTag
+	( const Tag & tag
+	, Tag       & replacement
+	)
+{
+	foreach (Tag & t, createdTags)
+	{
+		if (t.guid != tag.guid)
+			continue;
+		t = tag;
+		break;
+	}
+	replacement = replacementTag;
+}

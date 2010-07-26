@@ -88,6 +88,24 @@ public:
 		, const Guid        & notebookFilter
 		);
 
+	virtual void UpdateNote
+		( const Note                  & note
+		, const std::wstring          & body
+		, const std::vector<Resource> & resources
+		, const Guid                  & notebook
+		, Note                        & replacement
+		);
+
+	virtual void UpdateNotebook
+		( const Notebook & notebook
+		, Notebook       & replacement
+		);
+
+	virtual void UpdateTag
+		( const Tag & tag
+		, Tag       & replacement
+		);
+
 // utility functions
 
 private:

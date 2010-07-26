@@ -23,23 +23,11 @@ void MockSyncLogger::BeginSyncStage(const wstring & name)
 {
 }
 
-void MockSyncLogger::Add(const Guid & remote)
-{
-}
-
-void MockSyncLogger::Delete(const Guid & local)
-{
-}
-
-void MockSyncLogger::Rename(const Guid & local)
-{
-}
-
-void MockSyncLogger::Upload(const Guid & local)
-{
-}
-
-void MockSyncLogger::Merge(const Guid & local, const Guid & remote)
+void MockSyncLogger::PerformAction
+	( const wchar_t * action
+	, const Guid    * local
+	, const Guid    * remote
+	)
 {
 }
 

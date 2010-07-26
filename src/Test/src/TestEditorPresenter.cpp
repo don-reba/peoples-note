@@ -55,7 +55,10 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK_EQUAL
 		( userModel.addedNotes.at(0).body
-		, L"<en-note><en-todo checked=\"false\"/></en-note>"
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note><en-todo checked=\"false\"/></en-note>"
 		);
 	BOOST_CHECK_EQUAL
 		( userModel.addedNotes.at(0).note.name
@@ -134,7 +137,7 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.SignalNewNote();
 
 	BOOST_CHECK(editorView.isShown);
-	BOOST_CHECK(editorView.body.empty());
+	BOOST_CHECK_EQUAL(editorView.body, L"<div type=\"en-note\" />");
 	BOOST_CHECK_EQUAL
 		( editorView.note.name
 		, L"New note in last-used-notebook"

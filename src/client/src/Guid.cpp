@@ -6,6 +6,8 @@
 using namespace std;
 using namespace Tools;
 
+const wchar_t Guid::localMarker = '$';
+
 Guid::Guid()
 {
 	GUID guid = { 0 };
@@ -18,6 +20,7 @@ Guid::Guid()
 
 	data.clear();
 	FilterGuid(&str[0], data);
+	data.push_back(localMarker);
 }
 
 Guid::Guid(string data)
@@ -28,6 +31,11 @@ Guid::Guid(string data)
 Guid::Guid(wstring data)
 	: data (ConvertToAnsi(data))
 {
+}
+
+bool Guid::IsLocal() const
+{
+	return data.at(data.size() - 1) == localMarker;
 }
 
 Guid::operator const string & () const

@@ -227,6 +227,90 @@ void NoteStore::ListEntries
 	}
 }
 
+void NoteStore::UpdateNote
+	( const Note             & note
+	, const wstring          & body
+	, const vector<Resource> & resources
+	, const Guid             & notebook
+	, Note                   & replacement
+	)
+{
+	EDAM::Types::Note enNote;
+	enNote.__isset.guid         = true;
+	enNote.__isset.title        = true;
+	enNote.__isset.created      = true;
+	enNote.__isset.content      = true;
+	enNote.__isset.resources    = true;
+	enNote.__isset.notebookGuid = true;
+
+	enNote.guid         = ConvertToUnicode(note.guid);
+	enNote.title        = note.name;
+	enNote.created      = ConvertToEnTime(note.creationDate.GetTime());
+	enNote.content      = body;
+	enNote.notebookGuid = ConvertToUnicode(notebook);
+
+	enNote.resources.resize(resources.size());
+	for (int i(0); i != resources.size(); ++i)
+	{
+		EDAM::Types::Resource & resource(enNote.resources.at(i));
+		resource.__isset.data = true;
+		resource.data.__isset.body = true;
+		resource.data.__isset.size = true;
+
+		copy
+			( resources.at(i).Data.begin()
+			, resources.at(i).Data.end()
+			, back_inserter(resource.data.body)
+			);
+		resource.data.size = resources.at(i).Data.size();
+	}
+
+	EDAM::Types::Note enReplacement(noteStore.updateNote(token, enNote));
+	replacement.guid         = Guid(enReplacement.guid);
+	replacement.name         = enReplacement.title;
+	replacement.creationDate = static_cast<time_t>(ConvertFromEnTime(enReplacement.created));
+	replacement.usn          = enReplacement.updateSequenceNum;
+	replacement.isDirty      = false;
+}
+
+void NoteStore::UpdateNotebook
+	( const Notebook & notebook
+	, Notebook       & replacement
+	)
+{
+	EDAM::Types::Notebook enNotebook;
+	enNotebook.__isset.guid = true;
+	enNotebook.__isset.name = true;
+
+	enNotebook.guid = ConvertToUnicode(notebook.guid);
+	enNotebook.name = notebook.name;
+
+	int replacementUsn(noteStore.updateNotebook(token, enNotebook));
+	replacement.guid    = notebook.guid;
+	replacement.name    = notebook.name;
+	replacement.usn     = replacementUsn;
+	replacement.isDirty = false;
+}
+
+void NoteStore::UpdateTag
+	( const Tag & tag
+	, Tag       & replacement
+	)
+{
+	EDAM::Types::Tag enTag;
+	enTag.__isset.guid = true;
+	enTag.__isset.name = true;
+
+	enTag.guid = ConvertToUnicode(tag.guid);
+	enTag.name = tag.name;
+
+	int replacementUsn(noteStore.updateTag(token, enTag));
+	replacement.guid    = tag.guid;
+	replacement.name    = tag.name;
+	replacement.usn     = replacementUsn;
+	replacement.isDirty = false;
+}
+
 //------------------
 // utility functions
 //------------------

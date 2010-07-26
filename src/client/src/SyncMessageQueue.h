@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/ptr_container/ptr_deque.hpp>
+#include <queue>
 
 class SyncMessageQueue
 {
@@ -19,51 +19,26 @@ public:
 	class Message
 	{
 	public:
-		
-		virtual MessageType GetType() const = 0;
-	};
 
-	class PlainMessage : public Message
-	{
-	private:
+		const MessageType  Type;
+		const std::wstring Text;
 
-		MessageType type;
-
-	public:
-
-		PlainMessage(MessageType type);
-
-		virtual MessageType GetType() const;
-	};
-
-	class TextMessage : public Message
-	{
-	private:
-
-		std::wstring text;
-
-	public:
-
-		TextMessage(const wchar_t * text);
-
-		virtual MessageType GetType() const;
-
-		const wchar_t * GetText() const;
+		Message(MessageType type, const wchar_t * text);
 	};
 
 private:
 
 	CRITICAL_SECTION lock;
 
-	boost::ptr_deque<Message> messages;
+	std::queue<Message> messages;
 
 public:
 
 	SyncMessageQueue();
 
-	void Enqueue(Message * message);
+	void Enqueue(const Message & message);
 
-	Message * Dequeue();
+	Message Dequeue();
 
 	bool IsEmpty();
 };

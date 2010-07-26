@@ -148,6 +148,18 @@ void MockUserModel::GetNoteBody
 		resource = noteBodies[guid];
 }
 
+void MockUserModel::GetNoteResources
+	( const Guid   & note
+	, vector<Guid> & resources
+	)
+{
+	foreach (Resource & resource, this->resources)
+	{
+		if (resource.Note == note)
+			resources.push_back(resource.Guid);
+	}
+}
+
 void MockUserModel::GetNoteTags
 	( const Note & note
 	, TagList    & tags

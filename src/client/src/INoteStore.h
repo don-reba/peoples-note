@@ -16,7 +16,7 @@ public:
 		( const Note                  & note
 		, const std::wstring          & body
 		, const std::vector<Resource> & resources
-		, const Guid                  & guid
+		, const Guid                  & notebook
 		, Note                        & replacement
 		) = 0;
 
@@ -65,5 +65,23 @@ public:
 		, std::vector<Guid> & expungedTags
 		, std::vector<Guid> & resources
 		, const Guid        & notebookFilter
+		) = 0;
+
+	virtual void UpdateNote
+		( const Note                  & note
+		, const std::wstring          & body
+		, const std::vector<Resource> & resources
+		, const Guid                  & guid
+		, Note                        & replacement
+		) = 0;
+
+	virtual void UpdateNotebook
+		( const Notebook & notebook
+		, Notebook       & replacement
+		) = 0;
+
+	virtual void UpdateTag
+		( const Tag & tag
+		, Tag       & replacement
 		) = 0;
 };

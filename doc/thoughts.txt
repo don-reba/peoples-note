@@ -1154,7 +1154,6 @@ sync logic
 		same USN handling
 	EnService should contain as little logic as possible
 		factor it out later
-		TODO
 	SyncLogic usage
 		build the remote resource list
 		build the local resource list
@@ -1913,9 +1912,28 @@ notes are uploaded to the wrong notebook
 updating note title fails
 	ENML validation
 	double <en-note>
-	TODO
+	fixed
 Thrift malfunctions
 	getting a 1 GB message
 	actually a 405 error: GET not supported
 	strange, because I use POST
 	was using wrong URLs
+checkbox graphics are not loading
+	TODO
+selection in edit view is not visible
+	TODO
+notes do not pass ENML
+	needed to specify ENML2.dtd
+updated note is uploaded as a second note
+	API has separate function for updating
+	might want to create a separate action for updating
+	can't tell whether a note already exists on the server
+		for incremental updates
+	need to mark unsynced notes
+		by assigning special GUIDs
+		prefixing or postfexing a special character
+		postfixing is cheaper
+			it is the more common operation
+sync testing leaves much to be desired
+	updating, logging
+	TODO

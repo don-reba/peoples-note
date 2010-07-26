@@ -16,20 +16,25 @@ public:
 
 	void Add(const Tag & remote);
 
+	void Create
+		( const Tag  & local
+		, INoteStore & noteStore
+		);
+
 	void Delete(const Tag & local);
+
+	void Merge
+		( const Tag & local
+		, const Tag & remote
+		);
 
 	void RenameAdd
 		( const Tag & local
 		, const Tag & remote
 		);
 
-	void Upload
+	void Update
 		( const Tag  & local
 		, INoteStore & noteStore
-		);
-
-	void Merge
-		( const Tag & local
-		, const Tag & remote
 		);
 };

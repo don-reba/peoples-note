@@ -21,9 +21,30 @@ void NotebookProcessor::Add(const Notebook & remote)
 	userModel.AddNotebook(remote);
 }
 
+void NotebookProcessor::Create
+	( const Notebook & local
+	, INoteStore     & noteStore
+	)
+{
+	Transaction transaction(userModel);
+
+	Notebook replacement;
+	noteStore.CreateNotebook(local, replacement);
+	userModel.DeleteNotebook(local.guid);
+	userModel.AddNotebook(replacement);
+}
+
 void NotebookProcessor::Delete(const Notebook & local)
 {
 	userModel.DeleteNotebook(local.guid);
+}
+
+void NotebookProcessor::Merge
+	( const Notebook & local
+	, const Notebook & remote
+	)
+{
+	userModel.UpdateNotebook(local, remote);
 }
 
 void NotebookProcessor::RenameAdd
@@ -57,7 +78,7 @@ void NotebookProcessor::RenameAdd
 	userModel.AddNotebook(remote);
 }
 
-void NotebookProcessor::Upload
+void NotebookProcessor::Update
 	( const Notebook & local
 	, INoteStore     & noteStore
 	)
@@ -65,15 +86,6 @@ void NotebookProcessor::Upload
 	Transaction transaction(userModel);
 
 	Notebook replacement;
-	noteStore.CreateNotebook(local, replacement);
-	userModel.DeleteNotebook(local.guid);
-	userModel.AddNotebook(replacement);
-}
-
-void NotebookProcessor::Merge
-	( const Notebook & local
-	, const Notebook & remote
-	)
-{
-	userModel.UpdateNotebook(local, remote);
+	noteStore.UpdateNotebook(local, replacement);
+	userModel.UpdateNotebook(local, replacement);
 }

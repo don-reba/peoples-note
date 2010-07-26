@@ -12,17 +12,17 @@ SyncMessageQueue::SyncMessageQueue()
 	::InitializeCriticalSection(&lock);
 }
 
-void SyncMessageQueue::Enqueue(SyncMessageQueue::Message * message)
+void SyncMessageQueue::Enqueue(const SyncMessageQueue::Message & message)
 {
 	ScopedLock lock(lock);
-	messages.push_back(message);
+	messages.push(message);
 }
 
-SyncMessageQueue::Message * SyncMessageQueue::Dequeue()
+SyncMessageQueue::Message SyncMessageQueue::Dequeue()
 {
 	ScopedLock lock(lock);
-	Message * message(&messages.front());
-	messages.pop_front();
+	Message message(messages.front());
+	messages.pop();
 	return message;
 }
 
@@ -32,37 +32,15 @@ bool SyncMessageQueue::IsEmpty()
 	return messages.empty();
 }
 
-//-------------
-// PlainMessage
-//-------------
+//--------
+// Message
+//--------
 
-SyncMessageQueue::PlainMessage::PlainMessage
-	( SyncMessageQueue::MessageType type
+SyncMessageQueue::Message::Message
+	( SyncMessageQueue::MessageType   type
+	, const wchar_t                 * text
 	)
-	: type (type)
+	: Text (text)
+	, Type (type)
 {
-}
-
-SyncMessageQueue::MessageType SyncMessageQueue::PlainMessage::GetType() const
-{
-	return type;
-}
-
-//------------
-// TextMessage
-//------------
-
-SyncMessageQueue::TextMessage::TextMessage(const wchar_t * text)
-	: text (text)
-{
-}
-
-SyncMessageQueue::MessageType SyncMessageQueue::TextMessage::GetType() const
-{
-	return MessageText;
-}
-
-const wchar_t * SyncMessageQueue::TextMessage::GetText() const
-{
-	return text.c_str();
 }

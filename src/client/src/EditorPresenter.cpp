@@ -97,7 +97,7 @@ void EditorPresenter::OnNewNote()
 	note.name = L"New note in ";
 	note.name.append(notebook.name);
 
-	wstring body;
+	wstring body(L"<div type=\"en-note\" />");
 
 	editorView.SetNote(note, body);
 }

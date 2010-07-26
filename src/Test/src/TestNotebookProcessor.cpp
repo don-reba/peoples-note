@@ -32,6 +32,19 @@ BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Add_Test, NotebookProcessorFixture)
 	BOOST_CHECK_EQUAL(userModel.notebooks.at(0).name, L"test");
 }
 
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Create_Test, NotebookProcessorFixture)
+{
+	MockNoteStore noteStore;
+
+	Notebook notebook;
+	notebook.name = L"test";
+
+	notebookProcessor.Create(notebook, noteStore);
+
+	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.size(), 1);
+	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name, L"test");
+}
+
 BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Delete_Test, NotebookProcessorFixture)
 {
 	Notebook notebook;
@@ -42,7 +55,7 @@ BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Delete_Test, NotebookProcessorFixture)
 	BOOST_CHECK_EQUAL(userModel.deletedNotebooks.at(0), notebook.guid);
 }
 
-BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Rename_Test, NotebookProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_RenameAdd_Test, NotebookProcessorFixture)
 {
 	userModel.notebooks.push_back(Notebook());
 	userModel.notebooks.back().name = L"test";
@@ -63,15 +76,25 @@ BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Rename_Test, NotebookProcessorFixture)
 	BOOST_CHECK_EQUAL(userModel.notebooks.at(4).name, L"test");
 }
 
-BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Upload_Test, NotebookProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Update_Test, NotebookProcessorFixture)
 {
 	MockNoteStore noteStore;
 
 	Notebook notebook;
-	notebook.name = L"test";
+	notebook.name    = L"old";
+	notebook.isDirty = true;
+	notebook.usn     = 0;
 
-	notebookProcessor.Upload(notebook, noteStore);
+	noteStore.createdNotebooks.push_back(notebook);
+
+	notebook.name    = L"new";
+	notebook.isDirty = false;
+	notebook.usn     = 2;
+
+	notebookProcessor.Update(notebook, noteStore);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.size(), 1);
-	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name, L"test");
+	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name,    L"new");
+	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).isDirty, false);
+	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).usn,     2);
 }

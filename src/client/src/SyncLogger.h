@@ -25,11 +25,11 @@ public:
 
 	virtual void BeginSyncStage(const std::wstring & name);
 
-	virtual void Add    (const Guid & remote);
-	virtual void Delete (const Guid & local);
-	virtual void Rename (const Guid & local);
-	virtual void Upload (const Guid & local);
-	virtual void Merge  (const Guid & local, const Guid & remote);
+	virtual void PerformAction
+		( const wchar_t * action
+		, const Guid    * local
+		, const Guid    * remote
+		);
 
 	virtual void Error(const std::wstring & message);
 
@@ -45,13 +45,13 @@ private:
 		);
 
 	void WriteOperation
-		( const std::wstring & name
-		, const Guid         & guid
+		( const wchar_t * name
+		, const Guid    & guid
 		);
 
 	void WriteOperation
-		( const std::wstring & name
-		, const Guid         & guid1
-		, const Guid         & guid2
+		( const wchar_t * name
+		, const Guid    & guid1
+		, const Guid    & guid2
 		);
 };

@@ -15,11 +15,11 @@ public:
 
 	virtual void BeginSyncStage(const std::wstring & name) = 0;
 
-	virtual void Add    (const Guid & remote) = 0;
-	virtual void Delete (const Guid & local) = 0;
-	virtual void Rename (const Guid & local) = 0;
-	virtual void Upload (const Guid & local) = 0;
-	virtual void Merge  (const Guid & local, const Guid & remote) = 0;
+	virtual void PerformAction
+		( const wchar_t * action
+		, const Guid    * local
+		, const Guid    * remote
+		) = 0;
 
 	virtual void Error(const std::wstring & message) = 0;
 };

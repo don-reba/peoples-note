@@ -169,6 +169,11 @@ public:
 		, std::wstring & body
 		);
 
+	virtual void GetNoteResources
+		( const Guid        & note
+		, std::vector<Guid> & resources
+		);
+
 	virtual void GetNoteTags
 		( const Note & note
 		, TagList    & tags
