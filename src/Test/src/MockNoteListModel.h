@@ -15,7 +15,7 @@ public:
 
 	virtual void ConnectChanged(slot_type OnChanged);
 
-	virtual const NoteList & GetNotes();
+	virtual const NoteList & GetCurrentPage();
 
 	virtual void SetNotes(const NoteList & notes);
 };

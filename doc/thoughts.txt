@@ -1919,7 +1919,8 @@ Thrift malfunctions
 	strange, because I use POST
 	was using wrong URLs
 checkbox graphics are not loading
-	TODO
+	should have returned LOAD_OK for unknown resources
+		not LOAD_DISCARD
 selection in edit view is not visible
 	TODO
 notes do not pass ENML
@@ -1937,3 +1938,26 @@ updated note is uploaded as a second note
 sync testing leaves much to be desired
 	updating, logging
 	TODO
+can't open updated note
+	even after restarting
+	preview does not update
+	crashes on exit
+	TODO
+paging
+	can implement either in view or in model
+	NoteListModel can limit itself to accepting only a set number of notes
+	after that, display paging controls
+	paging controls fetch more data into NoteListModel
+	how to implement paging
+		some people have thousands of notes
+		would it be acceptable to load metadata for all of them?
+		each note contains
+			guid:         64
+			creationDate: 8
+			name:         200
+			usn:          4
+			isDirty:      1
+		total size: ~300
+		1000 notes => 300 KB
+		not too much, actually
+		if memory consumption becomes a problem => use smaller notebooks

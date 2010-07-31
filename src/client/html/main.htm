@@ -108,6 +108,12 @@
 			{
 				background-image: url(file-note.png);
 			}
+			#page-down, #page-up
+			{
+				behavior:   clickable;
+				display:    none;
+				text-align: center;
+			}
 			#scroll
 			{
 				background-color: white;
@@ -209,21 +215,23 @@
 			<widget #search-button type="button" tabindex="3" />
 		</div>
 		<div id="note-list-panel">
-					<widget type="select" id="note-list" tabindex="0">
-						<div #new-note-note>
-							<div #label>Create note:</div>
-							<widget type="button" #new-text  />
-							<widget type="button" #new-voice />
-							<widget type="button" #new-photo />
-							<widget type="button" #new-file  />
-						</div>
-					</widget>
+				<widget type="select" id="note-list" tabindex="0">
+					<div #new-note-note>
+						<div #label>Create note:</div>
+						<widget type="button" #new-text  />
+						<widget type="button" #new-voice />
+						<widget type="button" #new-photo />
+						<widget type="button" #new-file  />
+					</div>
+					<div #page-up>Later notes</div>
+					<div #page-down>Eariler notes</div>
+				</widget>
 				<div id="scroll"><div id="slider" /></div>
 		</div>
 		<div id="status-bar">
 				<div id="sync-panel">
-						<button id="sync-button"/>
-						<div id="sync-text" />
+					<button id="sync-button"/>
+					<div id="sync-text" />
 				</div>
 				<div id="status"/>
 				<div id="menu">

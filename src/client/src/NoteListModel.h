@@ -7,18 +7,32 @@ class NoteListModel : public INoteListModel
 {
 private:
 
-	const NoteList * notes;
-	const NoteList   empty;
+	const int pageSize;
+
+	NoteList notes;
+
+	int currentPage;
 
 	signal SignalChanged;
 
 public:
 
-	NoteListModel();
+	NoteListModel(int pageSize);
 
 	virtual void ConnectChanged(slot_type OnReset);
 
-	virtual const NoteList & GetNotes(); 
+	virtual const void GetCurrentPage
+		( NoteList::const_iterator & begin
+		, NoteList::const_iterator & end
+		);
+
+	virtual bool HasNextNotes();
+
+	virtual bool HasPreviousNotes();
+
+	virtual void SelectNextPage();
+
+	virtual void SelectPreviousPage();
 
 	virtual void SetNotes(const NoteList & notes);
 };

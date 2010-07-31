@@ -45,6 +45,8 @@ private:
 	void OnTagsChanged();
 	void OnNotebookSelected();
 	void OnNoteListChanged();
+	void OnPageDown();
+	void OnPageUp();
 	void OnSyncBegin();
 	void OnSyncEnd();
 	void OnSyncStatusUpdated();

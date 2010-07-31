@@ -34,6 +34,12 @@ NoteListPresenter::NoteListPresenter
 	noteListView.ConnectNotebookSelected
 		(bind(&NoteListPresenter::OnNotebookSelected, this));
 
+	noteListView.ConnectPageDown
+		(bind(&NoteListPresenter::OnPageDown, this));
+
+	noteListView.ConnectPageUp
+		(bind(&NoteListPresenter::OnPageUp, this));
+
 	noteListView.ConnectSync
 		(bind(&NoteListPresenter::OnSyncBegin, this));
 
@@ -92,15 +98,39 @@ void NoteListPresenter::OnNotebookSelected()
 
 void NoteListPresenter::OnNoteListChanged()
 {
-	const NoteList & notes = noteListModel.GetNotes();
+	if (noteListModel.HasPreviousNotes())
+		noteListView.ShowPageUp();
+	else
+		noteListView.HidePageUp();
+
+	if (noteListModel.HasNextNotes())
+		noteListView.ShowPageDown();
+	else
+		noteListView.HidePageDown();
+
+	NoteList::const_iterator notesBegin;
+	NoteList::const_iterator notesEnd;
+	noteListModel.GetCurrentPage(notesBegin, notesEnd);
 	noteListView.ClearNotes();
-	foreach (const Note & note, notes)
+	for (; notesBegin != notesEnd; ++notesBegin)
 	{
+		const Note & note(*notesBegin);
 		wstring guid(ConvertToUnicode(note.guid));
 		noteListView.AddNote(ConvertToHtml(note, guid), guid);
 	}
 	noteListView.UpdateNotes();
+
 	UpdateSyncCounter();
+}
+
+void NoteListPresenter::OnPageDown()
+{
+	noteListModel.SelectNextPage();
+}
+
+void NoteListPresenter::OnPageUp()
+{
+	noteListModel.SelectPreviousPage();
 }
 
 void NoteListPresenter::OnSyncBegin()

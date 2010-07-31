@@ -24,6 +24,10 @@ public:
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote) = 0;
 
+	virtual void ConnectPageDown(slot_type OnPageDown) = 0;
+
+	virtual void ConnectPageUp(slot_type OnPageUp) = 0;
+
 	virtual void ConnectSearch(slot_type OnSearch) = 0;
 
 	virtual void ConnectSignIn(slot_type OnSignin) = 0;
@@ -46,6 +50,10 @@ public:
 
 	virtual std::wstring GetSearchString() = 0;
 
+	virtual void HidePageDown() = 0;
+
+	virtual void HidePageUp() = 0;
+
 	virtual void HideSyncButton() = 0;
 
 	virtual void SetProfileText(const std::wstring & text) = 0;
@@ -57,6 +65,10 @@ public:
 	virtual void SetSyncText(const std::wstring & text) = 0;
 
 	virtual void SetWindowTitle(const std::wstring & text) = 0;
+
+	virtual void ShowPageDown() = 0;
+
+	virtual void ShowPageUp() = 0;
 
 	virtual void ShowSyncButton() = 0;
 

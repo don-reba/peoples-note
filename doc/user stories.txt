@@ -56,9 +56,13 @@ note list navigation
 	√ when the user clicks on the note list while it is scrolling, the scrolling should stop
 	√ when the user flicks the note list, it should receive scrolling momentum
 	when there are more notes to display, the last entry in the list should be "show more notes"
-	when the user clicks "show more notes", the note list should be extended by another page
 	when the search box is focused, the virtual keyboard should be visible
 	when the search box is not focused, the virtual keyboard should not be visible
+note list paging
+	when a next page is available, the "later notes" link should be added to the end of the list
+	when a previous page is available, the "earlier notes" link should be added to the beginning of the list
+	when the "later notes" link is clicked, the next page should be set as the note list
+	when the "earlier notes" link is clicked, the previous page should be set as the note list
 note view
 	√ when the user signs in, the list of notebooks should be filled in
 	when the user flicks the note left, the next note should be displayed

@@ -69,6 +69,8 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
 	ConnectBehavior("#new-text",      BUTTON_CLICK,             &NoteListView::OnNewText);
 	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
+	ConnectBehavior("#page-down",     BUTTON_CLICK,             &NoteListView::OnPageDown);
+	ConnectBehavior("#page-up",       BUTTON_CLICK,             &NoteListView::OnPageUp);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
 	ConnectBehavior("#sync-button",   BUTTON_CLICK,             &NoteListView::OnSync);
 
@@ -90,7 +92,7 @@ void NoteListView::AddNote(wstring html, wstring value)
 	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
 
 	element note(element::create("option"));
-	noteList.append(note);
+	noteList.insert(note, noteList.children_count() - 1);
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
@@ -153,6 +155,16 @@ void NoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
 void NoteListView::ConnectOpenNote(slot_type OnOpenNote)
 {
 	SignalOpenNote.connect(OnOpenNote);
+}
+
+void NoteListView::ConnectPageDown(slot_type OnPageDown)
+{
+	SignalPageDown.connect(OnPageDown);
+}
+
+void NoteListView::ConnectPageUp(slot_type OnPageUp)
+{
+	SignalPageUp.connect(OnPageUp);
 }
 
 void NoteListView::ConnectSearch(slot_type OnSearch)
@@ -218,40 +230,52 @@ wstring NoteListView::GetSearchString()
 	return searchBox.text().c_str();
 }
 
+void NoteListView::HidePageDown()
+{
+	element(FindFirstElement("#page-down"))
+		.set_style_attribute("display", L"none");
+}
+
+void NoteListView::HidePageUp()
+{
+	element(FindFirstElement("#page-up"))
+		.set_style_attribute("display", L"none");
+}
+
 void NoteListView::HideSyncButton()
 {
-	element root (element::root_element(hwnd_));
-	element sync (root.find_first("#sync-panel"));
-	if (!sync)
-		throw std::exception("'#sync-panel' not found.");
-	sync.set_style_attribute("display", L"none");
+	element(FindFirstElement("#sync-panel"))
+		.set_style_attribute("display", L"none");
 }
 
 void NoteListView::SetProfileText(const wstring & text)
 {
-	element root    (element::root_element(hwnd_));
-	element profile (root.find_first("#menu-profile"));
-	if (!profile)
-		throw std::exception("'#menu-profile' not found.");
-	profile.set_text(text.c_str());
+	element(FindFirstElement("#menu-profile"))
+		.set_text(text.c_str());
 }
 
 void NoteListView::SetSigninText(const wstring & text)
 {
-	element root   (element::root_element(hwnd_));
-	element signin (root.find_first("#menu-signin"));
-	if (!signin)
-		throw std::exception("'#menu-signin' not found.");
-	signin.set_text(text.c_str());
+	element(FindFirstElement("#menu-signin"))
+		.set_text(text.c_str());
+}
+
+void NoteListView::ShowPageDown()
+{
+	element(FindFirstElement("#page-down"))
+		.set_style_attribute("display", L"block");
+}
+
+void NoteListView::ShowPageUp()
+{
+	element(FindFirstElement("#page-up"))
+		.set_style_attribute("display", L"block");
 }
 
 void NoteListView::ShowSyncButton()
 {
-	element root (element::root_element(hwnd_));
-	element sync (root.find_first("#sync-panel"));
-	if (!sync)
-		throw std::exception("'#sync-panel' not found.");
-	sync.set_style_attribute("display", L"block");
+	element(FindFirstElement("#sync-panel"))
+		.set_style_attribute("display", L"block");
 }
 
 void NoteListView::SetStatusText(const wstring  & text)
@@ -261,11 +285,8 @@ void NoteListView::SetStatusText(const wstring  & text)
 
 void NoteListView::SetSyncText(const wstring & text)
 {
-	element root (element::root_element(hwnd_));
-	element sync (root.find_first("#sync-text"));
-	if (!sync)
-		throw std::exception("'#sync-text' not found.");
-	sync.set_text(text.c_str());
+	element(FindFirstElement("#sync-text"))
+		.set_text(text.c_str());
 }
 
 void NoteListView::SetWindowTitle(const wstring & text)
@@ -281,6 +302,7 @@ void NoteListView::UpdateNotebooks()
 void NoteListView::UpdateNotes()
 {
 	noteList.update(MEASURE_DEEP|REDRAW_NOW);
+	SetNoteListScrollPos(0);
 	UpdateScrollbar();
 }
 
@@ -595,6 +617,16 @@ void NoteListView::OnNewText(BEHAVIOR_EVENT_PARAMS * params)
 void NoteListView::OnNote(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalOpenNote();
+}
+
+void NoteListView::OnPageDown(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalPageDown();
+}
+
+void NoteListView::OnPageUp(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalPageUp();
 }
 
 void NoteListView::OnSearch(BEHAVIOR_EVENT_PARAMS * params)
