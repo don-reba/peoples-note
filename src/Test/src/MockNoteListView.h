@@ -43,6 +43,8 @@ public:
 	std::wstring syncText;
 	std::wstring windowTitle;
 
+	bool isPageDownVisible;
+	bool isPageUpVisible;
 	bool isSyncButtonShown;
 	bool isSyncEnabled;
 
@@ -52,6 +54,8 @@ public:
 	signal SignalNewNote;
 	signal SignalNotebookSelected;
 	signal SignalOpenNote;
+	signal SignalPageDown;
+	signal SignalPageUp;
 	signal SignalSearch;
 	signal SignalSignIn;
 	signal SignalSync;
@@ -80,6 +84,10 @@ public:
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 
+	virtual void ConnectPageDown(slot_type OnPageDown);
+
+	virtual void ConnectPageUp(slot_type OnPageUp);
+
 	virtual void ConnectSearch(slot_type OnSearch);
 
 	virtual void ConnectSignIn(slot_type OnSignIn);
@@ -98,6 +106,10 @@ public:
 	
 	virtual std::wstring GetSearchString();
 
+	virtual void HidePageDown();
+
+	virtual void HidePageUp();
+
 	virtual void HideSyncButton();
 
 	virtual void SetProfileText(const std::wstring & text);
@@ -109,6 +121,10 @@ public:
 	virtual void SetSyncText(const std::wstring & text);
 
 	virtual void SetWindowTitle(const std::wstring & text);
+
+	virtual void ShowPageDown();
+
+	virtual void ShowPageUp();
 
 	virtual void ShowSyncButton();
 

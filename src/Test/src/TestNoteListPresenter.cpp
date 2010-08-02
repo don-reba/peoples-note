@@ -71,6 +71,9 @@ BOOST_FIXTURE_TEST_CASE
 		, back_inserter(noteListModel.notes)
 		);
 
+	noteListModel.hasPreviousNotes = false;
+	noteListModel.hasNextNotes     = true;
+
 	noteListModel.SignalChanged();
 
 	BOOST_CHECK_EQUAL(noteListView.notesUpdated, true);
@@ -90,6 +93,9 @@ BOOST_FIXTURE_TEST_CASE
 		);
 
 	BOOST_CHECK_EQUAL(noteListView.syncText, L"3");
+
+	BOOST_CHECK(noteListView.isPageDownVisible);
+	BOOST_CHECK(!noteListView.isPageUpVisible);
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -141,17 +147,6 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.isSyncButtonShown, true);
 
 	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
-}
-
-BOOST_FIXTURE_TEST_CASE
-	( NotListPresenter_LoadThumbnail_Test
-	, NoteListPresenterFixture
-	)
-{
-	userModel.notes.push_back(Note());
-	userModel.notes.back().guid = Guid("{0}");
-	userModel.notes.push_back(Note());
-	userModel.notes.back().guid = Guid("{1}");
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -243,7 +238,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_SincBegin_Test
+	( NoteListPresenter_SyncBegin_Test
 	, NoteListPresenterFixture
 	)
 {

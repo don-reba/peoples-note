@@ -303,6 +303,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\NoteListModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\NoteListPresenter.cpp"
 				>
 			</File>
@@ -401,6 +405,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestNotebookProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestNoteListModel.cpp"
 				>
 			</File>
 			<File

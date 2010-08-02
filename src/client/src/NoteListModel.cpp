@@ -19,7 +19,7 @@ void NoteListModel::ConnectChanged(slot_type OnReset)
 }
 
 
-const void NoteListModel::GetCurrentPage
+void NoteListModel::GetCurrentPage
 	( NoteList::const_iterator & begin
 	, NoteList::const_iterator & end
 	)

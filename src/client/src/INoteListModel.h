@@ -11,7 +11,7 @@ public:
 
 	virtual void ConnectChanged(slot_type OnReset) = 0;
 
-	virtual const void GetCurrentPage
+	virtual void GetCurrentPage
 		( NoteList::const_iterator & begin
 		, NoteList::const_iterator & end
 		) = 0;

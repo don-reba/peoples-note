@@ -6,6 +6,8 @@ using namespace std;
 MockNoteListView::MockNoteListView()
 	: notesUpdated      (true)
 	, notebooksUpdated  (true)
+	, isPageDownVisible (false)
+	, isPageUpVisible   (false)
 	, isSyncButtonShown (false)
 	, isSyncEnabled     (true)
 {
@@ -69,6 +71,16 @@ void MockNoteListView::ConnectOpenNote(slot_type OnOpenNote)
 	SignalOpenNote.connect(OnOpenNote);
 }
 
+void MockNoteListView::ConnectPageDown(slot_type OnPageDown)
+{
+	SignalPageDown.connect(OnPageDown);
+}
+
+void MockNoteListView::ConnectPageUp(slot_type OnPageUp)
+{
+	SignalPageUp.connect(OnPageUp);
+}
+
 void MockNoteListView::ConnectSearch(slot_type OnSearch)
 {
 	SignalSearch.connect(OnSearch);
@@ -116,6 +128,16 @@ std::wstring MockNoteListView::GetSearchString()
 	return searchString;
 }
 
+void MockNoteListView::HidePageDown()
+{
+	isPageDownVisible = false;
+}
+
+void MockNoteListView::HidePageUp()
+{
+	isPageUpVisible = false;
+}
+
 void MockNoteListView::HideSyncButton()
 {
 	isSyncButtonShown = false;
@@ -144,6 +166,16 @@ void MockNoteListView::SetSyncText(const wstring & text)
 void MockNoteListView::SetWindowTitle(const wstring & text)
 {
 	windowTitle = text;
+}
+
+void MockNoteListView::ShowPageDown()
+{
+	isPageDownVisible = true;
+}
+
+void MockNoteListView::ShowPageUp()
+{
+	isPageUpVisible = true;
 }
 
 void MockNoteListView::ShowSyncButton()
