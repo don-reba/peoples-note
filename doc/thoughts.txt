@@ -1969,6 +1969,12 @@ NoteListView::AddNote passes strings by value
 scrollbar does not appear after signing in
 	because all 4 notes fit
 	and pagination controls are not being set
-	TODO
+	NoteListView::UpdateNotes is called from only a single place
+	NoteListView::UpdateScrollbar has zero contentSize
+	could be because the window is hidden then
+		or disabled
+	indeed
 notes are not sorted by date
+	actually, sorted in ascending order
+	should be in descending
 	TODO

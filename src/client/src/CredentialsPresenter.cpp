@@ -65,8 +65,8 @@ void CredentialsPresenter::OnOk()
 			enService.GetUserStore()->GetAuthenticationToken(username, password);
 		if (authenticationResult.IsGood)
 		{
-			credentialsModel.SetCredentials(username, password);
 			credentialsView.Close();
+			credentialsModel.SetCredentials(username, password);
 		}
 		else
 		{
