@@ -1942,7 +1942,10 @@ can't open updated note
 	even after restarting
 	preview does not update
 	crashes on exit
-	TODO
+	crashes even on download
+	crashes on opening synced notes
+	ReplaceTodo had a bug when
+		a todo div was present without a "checked" attribute
 paging
 	can implement either in view or in model
 	NoteListModel can limit itself to accepting only a set number of notes
@@ -1961,3 +1964,11 @@ paging
 		1000 notes => 300 KB
 		not too much, actually
 		if memory consumption becomes a problem => use smaller notebooks
+NoteListView::AddNote passes strings by value
+	TODO
+scrollbar does not appear after signing in
+	because all 4 notes fit
+	and pagination controls are not being set
+	TODO
+notes are not sorted by date
+	TODO

@@ -47,6 +47,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 			L"note"
 			L"<en-todo checked=\"true\"/>"
 			L"<en-todo checked=\"false\"/>"
+			L"<en-todo/>"
 		L"</en-note>";
 	wstring html;
 	enNoteTranslator.ConvertToHtml(xml, html);
@@ -58,10 +59,23 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 				L"note"
 				L"<input type=\"checkbox\" checked=\"\"/>"
 				L"<input type=\"checkbox\"/>"
+				L"<input type=\"checkbox\"/>"
 			L"</div>"
 		);
 
+
 	wstring xml2;
 	enNoteTranslator.ConvertToXml(html, xml2);
-	BOOST_CHECK_EQUAL(xml, xml2);
+	BOOST_CHECK_EQUAL
+		( xml2
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note>"
+				L"note"
+				L"<en-todo checked=\"true\"/>"
+				L"<en-todo checked=\"false\"/>"
+				L"<en-todo checked=\"false\"/>"
+			L"</en-note>"
+		);
 }

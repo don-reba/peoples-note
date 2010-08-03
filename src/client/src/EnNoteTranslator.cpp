@@ -250,8 +250,7 @@ void EnNoteTranslator::ReplaceTodo
 	)
 {
 	xml_attribute<wchar_t> * attribute = child->first_attribute(L"checked");
-	wstring value(attribute->value(), attribute->value_size());
-	bool checked(attribute && value == L"true");
+	bool checked(attribute && wstring(attribute->value(), attribute->value_size()) == L"true");
 
 	xml_node<wchar_t> * node(store->allocate_node(node_element, L"input"));
 	node->append_attribute(store->allocate_attribute(L"type", L"checkbox"));
