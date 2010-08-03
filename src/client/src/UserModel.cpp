@@ -573,7 +573,7 @@ void UserModel::GetNotesByNotebook
 		( "SELECT guid, usn, title, creationDate, isDirty"
 		"  FROM Notes"
 		"  WHERE notebook = ?"
-		"  ORDER BY creationDate"
+		"  ORDER BY creationDate DESC"
 		);
 	statement->Bind(1, notebook.guid);
 	while (!statement->Execute())
@@ -606,7 +606,7 @@ void UserModel::GetNotesBySearch
 		( "SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
 		"  FROM   Notes as n, NoteText"
 		"  WHERE  n.rowid = NoteText.rowid AND NoteText MATCH ?"
-		"  ORDER  BY n.creationDate"
+		"  ORDER  BY n.creationDate DESC"
 		);
 	statement->Bind(1, search);
 	while (!statement->Execute())
