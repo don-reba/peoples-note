@@ -86,7 +86,10 @@ void NoteListView::RegisterEventHandlers()
 // INoteListView implementation
 //-----------------------------
 
-void NoteListView::AddNote(wstring html, wstring value)
+void NoteListView::AddNote
+	( const wstring & html
+	, const wstring & value
+	)
 {
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
@@ -98,7 +101,10 @@ void NoteListView::AddNote(wstring html, wstring value)
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
 }
 
-void NoteListView::AddNotebook(wstring html, wstring value)
+void NoteListView::AddNotebook
+	( const wstring & html
+	, const wstring & value
+	)
 {
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);

@@ -1965,7 +1965,8 @@ paging
 		not too much, actually
 		if memory consumption becomes a problem => use smaller notebooks
 NoteListView::AddNote passes strings by value
-	TODO
+	also AddNotebook
+	fixed
 scrollbar does not appear after signing in
 	because all 4 notes fit
 	and pagination controls are not being set
@@ -1977,4 +1978,3 @@ scrollbar does not appear after signing in
 notes are not sorted by date
 	actually, sorted in ascending order
 	should be in descending
-	TODO

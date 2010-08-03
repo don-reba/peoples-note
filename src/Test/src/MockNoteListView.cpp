@@ -13,7 +13,10 @@ MockNoteListView::MockNoteListView()
 {
 }
 
-void MockNoteListView::AddNote(wstring html, wstring value)
+void MockNoteListView::AddNote
+	( const wstring & html
+	, const wstring & value
+	)
 {
 	notes.push_back(NoteRecord());
 	notes.back().html  = html;
@@ -21,7 +24,10 @@ void MockNoteListView::AddNote(wstring html, wstring value)
 	notesUpdated = false;
 }
 
-void MockNoteListView::AddNotebook(wstring html, wstring value)
+void MockNoteListView::AddNotebook
+	( const wstring & html
+	, const wstring & value
+	)
 {
 	notebooks.push_back(NotebookRecord());
 	notebooks.back().html  = html;
