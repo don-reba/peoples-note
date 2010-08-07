@@ -1098,7 +1098,6 @@ resource upload
 		hash
 		mime
 	also, it would be better to copy to the final array right away
-	TODO
 sync logic
 	want a separate component
 		that will make decisions to follow
@@ -1331,7 +1330,6 @@ sync logging
 need to refactor SyncModel
 	the SyncContext looks like a really bad idea
 	it duplicates most SyncModel members
-	TODO
 sync troubles
 	have a remote notebook and a local notebook
 	same name, different Guids
@@ -1523,7 +1521,6 @@ checkbox support
 					output from EnNoteTranslator
 					stored by the note
 						view, presenter, or model?
-						TODO
 					global class
 			how to store it
 				transformation function has fixed signature
@@ -1861,7 +1858,7 @@ editor implementation plan
 		command buttons
 probably should rename view.hide to view.close, where appropriate
 	TODO
-loosing formatting
+losing formatting
 	open opening a created note
 		could be during opening or saving
 	TODO
@@ -1978,3 +1975,13 @@ scrollbar does not appear after signing in
 notes are not sorted by date
 	actually, sorted in ascending order
 	should be in descending
+new note is created with zero creationDate
+	TODO
+checkboxes don't work
+	get drawn correctly
+		in the viewer
+		in the editor
+	xcall asserts
+	TODO
+the list of notes should not be a list of options
+	should be a list of buttons
