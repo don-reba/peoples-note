@@ -25,7 +25,7 @@ wstring Timestamp::GetFormattedDateTime() const
 	const LCID locale = LOCALE_USER_DEFAULT;
 
 	vector<wchar_t> dateChars(11);
-	int result = ::GetDateFormat
+	::GetDateFormat
 		( locale           // Locale
 		, 0                // dwFlags
 		, &time            // lpDate
@@ -33,7 +33,6 @@ wstring Timestamp::GetFormattedDateTime() const
 		, &dateChars[0]    // lpDateSTr
 		, dateChars.size() // cchDate
 		);
-	DWORD error = GetLastError();
 
 	vector<wchar_t> timeChars(6);
 	::GetTimeFormat

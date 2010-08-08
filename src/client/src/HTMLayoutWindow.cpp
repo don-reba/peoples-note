@@ -17,6 +17,8 @@ using namespace Tools;
 HTMLayoutWindow::HTMLayoutWindow(const wchar_t * resourceId)
 	: resourceId    (resourceId)
 	, isHtmlDataSet (false)
+	, htmlData      (NULL)
+	, htmlUri       (NULL)
 {
 }
 

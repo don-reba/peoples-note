@@ -102,41 +102,47 @@ void EnImporter::ImportNotes
 	}
 	catch (rapidxml::parse_error & e)
 	{
-		const wchar_t * fragment = e.where<wchar_t>();
-		cout << e.what() << endl;
+		const wchar_t * fragment(e.where<wchar_t>());
+		cout << fragment << endl;
 	}
 }
 time_t EnImporter::ParseTime(wstring time)
 {
 	if (time.size() != 16 || time[8] != L'T' || time[15] != L'Z')
 		return 0;
-	SYSTEMTIME systemTime;
+	SYSTEMTIME systemTime = { };
 	systemTime.wYear
-		= GetDigit(time[0]) * 1000
+		= static_cast<WORD>
+		( GetDigit(time[0]) * 1000
 		+ GetDigit(time[1]) * 100
 		+ GetDigit(time[2]) * 10
 		+ GetDigit(time[3]) * 1
-		;
+		);
 	systemTime.wMonth
-		= GetDigit(time[4]) * 10
+		= static_cast<WORD>
+		( GetDigit(time[4]) * 10
 		+ GetDigit(time[5]) * 1
-		;
+		);
 	systemTime.wDay
-		= GetDigit(time[6]) * 10
+		= static_cast<WORD>
+		( GetDigit(time[6]) * 10
 		+ GetDigit(time[7]) * 1
-		;
+		);
 	systemTime.wHour
-		= GetDigit(time[9])  * 10
+		= static_cast<WORD>
+		( GetDigit(time[9])  * 10
 		+ GetDigit(time[10]) * 1
-		;
+		);
 	systemTime.wMinute
-		= GetDigit(time[11]) * 10
+		= static_cast<WORD>
+		( GetDigit(time[11]) * 10
 		+ GetDigit(time[12]) * 1
-		;
+		);
 	systemTime.wSecond
-		= GetDigit(time[13]) * 10
+		= static_cast<WORD>
+		( GetDigit(time[13]) * 10
 		+ GetDigit(time[14]) * 1
-		;
+		);
 	return SystemTimeToUnixTime(systemTime);
 }
 

@@ -29,7 +29,7 @@ private:
 		UINT      command;
 		EventType event;
 
-		bool operator == (HELEMENT element)
+		bool operator == (HELEMENT element) const
 		{
 			return this->element == element;
 		}

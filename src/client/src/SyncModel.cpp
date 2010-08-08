@@ -32,11 +32,12 @@ SyncModel::SyncModel
 	, IUserModel   & userModel
 	, ISyncLogger  & logger
 	)
-	: syncThread  (NULL)
-	, enService   (enService)
-	, messagePump (messagePump)
-	, userModel   (userModel)
-	, syncLogger  (logger)
+	: syncThread    (NULL)
+	, enService     (enService)
+	, messagePump   (messagePump)
+	, userModel     (userModel)
+	, stopRequested (false)
+	, syncLogger    (logger)
 {
 	::InitializeCriticalSection(&lock);
 }

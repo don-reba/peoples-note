@@ -59,7 +59,7 @@ bool IsBase64Whitespace(wchar_t c)
 // Tools implementation
 //---------------------
 
-string Tools::ConvertToAnsi(const wstring str)
+string Tools::ConvertToAnsi(const wstring & str)
 {
 	UINT  codePage = CP_ACP;
 	DWORD flags    = 0;
@@ -124,7 +124,7 @@ const unsigned char * Tools::ConvertToUtf8
 		;
 }
 
-wstring Tools::ConvertToUnicode(const string str)
+wstring Tools::ConvertToUnicode(const string & str)
 {
 	UINT  codePage = CP_ACP;
 	DWORD flags    = 0;

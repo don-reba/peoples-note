@@ -137,8 +137,10 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="StdAfx.h"
+				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				EnablePREfast="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -555,6 +557,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
+						WarningLevel="3"
 					/>
 				</FileConfiguration>
 				<FileConfiguration

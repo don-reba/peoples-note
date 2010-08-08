@@ -9,7 +9,8 @@ using namespace std;
 //----------
 
 Animator::Animator()
-	: lastId (AnimationNone)
+	: lastFps (0)
+	, lastId  (AnimationNone)
 {
 }
 

@@ -1985,3 +1985,19 @@ checkboxes don't work
 	TODO
 the list of notes should not be a list of options
 	should be a list of buttons
+thumbnails are not updated after checkboxes are edited
+	TODO
+crashes on exit after creating and updating a note with 4 checkboxes
+	and after simply restarting
+	coming out of HTMLayoutProcND
+		WM_DESTROY
+			turns off window handlers
+		maybe the stack is corrupted
+			it is
+		how to find the actual caller?
+			has to occur in either
+				message handler
+				destructor
+					at the end of main
+					does not get there
+	TODO

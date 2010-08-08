@@ -5,14 +5,14 @@
 
 namespace Tools
 {
-	std::string ConvertToAnsi(const std::wstring str);
+	std::string ConvertToAnsi(const std::wstring & str);
 
 	const unsigned char * ConvertToUtf8
 		( const std::wstring         & str
 		, std::vector<unsigned char> & result
 		);
 
-	std::wstring ConvertToUnicode(const std::string str);
+	std::wstring ConvertToUnicode(const std::string & str);
 
 	std::wstring ConvertToUnicode(const unsigned char * str);
 
