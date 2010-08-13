@@ -413,8 +413,9 @@ namespace htmlayout
       static HELEMENT root_element(HWND hHTMLayoutWnd)
       {
         HELEMENT h = 0;
-        HLDOM_RESULT r = HTMLayoutGetRootElement(hHTMLayoutWnd,&h);
-        assert(r == HLDOM_OK);r;
+        HTMLayoutGetRootElement(hHTMLayoutWnd,&h);
+        //HLDOM_RESULT r = HTMLayoutGetRootElement(hHTMLayoutWnd,&h);
+        //assert(r == HLDOM_OK);r;
         return h;
       }
 

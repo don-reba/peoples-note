@@ -219,8 +219,7 @@ BOOL HTMLayoutWindow::ProcessHTMLayoutEvent
 	, LPVOID   params
 	)
 {
-	event &= ~HANDLED;
-	switch (event)
+	switch (event & ~(HANDLED | SINKING | BUBBLING))
 	{
 	case HANDLE_BEHAVIOR_EVENT:
 		return OnBehavior(reinterpret_cast<BEHAVIOR_EVENT_PARAMS*>(params));

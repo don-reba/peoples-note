@@ -182,6 +182,7 @@ void EditorView::OnCheck(BEHAVIOR_EVENT_PARAMS * params)
 {
 	element body(FindFirstElement("#body"));
 	body.xcall("insert", json::string(L"<input type=\"checkbox\" />"));
+	body.update();
 }
 
 void EditorView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
