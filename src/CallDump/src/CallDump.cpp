@@ -3,10 +3,10 @@
 #include <windows.h>
 
 class Store
-{
+{ 
 private:
 
-	static const int bufferSize = 32;
+	static const int bufferSize = 1024;
 
 	const HANDLE file;
 	unsigned __int32 * const buffer;
@@ -59,6 +59,7 @@ public:
 			return;
 
 		bufferPos = 0;
+		::SetFilePointer(file, 0, NULL, FILE_BEGIN);
 		::WriteFile(file, &buffer[0], bufferSize * 4, NULL, NULL);
 	}
 

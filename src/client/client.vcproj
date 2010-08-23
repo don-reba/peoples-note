@@ -164,6 +164,7 @@
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				GenerateMapFile="false"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
