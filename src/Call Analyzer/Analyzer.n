@@ -1,0 +1,283 @@
+using Nemerle.Collections;
+using Nemerle.Text;
+using Nemerle.Utility;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using System;
+using Windows;
+
+public module Windows
+{
+    [Flags]
+    public enum UnDecorateFlags
+    {
+        | Complete             = 0x0000 // Enable full undecoration
+        | NoLeadingUnderscores = 0x0001 // Remove leading underscores from MS extended keywords
+        | NoMsKeywords         = 0x0002 // Disable expansion of MS extended keywords
+        | NoFunctionReturns    = 0x0004 // Disable expansion of return type for primary declaration
+        | NoAllocationModel    = 0x0008 // Disable expansion of the declaration model
+        | NoAllocationLanguage = 0x0010 // Disable expansion of the declaration language specifier
+        | NoMsThistype         = 0x0020 // NYI Disable expansion of MS keywords on the 'this' type for primary declaration
+        | NoCvThistype         = 0x0040 // NYI Disable expansion of CV modifiers on the 'this' type for primary declaration
+        | NoThistype           = 0x0060 // Disable all modifiers on the 'this' type
+        | NoAccessSpecifiers   = 0x0080 // Disable expansion of access specifiers for members
+        | NoThrowSignatures    = 0x0100 // Disable expansion of 'throw-signatures' for functions and pointers to functions
+        | NoMemberType         = 0x0200 // Disable expansion of 'static' or 'virtual'ness of members
+        | NoReturnUdtModel     = 0x0400 // Disable expansion of MS model for UDT returns
+        | Decode32Bit          = 0x0800 // Undecorate 32-bit decorated names
+        | NameOnly             = 0x1000 // Crack only the name for primary declaration; return just [scope::]name.  Does expand template params
+        | NoArguments          = 0x2000 // Don't undecorate arguments to function
+        | NoSpecialSyms        = 0x4000 // Don't undecorate special names (v-table, vcall, vector xxx, metatype, etc)
+    }
+
+    [DllImport("dbghelp.dll", SetLastError=true, PreserveSig=true)]
+    public extern UnDecorateSymbolName
+        ( [In]  [MarshalAs(UnmanagedType.LPStr)] DecoratedName     : string
+        , [Out]                                  UnDecoratedName   : StringBuilder
+        , [In]  [MarshalAs(UnmanagedType.U4)]    UndecoratedLength : int
+        , [In]  [MarshalAs(UnmanagedType.U4)]    Flags             : UnDecorateFlags
+	) : int;
+
+}
+
+class MapFile
+{
+	//-------------
+	// nested types
+	//-------------
+
+	[ Record ]
+	public struct SegmentedAddress
+	{
+		public Segment : int;
+		public Address : int;
+
+		public override ToString() : string
+		{
+			$"$Segment:$Address"
+		}
+	}
+
+	[ Record ]
+	public struct Symbol
+	{
+		public Start      : SegmentedAddress;
+		public Name       : string;
+		public Address    : int;
+		public ObjectName : string;
+	}
+
+	[ Record ]
+	public struct Section
+	{
+		public Start     : SegmentedAddress;
+		public Length    : int;
+		public Name      : string;
+		public ClassName : string;
+	}
+
+	//-----
+	// data
+	//-----
+
+	[ Accessor ] private entryPoint           : SegmentedAddress;
+	[ Accessor ] private functions            : array[Symbol];
+	[ Accessor ] private name                 : string;
+	[ Accessor ] private preferredLoadAddress : int;
+	[ Accessor ] private sections             : array[Section];
+	[ Accessor ] private statics              : array[Symbol];
+	[ Accessor ] private timestamp            : int;
+
+	//----------
+	// interface
+	//----------
+
+	public this(stream : Stream)
+	{
+		def ParseHex(n : string) : int
+		{
+			int.Parse(n, System.Globalization.NumberStyles.HexNumber)
+		}
+
+		def ParseEntryPoint(reader)
+		{
+			regexp match (reader.ReadLine())
+			{
+				| @" entry point at +(?<segment>[0-9a-f]+):(?<address>[0-9a-f]+).*" =>
+					SegmentedAddress(ParseHex(segment), ParseHex(address));
+				| _ => SegmentedAddress(0, 0)
+			}
+		}
+		def ParseSymbolsTable(reader)
+		{
+			mutable run = true;
+			def functions = List();
+			while (run)
+			{
+				def line = reader.ReadLine();
+				regexp match (line)
+				{
+					| @" (?<segment>[0-9a-f]+):(?<address>[0-9a-f]+) +(?<name>\S+) +(?<rvaPlusBase>[0-9a-f]+) +(?<objectName>.*)" =>
+						def function = Symbol
+							( start      = SegmentedAddress(ParseHex(segment), ParseHex(address))
+							, name       = name
+							, address    = ParseHex(rvaPlusBase)
+							, objectName = objectName
+							);
+						functions.Add(function);
+					| _ => run = false
+				}
+			}
+			functions.ToArray();
+		}
+		def ParseName(reader)
+		{
+			regexp match (reader.ReadLine())
+			{
+				| @" (?<name>\w+)" => name
+				| _ => ""
+			}
+		}
+		def ParsePreferredLoadAddress(reader)
+		{
+			regexp match (reader.ReadLine())
+			{
+				| @" Preferred load address is (?<preferredLoadAddress>[0-9a-f]+).*" =>
+					ParseHex(preferredLoadAddress)
+				| _ => 0
+			}
+		}
+		def ParseSectionTable(reader)
+		{
+			mutable run = true;
+			def sections = List();
+			while (run)
+			{
+				regexp match (reader.ReadLine())
+				{
+					| @" (?<segment>[0-9a-f]+):(?<address>[0-9a-f]+) (?<length>[0-9a-f]+)H (?<name>\S+) +(?<className>\w+).*" =>
+						def section = Section
+							( start     = SegmentedAddress(ParseHex(segment), ParseHex(address))
+							, length    = ParseHex(length)
+							, name      = name
+							, className = className
+							);
+						sections.Add(section);
+					| _ => run = false
+				}
+			}
+			sections.ToArray();
+		}
+		def ParseTimestamp(reader)
+		{
+			regexp match (reader.ReadLine())
+			{
+				| @" Timestamp is (?<timestamp>[0-9a-f]+).*" =>
+					ParseHex(timestamp)
+				| _ => 0
+			}
+		}
+		def Skip(reader, n)
+		{
+			repeat (n)
+				_ = reader.ReadLine();
+		}
+		using (reader = StreamReader(stream, Encoding.UTF8))
+		{
+			name                 = ParseName                 (reader); Skip(reader, 1);
+			timestamp            = ParseTimestamp            (reader); Skip(reader, 1);
+			preferredLoadAddress = ParsePreferredLoadAddress (reader); Skip(reader, 2);
+			sections             = ParseSectionTable         (reader); Skip(reader, 2);
+			functions            = ParseSymbolsTable         (reader);
+			entryPoint           = ParseEntryPoint           (reader); Skip(reader, 3);
+			statics              = ParseSymbolsTable         (reader);
+		}
+	}
+}
+
+def ReadCalls(stream)
+{
+	def a = List();
+	using (reader = BinaryReader(stream))
+	{
+		try
+		{
+			while (true)
+				a.Add(reader.ReadInt32());
+		}
+		catch
+		{
+			| _ is EndOfStreamException => ()
+		}
+	}
+	a;
+}
+
+def ReadMap(stream)
+{
+	def mapFile = MapFile(stream);
+	//Console.WriteLine($"entry point:           $(mapFile.EntryPoint)");
+	//Console.WriteLine($"functions count:       $(mapFile.Functions.Length)");
+	//Console.WriteLine($"name:                  $(mapFile.Name)");
+	//Console.WriteLine($"preferred load address $(mapFile.PreferredLoadAddress)");
+	//Console.WriteLine($"sections count         $(mapFile.Sections.Length)");
+	//Console.WriteLine($"statics count:         $(mapFile.Statics.Length)");
+	//Console.WriteLine($"timestamp:             $(mapFile.Timestamp)");
+	mapFile;
+}
+
+def DisplayCalls(calls, map)
+{
+	def PrintFunction(address)
+	{
+		def Undecorate(decoratedName)
+		{
+			def name = StringBuilder(255);
+			_ = UnDecorateSymbolName
+				( DecoratedName     = decoratedName
+				, UnDecoratedName   = name
+				, UndecoratedLength = name.Capacity
+				, Flags             = UnDecorateFlags.NameOnly
+				);
+			name.ToString();
+		}
+		match (map.Functions.FindIndex(symbol => symbol.Address > address))
+		{
+			| -1 =>
+				match (map.Statics.FindIndex(symbol => symbol.Address > address))
+				{
+					| -1 => Console.WriteLine("...")
+					| 0  => Console.WriteLine(Undecorate(map.Statics[0].Name))
+					| n  => Console.WriteLine(Undecorate(map.Statics[n - 1].Name))
+				}
+			| 0 =>
+				Console.WriteLine(Undecorate(map.Functions[0].Name))
+			| n =>
+				Console.WriteLine(Undecorate(map.Functions[n - 1].Name))
+		}
+	}
+	mutable offset = 0;
+	foreach (call in calls)
+	{
+		repeat (offset)
+			Console.Write("   ");
+		if (call < 0)
+		{
+			--offset;
+		}
+		else
+		{
+			PrintFunction(call);
+			++offset;
+		}
+	}
+}
+
+DisplayCalls
+	( calls = using (stream = File.OpenRead("data\\calls.bin"))
+		ReadCalls(stream)
+	, map   = using (stream = File.OpenRead("data\\client.map"))
+		ReadMap(stream)
+	);
