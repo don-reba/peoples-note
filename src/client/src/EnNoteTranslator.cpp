@@ -255,7 +255,7 @@ void EnNoteTranslator::ReplaceTodo
 	xml_node<wchar_t> * node(store->allocate_node(node_element, L"input"));
 	node->append_attribute(store->allocate_attribute(L"type", L"checkbox"));
 	if (checked)
-		node->append_attribute(store->allocate_attribute(L"checked"));
+		node->append_attribute(store->allocate_attribute(L"checked", L"true"));
 
 	parent->insert_node(child, node);
 	parent->remove_node(child);

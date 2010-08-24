@@ -42,6 +42,8 @@ public:
 
 	~Store()
 	{
+		Flush();
+		::CloseHandle(file);
 		delete [] buffer;
 	}
 
@@ -55,15 +57,21 @@ public:
 		if (!enter)
 			value |= 0x80000000;
 		buffer[bufferPos++] = value;
+
 		if (bufferPos < bufferSize)
 			return;
 
+		Flush();
 		bufferPos = 0;
-		::SetFilePointer(file, 0, NULL, FILE_BEGIN);
-		::WriteFile(file, &buffer[0], bufferSize * 4, NULL, NULL);
 	}
 
 private:
+
+	void Flush()
+	{
+		::SetFilePointer(file, 0, NULL, FILE_BEGIN);
+		::WriteFile(file, &buffer[0], bufferPos * 4, NULL, NULL);
+	}
 
 	static HANDLE CreateLogFile()
 	{

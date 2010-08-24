@@ -235,7 +235,7 @@ void UserModel::DeleteNote(const Guid & note)
 			);
 		statement->Bind(1, note);
 		if (statement->Execute())
-			throw std::exception("Could not find the note to delete.");
+			return;
 		statement->Get(0, rowid);
 	}
 	{

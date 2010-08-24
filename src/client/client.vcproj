@@ -130,7 +130,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
-				AdditionalOptions="/callcap"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;..\HTMLayout\include;&quot;..\Evernote API\include&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_OMIT_UTF16;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
@@ -164,7 +163,7 @@
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/client.pdb"
-				GenerateMapFile="false"
+				GenerateMapFile="true"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
@@ -188,6 +187,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy/y &quot;$(TargetDir)$(TargetName).map&quot; &quot;$(SolutionDir)Call Analyzer\data\&quot;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"

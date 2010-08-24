@@ -122,9 +122,9 @@ class MapFile
 					| @" (?<segment>[0-9a-f]+):(?<address>[0-9a-f]+) +(?<name>\S+) +(?<rvaPlusBase>[0-9a-f]+) +(?<objectName>.*)" =>
 						def function = Symbol
 							( start      = SegmentedAddress(ParseHex(segment), ParseHex(address))
-							, name       = name
+							, name       = name.Trim()
 							, address    = ParseHex(rvaPlusBase)
-							, objectName = objectName
+							, objectName = objectName.Trim()
 							);
 						functions.Add(function);
 					| _ => run = false
@@ -136,8 +136,8 @@ class MapFile
 		{
 			regexp match (reader.ReadLine())
 			{
-				| @" (?<name>\w+)" => name
-				| _ => ""
+				| @" (?<name>\w+)" => name.Trim()
+				| _                => ""
 			}
 		}
 		def ParsePreferredLoadAddress(reader)
@@ -228,9 +228,9 @@ def ReadMap(stream)
 	mapFile;
 }
 
-def DisplayCalls(calls, map)
+def DisplayCalls(calls, map, stream)
 {
-	def PrintFunction(address)
+	def PrintFunction(address, writer)
 	{
 		def Undecorate(decoratedName)
 		{
@@ -248,36 +248,45 @@ def DisplayCalls(calls, map)
 			| -1 =>
 				match (map.Statics.FindIndex(symbol => symbol.Address > address))
 				{
-					| -1 => Console.WriteLine("...")
-					| 0  => Console.WriteLine(Undecorate(map.Statics[0].Name))
-					| n  => Console.WriteLine(Undecorate(map.Statics[n - 1].Name))
+					| -1 => writer.WriteLine("...")
+					| 0  => writer.WriteLine(Undecorate(map.Statics[0].Name))
+					| n  => writer.WriteLine(Undecorate(map.Statics[n - 1].Name))
 				}
 			| 0 =>
-				Console.WriteLine(Undecorate(map.Functions[0].Name))
+				writer.WriteLine(Undecorate(map.Functions[0].Name))
 			| n =>
-				Console.WriteLine(Undecorate(map.Functions[n - 1].Name))
+				writer.WriteLine(Undecorate(map.Functions[n - 1].Name))
 		}
 	}
-	mutable offset = 0;
-	foreach (call in calls)
+	using (writer = StreamWriter(stream))
 	{
-		repeat (offset)
-			Console.Write("   ");
-		if (call < 0)
+		mutable offset = 0;
+		foreach (call in calls)
 		{
-			--offset;
-		}
-		else
-		{
-			PrintFunction(call);
-			++offset;
+			if (call < 0)
+			{
+				--offset;
+			}
+			else
+			{
+				repeat (offset)
+					writer.Write('\t');
+				PrintFunction(call, writer);
+				++offset;
+			}
 		}
 	}
 }
 
-DisplayCalls
-	( calls = using (stream = File.OpenRead("data\\calls.bin"))
-		ReadCalls(stream)
-	, map   = using (stream = File.OpenRead("data\\client.map"))
-		ReadMap(stream)
-	);
+{
+	using (stream = File.Create(@"data\analysis.txt"))
+	{
+		DisplayCalls
+			( calls  = using (stream = File.OpenRead(@"data\calls.bin"))
+				ReadCalls(stream)
+			, map    = using (stream = File.OpenRead(@"data\client.map"))
+				ReadMap(stream)
+			, stream = stream
+			);
+	}
+}
