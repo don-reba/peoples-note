@@ -111,6 +111,8 @@ protected:
 
 	DWORD GetHtmlDataSize();
 
+	void SetHtmlUri(const wchar_t * uri);
+
 	bool UseHtmlData();
 
 // window message handlers

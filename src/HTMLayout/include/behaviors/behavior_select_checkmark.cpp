@@ -224,8 +224,6 @@ struct select_checkmark: public behavior
         //if(prev != L"off") node.update(RESET_STYLE_THIS);
       }
     }
-    
-
 
 };
 

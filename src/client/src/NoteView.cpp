@@ -131,6 +131,8 @@ void NoteView::SetNote
 	, const wstring & bodyHtml
 	)
 {
+	isDirty = false;
+
 	this->note = note;
 
 	element title    (FindFirstElement("#title"));

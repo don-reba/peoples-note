@@ -316,6 +316,7 @@ void NoteListView::UpdateThumbnail(const Guid & guid)
 {
 	wstring uri(L"thumb:");
 	uri.append(ConvertToUnicode(guid));
+	SetHtmlUri(uri.c_str());
 
 	SignalLoadHtmlData();
 	if (UseHtmlData())

@@ -99,6 +99,11 @@ DWORD HTMLayoutWindow::GetHtmlDataSize()
 	return htmlDataSize;
 }
 
+void HTMLayoutWindow::SetHtmlUri(const wchar_t * uri)
+{
+	htmlUri = uri;
+}
+
 bool HTMLayoutWindow::UseHtmlData()
 {
 	bool isHtmlDataSet = this->isHtmlDataSet;

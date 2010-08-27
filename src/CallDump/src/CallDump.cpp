@@ -1,3 +1,6 @@
+// Library for capturing profiling information with
+// the /callcap compiler flag.
+
 #ifdef DEBUG
 
 #include <windows.h>
