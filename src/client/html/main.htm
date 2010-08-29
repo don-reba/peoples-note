@@ -30,6 +30,7 @@
 			{
 				background-color: #f0ec40;
 				background-image: none;
+				behavior:         clickable;
 				border-style:     none;
 				height:           100%%;
 				padding:          0;
@@ -37,18 +38,12 @@
 				text-align:       left;
 				width:            100%%;
 			}
-			#note-list select
-			{
-				background-color: #f0ec40;
-			}
 			#note-list .note
 			{
 				background-image:    url(corner.png);
 				background-position: right top;
 				background-repeat:   no-repeat;
 				border-top:          1px solid #606060;
-				margin:              0px;
-				padding:             0px;
 				height:              100px;
 				overflow:            hidden;
 			}
@@ -215,7 +210,7 @@
 			<widget #search-button type="button" tabindex="3" />
 		</div>
 		<div id="note-list-panel">
-				<widget type="select" id="note-list" tabindex="0">
+				<div id="note-list" tabindex="0">
 					<div #new-note-note>
 						<div #label>Create note:</div>
 						<widget type="button" #new-text  />
@@ -225,7 +220,7 @@
 					</div>
 					<div #page-up>Later notes</div>
 					<div #page-down>Eariler notes</div>
-				</widget>
+				</div>
 				<div id="scroll"><div id="slider" /></div>
 		</div>
 		<div id="status-bar">

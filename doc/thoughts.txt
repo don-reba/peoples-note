@@ -1982,14 +1982,15 @@ checkboxes don't work
 		in the viewer
 		in the editor
 	xcall asserts
-	TODO
 the list of notes should not be a list of options
 	should be a list of buttons
 thumbnails are not updated after checkboxes are edited
 	throws an exception
-	trying to load thumbnail from resources
-	_Ptr = 0x01c8e0d0 "fe13d760-b70a-4b67-9515-050bf651ad5e"
-	TODO
+		trying to load thumbnail from resources
+		fixed, but not the cause
+	thumbnails are updated and saved to the database
+	but not reloaded
+	picture does not update, unlike img
 crashes on exit after creating and updating a note with 4 checkboxes
 	and after simply restarting
 	coming out of HTMLayoutProcND
@@ -2010,4 +2011,4 @@ crashes on exit after creating and updating a note with 4 checkboxes
 			r4 = 0x01a86480
 	the checkbox was created with the wrong xcall
 selected note can't be selected again
-	TODO
+	changed the list to a series of clickable panels

@@ -67,8 +67,8 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
 	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
 	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
+	ConnectBehavior("#note-list",     BUTTON_CLICK,             &NoteListView::OnNote);
 	ConnectBehavior("#new-text",      BUTTON_CLICK,             &NoteListView::OnNewText);
-	ConnectBehavior("#note-list",     SELECT_SELECTION_CHANGED, &NoteListView::OnNote);
 	ConnectBehavior("#page-down",     BUTTON_CLICK,             &NoteListView::OnPageDown);
 	ConnectBehavior("#page-up",       BUTTON_CLICK,             &NoteListView::OnPageUp);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
@@ -94,7 +94,7 @@ void NoteListView::AddNote
 	vector<unsigned char> htmlUtf8Chars;
 	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
 
-	element note(element::create("option"));
+	element note(element::create("div"));
 	noteList.insert(note, noteList.children_count() - 1);
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
@@ -226,9 +226,7 @@ Guid NoteListView::GetSelectedNotebookGuid()
 
 Guid NoteListView::GetSelectedNoteGuid()
 {
-	element root     (element::root_element(hwnd_));
-	element noteList (root.find_first("#note-list"));
-	return noteList.get_value().to_string().c_str();
+	return noteList.get_attribute("value");
 }
 
 wstring NoteListView::GetSearchString()
@@ -623,7 +621,22 @@ void NoteListView::OnNewText(BEHAVIOR_EVENT_PARAMS * params)
 
 void NoteListView::OnNote(BEHAVIOR_EVENT_PARAMS * params)
 {
-	SignalOpenNote();
+	POINT point = { 0 };
+	::GetCursorPos(&point);
+	::ScreenToClient(hwnd_, &point);
+	element target(noteList.find_element(hwnd_, point));
+	if (target && target != noteList)
+	{
+		while (target.parent() != noteList)
+			target = target.parent();
+
+		const wchar_t * value(target.get_attribute("value"));
+		if (value)
+		{
+			noteList.set_attribute("value", value);
+			SignalOpenNote();
+		}
+	}
 }
 
 void NoteListView::OnPageDown(BEHAVIOR_EVENT_PARAMS * params)
