@@ -138,8 +138,14 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK(editorView.isShown);
 	BOOST_CHECK_EQUAL(editorView.body, L"<div type=\"en-note\" />");
+	BOOST_CHECK_EQUAL(editorView.note.isDirty, true);
+	BOOST_CHECK_EQUAL(editorView.note.usn,     0);
 	BOOST_CHECK_EQUAL
 		( editorView.note.name
 		, L"New note in last-used-notebook"
+		);
+	BOOST_CHECK_NE
+		( editorView.note.creationDate.GetTime()
+		, 0L
 		);
 }

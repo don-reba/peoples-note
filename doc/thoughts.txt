@@ -1976,7 +1976,7 @@ notes are not sorted by date
 	actually, sorted in ascending order
 	should be in descending
 new note is created with zero creationDate
-	TODO
+	fixed
 checkboxes don't work
 	get drawn correctly
 		in the viewer

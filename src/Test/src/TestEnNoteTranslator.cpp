@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 		,
 			L"<div type=\"en-note\">"
 				L"note"
-				L"<input type=\"checkbox\" checked=\"\"/>"
+				L"<input type=\"checkbox\" checked=\"true\"/>"
 				L"<input type=\"checkbox\"/>"
 				L"<input type=\"checkbox\"/>"
 			L"</div>"

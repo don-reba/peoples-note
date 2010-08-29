@@ -17,4 +17,6 @@ public:
 	std::wstring GetFormattedDateTime() const;
 
 	__int64 GetTime() const;
+
+	static Timestamp GetCurrentTime();
 };

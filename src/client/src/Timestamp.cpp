@@ -53,3 +53,10 @@ __int64 Timestamp::GetTime() const
 {
 	return unixTime;
 }
+
+Timestamp Timestamp::GetCurrentTime()
+{
+	SYSTEMTIME time;
+	::GetSystemTime(&time);
+	return Tools::SystemTimeToUnixTime(time);
+}
