@@ -7,7 +7,10 @@
 #include "INoteView.h"
 #include "IUserModel.h"
 #include "EnNoteTranslator.h"
+#include "Tools.h"
 #include "Transaction.h"
+
+#include <time.h>
 
 using namespace boost;
 using namespace std;
@@ -93,9 +96,15 @@ void EditorPresenter::OnNewNote()
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
 
+	SYSTEMTIME time;
+	::GetSystemTime(&time);
+
 	Note note;
-	note.name = L"New note in ";
+	note.name         = L"New note in ";
 	note.name.append(notebook.name);
+	note.creationDate = Tools::SystemTimeToUnixTime(time);
+	note.isDirty      = true;
+	note.usn          = 0;
 
 	wstring body(L"<div type=\"en-note\" />");
 
