@@ -2022,3 +2022,5 @@ note editor checkbox changes are not persisted
 	TODO
 links should open in a browser
 	TODO
+sync counter is not updated after a note is edited
+	reloading the list fixes this

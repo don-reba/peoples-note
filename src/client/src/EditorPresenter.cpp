@@ -60,6 +60,8 @@ void EditorPresenter::OnAccept()
 	noteView.Render(thumbnail);
 	userModel.SetNoteThumbnail(note.guid, thumbnail);
 
+	noteListView.UpdateThumbnail(note.guid);
+
 	editorView.Hide();
 
 	NoteList notes;

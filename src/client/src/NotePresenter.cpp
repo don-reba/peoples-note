@@ -3,6 +3,7 @@
 
 #include "EnNoteTranslator.h"
 #include "Guid.h"
+#include "INoteListModel.h"
 #include "INoteListView.h"
 #include "INoteView.h"
 #include "IUserModel.h"
@@ -18,12 +19,14 @@ using namespace Tools;
 //----------
 
 NotePresenter::NotePresenter
-	( INoteListView    & noteListView
+	( INoteListModel   & noteListModel
+	, INoteListView    & noteListView
 	, INoteView        & noteView
 	, IUserModel       & userModel
 	, EnNoteTranslator & enNoteTranslator
 	)
-	: noteListView     (noteListView)
+	: noteListModel    (noteListModel)
+	, noteListView     (noteListView)
 	, noteView         (noteView)
 	, userModel        (userModel)
 	, enNoteTranslator (enNoteTranslator)
@@ -57,6 +60,8 @@ void NotePresenter::OnCloseNote()
 	userModel.GetLastUsedNotebook(notebook);
 	userModel.AddNote(note, bodyXml, L"", notebook);
 
+	noteView.SetNote(note, L"", L"", bodyHtml);
+
 	Thumbnail thumbnail;
 	thumbnail.Width  = 164;
 	thumbnail.Height = 100;
@@ -64,6 +69,10 @@ void NotePresenter::OnCloseNote()
 	userModel.SetNoteThumbnail(note.guid, thumbnail);
 
 	noteListView.UpdateThumbnail(note.guid);
+
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	noteListModel.SetNotes(notes);
 }
 
 void NotePresenter::OnOpenNote()

@@ -276,5 +276,6 @@ void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 		e.set_attribute("checked", L"true");
 	else
 		e.remove_attribute("checked");
-	isDirty = true;
+	note.isDirty = true;
+	isDirty      = true;
 }

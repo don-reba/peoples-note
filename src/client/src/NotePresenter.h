@@ -1,5 +1,6 @@
 #pragma once
 
+class INoteListModel;
 class INoteListView;
 class INoteView;
 class IUserModel;
@@ -9,6 +10,7 @@ class NotePresenter
 {
 private:
 
+	INoteListModel   & noteListModel;
 	INoteListView    & noteListView;
 	INoteView        & noteView;
 	IUserModel       & userModel;
@@ -19,7 +21,8 @@ private:
 public:
 
 	NotePresenter
-		( INoteListView    & noteListView
+		( INoteListModel   & noteListModel
+		, INoteListView    & noteListView
 		, INoteView        & noteView
 		, IUserModel       & userModel
 		, EnNoteTranslator & enNoteTranslator

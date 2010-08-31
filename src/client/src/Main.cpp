@@ -190,7 +190,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, enNoteTranslator
 			);
 		NotePresenter notePresenter
-			( noteListView
+			( noteListModel
+			, noteListView
 			, noteView
 			, userModel
 			, enNoteTranslator
