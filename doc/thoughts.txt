@@ -1919,7 +1919,8 @@ checkbox graphics are not loading
 	should have returned LOAD_OK for unknown resources
 		not LOAD_DISCARD
 selection in edit view is not visible
-	TODO
+	HTMLayout bug
+	fixed
 notes do not pass ENML
 	needed to specify ENML2.dtd
 updated note is uploaded as a second note
@@ -2012,3 +2013,12 @@ crashes on exit after creating and updating a note with 4 checkboxes
 	the checkbox was created with the wrong xcall
 selected note can't be selected again
 	changed the list to a series of clickable panels
+threw an unhandled exception on attempt to commit an edited note
+	edited checkboxes in the viewer, then opened the editor
+	the viewer was setting checked=""
+signin screen should accept "enter" in the password field
+	TODO
+note editor checkbox changes are not persisted
+	TODO
+links should open in a browser
+	TODO

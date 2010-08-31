@@ -1100,6 +1100,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html\logo_large.png"
+				>
+			</File>
+			<File
 				RelativePath=".\html\photo-note.png"
 				>
 			</File>

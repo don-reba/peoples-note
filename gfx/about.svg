@@ -14,7 +14,7 @@
    height="640"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.0 r9654"
    sodipodi:docname="about.svg"
    inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\about.png"
    inkscape:export-xdpi="360"
@@ -538,7 +538,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.93338095"
      inkscape:cx="0.69198833"
-     inkscape:cy="319.70791"
+     inkscape:cy="276.85295"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -654,8 +654,17 @@
        id="rect3758"
        width="480"
        height="552.99335"
-       x="-1.5654145e-13"
+       x="-1.5654145e-013"
        y="87.00666" />
+    <image
+       transform="translate(0,-412.36218)"
+       style="display:inline"
+       y="615.29968"
+       x="68.731361"
+       id="image3896"
+       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/logo_large.png"
+       height="421.06253"
+       width="340.39453" />
   </g>
   <g
      inkscape:label="Layer 1"
@@ -733,7 +742,8 @@
       <path
          id="path3468"
          d="m 34.955006,962.49963 357.722024,0"
-         style="fill:#0000ff;stroke:#0000ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+         style="fill:#0000ff;stroke:#0000ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
   <g
