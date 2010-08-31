@@ -68,9 +68,14 @@ void SyncModel::ProcessMessages()
 		case SyncMessageQueue::MessageSyncComplete:
 			SignalSyncComplete();
 			break;
+		case SyncMessageQueue::MessageSyncFailed:
+			statusText = L"Tried to sync, but something went wrong.";
+			SignalStatusUpdated();
+			break;
 		case SyncMessageQueue::MessageText:
 			statusText = message.Text;
 			SignalStatusUpdated();
+			break;
 		}
 	}
 }
