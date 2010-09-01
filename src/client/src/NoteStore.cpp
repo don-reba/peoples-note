@@ -335,32 +335,35 @@ void NoteStore::ListEntries
 	)
 {
 	wstring notebookFilterGuid(ConvertToUnicode(notebookFilter));
-	foreach (const EDAM::Types::Note & note, chunk.notes)
+	if (!notebookFilter.IsLocal())
 	{
-		if (note.__isset.active && !note.active)
-			continue;
-		if (note.notebookGuid != notebookFilterGuid)
-			continue;
-		notes.push_back(EnInteropNote());
-
-		notes.back().notebook = note.notebookGuid;
-
-		notes.back().note.guid         = note.guid;
-		notes.back().note.name         = note.title;
-		notes.back().note.creationDate = static_cast<time_t>(ConvertFromEnTime(note.created));
-		notes.back().note.usn          = note.updateSequenceNum;
-		notes.back().note.isDirty      = false;
-
-		notes.back().guid    = notes.back().note.guid;
-		notes.back().name    = notes.back().note.name;
-		notes.back().usn     = notes.back().note.usn;
-		notes.back().isDirty = notes.back().note.isDirty;
-
-		// WARN: might be slow for large resource counts
-		foreach (const EDAM::Types::Resource & resource, note.resources)
+		foreach (const EDAM::Types::Note & note, chunk.notes)
 		{
-			if (resource.noteGuid == note.guid)
-				notes.back().resources.push_back(resource.guid);
+			if (note.__isset.active && !note.active)
+				continue;
+			if (note.notebookGuid != notebookFilterGuid)
+				continue;
+			notes.push_back(EnInteropNote());
+
+			notes.back().notebook = note.notebookGuid;
+
+			notes.back().note.guid         = note.guid;
+			notes.back().note.name         = note.title;
+			notes.back().note.creationDate = static_cast<time_t>(ConvertFromEnTime(note.created));
+			notes.back().note.usn          = note.updateSequenceNum;
+			notes.back().note.isDirty      = false;
+
+			notes.back().guid    = notes.back().note.guid;
+			notes.back().name    = notes.back().note.name;
+			notes.back().usn     = notes.back().note.usn;
+			notes.back().isDirty = notes.back().note.isDirty;
+
+			// WARN: might be slow for large resource counts
+			foreach (const EDAM::Types::Resource & resource, note.resources)
+			{
+				if (resource.noteGuid == note.guid)
+					notes.back().resources.push_back(resource.guid);
+			}
 		}
 	}
 	foreach (const EDAM::Types::Notebook & notebook, chunk.notebooks)

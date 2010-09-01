@@ -394,6 +394,7 @@ void SyncModel::Sync()
 
 		Notebook notebook;
 		userModel.GetLastUsedNotebook(notebook);
+		bool isLocalNotebook(notebook.guid.IsLocal());
 
 		if (fullSync)
 		{
@@ -446,7 +447,7 @@ void SyncModel::Sync()
 					}
 					catch (const std::exception &)
 					{
-						// eat deletion errors
+						// ignore deletion errors
 					}
 				}
 				foreach (Guid & guid, expungedNotebooks)
@@ -473,7 +474,7 @@ void SyncModel::Sync()
 
 		ProcessNotes(remoteNotes, *noteStore, notebook, fullSync);
 
-		userModel.SetNotebookUpdateCount(notebook.guid, syncState.UpdateCount);
+		userModel.SetNotebookUpdateCount(notebook.guid, isLocalNotebook ? 0 : syncState.UpdateCount);
 		userModel.SetUpdateCount(syncState.UpdateCount);
 		userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
 

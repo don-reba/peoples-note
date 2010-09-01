@@ -2028,4 +2028,10 @@ sync counter is not updated after a note is edited
 internet address could not be resolved
 	no error message is displayed
 	no internet connection
+sync with DonReba did not upload my notes
+	probably because my notebook has the same name as the default
+	update count issue?
+	incremental update is done starting at notebook update count
+	TODO
+don't need to list notes for local notebooks
 	TODO
