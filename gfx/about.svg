@@ -536,9 +536,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.93338095"
-     inkscape:cx="0.69198833"
-     inkscape:cy="276.85295"
+     inkscape:zoom="1.32"
+     inkscape:cx="190.55155"
+     inkscape:cy="376.12808"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -613,33 +613,36 @@
        height="640"
        x="0"
        y="0" />
-    <rect
-       transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,718.8205,-390.02773)"
-       style="fill:#000000;stroke:#000000;stroke-width:1;stroke-opacity:1;filter:url(#filter3802)"
-       id="rect3713"
-       width="479"
-       height="404.97934"
-       x="-783.56812"
-       y="425.62921"
-       clip-path="url(#clipPath3754)" />
-    <rect
-       y="57.932331"
-       x="-24.03508"
-       height="404.97934"
-       width="479"
-       id="rect3711"
-       style="fill:#696969;fill-opacity:1;stroke:none"
-       transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,-1.4949933e-6,52.000007)"
-       clip-path="url(#clipPath3750)" />
-    <rect
-       y="35.006653"
-       x="1.0000044"
-       height="404.97934"
-       width="479"
-       id="rect3739"
-       style="fill:#000000;stroke:none;filter:url(#filter3796)"
-       clip-path="url(#clipPath3746)"
-       transform="translate(-1.4949933e-6,52.000007)" />
+    <g
+       id="g3120">
+      <rect
+         clip-path="url(#clipPath3754)"
+         y="425.62921"
+         x="-783.56812"
+         height="404.97934"
+         width="479"
+         id="rect3713"
+         style="fill:#000000;stroke:#000000;stroke-width:1;stroke-opacity:1;filter:url(#filter3802)"
+         transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,718.8205,-390.02773)" />
+      <rect
+         clip-path="url(#clipPath3750)"
+         transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,-1.4949933e-6,52.000007)"
+         style="fill:#696969;fill-opacity:1;stroke:none"
+         id="rect3711"
+         width="479"
+         height="404.97934"
+         x="-24.03508"
+         y="57.932331" />
+      <rect
+         transform="translate(-1.4949933e-6,52.000007)"
+         clip-path="url(#clipPath3746)"
+         style="fill:#000000;stroke:none;filter:url(#filter3796)"
+         id="rect3739"
+         width="479"
+         height="404.97934"
+         x="1.0000044"
+         y="35.006653" />
+    </g>
     <rect
        style="fill:#6fb536;fill-opacity:1;stroke:none"
        id="rect3709"
@@ -656,15 +659,6 @@
        height="552.99335"
        x="-1.5654145e-013"
        y="87.00666" />
-    <image
-       transform="translate(0,-412.36218)"
-       style="display:inline"
-       y="615.29968"
-       x="68.731361"
-       id="image3896"
-       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/logo_large.png"
-       height="421.06253"
-       width="340.39453" />
   </g>
   <g
      inkscape:label="Layer 1"

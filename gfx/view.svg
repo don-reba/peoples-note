@@ -14,7 +14,7 @@
    height="640"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.0 r9654"
    sodipodi:docname="view.svg"
    inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\view.png"
    inkscape:export-xdpi="360"
@@ -68,9 +68,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.66"
-     inkscape:cx="139.44179"
-     inkscape:cy="360.06068"
+     inkscape:zoom="0.93338095"
+     inkscape:cx="281.45705"
+     inkscape:cy="283.44225"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -181,11 +181,11 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
          xlink:href="icons/view-fullscreen.png"
-         width="56"
-         height="56"
-         id="image2997"
+         y="825.08661"
          x="869.81134"
-         y="825.08661" />
+         id="image2997"
+         height="56"
+         width="56" />
     </g>
     <g
        id="g2928"
@@ -205,16 +205,16 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
          xlink:href="icons/home.png"
-         width="56"
-         height="56"
-         id="image3011"
+         y="592.64783"
          x="-202.25606"
-         y="592.64783" />
+         id="image3011"
+         height="56"
+         width="56" />
     </g>
     <g
        id="g3740"
        style="opacity:0.5;fill:#989898;fill-opacity:1"
-       transform="translate(2,54.000201)">
+       transform="translate(12,60.000201)">
       <text
          id="text2922"
          y="434.39539"
@@ -264,7 +264,7 @@
     </g>
     <g
        id="g3750"
-       transform="translate(0,52.000201)">
+       transform="translate(10,58.000201)">
       <text
          xml:space="preserve"
          style="font-size:38.50821304px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans"
