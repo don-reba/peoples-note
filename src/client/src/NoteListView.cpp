@@ -509,6 +509,8 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 	if (!IsChild(target, noteList))
 		return;
 
+	noteList.set_state(STATE_FOCUS);
+
 	if (state == StateAnimating)
 		animator.Unsubscribe(IAnimator::AnimationNoteListScroll);
 
@@ -597,7 +599,7 @@ BOOL NoteListView::OnFocus(FOCUS_PARAMS * params)
 {
 	DWORD oldSipState(sipState);
 	sipState
-		= (root_element::focus_element(hwnd_) == searchBox)
+		= (element::focus_element(hwnd_) == searchBox)
 		? SHFS_SHOWSIPBUTTON
 		: SHFS_HIDESIPBUTTON;
 	if (oldSipState != sipState)
