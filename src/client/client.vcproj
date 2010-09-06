@@ -690,6 +690,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\API Key.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\AuthenticationToken.h"
 				>
 			</File>

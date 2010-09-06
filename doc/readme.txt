@@ -33,3 +33,9 @@ Requirements
 Visual Studio 2008
 Boost 1.41.0
 Inkscape 0.48
+
+----------------
+Evernote Support
+----------------
+
+In order to enable this, you have to set your developer key in "src\client\API Key.h".

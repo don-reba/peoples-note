@@ -5,6 +5,8 @@
 
 #include "Thrift/Thrift.h"
 #include "Evernote/EDAM/UserStore.h"
+
+#include "API Key.h"
 #include "SyncLogic.h"
 #include "Tools.h"
 #include "Transaction.h"
@@ -22,8 +24,6 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 	, wstring password
 	)
 {
-	const wchar_t * consumerKey    = L"donreba";
-	const wchar_t * consumerSecret = L"3d764d03e2b1c7c4";
 	const wchar_t * userStoreUrl   = L"https://www.evernote.com/edam/user";
 
 	AuthenticationResult result;

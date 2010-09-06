@@ -19,6 +19,8 @@ robocopy "src\HTMLayout"    "%dst%\src\HTMLayout"    %opt%
 
 xcopy/q/y "src\Evernote client.sln" "%dst%\src"
 
+move/y "%dst%\src\client\src\API Key (placeholder).h" "%dst%\src\client\src\API Key.h"
+
 robocopy "gfx" "%dst%\gfx" *.svg %opt%
 robocopy "gfx\icons" "%dst%\gfx\icons" %opt%
 
