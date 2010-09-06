@@ -17,6 +17,7 @@ public:
 	std::wstring documentPath;
 	std::wstring username;
 	std::wstring statusText;
+	double       syncProgress;
 
 public:
 
@@ -35,4 +36,6 @@ public:
 	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
 
 	virtual const wchar_t * GetStatusText();
+
+	virtual double GetSyncProgress();
 };

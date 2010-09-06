@@ -34,6 +34,7 @@ private:
 	bool stopRequested;
 
 	std::wstring statusText;
+	double       syncProgress;
 
 	signal SignalNotebooksChanged;
 	signal SignalNotesChanged;
@@ -76,6 +77,8 @@ public:
 
 	virtual const wchar_t * GetStatusText();
 
+	virtual double GetSyncProgress();
+
 // utility functions
 
 private:
@@ -87,8 +90,9 @@ private:
 		, EnInteropNoteList & notes
 		);
 
-	void PostPlainMessage (SyncMessageQueue::MessageType type);
-	void PostTextMessage  (const wchar_t *               text);
+	void PostPlainMessage    (SyncMessageQueue::MessageType type);
+	void PostProgressMessage (double                        progress);
+	void PostTextMessage     (const wchar_t *               text);
 
 	void ProcessNotes
 		( const EnInteropNoteList & remoteNotes

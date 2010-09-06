@@ -45,3 +45,8 @@ const wchar_t * MockSyncModel::GetStatusText()
 {
 	return statusText.c_str();
 }
+
+double MockSyncModel::GetSyncProgress()
+{
+	return syncProgress;
+}

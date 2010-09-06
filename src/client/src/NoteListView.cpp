@@ -6,6 +6,7 @@
 #include "Tools.h"
 
 #include <cmath>
+#include <sstream>
 
 using namespace boost;
 using namespace htmlayout;
@@ -72,7 +73,7 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#page-down",     BUTTON_CLICK,             &NoteListView::OnPageDown);
 	ConnectBehavior("#page-up",       BUTTON_CLICK,             &NoteListView::OnPageUp);
 	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
-	ConnectBehavior("#sync-button",   BUTTON_CLICK,             &NoteListView::OnSync);
+	ConnectBehavior("#sync-panel",    BUTTON_CLICK,             &NoteListView::OnSync);
 
 	noteList     = FindFirstElement("#note-list");
 	notebookList = FindFirstElement("#notebook-list");
@@ -256,6 +257,14 @@ void NoteListView::SetProfileText(const wstring & text)
 {
 	element(FindFirstElement("#menu-profile"))
 		.set_text(text.c_str());
+}
+
+void NoteListView::SetProgress(double fraction)
+{
+	wstringstream stream;
+	stream << (100.0 - 100.0 * fraction) << L"%";
+	element(FindFirstElement("#status-progress"))
+		.set_style_attribute("background-offset-right", stream.str().c_str());
 }
 
 void NoteListView::SetSigninText(const wstring & text)

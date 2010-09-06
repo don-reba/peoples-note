@@ -13,6 +13,7 @@ public:
 		MessageTagsChanged,
 		MessageSyncFailed,
 		MessageSyncComplete,
+		MessageSyncProgress,
 		MessageText,
 	};
 
@@ -22,8 +23,9 @@ public:
 
 		const MessageType  Type;
 		const std::wstring Text;
+		const double       Value;
 
-		Message(MessageType type, const wchar_t * text);
+		Message(MessageType type, const wchar_t * text, double value);
 	};
 
 private:

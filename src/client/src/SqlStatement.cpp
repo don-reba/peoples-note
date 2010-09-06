@@ -16,7 +16,7 @@ SqlStatement::SqlStatement(sqlite3 * db, const char * sql)
 	int result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
 	if (result != SQLITE_OK)
 	{
-		DEBUGMSG(true, (L"%s\n", sqlite3_errmsg(db)));
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(sqlite3_errmsg(db))));
 		throw std::exception(sqlite3_errmsg(db));
 	}
 }

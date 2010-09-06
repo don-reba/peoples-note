@@ -72,6 +72,10 @@ void SyncModel::ProcessMessages()
 			statusText = L"Tried to sync, but something went wrong.";
 			SignalStatusUpdated();
 			break;
+		case SyncMessageQueue::MessageSyncProgress:
+			syncProgress = message.Value;
+			SignalStatusUpdated();
+			break;
 		case SyncMessageQueue::MessageText:
 			statusText = message.Text;
 			SignalStatusUpdated();
@@ -136,6 +140,11 @@ const wchar_t * SyncModel::GetStatusText()
 	return statusText.c_str();
 }
 
+double SyncModel::GetSyncProgress()
+{
+	return syncProgress;
+}
+
 //------------------
 // utility functions
 //------------------
@@ -170,14 +179,29 @@ void SyncModel::GetNotes
 
 void SyncModel::PostPlainMessage(SyncMessageQueue::MessageType type)
 {
-	SyncMessageQueue::Message message(type, L"");
+	SyncMessageQueue::Message message(type, L"", 0.0);
+	messages.Enqueue(message);
+	messagePump.WakeUp();
+}
+
+void SyncModel::PostProgressMessage(double progress)
+{
+	SyncMessageQueue::Message message
+		( SyncMessageQueue::MessageSyncProgress
+		, L""
+		, progress
+		);
 	messages.Enqueue(message);
 	messagePump.WakeUp();
 }
 
 void SyncModel::PostTextMessage(const wchar_t * text)
 {
-	SyncMessageQueue::Message message(SyncMessageQueue::MessageText, text);
+	SyncMessageQueue::Message message
+		( SyncMessageQueue::MessageText
+		, text
+		, 0.0
+		);
 	messages.Enqueue(message);
 	messagePump.WakeUp();
 }
@@ -192,6 +216,7 @@ void SyncModel::ProcessNotes
 	EnInteropNoteList local;
 	GetNotes(notebook, local);
 	syncLogger.ListNotes(L"Local notes", local);
+	syncLogger.BeginSyncStage(L"notes");
 
 	vector<SyncLogic::Action<EnInteropNote> > actions;
 	SyncLogic::Sync(fullSync, remote, local, actions);
@@ -200,7 +225,25 @@ void SyncModel::ProcessNotes
 
 	NoteProcessor processor(userModel, noteStore, notebook);
 
-	syncLogger.BeginSyncStage(L"notes");
+	// count the number of valid actions
+	double actionCount(0.0);
+	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
+	{
+		// filter by notes from this notebook
+		if (action.Local && action.Local->notebook != notebook.guid)
+			continue;
+		if (action.Remote && action.Remote->notebook != notebook.guid)
+			continue;
+		actionCount += 1.0;
+	}
+	if (actionCount == 0.0)
+		return;
+
+	// perform the actions
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Synchronizing notes...");
+
+	double actionIndex(0.0);
 	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
 	{
 		// filter by notes from this notebook
@@ -240,6 +283,9 @@ void SyncModel::ProcessNotes
 			}
 			break;
 		}
+
+		PostProgressMessage(actionIndex / actionCount);
+		actionIndex += 1.0;
 	}
 }
 
@@ -258,9 +304,13 @@ void SyncModel::ProcessNotebooks
 	if (actions.empty())
 		return;
 
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Synchronizing notebooks...");
+
 	NotebookProcessor processor(userModel);
 
 	syncLogger.BeginSyncStage(L"notebooks");
+	double actionIndex(0.0);
 	foreach (const SyncLogic::Action<Notebook> action, actions)
 	{
 		switch (action.Type)
@@ -294,6 +344,9 @@ void SyncModel::ProcessNotebooks
 			}
 			break;
 		}
+
+		PostProgressMessage(actionIndex / actions.size());
+		actionIndex += 1.0;
 	}
 }
 
@@ -312,8 +365,13 @@ void SyncModel::ProcessTags
 	if (actions.empty())
 		return;
 
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Synchronizing tags...");
+
 	TagProcessor processor(userModel);
 
+	syncLogger.BeginSyncStage(L"tags");
+	double actionIndex(0.0);
 	foreach (const SyncLogic::Action<Tag> action, actions)
 	{
 		switch (action.Type)
@@ -347,6 +405,9 @@ void SyncModel::ProcessTags
 			}
 			break;
 		}
+
+		PostProgressMessage(actionIndex / actions.size());
+		actionIndex += 1.0;
 	}
 }
 
@@ -481,6 +542,7 @@ void SyncModel::Sync()
 		PostPlainMessage(SyncMessageQueue::MessageSyncComplete);
 
 		PostTextMessage(L"");
+		PostProgressMessage(0.0);
 
 		userModel.Unload();
 	}

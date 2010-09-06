@@ -145,6 +145,7 @@ void NoteListPresenter::OnSyncEnd()
 
 void NoteListPresenter::OnSyncStatusUpdated()
 {
+	noteListView.SetProgress(syncModel.GetSyncProgress());
 	noteListView.SetStatusText(syncModel.GetStatusText());
 }
 

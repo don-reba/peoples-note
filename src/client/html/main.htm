@@ -4,21 +4,21 @@
 			@import url(menu.css);
 			body
 			{
-				background-color: white;
-				margin:           0px;
-				padding:          0px;
-				text-align:       center;
+				background: white;
+				margin:     0px;
+				padding:    0px;
+				text-align: center;
 			}
 			#menu
 			{
-				background-image:  url(gradient-60.png) repeat-x;
-				behavior:          popup-menu;
-				border:            1px solid black;
-				height:            48px;
-				margin:            -1px;
-				padding:           0px 10px;
-				width:             0px;
-				vertical-align:    middle;
+				background:     url(gradient-60.png) repeat-x;
+				behavior:       popup-menu;
+				border:         1px solid #606060;
+				height:         48px;
+				margin:         -1px;
+				padding:        0px 10px;
+				width:          0px;
+				vertical-align: middle;
 			}
 			#note-list-panel
 			{
@@ -29,23 +29,18 @@
 			#note-list
 			{
 				background-color: #f0ec40;
-				background-image: none;
 				behavior:         clickable;
-				border-style:     none;
 				height:           100%%;
-				padding:          0;
 				overflow:         hidden;
 				text-align:       left;
 				width:            100%%;
 			}
 			#note-list .note
 			{
-				background-image:    url(corner.png);
-				background-position: right top;
-				background-repeat:   no-repeat;
-				border-top:          1px solid #606060;
-				height:              100px;
-				overflow:            hidden;
+				background: url(corner.png) no-repeat right top;
+				border-top: 1px solid #606060;
+				height:     100px;
+				overflow:   hidden;
 			}
 			#note-list .note #thumb
 			{
@@ -89,19 +84,19 @@
 			}
 			#new-text
 			{
-				background-image: url(text-note.png);
+				background: url(text-note.png);
 			}
 			#new-voice
 			{
-				background-image: url(voice-note.png);
+				background: url(voice-note.png);
 			}
 			#new-photo
 			{
-				background-image: url(photo-note.png);
+				background: url(photo-note.png);
 			}
 			#new-file
 			{
-				background-image: url(file-note.png);
+				background: url(file-note.png);
 			}
 			#page-down, #page-up
 			{
@@ -111,10 +106,10 @@
 			}
 			#scroll
 			{
-				background-color: white;
-				height:           100%%;
-				overflow:         hidden;
-				width:            5px;
+				background: white;
+				height:     100%%;
+				overflow:   hidden;
+				width:      5px;
 			}
 			#scroll #slider
 			{
@@ -153,48 +148,55 @@
 			}
 			#status
 			{
-				display:        inline;
 				font-size:      20px;
 				line-height:    24px;
 				margin:         0px 6px;
 				max-height:     48px;
 				overflow:       hidden;
-				text-align:     left;
 				vertical-align: middle;
 				width:          100%%;
 			}
 			#status-bar
 			{
-				background:     #e0e0e0 url(reflection-48.png) repeat-x;
-				border-top:     1px solid black;
-				display:        table-cell;
-				flow:           horizontal;
-				height:         48px;
-				overflow:       hidden;
-				vertical-align: middle;
-				width:          100%;
+				background:         url(status-gray.png) repeat-x;
+				border-top:        1px solid #606060;
+				display:           table-cell;
+				flow:              horizontal;
+				height:            48px;
+				overflow:          hidden;
+				width:             100%;
 			}
-			#sync-button
+			#status-progress
 			{
-				background-image: url(sync.png);
-				border-style:     none;
-				height:           48px;
-				margin:           0px;
-				padding:          0px;
-				width:            52px;
+				background-offset-right: 100%;
+				background:     url(status-green.png) repeat-x;
+				height:         100%%;
+				text-align:     left;
+				vertical-align: middle;
+				width:          100%%;
+			}
+			#sync-icon
+			{
+				background:   url(sync.png);
+				border-style: none;
+				height:       48px;
+				margin:       0px;
+				padding:      0px;
+				width:        52px;
 			}
 			#sync-panel
 			{
 				background: url(gradient-60.png) repeat-x;
+				behavior:   clickable;
 				display:    none;
 				flow:       horizontal;
 				width:      0px;
 			}
 			#sync-panel > *
 			{
-				border:         1px solid black;
+				border-style:   none;
+				border-right:   1px solid black;
 				height:         48px;
-				margin:         -1px;
 				vertical-align: middle;
 			}
 			#sync-text
@@ -209,8 +211,8 @@
 			<widget #search-box    type="text"   tabindex="2" />
 			<widget #search-button type="button" tabindex="3" />
 		</div>
-		<div id="note-list-panel">
-				<div id="note-list" tabindex="0">
+		<div #note-list-panel>
+				<div #note-list tabindex="0">
 					<div #new-note-note>
 						<div #label>Create note:</div>
 						<widget type="button" #new-text  />
@@ -221,25 +223,25 @@
 					<div #page-up>Later notes</div>
 					<div #page-down>Eariler notes</div>
 				</div>
-				<div id="scroll"><div id="slider" /></div>
+				<div #scroll><div #slider /></div>
 		</div>
-		<div id="status-bar">
-				<div id="sync-panel">
-					<button id="sync-button"/>
-					<div id="sync-text" />
+		<div #status-bar>
+				<div #sync-panel>
+					<div #sync-icon />
+					<div #sync-text />
 				</div>
-				<div id="status"/>
-				<div id="menu">
+				<div #status-progress><span #status /></div>
+				<div #menu>
 					Menu
 					<menu>
-						<li id="menu-profile" />
-						<li id="menu-signin">Sign in</li>
+						<li #menu-profile />
+						<li #menu-signin>Sign in</li>
 						<hr />
-						<li>Notebook <menu id="notebook-list" /></li>
-						<li id="menu-import">Import notes</li>
+						<li>Notebook <menu #notebook-list /></li>
+						<li #menu-import>Import notes</li>
 						<hr />
-						<li id="menu-about">About</li>
-						<li id="menu-exit">Exit</li>
+						<li #menu-about>About</li>
+						<li #menu-exit>Exit</li>
 					</menu>
 				</div>
 		</div>

@@ -37,6 +37,7 @@ public:
 	bool         hasEnexPath;
 	std::wstring enexPath;
 
+	double       progressFraction;
 	std::wstring profileText;
 	std::wstring signinText;
 	std::wstring statusText;
@@ -119,6 +120,8 @@ public:
 	virtual void HideSyncButton();
 
 	virtual void SetProfileText(const std::wstring & text);
+
+	virtual void SetProgress(double fraction);
 
 	virtual void SetSigninText(const std::wstring & text);
 

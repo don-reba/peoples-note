@@ -2,6 +2,7 @@
 
 #include "EnNoteTranslator.h"
 #include "MockUserModel.h"
+#include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockNoteView.h"
 #include "NotePresenter.h"
@@ -11,15 +12,17 @@ using namespace std;
 struct NotePresenterFixture
 {
 	EnNoteTranslator enNoteTranslator;
-	MockNoteListView noteListView;
-	MockNoteView     noteView;
-	MockUserModel    userModel;
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockNoteView      noteView;
+	MockUserModel     userModel;
 
 	NotePresenter notePresenter;
 
 	NotePresenterFixture()
 		: notePresenter
-			( noteListView
+			( noteListModel
+			, noteListView
 			, noteView
 			, userModel
 			, enNoteTranslator

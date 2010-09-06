@@ -2032,6 +2032,31 @@ sync with DonReba did not upload my notes
 	probably because my notebook has the same name as the default
 	update count issue?
 	incremental update is done starting at notebook update count
-	TODO
+	the fundamental issue is that notebooks have two update counts
+		last note update count
+			use this to decide, whether to sync notes
+		notebook update count
+			use this to sync notebooks
+	does it make any sense?
+		at sync need to get changes to notes and notebook info
+		notebook USN is never smaller than the note list USN max
+			because notes can be ignored, but not notebooks
+		at sync we retreive changes starting with the note list USN max
+		syncing different notebooks could retrieve changes from intersecting time periods
+		should ignore non-note changes below global sync date
+	note list USN max
+		could be stored in the notebook or calculated
+			calculating would loop through maybe a thousand elements...
+			should not take long
+			storing it would introduce an FD
+				complicating logic
+	note list update count is not the USN max
+		it is the update count at the last sync
+	implementation
+		looks like the solution is
+			to make notebookUpdateCount the note list max
+			instead of the notebook usn
 don't need to list notes for local notebooks
+	currently, only the Guid is available
+		should be enough
 	TODO

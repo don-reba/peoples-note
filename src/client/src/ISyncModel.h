@@ -21,4 +21,6 @@ public:
 	virtual void ConnectSyncComplete(slot_type OnSyncComplete) = 0;
 
 	virtual const wchar_t * GetStatusText() = 0;
+
+	virtual double GetSyncProgress() = 0;
 };

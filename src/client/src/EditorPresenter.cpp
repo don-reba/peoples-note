@@ -47,6 +47,7 @@ void EditorPresenter::OnAccept()
 	editorView.GetNote(note);
 	editorView.GetTitle(note.name);
 	note.isDirty = true;
+	note.usn     = userModel.GetUpdateCount();
 
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);

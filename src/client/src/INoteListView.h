@@ -64,6 +64,8 @@ public:
 
 	virtual void SetProfileText(const std::wstring & text) = 0;
 
+	virtual void SetProgress(double fraction) = 0;
+
 	virtual void SetSigninText(const std::wstring & text) = 0;
 
 	virtual void SetStatusText(const std::wstring & text) = 0;

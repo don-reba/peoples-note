@@ -154,6 +154,11 @@ void MockNoteListView::SetProfileText(const wstring & text)
 	profileText = text;
 }
 
+void MockNoteListView::SetProgress(double fraction)
+{
+	progressFraction = fraction;
+}
+
 void MockNoteListView::SetSigninText(const wstring & text)
 {
 	signinText = text;

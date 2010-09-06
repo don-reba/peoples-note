@@ -39,8 +39,10 @@ bool SyncMessageQueue::IsEmpty()
 SyncMessageQueue::Message::Message
 	( SyncMessageQueue::MessageType   type
 	, const wchar_t                 * text
+	, double                          value
 	)
-	: Text (text)
-	, Type (type)
+	: Text  (text)
+	, Type  (type)
+	, Value (value)
 {
 }

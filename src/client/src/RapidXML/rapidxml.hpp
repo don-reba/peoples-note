@@ -1456,7 +1456,7 @@ namespace rapidxml
         {
             static unsigned char test(Ch ch)
             {
-                return internal::lookup_tables<0>::lookup_text[static_cast<unsigned char>(ch)];
+                return ch > 0xFF || internal::lookup_tables<0>::lookup_text[static_cast<unsigned char>(ch)];
             }
         };
 

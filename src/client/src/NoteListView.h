@@ -132,6 +132,8 @@ public:
 
 	virtual void SetProfileText(const std::wstring & text);
 
+	virtual void SetProgress(double fraction);
+
 	virtual void SetSigninText(const std::wstring & text);
 
 	virtual void SetStatusText(const std::wstring & text);
