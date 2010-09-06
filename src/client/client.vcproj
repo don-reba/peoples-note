@@ -158,7 +158,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
 				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot; &quot;$(SolutionDir)CallDump\$(PlatformName)\$(ConfigurationName)\CallDump.lib&quot; wininet.lib Imaging.lib"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/pnote.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
@@ -191,7 +191,7 @@
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
-				RemoteDirectory=""
+				RemoteDirectory="%CSIDL_PROGRAM_FILES%\People&apos;s Note"
 				RegisterOutput="0"
 				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\$(TargetName)|0"
 			/>
@@ -337,7 +337,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
 				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot; wininet.lib Imaging.lib"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/pnote.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
@@ -370,7 +370,7 @@
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
-				RemoteDirectory=""
+				RemoteDirectory="%CSIDL_PROGRAM_FILES%\People&apos;s Note"
 				RegisterOutput="0"
 				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\$(TargetName)|0"
 			/>
