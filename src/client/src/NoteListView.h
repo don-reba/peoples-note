@@ -160,6 +160,8 @@ private:
 
 	void AnimateScroll(DWORD time);
 
+	element GetChild(element parent, element descendant);
+
 	int GetNoteListScrollPos();
 
 	static bool IsChild(element child, element parent);

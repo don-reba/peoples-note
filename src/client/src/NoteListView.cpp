@@ -360,6 +360,15 @@ void NoteListView::AnimateScroll(DWORD time)
 	}
 }
 
+element NoteListView::GetChild(element parent, element descendant)
+{
+	if (descendant == parent)
+		return element();
+	while (descendant && descendant.parent() != parent)
+		descendant = descendant.parent();
+	return descendant;
+}
+
 int NoteListView::GetNoteListScrollPos()
 {
 	POINT scrollPos;
@@ -532,7 +541,7 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 	if (state == StateDragging)
 	{
 		int distance = msg.Position().y - lButtonDownY;
-		if (6 < abs(distance))
+		if (8 < abs(distance))
 		{
 			startScrollPos = GetNoteListScrollPos();
 
@@ -633,12 +642,9 @@ void NoteListView::OnNote(BEHAVIOR_EVENT_PARAMS * params)
 	POINT point = { 0 };
 	::GetCursorPos(&point);
 	::ScreenToClient(hwnd_, &point);
-	element target(noteList.find_element(hwnd_, point));
-	if (target && target != noteList)
+	element target(GetChild(noteList, noteList.find_element(hwnd_, point)));
+	if (target)
 	{
-		while (target.parent() != noteList)
-			target = target.parent();
-
 		const wchar_t * value(target.get_attribute("value"));
 		if (value)
 		{
