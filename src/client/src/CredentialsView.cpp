@@ -259,3 +259,29 @@ void CredentialsView::ProcessMessage(WndMsg &msg)
 		throw e;
 	}
 }
+
+//---------------------------
+// HTMLayout message handlers
+//---------------------------
+
+BOOL CredentialsView::OnKey(KEY_PARAMS * params)
+{
+	if (params->cmd & HANDLED)
+		return FALSE;
+	if (!(params->cmd & KEY_UP))
+		return FALSE;
+	if (params->key_code == 0x0D)
+	{
+		if (params->target == FindFirstElement("#username"))
+		{
+			element(FindFirstElement("#password")).set_state(STATE_FOCUS);
+			return TRUE;
+		}
+		if (params->target == FindFirstElement("#password"))
+		{
+			SignalOk();
+			return TRUE;
+		}
+	}
+	return FALSE;
+}

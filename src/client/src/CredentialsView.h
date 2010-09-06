@@ -69,4 +69,10 @@ private:
 	void OnSettingChange (Msg<WM_SETTINGCHANGE> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
+
+// HTMLayout message handlers
+
+private:
+
+	virtual BOOL OnKey (KEY_PARAMS * params);
 };

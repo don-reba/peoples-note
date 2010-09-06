@@ -132,6 +132,7 @@ protected:
 
 	virtual BOOL OnBehavior (BEHAVIOR_EVENT_PARAMS * params);
 	virtual BOOL OnFocus    (FOCUS_PARAMS          * params);
+	virtual BOOL OnKey      (KEY_PARAMS            * params);
 	virtual BOOL OnLoadData (NMHL_LOAD_DATA        * params);
 
 private:

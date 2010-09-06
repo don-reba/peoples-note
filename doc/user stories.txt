@@ -13,7 +13,8 @@ sign in window
 	√ when the user chooses to accept, the username and password should be verified
 	√ when the user tries to sign in with invalid credentials, a message should be displayed and the password cleared
 	√ when the user signs in with valid credentials, the window should close
-	when the user presses "enter" in the password field, signing in should be attempted
+	√ when the user presses "enter" in the username field, the focus should move to the password field
+	√ when the user presses "enter" in the password field, signing in should be attempted
 note creation
 	√ when the user clicks the new-text button, a text note creation screen should be displayed
 	when the user clicks the new-voice button, audio recording should start
@@ -42,28 +43,19 @@ sync
 search
 	√ when the user searches for a non-empty string, notebook should be filtered by full-text search
 	√ when the user searches for an empty string or whitespace, the note list should be reset
-	when a search is in progress, the note list should be grayed out and disabled
-	when the user clicks on the search box
-		the SIP pops up
-		the note list is faded and disabled
-		the toolbar with "Go" and "Cancel" buttons appears
-	when the search is initiated or cancelled
-		the SIP should be hidden
-		the toolbar should disappear
-	when the search completes or is cancelled
-		the note list should be returned to normal state
 note list navigation
 	√ when the user clicks on a note while the note list is still, note view for it should open up
 	√ when the user clicks on the note list while it is scrolling, the scrolling should stop
 	√ when the user flicks the note list, it should receive scrolling momentum
-	when there are more notes to display, the last entry in the list should be "show more notes"
-	when the search box is focused, the virtual keyboard should be visible
-	when the search box is not focused, the virtual keyboard should not be visible
+	√ when the search box is focused, the virtual keyboard should be visible
+	√ when the search box is not focused, the virtual keyboard should not be visible
+	√ when the user presses "enter" in the search box, search for the text in the text box
+	√ when the user presses the search button in the search box, search for the text in the text box
 note list paging
-	when a next page is available, the "later notes" link should be added to the end of the list
-	when a previous page is available, the "earlier notes" link should be added to the beginning of the list
-	when the "later notes" link is clicked, the next page should be set as the note list
-	when the "earlier notes" link is clicked, the previous page should be set as the note list
+	√ when a next page is available, the "later notes" link should be added to the end of the list
+	√ when a previous page is available, the "earlier notes" link should be added to the beginning of the list
+	√ when the "later notes" link is clicked, the next page should be set as the note list
+	√ when the "earlier notes" link is clicked, the previous page should be set as the note list
 note view
 	√ when the user signs in, the list of notebooks should be filled in
 	when the user flicks the note left, the next note should be displayed
@@ -80,7 +72,7 @@ notebooks
 		notebook choice should be persisted
 	√ when the user changes notebooks, the main window title should be set to notebook name
 about
-	when the user selects "about" from the menu, the "about" window should be shown
+	√ when the user selects "about" from the menu, the "about" window should be shown
 storage
 	√ when a set of notes is needed, their attributes are loaded from the database
 	when a note's contest is needed, it is loaded from the database
@@ -90,7 +82,7 @@ database
 	when the file exists and has a lesser version, convert it to current version
 	when the file exists and has a greater version, refuse to open it
 	√ when the file exists and has the correct version, use it
-	when a database for a named user cannot be opened, switch to the default user
+	√ when a database for a named user cannot be opened, switch to the default user
 	when a database for the default user cannot be opened, show an error message and quit
 Evernote import
 	√ when the "Import" menu option is selected, dispaly an ".enex" file open dialog

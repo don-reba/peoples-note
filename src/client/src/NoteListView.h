@@ -190,6 +190,7 @@ private:
 private:
 
 	virtual BOOL OnFocus (FOCUS_PARAMS * params);
+	virtual BOOL OnKey   (KEY_PARAMS   * params);
 
 	void OnMenuAbout    (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuExit     (BEHAVIOR_EVENT_PARAMS * params);

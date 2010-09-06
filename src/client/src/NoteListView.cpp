@@ -607,6 +607,20 @@ BOOL NoteListView::OnFocus(FOCUS_PARAMS * params)
 	return FALSE;
 }
 
+BOOL NoteListView::OnKey(KEY_PARAMS * params)
+{
+	if (params->cmd & HANDLED)
+		return FALSE;
+	if (!(params->cmd & KEY_UP))
+		return FALSE;
+	if (params->key_code == 0x0D && searchBox == params->target)
+	{
+		SignalSearch();
+		return TRUE;
+	}
+	return FALSE;
+}
+
 void NoteListView::OnMenuAbout(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalAbout();

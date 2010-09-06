@@ -126,7 +126,7 @@ void HTMLayoutWindow::OnCreate(Msg<WM_CREATE> & msg)
 		( hwnd_
 		, &HTMLayoutWindow::ProcessHTMLayoutEvent
 		, this
-		, HANDLE_BEHAVIOR_EVENT|HANDLE_FOCUS
+		, HANDLE_BEHAVIOR_EVENT|HANDLE_FOCUS|HANDLE_KEY
 		);
 
 	HtmlResource resource = LoadHtmlResource(resourceId);
@@ -193,6 +193,11 @@ BOOL HTMLayoutWindow::OnFocus(FOCUS_PARAMS * params)
 	return FALSE;
 }
 
+BOOL HTMLayoutWindow::OnKey(KEY_PARAMS * params)
+{
+	return FALSE;
+}
+
 BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 {
 	htmlUri = params->uri;
@@ -230,6 +235,8 @@ BOOL HTMLayoutWindow::ProcessHTMLayoutEvent
 		return OnBehavior(reinterpret_cast<BEHAVIOR_EVENT_PARAMS*>(params));
 	case HANDLE_FOCUS:
 		return OnFocus(reinterpret_cast<FOCUS_PARAMS*>(params));
+	case HANDLE_KEY:
+		return OnKey(reinterpret_cast<KEY_PARAMS*>(params));
 	};
 	return FALSE;
 }
