@@ -197,12 +197,14 @@ void NoteListView::ConnectSync(slot_type OnSync)
 
 void NoteListView::DisableSync()
 {
-	// TODO: implement
+	element e(FindFirstElement("#sync-panel"));
+	e.set_attribute("disabled", L"true");
 }
 
 void NoteListView::EnableSync()
 {
-	// TODO: implement
+	element e(FindFirstElement("#sync-panel"));
+	e.set_attribute("disabled", NULL);
 }
 
 bool NoteListView::GetEnexPath(wstring & path)

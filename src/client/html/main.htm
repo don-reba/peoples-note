@@ -192,6 +192,18 @@
 				flow:       horizontal;
 				width:      0px;
 			}
+			#sync-panel[disabled="true"] *
+			{
+				background-color: #e0e0c0;
+				border-color:     #404020;
+				color:            #404020;
+				background-image-transformation: contrast-brightness-gamma(0.5,0.8, 1.0);
+			}
+			#sync-panel[disabled="true"]
+			{
+				background-image: none;
+				background-color: red;
+			}
 			#sync-panel > *
 			{
 				border-style:   none;
