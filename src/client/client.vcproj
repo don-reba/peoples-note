@@ -67,11 +67,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.01"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/pnote.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/pnote.pdb"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
@@ -162,7 +162,7 @@
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/pnote.pdb"
 				GenerateMapFile="true"
 				SubSystem="0"
 				StackReserveSize="65536"
@@ -193,7 +193,7 @@
 				ForceDirty="-1"
 				RemoteDirectory="%CSIDL_PROGRAM_FILES%\People&apos;s Note"
 				RegisterOutput="0"
-				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\$(TargetName)|0"
+				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\People&apos;s Note\|0"
 			/>
 			<DebuggerTool
 			/>
@@ -246,11 +246,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.01"
-				OutputFile="$(OutDir)/client.exe"
+				OutputFile="$(OutDir)/pnote.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/pnote.pdb"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
@@ -341,7 +341,7 @@
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/client.pdb"
+				ProgramDatabaseFile="$(OutDir)/pnote.pdb"
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
@@ -532,6 +532,14 @@
 			</File>
 			<File
 				RelativePath=".\src\NoteView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ProfilePresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ProfileView.cpp"
 				>
 			</File>
 			<File
@@ -854,6 +862,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\IProfileView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\IRegistryKey.h"
 				>
 			</File>
@@ -939,6 +951,14 @@
 			</File>
 			<File
 				RelativePath=".\src\NoteView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ProfilePresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ProfileView.h"
 				>
 			</File>
 			<File
@@ -1223,6 +1243,11 @@
 			</File>
 			<File
 				RelativePath=".\html\note-view.htm"
+				>
+			</File>
+			<File
+				RelativePath=".\html\profile.htm"
+				DeploymentContent="true"
 				>
 			</File>
 			<File

@@ -87,6 +87,7 @@ BEGIN
     IDS_CANCEL              "Cancel"
     IDC_ABOUT_VIEW          "ABOUT-VIEW"
     IDC_NOTE_EDIT           "NOTE-EDIT"
+    IDC_PROFILE_VIEW        "PROFILE-VIEW"
 END
 
 STRINGTABLE 
@@ -127,6 +128,7 @@ MENU.CSS                HTML                    "html\\menu.css"
 NOTE_VIEW.HTM           HTML                    "html\\note-view.htm"
 NOTE_EDIT.HTM           HTML                    "html\\note-edit.htm"
 PHOTO_NOTE.PNG          HTML                    "html\\photo-note.png"
+PROFILE.HTM             HTML                    "html\\profile.htm"
 REFLECTION_48.PNG       HTML                    "html\\reflection-48.png"
 RT_CHECK.PNG            HTML                    "html\\rt-check.png"
 RT_COPY.PNG             HTML                    "html\\rt-copy.png"

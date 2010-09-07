@@ -64,16 +64,17 @@ void NoteListView::Create()
 
 void NoteListView::RegisterEventHandlers()
 {
-	ConnectBehavior("#menu-about",    MENU_ITEM_CLICK,          &NoteListView::OnMenuAbout);
-	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,          &NoteListView::OnMenuExit);
-	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,          &NoteListView::OnMenuImport);
-	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,          &NoteListView::OnMenuSignIn);
-	ConnectBehavior("#note-list",     BUTTON_CLICK,             &NoteListView::OnNote);
-	ConnectBehavior("#new-text",      BUTTON_CLICK,             &NoteListView::OnNewText);
-	ConnectBehavior("#page-down",     BUTTON_CLICK,             &NoteListView::OnPageDown);
-	ConnectBehavior("#page-up",       BUTTON_CLICK,             &NoteListView::OnPageUp);
-	ConnectBehavior("#search-button", BUTTON_CLICK,             &NoteListView::OnSearch);
-	ConnectBehavior("#sync-panel",    BUTTON_CLICK,             &NoteListView::OnSync);
+	ConnectBehavior("#menu-profile",  MENU_ITEM_CLICK, &NoteListView::OnMenuProfile);
+	ConnectBehavior("#menu-about",    MENU_ITEM_CLICK, &NoteListView::OnMenuAbout);
+	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK, &NoteListView::OnMenuExit);
+	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK, &NoteListView::OnMenuImport);
+	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK, &NoteListView::OnMenuSignIn);
+	ConnectBehavior("#note-list",     BUTTON_CLICK,    &NoteListView::OnNote);
+	ConnectBehavior("#new-text",      BUTTON_CLICK,    &NoteListView::OnNewText);
+	ConnectBehavior("#page-down",     BUTTON_CLICK,    &NoteListView::OnPageDown);
+	ConnectBehavior("#page-up",       BUTTON_CLICK,    &NoteListView::OnPageUp);
+	ConnectBehavior("#search-button", BUTTON_CLICK,    &NoteListView::OnSearch);
+	ConnectBehavior("#sync-panel",    BUTTON_CLICK,    &NoteListView::OnSync);
 
 	noteList     = FindFirstElement("#note-list");
 	notebookList = FindFirstElement("#notebook-list");
@@ -172,6 +173,11 @@ void NoteListView::ConnectPageDown(slot_type OnPageDown)
 void NoteListView::ConnectPageUp(slot_type OnPageUp)
 {
 	SignalPageUp.connect(OnPageUp);
+}
+
+void NoteListView::ConnectProfile(slot_type OnProfile)
+{
+	SignalProfile.connect(OnProfile);
 }
 
 void NoteListView::ConnectSearch(slot_type OnSearch)
@@ -641,6 +647,11 @@ void NoteListView::OnMenuNotebook(BEHAVIOR_EVENT_PARAMS * params)
 	element notebook(params->heTarget);
 	selectedNotebookGuid = Guid(notebook.get_attribute("guid"));
 	SignalNotebookSelected();
+}
+
+void NoteListView::OnMenuProfile(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalProfile();
 }
 
 void NoteListView::OnMenuSignIn(BEHAVIOR_EVENT_PARAMS * params)

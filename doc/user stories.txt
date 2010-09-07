@@ -101,3 +101,5 @@ text note editing
 	when the note is changed, the "OK" button should be enabled
 instrumentation
 	√ when an animation is completed, display the result in the status bar
+profile view
+	when the user selects the profile name from the menu, the "profile" window should be shown

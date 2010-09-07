@@ -16,6 +16,7 @@
 #define IDC_ABOUT_VIEW                  12
 #define IDC_NOTE_EDIT                   13
 #define IDS_STRING14                    14
+#define IDC_PROFILE_VIEW                14
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104

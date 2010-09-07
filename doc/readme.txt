@@ -12,13 +12,13 @@ gfx
 	Source code for the main People's Note client project.
 
 "src\MobileTest"
-	Those unit tests for Peope's Note that need to run in a WinCE environment.
+	Those unit tests for People's Note that need to run in a WinCE environment.
 
 "src\Test"
 	Those unit tests for People's Note that can be run in a Win32 environment.
 
 "src\CallDump"
-	Library used by the built-in profiler in People's Note.
+	Library used for profiling People's Note.
 
 "src\HTMLayout"
 	Headers and binaries for the HTMLayout library used by People's Note.
@@ -38,4 +38,4 @@ Inkscape 0.48
 Evernote Support
 ----------------
 
-In order to enable this, you have to set your developer key in "src\client\API Key.h".
+In order to enable this, you need to get a developer API key from Evernote and set it in "src\client\src\API Key.h".

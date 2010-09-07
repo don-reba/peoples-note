@@ -34,6 +34,8 @@ public:
 
 	virtual void ConnectPageUp(slot_type OnPageUp) = 0;
 
+	virtual void ConnectProfile(slot_type OnProfile) = 0;
+
 	virtual void ConnectSearch(slot_type OnSearch) = 0;
 
 	virtual void ConnectSignIn(slot_type OnSignin) = 0;

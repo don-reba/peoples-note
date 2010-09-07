@@ -21,6 +21,8 @@
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
 #include "NotePresenter.h"
+#include "ProfilePresenter.h"
+#include "ProfileView.h"
 #include "RegistryKey.h"
 #include "SearchPresenter.h"
 #include "SyncLogger.h"
@@ -139,6 +141,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		EditorView      editorView      (instance);
 		NoteView        noteView        (instance);
 		NoteListView    noteListView    (animator, instance, nCmdShow);
+		ProfileView     profileView     (instance);
 
 		HtmlDataLoader htmlDataLoader
 			( enNoteTranslator
@@ -175,6 +178,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			, editorView
 			, noteView
 			, noteListView
+			, profileView
 			, htmlDataLoader
 			);
 		InstrumentationPresenter instrumentationPresenter
@@ -195,6 +199,10 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteView
 			, userModel
 			, enNoteTranslator
+			);
+		ProfilePresenter profilePresenter
+			( profileView
+			, noteListView
 			);
 		SearchPresenter searchPresenter
 			( noteListModel
@@ -222,6 +230,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		editorView.Create(noteListView.hwnd_);
 		credentialsView.Create(noteListView.hwnd_);
 		aboutView.Create(noteListView.hwnd_);
+		profileView.Create(noteListView.hwnd_);
 
 		userLoader.Run();
 		int result(RunMessageLoop(animator, syncModel));

@@ -1,13 +1,7 @@
 #pragma once
 
-class IAboutView;
-class ICredentialsView;
-class IEditorView;
-class IHtmlDataLoader;
-class INoteView;
-class INoteListView;
-
 class HTMLayoutWindow;
+class IHtmlDataLoader;
 
 class HtmlLayoutPresenter
 {
@@ -18,6 +12,7 @@ private:
 	HTMLayoutWindow & editorView;
 	HTMLayoutWindow & noteView;
 	HTMLayoutWindow & noteListView;
+	HTMLayoutWindow & profileView;
 	IHtmlDataLoader & htmlDataLoader;
 
 public:
@@ -28,6 +23,7 @@ public:
 		, HTMLayoutWindow & editorView
 		, HTMLayoutWindow & noteView
 		, HTMLayoutWindow & noteListView
+		, HTMLayoutWindow & profileView
 		, IHtmlDataLoader & htmlDataLoader
 		);
 
