@@ -1,0 +1,48 @@
+abbr
+{
+	text-decoration : none;
+	border-bottom   : 1px dotted;
+}
+blockquote
+{
+	font-family : Consolas, "Courier New";
+}
+body
+{
+	background-color : white;
+	font-family      : Candara, "Trebuchet MS";
+	margin-left      : auto;
+	margin-right     : auto;
+	margin-top       : 1em;
+	width            : 34em;
+}
+h1
+{
+	font-size  : 3em;
+	clear      : both;
+	text-align : center;
+}
+h2
+{
+	font-size : 1.6em;
+	clear     : both;
+}
+img
+{
+	border : none;
+}
+li
+{
+	margin-top    : 0.5em;
+	margin-bottom : 0.5em;
+}
+p
+{
+	margin-top    : 1.5em;
+	margin-bottom : 1.5em;
+	text-align    : justify;
+}
+#home
+{
+	font-size : 1.2em;
+}
