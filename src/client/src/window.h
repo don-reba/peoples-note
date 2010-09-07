@@ -294,6 +294,21 @@ struct Msg<WM_KEYDOWN> : Msg_
 };
 
 template <>
+struct Msg<WM_KEYUP> : Msg_
+{
+	Msg(WndMsg &msg) : Msg_(msg) {}
+	UINT Flags() const {
+		return HIWORD(lprm_);
+	}
+	int RepeatCount() const {
+		return static_cast<short>(LOWORD(lprm_));
+	}
+	UINT VKey() const {
+		return static_cast<UINT>(wprm_);
+	}
+};
+
+template <>
 struct Msg<WM_LBUTTONDOWN> : Msg_
 {
 	Msg(WndMsg &msg) : Msg_(msg) {}

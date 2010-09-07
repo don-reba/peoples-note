@@ -32,6 +32,14 @@ public:
 
 	virtual void Show();
 
+// window message handlers
+
+private:
+
+	void OnKeyUp(Msg<WM_KEYUP> & msg);
+
+	virtual void ProcessMessage(WndMsg &msg);
+
 // utility functions
 
 private:

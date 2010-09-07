@@ -67,6 +67,37 @@ void ProfileView::Show()
 		throw std::exception("Window creation failed.");
 }
 
+//------------------------
+// window message handlers
+//------------------------
+
+void ProfileView::OnKeyUp(Msg<WM_KEYUP> & msg)
+{
+	if (msg.VKey() == 0x1b)
+	{
+		SignalClose();
+		msg.handled_ = true;
+	}
+}
+
+void ProfileView::ProcessMessage(WndMsg &msg)
+{
+	static Handler mmp[] =
+	{
+		&ProfileView::OnKeyUp,
+	};
+	try
+	{
+		if (!Handler::Call(mmp, this, msg))
+			__super::ProcessMessage(msg);
+	}
+	catch (const std::exception & e)
+	{
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
+		throw e;
+	}
+}
+
 //------------------
 // utility functions
 //------------------

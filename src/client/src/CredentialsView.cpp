@@ -231,6 +231,15 @@ void CredentialsView::OnCommand(Msg<WM_COMMAND> & msg)
 	}
 }
 
+void CredentialsView::OnKeyUp(Msg<WM_KEYUP> & msg)
+{
+	if (msg.VKey() == 0x1b)
+	{
+		SignalCancel();
+		msg.handled_ = true;
+	}
+}
+
 void CredentialsView::OnSettingChange(Msg<WM_SETTINGCHANGE> & msg)
 {
 	if (msg.Flag() == SPI_SETSIPINFO)
@@ -246,6 +255,7 @@ void CredentialsView::ProcessMessage(WndMsg &msg)
 	{
 		&CredentialsView::OnActivate,
 		&CredentialsView::OnCommand,
+		&CredentialsView::OnKeyUp,
 		&CredentialsView::OnSettingChange,
 	};
 	try

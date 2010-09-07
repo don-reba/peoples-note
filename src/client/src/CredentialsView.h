@@ -66,6 +66,7 @@ private:
 
 	void OnActivate      (Msg<WM_ACTIVATE>      & msg);
 	void OnCommand       (Msg<WM_COMMAND>       & msg);
+	void OnKeyUp         (Msg<WM_KEYUP>         & msg);
 	void OnSettingChange (Msg<WM_SETTINGCHANGE> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
