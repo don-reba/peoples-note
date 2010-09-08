@@ -5,43 +5,148 @@
 	<title>People's Note</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 	<meta name="description" content="People's Note is a Windows Mobile note taking application with full-featured Evernote integration and a great look.">
-	<link href="main.css" rel="stylesheet" type="text/css" media="all">
+	<link href="css/main.css" rel="stylesheet" type="text/css" media="all">
 	<style type="text/css">
-		#content
+		#logo
 		{
-			padding-left : 48px;
+			padding-right: 48px;
+		}
+		#download
+		{
+			margin-top: 1.5em;
 		}
 		#download p
 		{
-			margin-top    : 0.25em;
-			margin-bottom : 0.25em;
 			text-align    : center;
 		}
 		p
 		{
 			font-size  : 1.2em;
+			margin     : 0.25em;
+		}
+
+		#slideshow-container
+		{
+			position : relative;
+			width    : 240px;
+		}
+		#loading
+		{
+			height   : 320px;
+			left     : 0px;
+			overflow : hidden;
+			position : absolute;
+			top      : 0px;
+			width    : 240px;
+			background: url('img/loader.gif') no-repeat center;
+		}
+		#slideshow
+		{
+			height   : 320px;
+			left     : 0px;
+			overflow : hidden;
+			position : absolute;
+			top      : 0px;
+			width    : 240px;
+		}
+		#caption
+		{
+			left       : 0px;
+			position   : absolute;
+			top        : 330px;
+			width      : 240px;
+			font       : 1em "Trebuchet MS";
+			text-align : center;
+		}
+		#thumbs
+		{
+			padding-right: 64px;
+		}
+		#slideshow span.image-wrapper {
+			display  : block;
+			left     : 0;
+			position : absolute;
+			top      : 0;
+		}
+		#caption span.image-caption {
+			display  : block;
+			left     : 0;
+			position : absolute;
+			top      : 0;
+			width    : 240px;
 		}
 	</style>
+	<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="js/jquery.galleriffic.js"></script>
 </head>
 <body>
 
-<h1>People's Note</h1>
+	<h1>People's Note</h1>
 
-<table cellspacing="0px" cellpadding="0px" border="0px">
-	<tr>
-		<td class="logo">
-			<img src="img/main_logo.png" alt="logo">
-		</td>
-		<td id="content">
-			<p>People's Note is a Windows Mobile note taking application with full-featured Evernote integration and a great look.</p>
-			<div id="download">
-				<p><a href="https://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=SmartModManager"><img src="img/download.png" alt="Download"></a></p>
-				<p><a href="screenshots.html">Screenshots</a></p>
-				<p><a href="details.html">More Information</a></p>
-			</div>
-		</td>
-	</tr>
-</table>
+	<table>
+		<tr>
+			<td id="logo">
+				<img src="img/main_logo.png" alt="logo">
+			</td>
+			<td id="content">
+				<p>People's Note is a Windows Mobile note taking application with full-featured Evernote integration and a great look.</p>
+				<div id="download">
+					<p><a href="https://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=SmartModManager"><img src="img/download.png" alt="Download"></a></p>
+					<p><a href="http://peoplesnote.codeplex.com/">More Information</a></p>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<hr/>
+	<table>
+		<tr valign="top">
+			<td>
+				<div id="thumbs" class="navigation">
+					<ul class="thumbs">
+						<li>
+							<a class="thumb" href="screenshots/design.png">Overall design</a>
+							<div class="caption">Take your notes with you</div>
+						</li>
+						<li>
+							<a class="thumb" href="screenshots/fps.png">Viewing notes</a>
+							<div class="caption">View notes with all their formatting</div>
+						</li>
+						<li>
+							<a class="thumb" href="screenshots/fps.png">Editing</a>
+							<div class="caption">Edit notes easily</div>
+						</li>
+						<li>
+							<a class="thumb" href="screenshots/fps.png">Evernote support</a>
+							<div class="caption">You can login to Evernote, but you don't have to</div>
+						</li>
+						<li>
+							<a class="thumb" href="screenshots/fps.png">Online synchronization</a>
+							<div class="caption">Synchronize with Evernote whenever convenient</div>
+						</li>
+					</ul>
+				</div>
+			</td>
+			<td valigh="top">
+				<div id="slideshow-container" class="content">
+					<div id="loading"></div>
+					<div id="slideshow"></div>
+					<div id="caption"></div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+		$(document).ready(function() {				
+			// initialize gallery
+			$('#thumbs').galleriffic({
+				preloadAhread:       10,
+				imageContainerSel:   '#slideshow',
+				captionContainerSel: '#caption',
+				loadingContainerSel: '#loading',
+				syncTransitions:     true
+			});
+		});
+	</script>
 </body>
 </html>
 
