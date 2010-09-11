@@ -1247,7 +1247,6 @@
 			</File>
 			<File
 				RelativePath=".\html\profile.htm"
-				DeploymentContent="true"
 				>
 			</File>
 			<File
