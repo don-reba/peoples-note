@@ -2074,4 +2074,10 @@ screenshot notes
 		nature photo
 sync button is not reenabled on failure
 	signing out, then back in crashes the app
-	TODO
+		last used notebook was not set
+			should this even lead to an exception?
+			there has to be another notebook
+				or if there is not
+				could create one
+		should add a test for this
+			TODO

@@ -70,6 +70,7 @@ void SyncModel::ProcessMessages()
 		case SyncMessageQueue::MessageSyncFailed:
 			statusText = L"Tried to sync, but something went wrong.";
 			SignalStatusUpdated();
+			SignalSyncComplete();
 			break;
 		case SyncMessageQueue::MessageSyncProgress:
 			syncProgress = message.Value;
