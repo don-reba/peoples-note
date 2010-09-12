@@ -4,62 +4,70 @@
 <head>
 	<title>People's Note</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<meta name="description" content="People's Note is a Windows Mobile note taking application with full-featured Evernote integration and a great look.">
-	<link href="css/main.css" rel="stylesheet" type="text/css" media="all">
+	<meta name="description" content="People's Note is a polished Windows Mobile note taking application with full-featured Evernote integration.">
 	<style type="text/css">
-		#logo
-		{
-			padding-right: 48px;
+		body {
+			font-family  : Candara, "Trebuchet MS";
+			margin-left  : auto;
+			margin-right : auto;
+			margin-top   : 1em;
+			width        : 34em;
 		}
-		#download
-		{
-			margin-top: 1.5em;
+		h1 {
+			font-size  : 3em;
+			text-align : center;
 		}
-		#download p
-		{
-			text-align    : center;
-		}
-		p
-		{
-			font-size  : 1.2em;
-			margin     : 0.25em;
+		img {
+			border : none;
 		}
 
-		#slideshow-container
-		{
-			position : relative;
-			width    : 240px;
+		#content {
+			text-align: center;
 		}
-		#loading
-		{
+		#description {
+			font-size  : 1.2em;
+			text-align : justify;
+		}
+		#logo {
+			padding-right: 48px;
+		}
+		#download {
+			margin-top: 1.5em;
+		}
+		#download p {
+			text-align    : center;
+		}
+
+		#slideshow-container {
+			position : relative;
+			width    : 245px;
+		}
+		#loading {
 			height   : 320px;
 			left     : 0px;
 			overflow : hidden;
 			position : absolute;
 			top      : 0px;
-			width    : 240px;
+			width    : 245px;
 			background: url('img/loader.gif') no-repeat center;
 		}
-		#slideshow
-		{
+		#slideshow {
 			height   : 320px;
 			left     : 0px;
 			overflow : hidden;
 			position : absolute;
 			top      : 0px;
-			width    : 240px;
+			width    : 245px;
 		}
-		#caption
-		{
+		#caption {
 			left       : 0px;
 			position   : absolute;
 			top        : 330px;
-			width      : 240px;
+			width      : 245px;
 			font       : 1em "Trebuchet MS";
 			text-align : center;
 		}
-		#thumbs
-		{
+		#thumbs {
 			padding-right: 64px;
 		}
 		#slideshow span.image-wrapper {
@@ -73,7 +81,7 @@
 			left     : 0;
 			position : absolute;
 			top      : 0;
-			width    : 240px;
+			width    : 245px;
 		}
 	</style>
 	<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
@@ -83,45 +91,40 @@
 
 	<h1>People's Note</h1>
 
-	<table>
+	<table cellspacing=0 cellpadding=0>
 		<tr>
 			<td id="logo">
 				<img src="img/main_logo.png" alt="logo">
 			</td>
 			<td id="content">
-				<p>People's Note is a Windows Mobile note taking application with full-featured Evernote integration and a great look.</p>
-				<div id="download">
-					<p><a href="https://www.codeplex.com/Release/ProjectReleases.aspx?ProjectName=SmartModManager"><img src="img/download.png" alt="Download"></a></p>
-					<p><a href="http://peoplesnote.codeplex.com/">More Information</a></p>
+				<div id="description">People's Note is a polished Windows Mobile note taking application with full-featured Evernote integration.</div>
+				<div id="download"><a href="http://peoplesnote.codeplex.com/releases"><img src="img/download.png" alt="Download"></a></div>
+					<div id="more-information"><a href="http://peoplesnote.codeplex.com/">More Information</a></div>
 				</div>
 			</td>
 		</tr>
 	</table>
 	<hr/>
-	<table>
+	<table cellspacing=0 cellpadding=0>
 		<tr valign="top">
 			<td>
 				<div id="thumbs" class="navigation">
 					<ul class="thumbs">
 						<li>
-							<a class="thumb" href="screenshots/design.png">Overall design</a>
-							<div class="caption">Take your notes with you</div>
+							<a class="thumb" href="screenshots\list.png">Notebook</a>
+							<div class="caption">Take your notes with you, quickly capture ideas or find memories.</div>
 						</li>
 						<li>
-							<a class="thumb" href="screenshots/fps.png">Viewing notes</a>
-							<div class="caption">View notes with all their formatting</div>
+							<a class="thumb" href="screenshots\note_view.png">Viewing notes</a>
+							<div class="caption">View notes with all their formatting intact in full screen mode.</div>
 						</li>
 						<li>
-							<a class="thumb" href="screenshots/fps.png">Editing</a>
-							<div class="caption">Edit notes easily</div>
+							<a class="thumb" href="screenshots\note_editor.png">Editing</a>
+							<div class="caption">Edit notes easily, add formatting and TODO checkboxes.</div>
 						</li>
 						<li>
-							<a class="thumb" href="screenshots/fps.png">Evernote support</a>
-							<div class="caption">You can login to Evernote, but you don't have to</div>
-						</li>
-						<li>
-							<a class="thumb" href="screenshots/fps.png">Online synchronization</a>
-							<div class="caption">Synchronize with Evernote whenever convenient</div>
+							<a class="thumb" href="screenshots/evernote.png">Evernote support</a>
+							<div class="caption">You can sign into Evernote to sync your notes over internet, but you don't have to.</div>
 						</li>
 					</ul>
 				</div>
