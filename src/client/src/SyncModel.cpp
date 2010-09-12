@@ -14,7 +14,6 @@
 #include "SyncLogic.h"
 #include "TagProcessor.h"
 #include "Tools.h"
-#include "Transaction.h"
 
 #include <algorithm>
 #include <sstream>

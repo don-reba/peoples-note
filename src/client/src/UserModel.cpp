@@ -373,6 +373,8 @@ __int64 UserModel::GetLastSyncEnTime()
 
 void UserModel::GetLastUsedNotebook(Notebook & notebook)
 {
+	Transaction transaction(*this);
+
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, usn, name, isDirty"
 		"  FROM Notebooks"
@@ -380,7 +382,11 @@ void UserModel::GetLastUsedNotebook(Notebook & notebook)
 		"  LIMIT 1"
 		);
 	if (statement->Execute())
-		throw std::exception("No last used notebook.");
+	{
+		GetFirstNotebook(notebook);
+		MakeNotebookLastUsed(notebook);
+		return;
+	}
 	wstring guidString;
 	statement->Get(0, guidString);
 	statement->Get(1, notebook.usn);
@@ -922,6 +928,34 @@ wstring UserModel::CreatePathFromName(wstring name)
 void UserModel::CreateTable(const char * sql)
 {
 	dataStore.MakeStatement(sql)->Execute();
+}
+
+void UserModel::GetFirstNotebook(Notebook & notebook)
+{
+	Transaction transaction(*this);
+
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT   guid, usn, name, isDirty"
+		"  FROM     Notebooks"
+		"  ORDER BY name"
+		"  LIMIT    1"
+		);
+	if (statement->Execute())
+	{
+		notebook.guid    = Guid();
+		notebook.name    = L"Notes";
+		notebook.isDirty = true;
+		notebook.usn     = GetUpdateCount();
+		AddNotebook(notebook);
+		MakeNotebookDefault(notebook);
+		MakeNotebookLastUsed(notebook);
+	}
+	wstring guidString;
+	statement->Get(0, guidString);
+	statement->Get(1, notebook.usn);
+	statement->Get(2, notebook.name);
+	statement->Get(3, notebook.isDirty);
+	notebook.guid = guidString;
 }
 
 void UserModel::Initialize(wstring name)

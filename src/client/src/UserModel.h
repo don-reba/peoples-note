@@ -186,6 +186,8 @@ private:
 
 	void CreateTable(const char * sql);
 
+	void GetFirstNotebook(Notebook & notebook);
+
 	template<typename T>
 	void GetProperty(const std::wstring & name, T & value);
 

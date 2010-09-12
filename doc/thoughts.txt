@@ -2060,3 +2060,18 @@ don't need to list notes for local notebooks
 	currently, only the Guid is available
 		should be enough
 	TODO
+screenshot notes
+	should use distinctive notes
+	lets look EN's screenshots
+		mostly untitled notes
+		many pictures
+	only need five notes or so
+		√ city place photo
+		√ TODO list
+		√ web clip
+		√ product photo
+		food photo
+		nature photo
+sync button is not reenabled on failure
+	signing out, then back in crashes the app
+	TODO
