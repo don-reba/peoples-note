@@ -279,6 +279,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockProfileView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockRegistryKey.cpp"
 				>
 			</File>
@@ -316,6 +320,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\NoteProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\ProfilePresenter.cpp"
 				>
 			</File>
 			<File
@@ -421,6 +429,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestNoteProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestProfilePresenter.cpp"
 				>
 			</File>
 			<File
@@ -543,6 +555,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockNoteView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockProfileView.h"
 				>
 			</File>
 			<File

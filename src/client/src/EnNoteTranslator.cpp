@@ -2,6 +2,7 @@
 #include "EnNoteTranslator.h"
 
 #include "RapidXml/rapidxml_print.hpp"
+#include "Tools.h"
 
 #include "windows.h"
 
@@ -38,7 +39,9 @@ void EnNoteTranslator::ConvertToHtml
 	ProcessNode(doc.get(), doc.get(), xmlTransforms);
 
 	html.clear();
-	print(back_inserter(html), *doc, print_no_indenting);
+	print(back_inserter(html), *doc, print_no_indenting | print_no_char_expansion);
+	// apostropies are escaped in XML, but not in HTML
+	Tools::ReplaceAll(html, L"&apos;", L"'");
 }
 
 void EnNoteTranslator::ConvertToXml
@@ -53,7 +56,7 @@ void EnNoteTranslator::ConvertToXml
 	ProcessNode(doc.get(), doc.get(), htmlTransforms);
 
 	xml = L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n";
-	print(back_inserter(xml), *doc, print_no_indenting);
+	print(back_inserter(xml), *doc, print_no_indenting | print_no_char_expansion);
 }
 
 //------------------

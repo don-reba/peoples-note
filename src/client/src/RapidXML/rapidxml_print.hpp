@@ -20,7 +20,8 @@ namespace rapidxml
     ///////////////////////////////////////////////////////////////////////
     // Printing flags
 
-    const int print_no_indenting = 0x1;   //!< Printer flag instructing the printer to suppress indenting of XML. See print() function.
+    const int print_no_indenting      = 0x1;   //!< Printer flag instructing the printer to suppress indenting of XML. See print() function.
+	const int print_no_char_expansion = 0x2;   //!< Printer flag mirroring the parser flag parse_no_entity_translation
 
     ///////////////////////////////////////////////////////////////////////
     // Internal
@@ -44,8 +45,10 @@ namespace rapidxml
         // Copy characters from given range to given output iterator and expand
         // characters into references (&lt; &gt; &apos; &quot; &amp;)
         template<class OutIt, class Ch>
-        inline OutIt copy_and_expand_chars(const Ch *begin, const Ch *end, Ch noexpand, OutIt out)
+        inline OutIt copy_and_expand_chars(const Ch *begin, const Ch *end, Ch noexpand, OutIt out, int flags)
         {
+			if (flags & print_no_char_expansion)
+				return copy_chars(begin, end, out);
             while (begin != end)
             {
                 if (*begin == noexpand)
@@ -189,13 +192,13 @@ namespace rapidxml
                     if (find_char<Ch, Ch('"')>(attribute->value(), attribute->value() + attribute->value_size()))
                     {
                         *out = Ch('\''), ++out;
-                        out = copy_and_expand_chars(attribute->value(), attribute->value() + attribute->value_size(), Ch('"'), out);
+                        out = copy_and_expand_chars(attribute->value(), attribute->value() + attribute->value_size(), Ch('"'), out, flags);
                         *out = Ch('\''), ++out;
                     }
                     else
                     {
                         *out = Ch('"'), ++out;
-                        out = copy_and_expand_chars(attribute->value(), attribute->value() + attribute->value_size(), Ch('\''), out);
+                        out = copy_and_expand_chars(attribute->value(), attribute->value() + attribute->value_size(), Ch('\''), out, flags);
                         *out = Ch('"'), ++out;
                     }
                 }
@@ -210,7 +213,7 @@ namespace rapidxml
             assert(node->type() == node_data);
             if (!(flags & print_no_indenting))
                 out = fill_chars(out, indent, Ch('\t'));
-            out = copy_and_expand_chars(node->value(), node->value() + node->value_size(), Ch(0), out);
+            out = copy_and_expand_chars(node->value(), node->value() + node->value_size(), Ch(0), out, flags);
             return out;
         }
 
@@ -267,12 +270,12 @@ namespace rapidxml
                 if (!child)
                 {
                     // If node has no children, only print its value without indenting
-                    out = copy_and_expand_chars(node->value(), node->value() + node->value_size(), Ch(0), out);
+                    out = copy_and_expand_chars(node->value(), node->value() + node->value_size(), Ch(0), out, flags);
                 }
                 else if (child->next_sibling() == 0 && child->type() == node_data)
                 {
                     // If node has a sole data child, only print its value without indenting
-                    out = copy_and_expand_chars(child->value(), child->value() + child->value_size(), Ch(0), out);
+                    out = copy_and_expand_chars(child->value(), child->value() + child->value_size(), Ch(0), out, flags);
                 }
                 else
                 {

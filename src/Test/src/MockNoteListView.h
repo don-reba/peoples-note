@@ -57,6 +57,7 @@ public:
 	signal SignalOpenNote;
 	signal SignalPageDown;
 	signal SignalPageUp;
+	signal SignalProfile;
 	signal SignalSearch;
 	signal SignalSignIn;
 	signal SignalSync;
@@ -94,6 +95,8 @@ public:
 	virtual void ConnectPageDown(slot_type OnPageDown);
 
 	virtual void ConnectPageUp(slot_type OnPageUp);
+
+	virtual void ConnectProfile(slot_type OnProfile);
 
 	virtual void ConnectSearch(slot_type OnSearch);
 

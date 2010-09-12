@@ -87,6 +87,11 @@ void MockNoteListView::ConnectPageUp(slot_type OnPageUp)
 	SignalPageUp.connect(OnPageUp);
 }
 
+void MockNoteListView::ConnectProfile(slot_type OnProfile)
+{
+	SignalProfile.connect(OnProfile);
+}
+
 void MockNoteListView::ConnectSearch(slot_type OnSearch)
 {
 	SignalSearch.connect(OnSearch);

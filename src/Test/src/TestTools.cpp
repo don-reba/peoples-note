@@ -88,6 +88,25 @@ BOOST_AUTO_TEST_CASE(ToolsDecodeBase64)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(ToolsReplaceAll)
+{
+	wstring test;
+
+	Tools::ReplaceAll(test, L"", L".");
+	BOOST_CHECK_EQUAL(test, L"");
+
+	Tools::ReplaceAll(test, L".", L"");
+	BOOST_CHECK_EQUAL(test, L"");
+	
+	test = L"&amp;--&amp;--&amp;";
+
+	Tools::ReplaceAll(test, L"&amp;", L"'");
+	BOOST_CHECK_EQUAL(test, L"'--'--'");
+
+	Tools::ReplaceAll(test, L"'", L"&amp;");
+	BOOST_CHECK_EQUAL(test, L"&amp;--&amp;--&amp;");
+}
+
 BOOST_AUTO_TEST_CASE(ToolsStartsWith)
 {
 	BOOST_CHECK(!Tools::StartsWith(NULL, L""));

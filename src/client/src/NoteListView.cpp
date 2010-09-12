@@ -551,7 +551,7 @@ void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 	if (state == StateDragging)
 	{
 		int distance = msg.Position().y - lButtonDownY;
-		if (8 < abs(distance))
+		if (12 < abs(distance))
 		{
 			startScrollPos = GetNoteListScrollPos();
 

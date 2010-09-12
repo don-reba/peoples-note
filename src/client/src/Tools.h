@@ -28,6 +28,12 @@ namespace Tools
 
 	std::wstring LoadStringResource(int id);
 
+	void ReplaceAll
+		(       std::wstring & str
+		, const std::wstring & target
+		, const std::wstring & replacement
+		);
+
 	bool StartsWith(const wchar_t * text, const wchar_t * prefix);
 
 	void UnixTimeToFileTime

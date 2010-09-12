@@ -434,6 +434,22 @@ wstring Tools::LoadStringResource(int id)
 	return &str[0];
 }
 
+void Tools::ReplaceAll
+	(       wstring & str
+	, const wstring & target
+	, const wstring & replacement
+	)
+{
+	if (target.empty())
+		return;
+	size_t i(str.find(target));
+	while(i != wstring::npos)
+	{
+		str.replace(i, target.length(), replacement);
+		i = str.find(target, i + replacement.length());
+	}
+}
+
 bool Tools::StartsWith(const wchar_t * text, const wchar_t * prefix)
 {
 	if (!(text && prefix))

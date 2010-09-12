@@ -11,6 +11,9 @@ gfx
 "src\client"
 	Source code for the main People's Note client project.
 
+"src\client\src\rapidxml"
+	Our custom version of RapidXML. The official version contains a known crash bug.
+
 "src\MobileTest"
 	Those unit tests for People's Note that need to run in a WinCE environment.
 

@@ -2081,3 +2081,14 @@ sync button is not reenabled on failure
 				could create one
 		should add a test for this
 			TODO
+something is wrong with scrolling
+	TODO
+claim note title is shown incorrectly
+	its just too long
+in note view, apostrophies are not translated
+	they are translated in XML, but not in HTML
+	they amperstand in &apos; gets encoded somehow
+		XML->HTML conversion should not encode symbols
+		the parser performs no entity translation
+		the printer does
+	TODO
