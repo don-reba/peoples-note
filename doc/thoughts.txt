@@ -2022,7 +2022,7 @@ note editor checkbox changes are not persisted
 	c-smile said he'd fix this
 	TODO
 links should open in a browser
-	TODO
+	fixed
 sync counter is not updated after a note is edited
 	reloading the list fixes this
 internet address could not be resolved
