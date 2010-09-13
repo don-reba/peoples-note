@@ -16,10 +16,12 @@ InstrumentationPresenter::InstrumentationPresenter
 	: animator     (animator)
 	, noteListView (noteListView)
 {
+#ifdef INSTRUMENTATION_ON
 	animator.ConnectAnimationCompleted(bind
 		( &InstrumentationPresenter::OnAnimationCompleted
 		, this
 		));
+#endif // INSTRUMENTATION_ON
 }
 
 void InstrumentationPresenter::OnAnimationCompleted()

@@ -2091,4 +2091,4 @@ in note view, apostrophies are not translated
 		XML->HTML conversion should not encode symbols
 		the parser performs no entity translation
 		the printer does
-	TODO
+	this also fixed other translation bugs
