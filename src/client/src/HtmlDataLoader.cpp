@@ -40,9 +40,10 @@ bool HtmlDataLoader::LoadFromUri(const wchar_t * uri)
 	{
 		switch (ClassifyUri(uri))
 		{
-		case UriTypeThumbnail: LoadThumbnailUri (uri); return true;
-		case UriTypeResource:  LoadResourceUri  (uri); return true;
 		case UriTypeHtml:      LoadHtmlUri      (uri); return true;
+		case UriTypeHttp:      LoadHttpUri      (uri); return true;
+		case UriTypeResource:  LoadResourceUri  (uri); return true;
+		case UriTypeThumbnail: LoadThumbnailUri (uri); return true;
 		}
 	}
 	catch (const std::exception & e)
@@ -61,6 +62,8 @@ HtmlDataLoader::UriType HtmlDataLoader::ClassifyUri(const wchar_t * uri)
 		return UriTypeThumbnail;
 	if (IsPrefix(uri, colonPosition, L"img"))
 		return UriTypeResource;
+	if (IsPrefix(uri, colonPosition, L"http"))
+		return UriTypeHttp;
 	return UriTypeUnknown;
 }
 
@@ -86,6 +89,17 @@ void HtmlDataLoader::LoadHtmlUri(const wchar_t * uri)
 {
 	HtmlResource resource(LoadHtmlResource(uri));
 	blob.assign(resource.data, resource.data + resource.size);
+}
+
+void HtmlDataLoader::LoadHttpUri(const wchar_t * uri)
+{
+	blob.clear();
+
+	SHELLEXECUTEINFO info = { sizeof(info) };
+	info.fMask  = SEE_MASK_FLAG_NO_UI | SEE_MASK_NOCLOSEPROCESS;
+	info.lpVerb = L"open";
+	info.lpFile = uri;
+	::ShellExecuteEx(&info);
 }
 
 void HtmlDataLoader::LoadResourceUri(const wchar_t * uri)

@@ -14,6 +14,7 @@ private:
 	enum UriType
 	{
 		UriTypeHtml,
+		UriTypeHttp,
 		UriTypeResource,
 		UriTypeThumbnail,
 		UriTypeUnknown,
@@ -52,6 +53,7 @@ private:
 		);
 
 	void LoadHtmlUri      (const wchar_t * uri);
+	void LoadHttpUri      (const wchar_t * uri);
 	void LoadResourceUri  (const wchar_t * uri);
 	void LoadThumbnailUri (const wchar_t * uri);
 };

@@ -204,8 +204,16 @@ BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 	SignalLoadHtmlData();
 	if (UseHtmlData())
 	{
-		params->outData     = const_cast<BYTE*>(htmlData);
-		params->outDataSize = htmlDataSize;
+		if (htmlDataSize > 0)
+		{
+			params->outData     = const_cast<BYTE*>(htmlData);
+			params->outDataSize = htmlDataSize;
+			return LOAD_OK;
+		}
+		else
+		{
+			return LOAD_DISCARD;
+		}
 	}
 	return LOAD_OK;
 }
