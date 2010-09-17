@@ -1,6 +1,3 @@
-// SetupDll.cpp : Defines the entry point for the DLL application.
-//
-
 #include "stdafx.h"
 #include "ce_setup.h"
 
@@ -88,11 +85,8 @@ void CreateShortcut(HWND hwndParent, LPCTSTR pszInstallDir)
 	::SHGetSpecialFolderPath(hwndParent, shortcutPath, CSIDL_PROGRAMS , false); 
 	wsprintf(shortcutPath, _T("%s\\%s.lnk"), shortcutPath, appName);
 
-	// CSIDL_PROGRAM_FILES == \Program Files
-	wchar_t programFilesPath[MAX_PATH];
-	::SHGetSpecialFolderPath(hwndParent, programFilesPath, CSIDL_PROGRAM_FILES, false);
 	wchar_t targetPath[MAX_PATH];
-	wsprintf(targetPath, L"\"%s\\%s\\pnote.exe\"", programFilesPath, appName);
+	wsprintf(targetPath, L"\"%s\\pnote.exe\"", pszInstallDir);
 
 	::SHCreateShortcut(shortcutPath, targetPath);
 }
