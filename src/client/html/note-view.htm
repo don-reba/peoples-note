@@ -3,37 +3,49 @@
 		<style>
 			body
 			{
-				background-color: white;
-				margin:           0px;
-				padding:          0px;
+				background-color : white;
+				margin           : 0px;
+				padding          : 0px;
 			}
 			#title
 			{
-				font-size: 1.2em;
+				font-size : 1.2em;
 			}
 			#subtitle
 			{
-				font-size: 0.8em;
+				font-size : 0.8em;
 			}
 			#body
 			{
-				width:  100%%;
-				height: 100%%;
+				width   : 100%%;
+				height  : 100%%;
+				padding : 0 0 72px 0;
 			}
 			#tools
 			{
-				flow:       horizontal;
-				bottom:     0px;
-				position:   fixed;
-				width:      100%;
+				flow     : horizontal;
+				bottom   : 0px;
+				position : fixed;
+				width    : 100%;
 			}
 			#tools button
 			{
-				background-color: silver;
-				background-image: none;
-				margin:           0px;
-				opacity:          0.75;
-				padding:          0px;
+				height  : 72px;
+				margin  : 0px;
+				padding : 0px;
+				width   : 72px;
+			}
+			#home
+			{
+				background : url(home.png);
+			}
+			#edit
+			{
+				background : url(edit.png);
+			}
+			#full-screen
+			{
+				background : url(view-fullscreen.png);
 			}
 			#tools .spacer
 			{
@@ -46,11 +58,11 @@
 		<div #subtitle />
 		<div #body />
 		<div #tools>
-			<button #home><img src="home.png" /></button>
+			<button #home />
 			<div .spacer />
-			<button #edit><img src="edit.png" /></button>
+			<button #edit />
 			<div .spacer />
-			<button #full-screen><img src="view-fullscreen.png" /></button>
+			<button #full-screen />
 		</div>
 	</body>
 </html>

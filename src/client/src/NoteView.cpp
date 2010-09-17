@@ -212,12 +212,12 @@ void NoteView::ToggleFullScreen()
 		, rect.bottom - rect.top
 		, TRUE
 		);
-	element img(FindFirstElement("#full-screen img"));
-	img.set_attribute
-		( "src"
+	element img(FindFirstElement("#full-screen"));
+	img.set_style_attribute
+		( "background-image"
 		, isFullScreen
-		? L"view-restore.png"
-		: L"view-fullscreen.png"
+		? L"url(view-restore.png)"
+		: L"url(view-fullscreen.png)"
 		);
 	img.update();
 }

@@ -45,21 +45,195 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3946"
-       id="linearGradient3745"
-       x1="-177.02544"
-       y1="653.14783"
-       x2="-177.02544"
-       y2="588.1322"
-       gradientUnits="userSpaceOnUse" />
+       id="linearGradient3067"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,-555.23672,69.969221)"
+       x1="892.76532"
+       y1="885.58661"
+       x2="892.76532"
+       y2="820.58478" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3946"
-       id="linearGradient3753"
+       xlink:href="#linearGradient3946-8"
+       id="linearGradient3067-6"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,-555.23672,69.969221)"
+       x1="892.76532"
+       y1="885.58661"
+       x2="892.76532"
+       y2="820.58478" />
+    <linearGradient
+       id="linearGradient3946-8">
+      <stop
+         style="stop-color:#e0e0e0;stop-opacity:1;"
+         offset="0"
+         id="stop3948-2" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop3950-6" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946-3"
+       id="linearGradient3049-2"
+       gradientUnits="userSpaceOnUse"
        x1="892.76532"
        y1="885.58661"
        x2="892.76532"
        y2="820.58478"
-       gradientUnits="userSpaceOnUse" />
+       gradientTransform="matrix(1.109375,0,0,1.109375,-757.50946,69.969218)" />
+    <linearGradient
+       id="linearGradient3946-3">
+      <stop
+         style="stop-color:#e0e0e0;stop-opacity:1;"
+         offset="0"
+         id="stop3948-7" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="1"
+         id="stop3950-3" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3153"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,229.31532,327.83099)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3155"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,-757.50946,69.969218)"
+       x1="892.76532"
+       y1="885.58661"
+       x2="892.76532"
+       y2="820.58478" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3157"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,229.31532,327.83099)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946-8"
+       id="linearGradient3201"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,-555.23672,69.969221)"
+       x1="892.76532"
+       y1="885.58661"
+       x2="892.76532"
+       y2="820.58478" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946-8"
+       id="linearGradient3219"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,-555.23672,69.969221)"
+       x1="892.76532"
+       y1="885.58661"
+       x2="892.76532"
+       y2="820.58478" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3823"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,829.31532,100.83099)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946-3"
+       id="linearGradient3831"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,-360.00945,-253.03078)"
+       x1="892.76532"
+       y1="885.58661"
+       x2="892.76532"
+       y2="820.58478" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3833"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,829.31532,100.83099)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3837"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,828.81532,100.83099)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3858"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,828.81532,4.33099)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3865"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,828.81532,-91.66901)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946-8"
+       id="linearGradient3869"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,-360.00945,-447.03078)"
+       x1="892.76532"
+       y1="885.58661"
+       x2="892.76532"
+       y2="820.58478" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3873"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,828.81532,-189.66901)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3891"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.109375,0,0,1.109375,828.81532,100.83099)"
+       x1="-177.02544"
+       y1="653.14783"
+       x2="-177.02544"
+       y2="588.1322" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -68,9 +242,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.93338095"
-     inkscape:cx="281.45705"
-     inkscape:cy="283.44225"
+     inkscape:zoom="1.1195857"
+     inkscape:cx="350.35061"
+     inkscape:cy="271.90069"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -89,7 +263,7 @@
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:snap-global="true"
-     inkscape:snap-page="true"
+     inkscape:snap-page="false"
      inkscape:bbox-paths="true">
     <inkscape:grid
        type="xygrid"
@@ -127,7 +301,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -162,54 +336,53 @@
          id="flowPara2912" /><flowPara
          id="flowPara2914">Eu vitae dui. Conubia non feugiat, nullam tristique, consectetuer et ornare. Morbi quis nisl. Sed in, nibh vestibulum. Aliquam at. Auctor arcu.</flowPara><flowPara
          id="flowPara2916" /><flowPara
-         id="flowPara2918">Dignissim hymenaeos, risus wisi, pede lorem. Elit vulputate nec. Volutpat purus, eget sodales, arcu ut. Eaque nullam, adipiscing ac. Massa convallis amet, tincidunt est, feugiat sed dui.</flowPara><flowPara
          id="flowPara2920" /></flowRoot>    <g
-       id="g2924"
-       transform="translate(-460.53861,166.77557)">
+       id="g3063"
+       transform="translate(-6.7727377,-2.6171874e-6)">
       <rect
          rx="12.5"
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
          inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
          ry="12.5"
-         y="821.08661"
-         x="865.81134"
-         height="64"
-         width="64"
+         y="980.86218"
+         x="405.27274"
+         height="71"
+         width="71"
          id="rect2832-4-1"
-         style="fill:url(#linearGradient3753);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:url(#linearGradient3067);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
          xlink:href="icons/view-fullscreen.png"
-         y="825.08661"
-         x="869.81134"
+         y="984.36218"
+         x="408.77274"
          id="image2997"
-         height="56"
-         width="56" />
+         height="64"
+         width="64" />
     </g>
     <g
-       id="g2928"
-       transform="translate(206.75606,399.21435)">
+       id="g3059"
+       transform="translate(-2.2649765e-6,-2.6171874e-6)">
       <rect
          rx="12.5"
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
          inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
          ry="12.5"
-         y="588.64783"
-         x="-206.25606"
-         height="64"
-         width="64"
+         y="980.86218"
+         x="0.50000226"
+         height="71"
+         width="71"
          id="rect2832-4"
-         style="fill:url(#linearGradient3745);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:url(#linearGradient3157);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
          xlink:href="icons/home.png"
-         y="592.64783"
-         x="-202.25606"
+         y="984.36218"
+         x="4.0000024"
          id="image3011"
-         height="56"
-         width="56" />
+         height="64"
+         width="64" />
     </g>
     <g
        id="g3740"
@@ -245,7 +418,7 @@
          ry="0"
          y="767.71906"
          x="321.23337"
-         height="580"
+         height="532.87476"
          width="10"
          id="rect2981"
          style="fill:#ffffff;fill-opacity:1;stroke:none" />
@@ -287,6 +460,113 @@
            x="-3.5975647"
            y="472.67676"
            style="font-style:normal;fill:#000000;-inkscape-font-specification:Bitstream Vera Sans">Created on 2010-04-18</tspan></text>
+    </g>
+    <g
+       id="g3069"
+       transform="translate(-3.5,0)">
+      <rect
+         style="fill:url(#linearGradient3155);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3041"
+         width="71"
+         height="71"
+         x="203"
+         y="980.86218"
+         ry="12.5"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-xdpi="360"
+         inkscape:export-ydpi="360"
+         rx="12.5" />
+      <image
+         width="64"
+         height="64"
+         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/edit.png"
+         id="image3036"
+         x="206.5"
+         y="984.36218" />
+    </g>
+    <g
+       id="g3883">
+      <rect
+         inkscape:export-ydpi="360"
+         inkscape:export-xdpi="360"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         y="657.36218"
+         x="600"
+         height="72"
+         width="72"
+         id="rect3856"
+         style="fill:url(#linearGradient3858);fill-opacity:1;stroke:none" />
+      <image
+         width="64"
+         height="64"
+         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/edit.png"
+         id="image3036-8"
+         x="604"
+         y="661.36218" />
+    </g>
+    <g
+       id="g3887"
+       transform="translate(0,0.49999738)">
+      <rect
+         style="fill:url(#linearGradient3891);fill-opacity:1;stroke:none"
+         id="rect3149"
+         width="72"
+         height="72"
+         x="600"
+         y="753.86218"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-xdpi="360"
+         inkscape:export-ydpi="360" />
+      <image
+         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
+         xlink:href="icons/home.png"
+         style="stroke:none"
+         width="64"
+         height="64"
+         id="image3151"
+         x="604.5"
+         y="757.86218" />
+    </g>
+    <g
+       id="g3875">
+      <rect
+         inkscape:export-ydpi="360"
+         inkscape:export-xdpi="360"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         y="463.36218"
+         x="600"
+         height="72"
+         width="72"
+         id="rect3871"
+         style="fill:url(#linearGradient3873);fill-opacity:1;stroke:none" />
+      <image
+         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
+         xlink:href="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
+         y="467.36218"
+         x="604"
+         id="image3199"
+         height="64"
+         width="64" />
+    </g>
+    <g
+       id="g3879">
+      <rect
+         style="fill:url(#linearGradient3865);fill-opacity:1;stroke:none"
+         id="rect3860"
+         width="72"
+         height="72"
+         x="600"
+         y="561.36218"
+         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-xdpi="360"
+         inkscape:export-ydpi="360" />
+      <image
+         width="64"
+         height="64"
+         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/view-restore.png"
+         id="image3211"
+         x="604"
+         y="565.36218" />
     </g>
   </g>
   <g
