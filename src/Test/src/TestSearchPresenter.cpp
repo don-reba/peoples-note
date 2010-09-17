@@ -8,6 +8,24 @@
 using namespace boost;
 using namespace std;
 
+struct SearchPresenterFixture
+{
+	MockNoteListModel noteListModel;
+	MockUserModel     userModel;
+	MockNoteListView  noteListView;
+
+	SearchPresenter searchPresenter;
+
+	SearchPresenterFixture()
+		: searchPresenter
+			( noteListModel
+			, userModel
+			, noteListView
+			)
+	{
+	}
+};
+
 Note MakeNote(const wchar_t * name)
 {
 	Note note;
@@ -15,13 +33,32 @@ Note MakeNote(const wchar_t * name)
 	return note;
 }
 
-BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
+BOOST_FIXTURE_TEST_CASE
+	( SearchPresenter_Clear_Test
+	, SearchPresenterFixture
+	)
 {
-	MockNoteListModel noteListModel;
-	MockUserModel     userModel;
-	MockNoteListView  noteListView;
-	SearchPresenter   searchPresenter(noteListModel, userModel, noteListView);
+	userModel.notes.push_back(MakeNote(L"note-0"));
+	userModel.notes.push_back(MakeNote(L"note-1"));
 
+	noteListView.isSearchButtonSetToSearch = false;
+
+	noteListView.searchString = L"search";
+	noteListView.SignalClearSearch();
+
+	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
+	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
+
+	BOOST_CHECK_EQUAL(noteListView.searchText, L"");
+	BOOST_CHECK(noteListView.isSearchButtonSetToSearch);
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( SearchPresenter_Search_Test
+	, SearchPresenterFixture
+	)
+{
 	userModel.notes.push_back(MakeNote(L"note-0"));
 	userModel.notes.push_back(MakeNote(L"note-1"));
 
@@ -33,15 +70,15 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_Search_Test1)
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
+
+	BOOST_CHECK(!noteListView.isSearchButtonSetToSearch);
 }
 
-BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
+BOOST_FIXTURE_TEST_CASE
+	( SearchPresenter_SearchReset_Test
+	, SearchPresenterFixture
+	)
 {
-	MockNoteListModel noteListModel;
-	MockUserModel     userModel;
-	MockNoteListView  noteListView;
-	SearchPresenter   searchPresenter(noteListModel, userModel, noteListView);
-
 	userModel.notes.push_back(MakeNote(L"note-0"));
 	userModel.notes.push_back(MakeNote(L"note-1"));
 
@@ -51,4 +88,6 @@ BOOST_AUTO_TEST_CASE(SearchPresenter_SearchReset_Test1)
 	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
 	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
+
+	BOOST_CHECK(noteListView.isSearchButtonSetToSearch);
 }

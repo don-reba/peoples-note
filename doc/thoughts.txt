@@ -2110,4 +2110,6 @@ some notes seem to not have the "value" attribute set
 the shortcut is not set correctly for memory card installations
 	TODO
 should add a button for clearing the search field
+	done
+search does not limit to the current notebook
 	TODO

@@ -4,12 +4,13 @@
 using namespace std;
 
 MockNoteListView::MockNoteListView()
-	: notesUpdated      (true)
-	, notebooksUpdated  (true)
-	, isPageDownVisible (false)
-	, isPageUpVisible   (false)
-	, isSyncButtonShown (false)
-	, isSyncEnabled     (true)
+	: notesUpdated              (true)
+	, notebooksUpdated          (true)
+	, isPageDownVisible         (false)
+	, isPageUpVisible           (false)
+	, isSearchButtonSetToSearch (true)
+	, isSyncButtonShown         (false)
+	, isSyncEnabled             (true)
 {
 }
 
@@ -50,6 +51,11 @@ void MockNoteListView::ClearNotes()
 void MockNoteListView::ConnectAbout(slot_type OnAbout)
 {
 	SignalAbout.connect(OnAbout);
+}
+
+void MockNoteListView::ConnectClearSearch(slot_type OnClearSearch)
+{
+	SignalClearSearch.connect(OnClearSearch);
 }
 
 void MockNoteListView::ConnectCreated(slot_type OnCreated)
@@ -95,6 +101,11 @@ void MockNoteListView::ConnectProfile(slot_type OnProfile)
 void MockNoteListView::ConnectSearch(slot_type OnSearch)
 {
 	SignalSearch.connect(OnSearch);
+}
+
+void MockNoteListView::ConnectSearchChanged(slot_type OnSearchChanged)
+{
+	SignalSearchChanged.connect(OnSearchChanged);
 }
 
 void MockNoteListView::ConnectSignIn(slot_type OnSignIn)
@@ -162,6 +173,21 @@ void MockNoteListView::SetProfileText(const wstring & text)
 void MockNoteListView::SetProgress(double fraction)
 {
 	progressFraction = fraction;
+}
+
+void MockNoteListView::SetSearchButtonToClear()
+{
+	isSearchButtonSetToSearch = false;
+}
+
+void MockNoteListView::SetSearchButtonToSearch()
+{
+	isSearchButtonSetToSearch = true;
+}
+
+void MockNoteListView::SetSearchText(const wstring & text)
+{
+	searchText = text;
 }
 
 void MockNoteListView::SetSigninText(const wstring & text)

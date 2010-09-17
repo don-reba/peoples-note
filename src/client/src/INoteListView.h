@@ -22,6 +22,8 @@ public:
 
 	virtual void ConnectAbout(slot_type OnAbout) = 0;
 
+	virtual void ConnectClearSearch(slot_type OnClearSearch) = 0;
+
 	virtual void ConnectImport(slot_type OnImport) = 0;
 
 	virtual void ConnectNewNote(slot_type OnNewNote) = 0;
@@ -37,6 +39,8 @@ public:
 	virtual void ConnectProfile(slot_type OnProfile) = 0;
 
 	virtual void ConnectSearch(slot_type OnSearch) = 0;
+
+	virtual void ConnectSearchChanged(slot_type OnSearchChanged) = 0;
 
 	virtual void ConnectSignIn(slot_type OnSignin) = 0;
 
@@ -67,6 +71,12 @@ public:
 	virtual void SetProfileText(const std::wstring & text) = 0;
 
 	virtual void SetProgress(double fraction) = 0;
+
+	virtual void SetSearchButtonToClear() = 0;
+
+	virtual void SetSearchButtonToSearch() = 0;
+
+	virtual void SetSearchText(const std::wstring & text) = 0;
 
 	virtual void SetSigninText(const std::wstring & text) = 0;
 

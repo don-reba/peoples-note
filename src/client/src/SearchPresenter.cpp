@@ -16,7 +16,20 @@ SearchPresenter::SearchPresenter
 	, userModel     (userModel)
 	, noteListView  (noteListView)
 {
-	noteListView.ConnectSearch(bind(&SearchPresenter::OnSearch, *this));
+	noteListView.ConnectClearSearch
+		(bind(&SearchPresenter::OnClearSearch, *this));
+
+	noteListView.ConnectSearch
+		(bind(&SearchPresenter::OnSearch, *this));
+
+	noteListView.ConnectSearchChanged
+		(bind(&SearchPresenter::OnSearchChanged, *this));
+}
+
+void SearchPresenter::OnClearSearch()
+{
+	noteListView.SetSearchText(L"");
+	ResetNotes();
 }
 
 void SearchPresenter::OnSearch()
@@ -28,8 +41,14 @@ void SearchPresenter::OnSearch()
 		SearchNotes(search);
 }
 
+void SearchPresenter::OnSearchChanged()
+{
+	noteListView.SetSearchButtonToSearch();
+}
+
 void SearchPresenter::ResetNotes()
 {
+	noteListView.SetSearchButtonToSearch();
 	Transaction transaction(userModel);
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
@@ -40,6 +59,7 @@ void SearchPresenter::ResetNotes()
 
 void SearchPresenter::SearchNotes(wstring search)
 {
+	noteListView.SetSearchButtonToClear();
 	Transaction transaction(userModel);
 	NoteList notes;
 	userModel.GetNotesBySearch(search, notes);

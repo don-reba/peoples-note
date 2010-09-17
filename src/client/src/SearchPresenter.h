@@ -22,7 +22,9 @@ public:
 
 private:
 
+	void OnClearSearch();
 	void OnSearch();
+	void OnSearchChanged();
 
 	void ResetNotes();
 

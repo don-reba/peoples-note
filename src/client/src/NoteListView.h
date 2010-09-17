@@ -12,6 +12,12 @@ class NoteListView : public HTMLayoutWindow, public INoteListView
 {
 private:
 
+	enum SearchButtonState
+	{
+		SearchButtonSearch,
+		SearchButtonClear,
+	};
+
 	enum State
 	{
 		StateIdle,
@@ -43,14 +49,16 @@ private:
 
 	Guid selectedNotebookGuid;
 
-	WndMsgPtr lButtonDown;
-	int       lButtonDownY;
-	int       startScrollPos;
-	double    dragSpeed;
-	int       startTime;
-	State     state;
+	WndMsgPtr         lButtonDown;
+	int               lButtonDownY;
+	int               startScrollPos;
+	double            dragSpeed;
+	int               startTime;
+	SearchButtonState searchButtonState;
+	State             state;
 
 	signal SignalAbout;
+	signal SignalClearSearch;
 	signal SignalImport;
 	signal SignalNewNote;
 	signal SignalNotebookSelected;
@@ -59,6 +67,7 @@ private:
 	signal SignalPageUp;
 	signal SignalProfile;
 	signal SignalSearch;
+	signal SignalSearchChanged;
 	signal SignalSignIn;
 	signal SignalSync;
 
@@ -96,6 +105,8 @@ public:
 
 	virtual void ConnectAbout(slot_type OnAbout);
 
+	virtual void ConnectClearSearch(slot_type OnClearSearch);
+
 	virtual void ConnectImport(slot_type OnImport);
 
 	virtual void ConnectNewNote(slot_type OnNewNote);
@@ -111,6 +122,8 @@ public:
 	virtual void ConnectProfile(slot_type OnProfile);
 
 	virtual void ConnectSearch(slot_type OnSearch);
+
+	virtual void ConnectSearchChanged(slot_type OnSearchChanged);
 
 	virtual void ConnectSignIn(slot_type OnSignin);
 
@@ -137,6 +150,12 @@ public:
 	virtual void SetProfileText(const std::wstring & text);
 
 	virtual void SetProgress(double fraction);
+
+	virtual void SetSearchButtonToClear();
+
+	virtual void SetSearchButtonToSearch();
+
+	virtual void SetSearchText(const std::wstring & text);
 
 	virtual void SetSigninText(const std::wstring & text);
 
@@ -170,6 +189,8 @@ private:
 
 	static bool IsChild(element child, element parent);
 
+	void OnSearch();
+
 	ATOM RegisterClass(std::wstring wndClass);
 
 	void SetNoteListScrollPos(int pos);
@@ -196,16 +217,17 @@ private:
 	virtual BOOL OnFocus (FOCUS_PARAMS * params);
 	virtual BOOL OnKey   (KEY_PARAMS   * params);
 
-	void OnMenuAbout    (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuExit     (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuImport   (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuNotebook (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuProfile  (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuSignIn   (BEHAVIOR_EVENT_PARAMS * params);
-	void OnNewText      (BEHAVIOR_EVENT_PARAMS * params);
-	void OnNote         (BEHAVIOR_EVENT_PARAMS * params);
-	void OnPageDown     (BEHAVIOR_EVENT_PARAMS * params);
-	void OnPageUp       (BEHAVIOR_EVENT_PARAMS * params);
-	void OnSearch       (BEHAVIOR_EVENT_PARAMS * params);
-	void OnSync         (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuAbout     (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuExit      (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuImport    (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuNotebook  (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuProfile   (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuSignIn    (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNewText       (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNote          (BEHAVIOR_EVENT_PARAMS * params);
+	void OnPageDown      (BEHAVIOR_EVENT_PARAMS * params);
+	void OnPageUp        (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSearch        (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSearchChanged (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSync          (BEHAVIOR_EVENT_PARAMS * params);
 };

@@ -44,6 +44,11 @@ sync
 search
 	√ when the user searches for a non-empty string, notebook should be filtered by full-text search
 	√ when the user searches for an empty string or whitespace, the note list should be reset
+	√ when the user searches for a non-empty string, the "search" button should be replaced by the "clear" button
+	√ when the user changes the search, the "clear" button should be replaced by the "search" button
+	√ when the user presses the "clear" button, the empty-string search should be performed
+	when the user presess the "back" button, the previous search should be performed
+	when no previous search is available, the "back" button should be grayed out
 note list navigation
 	√ when the user clicks on a note while the note list is still, note view for it should open up
 	√ when the user clicks on the note list while it is scrolling, the scrolling should stop
@@ -64,7 +69,6 @@ note view
 	when the user flicks the note right, the previous note should be displayed
 		unless the note is the first
 	√ when the user clicks a TODO checkbox, the checkbox should be toggled
-	when a TODO checkbox is ticked, a "reset" button should appear
 	√ when a note is closed, the TODO checkbox state is persisted
 	√ when a note is closed, its thumbnail should be updated
 notebooks

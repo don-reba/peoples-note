@@ -39,6 +39,7 @@ public:
 
 	double       progressFraction;
 	std::wstring profileText;
+	std::wstring searchText;
 	std::wstring signinText;
 	std::wstring statusText;
 	std::wstring syncText;
@@ -48,8 +49,10 @@ public:
 	bool isPageUpVisible;
 	bool isSyncButtonShown;
 	bool isSyncEnabled;
+	bool isSearchButtonSetToSearch;
 
 	signal SignalAbout;
+	signal SignalClearSearch;
 	signal SignalCreated;
 	signal SignalImport;
 	signal SignalNewNote;
@@ -59,6 +62,7 @@ public:
 	signal SignalPageUp;
 	signal SignalProfile;
 	signal SignalSearch;
+	signal SignalSearchChanged;
 	signal SignalSignIn;
 	signal SignalSync;
 
@@ -82,6 +86,8 @@ public:
 
 	virtual void ConnectAbout(slot_type OnAbout);
 
+	virtual void ConnectClearSearch(slot_type OnClearSearch);
+
 	virtual void ConnectCreated(slot_type OnCreated);
 
 	virtual void ConnectImport(slot_type OnImport);
@@ -99,6 +105,8 @@ public:
 	virtual void ConnectProfile(slot_type OnProfile);
 
 	virtual void ConnectSearch(slot_type OnSearch);
+
+	virtual void ConnectSearchChanged(slot_type OnSearchChanged);
 
 	virtual void ConnectSignIn(slot_type OnSignIn);
 
@@ -125,6 +133,12 @@ public:
 	virtual void SetProfileText(const std::wstring & text);
 
 	virtual void SetProgress(double fraction);
+
+	virtual void SetSearchButtonToClear();
+
+	virtual void SetSearchButtonToSearch();
+
+	virtual void SetSearchText(const std::wstring & text);
 
 	virtual void SetSigninText(const std::wstring & text);
 
