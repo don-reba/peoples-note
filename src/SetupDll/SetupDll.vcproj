@@ -512,6 +512,7 @@
 				AdditionalOptions=" /subsystem:windowsce,5.02"
 				OutputFile="$(OutDir)/SetupDll.dll"
 				LinkIncremental="1"
+				ModuleDefinitionFile="SetupDll.def"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/SetupDll.pdb"

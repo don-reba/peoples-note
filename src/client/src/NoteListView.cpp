@@ -513,9 +513,13 @@ void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 
 void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
-	element target(element::find_element(hwnd_, msg.Position()));
-	if (!IsChild(target, noteList))
+	clickTarget = element::find_element(hwnd_, msg.Position());
+	if (!IsChild(clickTarget, noteList))
+	{
+		if (clickTarget == noteList)
+			noteList.set_state(STATE_FOCUS);
 		return;
+	}
 
 	noteList.set_state(STATE_FOCUS);
 
@@ -668,13 +672,9 @@ void NoteListView::OnNewText(BEHAVIOR_EVENT_PARAMS * params)
 
 void NoteListView::OnNote(BEHAVIOR_EVENT_PARAMS * params)
 {
-	POINT point = { 0 };
-	::GetCursorPos(&point);
-	::ScreenToClient(hwnd_, &point);
-	element target(GetChild(noteList, noteList.find_element(hwnd_, point)));
-	if (target)
+	if (IsChild(clickTarget, noteList))
 	{
-		const wchar_t * value(target.get_attribute("value"));
+		const wchar_t * value(GetChild(noteList, clickTarget).get_attribute("value"));
 		if (value)
 		{
 			noteList.set_attribute("value", value);

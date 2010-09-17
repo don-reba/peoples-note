@@ -33,6 +33,7 @@ private:
 	HINSTANCE      instance;
 	DWORD          sipState;
 
+	element clickTarget;
 	element noteList;
 	element notebookList;
 	element listScroll;

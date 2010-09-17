@@ -2092,3 +2092,22 @@ in note view, apostrophies are not translated
 		the parser performs no entity translation
 		the printer does
 	this also fixed other translation bugs
+would be good to add encryption and decryption
+	nevernote uses RC2/ECB/NOPADDING
+		works in Crypto++
+	nevernote remembers previous passwords
+	TODO
+looks like the shortcut does not work for installation onto cards
+	TODO
+clicking notes does not work on WM 6
+	GetCursorPos does not work
+	need it to get the note element
+	can remember the note element in the WM_LBUTTONDOWN handler
+encrypted notes show up as gibberish
+	TODO
+some notes seem to not have the "value" attribute set
+	clickTarget was not necessarily a notedde
+the shortcut is not set correctly for memory card installations
+	TODO
+should add a button for clearing the search field
+	TODO

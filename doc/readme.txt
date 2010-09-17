@@ -18,7 +18,7 @@ gfx
 	Those unit tests for People's Note that need to run in a WinCE environment.
 
 "src\Test"
-	Those unit tests for People's Note that can be run in a Win32 environment.
+	Those unit tests for People's Note that can run in a Win32 environment.
 
 "src\CallDump"
 	Library used for profiling People's Note.
@@ -41,4 +41,4 @@ Inkscape 0.48
 Evernote Support
 ----------------
 
-In order to enable this, you need to get a developer API key from Evernote and set it in "src\client\src\API Key.h".
+In order to enable this, you need to get a developer API key from Evernote and set it in "src\client\src\API Key.h". Without it, the program will build and run, but won't be able to connect to Evernote's servers.

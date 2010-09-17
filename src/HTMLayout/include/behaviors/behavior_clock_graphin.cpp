@@ -111,7 +111,7 @@ struct graphin_clock: public canvas
     void draw_clock_hand( HELEMENT he, graphics& gx, UINT sx, UINT sy, double angle_degree, int hand )
     {
        dom::element self(he);
-       color c(0,0,0,0);
+       color c(255,0,0,0);
        int   hand_width_px;
 
        double radians = (2.0 * PI * (angle_degree - 90.0)) / 360.0 ;

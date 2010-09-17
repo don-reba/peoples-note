@@ -89,9 +89,10 @@ void CreateShortcut(HWND hwndParent, LPCTSTR pszInstallDir)
 	wsprintf(shortcutPath, _T("%s\\%s.lnk"), shortcutPath, appName);
 
 	// CSIDL_PROGRAM_FILES == \Program Files
+	wchar_t programFilesPath[MAX_PATH];
+	::SHGetSpecialFolderPath(hwndParent, programFilesPath, CSIDL_PROGRAM_FILES, false);
 	wchar_t targetPath[MAX_PATH];
-	::SHGetSpecialFolderPath(hwndParent, targetPath, CSIDL_PROGRAM_FILES, false); 
-	wsprintf(targetPath, L"\"%s\\%s\\%s.exe\"", targetPath, appName, appName);
+	wsprintf(targetPath, L"\"%s\\%s\\pnote.exe\"", programFilesPath, appName);
 
 	::SHCreateShortcut(shortcutPath, targetPath);
 }
