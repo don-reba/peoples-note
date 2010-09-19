@@ -1104,6 +1104,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html\encrypt.png"
+				>
+			</File>
+			<File
 				RelativePath=".\html\file-note.png"
 				>
 			</File>

@@ -100,6 +100,9 @@ BOOST_AUTO_TEST_CASE(ToolsReplaceAll)
 	
 	test = L"&amp;--&amp;--&amp;";
 
+	Tools::ReplaceAll(test, L"&amp;", L"&amp;");
+	BOOST_CHECK_EQUAL(test, L"&amp;--&amp;--&amp;");
+
 	Tools::ReplaceAll(test, L"&amp;", L"'");
 	BOOST_CHECK_EQUAL(test, L"'--'--'");
 

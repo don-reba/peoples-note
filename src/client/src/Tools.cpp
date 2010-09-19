@@ -440,7 +440,7 @@ void Tools::ReplaceAll
 	, const wstring & replacement
 	)
 {
-	if (target.empty())
+	if (target.empty() || target == replacement)
 		return;
 	size_t i(str.find(target));
 	while(i != wstring::npos)

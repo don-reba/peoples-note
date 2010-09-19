@@ -234,6 +234,28 @@
        y1="653.14783"
        x2="-177.02544"
        y2="588.1322" />
+    <filter
+       inkscape:collect="always"
+       id="filter3851"
+       x="-0.10399998"
+       width="1.208"
+       y="-0.08914287"
+       height="1.1782857">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.5942858"
+         id="feGaussianBlur3853" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3946"
+       id="linearGradient3861"
+       x1="596.10596"
+       y1="867.47235"
+       x2="596.10596"
+       y2="891.47235"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(37.513877,0.89318754)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -242,16 +264,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.1195857"
-     inkscape:cx="350.35061"
-     inkscape:cy="271.90069"
+     inkscape:zoom="1.5833333"
+     inkscape:cx="576.93527"
+     inkscape:cy="211.74545"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="false"
      inkscape:showpageshadow="true"
      inkscape:snap-bbox="true"
-     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-bbox-edge-midpoints="true"
      inkscape:bbox-nodes="false"
      inkscape:snap-bbox-midpoints="false"
      inkscape:snap-grids="true"
@@ -264,7 +286,9 @@
      inkscape:window-maximized="1"
      inkscape:snap-global="true"
      inkscape:snap-page="false"
-     inkscape:bbox-paths="true">
+     inkscape:bbox-paths="false"
+     inkscape:object-nodes="false"
+     inkscape:snap-smooth-nodes="false">
     <inkscape:grid
        type="xygrid"
        id="grid2820"
@@ -301,7 +325,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -310,6 +334,20 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-412.36218)">
+    <rect
+       style="fill:url(#linearGradient3861);fill-opacity:1;stroke:none"
+       id="rect3061"
+       width="40"
+       height="24"
+       x="613.61981"
+       y="868.36554"
+       ry="12"
+       rx="12" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3081"
+       d="m 633.61984,872.36554 c -2.52473,0 -4.57144,2.0467 -4.57144,4.57142 l 0,2.28572 -2.28571,0 0,9.14286 13.71429,0 0,-9.14286 -2.28571,0 0,-2.28572 c 0,-2.52472 -2.04671,-4.57142 -4.57143,-4.57142 z m 0,1.82858 c 1.51483,0 2.74285,1.22801 2.74285,2.74284 l 0,2.28572 -5.48571,0 0,-2.28572 c 0,-1.51483 1.22801,-2.74284 2.74286,-2.74284 z"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3851)" />
     <rect
        style="fill:#f0ec40;fill-opacity:1;stroke:none"
        id="rect2915"
@@ -568,6 +606,11 @@
          x="604"
          y="565.36218" />
     </g>
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       d="m 633.61984,872.36554 c -2.52473,0 -4.57144,2.0467 -4.57144,4.57142 l 0,2.28572 -2.28571,0 0,9.14286 13.71429,0 0,-9.14286 -2.28571,0 0,-2.28572 c 0,-2.52472 -2.04671,-4.57142 -4.57143,-4.57142 z m 0,1.82858 c 1.51483,0 2.74285,1.22801 2.74285,2.74284 l 0,2.28572 -5.48571,0 0,-2.28572 c 0,-1.51483 1.22801,-2.74284 2.74286,-2.74284 z"
+       id="path3076"
+       inkscape:connector-curvature="0" />
   </g>
   <g
      inkscape:groupmode="layer"
