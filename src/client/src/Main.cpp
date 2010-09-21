@@ -134,7 +134,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		UserModel        userModel(dataStore, documentPath);
 		UserModel        syncUserModel(syncDataStore, documentPath);
 
-		SyncModel syncModel(enService, messagePump, syncUserModel, syncLogger);
+		SyncModel syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
 
 		AboutView       aboutView       (instance);
 		CredentialsView credentialsView (instance);
@@ -167,7 +167,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, enNoteTranslator
 			);
 		EnImportPresenter enImportPresenter
-			( enImporter
+			( enNoteTranslator
+			, enImporter
 			, noteListModel
 			, noteListView
 			, userModel

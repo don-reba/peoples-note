@@ -37,6 +37,11 @@ public:
 		, std::wstring & html
 		);
 
+	void ConvertToText
+		( std::wstring   xml
+		, std::wstring & text
+		);
+
 	void ConvertToXml
 		( std::wstring   html
 		, std::wstring & xml

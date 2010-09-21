@@ -2,6 +2,7 @@
 #include "NoteProcessor.h"
 
 #include "EnInteropNote.h"
+#include "EnNoteTranslator.h"
 #include "INoteStore.h"
 #include "IUserModel.h"
 #include "Notebook.h"
@@ -10,13 +11,15 @@
 using namespace std;
 
 NoteProcessor::NoteProcessor
-	( IUserModel     & userModel
-	, INoteStore     & noteStore
-	, const Notebook & notebook
+	( EnNoteTranslator & enNoteTranslator
+	, IUserModel       & userModel
+	, INoteStore       & noteStore
+	, const Notebook   & notebook
 	)
-	: userModel (userModel)
-	, noteStore (noteStore)
-	, notebook  (notebook)
+	: enNoteTranslator (enNoteTranslator)
+	, userModel        (userModel)
+	, noteStore        (noteStore)
+	, notebook         (notebook)
 {
 }
 
@@ -25,11 +28,14 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 	wstring body;
 	noteStore.GetNoteBody(remote.note, body);
 
+	wstring bodyText;
+	enNoteTranslator.ConvertToText(body, bodyText);
+
 	vector<wstring> tagNames;
 	noteStore.GetNoteTagNames(remote.note, tagNames);
 
 	Transaction transaction(userModel);
-	userModel.AddNote(remote.note, body, L"", notebook);
+	userModel.AddNote(remote.note, body, bodyText, notebook);
 	foreach (const Guid & guid, remote.resources)
 	{
 		Resource resource;
@@ -59,11 +65,14 @@ void NoteProcessor::Create(const EnInteropNote & local)
 	wstring body;
 	userModel.GetNoteBody(local.guid, body);
 
+	wstring bodyText;
+	enNoteTranslator.ConvertToText(body, bodyText);
+
 	Note replacement;
 	noteStore.CreateNote(local.note, body, resources, notebook.guid, replacement);
 
 	userModel.DeleteNote(local.note.guid);
-	userModel.AddNote(replacement, body, L"", notebook);
+	userModel.AddNote(replacement, body, bodyText, notebook);
 }
 
 void NoteProcessor::Merge
@@ -78,7 +87,10 @@ void NoteProcessor::Merge
 	wstring body;
 	noteStore.GetNoteBody(remote.note, body);
 
-	userModel.AddNote(remote.note, body, L"", notebook);
+	wstring bodyText;
+	enNoteTranslator.ConvertToText(body, bodyText);
+
+	userModel.AddNote(remote.note, body, bodyText, notebook);
 
 	foreach (const Guid & guid, remote.resources)
 	{
@@ -108,9 +120,12 @@ void NoteProcessor::Update(const EnInteropNote & local)
 	wstring body;
 	userModel.GetNoteBody(local.guid, body);
 
+	wstring bodyText;
+	enNoteTranslator.ConvertToText(body, bodyText);
+
 	Note replacement;
 	noteStore.UpdateNote(local.note, body, resources, notebook.guid, replacement);
 
 	userModel.DeleteNote(local.note.guid);
-	userModel.AddNote(replacement, body, L"", notebook);
+	userModel.AddNote(replacement, body, bodyText, notebook);
 }

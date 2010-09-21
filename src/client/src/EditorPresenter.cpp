@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "EditorPresenter.h"
 
+#include "EnNoteTranslator.h"
 #include "IEditorView.h"
 #include "INoteListModel.h"
 #include "INoteListView.h"
 #include "INoteView.h"
 #include "IUserModel.h"
-#include "EnNoteTranslator.h"
 #include "Transaction.h"
 
 using namespace boost;
@@ -41,6 +41,9 @@ void EditorPresenter::OnAccept()
 	wstring bodyXml;
 	enNoteTranslator.ConvertToXml(bodyHtml, bodyXml);
 
+	wstring bodyText;
+	enNoteTranslator.ConvertToText(bodyXml, bodyText);
+
 	Transaction transaction(userModel);
 
 	Note note;
@@ -51,7 +54,7 @@ void EditorPresenter::OnAccept()
 
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
-	userModel.AddNote(note, bodyXml, L"", notebook);
+	userModel.AddNote(note, bodyXml, bodyText, notebook);
 
 	noteView.SetNote(note, L"", L"", bodyHtml);
 

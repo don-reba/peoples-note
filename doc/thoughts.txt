@@ -2113,3 +2113,20 @@ should add a button for clearing the search field
 	done
 search does not limit to the current notebook
 	TODO
+note body indexing
+	changes
+		EnImportPresenter::ImportNotes
+		EditorPresenter::OnAccept
+		NotePresenter::OnCloseNote
+		NoteProcessor::Add
+		NoteProcessor::Create
+		NoteProcessor::Merge
+		NoteProcessor::Update
+	text processing
+		iterate through the tree
+			output text nodes
+		skip en-crypt element nodes
+	update tests
+		TODO
+the menu can show only so many notebooks
+	TODO

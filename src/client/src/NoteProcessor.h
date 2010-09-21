@@ -1,6 +1,7 @@
 #pragma once
 
 class EnInteropNote;
+class EnNoteTranslator;
 class INoteStore;
 class IUserModel;
 class Notebook;
@@ -9,17 +10,19 @@ class NoteProcessor
 {
 private:
 
-	INoteStore & noteStore;
-	IUserModel & userModel;
+	EnNoteTranslator & enNoteTranslator;
+	INoteStore       & noteStore;
+	IUserModel       & userModel;
 	
 	const Notebook & notebook;
 
 public:
 
 	NoteProcessor
-		( IUserModel     & userModel
-		, INoteStore     & noteStore
-		, const Notebook & notebook
+		( EnNoteTranslator & enNoteTranslator
+		, IUserModel       & userModel
+		, INoteStore       & noteStore
+		, const Notebook   & notebook
 		);
 
 	void Add(const EnInteropNote & remote);

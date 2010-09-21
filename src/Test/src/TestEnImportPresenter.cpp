@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnImportPresenter.h"
 
+#include "EnNoteTranslator.h"
 #include "MockEnImporter.h"
 #include "Note.h"
 #include "MockNoteListModel.h"
@@ -38,13 +39,15 @@ Note MakeNote(const Guid & guid, wchar_t * name, int creationDate)
 
 BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 {
+	EnNoteTranslator enNoteTranslator;
 	MockEnImporter    enImporter;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockUserModel     userModel;
 
 	EnImportPresenter enImportPresenter
-		( enImporter
+		( enNoteTranslator
+		, enImporter
 		, noteListModel
 		, noteListView
 		, userModel
@@ -54,8 +57,8 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 
 	enImporter.notes.push_back(MakeNote(L"note-1", 1));
 	enImporter.notes.push_back(MakeNote(L"note-2", 2));
-	enImporter.bodies.push_back(L"body-1");
-	enImporter.bodies.push_back(L"body-2");
+	enImporter.bodies.push_back(L"<en-note>body-1</en-note>");
+	enImporter.bodies.push_back(L"<en-note>body-2</en-note>");
 
 	noteListView.hasEnexPath = true;
 	noteListView.enexPath    = L"data\\Mixed.enex";
@@ -67,8 +70,8 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 	BOOST_REQUIRE_EQUAL(addedNotes.size(), 2);
 	BOOST_CHECK_EQUAL(addedNotes.at(0).note.name, L"note-1");
 	BOOST_CHECK_EQUAL(addedNotes.at(1).note.name, L"note-2");
-	BOOST_CHECK_EQUAL(addedNotes.at(0).body, L"body-1");
-	BOOST_CHECK_EQUAL(addedNotes.at(1).body, L"body-2");
+	BOOST_CHECK_EQUAL(addedNotes.at(0).body, L"<en-note>body-1</en-note>");
+	BOOST_CHECK_EQUAL(addedNotes.at(1).body, L"<en-note>body-2</en-note>");
 	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook.name, L"last-used-notebook");
 	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook.name, L"last-used-notebook");
 
@@ -79,13 +82,15 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 
 BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test1)
 {
+	EnNoteTranslator enNoteTranslator;
 	MockEnImporter    enImporter;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockUserModel     userModel;
 
 	EnImportPresenter enImportPresenter
-		( enImporter
+		( enNoteTranslator
+		, enImporter
 		, noteListModel
 		, noteListView
 		, userModel
@@ -104,13 +109,15 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test1)
 
 BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
 {
+	EnNoteTranslator  enNoteTranslator;
 	MockEnImporter    enImporter;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockUserModel     userModel;
 
 	EnImportPresenter enImportPresenter
-		( enImporter
+		( enNoteTranslator
+		, enImporter
 		, noteListModel
 		, noteListView
 		, userModel

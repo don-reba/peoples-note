@@ -3,6 +3,7 @@
 #include "Blob.h"
 #include "Note.h"
 
+class EnNoteTranslator;
 class IEnImporter;
 class INoteListModel;
 class INoteListView;
@@ -12,18 +13,20 @@ class EnImportPresenter
 {
 private:
 
-	IEnImporter    & enImporter;
-	INoteListModel & noteListModel;
-	INoteListView  & noteListView;
-	IUserModel     & userModel;
+	EnNoteTranslator & enNoteTranslator;
+	IEnImporter      & enImporter;
+	INoteListModel   & noteListModel;
+	INoteListView    & noteListView;
+	IUserModel       & userModel;
 
 public:
 
 	EnImportPresenter
-		( IEnImporter    & enImporter
-		, INoteListModel & noteListModel
-		, INoteListView  & noteListView
-		, IUserModel     & userModel
+		( EnNoteTranslator & enNoteTranslator
+		, IEnImporter      & enImporter
+		, INoteListModel   & noteListModel
+		, INoteListView    & noteListView
+		, IUserModel       & userModel
 		);
 
 private:

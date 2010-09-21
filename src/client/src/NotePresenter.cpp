@@ -50,6 +50,9 @@ void NotePresenter::OnCloseNote()
 	wstring bodyXml;
 	enNoteTranslator.ConvertToXml(bodyHtml, bodyXml);
 
+	wstring bodyText;
+	enNoteTranslator.ConvertToText(bodyXml, bodyText);
+
 	Transaction transaction(userModel);
 
 	Note note;
@@ -58,7 +61,7 @@ void NotePresenter::OnCloseNote()
 
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
-	userModel.AddNote(note, bodyXml, L"", notebook);
+	userModel.AddNote(note, bodyXml, bodyText, notebook);
 
 	noteView.SetNote(note, L"", L"", bodyHtml);
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "NoteProcessor.h"
 
+#include "EnNoteTranslator.h"
 #include "MockNoteStore.h"
 #include "MockUserModel.h"
 #include "Notebook.h"
@@ -11,14 +12,20 @@ using namespace std;
 
 struct NoteProcessorFixture
 {
-	MockUserModel userModel;
-	MockNoteStore noteStore;
-	Notebook      notebook;
+	EnNoteTranslator enNoteTranslator;
+	MockUserModel    userModel;
+	MockNoteStore    noteStore;
+	Notebook         notebook;
 
 	NoteProcessor noteProcessor;
 
 	NoteProcessorFixture()
-		: noteProcessor (userModel, noteStore, notebook)
+		: noteProcessor
+			( enNoteTranslator
+			, userModel
+			, noteStore
+			, notebook
+			)
 	{
 	}
 };
@@ -33,7 +40,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 	note.resources.push_back(Guid("{1}"));
 	note.resources.push_back(Guid("{2}"));
 
-	noteStore.noteBodies["{0}"] = L"test-body";
+	noteStore.noteBodies["{0}"] = L"<en-note>test-body</en-note>";
 	noteStore.resources.resize(2);
 	noteStore.resources.at(0).Data.push_back(2);
 	noteStore.resources.at(0).Guid = Guid("{1}");
@@ -57,7 +64,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 	noteProcessor.Add(note);
 
 	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).body, L"test-body");
+	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).body, L"<en-note>test-body</en-note>");
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).note.name, L"test-note");
 
 	BOOST_CHECK_EQUAL(userModel.resources.size(), 2);
@@ -136,7 +143,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)
 	remote.resources.push_back(Guid("{0}"));
 	remote.resources.push_back(Guid("{1}"));
 
-	noteStore.noteBodies[remote.guid] = L"remote-body";
+	noteStore.noteBodies[remote.guid] = L"<en-note>remote-body</en-note>";
 	noteStore.resources.push_back(Resource());
 	noteStore.resources.back().Guid = Guid("{0}");
 	noteStore.resources.back().Note = remote.guid;
@@ -153,7 +160,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)
 	BOOST_CHECK_EQUAL(userModel.resources.at(0).Guid, Guid("{0}"));
 	BOOST_CHECK_EQUAL(userModel.resources.at(1).Guid, Guid("{1}"));
 
-	BOOST_CHECK_EQUAL(userModel.noteBodies[remote.guid], L"remote-body");
+	BOOST_CHECK_EQUAL(userModel.noteBodies[remote.guid], L"<en-note>remote-body</en-note>");
 }
 
 //BOOST_FIXTURE_TEST_CASE(NoteProcessor_Update_Test, NoteProcessorFixture)

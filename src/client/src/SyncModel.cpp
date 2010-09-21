@@ -2,6 +2,7 @@
 #include "SyncModel.h"
 
 #include "DataStore.h"
+#include "EnNoteTranslator.h"
 #include "IEnService.h"
 #include "IMessagePump.h"
 #include "INoteStore.h"
@@ -26,17 +27,19 @@ using namespace Tools;
 //----------
 
 SyncModel::SyncModel
-	( IEnService   & enService
-	, IMessagePump & messagePump
-	, IUserModel   & userModel
-	, ISyncLogger  & logger
+	( EnNoteTranslator & enNoteTranslator
+	, IEnService       & enService
+	, IMessagePump     & messagePump
+	, IUserModel       & userModel
+	, ISyncLogger      & logger
 	)
-	: syncThread    (NULL)
-	, enService     (enService)
-	, messagePump   (messagePump)
-	, userModel     (userModel)
-	, stopRequested (false)
-	, syncLogger    (logger)
+	: enNoteTranslator (enNoteTranslator)
+	, syncThread       (NULL)
+	, enService        (enService)
+	, messagePump      (messagePump)
+	, userModel        (userModel)
+	, stopRequested    (false)
+	, syncLogger       (logger)
 {
 	::InitializeCriticalSection(&lock);
 }
@@ -223,7 +226,7 @@ void SyncModel::ProcessNotes
 	if (actions.empty())
 		return;
 
-	NoteProcessor processor(userModel, noteStore, notebook);
+	NoteProcessor processor(enNoteTranslator, userModel, noteStore, notebook);
 
 	// count the number of valid actions
 	double actionCount(0.0);

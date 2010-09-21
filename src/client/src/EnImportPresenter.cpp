@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnImportPresenter.h"
 
+#include "EnNoteTranslator.h"
 #include "IEnImporter.h"
 #include "INoteListModel.h"
 #include "INoteListView.h"
@@ -16,15 +17,17 @@ using namespace std;
 using namespace Tools;
 
 EnImportPresenter::EnImportPresenter
-	( IEnImporter    & enImporter
-	, INoteListModel & noteListModel
-	, INoteListView  & noteListView
-	, IUserModel     & userModel
+	( EnNoteTranslator & enNoteTranslator
+	, IEnImporter      & enImporter
+	, INoteListModel   & noteListModel
+	, INoteListView    & noteListView
+	, IUserModel       & userModel
 	)
-	: enImporter    (enImporter)
-	, noteListModel (noteListModel)
-	, noteListView  (noteListView)
-	, userModel     (userModel)
+	: enImporter       (enImporter)
+	, enNoteTranslator (enNoteTranslator)
+	, noteListModel    (noteListModel)
+	, noteListView     (noteListView)
+	, userModel        (userModel)
 {
 	noteListView.ConnectImport(bind(&EnImportPresenter::OnImport, *this));
 }
@@ -58,9 +61,12 @@ void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 
 	for (int i(0); i != notes.size(); ++i)
 	{
-		const Note    & note     = notes.at(i);
-		const wstring & body     = bodies.at(i);
-		wstring         bodyText = L""; // TODO: produce body text
+		const Note    & note = notes.at(i);
+		const wstring & body = bodies.at(i);
+
+		wstring bodyText;
+		enNoteTranslator.ConvertToText(body, bodyText);
+
 		userModel.AddNote(note, body, bodyText, notebook);
 	}
 

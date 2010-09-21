@@ -8,6 +8,7 @@
 #include "SyncMessageQueue.h"
 #include "Tag.h"
 
+class EnNoteTranslator;
 class IEnService;
 class IMessagePump;
 class INoteStore;
@@ -20,10 +21,11 @@ class SyncModel : public ISyncModel
 
 private:
 
-	IEnService   & enService;
-	IMessagePump & messagePump;
-	ISyncLogger  & syncLogger;
-	IUserModel   & userModel;
+	EnNoteTranslator & enNoteTranslator;
+	IEnService       & enService;
+	IMessagePump     & messagePump;
+	ISyncLogger      & syncLogger;
+	IUserModel       & userModel;
 
 	HANDLE syncThread;
 
@@ -47,10 +49,11 @@ private:
 public:
 
 	SyncModel
-		( IEnService   & enService
-		, IMessagePump & messagePump
-		, IUserModel   & userModel
-		, ISyncLogger  & logger
+		( EnNoteTranslator & enNoteTranslator
+		, IEnService       & enService
+		, IMessagePump     & messagePump
+		, IUserModel       & userModel
+		, ISyncLogger      & logger
 		);
 
 	~SyncModel();

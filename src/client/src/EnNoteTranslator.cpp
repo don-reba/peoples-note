@@ -45,6 +45,58 @@ void EnNoteTranslator::ConvertToHtml
 	Tools::ReplaceAll(html, L"&apos;", L"'");
 }
 
+void EnNoteTranslator::ConvertToText
+	( wstring   xml
+	, wstring & text
+	)
+{
+	typedef xml_document<wchar_t> XmlDocument;
+	auto_ptr<XmlDocument> doc(new XmlDocument());
+	doc->parse<parse_non_destructive>(&xml[0]);
+
+	text.clear();
+
+	// depth-first iteration
+	xml_node<wchar_t> * node(doc.get());
+	while (node)
+	{
+		xml_node<wchar_t> * next(0);
+
+		switch (node->type())
+		{
+		case node_data:
+			{
+				// output text
+				text.append(node->value(), node->value_size());
+				text.append(L" ");
+				next = node->parent()->next_sibling();
+			} break;
+		case node_element:
+			{
+				// skip en-crypt elements
+				wstring name(node->name(), node->name_size());
+				if (name == L"en-crypt")
+					next = node->next_sibling();
+				else
+					next = node->first_node();
+			} break;
+		default:
+			{
+				next = node->first_node();
+			}
+		}
+
+		// get next node
+		while (!next && node->parent())
+		{
+			next = node->next_sibling();
+			if (!next)
+				node = node->parent();
+		}
+		node = next;
+	}
+}
+
 void EnNoteTranslator::ConvertToXml
 	( wstring   html
 	, wstring & xml

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SyncModel.h"
 
+#include "EnNoteTranslator.h"
 #include "MockEnService.h"
 #include "MockMessagePump.h"
 #include "MockSyncLogger.h"
@@ -20,16 +21,18 @@ struct SignalCheck
 
 struct SyncModelFixture
 {
-	MockEnService   enService;
-	MockMessagePump messagePump;
-	MockSyncLogger  syncLogger;
-	MockUserModel   userModel;
+	EnNoteTranslator enNoteTranslator;
+	MockEnService    enService;
+	MockMessagePump  messagePump;
+	MockSyncLogger   syncLogger;
+	MockUserModel    userModel;
 
 	SyncModel syncModel;
 
 	SyncModelFixture()
 		: syncModel
-			( enService
+			( enNoteTranslator
+			, enService
 			, messagePump
 			, userModel
 			, syncLogger

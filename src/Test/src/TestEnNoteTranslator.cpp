@@ -6,7 +6,29 @@
 #include "MockNoteView.h"
 #include "NotePresenter.h"
 
+#include <iostream>
+
 using namespace std;
+
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToText)
+{
+	EnNoteTranslator enNoteTranslator;
+
+	wstring xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+		L"<en-note>"
+			L"text1"
+			L"<table><tr><td>cell1</td></tr><tr><td>cell2</td></tr></table>"
+			L"text2"
+			L"<en-crypt>CIPHER</en-crypt>"
+			L"text3"
+		L"</en-note>";
+	wstring text;
+	enNoteTranslator.ConvertToText(xml, text);
+
+	BOOST_CHECK_EQUAL(text, L"text1 cell1 cell2 text2 text3 ");
+}
 
 BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt_Test)
 {
