@@ -2126,7 +2126,32 @@ note body indexing
 		iterate through the tree
 			output text nodes
 		skip en-crypt element nodes
+			should also skip en-media
+				TODO
 	update tests
 		TODO
 the menu can show only so many notebooks
 	TODO
+displaying a tip after full sync
+	explain that
+		sync is done by notebook
+		the list of notebooks in the menu has been updated
+		the user should select a notebook and sync again
+	message
+		Select a notebook from the menu and sync again.
+			unfriendly commanding tone
+			reason unclear
+		Got your notebooks — choose one from the menu and sync again to get the notes.
+			unclear that this is an instruction
+		Tip: choose a notebook from the menu and sync again to get the notes.
+			too long
+	there has to be away to clear the status bar
+		could do it after a timeout
+			but a user might leave the phone unattended while it is syncing
+			definitely a bad idea
+		could do it on click
+			would clear the instructions once the user starts following them
+		could a button for clearing the status bar
+			no space
+		could clear the status bar when it is clicked
+			might not be obvious

@@ -76,6 +76,7 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#page-up",       BUTTON_CLICK,       &NoteListView::OnPageUp);
 	ConnectBehavior("#search-box",    EDIT_VALUE_CHANGED, &NoteListView::OnSearchChanged);
 	ConnectBehavior("#search-button", BUTTON_CLICK,       &NoteListView::OnSearch);
+	ConnectBehavior("#status-button", BUTTON_CLICK,       &NoteListView::OnStatus);
 	ConnectBehavior("#sync-panel",    BUTTON_CLICK,       &NoteListView::OnSync);
 
 	noteList     = FindFirstElement("#note-list");
@@ -742,6 +743,11 @@ void NoteListView::OnSearch(BEHAVIOR_EVENT_PARAMS * params)
 void NoteListView::OnSearchChanged(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalSearchChanged();
+}
+
+void NoteListView::OnStatus(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SetStatusText(L"");
 }
 
 void NoteListView::OnSync(BEHAVIOR_EVENT_PARAMS * params)

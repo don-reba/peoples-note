@@ -229,5 +229,6 @@ private:
 	void OnPageUp        (BEHAVIOR_EVENT_PARAMS * params);
 	void OnSearch        (BEHAVIOR_EVENT_PARAMS * params);
 	void OnSearchChanged (BEHAVIOR_EVENT_PARAMS * params);
+	void OnStatus        (BEHAVIOR_EVENT_PARAMS * params);
 	void OnSync          (BEHAVIOR_EVENT_PARAMS * params);
 };

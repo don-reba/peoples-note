@@ -41,6 +41,8 @@ sync
 	when EN rejects the user's password at sync, the signin screen should be displayed with his username
 		the username should be read-only
 	when sync is in progress, prevent the device from going into standby mode
+	√ when the full sync is over, the status bar should display a tip to explain notebook syncing
+	√ when the user clicks the status text, it should disappear
 search
 	√ when the user searches for a non-empty string, notebook should be filtered by full-text search
 	√ when the user searches for an empty string or whitespace, the note list should be reset

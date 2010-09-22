@@ -544,7 +544,11 @@ void SyncModel::Sync()
 
 		PostPlainMessage(SyncMessageQueue::MessageSyncComplete);
 
-		PostTextMessage(L"");
+		PostTextMessage
+			( fullSync
+			? L"Tip: choose a notebook and sync again to get the notes."
+			: L""
+			);
 		PostProgressMessage(0.0);
 
 		userModel.Unload();

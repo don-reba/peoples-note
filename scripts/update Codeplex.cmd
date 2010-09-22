@@ -4,7 +4,7 @@ pushd ..
 
 set dst=Codeplex
 set opt=/s /xf *.swp *.swo /njh /njs /nfl /ndl
-set winCEopt=/xd "Windows Mobile 6 Professional SDK (ARMV4I)" /xf *.user
+set winCEopt=/xd "Windows Mobile 6 Professional SDK (ARMV4I)" "Windows Mobile 5.0 Pocket PC SDK (ARMV4I)" /xf *.user *.aps
 set win32opt=/xd Debug Release /xf *.user
 
 robocopy "src\client"       "%dst%\src\client"       %opt% %winCEopt%
