@@ -2,6 +2,12 @@
 #include "NoteListPresenter.h"
 
 #include "ICredentialsModel.h"
+#include "INoteListModel.h"
+#include "INoteListView.h"
+#include "INoteView.h"
+#include "ISyncModel.h"
+#include "IUserModel.h"
+#include "NotebookMenuGenerator.h"
 #include "NoteView.h"
 #include "Notebook.h"
 #include "Tools.h"
@@ -196,15 +202,12 @@ void NoteListPresenter::UpdateActiveNotebook()
 
 void NoteListPresenter::UpdateNotebookListView()
 {
-	noteListView.ClearNotebooks();
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
-	foreach (const Notebook & notebook, notebooks)
-	{
-		wstring guid(ConvertToUnicode(notebook.guid));
-		noteListView.AddNotebook(notebook.name, guid);
-	}
-	noteListView.UpdateNotebooks();
+
+	wstring menuHtml;
+	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
+	noteListView.SetNotebookMenu(menuHtml);
 }
 
 void NoteListPresenter::UpdateNoteList()

@@ -1,15 +1,16 @@
 #pragma once
 
 #include "EnNoteTranslator.h"
-#include "INoteListModel.h"
-#include "INoteListView.h"
-#include "INoteView.h"
-#include "ISyncModel.h"
-#include "IUserModel.h"
 #include "Note.h"
 #include "Tag.h"
 #include "Thumbnail.h"
 #include "Timestamp.h"
+
+class INoteListModel;
+class INoteListView;
+class INoteView;
+class ISyncModel;
+class IUserModel;
 
 class NoteListPresenter
 {
@@ -39,7 +40,6 @@ public:
 
 private:
 
-	void OnDirtyChanged();
 	void OnNotesChanged();
 	void OnNotebooksChanged();
 	void OnTagsChanged();

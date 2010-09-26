@@ -15,11 +15,6 @@ public:
 		, const std::wstring & value
 		) = 0;
 
-	virtual void AddNotebook
-		( const std::wstring & html
-		, const std::wstring & value
-		) = 0;
-
 	virtual void ConnectAbout(slot_type OnAbout) = 0;
 
 	virtual void ConnectClearSearch(slot_type OnClearSearch) = 0;
@@ -48,8 +43,6 @@ public:
 
 	virtual void ClearNotes() = 0;
 
-	virtual void ClearNotebooks() = 0;
-
 	virtual void DisableSync() = 0;
 
 	virtual void EnableSync() = 0;
@@ -67,6 +60,8 @@ public:
 	virtual void HidePageUp() = 0;
 
 	virtual void HideSyncButton() = 0;
+
+	virtual void SetNotebookMenu(const std::wstring & html) = 0;
 
 	virtual void SetProfileText(const std::wstring & text) = 0;
 
@@ -93,8 +88,6 @@ public:
 	virtual void ShowSyncButton() = 0;
 
 	virtual void UpdateNotes() = 0;
-
-	virtual void UpdateNotebooks() = 0;
 
 	virtual void UpdateThumbnail(const Guid & guid) = 0;
 };

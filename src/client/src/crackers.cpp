@@ -10,5 +10,5 @@ BOOL Toolbar_GetButtonInfo(HWND hwndCtl, int iID, LPTBBUTTONINFO lptbbi)
 
 void CloseWindow(HWND hwnd)
 {
-	SendMessage(hwnd, WM_CLOSE, 0, 0);
+	PostMessage(hwnd, WM_CLOSE, 0, 0);
 }

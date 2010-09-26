@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Notebook.h"
+
 class INoteListModel;
 class INoteListView;
 class ISyncModel;

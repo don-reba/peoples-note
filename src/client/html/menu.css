@@ -22,8 +22,8 @@ menu li
 {  
 	text-align: left;
 	width:*;
-	padding-left:24px; /* room for icon */
-	padding-right:12px; /* room for the arrow */
+	padding-left:8px;
+	padding-right:20px; /* room for the arrow */
 	padding-top:4px; 
 	padding-bottom:4px; 
 	foreground-repeat: no-repeat;

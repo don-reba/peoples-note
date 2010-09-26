@@ -2131,7 +2131,94 @@ note body indexing
 	update tests
 		TODO
 the menu can show only so many notebooks
-	TODO
+	solutions
+		extra menu level
+			- an extra click to access any notebook
+		autoscrolling menu
+			- impossible, due to absense of mouse move events
+		paging
+			+ no clicks to access some notebooks
+			- potentially, several clicks to access others
+	extra menu level
+		separates notes into several equal groups
+			how large should they be?
+			could limit maximum list length
+			by equating group size with the number of groups
+			sqrt(n)
+			can generalize this to arbitrary depths
+			let there be m, such that n^(1/m)<c
+			then m=ceil(ln(n)/ln(c))
+		shows the shortest differentiating prefix
+			take the first entry of every group
+			can make them all the same length
+			find out what length it is
+				find the longest common suffix for all the strings
+					trim it
+			we still don't want overly long names
+			if the trimmed names are longer than a limit
+				trim them further
+				better yet, trim middles
+		implementation issues
+			can't add notebooks one by one to the view
+			need some sort of menu structure to pass to the view
+				would be computed by a testable algorithm
+				could be inside a presenter
+			better yet
+			create HTML in the presenter
+				how to subscribe to behaviors, then?
+					subscribe to the menu itself and check the target
+			generation
+				for non-deepest levels, create title, then processes next level
+				after the last member of a group, go to previous level
+			iterative approach
+				start at zeroth element and depth
+				while depth non-negative
+					if last element in a group
+						end level
+						decrement depth
+					else
+						if depth == max
+							create notebook entry
+							increment element
+						else
+							create menu title
+							start a new level
+							increment depth
+			problem
+				algorithm goes up a level
+					then goes down a level
+					and then back up
+				need to tell these states apart
+				after getting high enough up
+					we want to get all the way down
+				could add a boolean direction flag
+					seems to work
+		menu is updated from several places
+			should be updated in the note list presenter
+			menu creation should be done in the note list model
+				we don't have one, though
+	notebook updating
+		is done by the sync presenter and the note list presenter in response to
+			sync completion
+			notebook changes during synchronization
+			user loading
+		should be done in response to the notebook list model changing
+			should modify notebook model in response to
+				sync completion
+				notebook changes during synchronization
+				user loading
+			but these modifications should not be done by the note list presenter
+			should be done by the notebook list presenter
+				or sync presenter
+	notebook model
+		actually, there is no need for separate notebook storage
+		notebooks are stored in the database
+		the menu is update at specific points
+		should be updated by the note list presneter
+			because it is responsible for the view
+		so, the menu generation code should be in...
+			a separate class
+			owned by the note list view
 displaying a tip after full sync
 	explain that
 		sync is done by notebook
@@ -2143,8 +2230,12 @@ displaying a tip after full sync
 			reason unclear
 		Got your notebooks — choose one from the menu and sync again to get the notes.
 			unclear that this is an instruction
-		Tip: choose a notebook from the menu and sync again to get the notes.
+		Tip: Got your notebooks — choose one from the menu and sync again to get the notes.
 			too long
+		Tip: choose a notebook from the menu and sync again to get the notes.
+			still too long
+		Tip: choose a notebook and sync again to get the notes.
+			does not mention the menu
 	there has to be away to clear the status bar
 		could do it after a timeout
 			but a user might leave the phone unattended while it is syncing
@@ -2155,3 +2246,11 @@ displaying a tip after full sync
 			no space
 		could clear the status bar when it is clicked
 			might not be obvious
+the main window freezes when the virtual keyboard is hidden
+	using HTC Keyboard
+	TODO
+cannot close the "about" window after switching to it from another app
+	can't reproduce on WM 6.0
+	TODO
+crash after clicking the notebook submenu, then exiting
+	window should be closed with PostMessage, not SendMessage

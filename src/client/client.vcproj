@@ -503,6 +503,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NotebookMenuGenerator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\NotebookProcessor.cpp"
 				>
 			</File>
@@ -919,6 +923,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Notebook.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\NotebookMenuGenerator.h"
 				>
 			</File>
 			<File

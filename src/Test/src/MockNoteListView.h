@@ -14,21 +14,16 @@ public:
 		std::wstring html;
 		std::wstring value;
 	};
-	struct NotebookRecord
-	{
-		std::wstring html;
-		std::wstring value;
-	};
 
 public:
 
-	std::vector<NoteRecord>     notes;
-	std::vector<NotebookRecord> notebooks;
+	std::wstring notebookMenu;
+
+	std::vector<NoteRecord> notes;
 
 	std::set<std::string> updatedThumbnails;
 
 	bool notesUpdated;
-	bool notebooksUpdated;
 
 	std::wstring searchString;
 	Guid         selectedNotebookGuid;
@@ -74,13 +69,6 @@ public:
 		( const std::wstring & html
 		, const std::wstring & value
 		);
-
-	virtual void AddNotebook
-		( const std::wstring & html
-		, const std::wstring & value
-		);
-
-	virtual void ClearNotebooks();
 
 	virtual void ClearNotes();
 
@@ -130,6 +118,8 @@ public:
 
 	virtual void HideSyncButton();
 
+	virtual void SetNotebookMenu(const std::wstring & html);
+
 	virtual void SetProfileText(const std::wstring & text);
 
 	virtual void SetProgress(double fraction);
@@ -153,8 +143,6 @@ public:
 	virtual void ShowPageUp();
 
 	virtual void ShowSyncButton();
-
-	virtual void UpdateNotebooks();
 
 	virtual void UpdateNotes();
 

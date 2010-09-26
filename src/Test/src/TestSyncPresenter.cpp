@@ -8,7 +8,29 @@
 using namespace boost;
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(SyncPresenter_Sync_Test)
+struct SyncPresenterFixture
+{
+	MockNoteListModel noteListModel;
+	MockNoteListView  noteListView;
+	MockSyncModel     syncModel;
+	MockUserModel     userModel;
+	SyncPresenter     syncPresenter;
+
+	SyncPresenterFixture()
+		: syncPresenter
+			( noteListModel
+			, noteListView
+			, syncModel
+			, userModel
+			)
+	{
+	}
+};
+
+BOOST_FIXTURE_TEST_CASE
+	( SyncPresenter_Sync
+	, SyncPresenterFixture
+	)
 {
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
@@ -30,7 +52,10 @@ BOOST_AUTO_TEST_CASE(SyncPresenter_Sync_Test)
 	BOOST_CHECK_EQUAL(syncModel.username, L"test-usr");
 }
 
-BOOST_AUTO_TEST_CASE(SyncPresenter_SyncComplete_Test)
+BOOST_FIXTURE_TEST_CASE
+	( SyncPresenter_SyncComplete
+	, SyncPresenterFixture
+	)
 {
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;

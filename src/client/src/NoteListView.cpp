@@ -80,7 +80,6 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#sync-panel",    BUTTON_CLICK,       &NoteListView::OnSync);
 
 	noteList     = FindFirstElement("#note-list");
-	notebookList = FindFirstElement("#notebook-list");
 	listScroll   = FindFirstElement("#scroll");
 	listSlider   = FindFirstElement("#slider");
 	searchBox    = FindFirstElement("#search-box");
@@ -97,40 +96,13 @@ void NoteListView::AddNote
 	)
 {
 	vector<unsigned char> htmlUtf8Chars;
-	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
+	const unsigned char * htmlUtf8(ConvertToUtf8(html, htmlUtf8Chars));
 
 	element note(element::create("div"));
 	noteList.insert(note, noteList.children_count() - 1);
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
-}
-
-void NoteListView::AddNotebook
-	( const wstring & html
-	, const wstring & value
-	)
-{
-	vector<unsigned char> htmlUtf8Chars;
-	const unsigned char * htmlUtf8 = ConvertToUtf8(html, htmlUtf8Chars);
-
-	element notebook = element::create("li");
-	notebookList.append(notebook);
-	notebook.set_attribute("guid", value.c_str());
-	notebook.set_html(htmlUtf8, htmlUtf8Chars.size());
-
-	ConnectBehavior(static_cast<HELEMENT>(notebook), MENU_ITEM_CLICK, &NoteListView::OnMenuNotebook);
-}
-
-void NoteListView::ClearNotebooks()
-{
-	vector<element> notebooks;
-	notebookList.find_all(notebooks, "li");
-	foreach (element & notebook, notebooks)
-	{
-		DisconnectBehavior(notebook);
-		notebook.destroy();
-	}
 }
 
 void NoteListView::ClearNotes()
@@ -274,6 +246,25 @@ void NoteListView::HideSyncButton()
 		.set_style_attribute("display", L"none");
 }
 
+void NoteListView::SetNotebookMenu(const std::wstring & html)
+{
+	element notebookList(FindFirstElement("#notebook-list"));
+
+	vector<element> notebooks;
+	notebookList.find_all(notebooks, "li[guid]");
+	foreach (element & notebook, notebooks)
+		DisconnectBehavior(notebook);
+
+	vector<unsigned char> htmlUtf8Chars;
+	const unsigned char * htmlUtf8(ConvertToUtf8(html, htmlUtf8Chars));
+	notebookList.set_html(htmlUtf8, htmlUtf8Chars.size());
+
+	notebooks.clear();
+	notebookList.find_all(notebooks, "li[guid]");
+	foreach (element & notebook, notebooks)
+		ConnectBehavior(notebook, MENU_ITEM_CLICK, &NoteListView::OnMenuNotebook);
+}
+
 void NoteListView::SetProfileText(const wstring & text)
 {
 	element(FindFirstElement("#menu-profile"))
@@ -346,11 +337,6 @@ void NoteListView::SetSyncText(const wstring & text)
 void NoteListView::SetWindowTitle(const wstring & text)
 {
 	::SetWindowText(hwnd_, text.c_str());
-}
-
-void NoteListView::UpdateNotebooks()
-{
-	notebookList.update(true);
 }
 
 void NoteListView::UpdateNotes()

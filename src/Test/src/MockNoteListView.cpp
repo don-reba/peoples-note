@@ -5,7 +5,6 @@ using namespace std;
 
 MockNoteListView::MockNoteListView()
 	: notesUpdated              (true)
-	, notebooksUpdated          (true)
 	, isPageDownVisible         (false)
 	, isPageUpVisible           (false)
 	, isSearchButtonSetToSearch (true)
@@ -23,23 +22,6 @@ void MockNoteListView::AddNote
 	notes.back().html  = html;
 	notes.back().value = value;
 	notesUpdated = false;
-}
-
-void MockNoteListView::AddNotebook
-	( const wstring & html
-	, const wstring & value
-	)
-{
-	notebooks.push_back(NotebookRecord());
-	notebooks.back().html  = html;
-	notebooks.back().value = value;
-	notebooksUpdated = false;
-}
-
-void MockNoteListView::ClearNotebooks()
-{
-	notebooks.clear();
-	notebooksUpdated = false;
 }
 
 void MockNoteListView::ClearNotes()
@@ -165,6 +147,11 @@ void MockNoteListView::HideSyncButton()
 	isSyncButtonShown = false;
 }
 
+void MockNoteListView::SetNotebookMenu(const wstring & html)
+{
+	notebookMenu = html;
+}
+
 void MockNoteListView::SetProfileText(const wstring & text)
 {
 	profileText = text;
@@ -223,11 +210,6 @@ void MockNoteListView::ShowPageUp()
 void MockNoteListView::ShowSyncButton()
 {
 	isSyncButtonShown = true;
-}
-
-void MockNoteListView::UpdateNotebooks()
-{
-	notebooksUpdated = true;
 }
 
 void MockNoteListView::UpdateNotes()

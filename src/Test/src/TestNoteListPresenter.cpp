@@ -160,23 +160,23 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.push_back(Note());
 	userModel.notes.back().isDirty = true;
 
-	noteListView.notebooks.push_back(MockNoteListView::NotebookRecord());
-	noteListView.notebooks.back().html = L"fake-notebook";
-
 	userModel.notebooks.push_back(Notebook());
 	userModel.notebooks.back().name = L"notebook-0";
+	userModel.notebooks.back().guid = Guid("guid-0");
 	userModel.notebooks.push_back(Notebook());
 	userModel.notebooks.back().name = L"notebook-1";
+	userModel.notebooks.back().guid = Guid("guid-1");
 
 	syncModel.SignalNotebooksChanged();
 
 	BOOST_CHECK_EQUAL(noteListView.syncText, L"2");
 
-	BOOST_CHECK_EQUAL(noteListView.notebooks.size(), 2);
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(0).html, L"notebook-0");
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(1).html, L"notebook-1");
-
-	BOOST_CHECK(noteListView.notebooksUpdated);
+	BOOST_CHECK_EQUAL
+		( noteListView.notebookMenu
+		,
+			L"<li guid=\"guid-0\">notebook-0</li>"
+			L"<li guid=\"guid-1\">notebook-1</li>"
+		);
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -284,12 +284,17 @@ BOOST_FIXTURE_TEST_CASE
 {
 	userModel.notebooks.push_back(Notebook());
 	userModel.notebooks.back().name = L"notebook-0";
+	userModel.notebooks.back().guid = Guid("guid-0");
 	userModel.notebooks.push_back(Notebook());
 	userModel.notebooks.back().name = L"notebook-1";
+	userModel.notebooks.back().guid = Guid("guid-1");
 
 	userModel.SignalLoaded();
 
-	BOOST_REQUIRE_EQUAL(noteListView.notebooks.size(), 2);
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(0).html, L"notebook-0");
-	BOOST_CHECK_EQUAL(noteListView.notebooks.at(1).html, L"notebook-1");
+	BOOST_CHECK_EQUAL
+		( noteListView.notebookMenu
+		,
+			L"<li guid=\"guid-0\">notebook-0</li>"
+			L"<li guid=\"guid-1\">notebook-1</li>"
+		);
 }

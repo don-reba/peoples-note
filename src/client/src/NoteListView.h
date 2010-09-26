@@ -41,7 +41,6 @@ private:
 
 	element clickTarget;
 	element noteList;
-	element notebookList;
 	element listScroll;
 	element listSlider;
 	element searchBox;
@@ -94,13 +93,6 @@ public:
 		, const std::wstring & value
 		);
 
-	virtual void AddNotebook
-		( const std::wstring & html
-		, const std::wstring & value
-		);
-
-	virtual void ClearNotebooks();
-
 	virtual void ClearNotes();
 
 	virtual void ConnectAbout(slot_type OnAbout);
@@ -147,6 +139,8 @@ public:
 
 	virtual void HideSyncButton();
 
+	virtual void SetNotebookMenu(const std::wstring & html);
+
 	virtual void SetProfileText(const std::wstring & text);
 
 	virtual void SetProgress(double fraction);
@@ -170,8 +164,6 @@ public:
 	virtual void ShowPageUp();
 
 	virtual void ShowSyncButton();
-
-	virtual void UpdateNotebooks();
 
 	virtual void UpdateNotes();
 

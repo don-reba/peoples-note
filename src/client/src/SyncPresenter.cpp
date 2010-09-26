@@ -5,7 +5,10 @@
 #include "INoteListView.h"
 #include "ISyncModel.h"
 #include "IUserModel.h"
+#include "NotebookMenuGenerator.h"
 #include "Tools.h"
+
+#include <cmath>
 
 using namespace boost;
 using namespace std;
@@ -43,13 +46,12 @@ void SyncPresenter::OnSyncComplete()
 	userModel.GetNotesByNotebook(notebook, notes);
 	noteListModel.SetNotes(notes);
 
-	noteListView.ClearNotebooks();
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
-	foreach (const Notebook & notebook, notebooks)
-	{
-		wstring guid(ConvertToUnicode(notebook.guid));
-		noteListView.AddNotebook(notebook.name, guid);
-	}
-	noteListView.UpdateNotebooks();
+
+	wstring menuHtml;
+	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
+	noteListView.SetNotebookMenu(menuHtml);
 }
+
+

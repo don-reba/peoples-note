@@ -34,6 +34,7 @@ Requirements
 ------------
 
 Visual Studio 2008
+Windows Mobile 6.5 Developer Tool Kit
 Boost 1.41.0
 Inkscape 0.48
 
