@@ -1,0 +1,86 @@
+﻿<html>
+	<head>
+		<style>
+			body
+			{
+				background-color: white;
+				margin:           0px;
+				padding:          0px;
+			}
+			#toolbar
+			{
+				flow:             vertical;
+				background-color: silver;
+				text-align:       center;
+			}
+			#toolbar div
+			{
+				background-image: url(gradient-64.png) repeat-x;
+				flow:             horizontal;
+				width:            100%;
+			}
+			#toolbar div .separator
+			{
+				width: 16px;
+			}
+			.tb-button
+			{
+				behavior: clickable;
+				border:   none;
+				height:   64px;
+				margin:   0px;
+				padding:  0px;
+				width:    64px;
+			}
+			#title-frame
+			{
+				background-color: #f0ec40;
+				width:            100%;
+			}
+			#title
+			{
+				background-image:    url(inputshadow.png);
+				background-position: 13px 13px 13px 13px;
+				background-repeat:   expand;
+				font-size:           24px;
+				height:              40px;
+				margin:              8px;
+				padding:             0px 10px;
+				width:               100%%;
+			}
+			#body
+			{
+				width:  100%%;
+				height: 100%%;
+			}
+		</style>
+	</head>
+	<body>
+		<widget #toolbar>
+			<div>
+				<widget .tb-button command="richtext:undo"><img src="rt-undo.png" /></widget>
+				<widget .tb-button command="richtext:redo"><img src="rt-redo.png" /></widget>
+				<div .separator/>
+				<widget .tb-button command="richtext:copy"><img src="rt-copy.png" /></widget>
+				<widget .tb-button command="richtext:paste"><img src="rt-paste.png" /></widget>
+				<div .separator/>
+				<widget .tb-button command="richtext:strong"><img src="rt-strong.png" /></widget>
+				<widget .tb-button command="richtext:em"><img src="rt-em.png" /></widget>
+				<widget .tb-button command="richtext:u"><img src="rt-u.png" /></widget>
+			</div>
+			<div>
+				<widget .tb-button command="richtext:li-ol"><img src="rt-li-ol.png" /></widget>
+				<widget .tb-button command="richtext:li-ul"><img src="rt-li-ul.png" /></widget>
+				<div .separator/>
+				<widget .tb-button command="richtext:indent-dec"><img src="rt-indent-dec.png" /></widget>
+				<widget .tb-button command="richtext:indent-inc"><img src="rt-indent-inc.png" /></widget>
+				<div .separator/>
+				<widget .tb-button #check><img src="rt-check.png" /></widget>
+			</div>
+		</widget>
+		<div #title-frame>
+			<input #title />
+		</div>
+		<richtext #body toolbar="#toolbar" />
+	</body>
+</html>

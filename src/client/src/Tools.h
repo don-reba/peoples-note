@@ -24,7 +24,7 @@ namespace Tools
 
 	std::string HashWithMD5(const Blob & data);
 
-	HtmlResource LoadHtmlResource(LPCWSTR id);
+	HtmlResource LoadHtmlResource(LPCWSTR id, bool highRes);
 
 	std::wstring LoadStringResource(int id);
 

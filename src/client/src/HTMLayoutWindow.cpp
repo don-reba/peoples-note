@@ -129,7 +129,7 @@ void HTMLayoutWindow::OnCreate(Msg<WM_CREATE> & msg)
 		, HANDLE_BEHAVIOR_EVENT|HANDLE_FOCUS|HANDLE_KEY
 		);
 
-	HtmlResource resource = LoadHtmlResource(resourceId);
+	HtmlResource resource = LoadHtmlResource(resourceId, false);
 	if (!HTMLayoutLoadHtml(hwnd_, resource.data, resource.size))
 		throw exception("Failed to load interface.");
 

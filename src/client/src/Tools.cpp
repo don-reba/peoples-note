@@ -397,10 +397,12 @@ string Tools::HashWithMD5(const Blob & data)
 	return hex;
 }
 
-HtmlResource Tools::LoadHtmlResource(LPCWSTR id)
+HtmlResource Tools::LoadHtmlResource(LPCWSTR id, bool highRes)
 {
 	wstring newId(id);
 	std::replace(newId.begin(), newId.end(), L'-', L'_');
+	if (!highRes)
+		newId.insert(0, L"LR_");
 
 	HINSTANCE instance = GetModuleHandle(NULL);
 

@@ -1,0 +1,265 @@
+﻿<html>
+	<head>
+		<style>
+			@import url(menu.css);
+			body
+			{
+				background : white;
+				margin     : 0px;
+				padding    : 0px;
+				text-align : center;
+			}
+			#menu
+			{
+				background     : url(gradient-60.png) repeat-x;
+				behavior       : popup-menu;
+				border         : 1px solid #606060;
+				height         : 48px;
+				margin         : -1px;
+				padding        : 0px 10px;
+				width          : 0px;
+				vertical-align : middle;
+			}
+			#note-list-panel
+			{
+				flow   : horizontal;
+				height : 100%%;
+				width  : 100%;
+			}
+			#note-list
+			{
+				background-color : #f0ec40;
+				behavior         : clickable;
+				height           : 100%%;
+				overflow         : hidden;
+				text-align       : left;
+				width            : 100%%;
+			}
+			#note-list .note
+			{
+				background : url(corner.png) no-repeat right top;
+				border-top : 1px solid #606060;
+				height     : 100px;
+				overflow   : hidden;
+			}
+			#note-list .note #thumb
+			{
+				border-style : none;
+				border-right : 4px solid #f0ec40;
+				display      : block;
+				float        : left;
+				height       : 100px;
+				width        : 164px;
+			}
+			#note-list .note #time
+			{
+				font-size : 20px;
+				height    : 28px;
+			}
+			#note-list .note #title
+			{
+				font-size   : 20px;
+				font-weight : bold;
+				line-height : 23px;
+				white-space : normal;
+			}
+			#new-note-note
+			{
+				flow : horizontal;
+			}
+			#new-note-note #label
+			{
+				padding-left   : 10px;
+				vertical-align : middle;
+				width          : 100%%;
+			}
+			#new-note-note widget
+			{
+				background-repeat : no-repeat;
+				border-style      : none;
+				height            : 78px;
+				margin            : 0px;
+				padding           : 0px;
+				width             : 78px;
+			}
+			#new-text
+			{
+				background : url(text-note.png);
+			}
+			#new-voice
+			{
+				background : url(voice-note.png);
+			}
+			#new-photo
+			{
+				background : url(photo-note.png);
+			}
+			#new-file
+			{
+				background : url(file-note.png);
+			}
+			#page-down, #page-up
+			{
+				behavior   : clickable;
+				display    : none;
+				text-align : center;
+			}
+			#scroll
+			{
+				background : white;
+				height     : 100%%;
+				overflow   : hidden;
+				width      : 5px;
+			}
+			#scroll #slider
+			{
+				background-color : #606060;
+				border-radius    : 2px;
+				display          : none;
+				height           : 128px;
+				width            : 100%%;
+			}
+			#search-frame
+			{
+				border-style  : none;
+				border-bottom : 1px solid #000000;
+				flow          : horizontal;
+				width         : 100%;
+			}
+			#search-box
+			{
+				background-image    : url(inputshadow.png);
+				background-position : 13px 13px 13px 13px;
+				background-repeat   : expand;
+				font-size           : 24px;
+				height              : 40px;
+				margin              : 8px 0px 8px 8px;
+				padding             : 0px 10px;
+				width               : 100%%;
+			}
+			#search-button
+			{
+				background   : url(search.png) no-repeat;
+				border-style : none;
+				height       : 40px;
+				margin       : 8px 8px 8px 0px;
+				padding      : 0px;
+				width        : 40px;
+			}
+			#status
+			{
+				font-size      : 20px;
+				line-height    : 24px;
+				max-height     : 48px;
+				overflow       : hidden;
+				vertical-align : middle;
+				width          : 100%%;
+			}
+			#status-bar
+			{
+				background : url(status-gray.png) repeat-x;
+				border-top : 1px solid #606060;
+				display    : table-cell;
+				flow       : horizontal;
+				height     : 48px;
+				overflow   : hidden;
+				width      : 100%;
+			}
+			#status-button
+			{
+				behavior : clickable;
+				padding  : 0px 6px;
+			}
+			#status-progress
+			{
+				background-offset-right : 100%;
+				background              : url(status-green.png) repeat-x;
+				height                  : 100%%;
+				text-align              : left;
+				vertical-align          : middle;
+				width                   : 100%%;
+			}
+			#sync-icon
+			{
+				background:   url(sync.png);
+				border-style: none;
+				height:       48px;
+				margin:       0px;
+				padding:      0px;
+				width:        52px;
+			}
+			#sync-panel
+			{
+				background: url(gradient-60.png) repeat-x;
+				behavior:   clickable;
+				display:    none;
+				flow:       horizontal;
+				width:      0px;
+			}
+			#sync-panel[disabled="true"] *
+			{
+				background-color: #e0e0c0;
+				border-color:     #404020;
+				color:            #404020;
+				background-image-transformation: contrast-brightness-gamma(0.5,0.8, 1.0);
+			}
+			#sync-panel[disabled="true"]
+			{
+				background-image: none;
+				background-color: red;
+			}
+			#sync-panel > *
+			{
+				border-style:   none;
+				border-right:   1px solid black;
+				height:         48px;
+				vertical-align: middle;
+			}
+			#sync-text
+			{
+				padding:     0px 4px;
+				white-space: nowrap;
+			}
+		</style>
+	</head>
+	<body>
+		<div #search-frame>
+			<widget #search-box    type="text"   tabindex="2" />
+			<widget #search-button type="button" tabindex="3" />
+		</div>
+		<div #note-list-panel>
+				<div #note-list tabindex="0">
+					<div #new-note-note>
+						<div #label>Create note:</div>
+						<widget type="button" #new-text  />
+						<widget type="button" #new-voice />
+						<widget type="button" #new-photo />
+						<widget type="button" #new-file  />
+					</div>
+					<div #page-up>Later notes</div>
+					<div #page-down>Eariler notes</div>
+				</div>
+				<div #scroll><div #slider /></div>
+		</div>
+		<div #status-bar>
+				<div #sync-panel>
+					<div #sync-icon />
+					<div #sync-text />
+				</div>
+				<div #status-progress><div #status-button><span #status /></div></div>
+				<div #menu>
+					Menu
+					<menu>
+						<li #menu-profile />
+						<li #menu-signin>Sign in</li>
+						<hr />
+						<li>Notebook <menu #notebook-list /></li>
+						<li #menu-import>Import notes</li>
+						<hr />
+						<li #menu-about>About</li>
+						<li #menu-exit>Exit</li>
+					</menu>
+				</div>
+		</div>
+	</body>
+</html>

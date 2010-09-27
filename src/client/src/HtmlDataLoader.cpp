@@ -87,7 +87,7 @@ bool HtmlDataLoader::IsPrefix
 
 void HtmlDataLoader::LoadHtmlUri(const wchar_t * uri)
 {
-	HtmlResource resource(LoadHtmlResource(uri));
+	HtmlResource resource(LoadHtmlResource(uri, false));
 	blob.assign(resource.data, resource.data + resource.size);
 }
 
