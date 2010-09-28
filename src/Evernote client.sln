@@ -120,7 +120,6 @@ Global
 		{92A38D45-DA24-46DC-8F77-8AE536164682}.Debug|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Debug
 		{92A38D45-DA24-46DC-8F77-8AE536164682}.Debug|Windows Mobile 5.0 Smartphone SDK (ARMV4I).Build.0 = Debug
 		{92A38D45-DA24-46DC-8F77-8AE536164682}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug
-		{92A38D45-DA24-46DC-8F77-8AE536164682}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).Build.0 = Debug
 		{92A38D45-DA24-46DC-8F77-8AE536164682}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).Deploy.0 = Debug
 		{92A38D45-DA24-46DC-8F77-8AE536164682}.Release|Mixed Platforms.ActiveCfg = Release
 		{92A38D45-DA24-46DC-8F77-8AE536164682}.Release|Win32.ActiveCfg = Release

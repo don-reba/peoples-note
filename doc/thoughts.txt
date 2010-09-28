@@ -2251,6 +2251,37 @@ the main window freezes when the virtual keyboard is hidden
 	TODO
 cannot close the "about" window after switching to it from another app
 	can't reproduce on WM 6.0
+	WM seems to lack owned window support
+		if so, have to switch to dialogs
 	TODO
 crash after clicking the notebook submenu, then exiting
 	window should be closed with PostMessage, not SendMessage
+low resolution support
+	target 320x320 or even 240x240
+	how to do it?
+	solutions
+		relative units
+			- hard to guarantee proper pixel alignment
+			- wastes memory
+		a dynamic attribute
+			- very long style
+		dynamicly loaded second set of resources
+			- difficult to do
+			- diffucult to mainain
+		compile flag for set of resources
+			- diffucult to mainain
+	second resource set
+		store the resources in a separate folder
+		give them identifiers with a special prefix or suffix
+		have the tools function adjust the identifier
+	dpi choice
+		resources are loaded by HTMLayout::OnCreate
+			it could determine the dpi
+			and tell it to the tools function
+			the tools function would adjust the name
+		also by HtmlDataLoader::LoadHtmlUri
+			not sure how it would find out the dpi
+			TODO
+	thumbnail size
+		these need to be smaller, too
+		TODO

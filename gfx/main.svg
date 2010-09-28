@@ -18,8 +18,8 @@
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="main.svg"
    inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\main.png"
-   inkscape:export-xdpi="360"
-   inkscape:export-ydpi="360">
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180">
   <defs
      id="defs4">
     <linearGradient
@@ -1098,26 +1098,6 @@
        y1="1052.3622"
        x2="47.937496"
        y2="1002.3622" />
-    <filter
-       inkscape:collect="always"
-       id="filter4078">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.290002"
-         id="feGaussianBlur4080" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       id="filter4102"
-       x="-0.34055914"
-       width="1.6811183"
-       y="-0.20890593"
-       height="1.4178119">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.2569893"
-         id="feGaussianBlur4104" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1127,10 +1107,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="38.591143"
+     inkscape:cx="175.98706"
      inkscape:cy="282.32266"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="false"
      inkscape:showpageshadow="true"
@@ -1201,7 +1181,7 @@
      id="layer1"
      transform="translate(0,-412.36218)">
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
        id="rect3922"
        width="479.5"
        height="58.5"
@@ -1212,12 +1192,14 @@
        d="m 0,464.35736 0,59.03125 440,0 0,-59.03125 -440,0 z m 10,10.03125 420,0 0,40 -420,0 0,-40 z"
        id="rect3016"
        clip-path="none"
-       sodipodi:nodetypes="cccccccccc" />
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:connector-curvature="0" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
        clip-path="none"
        d="m 0,464.36218 0,59.03125 480,0 0,-59.03125 -480,0 z m 10,10.03125 460,0 0,40 -460,0 0,-40 z"
-       id="rect3045" />
+       id="rect3045"
+       inkscape:connector-curvature="0" />
     <g
        id="g3997">
       <rect
@@ -1277,14 +1259,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/text-note.png"
            xlink:href="icons/text-note.png"
-           y="487.36218"
-           x="184"
-           id="image3769"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3769"
+           x="184"
+           y="487.36218" />
       </g>
       <g
          transform="translate(-37.706059,51.999997)"
@@ -1316,14 +1298,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/voice-note.png"
            xlink:href="icons/voice-note.png"
-           y="487.36218"
-           x="255.66663"
-           id="image3783"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3783"
+           x="255.66663"
+           y="487.36218" />
       </g>
       <g
          transform="translate(-17.853261,51.999997)"
@@ -1355,14 +1337,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/photo-note.png"
            xlink:href="icons/photo-note.png"
-           y="487.36218"
-           x="331.33331"
-           id="image3797"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3797"
+           x="331.33331"
+           y="487.36218" />
       </g>
       <g
          transform="translate(3.9995832,51.999997)"
@@ -1393,14 +1375,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/file-note.png"
            xlink:href="icons/file-note.png"
-           y="491.36218"
-           x="409"
-           id="image3811"
-           height="48"
-           width="48"
-           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+           width="48"
+           height="48"
+           id="image3811"
+           x="409"
+           y="491.36218" />
       </g>
       <rect
          inkscape:export-ydpi="360"
@@ -1421,15 +1403,16 @@
          style="fill:#f0ec40;fill-opacity:1;stroke:none"
          d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
          id="path3917"
-         sodipodi:nodetypes="ccccc" />
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         width="164"
-         height="100"
-         id="image3931"
+         y="615.32898"
          x="0"
-         y="615.32898" />
+         id="image3931"
+         height="100"
+         width="164" />
       <g
          id="g3933"
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)">
@@ -1437,15 +1420,18 @@
            clip-path="url(#clipPath3880)"
            style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3935" />
+           id="path3935"
+           inkscape:connector-curvature="0" />
         <path
            id="path3937"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:url(#linearGradient3221);fill-opacity:1;stroke:none" />
+           style="fill:url(#linearGradient3221);fill-opacity:1;stroke:none"
+           inkscape:connector-curvature="0" />
         <path
            style="fill:#f0ec40;fill-opacity:1;stroke:none"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           id="path3939" />
+           id="path3939"
+           inkscape:connector-curvature="0" />
       </g>
       <text
          id="text3025"
@@ -1488,15 +1474,16 @@
          sodipodi:nodetypes="ccccc"
          id="path3225"
          d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
-         style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+         style="fill:#f0ec40;fill-opacity:1;stroke:none"
+         inkscape:connector-curvature="0" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         y="615.32898"
-         x="0"
-         id="image3227"
+         width="164"
          height="100"
-         width="164" />
+         id="image3227"
+         x="0"
+         y="615.32898" />
       <g
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)"
          id="g3229">
@@ -1504,15 +1491,18 @@
            id="path3231"
            d="m 438,665.32897 32,32 -32,0 0,-32"
            style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
-           clip-path="url(#clipPath3880)" />
+           clip-path="url(#clipPath3880)"
+           inkscape:connector-curvature="0" />
         <path
            style="fill:url(#linearGradient3247);fill-opacity:1;stroke:none"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3233" />
+           id="path3233"
+           inkscape:connector-curvature="0" />
         <path
            id="path3235"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+           style="fill:#f0ec40;fill-opacity:1;stroke:none"
+           inkscape:connector-curvature="0" />
       </g>
       <text
          xml:space="preserve"
@@ -1563,15 +1553,16 @@
          style="fill:#f0ec40;fill-opacity:1;stroke:none"
          d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
          id="path3251"
-         sodipodi:nodetypes="ccccc" />
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         width="164"
-         height="100"
-         id="image3253"
+         y="615.32898"
          x="0"
-         y="615.32898" />
+         id="image3253"
+         height="100"
+         width="164" />
       <g
          id="g3255"
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)">
@@ -1579,15 +1570,18 @@
            clip-path="url(#clipPath3880)"
            style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3257" />
+           id="path3257"
+           inkscape:connector-curvature="0" />
         <path
            id="path3259"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:url(#linearGradient3273);fill-opacity:1;stroke:none" />
+           style="fill:url(#linearGradient3273);fill-opacity:1;stroke:none"
+           inkscape:connector-curvature="0" />
         <path
            style="fill:#f0ec40;fill-opacity:1;stroke:none"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           id="path3261" />
+           id="path3261"
+           inkscape:connector-curvature="0" />
       </g>
       <text
          id="text3263"
@@ -1654,11 +1648,12 @@
          inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
          id="path2961"
          d="m 462.44629,480.91592 c -5.18279,-5.18276 -13.58571,-5.18276 -18.76847,0 -4.74069,4.74068 -5.14406,12.17354 -1.21214,17.37384 l -10.25747,10.25748 c -0.72205,0.72206 -0.72205,1.88467 0,2.60672 0.72205,0.72207 1.88467,0.72207 2.60672,0 l 10.25748,-10.25746 c 5.2003,3.93193 12.63316,3.52854 17.37385,-1.21214 5.18275,-5.18276 5.18275,-13.58568 0,-18.76844 z m -2.60675,2.60672 c 3.74309,3.74311 3.74309,9.81188 0,13.55499 -3.74311,3.74311 -9.81188,3.74311 -13.555,0 -3.74309,-3.74311 -3.74309,-9.81188 0,-13.55499 3.74311,-3.7431 9.81188,-3.7431 13.555,0 z"
-         style="fill:#606060;fill-opacity:1;stroke:none" />
+         style="fill:#606060;fill-opacity:1;stroke:none"
+         inkscape:connector-curvature="0" />
     </g>
     <g
        id="g3911"
-       transform="matrix(0.97560976,0,0,0.97560976,45.100825,22.803608)">
+       transform="matrix(0.97560976,0,0,0.97560976,32.826551,22.803608)">
       <rect
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
@@ -1669,18 +1664,19 @@
          height="40"
          width="40"
          id="rect2909-1"
-         style="fill:url(#linearGradient3920);fill-opacity:1;stroke:#606060;stroke-width:1.02499998;stroke-opacity:1" />
+         style="fill:url(#linearGradient3920);fill-opacity:1;stroke:none" />
       <path
          d="m 77.544793,749.24158 c 1.144498,0 2.065881,0.92138 2.065881,2.06588 l 0,43.17755 c 0,1.1445 -0.921383,2.06588 -2.065881,2.06588 -1.144498,0 -2.065881,-0.92138 -2.065881,-2.06588 l 0,-43.17755 c 0,-1.1445 0.921383,-2.06588 2.065881,-2.06588 z m -23.654652,23.65464 c 0,-1.1445 0.921382,-2.06588 2.065881,-2.06588 l 43.177548,0 c 1.1445,0 2.06588,0.92138 2.06588,2.06588 0,1.14449 -0.92138,2.06588 -2.06588,2.06588 l -43.177548,0 c -1.144499,0 -2.065881,-0.92139 -2.065881,-2.06588 z"
          style="fill:#606060;fill-opacity:1;stroke:none"
          transform="matrix(0.70710698,-0.70710658,0.70710698,0.70710658,0,0)"
-         id="rect3075" />
+         id="rect3075"
+         inkscape:connector-curvature="0" />
     </g>
     <g
        id="g3946"
-       transform="translate(182.79866,68.148804)">
+       transform="translate(170.5,68.148804)">
       <rect
-         style="fill:url(#linearGradient3953);fill-opacity:1;stroke:#606060;stroke-width:1;stroke-opacity:1"
+         style="fill:url(#linearGradient3953);fill-opacity:1;stroke:none"
          id="rect3948"
          width="39"
          height="39"
@@ -1696,7 +1692,8 @@
          id="path3950"
          inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
          inkscape:export-xdpi="360"
-         inkscape:export-ydpi="360" />
+         inkscape:export-ydpi="360"
+         inkscape:connector-curvature="0" />
     </g>
     <g
        transform="translate(0,300.03322)"
@@ -1705,15 +1702,16 @@
          sodipodi:nodetypes="ccccc"
          id="path3277"
          d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
-         style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+         style="fill:#f0ec40;fill-opacity:1;stroke:none"
+         inkscape:connector-curvature="0" />
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         y="615.32898"
-         x="0"
-         id="image3279"
+         width="164"
          height="100"
-         width="164" />
+         id="image3279"
+         x="0"
+         y="615.32898" />
       <g
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)"
          id="g3281">
@@ -1721,15 +1719,18 @@
            id="path3283"
            d="m 438,665.32897 32,32 -32,0 0,-32"
            style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876)"
-           clip-path="url(#clipPath3880)" />
+           clip-path="url(#clipPath3880)"
+           inkscape:connector-curvature="0" />
         <path
            style="fill:url(#linearGradient3299);fill-opacity:1;stroke:none"
            d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3285" />
+           id="path3285"
+           inkscape:connector-curvature="0" />
         <path
            id="path3287"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+           style="fill:#f0ec40;fill-opacity:1;stroke:none"
+           inkscape:connector-curvature="0" />
       </g>
       <text
          xml:space="preserve"

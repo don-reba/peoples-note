@@ -14,11 +14,11 @@
    height="640"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.0 r9654"
    sodipodi:docname="edit.svg"
    inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\edit.png"
-   inkscape:export-xdpi="360"
-   inkscape:export-ydpi="360">
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -49,24 +49,6 @@
        id="linearGradient3062"
        xlink:href="#linearGradient3946"
        inkscape:collect="always" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3946"
-       id="linearGradient3745"
-       x1="-177.02544"
-       y1="653.14783"
-       x2="-177.02544"
-       y2="588.1322"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3946"
-       id="linearGradient3753"
-       x1="892.76532"
-       y1="885.58661"
-       x2="892.76532"
-       y2="820.58478"
-       gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3946"
@@ -346,7 +328,7 @@
          id="flowRegion2906"><rect
            id="rect2908"
            width="448.50183"
-           height="394.4942"
+           height="359.11337"
            x="173.64746"
            y="-195.85144"
            style="text-align:justify;text-anchor:start"
@@ -357,56 +339,8 @@
          id="flowPara2916" /><flowPara
          id="flowPara2918">Dignissim hymenaeos, risus wisi, pede lorem. Elit vulputate nec. Volutpat purus, eget sodales, arcu ut. Eaque nullam, adipiscing ac. Massa convallis amet, tincidunt est, feugiat sed dui.</flowPara><flowPara
          id="flowPara2920" /></flowRoot>    <g
-       id="g2924"
-       transform="translate(-460.53861,166.77557)">
-      <rect
-         rx="12.5"
-         inkscape:export-ydpi="360"
-         inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
-         ry="12.5"
-         y="821.08661"
-         x="865.81134"
-         height="64"
-         width="64"
-         id="rect2832-4-1"
-         style="fill:url(#linearGradient3753);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
-         xlink:href="icons/view-fullscreen.png"
-         y="825.08661"
-         x="869.81134"
-         id="image2997"
-         height="56"
-         width="56" />
-    </g>
-    <g
-       id="g2928"
-       transform="translate(206.75606,399.21435)">
-      <rect
-         rx="12.5"
-         inkscape:export-ydpi="360"
-         inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
-         ry="12.5"
-         y="588.64783"
-         x="-206.25606"
-         height="64"
-         width="64"
-         id="rect2832-4"
-         style="fill:url(#linearGradient3745);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
-         xlink:href="icons/home.png"
-         y="592.64783"
-         x="-202.25606"
-         id="image3011"
-         height="56"
-         width="56" />
-    </g>
-    <g
        id="g2929"
-       transform="matrix(1,0,0,0.78097269,148.76663,51.830635)">
+       transform="matrix(1,0,0,0.60166195,148.76663,189.49091)">
       <rect
          ry="0"
          y="767.71906"
@@ -419,7 +353,7 @@
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
          inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
-         ry="6.4022727"
+         ry="8.3103142"
          y="767.71906"
          x="321.23337"
          height="400"
@@ -554,6 +488,238 @@
          id="tspan4649"
          x="27.498077"
          y="632.67743">Note Title</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       id="rect2908-1"
+       width="480"
+       height="52"
+       x="-0.00025027155"
+       y="1000.3622" />
+    <text
+       xml:space="preserve"
+       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans Bold"
+       x="103.96606"
+       y="1034.3839"
+       id="text3682"><tspan
+         sodipodi:role="line"
+         id="tspan3684"
+         x="103.96606"
+         y="1034.3839">OK</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans Bold;text-anchor:middle;text-align:center"
+       x="374.05103"
+       y="1034.3839"
+       id="text3686"><tspan
+         sodipodi:role="line"
+         id="tspan3688"
+         x="327.17383"
+         y="1034.3839">Cancel</tspan></text>
+    <g
+       id="g3825"
+       transform="translate(683.41829,186.28692)">
+      <rect
+         ry="1.9886364"
+         y="829.54022"
+         x="-459.42233"
+         height="21.070076"
+         width="32.007576"
+         id="rect2988"
+         style="fill:#ffffff;fill-opacity:1;stroke:none"
+         rx="1.9886364" />
+      <rect
+         ry="0"
+         y="832.52319"
+         x="-437.3027"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3762"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3777"
+         width="3.0066285"
+         height="3.0066288"
+         x="-441.30762"
+         y="832.52319"
+         ry="0" />
+      <rect
+         ry="0"
+         y="832.52319"
+         x="-445.3125"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3779"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3781"
+         width="3.0066285"
+         height="3.0066288"
+         x="-449.31738"
+         y="832.52319"
+         ry="0" />
+      <rect
+         ry="0"
+         y="832.52319"
+         x="-453.3223"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3783"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3785"
+         width="3.0066285"
+         height="3.0066288"
+         x="-457.32718"
+         y="832.52319"
+         ry="0" />
+      <rect
+         ry="0"
+         y="832.52319"
+         x="-433.29782"
+         height="3.0066288"
+         width="3.9535983"
+         id="rect3787"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3789"
+         width="3.0066285"
+         height="3.0066288"
+         x="-440.3205"
+         y="836.53998"
+         ry="0" />
+      <rect
+         ry="0"
+         y="836.53998"
+         x="-444.32675"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3791"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3793"
+         width="3.0066285"
+         height="3.0066288"
+         x="-448.33298"
+         y="836.53998"
+         ry="0" />
+      <rect
+         ry="0"
+         y="836.53998"
+         x="-452.33923"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3795"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3797"
+         width="3.9883189"
+         height="3.0066288"
+         x="-457.32718"
+         y="836.53998"
+         ry="0" />
+      <rect
+         ry="0"
+         y="836.53998"
+         x="-436.31424"
+         height="3.0066288"
+         width="6.9700193"
+         id="rect3799"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3801"
+         width="3.0066285"
+         height="3.0066288"
+         x="-439.30096"
+         y="840.52826"
+         ry="0" />
+      <rect
+         ry="0"
+         y="840.52826"
+         x="-443.31345"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3803"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3805"
+         width="3.0066285"
+         height="3.0066288"
+         x="-447.32596"
+         y="840.52826"
+         ry="0" />
+      <rect
+         ry="0"
+         y="840.52826"
+         x="-451.33844"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3807"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3809"
+         width="4.9828563"
+         height="3.0066288"
+         x="-457.32718"
+         y="840.52826"
+         ry="0" />
+      <rect
+         ry="0"
+         y="840.52826"
+         x="-435.28845"
+         height="3.0066288"
+         width="5.944232"
+         id="rect3811"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3813"
+         width="3.0066285"
+         height="3.0066288"
+         x="-457.32718"
+         y="844.54388"
+         ry="0" />
+      <rect
+         ry="0"
+         y="844.54388"
+         x="-449.34625"
+         height="3.0066288"
+         width="12.037878"
+         id="rect3815"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         ry="0"
+         y="844.54388"
+         x="-453.34625"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3817"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         ry="0"
+         y="844.54388"
+         x="-436.35086"
+         height="3.0066288"
+         width="3.0066285"
+         id="rect3819"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect3821"
+         width="3.0066285"
+         height="3.0066288"
+         x="-432.35086"
+         y="844.54388"
+         ry="0" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"

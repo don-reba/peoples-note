@@ -17,8 +17,8 @@
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="view.svg"
    inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\view.png"
-   inkscape:export-xdpi="360"
-   inkscape:export-ydpi="360">
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180">
   <defs
      id="defs4">
     <linearGradient
@@ -264,9 +264,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.5833333"
-     inkscape:cx="576.93527"
-     inkscape:cy="211.74545"
+     inkscape:zoom="0.79166665"
+     inkscape:cx="668.26487"
+     inkscape:cy="214.02939"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -392,11 +392,11 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
          xlink:href="icons/view-fullscreen.png"
-         y="984.36218"
-         x="408.77274"
-         id="image2997"
+         width="64"
          height="64"
-         width="64" />
+         id="image2997"
+         x="408.77274"
+         y="984.36218" />
     </g>
     <g
        id="g3059"
@@ -416,11 +416,11 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
          xlink:href="icons/home.png"
-         y="984.36218"
-         x="4.0000024"
-         id="image3011"
+         width="64"
          height="64"
-         width="64" />
+         id="image3011"
+         x="4.0000024"
+         y="984.36218" />
     </g>
     <g
        id="g3740"
@@ -558,12 +558,12 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
          xlink:href="icons/home.png"
-         style="stroke:none"
-         width="64"
-         height="64"
-         id="image3151"
+         y="757.86218"
          x="604.5"
-         y="757.86218" />
+         id="image3151"
+         height="64"
+         width="64"
+         style="stroke:none" />
     </g>
     <g
        id="g3875">
