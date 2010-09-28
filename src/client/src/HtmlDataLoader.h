@@ -4,6 +4,7 @@
 #include "IHtmlDataLoader.h"
 
 class EnNoteTranslator;
+class INoteListView;
 class INoteView;
 class IUserModel;
 
@@ -25,6 +26,7 @@ private:
 	Blob blob;
 
 	EnNoteTranslator & enNoteTranslator;
+	INoteListView    & noteListView;
 	INoteView        & noteView;
 	IUserModel       & userModel;
 
@@ -32,6 +34,7 @@ public:
 
 	HtmlDataLoader
 		( EnNoteTranslator & enNoteTranslator
+		, INoteListView    & noteListView
 		, INoteView        & noteView
 		, IUserModel       & userModel
 		);

@@ -53,6 +53,8 @@ public:
 
 	virtual Guid GetSelectedNoteGuid() = 0;
 
+	virtual void GetThumbSize(SIZE & size) = 0;
+
 	virtual std::wstring GetSearchString() = 0;
 
 	virtual void HidePageDown() = 0;

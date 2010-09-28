@@ -3,6 +3,7 @@
 
 #include "EnNoteTranslator.h"
 #include "HtmlResource.h"
+#include "INoteListView.h"
 #include "INoteView.h"
 #include "Tools.h"
 #include "Transaction.h"
@@ -13,10 +14,12 @@ using namespace Tools;
 
 HtmlDataLoader::HtmlDataLoader
 	( EnNoteTranslator & enNoteTranslator
+	, INoteListView    & noteListView
 	, INoteView        & noteView
 	, IUserModel       & userModel
 	)
 	: enNoteTranslator (enNoteTranslator)
+	, noteListView     (noteListView)
 	, noteView         (noteView)
 	, userModel        (userModel)
 {
@@ -119,7 +122,8 @@ void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
 	Thumbnail thumbnail;
 	userModel.GetNoteThumbnail(guid, thumbnail);
 
-	const SIZE size = { 164, 100 };
+	SIZE size;
+	noteListView.GetThumbSize(size);
 	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
 	{
 		wstring body;

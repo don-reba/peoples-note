@@ -133,6 +133,8 @@ public:
 	
 	virtual std::wstring GetSearchString();
 
+	virtual void GetThumbSize(SIZE & size);
+
 	virtual void HidePageDown();
 
 	virtual void HidePageUp();

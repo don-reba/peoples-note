@@ -58,9 +58,12 @@ void EditorPresenter::OnAccept()
 
 	noteView.SetNote(note, L"", L"", bodyHtml);
 
+	SIZE thumbnailSize;
+	noteListView.GetThumbSize(thumbnailSize);
+
 	Thumbnail thumbnail;
-	thumbnail.Width  = 164;
-	thumbnail.Height = 100;
+	thumbnail.Width  = thumbnailSize.cx;
+	thumbnail.Height = thumbnailSize.cy;
 	noteView.Render(thumbnail);
 	userModel.SetNoteThumbnail(note.guid, thumbnail);
 

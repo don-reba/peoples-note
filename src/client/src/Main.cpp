@@ -145,6 +145,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		HtmlDataLoader htmlDataLoader
 			( enNoteTranslator
+			, noteListView
 			, noteView
 			, userModel
 			);

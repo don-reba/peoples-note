@@ -228,6 +228,13 @@ wstring NoteListView::GetSearchString()
 	return searchBox.text().c_str();
 }
 
+void NoteListView::GetThumbSize(SIZE & size)
+{
+	element e(element::root_element(hwnd_));
+	size.cx = e.get_attribute_int("thumb-width");
+	size.cy = e.get_attribute_int("thumb-height");
+}
+
 void NoteListView::HidePageDown()
 {
 	element(FindFirstElement("#page-down"))
