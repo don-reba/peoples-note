@@ -17,8 +17,8 @@
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="edit.svg"
    inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\edit.png"
-   inkscape:export-xdpi="180"
-   inkscape:export-ydpi="180">
+   inkscape:export-xdpi="360"
+   inkscape:export-ydpi="360">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -720,6 +720,13 @@
          y="844.54388"
          ry="0" />
     </g>
+    <image
+       y="528.36218"
+       x="416"
+       id="image3098"
+       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-hide.png"
+       height="64"
+       width="64" />
   </g>
   <g
      inkscape:groupmode="layer"
