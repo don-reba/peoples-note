@@ -13,9 +13,9 @@ using namespace Tools;
 // interface
 //----------
 
-AboutView::AboutView(HINSTANCE instance)
+AboutView::AboutView(HINSTANCE instance, bool highRes)
 	: instance (instance)
-	, HTMLayoutWindow(L"about.htm")
+	, HTMLayoutWindow(L"about.htm", highRes)
 {
 }
 

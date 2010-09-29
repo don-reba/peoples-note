@@ -39,4 +39,8 @@ public:
 	virtual void Get(int index, std::wstring & text);
 
 	virtual bool IsNull(int index);
+
+private:
+
+	void HandleError(const std::string msg);
 };

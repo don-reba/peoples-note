@@ -155,8 +155,8 @@ void UserModel::AddNote
 void UserModel::AddNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Notebooks(guid, usn, name, isDirty, isDefault, isLastUsed)"
-		"  VALUES (?, ?, ?, ?, 0, 0)"
+		( "INSERT OR REPLACE INTO Notebooks(guid, usn, name, isDirty)"
+		"  VALUES (?, ?, ?, ?)"
 		);
 	statement->Bind(1, notebook.guid);
 	statement->Bind(2, notebook.usn);
@@ -977,10 +977,10 @@ void UserModel::Initialize(wstring name)
 			"( guid PRIMARY KEY"
 			", usn"
 			", name"
-			", updateCount"
+			", updateCount DEFAULT 0"
 			", isDirty"
-			", isDefault"
-			", isLastUsed"
+			", isDefault  DEFAULT 0"
+			", isLastUsed DEFAULT 0"
 			")"
 		);
 
@@ -1002,7 +1002,7 @@ void UserModel::Initialize(wstring name)
 			", thumbnail"
 			", thumbnailWidth  DEFAULT 0"
 			", thumbnailHeight DEFAULT 0"
-			", notebook REFERENCES Notebooks(guid)  ON DELETE CASCADE ON UPDATE CASCADE"
+			", notebook REFERENCES Notebooks(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
 		);
 

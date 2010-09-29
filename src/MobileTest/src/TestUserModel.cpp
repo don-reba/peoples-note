@@ -93,7 +93,7 @@ Note MakeNote
 // test suite
 //-----------
 
-FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelAddNote, DataStoreFixture)
 {
 	Note note0;
 	note0.name         = L"note-0";
@@ -189,7 +189,7 @@ FIXTURE_TEST_CASE(TestUserModelAddNote, DataStoreFixture)
 	}
 }
 
-FIXTURE_TEST_CASE(TestUserModelCascade, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelCascade, DataStoreFixture)
 {
 	Notebook notebook;
 	Note note0;
@@ -225,7 +225,7 @@ FIXTURE_TEST_CASE(TestUserModelCascade, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetResourceCount(), 0);
 }
 
-FIXTURE_TEST_CASE(TestUserModelDeleteNote, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelDeleteNote, DataStoreFixture)
 {
 	Notebook notebook;
 	userModel.GetDefaultNotebook(notebook);
@@ -239,7 +239,7 @@ FIXTURE_TEST_CASE(TestUserModelDeleteNote, DataStoreFixture)
 	TEST_CHECK(notes.empty());
 }
 
-FIXTURE_TEST_CASE(TestUserModelDeleteNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelDeleteNotebook, DataStoreFixture)
 {
 	Notebook defaultNotebook;
 	userModel.GetDefaultNotebook(defaultNotebook);
@@ -268,7 +268,7 @@ FIXTURE_TEST_CASE(TestUserModelDeleteNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(lastUsedNotebook.guid, defaultNotebook.guid);
 }
 
-FIXTURE_TEST_CASE(TestUserModelDeleteTag, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelDeleteTag, DataStoreFixture)
 {
 	Tag tag;
 	userModel.AddTag(tag);
@@ -279,7 +279,7 @@ FIXTURE_TEST_CASE(TestUserModelDeleteTag, DataStoreFixture)
 	TEST_CHECK(tags.empty());
 }
 
-AUTO_TEST_CASE(TestUserModelExists)
+AUTO_TEST_CASE(UserModelExists)
 {
 	DataStore store;
 	UserModel userModel(store, storeFolder);
@@ -291,7 +291,7 @@ AUTO_TEST_CASE(TestUserModelExists)
 	TEST_CHECK(userModel.Exists(storeName));
 }
 
-FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelNoteForeignKey, DataStoreFixture)
 {
 	Notebook notebook;
 	notebook.name = L"test-notebook";
@@ -320,7 +320,7 @@ FIXTURE_TEST_CASE(TestUserModelNoteForeignKey, DataStoreFixture)
 		);
 }
 
-FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelAddNotebook, DataStoreFixture)
 {
 	Notebook notebook;
 	notebook.name = L"test-notebook";
@@ -337,7 +337,7 @@ FIXTURE_TEST_CASE(TestUserModelAddNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 }
 
-FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelDefaultNotebook, DataStoreFixture)
 {
 	Notebook notebook;
 	notebook.name = L"test-notebook";
@@ -349,7 +349,7 @@ FIXTURE_TEST_CASE(TestUserModelDefaultNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(defaultNotebook.name, L"test-notebook");
 }
 
-FIXTURE_TEST_CASE(TestUserModelGetDirtyNoteCount, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelGetDirtyNoteCount, DataStoreFixture)
 {
 	Notebook notebook;
 	userModel.GetDefaultNotebook(notebook);
@@ -369,7 +369,7 @@ FIXTURE_TEST_CASE(TestUserModelGetDirtyNoteCount, DataStoreFixture)
 	TEST_CHECK_EQUAL(dirtyNoteCount, 2);
 }
 
-FIXTURE_TEST_CASE(TestUserModelGetNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelGetNotebook, DataStoreFixture)
 {
 	Notebook notebook;
 	notebook.name = L"test-notebook";
@@ -381,7 +381,7 @@ FIXTURE_TEST_CASE(TestUserModelGetNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(result.name, L"test-notebook");
 }
 
-FIXTURE_TEST_CASE(TestUserModelReplacement, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelReplacement, DataStoreFixture)
 {
 	Notebook notebook0;
 	Notebook notebook1;
@@ -457,7 +457,7 @@ FIXTURE_TEST_CASE(TestUserModelReplacement, DataStoreFixture)
 	TEST_CHECK_EQUAL(resource.Data.at(0), 5);
 }
 
-FIXTURE_TEST_CASE(TestUserModelResource0, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelResource0, DataStoreFixture)
 {
 	Note note(MakeNote(L"note-0"));
 
@@ -476,7 +476,7 @@ FIXTURE_TEST_CASE(TestUserModelResource0, DataStoreFixture)
 		);
 }
 
-FIXTURE_TEST_CASE(TestUserModelResource1, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelResource1, DataStoreFixture)
 {
 	std::string hash ("hash");
 	Note        note (MakeNote(L"note-0"));
@@ -501,7 +501,7 @@ FIXTURE_TEST_CASE(TestUserModelResource1, DataStoreFixture)
 		TEST_CHECK_EQUAL(resource.Data.at(i), loaded.at(i));
 }
 
-FIXTURE_TEST_CASE(TestUserModelResource2, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelResource2, DataStoreFixture)
 {
 	Note note;
 
@@ -526,7 +526,7 @@ FIXTURE_TEST_CASE(TestUserModelResource2, DataStoreFixture)
 		);
 }
 
-FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelLastUsedNotebook, DataStoreFixture)
 {
 	Notebook notebook0;
 	notebook0.name = L"notebook0";
@@ -550,7 +550,7 @@ FIXTURE_TEST_CASE(TestUserModelLastUsedNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(lastUsedNotebook.usn,     2);
 }
 
-AUTO_TEST_CASE(TestUserModelLoad)
+AUTO_TEST_CASE(UserModelLoad)
 {
 	DataStore store;
 	UserModel userModel(store, storeFolder);
@@ -580,7 +580,7 @@ AUTO_TEST_CASE(TestUserModelLoad)
 	TEST_CHECK_EQUAL(credentials.GetUsername(), storeName);
 }
 
-AUTO_TEST_CASE(TestUserModelLoadAs)
+AUTO_TEST_CASE(UserModelLoadAs)
 {
 	DataStore store;
 	UserModel userModel(store, storeFolder);
@@ -622,7 +622,7 @@ AUTO_TEST_CASE(TestUserModelLoadAs)
 	TEST_CHECK_EQUAL(credentials.GetUsername(), dstName);
 }
 
-AUTO_TEST_CASE(TestUserModelLoadOrCreate)
+AUTO_TEST_CASE(UserModelLoadOrCreate)
 {
 	{
 		DataStore store;
@@ -666,7 +666,7 @@ AUTO_TEST_CASE(TestUserModelLoadOrCreate)
 	}
 }
 
-FIXTURE_TEST_CASE(TestUserModelNotebooks, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelNotebooks, DataStoreFixture)
 {
 	Notebook notebook0;
 	notebook0.name = L"notebook0";
@@ -687,7 +687,7 @@ FIXTURE_TEST_CASE(TestUserModelNotebooks, DataStoreFixture)
 	TEST_CHECK_EQUAL(notebooks.at(3).name, L"notebook2");
 }
 
-FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelNotesByNotebook, DataStoreFixture)
 {
 	vector<Notebook> notebooks;
 	notebooks.push_back(Notebook());
@@ -725,7 +725,7 @@ FIXTURE_TEST_CASE(TestUserModelNotesByNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes.at(1).name, L"note-2");
 }
 
-FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelNotesBySearch, DataStoreFixture)
 {
 	Notebook notebook;
 	notebook.name = L"notebook";
@@ -749,8 +749,8 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 	NoteList notes0;
 	userModel.GetNotesBySearch(L"software", notes0);
 	TEST_CHECK_EQUAL(notes0.size(), 2);
-	TEST_CHECK_EQUAL(notes0.at(0).name, L"useful software");
-	TEST_CHECK_EQUAL(notes0.at(1).name, L"software use");
+	TEST_CHECK_EQUAL(notes0.at(0).name, L"software use");
+	TEST_CHECK_EQUAL(notes0.at(1).name, L"useful software");
 
 	NoteList notes1;
 	userModel.GetNotesBySearch(L"use", notes1);
@@ -758,7 +758,7 @@ FIXTURE_TEST_CASE(TestUserModelNotesBySearch, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes1.at(0).name, L"software use");
 }
 
-FIXTURE_TEST_CASE(TestUserModelTags, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelTags, DataStoreFixture)
 {
 	TagList tags1;
 	tags1.push_back(Tag());
@@ -779,7 +779,7 @@ FIXTURE_TEST_CASE(TestUserModelTags, DataStoreFixture)
 	TEST_CHECK_EQUAL(tags2.at(2).name, L"tag-c");
 }
 
-FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelThumbnail, DataStoreFixture)
 {
 	Notebook notebook;
 	userModel.GetDefaultNotebook(notebook);
@@ -813,14 +813,14 @@ FIXTURE_TEST_CASE(TestUserModelThumbnail, DataStoreFixture)
 	TEST_CHECK_EQUAL(out.Height, 11);
 }
 
-FIXTURE_TEST_CASE(TestUserModelUnload, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelUnload, DataStoreFixture)
 {
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), FALSE);
 	userModel.Unload();
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), TRUE);
 }
 
-FIXTURE_TEST_CASE(TestUserModelUpdateNotebook, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelUpdateNotebook, DataStoreFixture)
 {
 	Notebook notebook;
 	userModel.GetDefaultNotebook(notebook);
@@ -861,7 +861,7 @@ FIXTURE_TEST_CASE(TestUserModelUpdateNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes.at(0).name, L"note-0");
 }
 
-FIXTURE_TEST_CASE(TestUserModelUpdateTag, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelUpdateTag, DataStoreFixture)
 {
 	Tag tag;
 	tag.guid    = Guid("{0}");

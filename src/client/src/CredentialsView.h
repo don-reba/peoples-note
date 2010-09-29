@@ -22,7 +22,7 @@ private:
 
 public:
 
-	CredentialsView(HINSTANCE instance);
+	CredentialsView(HINSTANCE instance, bool highRes);
 
 	void Create(HWND parent);
 

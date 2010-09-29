@@ -18,7 +18,7 @@ private:
 
 public:
 
-	AboutView(HINSTANCE instance);
+	AboutView(HINSTANCE instance, bool highRes);
 
 	void Create(HWND parent);
 

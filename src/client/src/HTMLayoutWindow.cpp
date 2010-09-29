@@ -14,8 +14,9 @@ using namespace Tools;
 // interface
 //----------
 
-HTMLayoutWindow::HTMLayoutWindow(const wchar_t * resourceId)
+HTMLayoutWindow::HTMLayoutWindow(const wchar_t * resourceId, bool highRes)
 	: resourceId    (resourceId)
+	, highRes       (highRes)
 	, isHtmlDataSet (false)
 	, htmlData      (NULL)
 	, htmlUri       (NULL)
@@ -117,6 +118,8 @@ bool HTMLayoutWindow::UseHtmlData()
 
 void HTMLayoutWindow::OnCreate(Msg<WM_CREATE> & msg)
 {
+	HTMLayoutSetOption(hwnd_, HTMLAYOUT_FONT_SMOOTHING, highRes ? 0 : 1);
+
 	HTMLayoutSetCallback
 		( hwnd_
 		, &HTMLayoutWindow::ProcessHTMLayoutNotify
@@ -129,7 +132,7 @@ void HTMLayoutWindow::OnCreate(Msg<WM_CREATE> & msg)
 		, HANDLE_BEHAVIOR_EVENT|HANDLE_FOCUS|HANDLE_KEY
 		);
 
-	HtmlResource resource = LoadHtmlResource(resourceId, false);
+	HtmlResource resource = LoadHtmlResource(resourceId, highRes);
 	if (!HTMLayoutLoadHtml(hwnd_, resource.data, resource.size))
 		throw exception("Failed to load interface.");
 

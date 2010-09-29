@@ -40,6 +40,8 @@ private:
 
 private:
 
+	bool highRes;
+
 	const wchar_t * const resourceId;
 
 	std::vector<EventRecord>  eventRecords;
@@ -66,7 +68,7 @@ public:
 
 protected:
 
-	HTMLayoutWindow(const wchar_t * resourceId);
+	HTMLayoutWindow(const wchar_t * resourceId, bool highRes);
 
 	template <typename T>
 	void ConnectBehavior

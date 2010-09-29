@@ -25,6 +25,8 @@ private:
 
 	Blob blob;
 
+	bool highRes;
+
 	EnNoteTranslator & enNoteTranslator;
 	INoteListView    & noteListView;
 	INoteView        & noteView;
@@ -33,7 +35,8 @@ private:
 public:
 
 	HtmlDataLoader
-		( EnNoteTranslator & enNoteTranslator
+		( bool               highRes
+		, EnNoteTranslator & enNoteTranslator
 		, INoteListView    & noteListView
 		, INoteView        & noteView
 		, IUserModel       & userModel

@@ -18,7 +18,7 @@ private:
 
 public:
 
-	ProfileView(HINSTANCE instance);
+	ProfileView(HINSTANCE instance, bool highRes);
 
 	void Create(HWND parent);
 

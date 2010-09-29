@@ -2281,7 +2281,21 @@ low resolution support
 			the tools function would adjust the name
 		also by HtmlDataLoader::LoadHtmlUri
 			not sure how it would find out the dpi
-			TODO
+			it is initialized in Main
+			can find out resolution there
 	thumbnail size
 		these need to be smaller, too
-		TODO
+		NoteView::Render is called by
+			HtmlDataLoader::LoadThumbnailUri
+			NotePresenter::OnCloseNote
+			EditorPresenter::OnAccept
+		would be best to get the size from the markup
+sync error
+	exception thrown by SqlStatement::Finalize on notebook add
+	the messsage is "(NULL)"
+	result is SQLITE_CONSTRAINT
+	the "Notes" notebook contains "Notes" in name._Buf
+		but nothing in name._Ptr
+	the error seems to have gone away after resyncing...
+thumbnails are not rendered correctly
+	TODO

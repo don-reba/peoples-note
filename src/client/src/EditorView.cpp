@@ -14,10 +14,10 @@ using namespace Tools;
 // interface
 //----------
 
-EditorView::EditorView(HINSTANCE instance)
+EditorView::EditorView(HINSTANCE instance, bool highRes)
 	: instance        (instance)
 	, parent          (NULL)
-	, HTMLayoutWindow (L"note-edit.htm")
+	, HTMLayoutWindow (L"note-edit.htm", highRes)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);

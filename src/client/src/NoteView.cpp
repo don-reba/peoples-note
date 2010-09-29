@@ -16,12 +16,12 @@ using namespace Tools;
 // interface
 //----------
 
-NoteView::NoteView(HINSTANCE instance)
+NoteView::NoteView(HINSTANCE instance, bool highRes)
 	: instance        (instance)
 	, isDirty         (false)
 	, isFullScreen    (false)
 	, parent          (NULL)
-	, HTMLayoutWindow (L"note-view.htm")
+	, HTMLayoutWindow (L"note-view.htm", highRes)
 {
 }
 

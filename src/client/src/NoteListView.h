@@ -75,8 +75,9 @@ private:
 public:
 
 	NoteListView
-		( IAnimator & animator
-		, HINSTANCE   instance
+		( HINSTANCE   instance
+		, bool        highRes
+		, IAnimator & animator
 		, int         cmdShow
 		);
 

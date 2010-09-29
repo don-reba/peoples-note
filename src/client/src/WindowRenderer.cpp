@@ -37,17 +37,18 @@ SIZE WindowRenderer::ComputeWindowSize(HWND window, SIZE size)
 
 void WindowRenderer::FlipImage(WORD * data, SIZE size)
 {
-	vector<WORD> line(size.cx);
+	int scanline((size.cx + 1) & ~1);
+	vector<WORD> line(scanline);
 	WORD * line1(data);
-	WORD * line2(data + size.cx * (size.cy - 1));
-	size_t lineSize(size.cx * 2);
+	WORD * line2(data + scanline * (size.cy - 1));
+	size_t lineSize(scanline * 2);
 	for (int y(0); y != size.cy / 2; ++y)
 	{
 		memcpy(&line[0], line1,    lineSize);
 		memcpy(line1,    line2,    lineSize);
 		memcpy(line2,    &line[0], lineSize);
-		line1 += size.cx;
-		line2 -= size.cx;
+		line1 += scanline;
+		line2 -= scanline;
 	}
 }
 

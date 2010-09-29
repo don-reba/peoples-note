@@ -15,10 +15,7 @@ SqlStatement::SqlStatement(sqlite3 * db, const char * sql)
 {
 	int result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
 	if (result != SQLITE_OK)
-	{
-		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 }
 
 SqlStatement::~SqlStatement()
@@ -31,10 +28,7 @@ bool SqlStatement::Execute()
 {
 	int result = sqlite3_step(statement);
 	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
-	{
-		DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 	return result == SQLITE_DONE;
 }
 
@@ -43,30 +37,21 @@ void SqlStatement::Finalize()
 	int result(sqlite3_finalize(statement));
 	statement = NULL;
 	if (result != SQLITE_OK)
-	{
-		DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 }
 
 void SqlStatement::Bind(int index, __int32 n)
 {
 	int result = sqlite3_bind_int(statement, index, n);
 	if (result != SQLITE_OK)
-	{
-		DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 }
 
 void SqlStatement::Bind(int index, __int64 n)
 {
 	int result = sqlite3_bind_int64(statement, index, n);
 	if (result != SQLITE_OK)
-	{
-		DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 }
 
 void SqlStatement::Bind(int index, const string & text)
@@ -79,10 +64,7 @@ void SqlStatement::Bind(int index, const string & text)
 		, SQLITE_TRANSIENT
 		);
 	if (result != SQLITE_OK)
-	{
-		DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 }
 
 void SqlStatement::Bind(int index, const wstring & text)
@@ -97,10 +79,7 @@ void SqlStatement::Bind(int index, const wstring & text)
 		, SQLITE_TRANSIENT
 		);
 	if (result != SQLITE_OK)
-	{
-		DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 }
 
 void SqlStatement::Bind(int index, const Blob & blob)
@@ -115,10 +94,7 @@ void SqlStatement::Bind(int index, const Blob & blob)
 		, SQLITE_STATIC
 		);
 	if (result != SQLITE_OK)
-	{
-		DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(sqlite3_errmsg(db))));
-		throw std::exception(sqlite3_errmsg(db));
-	}
+		HandleError(sqlite3_errmsg(db));
 }
 
 void SqlStatement::Get(int index, bool & n)
@@ -149,4 +125,10 @@ void SqlStatement::Get(int index, wstring & text)
 bool SqlStatement::IsNull(int index)
 {
 	return SQLITE_NULL == sqlite3_column_type(statement, index);
+}
+
+void SqlStatement::HandleError(const std::string msg)
+{
+	DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(msg).c_str()));
+	throw std::exception(msg.c_str());
 }

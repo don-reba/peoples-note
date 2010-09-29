@@ -26,7 +26,7 @@ private:
 
 public:
 
-	NoteView(HINSTANCE instance);
+	NoteView(HINSTANCE instance, bool highRes);
 
 	void Create(HWND parent);
 

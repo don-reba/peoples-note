@@ -10,10 +10,10 @@ using namespace htmlayout::dom;
 using namespace std;
 using namespace Tools;
 
-CredentialsView::CredentialsView(HINSTANCE instance)
+CredentialsView::CredentialsView(HINSTANCE instance, bool highRes)
 	: instance        (instance)
 	, parent          (NULL)
-	, HTMLayoutWindow (L"signin-view.htm")
+	, HTMLayoutWindow (L"signin-view.htm", highRes)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);

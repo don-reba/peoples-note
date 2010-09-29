@@ -24,7 +24,7 @@ private:
 
 public:
 
-	EditorView(HINSTANCE instance);
+	EditorView(HINSTANCE instance, bool highRes);
 
 	void Create(HWND parent);
 

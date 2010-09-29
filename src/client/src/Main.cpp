@@ -58,6 +58,15 @@ wstring GetDocumentPath()
 	return path;
 }
 
+bool IsHighRes()
+{
+	if (480 > ::GetDeviceCaps(NULL, HORZRES))
+		return false;
+	if (480 > ::GetDeviceCaps(NULL, VERTRES))
+		return false;
+	return true;
+}
+
 bool SwitchToPreviousInstance(HINSTANCE instance)
 {
 	std::wstring title       = LoadStringResource(IDS_APP_TITLE);
@@ -116,7 +125,8 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
-		wstring documentPath(GetDocumentPath());
+		wstring documentPath (GetDocumentPath());
+		bool    highRes      (IsHighRes());
 
 		Animator         animator;
 		RegistryKey      registryKey(L"Software\\People's Note");
@@ -136,15 +146,16 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		SyncModel syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
 
-		AboutView       aboutView       (instance);
-		CredentialsView credentialsView (instance);
-		EditorView      editorView      (instance);
-		NoteView        noteView        (instance);
-		NoteListView    noteListView    (animator, instance, nCmdShow);
-		ProfileView     profileView     (instance);
+		AboutView       aboutView       (instance, highRes);
+		CredentialsView credentialsView (instance, highRes);
+		EditorView      editorView      (instance, highRes);
+		NoteView        noteView        (instance, highRes);
+		NoteListView    noteListView    (instance, highRes, animator, nCmdShow);
+		ProfileView     profileView     (instance, highRes);
 
 		HtmlDataLoader htmlDataLoader
-			( enNoteTranslator
+			( highRes
+			, enNoteTranslator
 			, noteListView
 			, noteView
 			, userModel
@@ -228,11 +239,11 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 
 		noteListView.Create();
-		noteView.Create(noteListView.hwnd_);
-		editorView.Create(noteListView.hwnd_);
-		credentialsView.Create(noteListView.hwnd_);
-		aboutView.Create(noteListView.hwnd_);
-		profileView.Create(noteListView.hwnd_);
+		noteView.Create        (noteListView.hwnd_);
+		editorView.Create      (noteListView.hwnd_);
+		credentialsView.Create (noteListView.hwnd_);
+		aboutView.Create       (noteListView.hwnd_);
+		profileView.Create     (noteListView.hwnd_);
 
 		userLoader.Run();
 		int result(RunMessageLoop(animator, syncModel));
