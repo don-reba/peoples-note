@@ -122,11 +122,11 @@ void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
 	Transaction transaction(userModel);
 
 	Thumbnail thumbnail;
-	//userModel.GetNoteThumbnail(guid, thumbnail);
+	userModel.GetNoteThumbnail(guid, thumbnail);
 
 	SIZE size;
 	noteListView.GetThumbSize(size);
-	//if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
+	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
 	{
 		wstring body;
 		userModel.GetNoteBody(guid, body);
