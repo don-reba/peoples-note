@@ -131,7 +131,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;C:\Users\Alexey\Files\Programming\boost_1_41_0;&quot;C:\Users\Alexey\Files\Programming\Evernote client\src\client\src&quot;;&quot;C:\Users\Alexey\Files\Programming\Evernote client\src\Test\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)client\src&quot;;&quot;$(SolutionDir)Test\src&quot;"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_OMIT_UTF16;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -530,11 +530,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File

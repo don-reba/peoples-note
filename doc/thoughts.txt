@@ -2297,5 +2297,29 @@ sync error
 	the "Notes" notebook contains "Notes" in name._Buf
 		but nothing in name._Ptr
 	the error seems to have gone away after resyncing...
+	was it some kind of database corruption?
+		I might have forced the app to close
+		but that should not cause corruption...
+	or is there some other contraint?
+		in this case, the error should reprdocible in tests
+	what other constraints can there be?
+		notebook guid uniqueness constraint does not apply
+			using INSERT OR REPLACE
+		the change cascades
+			maybe cascading violates some constraint
+				foreign or uniqueness
+				uniqueness unlikely, because all keys are simple
+					are they?
 thumbnails are not rendered correctly
-	TODO
+	there was a bug in the FlipImage function
+	it was not using correct scaline length
+sync error
+	report
+		slow GRPS network
+		shows "incremental update" for a long time
+		stops with an exception
+		deleting the database does not help
+	hypothesis
+		high latency
+			it takes too long to fetch the changes
+			20 events at time
