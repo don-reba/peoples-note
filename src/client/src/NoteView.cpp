@@ -35,10 +35,12 @@ void NoteView::Create(HWND parent)
 	if (!RegisterClass(wndClass))
 		throw std::exception("Class could not be registered.");
 
-	DWORD windowStyle(WS_NONAVDONEBUTTON);
+	DWORD windowStyle   (WS_NONAVDONEBUTTON);
+	DWORD windowExStyle (0);
 
-	hwnd_ = ::CreateWindow
-		( wndClass.c_str() // lpClassName
+	hwnd_ = ::CreateWindowEx
+		( windowExStyle    // dwExStyle
+		, wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
 		, windowStyle      // dwStyle
 		, CW_USEDEFAULT    // x

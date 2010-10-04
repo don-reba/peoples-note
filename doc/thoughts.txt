@@ -2323,3 +2323,7 @@ sync error
 		high latency
 			it takes too long to fetch the changes
 			20 events at time
+the about dialog does not close
+	it was not handling the WM_CLOSE message
+	in fact, it is better to add the OK button
+		and handle the WM_COMMAND message from the IDOK control

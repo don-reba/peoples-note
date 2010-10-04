@@ -36,7 +36,8 @@ public:
 
 private:
 
-	void OnKeyUp(Msg<WM_KEYUP> & msg);
+	void OnCommand (Msg<WM_COMMAND> & msg);
+	void OnKeyUp   (Msg<WM_KEYUP>   & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 

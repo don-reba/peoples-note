@@ -48,28 +48,45 @@ void AboutView::Show()
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_ABOUT_VIEW);
 
-	DWORD windowStyle(WS_VISIBLE);
+	DWORD windowStyle   (WS_POPUP);
+	DWORD windowExStyle (WS_EX_CAPTIONOKBTN);
 
-	hwnd_ = ::CreateWindow
-		( wndClass.c_str() // lpClassName
+	hwnd_ = ::CreateWindowEx
+		( windowExStyle    // dwExStyle
+		, wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
 		, windowStyle      // dwStyle
 		, CW_USEDEFAULT    // x
 		, CW_USEDEFAULT    // y
 		, CW_USEDEFAULT    // nWidth
 		, CW_USEDEFAULT    // nHeight
-		, NULL             // hWndParent
+		, parent           // hWndParent
 		, NULL             // hMenu
 		, instance         // hInstance
 		, this             // lpParam
 		);
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
+
+	RECT rect;
+	::GetWindowRect(parent, &rect);
+	::SetWindowPos(hwnd_, parent, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, 0);
+
+	::ShowWindow(hwnd_, SW_SHOW);
 }
 
 //------------------------
 // window message handlers
 //------------------------
+
+void AboutView::OnCommand(Msg<WM_COMMAND> & msg)
+{
+	if (msg.CtrlId() == IDOK)
+	{
+		SignalClose();
+		msg.handled_ = true;
+	}
+}
 
 void AboutView::OnKeyUp(Msg<WM_KEYUP> & msg)
 {
@@ -84,10 +101,12 @@ void AboutView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
 	{
+		&AboutView::OnCommand,
 		&AboutView::OnKeyUp,
 	};
 	try
 	{
+		DEBUGMSG(true, (L"%s\n", Tools::GetMessageName(msg.id_).c_str()));
 		if (!Handler::Call(mmp, this, msg))
 			__super::ProcessMessage(msg);
 	}
