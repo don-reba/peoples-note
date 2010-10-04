@@ -150,12 +150,12 @@ BOOST_AUTO_TEST_CASE(ToolsUnixTimeToSystemTime_Test)
 	time_t unixTime = 0;
 	SYSTEMTIME systemTime;
 	Tools::UnixTimeToSystemTime(unixTime, systemTime);
-	BOOST_CHECK_EQUAL(systemTime.wYear,         1969);
-	BOOST_CHECK_EQUAL(systemTime.wMonth,        12);
-	BOOST_CHECK_EQUAL(systemTime.wDay,          31);
-	BOOST_CHECK_EQUAL(systemTime.wHour,         18);
+	BOOST_CHECK_EQUAL(systemTime.wYear,         1970);
+	BOOST_CHECK_EQUAL(systemTime.wMonth,        1);
+	BOOST_CHECK_EQUAL(systemTime.wDay,          1);
+	BOOST_CHECK_EQUAL(systemTime.wHour,         2);
 	BOOST_CHECK_EQUAL(systemTime.wMinute,       0);
 	BOOST_CHECK_EQUAL(systemTime.wSecond,       0);
 	BOOST_CHECK_EQUAL(systemTime.wMilliseconds, 0);
-	BOOST_CHECK_EQUAL(systemTime.wDayOfWeek,    3);
+	BOOST_CHECK_EQUAL(systemTime.wDayOfWeek,    4);
 }

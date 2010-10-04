@@ -40,6 +40,8 @@ public:
 	std::wstring syncText;
 	std::wstring windowTitle;
 
+	SIZE thumbSize;
+
 	bool isPageDownVisible;
 	bool isPageUpVisible;
 	bool isSyncButtonShown;
@@ -111,6 +113,8 @@ public:
 	virtual Guid GetSelectedNoteGuid();
 	
 	virtual std::wstring GetSearchString();
+
+	virtual void GetThumbSize(SIZE & size);
 
 	virtual void HidePageDown();
 

@@ -132,6 +132,11 @@ std::wstring MockNoteListView::GetSearchString()
 	return searchString;
 }
 
+void MockNoteListView::GetThumbSize(SIZE & size)
+{
+	size = thumbSize;
+}
+
 void MockNoteListView::HidePageDown()
 {
 	isPageDownVisible = false;

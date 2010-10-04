@@ -36,6 +36,9 @@ BOOST_FIXTURE_TEST_CASE
 	, NotePresenterFixture
 	)
 {
+	noteListView.thumbSize.cx = 164;
+	noteListView.thumbSize.cy = 100;
+
 	Guid guid;
 	userModel.notes.push_back(Note());
 	userModel.notes.back().guid    = guid;
@@ -89,7 +92,6 @@ BOOST_FIXTURE_TEST_CASE
 	, NotePresenterFixture
 	)
 {
-
 	userModel.tags.push_back(Tag());
 	userModel.tags.back().guid = Guid("{1}");
 	userModel.tags.back().name = L"tag-0";
@@ -109,7 +111,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK_EQUAL(noteView.body, L"<div type=\"en-note\">test-note</div>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
-	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1969-12-31 18:00");
+	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 02:00");
 	BOOST_CHECK(noteView.isShown);
 
 	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{1}"));
@@ -119,6 +121,6 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK_EQUAL(noteView.body, L"<div type=\"en-note\">test-note</div>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
-	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1969-12-31 18:00\ntags: tag-0, tag-1");
+	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 02:00\ntags: tag-0, tag-1");
 	BOOST_CHECK(noteView.isShown);
 }

@@ -40,6 +40,9 @@ BOOST_FIXTURE_TEST_CASE
 {
 	editorView.isShown = true;
 
+	noteListView.thumbSize.cx = 164;
+	noteListView.thumbSize.cy = 100;
+
 	noteListView.SignalNewNote();
 
 	editorView.body =
