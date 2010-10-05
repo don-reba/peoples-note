@@ -2,6 +2,7 @@
 #include "EditorView.h"
 
 #include "crackers.h"
+#include "Rect.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
@@ -235,38 +236,36 @@ void EditorView::ResizeWindow()
 	{
 		if ((sipInfo.fdwFlags & SIPF_ON) == SIPF_ON)
 		{
-			RECT & rect(sipInfo.rcVisibleDesktop);
+			Rect rect(sipInfo.rcVisibleDesktop);
 			::MoveWindow
-				( hwnd_                  // hwnd
-				, rect.left              // x
-				, rect.top               // y
-				, rect.right - rect.left // nWidth
-				, rect.bottom - rect.top // nHeight
-				, TRUE				     // bRepaint
+				( hwnd_            // hwnd
+				, rect.GetX()      // x
+				, rect.GetY()      // y
+				, rect.GetWidth()  // nWidth
+				, rect.GetHeight() // nHeight
+				, TRUE             // bRepaint
 				);
 		}
 		else
 		{
+			HWND menuBar(::SHFindMenuBar(hwnd_));
 			if (menuBar)
 			{
-				RECT & desktopRect(sipInfo.rcVisibleDesktop);
-				int desktopWidth  (desktopRect.right  - desktopRect.left);
-				int desktopHeight (desktopRect.bottom - desktopRect.top);
+				Rect desktopRect(sipInfo.rcVisibleDesktop);
 
-				RECT menuBarRect;
+				Rect menuBarRect;
 				::GetWindowRect(menuBar, &menuBarRect);
-				int menuBarHeight(menuBarRect.bottom - menuBarRect.top);
 
-				int windowWidth  (desktopWidth);
-				int windowHeight (desktopHeight - menuBarHeight);
+				int windowWidth  (desktopRect.GetWidth());
+				int windowHeight (desktopRect.GetHeight() - menuBarRect.GetHeight());
 
 				::MoveWindow
-					( hwnd_            // hwnd
-					, desktopRect.left // x
-					, desktopRect.top  // y
-					, windowWidth      // nWidth
-					, windowHeight     // nHeight
-					, TRUE			   // bRepaint
+					( hwnd_              // hwnd
+					, desktopRect.GetX() // x
+					, desktopRect.GetY() // y
+					, windowWidth        // nWidth
+					, windowHeight       // nHeight
+					, TRUE			     // bRepaint
 					);
 			}
 

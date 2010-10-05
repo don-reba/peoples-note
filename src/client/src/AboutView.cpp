@@ -3,6 +3,7 @@
 
 #include "crackers.h"
 #include "IHtmlDataLoader.h"
+#include "Rect.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
@@ -48,18 +49,21 @@ void AboutView::Show()
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_ABOUT_VIEW);
 
-	DWORD windowStyle   (WS_POPUP);
+	DWORD windowStyle   (WS_POPUP|WS_VISIBLE);
 	DWORD windowExStyle (WS_EX_CAPTIONOKBTN);
+
+	Rect rect;
+	::SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, FALSE);
 
 	hwnd_ = ::CreateWindowEx
 		( windowExStyle    // dwExStyle
 		, wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
 		, windowStyle      // dwStyle
-		, CW_USEDEFAULT    // x
-		, CW_USEDEFAULT    // y
-		, CW_USEDEFAULT    // nWidth
-		, CW_USEDEFAULT    // nHeight
+		, rect.GetX()      // x
+		, rect.GetY()      // y
+		, rect.GetWidth()  // nWidth
+		, rect.GetHeight() // nHeight
 		, parent           // hWndParent
 		, NULL             // hMenu
 		, instance         // hInstance
@@ -67,12 +71,6 @@ void AboutView::Show()
 		);
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
-
-	RECT rect;
-	::GetWindowRect(parent, &rect);
-	::SetWindowPos(hwnd_, parent, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, 0);
-
-	::ShowWindow(hwnd_, SW_SHOW);
 }
 
 //------------------------

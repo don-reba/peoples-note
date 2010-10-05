@@ -2,6 +2,7 @@
 #include "CredentialsView.h"
 
 #include "crackers.h"
+#include "Rect.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
@@ -74,17 +75,19 @@ void CredentialsView::Open()
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_CREDENTIALS_VIEW);
 
-	DWORD windowStyle(WS_POPUP);
+	DWORD windowStyle   (WS_POPUP);
+	DWORD windowExStyle (0);
 
-	hwnd_ = ::CreateWindow
-		( wndClass.c_str() // lpClassName
+	hwnd_ = ::CreateWindowEx
+		( windowExStyle    // dwExStyle
+		, wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
 		, windowStyle      // dwStyle
 		, CW_USEDEFAULT    // x
 		, CW_USEDEFAULT    // y
 		, CW_USEDEFAULT    // nWidth
 		, CW_USEDEFAULT    // nHeight
-		, NULL             // hWndParent
+		, parent           // hWndParent
 		, NULL             // hMenu
 		, instance         // hInstance
 		, this             // lpParam
@@ -167,14 +170,14 @@ void CredentialsView::ResizeWindow()
 	{
 		if ((sipInfo.fdwFlags & SIPF_ON) == SIPF_ON)
 		{
-			RECT & rect(sipInfo.rcVisibleDesktop);
+			Rect rect(sipInfo.rcVisibleDesktop);
 			::MoveWindow
-				( hwnd_                  // hwnd
-				, rect.left              // x
-				, rect.top               // y
-				, rect.right - rect.left // nWidth
-				, rect.bottom - rect.top // nHeight
-				, TRUE				     // bRepaint
+				( hwnd_            // hwnd
+				, rect.GetX()      // x
+				, rect.GetY()      // y
+				, rect.GetWidth()  // nWidth
+				, rect.GetHeight() // nHeight
+				, TRUE             // bRepaint
 				);
 		}
 		else
@@ -182,24 +185,21 @@ void CredentialsView::ResizeWindow()
 			HWND menuBar(::SHFindMenuBar(hwnd_));
 			if (menuBar)
 			{
-				RECT & desktopRect(sipInfo.rcVisibleDesktop);
-				int desktopWidth  (desktopRect.right  - desktopRect.left);
-				int desktopHeight (desktopRect.bottom - desktopRect.top);
+				Rect desktopRect(sipInfo.rcVisibleDesktop);
 
-				RECT menuBarRect;
+				Rect menuBarRect;
 				::GetWindowRect(menuBar, &menuBarRect);
-				int menuBarHeight(menuBarRect.bottom - menuBarRect.top);
 
-				int windowWidth  (desktopWidth);
-				int windowHeight (desktopHeight - menuBarHeight);
+				int windowWidth  (desktopRect.GetWidth());
+				int windowHeight (desktopRect.GetHeight() - menuBarRect.GetHeight());
 
 				::MoveWindow
-					( hwnd_            // hwnd
-					, desktopRect.left // x
-					, desktopRect.top  // y
-					, windowWidth      // nWidth
-					, windowHeight     // nHeight
-					, TRUE			   // bRepaint
+					( hwnd_              // hwnd
+					, desktopRect.GetX() // x
+					, desktopRect.GetY() // y
+					, windowWidth        // nWidth
+					, windowHeight       // nHeight
+					, TRUE			     // bRepaint
 					);
 			}
 

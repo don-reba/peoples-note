@@ -2,6 +2,7 @@
 #include "NoteView.h"
 
 #include "crackers.h"
+#include "Rect.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
@@ -35,19 +36,22 @@ void NoteView::Create(HWND parent)
 	if (!RegisterClass(wndClass))
 		throw std::exception("Class could not be registered.");
 
-	DWORD windowStyle   (WS_NONAVDONEBUTTON);
-	DWORD windowExStyle (0);
+	DWORD windowStyle   (WS_POPUP);
+	DWORD windowExStyle (WS_EX_CAPTIONOKBTN);
+
+	Rect rect;
+	::SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, FALSE);
 
 	hwnd_ = ::CreateWindowEx
 		( windowExStyle    // dwExStyle
 		, wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
 		, windowStyle      // dwStyle
-		, CW_USEDEFAULT    // x
-		, CW_USEDEFAULT    // y
-		, CW_USEDEFAULT    // nWidth
-		, CW_USEDEFAULT    // nHeight
-		, NULL             // hWndParent
+		, rect.GetX()      // x
+		, rect.GetY()      // y
+		, rect.GetWidth()  // nWidth
+		, rect.GetHeight() // nHeight
+		, parent           // hWndParent
 		, NULL             // hMenu
 		, instance         // hInstance
 		, this             // lpParam
@@ -196,9 +200,11 @@ void NoteView::ToggleFullScreen()
 		? SHFS_HIDESIPBUTTON | SHFS_HIDETASKBAR
 		: SHFS_HIDESIPBUTTON | SHFS_SHOWTASKBAR
 		);
-	RECT rect = { 0 };
+	Rect rect;
 	if (isFullScreen)
 	{
+		rect.left   = 0;
+		rect.top    = 0;
 		rect.right  = GetSystemMetrics(SM_CXSCREEN);
 		rect.bottom = GetSystemMetrics(SM_CYSCREEN);
 	}
@@ -208,10 +214,10 @@ void NoteView::ToggleFullScreen()
 	}
 	::MoveWindow
 		( hwnd_
-		, rect.left
-		, rect.top
-		, rect.right  - rect.left
-		, rect.bottom - rect.top
+		, rect.GetX()
+		, rect.GetY()
+		, rect.GetWidth()
+		, rect.GetHeight()
 		, TRUE
 		);
 	element img(FindFirstElement("#full-screen"));
