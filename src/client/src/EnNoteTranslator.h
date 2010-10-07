@@ -115,4 +115,8 @@ private:
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
+
+	static void EnNoteTranslator::SetRootToEnNote
+		( rapidxml::xml_document<wchar_t> * doc
+		);
 };
