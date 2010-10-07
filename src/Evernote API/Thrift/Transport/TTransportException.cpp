@@ -2,7 +2,6 @@
 #include "TTransportException.h"
 
 using namespace Thrift;
-using namespace Thrift::Protocol;
 using namespace Thrift::Transport;
 
 TTransportException::TTransportException(const wchar_t * message)

@@ -15,6 +15,7 @@ class INoteStore;
 class ISyncLogger;
 class IUserModel;
 
+
 class SyncModel : public ISyncModel
 {
 // data
@@ -93,9 +94,14 @@ private:
 		, EnInteropNoteList & notes
 		);
 
-	void PostPlainMessage    (SyncMessageQueue::MessageType type);
-	void PostProgressMessage (double                        progress);
-	void PostTextMessage     (const wchar_t *               text);
+	void FinishSync
+		( const wchar_t * logMessage
+		, const wchar_t * friendlyMessage
+		);
+
+	void PostProgressMessage     (double          progress);
+	void PostTextMessage         (const wchar_t * text);
+	void PostSyncCompleteMessage ();
 
 	void ProcessNotes
 		( const EnInteropNoteList & remoteNotes

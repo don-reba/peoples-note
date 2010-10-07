@@ -30,6 +30,64 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToText)
 	BOOST_CHECK_EQUAL(text, L"text1 cell1 cell2 text2 text3 ");
 }
 
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToXml)
+{
+	EnNoteTranslator enNoteTranslator;
+
+	wstring html;
+	wstring xml;
+	
+	html = L"";
+	enNoteTranslator.ConvertToXml(html, xml);
+	BOOST_CHECK_EQUAL
+		( xml
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note/>"
+		);
+	
+	html = L"<div/>";
+	enNoteTranslator.ConvertToXml(html, xml);
+	BOOST_CHECK_EQUAL
+		( xml
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note><div/></en-note>"
+		);
+
+	html = L"<p>1</p><p>2</p>";
+	enNoteTranslator.ConvertToXml(html, xml);
+	BOOST_CHECK_EQUAL
+		( xml
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note><p>1</p><p>2</p></en-note>"
+		);
+	
+	html = L"<en-note/>";
+	enNoteTranslator.ConvertToXml(html, xml);
+	BOOST_CHECK_EQUAL
+		( xml
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note/>"
+		);
+	
+	html = L"<en-note><p>1</p><p>2</p></en-note>";
+	enNoteTranslator.ConvertToXml(html, xml);
+	BOOST_CHECK_EQUAL
+		( xml
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note><p>1</p><p>2</p></en-note>"
+		);
+}
+
 BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt_Test)
 {
 	EnNoteTranslator enNoteTranslator;

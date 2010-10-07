@@ -2323,7 +2323,70 @@ sync error
 		high latency
 			it takes too long to fetch the changes
 			20 events at time
+	test
+		HttpSendRequest would return a timeout error
+			currently, should throw appropriate TTransportException
 the about dialog does not close
 	it was not handling the WM_CLOSE message
 	in fact, it is better to add the OK button
 		and handle the WM_COMMAND message from the IDOK control
+should NoteStore::CreateNote replace note resources?
+	NoteProcessor.Create
+		gets the old note's contents and resources
+		gets a replacement note
+		deletes the old note
+		adds the replacement note
+	don't the resources get deleted with the old note?
+	TODO
+need to improve error reporting
+	Evernote has special error types
+		EDAMUserException
+			error code
+			[parameter]
+		EDAMSystemException
+			error code
+			[parameter]
+		EDAMNotFoundException
+			[identifier]
+			[key]
+	these do not set the TException::what()
+	solutions
+		rethrow with a specific message
+			- repetitive code
+		set TException::what()
+			- unclear how to do
+		process EDAM exceptions upon catching
+			- breaks encapsulation
+	desired result
+		log the exception type and parameters
+		display a friendly message
+	need differentiation at the catching stage
+	handling EDAM data would require processing __isset
+		very leaky
+	can't we have NoteStore provide the handlers?
+		what would they do?
+		they don't know how friendly the messages are supposed to be
+		or else it would be leakage in the other direction
+	could rethrow errors
+		but that would not change the possibility of optional types
+		so the new types would have to be essentially the same
+	added specific handlers
+	now, there is a lot of repetition
+		unload the database
+		reset progress bar
+		decipher error code
+	can make a function for cleaning up
+		separate functions for generating messages
+			but these would expose the classes in the header
+			and the forward declarations would be too verbose
+		separete function for processing error codes
+			who should be doing this?
+			could be used in different places in code
+			in all the same places those codes are used
+				could add this metainformation to the code generator
+					but this would be time-consuming
+			lets add this to the sync model, for now
+				can always refactore, if needed
+	setback
+	adding message handlers is dragging Thrift into the test suite
+		can avoid this by adding just TException

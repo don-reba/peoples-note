@@ -3,6 +3,7 @@
 
 #include "DataStore.h"
 #include "EnNoteTranslator.h"
+#include "EnServiceTools.h"
 #include "IEnService.h"
 #include "IMessagePump.h"
 #include "INoteStore.h"
@@ -15,6 +16,8 @@
 #include "SyncLogic.h"
 #include "TagProcessor.h"
 #include "Tools.h"
+
+#include <Evernote\EDAM\Error.h>
 
 #include <algorithm>
 #include <sstream>
@@ -71,7 +74,7 @@ void SyncModel::ProcessMessages()
 			SignalSyncComplete();
 			break;
 		case SyncMessageQueue::MessageSyncFailed:
-			statusText = L"Tried to sync, but something went wrong.";
+			statusText = message.Text;
 			SignalStatusUpdated();
 			SignalSyncComplete();
 			break;
@@ -180,12 +183,17 @@ void SyncModel::GetNotes
 		userModel.GetNoteResources(note.guid, notes.back().resources);
 	}
 }
-
-void SyncModel::PostPlainMessage(SyncMessageQueue::MessageType type)
+void SyncModel::FinishSync
+	( const wchar_t * logMessage
+	, const wchar_t * friendlyMessage
+	)
 {
-	SyncMessageQueue::Message message(type, L"", 0.0);
-	messages.Enqueue(message);
-	messagePump.WakeUp();
+	PostProgressMessage(0.0);
+	if (*logMessage)
+		syncLogger.Error(logMessage);
+	PostTextMessage(friendlyMessage);
+	PostSyncCompleteMessage();
+	userModel.Unload();
 }
 
 void SyncModel::PostProgressMessage(double progress)
@@ -204,6 +212,17 @@ void SyncModel::PostTextMessage(const wchar_t * text)
 	SyncMessageQueue::Message message
 		( SyncMessageQueue::MessageText
 		, text
+		, 0.0
+		);
+	messages.Enqueue(message);
+	messagePump.WakeUp();
+}
+
+void SyncModel::PostSyncCompleteMessage()
+{
+	SyncMessageQueue::Message message
+		( SyncMessageQueue::MessageSyncComplete
+		, L""
 		, 0.0
 		);
 	messages.Enqueue(message);
@@ -432,10 +451,10 @@ void SyncModel::Sync()
 			);
 		if (!authenticationResult.IsGood)
 		{
-			userModel.Unload();
-			syncLogger.Error(L"Authentication failed.");
-			PostPlainMessage(SyncMessageQueue::MessageSyncFailed);
-			return;
+			FinishSync
+				( L"Authentication failed."
+				, L"Tried to sync, but could not authenticate."
+				);
 		}
 
 		IEnService::NoteStorePtr noteStore
@@ -543,24 +562,52 @@ void SyncModel::Sync()
 		userModel.SetUpdateCount(syncState.UpdateCount);
 		userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
 
-		PostPlainMessage(SyncMessageQueue::MessageSyncComplete);
-
-		PostTextMessage
-			( fullSync
+		FinishSync
+			( L""
+			, fullSync
 			? L"Tip: choose a notebook and sync again to get the notes."
 			: L""
 			);
-		PostProgressMessage(0.0);
-
-		userModel.Unload();
+	}
+	catch (const Evernote::EDAM::Error::EDAMNotFoundException & e)
+	{
+		FinishSync
+			( EnServiceTools::CreateNotFoundExceptionMessage(e).c_str()
+			, L"Tried to sync, but something went wrong."
+			);
+	}
+	catch (const Evernote::EDAM::Error::EDAMSystemException & e)
+	{
+		FinishSync
+			( EnServiceTools::CreateSystemExceptionMessage(e).c_str()
+			, L"Tried to sync, but something went wrong."
+			);
+	}
+	catch (const Evernote::EDAM::Error::EDAMUserException & e)
+	{
+		FinishSync
+			( EnServiceTools::CreateUserExceptionMessage(e).c_str()
+			, L"Tried to sync, but something went wrong."
+			);
+	}
+	catch (const Thrift::TException & e)
+	{
+		FinishSync
+			( EnServiceTools::CreateExceptionMessage(e).c_str()
+			, L"Tried to sync, but something went wrong."
+			);
 	}
 	catch (const std::exception & e)
 	{
-		wstring message(ConvertToUnicode(e.what()));
-		syncLogger.Error(message);
-		PostTextMessage(message.c_str());
-		userModel.Unload();
-		PostPlainMessage(SyncMessageQueue::MessageSyncFailed);
+		wstring message;
+		message.append(L"exception(");
+		message.append(ConvertToUnicode(e.what()));
+		message.append(L")");
+
+		FinishSync
+			( message.c_str()
+			, L"Tried to sync, but something went wrong."
+			);
 	}
 }
 

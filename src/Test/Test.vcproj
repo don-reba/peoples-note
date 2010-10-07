@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\client\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\client\src&quot;;&quot;$(SolutionDir)\Evernote API\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\client\src&quot;;&quot;$(SolutionDir)\Evernote API\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -208,6 +208,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\EnNoteTranslator.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\EnServiceTools.cpp"
 				>
 			</File>
 			<File
@@ -480,6 +484,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TException.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Thumbnail.cpp"
 				>
 			</File>
@@ -595,6 +603,10 @@
 			</File>
 			<File
 				RelativePath=".\src\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TException.h"
 				>
 			</File>
 		</Filter>

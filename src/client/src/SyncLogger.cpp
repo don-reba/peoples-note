@@ -94,7 +94,7 @@ void SyncLogger::WriteListHeader(const wstring & text)
 
 void SyncLogger::WriteListEntry(const wstring & name, const Guid & guid)
 {
-	stream << ConvertToUnicode(guid) << L" " << name << L"\n";
+	stream << ConvertToUnicode(guid) << L"\n";
 }
 
 void SyncLogger::WriteOperation(const wchar_t * name, const Guid & guid)

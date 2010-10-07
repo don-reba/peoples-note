@@ -47,6 +47,7 @@ void NoteStore::CreateNote
 	, Note                   & replacement
 	)
 {
+	// initialize an Evernote note structure
 	EDAM::Types::Note enNote;
 	enNote.__isset.title        = true;
 	enNote.__isset.created      = true;
@@ -75,7 +76,10 @@ void NoteStore::CreateNote
 		resource.data.size = resources.at(i).Data.size();
 	}
 
+	// call the createNote API and get the replacement note
 	EDAM::Types::Note enReplacement(noteStore.createNote(token, enNote));
+
+	// get data from the replacement Evernote note structure
 	replacement.guid         = Guid(enReplacement.guid);
 	replacement.name         = enReplacement.title;
 	replacement.creationDate = static_cast<time_t>(ConvertFromEnTime(enReplacement.created));
