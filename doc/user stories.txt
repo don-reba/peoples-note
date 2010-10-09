@@ -18,11 +18,10 @@ sign in window
 	√ when the user presses "esc", signing in should be cancelled
 note creation
 	√ when the user clicks the new-text button, a text note creation screen should be displayed
+	when the user clicks the new-ink button, an ink note creation screen should be displayed
 	when the user clicks the new-voice button, audio recording should start
 		the audio should be compressed
 	when the user clicks the new-photo button, the camera should be activated
-	when the user clicks the new-file button, a file selection dialog should show up
-		the file selection dialog should default to the photos folder
 	√ when a note is created, it should be added to the note list and persisted
 	√ when creation is aborted, no note should be created
 sync
@@ -100,15 +99,23 @@ text note viewing
 	when an HTTP url is clicked, open it in the browser
 text note editing
 	when the screen is tilted, the editor should rotate
-	√ when the "full screen" button is clicked, the note should expand to full screen
-	√ when the "collapse" button is clicked, the note should restore from full screen
+	√ when the "full screen" button is clicked, the body text field should expand to full screen
+	√ when the "show toolbar" button is clicked, the body text field should restore from full screen
 	when a new note is open, the title screen should say "New note in %notebook%"
 	when the editable surface is selected, enable the toolbar
 	when anything, but the editable surface is selected, disable the toolbar
 	when the note is unchanged, the "OK" button should be disabled
 	when the note is changed, the "OK" button should be enabled
+	√ when the "OK" button is pressed, the note should be saved and the window close
+	√ when the "Cancel" button is pressed, the window should close
 instrumentation
 	√ when an animation is completed, display the result in the status bar
 profile view
 	√ when the user selects the profile name from the menu, the "profile" window should be shown
 	√ when the user presses Esc, the profile window should close
+ink note editing
+	when the user clicks and drags, a line should be drawn following the cursor
+	when the screen is tilted, the editor should rotate
+	when the "OK" button is pressed, a picture note should be created and the window closed
+		the size of the picture equal to the size of the drawing
+	when the "Cancel" button is pressed, the window should close

@@ -2390,3 +2390,6 @@ need to improve error reporting
 	setback
 	adding message handlers is dragging Thrift into the test suite
 		can avoid this by adding just TException
+ink editor
+	drawing is pretty laggy
+		might solve by updating smaller regions

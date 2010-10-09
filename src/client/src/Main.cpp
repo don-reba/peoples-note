@@ -14,6 +14,8 @@
 #include "EnService.h"
 #include "HtmlDataLoader.h"
 #include "HtmlLayoutPresenter.h"
+#include "InkEditorPresenter.h"
+#include "InkEditorView.h"
 #include "InstrumentationPresenter.h"
 #include "LastUserModel.h"
 #include "MessagePump.h"
@@ -149,6 +151,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		AboutView       aboutView       (instance, highRes);
 		CredentialsView credentialsView (instance, highRes);
 		EditorView      editorView      (instance, highRes);
+		InkEditorView   inkEditorView   (instance);
 		NoteView        noteView        (instance, highRes);
 		NoteListView    noteListView    (instance, highRes, animator, nCmdShow);
 		ProfileView     profileView     (instance, highRes);
@@ -193,6 +196,10 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListView
 			, profileView
 			, htmlDataLoader
+			);
+		InkEditorPresenter
+			( inkEditorView
+			, noteListView
 			);
 		InstrumentationPresenter instrumentationPresenter
 			( animator
@@ -241,6 +248,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		noteListView.Create();
 		noteView.Create        (noteListView.hwnd_);
 		editorView.Create      (noteListView.hwnd_);
+		inkEditorView.Create   (noteListView.hwnd_);
 		credentialsView.Create (noteListView.hwnd_);
 		aboutView.Create       (noteListView.hwnd_);
 		profileView.Create     (noteListView.hwnd_);

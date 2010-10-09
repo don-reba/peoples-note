@@ -52,7 +52,7 @@ void EditorView::ConnectCancel(slot_type OnCancel)
 	SignalCancel.connect(OnCancel);
 }
 
-void EditorView::GetBody(std::wstring & html)
+void EditorView::GetBody(wstring & html)
 {
 	html = element(FindFirstElement("#body")).get_value().to_string();
 }
@@ -62,7 +62,7 @@ void EditorView::GetNote(Note & note)
 	note = this->note;
 }
 
-void EditorView::GetTitle(std::wstring & text)
+void EditorView::GetTitle(wstring & text)
 {
 	text = element(FindFirstElement("#title")).text();
 }
@@ -217,7 +217,7 @@ void EditorView::OnShowPanel(BEHAVIOR_EVENT_PARAMS * params)
 // utility functions
 //------------------
 
-ATOM EditorView::RegisterClass(const std::wstring & wndClass)
+ATOM EditorView::RegisterClass(const wstring & wndClass)
 {
 	WNDCLASS wc = { 0 };
 	wc.style         = CS_HREDRAW | CS_VREDRAW;

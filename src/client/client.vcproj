@@ -496,6 +496,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\InkEditorPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\InkEditorView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\InstrumentationPresenter.cpp"
 				>
 			</File>
@@ -871,6 +879,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\IInkEditorView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ILastUserModel.h"
 				>
 			</File>
@@ -880,6 +892,14 @@
 			</File>
 			<File
 				RelativePath=".\src\IMessagePump.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\InkEditorPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\InkEditorView.h"
 				>
 			</File>
 			<File
@@ -1125,19 +1145,19 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\html-lr\card-top.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html\card-top.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\clear.png"
+				RelativePath=".\html-lr\card-top.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\clear.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\clear.png"
 				>
 			</File>
 			<File
@@ -1161,15 +1181,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\edit.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\edit.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\encrypt.png"
+				RelativePath=".\html\edit.png"
 				>
 			</File>
 			<File
@@ -1177,11 +1193,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\file-note.png"
-				>
-			</File>
-			<File
-				RelativePath=".\html\file-note.png"
+				RelativePath=".\html-lr\encrypt.png"
 				>
 			</File>
 			<File
@@ -1209,7 +1221,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\inputshadow.png"
+				RelativePath=".\html\ink-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\ink-note.png"
 				>
 			</File>
 			<File
@@ -1217,11 +1233,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\photo-note.png"
+				RelativePath=".\html-lr\inputshadow.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\photo-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\photo-note.png"
 				>
 			</File>
 			<File
@@ -1233,15 +1253,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-check.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html\rt-check.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-copy.png"
+				RelativePath=".\html-lr\rt-check.png"
 				>
 			</File>
 			<File
@@ -1249,7 +1265,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-em.png"
+				RelativePath=".\html\rt-copy.png"
 				>
 			</File>
 			<File
@@ -1257,11 +1273,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-hide.png"
+				RelativePath=".\html\rt-em.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\rt-hide.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-hide.png"
 				>
 			</File>
 			<File
@@ -1273,15 +1293,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-indent-inc.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html\rt-indent-inc.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-li-ol.png"
+				RelativePath=".\html-lr\rt-indent-inc.png"
 				>
 			</File>
 			<File
@@ -1289,7 +1305,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-li-ul.png"
+				RelativePath=".\html-lr\rt-li-ol.png"
 				>
 			</File>
 			<File
@@ -1297,11 +1313,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-paste.png"
+				RelativePath=".\html\rt-li-ul.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\rt-paste.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\rt-paste.png"
 				>
 			</File>
 			<File
@@ -1313,15 +1333,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-strong.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\rt-strong.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-u.png"
+				RelativePath=".\html\rt-strong.png"
 				>
 			</File>
 			<File
@@ -1329,11 +1345,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-undo.png"
+				RelativePath=".\html-lr\rt-u.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\rt-undo.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-undo.png"
 				>
 			</File>
 			<File
@@ -1345,15 +1365,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\status-gray.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\status-gray.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\status-green.png"
+				RelativePath=".\html\status-gray.png"
 				>
 			</File>
 			<File
@@ -1361,7 +1377,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\sync.png"
+				RelativePath=".\html\status-green.png"
 				>
 			</File>
 			<File
@@ -1369,7 +1385,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\text-note.png"
+				RelativePath=".\html\sync.png"
 				>
 			</File>
 			<File
@@ -1377,11 +1393,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\texture.png"
+				RelativePath=".\html\text-note.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\view-fullscreen.png"
+				RelativePath=".\html\texture.png"
 				>
 			</File>
 			<File
@@ -1389,7 +1405,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\view-restore.png"
+				RelativePath=".\html\view-fullscreen.png"
 				>
 			</File>
 			<File
@@ -1397,11 +1413,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\voice-note.png"
+				RelativePath=".\html\view-restore.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\voice-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\voice-note.png"
 				>
 			</File>
 			<File
@@ -1419,15 +1439,11 @@
 			ParseFiles="false"
 			>
 			<File
-				RelativePath=".\html-lr\about.htm"
-				>
-			</File>
-			<File
 				RelativePath=".\html\about.htm"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\main.htm"
+				RelativePath=".\html-lr\about.htm"
 				>
 			</File>
 			<File
@@ -1435,11 +1451,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\menu.css"
+				RelativePath=".\html-lr\main.htm"
 				>
 			</File>
 			<File
 				RelativePath=".\html\menu.css"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\menu.css"
 				>
 			</File>
 			<File
@@ -1451,15 +1471,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\note-view.htm"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\note-view.htm"
 				>
 			</File>
 			<File
-				RelativePath=".\html\profile.htm"
+				RelativePath=".\html\note-view.htm"
 				>
 			</File>
 			<File
@@ -1467,11 +1483,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\signin-view.htm"
+				RelativePath=".\html\profile.htm"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\signin-view.htm"
+				>
+			</File>
+			<File
+				RelativePath=".\html\signin-view.htm"
 				>
 			</File>
 		</Filter>

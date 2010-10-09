@@ -72,6 +72,7 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,    &NoteListView::OnMenuImport);
 	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,    &NoteListView::OnMenuSignIn);
 	ConnectBehavior("#note-list",     BUTTON_CLICK,       &NoteListView::OnNote);
+	ConnectBehavior("#new-ink",       BUTTON_CLICK,       &NoteListView::OnNewInk);
 	ConnectBehavior("#new-text",      BUTTON_CLICK,       &NoteListView::OnNewText);
 	ConnectBehavior("#page-down",     BUTTON_CLICK,       &NoteListView::OnPageDown);
 	ConnectBehavior("#page-up",       BUTTON_CLICK,       &NoteListView::OnPageUp);
@@ -129,6 +130,11 @@ void NoteListView::ConnectClearSearch(slot_type OnClearSearch)
 void NoteListView::ConnectImport(slot_type OnImport)
 {
 	SignalImport.connect(OnImport);
+}
+
+void NoteListView::ConnectNewInkNote(slot_type OnNewInkNote)
+{
+	SignalNewInkNote.connect(OnNewInkNote);
 }
 
 void NoteListView::ConnectNewNote(slot_type OnNewNote)
@@ -699,6 +705,11 @@ void NoteListView::OnMenuProfile(BEHAVIOR_EVENT_PARAMS * params)
 void NoteListView::OnMenuSignIn(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalSignIn();
+}
+
+void NoteListView::OnNewInk(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalNewInkNote();
 }
 
 void NoteListView::OnNewText(BEHAVIOR_EVENT_PARAMS * params)
