@@ -2395,6 +2395,15 @@ ink editor
 		might solve by updating smaller regions
 		works great
 	the new note needs a title
-		TODO
+		add a fixed title, for now
 	should be able to draw dots
-		TODO
+		done
+	need to crop notes
+		several ways to go about this
+			BitBlt
+				requires extra memory
+				up to double
+			bit manipulation
+				error-prone
+				deeper in the stack
+		bit manipulation seems more attractive
