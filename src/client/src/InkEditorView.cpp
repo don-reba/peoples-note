@@ -5,6 +5,7 @@
 #include "Rect.h"
 #include "resourceppc.h"
 #include "Tools.h"
+#include "WindowRenderer.h"
 
 using namespace std;
 using namespace Tools;
@@ -41,6 +42,11 @@ void InkEditorView::ConnectAccept(slot_type OnAccept)
 void InkEditorView::ConnectCancel(slot_type OnCancel)
 {
 	SignalCancel.connect(OnCancel);
+}
+
+void InkEditorView::GetImage(Blob & blob)
+{
+	WindowRenderer::Render(bmp, blob);
 }
 
 void InkEditorView::Hide()
@@ -176,15 +182,41 @@ void InkEditorView::OnPaint(Msg<WM_PAINT> & msg)
 void InkEditorView::OnSize(Msg<WM_SIZE> & msg)
 {
 	// create a new bitmap
+	HDC windowDc(::GetDC(hwnd_));
+
 	if (bmpDc)
 		::DeleteDC(bmpDc);
-	bmpDc = ::CreateCompatibleDC(::GetDC(hwnd_));
+	bmpDc = ::CreateCompatibleDC(windowDc);
 	::SelectObject(bmpDc, ::GetStockObject(BLACK_PEN));
 
 	if (bmp)
 		::DeleteObject(bmp);
-	bmp = ::CreateCompatibleBitmap(bmpDc, msg.Size().cx, msg.Size().cy);
+ 	BITMAPINFO_BF info = { 0 };
+	info.bmiHeader.biSize         = sizeof(BITMAPINFOHEADER);
+	info.bmiHeader.biWidth        = msg.Size().cx;
+	info.bmiHeader.biHeight       = msg.Size().cy;
+	info.bmiHeader.biPlanes       = 1;
+	info.bmiHeader.biBitCount     = 16;
+	info.bmiHeader.biCompression  = BI_BITFIELDS;
+	info.bmiHeader.biSizeImage    = ((msg.Size().cx * 2 + 3) & ~3) * msg.Size().cy;
+	info.bmiHeader.biClrUsed      = 1;
+	info.bmiHeader.biClrImportant = 0;
+	info.bmiColorsR               = 0xf800;
+	info.bmiColorsG               = 0x07e0;
+	info.bmiColorsB               = 0x001f;
+
+	HDC dc(::CreateCompatibleDC(windowDc));
+	bmp = ::CreateDIBSection
+		( dc                              // hdc
+		, info.GetBitmapInfo()            // pbmi
+		, DIB_RGB_COLORS                  // iUsage
+		, NULL // ppvBits
+		, NULL                            // hSection
+		, 0                               // dwOffset
+		);
 	::SelectObject(bmpDc, bmp);
+
+	::ReleaseDC(hwnd_, windowDc);
 
 	RECT rect = { 0, 0, msg.Size().cx, msg.Size().cy };
 	::FillRect(bmpDc, &rect, static_cast<HBRUSH>(::GetStockObject(WHITE_BRUSH)));

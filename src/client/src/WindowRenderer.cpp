@@ -12,7 +12,11 @@ using namespace htmlayout;
 using namespace htmlayout::dom;
 using namespace std;
 
-void WindowRenderer::Render(HWND window, Thumbnail & thumbnail)
+//----------
+// interface
+//----------
+
+void WindowRenderer::RenderThumbnail(HWND window, Thumbnail & thumbnail)
 {
 	SIZE size = { thumbnail.Width, thumbnail.Height };
 	SIZE windowSize(ComputeWindowSize(window, size));
@@ -23,6 +27,105 @@ void WindowRenderer::Render(HWND window, Thumbnail & thumbnail)
 	ResizeAndCompress(data, windowSize, size, thumbnail.Data);
 	::DeleteObject(bmp);
 }
+
+void WindowRenderer::Render(HBITMAP bmp, Blob & blob)
+{
+	HRESULT result;
+
+	 BITMAP bmpObject;
+	::GetObject(bmp, sizeof(bmpObject), &bmpObject);
+
+	if (bmpObject.bmBitsPixel != 16)
+		throw std::exception("Invalid bitmap format.");
+	if (bmpObject.bmBits == NULL)
+		throw std::exception("Bitmap data unavailable.");
+
+	SIZE size = { bmpObject.bmWidth, bmpObject.bmHeight };
+
+	FlipImage(static_cast<WORD*>(bmpObject.bmBits), size);
+
+	IImagingFactory * imageFactory(NULL);
+	result = ::CoCreateInstance
+		( CLSID_ImagingFactory
+		, NULL
+		, CLSCTX_INPROC_SERVER
+		, IID_IImagingFactory
+		, reinterpret_cast<void**>(&imageFactory)
+		);
+
+	BitmapData bitmapData = { 0 };
+	bitmapData.Width       = size.cx;
+	bitmapData.Height      = size.cy;
+	bitmapData.Stride      = ((size.cx * 2 + 3) & ~3);
+	bitmapData.PixelFormat = PixelFormat16bppRGB565;
+	bitmapData.Scan0       = bmpObject.bmBits;
+
+	CComPtr<IBitmapImage> image;
+	result = imageFactory->CreateBitmapFromBuffer
+		( &bitmapData  // bitmapData
+		, &image.Ptr() // bitmap
+		);
+	if (FAILED(result))
+		throw ImagingException(result);
+
+	CComPtr<IImage> image2;
+	result = image.QueryInterface(image2);
+
+	ImageCodecInfo * infos(NULL);
+	UINT             infoCount(0);
+	result = imageFactory->GetInstalledEncoders(&infoCount, &infos);
+	ImageCodecInfo * codecInfo(NULL);
+	for (int i(0); i != infoCount; ++i)
+	{
+		ImageCodecInfo * info = infos + i;
+		if (wcscmp(info->FormatDescription, L"JPEG") == 0)
+			codecInfo = info;
+	}
+	
+	CComPtr<IStream> stream;
+	result = ::CreateStreamOnHGlobal
+		( NULL          // hGlobal
+		, TRUE          // fDeleteOnRelease
+		, &stream.Ptr() // ppstm
+		);
+	if (FAILED(result))
+		throw ImagingException(result);
+
+	CComPtr<IImageEncoder> encoder;
+	result = imageFactory->CreateImageEncoderToStream
+		( &codecInfo->Clsid // clsid
+		, stream            // stream
+		, &encoder.Ptr()    // encoder
+		);
+	if (FAILED(result))
+		throw ImagingException(result);
+	encoder->InitEncoder(stream);
+
+	CComPtr<IImageSink> sink;
+	result = encoder->GetEncodeSink(&sink.Ptr());
+	if (FAILED(result))
+		throw ImagingException(result);
+
+	result = image2->PushIntoSink(sink);
+	if (FAILED(result))
+		throw ImagingException(result);
+
+	LARGE_INTEGER  zero = { 0 };
+	ULARGE_INTEGER pos  = { 0 };
+	stream->Seek(zero, STREAM_SEEK_CUR, &pos);
+	stream->Seek(zero, STREAM_SEEK_SET, NULL);
+	if (pos.HighPart > 0 || pos.LowPart == 0)
+		return;
+	blob.resize(pos.LowPart);
+	ULONG bytesRead = 0;
+	stream->Read(&blob[0], pos.LowPart, &bytesRead);
+	if (bytesRead < pos.LowPart)
+		blob.resize(0);
+}
+
+//------------------
+// utility functions
+//------------------
 
 SIZE WindowRenderer::ComputeWindowSize(HWND window, SIZE size)
 {
@@ -68,7 +171,8 @@ HBITMAP WindowRenderer::RenderBitmap(HWND window, SIZE size, WORD *& data)
 	info.bmiColorsG               = 0x07e0;
 	info.bmiColorsB               = 0x001f;
 
-	HDC dc(::CreateCompatibleDC(::GetDC(window)));
+	HDC windowDc(::GetDC(window));
+	HDC dc(::CreateCompatibleDC(windowDc));
 	HBITMAP bmp = ::CreateDIBSection
 		( dc                              // hdc
 		, info.GetBitmapInfo()            // pbmi
@@ -84,6 +188,7 @@ HBITMAP WindowRenderer::RenderBitmap(HWND window, SIZE size, WORD *& data)
 			throw std::exception("Note rendering failed.");
 	}
 	::DeleteDC(dc);
+	::ReleaseDC(window, windowDc);
 
 	return bmp;
 }
@@ -123,9 +228,6 @@ void WindowRenderer::ResizeAndCompress
 
 	CComPtr<IImage> image2;
 	result = image.QueryInterface(image2);
-
-	CComPtr<IBasicBitmapOps> basicBitmapOps;
-	image.QueryInterface(basicBitmapOps);
 
 	CComPtr<IImage> thumb;
 	result = image2->GetThumbnail(endSize.cx, endSize.cy, &thumb.Ptr());

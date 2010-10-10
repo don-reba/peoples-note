@@ -17,8 +17,6 @@ private:
 	bool isDirty;
 	bool isFullScreen;
 
-	WindowRenderer windowRenderer;
-
 	signal SignalClose;
 	signal SignalEdit;
 

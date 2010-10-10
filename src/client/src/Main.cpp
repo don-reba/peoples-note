@@ -199,7 +199,9 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 		InkEditorPresenter
 			( inkEditorView
+			, noteListModel
 			, noteListView
+			, userModel
 			);
 		InstrumentationPresenter instrumentationPresenter
 			( animator

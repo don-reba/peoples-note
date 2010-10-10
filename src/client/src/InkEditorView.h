@@ -5,6 +5,21 @@
 
 class InkEditorView : public Window, public IInkEditorView
 {
+private:
+
+	struct BITMAPINFO_BF
+	{
+		BITMAPINFOHEADER bmiHeader;
+		DWORD bmiColorsR;
+		DWORD bmiColorsG;
+		DWORD bmiColorsB;
+
+		BITMAPINFO * GetBitmapInfo()
+		{
+			return reinterpret_cast<BITMAPINFO*>(this);
+		}
+	};
+
 // data
 
 private:
@@ -36,6 +51,8 @@ public:
 	virtual void ConnectAccept(slot_type OnAccept);
 
 	virtual void ConnectCancel(slot_type OnCancel);
+
+	virtual void GetImage(Blob & blob);
 
 	virtual void Hide();
 

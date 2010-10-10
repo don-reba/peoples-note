@@ -127,7 +127,7 @@ void NoteView::Render(Thumbnail & thumbnail)
 		( element::root_element(hwnd_)
 		, RESET_STYLE_DEEP | MEASURE_DEEP | REDRAW_NOW
 		);
-	windowRenderer.Render(hwnd_, thumbnail);
+	WindowRenderer::RenderThumbnail(hwnd_, thumbnail);
 }
 
 void NoteView::SetNote

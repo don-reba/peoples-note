@@ -19,9 +19,15 @@ private:
 		}
 	};
 
+// interface
+
 public:
 
-	void Render(HWND window, Thumbnail & thumbnail);
+	static void RenderThumbnail(HWND window, Thumbnail & thumbnail);
+
+	static void Render(HBITMAP bmp, Blob & blob);
+
+// utility functions
 
 private:
 

@@ -2393,3 +2393,8 @@ need to improve error reporting
 ink editor
 	drawing is pretty laggy
 		might solve by updating smaller regions
+		works great
+	the new note needs a title
+		TODO
+	should be able to draw dots
+		TODO

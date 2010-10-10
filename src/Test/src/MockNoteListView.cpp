@@ -50,6 +50,11 @@ void MockNoteListView::ConnectImport(slot_type OnImport)
 	SignalImport.connect(OnImport);
 }
 
+void MockNoteListView::ConnectNewInkNote(slot_type OnNewInkNote)
+{
+	SignalNewInkNote.connect(OnNewInkNote);
+}
+
 void MockNoteListView::ConnectNewNote(slot_type OnNewNote)
 {
 	SignalNewNote.connect(OnNewNote);

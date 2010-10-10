@@ -52,6 +52,7 @@ public:
 	signal SignalClearSearch;
 	signal SignalCreated;
 	signal SignalImport;
+	signal SignalNewInkNote;
 	signal SignalNewNote;
 	signal SignalNotebookSelected;
 	signal SignalOpenNote;
@@ -81,6 +82,8 @@ public:
 	virtual void ConnectCreated(slot_type OnCreated);
 
 	virtual void ConnectImport(slot_type OnImport);
+
+	virtual void ConnectNewInkNote(slot_type OnNewInkNote);
 
 	virtual void ConnectNewNote(slot_type OnNewNote);
 
