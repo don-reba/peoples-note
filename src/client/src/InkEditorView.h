@@ -32,6 +32,8 @@ private:
 	HWND           parent;
 
 	POINT lineStart;
+	RECT  drawingBounds;
+	bool  isDrawingEmpty;
 
 	signal SignalAccept;
 	signal SignalCancel;
@@ -75,6 +77,8 @@ private:
 // utility functions
 
 private:
+
+	void AddToDrawingBounds(const POINT & point);
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 };

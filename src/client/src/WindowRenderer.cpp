@@ -28,10 +28,8 @@ void WindowRenderer::RenderThumbnail(HWND window, Thumbnail & thumbnail)
 	::DeleteObject(bmp);
 }
 
-void WindowRenderer::Render(HBITMAP bmp, Blob & blob)
+void WindowRenderer::Render(HBITMAP bmp, const RECT & rect, Blob & blob)
 {
-	HRESULT result;
-
 	 BITMAP bmpObject;
 	::GetObject(bmp, sizeof(bmpObject), &bmpObject);
 
@@ -42,85 +40,11 @@ void WindowRenderer::Render(HBITMAP bmp, Blob & blob)
 
 	SIZE size = { bmpObject.bmWidth, bmpObject.bmHeight };
 
-	FlipImage(static_cast<WORD*>(bmpObject.bmBits), size);
+	WORD * bits(static_cast<WORD*>(bmpObject.bmBits));
 
-	IImagingFactory * imageFactory(NULL);
-	result = ::CoCreateInstance
-		( CLSID_ImagingFactory
-		, NULL
-		, CLSCTX_INPROC_SERVER
-		, IID_IImagingFactory
-		, reinterpret_cast<void**>(&imageFactory)
-		);
-
-	BitmapData bitmapData = { 0 };
-	bitmapData.Width       = size.cx;
-	bitmapData.Height      = size.cy;
-	bitmapData.Stride      = ((size.cx * 2 + 3) & ~3);
-	bitmapData.PixelFormat = PixelFormat16bppRGB565;
-	bitmapData.Scan0       = bmpObject.bmBits;
-
-	CComPtr<IBitmapImage> image;
-	result = imageFactory->CreateBitmapFromBuffer
-		( &bitmapData  // bitmapData
-		, &image.Ptr() // bitmap
-		);
-	if (FAILED(result))
-		throw ImagingException(result);
-
-	CComPtr<IImage> image2;
-	result = image.QueryInterface(image2);
-
-	ImageCodecInfo * infos(NULL);
-	UINT             infoCount(0);
-	result = imageFactory->GetInstalledEncoders(&infoCount, &infos);
-	ImageCodecInfo * codecInfo(NULL);
-	for (int i(0); i != infoCount; ++i)
-	{
-		ImageCodecInfo * info = infos + i;
-		if (wcscmp(info->FormatDescription, L"JPEG") == 0)
-			codecInfo = info;
-	}
-	
-	CComPtr<IStream> stream;
-	result = ::CreateStreamOnHGlobal
-		( NULL          // hGlobal
-		, TRUE          // fDeleteOnRelease
-		, &stream.Ptr() // ppstm
-		);
-	if (FAILED(result))
-		throw ImagingException(result);
-
-	CComPtr<IImageEncoder> encoder;
-	result = imageFactory->CreateImageEncoderToStream
-		( &codecInfo->Clsid // clsid
-		, stream            // stream
-		, &encoder.Ptr()    // encoder
-		);
-	if (FAILED(result))
-		throw ImagingException(result);
-	encoder->InitEncoder(stream);
-
-	CComPtr<IImageSink> sink;
-	result = encoder->GetEncodeSink(&sink.Ptr());
-	if (FAILED(result))
-		throw ImagingException(result);
-
-	result = image2->PushIntoSink(sink);
-	if (FAILED(result))
-		throw ImagingException(result);
-
-	LARGE_INTEGER  zero = { 0 };
-	ULARGE_INTEGER pos  = { 0 };
-	stream->Seek(zero, STREAM_SEEK_CUR, &pos);
-	stream->Seek(zero, STREAM_SEEK_SET, NULL);
-	if (pos.HighPart > 0 || pos.LowPart == 0)
-		return;
-	blob.resize(pos.LowPart);
-	ULONG bytesRead = 0;
-	stream->Read(&blob[0], pos.LowPart, &bytesRead);
-	if (bytesRead < pos.LowPart)
-		blob.resize(0);
+	FlipImage(bits, size);
+	CropImage(bits, size, CropRect(rect, size));
+	ResizeAndCompress(bits, size, size, blob);
 }
 
 //------------------
@@ -138,13 +62,44 @@ SIZE WindowRenderer::ComputeWindowSize(HWND window, SIZE size)
 	return windowSize;
 }
 
+void WindowRenderer::CropImage(WORD * data, SIZE & size, const RECT & rect)
+{
+	assert(rect.left <= rect.right);
+	assert(rect.top  <= rect.bottom);
+
+
+	vector<WORD> line(rect.right - rect.left);
+	const int srcScanline((size.cx     + 1) & ~1);
+	const int dstScanline((line.size() + 1) & ~1);
+	WORD * line1(data + size.cx * rect.top + rect.left);
+	WORD * line2(data);
+	for (int y(rect.top); y != rect.bottom; ++y)
+	{
+		memcpy(&line[0], line1,    2 * line.size());
+		memcpy(line2,    &line[0], 2 * line.size());
+		line1 += srcScanline;
+		line2 += dstScanline;
+	}
+
+	size.cx = rect.right - rect.left;
+	size.cy = rect.bottom - rect.top;
+}
+
+RECT WindowRenderer::CropRect(const RECT & rect, const SIZE & size)
+{
+	RECT srcBounds = { 0, 0, size.cx, size.cy };
+	RECT dstBounds;
+	::IntersectRect(&dstBounds, &srcBounds, &rect);
+	return dstBounds;
+}
+
 void WindowRenderer::FlipImage(WORD * data, SIZE size)
 {
-	int scanline((size.cx + 1) & ~1);
+	const int scanline((size.cx + 1) & ~1);
 	vector<WORD> line(scanline);
 	WORD * line1(data);
 	WORD * line2(data + scanline * (size.cy - 1));
-	size_t lineSize(scanline * 2);
+	const size_t lineSize(scanline * 2);
 	for (int y(0); y != size.cy / 2; ++y)
 	{
 		memcpy(&line[0], line1,    lineSize);
@@ -229,11 +184,6 @@ void WindowRenderer::ResizeAndCompress
 	CComPtr<IImage> image2;
 	result = image.QueryInterface(image2);
 
-	CComPtr<IImage> thumb;
-	result = image2->GetThumbnail(endSize.cx, endSize.cy, &thumb.Ptr());
-	if (FAILED(result))
-		throw ImagingException(result);
-
 	ImageCodecInfo * infos(NULL);
 	UINT             infoCount(0);
 	result = imageFactory->GetInstalledEncoders(&infoCount, &infos);
@@ -269,9 +219,23 @@ void WindowRenderer::ResizeAndCompress
 	if (FAILED(result))
 		throw ImagingException(result);
 
-	result = thumb->PushIntoSink(sink);
-	if (FAILED(result))
-		throw ImagingException(result);
+	if (startSize.cx == endSize.cx && startSize.cy == endSize.cy)
+	{
+		result = image2->PushIntoSink(sink);
+		if (FAILED(result))
+			throw ImagingException(result);
+	}
+	else
+	{
+		CComPtr<IImage> thumb;
+		result = image2->GetThumbnail(endSize.cx, endSize.cy, &thumb.Ptr());
+		if (FAILED(result))
+			throw ImagingException(result);
+
+		result = thumb->PushIntoSink(sink);
+		if (FAILED(result))
+			throw ImagingException(result);
+	}
 
 	LARGE_INTEGER  zero = { 0 };
 	ULARGE_INTEGER pos  = { 0 };

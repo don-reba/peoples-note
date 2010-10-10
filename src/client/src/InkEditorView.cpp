@@ -46,7 +46,9 @@ void InkEditorView::ConnectCancel(slot_type OnCancel)
 
 void InkEditorView::GetImage(Blob & blob)
 {
-	WindowRenderer::Render(bmp, blob);
+	RECT cropRect(drawingBounds);
+	::InflateRect(&cropRect, 4, 4);
+	WindowRenderer::Render(bmp, cropRect, blob);
 }
 
 void InkEditorView::Hide()
@@ -94,6 +96,8 @@ void InkEditorView::Show()
 	::SHCreateMenuBar(&menuBarInfo);
 	menuBar = menuBarInfo.hwndMB;
 
+	isDrawingEmpty = true;
+
 	ShowWindow(hwnd_, SW_SHOW);
 }
 
@@ -124,31 +128,26 @@ void InkEditorView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 	::SetCapture(hwnd_);
 
 	lineStart = msg.Position();
+	AddToDrawingBounds(lineStart);
+	::SetPixel(bmpDc, lineStart.x, lineStart.y, 0xFF000000);
 	::MoveToEx(bmpDc, lineStart.x, lineStart.y, NULL);
 }
 
 void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
-	RECT rect;
+	Rect rect;
 
 	rect.left = lineStart.x;
 	rect.top  = lineStart.y;
 
 	lineStart = msg.Position();
+	AddToDrawingBounds(lineStart);
 
 	rect.right  = lineStart.x;
 	rect.bottom = lineStart.y;
 
-	if (rect.right < rect.left)
-		swap(rect.left, rect.right);
-	if (rect.bottom < rect.top)
-		swap(rect.top, rect.bottom);
-
-	const LONG padding(1);
-	rect.left   -= padding;
-	rect.top    -= padding;
-	rect.right  += padding;
-	rect.bottom += padding;
+	rect.Normalize();
+	::InflateRect(&rect, 1, 1);
 
 	::LineTo(bmpDc, lineStart.x, lineStart.y);
 	::InvalidateRect(hwnd_, &rect, FALSE);
@@ -207,12 +206,12 @@ void InkEditorView::OnSize(Msg<WM_SIZE> & msg)
 
 	HDC dc(::CreateCompatibleDC(windowDc));
 	bmp = ::CreateDIBSection
-		( dc                              // hdc
-		, info.GetBitmapInfo()            // pbmi
-		, DIB_RGB_COLORS                  // iUsage
-		, NULL // ppvBits
-		, NULL                            // hSection
-		, 0                               // dwOffset
+		( dc                   // hdc
+		, info.GetBitmapInfo() // pbmi
+		, DIB_RGB_COLORS       // iUsage
+		, NULL                 // ppvBits
+		, NULL                 // hSection
+		, 0                    // dwOffset
 		);
 	::SelectObject(bmpDc, bmp);
 
@@ -249,6 +248,29 @@ void InkEditorView::ProcessMessage(WndMsg &msg)
 //------------------
 // utility functions
 //------------------
+
+
+void InkEditorView::AddToDrawingBounds(const POINT & point)
+{
+	if (isDrawingEmpty)
+	{
+		isDrawingEmpty = false;
+
+		drawingBounds.left = drawingBounds.right  = point.x;
+		drawingBounds.top  = drawingBounds.bottom = point.y;
+	}
+	else
+	{
+		if (point.x < drawingBounds.left)
+			drawingBounds.left = point.x;
+		if (point.x > drawingBounds.right)
+			drawingBounds.right = point.x;
+		if (point.y < drawingBounds.top)
+			drawingBounds.top = point.y;
+		if (point.y > drawingBounds.bottom)
+			drawingBounds.bottom = point.y;
+	}
+}
 
 ATOM InkEditorView::RegisterClass(const wstring & wndClass)
 {

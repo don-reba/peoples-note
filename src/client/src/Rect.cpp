@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "Rect.h"
 
+#include <algorithm>
+
+using namespace std;
+
 Rect::Rect()
 {
 }
@@ -28,4 +32,12 @@ LONG Rect::GetWidth() const
 LONG Rect::GetHeight() const
 {
 	return abs(bottom - top);
+}
+
+void Rect::Normalize()
+{
+	if (right < left)
+		swap(left, right);
+	if (bottom < top)
+		swap(top, bottom);
 }

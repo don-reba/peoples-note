@@ -10,4 +10,6 @@ struct Rect : public RECT
 	LONG GetY()      const;
 	LONG GetWidth()  const;
 	LONG GetHeight() const;
+
+	void Normalize();
 };

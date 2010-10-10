@@ -49,7 +49,7 @@ void InkEditorPresenter::OnAccept()
 	wstring body =
 		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
-		L"<en-note><en-media type=\"image/png\" hash=\"";
+		L"<en-note><en-media type=\"image/jpeg\" hash=\"";
 	body.append(ConvertToUnicode(image.Hash));
 	body.append(L"\"/></en-note>");
 
