@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="view.svg"
-   inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\view.png"
+   inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\view.png"
    inkscape:export-xdpi="180"
    inkscape:export-ydpi="180">
   <defs
@@ -381,7 +381,7 @@
          rx="12.5"
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          ry="12.5"
          y="980.86218"
          x="405.27274"
@@ -390,7 +390,7 @@
          id="rect2832-4-1"
          style="fill:url(#linearGradient3067);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
+         sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/view-fullscreen.png"
          xlink:href="icons/view-fullscreen.png"
          width="64"
          height="64"
@@ -405,7 +405,7 @@
          rx="12.5"
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          ry="12.5"
          y="980.86218"
          x="0.50000226"
@@ -414,7 +414,7 @@
          id="rect2832-4"
          style="fill:url(#linearGradient3157);fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
+         sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/home.png"
          xlink:href="icons/home.png"
          width="64"
          height="64"
@@ -463,7 +463,7 @@
       <rect
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          ry="4.53125"
          y="767.71906"
          x="321.23337"
@@ -510,14 +510,14 @@
          x="203"
          y="980.86218"
          ry="12.5"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          inkscape:export-xdpi="360"
          inkscape:export-ydpi="360"
          rx="12.5" />
       <image
          width="64"
          height="64"
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/edit.png"
+         xlink:href="icons/edit.png"
          id="image3036"
          x="206.5"
          y="984.36218" />
@@ -527,7 +527,7 @@
       <rect
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          y="657.36218"
          x="600"
          height="72"
@@ -537,7 +537,7 @@
       <image
          width="64"
          height="64"
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/edit.png"
+         xlink:href="icons/edit.png"
          id="image3036-8"
          x="604"
          y="661.36218" />
@@ -552,11 +552,11 @@
          height="72"
          x="600"
          y="753.86218"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          inkscape:export-xdpi="360"
          inkscape:export-ydpi="360" />
       <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/home.png"
+         sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/home.png"
          xlink:href="icons/home.png"
          y="757.86218"
          x="604.5"
@@ -570,7 +570,7 @@
       <rect
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          y="463.36218"
          x="600"
          height="72"
@@ -578,8 +578,8 @@
          id="rect3871"
          style="fill:url(#linearGradient3873);fill-opacity:1;stroke:none" />
       <image
-         sodipodi:absref="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
-         xlink:href="C:\Users\Alexey\Files\Programming\Evernote client\gfx\icons/view-fullscreen.png"
+         sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/view-fullscreen.png"
+         xlink:href="C:\Users\Alexey\Programming\Evernote client\gfx\icons/view-fullscreen.png"
          y="467.36218"
          x="604"
          id="image3199"
@@ -595,13 +595,13 @@
          height="72"
          x="600"
          y="561.36218"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          inkscape:export-xdpi="360"
          inkscape:export-ydpi="360" />
       <image
          width="64"
          height="64"
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/view-restore.png"
+         xlink:href="icons/view-restore.png"
          id="image3211"
          x="604"
          y="565.36218" />
@@ -622,7 +622,7 @@
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
        d="m -66,-56 0,752 612,0 0,-752 -612,0 z M 0,0 480,0 480,640 0,640 0,0 z"
        id="rect4040"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+       inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
     <rect
@@ -641,6 +641,6 @@
        id="image3052"
        height="52"
        width="480.00046"
-       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/window%20title.png" />
+       xlink:href="icons/window title.png" />
   </g>
 </svg>

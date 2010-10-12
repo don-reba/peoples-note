@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="edit.svg"
-   inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\edit.png"
+   inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\edit.png"
    inkscape:export-xdpi="360"
    inkscape:export-ydpi="360">
   <defs
@@ -352,7 +352,7 @@
       <rect
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
-         inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
          ry="8.3103142"
          y="767.71906"
          x="321.23337"
@@ -379,14 +379,14 @@
     <g
        id="g4653">
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-redo.png"
+         xlink:href="icons/rt-redo.png"
          width="64"
          height="64"
          id="image4346"
          x="63.999748"
          y="464.36218" />
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-undo.png"
+         xlink:href="icons/rt-undo.png"
          width="64"
          height="64"
          id="image4360"
@@ -397,14 +397,14 @@
        id="g4662"
        transform="translate(16.000122,0)">
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-copy.png"
+         xlink:href="icons/rt-copy.png"
          width="64"
          height="64"
          id="image4402"
          x="127.99975"
          y="464.36218" />
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-paste.png"
+         xlink:href="icons/rt-paste.png"
          width="64"
          height="64"
          id="image4416"
@@ -415,21 +415,21 @@
        id="g4657"
        transform="translate(32.000244,0)">
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-strong.png"
+         xlink:href="icons/rt-strong.png"
          width="64"
          height="64"
          id="image4430"
          x="255.99976"
          y="464.36218" />
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-em.png"
+         xlink:href="icons/rt-em.png"
          width="64"
          height="64"
          id="image4444"
          x="319.99976"
          y="464.36218" />
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-u.png"
+         xlink:href="icons/rt-u.png"
          width="64"
          height="64"
          id="image4458"
@@ -439,14 +439,14 @@
     <g
        id="g4678">
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-li-ol.png"
+         xlink:href="icons/rt-li-ol.png"
          width="64"
          height="64"
          id="image4472"
          x="-0.00025027155"
          y="528.36218" />
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-li-ul.png"
+         xlink:href="icons/rt-li-ul.png"
          width="64"
          height="64"
          id="image4486"
@@ -457,14 +457,14 @@
        id="g4674"
        transform="translate(16.000122,0)">
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-indent-dec.png"
+         xlink:href="icons/rt-indent-dec.png"
          width="64"
          height="64"
          id="image4500"
          x="127.99975"
          y="528.36218" />
       <image
-         xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-indent-inc.png"
+         xlink:href="icons/rt-indent-inc.png"
          width="64"
          height="64"
          id="image4514"
@@ -477,7 +477,7 @@
        id="image4528"
        height="64"
        width="64"
-       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-check.png" />
+       xlink:href="icons/rt-check.png" />
     <text
        xml:space="preserve"
        style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
@@ -724,7 +724,7 @@
        y="528.36218"
        x="416"
        id="image3098"
-       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/rt-hide.png"
+       xlink:href="icons/rt-hide.png"
        height="64"
        width="64" />
   </g>
@@ -738,7 +738,7 @@
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
        d="m -66,-56 0,752 612,0 0,-752 -612,0 z M 0,0 480,0 480,640 0,640 0,0 z"
        id="rect4040"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+       inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
     <rect
@@ -757,6 +757,6 @@
        id="image3052"
        height="52"
        width="480.00046"
-       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/window%20title.png" />
+       xlink:href="icons/window title.png" />
   </g>
 </svg>

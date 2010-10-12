@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="profile.svg"
-   inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\profile.png"
+   inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\profile.png"
    inkscape:export-xdpi="360"
    inkscape:export-ydpi="360">
   <defs
@@ -807,7 +807,7 @@
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
        d="m -66,-56 0,752 612,0 0,-752 -612,0 z M 0,0 480,0 480,640 0,640 0,0 z"
        id="rect4040"
-       inkscape:export-filename="C:\Users\Alexey\Files\Programming\Evernote client\gfx\render.png"
+       inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
        inkscape:export-xdpi="360"
        inkscape:export-ydpi="360" />
     <rect
@@ -823,7 +823,7 @@
     <image
        transform="translate(0,-412.36218)"
        style="display:inline"
-       xlink:href="file:///C:/Users/Alexey/Files/Programming/Evernote%20client/gfx/icons/window%20title.png"
+       xlink:href="icons/window title.png"
        width="480"
        height="52"
        id="image3080"
