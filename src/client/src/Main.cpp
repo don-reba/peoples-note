@@ -142,11 +142,11 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		CredentialsModel newCredentials;
 		LastUserModel    lastUserModel(registryKey);
-		NoteListModel    noteListModel(20);
 		UserModel        userModel(dataStore, documentPath);
 		UserModel        syncUserModel(syncDataStore, documentPath);
 
-		SyncModel syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
+		NoteListModel noteListModel(20, userModel);
+		SyncModel     syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
 
 		AboutView       aboutView       (instance, highRes);
 		CredentialsView credentialsView (instance, highRes);

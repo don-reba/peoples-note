@@ -630,6 +630,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SignalCheck.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\stdafx.h"
 				>
 			</File>

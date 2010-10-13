@@ -77,9 +77,7 @@ void NotePresenter::OnCloseNote()
 
 	noteListView.UpdateThumbnail(note.guid);
 
-	NoteList notes;
-	userModel.GetNotesByNotebook(notebook, notes);
-	noteListModel.SetNotes(notes);
+	noteListModel.Reload();
 }
 
 void NotePresenter::OnOpenNote()

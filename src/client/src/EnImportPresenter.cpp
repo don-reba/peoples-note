@@ -73,9 +73,7 @@ void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 	foreach (const Resource & resource, resources)
 		userModel.AddResource(resource);
 
-	notes.clear();
-	userModel.GetNotesByNotebook(notebook, notes);
-	noteListModel.SetNotes(notes);
+	noteListModel.Reload();
 }
 
 void EnImportPresenter::ReadFile

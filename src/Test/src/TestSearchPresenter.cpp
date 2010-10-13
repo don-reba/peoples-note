@@ -46,9 +46,7 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.searchString = L"search";
 	noteListView.SignalClearSearch();
 
-	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
+	BOOST_CHECK(noteListModel.isReloaded);
 
 	BOOST_CHECK_EQUAL(noteListView.searchText, L"");
 	BOOST_CHECK(noteListView.isSearchButtonSetToSearch);
@@ -85,9 +83,7 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.searchString = L"";
 	noteListView.SignalSearch();
 
-	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
+	BOOST_CHECK(noteListModel.isReloaded);
 
 	BOOST_CHECK(noteListView.isSearchButtonSetToSearch);
 }

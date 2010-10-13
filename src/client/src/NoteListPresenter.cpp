@@ -77,7 +77,7 @@ void NoteListPresenter::OnNotesChanged()
 {
 	Transaction transaction(userModel);
 	UpdateSyncCounter();
-	UpdateNoteList();
+	noteListModel.Reload();
 }
 
 void NoteListPresenter::OnNotebooksChanged()
@@ -98,7 +98,7 @@ void NoteListPresenter::OnNotebookSelected()
 	Transaction transaction(userModel);
 	UpdateActiveNotebook();
 	UpdateTitle();
-	UpdateNoteList();
+	noteListModel.Reload();
 	UpdateSyncCounter();
 }
 
@@ -162,7 +162,7 @@ void NoteListPresenter::OnUserLoaded()
 	UpdateTitle();
 	UpdateNotebookListView();
 
-	UpdateNoteList();
+	noteListModel.Reload();
 
 	Credentials credentials;
 	userModel.GetCredentials(credentials);
@@ -208,15 +208,6 @@ void NoteListPresenter::UpdateNotebookListView()
 	wstring menuHtml;
 	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
 	noteListView.SetNotebookMenu(menuHtml);
-}
-
-void NoteListPresenter::UpdateNoteList()
-{
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-	NoteList notes;
-	userModel.GetNotesByNotebook(notebook, notes);
-	noteListModel.SetNotes(notes);
 }
 
 void NoteListPresenter::UpdateSyncCounter()

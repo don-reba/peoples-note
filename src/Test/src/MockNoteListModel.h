@@ -11,7 +11,7 @@ public:
 
 	bool hasNextNotes;
 	bool hasPreviousNotes;
-
+	bool isReloaded;
 	bool nextPageSelected;
 	bool previousPageSelected;
 
@@ -31,6 +31,8 @@ public:
 	virtual bool HasNextNotes();
 
 	virtual bool HasPreviousNotes();
+
+	virtual void Reload();
 
 	virtual void SelectNextPage();
 

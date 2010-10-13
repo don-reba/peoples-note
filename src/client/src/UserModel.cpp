@@ -575,6 +575,7 @@ void UserModel::GetNotesByNotebook
 	, NoteList       & notes
 	)
 {
+	notes.clear();
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, usn, title, creationDate, isDirty"
 		"  FROM Notes"
@@ -608,6 +609,7 @@ void UserModel::GetNotesBySearch
 	, NoteList           & notes
 	)
 {
+	notes.clear();
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
 		"  FROM   Notes as n, NoteText"

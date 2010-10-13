@@ -210,6 +210,7 @@ void MockUserModel::GetNotesByNotebook
 	)
 {
 	notebookSelection = notebook.name;
+	notes.clear();
 	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
 }
 
@@ -219,6 +220,7 @@ void MockUserModel::GetNotesBySearch
 	)
 {
 	searchSelection = search;
+	notes.clear();
 	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
 }
 

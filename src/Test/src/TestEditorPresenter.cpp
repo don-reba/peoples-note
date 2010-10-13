@@ -77,7 +77,7 @@ BOOST_FIXTURE_TEST_CASE
 		);
 	BOOST_CHECK(isThumbnailUpdated);
 
-	BOOST_CHECK_EQUAL(noteListModel.notes.size(), 1);
+	BOOST_CHECK(noteListModel.isReloaded);
 }
 
 BOOST_FIXTURE_TEST_CASE

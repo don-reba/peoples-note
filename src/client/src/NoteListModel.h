@@ -3,9 +3,13 @@
 #include "INoteListModel.h"
 #include "Note.h"
 
+class IUserModel;
+
 class NoteListModel : public INoteListModel
 {
 private:
+
+	IUserModel & userModel;
 
 	const int pageSize;
 
@@ -17,7 +21,10 @@ private:
 
 public:
 
-	NoteListModel(int pageSize);
+	NoteListModel
+		( int          pageSize
+		, IUserModel & userModel
+		);
 
 	virtual void ConnectChanged(slot_type OnReset);
 
@@ -29,6 +36,8 @@ public:
 	virtual bool HasNextNotes();
 
 	virtual bool HasPreviousNotes();
+
+	virtual void Reload();
 
 	virtual void SelectNextPage();
 

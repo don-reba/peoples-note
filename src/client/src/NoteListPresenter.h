@@ -60,8 +60,6 @@ private:
 
 	void UpdateNotebookListView();
 
-	void UpdateNoteList();
-
 	void UpdateSyncCounter();
 
 	void UpdateTitle();

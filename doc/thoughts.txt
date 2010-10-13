@@ -2454,3 +2454,13 @@ window refactoring
 	and none of those functions is difficult to imlement
 	and there are not very many
 	so lets not refactor, after all
+refactor note list reloading
+	this is a somewhat complicated chunk of code that is used in many places
+	if it was defined in one place, which place would it be?
+		note list model
+	sideffect: saves some memory
+	need to test NoteListModel.Reload
+		TODO
+	this will also help when implementing advanced search features
+ink note line is too thin on high-resolution displays
+	TODO

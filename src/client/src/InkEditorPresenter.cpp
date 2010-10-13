@@ -64,16 +64,7 @@ void InkEditorPresenter::OnAccept()
 
 	inkEditorView.Hide();
 
-	// reload note list
-	{
-		Transaction transaction(userModel);
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-
-		NoteList notes;
-		userModel.GetNotesByNotebook(notebook, notes);
-		noteListModel.SetNotes(notes);
-	}
+	noteListModel.Reload();
 }
 
 void InkEditorPresenter::OnCancel()

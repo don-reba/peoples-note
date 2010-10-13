@@ -2,14 +2,19 @@
 #include "NoteListModel.h"
 #include <vector>
 
-#include "Note.h"
+#include "IUserModel.h"
+#include "Transaction.h"
 
 using namespace boost;
 using namespace std;
 
-NoteListModel::NoteListModel(int pageSize)
+NoteListModel::NoteListModel
+	( int          pageSize
+	, IUserModel & userModel
+	)
 	: currentPage (0)
 	, pageSize    (pageSize)
+	, userModel   (userModel)
 {
 }
 
@@ -46,6 +51,16 @@ bool NoteListModel::HasNextNotes()
 bool NoteListModel::HasPreviousNotes()
 {
 	return currentPage > 0;
+}
+
+void NoteListModel::Reload()
+{
+	Transaction transaction(userModel);
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	userModel.GetNotesByNotebook(notebook, notes);
+	currentPage = 0;
+	SignalChanged();
 }
 
 void NoteListModel::SelectNextPage()

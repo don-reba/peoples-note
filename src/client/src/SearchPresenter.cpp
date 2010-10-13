@@ -52,14 +52,13 @@ void SearchPresenter::ResetNotes()
 	Transaction transaction(userModel);
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
-	NoteList notes;
-	userModel.GetNotesByNotebook(notebook, notes);
-	noteListModel.SetNotes(notes);
+	noteListModel.Reload();
 }
 
 void SearchPresenter::SearchNotes(wstring search)
 {
 	noteListView.SetSearchButtonToClear();
+
 	Transaction transaction(userModel);
 	NoteList notes;
 	userModel.GetNotesBySearch(search, notes);

@@ -1,8 +1,15 @@
 #include "stdafx.h"
 #include "NoteListModel.h"
 
+#include "MockUserModel.h"
+#include "SignalCheck.h"
+
 using namespace boost;
 using namespace std;
+
+//-----------------------
+// auxilliary definitions
+//-----------------------
 
 class ExceptionHasText
 {
@@ -23,9 +30,14 @@ public:
 	}
 };
 
-BOOST_AUTO_TEST_CASE(NoteListModel_Empty_Test)
+//-----------
+// test cases
+//-----------
+
+BOOST_AUTO_TEST_CASE(NoteListModel_Empty)
 {
-	NoteListModel noteListModel(2);
+	MockUserModel userModel;
+	NoteListModel noteListModel(2, userModel);
 
 	NoteList::const_iterator begin;
 	NoteList::const_iterator end;
@@ -49,12 +61,13 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Empty_Test)
 		);
 }
 
-BOOST_AUTO_TEST_CASE(NoteListModel_Even_Test)
+BOOST_AUTO_TEST_CASE(NoteListModel_Even)
 {
+	MockUserModel userModel;
+	NoteListModel noteListModel(3, userModel);
+
 	NoteList::const_iterator begin;
 	NoteList::const_iterator end;
-
-	NoteListModel noteListModel(3);
 
 	noteListModel.SetNotes(NoteList(6));
 
@@ -73,12 +86,13 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Even_Test)
 	BOOST_CHECK(begin + 3 == end);
 }
 
-BOOST_AUTO_TEST_CASE(NoteListModel_Odd_Test)
+BOOST_AUTO_TEST_CASE(NoteListModel_Odd)
 {
+	MockUserModel userModel;
+	NoteListModel noteListModel(3, userModel);
+
 	NoteList::const_iterator begin;
 	NoteList::const_iterator end;
-
-	NoteListModel noteListModel(3);
 
 	noteListModel.SetNotes(NoteList(4));
 
@@ -95,4 +109,40 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Odd_Test)
 
 	noteListModel.GetCurrentPage(begin, end);
 	BOOST_CHECK(begin + 1 == end);
+}
+
+BOOST_AUTO_TEST_CASE(NoteListModel_Reload)
+{
+	MockUserModel userModel;
+	NoteListModel noteListModel(2, userModel);
+
+	NoteList::const_iterator begin;
+	NoteList::const_iterator end;
+
+	userModel.notebookSelection = L"";
+	userModel.notes.push_back(Note());
+	userModel.notes.back().name = L"note 0";
+	userModel.notes.push_back(Note());
+	userModel.notes.back().name = L"note 1";
+
+	NoteList notes(3);
+	noteListModel.SetNotes(notes);
+	noteListModel.SelectNextPage();
+
+	noteListModel.GetCurrentPage(begin, end);
+	BOOST_CHECK(begin + 1 == end);
+
+	SignalCheck signalChangedCheck;
+	noteListModel.ConnectChanged(ref(signalChangedCheck));
+
+	noteListModel.Reload();
+
+	BOOST_CHECK_EQUAL(userModel.notebookSelection, L"last-used-notebook");
+
+	noteListModel.GetCurrentPage(begin, end);
+	BOOST_REQUIRE(begin + 2 == end);
+	BOOST_CHECK_EQUAL(begin[0].name, L"note 0");
+	BOOST_CHECK_EQUAL(begin[1].name, L"note 1");
+
+	BOOST_CHECK(signalChangedCheck);
 }

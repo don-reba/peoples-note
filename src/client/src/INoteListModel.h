@@ -20,6 +20,8 @@ public:
 
 	virtual bool HasPreviousNotes() = 0;
 
+	virtual void Reload() = 0;
+
 	virtual void SelectNextPage() = 0;
 
 	virtual void SelectPreviousPage() = 0;

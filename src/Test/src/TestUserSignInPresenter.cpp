@@ -2,6 +2,7 @@
 #include "MockCredentialsModel.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
+#include "SignalCheck.h"
 #include "UserSignInPresenter.h"
 
 #include <boost/ref.hpp>
@@ -17,13 +18,6 @@ struct UserSignInPresenterFixture
 		: signInPresenter (credentialsModel, noteListView, userModel)
 	{
 	}
-};
-
-struct SignalCheck
-{
-	bool signalled;
-	SignalCheck() : signalled(false) {}
-	void operator () () { signalled = true; }
 };
 
 BOOST_FIXTURE_TEST_CASE
@@ -66,13 +60,13 @@ BOOST_FIXTURE_TEST_CASE
 	, UserSignInPresenterFixture
 	)
 {
-	SignalCheck check;
-	credentialsModel.SignalUpdating.connect(boost::ref(check));
+	SignalCheck signalUpdatingCheck;
+	credentialsModel.SignalUpdating.connect(boost::ref(signalUpdatingCheck));
 
 	userModel.SetCredentials(L"[anonymous]", L"");
 
 	noteListView.SignalSignIn();
-	BOOST_CHECK(check.signalled);
+	BOOST_CHECK(signalUpdatingCheck);
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -80,11 +74,11 @@ BOOST_FIXTURE_TEST_CASE
 	, UserSignInPresenterFixture
 	)
 {
-	SignalCheck check;
-	credentialsModel.SignalUpdating.connect(boost::ref(check));
+	SignalCheck signalUpdatingCheck;
+	credentialsModel.SignalUpdating.connect(boost::ref(signalUpdatingCheck));
 
 	noteListView.SignalSignIn();
-	BOOST_CHECK(!check.signalled);
+	BOOST_CHECK(!signalUpdatingCheck);
 
 	BOOST_CHECK_EQUAL(credentialsModel.GetUsername(), L"[anonymous]");
 	BOOST_CHECK_EQUAL(credentialsModel.GetPassword(), L"");

@@ -84,8 +84,7 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(userModel.resources.at(0).Data.at(1), 3);
 	BOOST_CHECK_EQUAL(userModel.resources.at(0).Note, userModel.notes.at(0).guid);
 
-	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 1);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"Ink note");
+	BOOST_CHECK(noteListModel.isReloaded);
 }
 
 BOOST_FIXTURE_TEST_CASE

@@ -53,5 +53,3 @@ void SyncPresenter::OnSyncComplete()
 	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
 	noteListView.SetNotebookMenu(menuHtml);
 }
-
-

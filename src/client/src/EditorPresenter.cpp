@@ -71,9 +71,7 @@ void EditorPresenter::OnAccept()
 
 	editorView.Hide();
 
-	NoteList notes;
-	userModel.GetNotesByNotebook(notebook, notes);
-	noteListModel.SetNotes(notes);
+	noteListModel.Reload();
 }
 
 void EditorPresenter::OnCancel()

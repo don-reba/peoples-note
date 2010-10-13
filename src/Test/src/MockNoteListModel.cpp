@@ -7,6 +7,7 @@ using namespace std;
 MockNoteListModel::MockNoteListModel()
 	: hasNextNotes         (false)
 	, hasPreviousNotes     (false)
+	, isReloaded           (false)
 	, nextPageSelected     (false)
 	, previousPageSelected (false)
 {
@@ -35,6 +36,11 @@ bool MockNoteListModel::HasNextNotes()
 bool MockNoteListModel::HasPreviousNotes()
 {
 	return hasPreviousNotes;
+}
+
+void MockNoteListModel::Reload()
+{
+	isReloaded = true;
 }
 
 void MockNoteListModel::SelectNextPage()
