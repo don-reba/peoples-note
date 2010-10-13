@@ -113,9 +113,15 @@ instrumentation
 profile view
 	√ when the user selects the profile name from the menu, the "profile" window should be shown
 	√ when the user presses Esc, the profile window should close
-ink note editing
-	when the user clicks and drags, a line should be drawn following the cursor
+ink note creation
+	√ when the user clicks, a dot should be drawn under the cursor
+	√ when the user clicks and drags, a line should be drawn following the cursor
 	when the screen is tilted, the editor should rotate
-	when the "OK" button is pressed, a picture note should be created and the window closed
-		the size of the picture equal to the size of the drawing
-	when the "Cancel" button is pressed, the window should close
+	√ when the user selects"OK", a picture note should be created and the window closed
+		√ the size of the picture equal to the size of the drawing
+	√ when the user selects "Cancel", the window should close
+photo note creation
+	when the user selects "OK", a camera capture dialog box with the specified settings should be invoked
+	when the user selects "OK", the settings should be saved
+	when the camera capture dialog closes, a photo with the chosen title should be created and the window closed
+	when the user selects "Cancel", the window should close

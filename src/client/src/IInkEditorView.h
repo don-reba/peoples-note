@@ -11,7 +11,7 @@ public:
 
 	virtual void ConnectCancel(slot_type OnCancel) = 0;
 
-	virtual void GetImage(Blob & blob) = 0;
+	virtual void GetImage(Blob & image) = 0;
 
 	virtual void Hide() = 0;
 

@@ -60,6 +60,11 @@ void MockNoteListView::ConnectNewNote(slot_type OnNewNote)
 	SignalNewNote.connect(OnNewNote);
 }
 
+void MockNoteListView::ConnectNewPhotoNote(slot_type OnNewPhoto)
+{
+	SignalNewPhotoNote.connect(OnNewPhoto);
+}
+
 void MockNoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
 {
 	SignalNotebookSelected.connect(OnNotebookSelected);

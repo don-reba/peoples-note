@@ -25,6 +25,8 @@ public:
 
 	virtual void ConnectNewNote(slot_type OnNewNote) = 0;
 
+	virtual void ConnectNewPhotoNote(slot_type OnNewPhoto) = 0;
+
 	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected) = 0;
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote) = 0;

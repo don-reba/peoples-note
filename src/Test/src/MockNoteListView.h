@@ -54,6 +54,7 @@ public:
 	signal SignalImport;
 	signal SignalNewInkNote;
 	signal SignalNewNote;
+	signal SignalNewPhotoNote;
 	signal SignalNotebookSelected;
 	signal SignalOpenNote;
 	signal SignalPageDown;
@@ -86,6 +87,8 @@ public:
 	virtual void ConnectNewInkNote(slot_type OnNewInkNote);
 
 	virtual void ConnectNewNote(slot_type OnNewNote);
+
+	virtual void ConnectNewPhotoNote(slot_type OnNewPhoto);
 
 	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
 

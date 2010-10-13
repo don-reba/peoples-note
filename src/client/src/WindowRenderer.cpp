@@ -67,7 +67,6 @@ void WindowRenderer::CropImage(WORD * data, SIZE & size, const RECT & rect)
 	assert(rect.left <= rect.right);
 	assert(rect.top  <= rect.bottom);
 
-
 	vector<WORD> line(rect.right - rect.left);
 	const int srcScanline((size.cx     + 1) & ~1);
 	const int dstScanline((line.size() + 1) & ~1);

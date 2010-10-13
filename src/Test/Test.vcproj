@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\InkEditorPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\LastUserModel.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockInkEditorView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockLastUserModel.cpp"
 				>
 			</File>
@@ -280,6 +288,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockNoteView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockPhotoEditorView.cpp"
 				>
 			</File>
 			<File
@@ -328,6 +340,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\NoteProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\PhotoEditorPresenter.cpp"
 				>
 			</File>
 			<File
@@ -416,6 +432,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestInkEditorPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestLastUserModel.cpp"
 				>
 			</File>
@@ -441,6 +461,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestNoteProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestPhotoEditorPresenter.cpp"
 				>
 			</File>
 			<File
@@ -550,6 +574,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockInkEditorView.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockLastUserModel.h"
 				>
 			</File>
@@ -571,6 +599,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockNoteView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockPhotoEditorView.h"
 				>
 			</File>
 			<File

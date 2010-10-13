@@ -2407,3 +2407,50 @@ ink editor
 				error-prone
 				deeper in the stack
 		bit manipulation seems more attractive
+photo notes
+	settings
+		things like
+			resolution
+			quality
+			title
+		need a way of adjusting
+			at the same time, want to minimize clicks
+			need to add an intermediate screen
+		storage
+			add a model to handle the settings
+			store in the registry
+	development plan
+		first, add photo support with default settings
+			no model
+		then, add settings
+	note that photos are, supposedly, always JPEGs
+	TODO
+window refactoring
+	there is common functionality in many windows
+		exiting on escape
+		ok/cancel buttons
+		show/hide
+		class registration
+	basically, two common behaviours
+		viewer
+			windows
+				note view
+				about
+				profile
+			behaviours
+				close on escape
+		editor
+			windows
+				sign in
+				editor
+				ink editor
+				photo editor
+			behaviours
+				cancel on escape
+				accept on ok
+	what would be the point of this refactoring?
+	some windows need subtly different behavior
+	that's ok
+	and none of those functions is difficult to imlement
+	and there are not very many
+	so lets not refactor, after all

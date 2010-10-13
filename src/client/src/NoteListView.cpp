@@ -142,6 +142,11 @@ void NoteListView::ConnectNewNote(slot_type OnNewNote)
 	SignalNewNote.connect(OnNewNote);
 }
 
+void NoteListView::ConnectNewPhotoNote(slot_type OnNewPhotoNote)
+{
+	SignalNewPhotoNote.connect(OnNewPhotoNote);
+}
+
 void NoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
 {
 	SignalNotebookSelected.connect(OnNotebookSelected);
