@@ -23,6 +23,8 @@
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
 #include "NotePresenter.h"
+#include "PhotoEditorView.h"
+#include "PhotoEditorPresenter.h"
 #include "ProfilePresenter.h"
 #include "ProfileView.h"
 #include "RegistryKey.h"
@@ -154,6 +156,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		InkEditorView   inkEditorView   (instance);
 		NoteView        noteView        (instance, highRes);
 		NoteListView    noteListView    (instance, highRes, animator, nCmdShow);
+		PhotoEditorView photoEditorView (instance, highRes);
 		ProfileView     profileView     (instance, highRes);
 
 		HtmlDataLoader htmlDataLoader
@@ -194,6 +197,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			, editorView
 			, noteView
 			, noteListView
+			, photoEditorView
 			, profileView
 			, htmlDataLoader
 			);
@@ -221,6 +225,12 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteView
 			, userModel
 			, enNoteTranslator
+			);
+		PhotoEditorPresenter
+			( noteListModel
+			, noteListView
+			, photoEditorView
+			, userModel
 			);
 		ProfilePresenter profilePresenter
 			( profileView
@@ -251,6 +261,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		noteView.Create        (noteListView.hwnd_);
 		editorView.Create      (noteListView.hwnd_);
 		inkEditorView.Create   (noteListView.hwnd_);
+		photoEditorView.Create (noteListView.hwnd_);
 		credentialsView.Create (noteListView.hwnd_);
 		aboutView.Create       (noteListView.hwnd_);
 		profileView.Create     (noteListView.hwnd_);

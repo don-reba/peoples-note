@@ -12,6 +12,7 @@ private:
 	HTMLayoutWindow & editorView;
 	HTMLayoutWindow & noteView;
 	HTMLayoutWindow & noteListView;
+	HTMLayoutWindow & photoEditorView;
 	HTMLayoutWindow & profileView;
 	IHtmlDataLoader & htmlDataLoader;
 
@@ -23,6 +24,7 @@ public:
 		, HTMLayoutWindow & editorView
 		, HTMLayoutWindow & noteView
 		, HTMLayoutWindow & noteListView
+		, HTMLayoutWindow & photoEditorView
 		, HTMLayoutWindow & profileView
 		, IHtmlDataLoader & htmlDataLoader
 		);

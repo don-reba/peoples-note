@@ -20,7 +20,7 @@ public:
 		( INoteListModel   & noteListModel
 		, INoteListView    & noteListView
 		, IPhotoEditorView & photoEditorView
-		, IUserModel       & usermModel
+		, IUserModel       & userModel
 		);
 
 private:

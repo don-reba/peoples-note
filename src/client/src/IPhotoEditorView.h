@@ -7,11 +7,11 @@ class IPhotoEditorView : public ISignalProvider
 {
 public:
 
+	virtual void ConnectCapture(slot_type OnCapture) = 0;
+
 	virtual void ConnectCancel(slot_type OnCancel) = 0;
 
 	virtual void ConnectOk(slot_type OnOk) = 0;
-
-	virtual void ConnectCapture(slot_type OnCapture) = 0;
 
 	virtual void Hide() = 0;
 

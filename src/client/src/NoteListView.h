@@ -225,6 +225,7 @@ private:
 	void OnMenuProfile   (BEHAVIOR_EVENT_PARAMS * params);
 	void OnMenuSignIn    (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNewInk        (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNewPhoto      (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNewText       (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNote          (BEHAVIOR_EVENT_PARAMS * params);
 	void OnPageDown      (BEHAVIOR_EVENT_PARAMS * params);

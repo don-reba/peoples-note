@@ -96,6 +96,11 @@ BEGIN
     IDS_OK                  "OK"
 END
 
+STRINGTABLE 
+BEGIN
+    IDC_PHOTO_EDIT          "PHOTO-EDIT"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -129,6 +134,7 @@ MAIN.HTM                HTML                    "html\\main.htm"
 MENU.CSS                HTML                    "html\\menu.css"
 NOTE_VIEW.HTM           HTML                    "html\\note-view.htm"
 NOTE_EDIT.HTM           HTML                    "html\\note-edit.htm"
+PHOTO_EDIT.HTM          HTML                    "html\\photo-edit.htm"
 PHOTO_NOTE.PNG          HTML                    "html\\photo-note.png"
 PROFILE.HTM             HTML                    "html\\profile.htm"
 RT_CHECK.PNG            HTML                    "html\\rt-check.png"

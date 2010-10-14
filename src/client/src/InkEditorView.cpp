@@ -104,6 +104,7 @@ void InkEditorView::Show()
 //------------------------
 // window message handlers
 //------------------------
+
 void InkEditorView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
 	if (msg.GetActiveState() != WA_INACTIVE)

@@ -75,12 +75,10 @@ void CredentialsView::Open()
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_CREDENTIALS_VIEW);
 
-	DWORD windowStyle   (WS_POPUP);
-	DWORD windowExStyle (0);
+	DWORD windowStyle(WS_POPUP);
 
-	hwnd_ = ::CreateWindowEx
-		( windowExStyle    // dwExStyle
-		, wndClass.c_str() // lpClassName
+	hwnd_ = ::CreateWindow
+		( wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
 		, windowStyle      // dwStyle
 		, CW_USEDEFAULT    // x
