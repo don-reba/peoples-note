@@ -25,4 +25,7 @@ mkdir "%dst%\doc"
 xcopy/q/y "doc\readme.txt"       "%dst%\doc"
 xcopy/q/y "doc\user stories.txt" "%dst%\doc"
 
+mkdir "%dst%\src\Thrift Generate"
+xcopy/q/y "C:\Users\Alexey\Programming\thrift-0.2.0\compiler\cpp\src\generate\t_cppw_generator.cc" "%dst%\src\Thrift Generate"
+
 popd
