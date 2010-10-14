@@ -73,7 +73,8 @@ private:
 
 private:
 
-	void OnClose(Msg<WM_CLOSE> & msg);
+	void OnClose   (Msg<WM_CLOSE>   & msg);
+	void OnCommand (Msg<WM_COMMAND> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 

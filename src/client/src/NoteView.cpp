@@ -234,10 +234,19 @@ void NoteView::ToggleFullScreen()
 // window message handlers
 //------------------------
 
-void NoteView::OnClose(Msg<WM_CLOSE> &msg)
+void NoteView::OnClose(Msg<WM_CLOSE> & msg)
 {
 	Hide();
 	msg.handled_ = true;
+}
+
+void NoteView::OnCommand(Msg<WM_COMMAND> & msg)
+{
+	if (msg.CtrlId() == IDOK)
+	{
+		CloseWindow(hwnd_);
+		msg.handled_ = true;
+	}
 }
 
 void NoteView::ProcessMessage(WndMsg &msg)
@@ -245,6 +254,7 @@ void NoteView::ProcessMessage(WndMsg &msg)
 	static Handler mmp[] =
 	{
 		&NoteView::OnClose,
+		&NoteView::OnCommand,
 	};
 	try
 	{
