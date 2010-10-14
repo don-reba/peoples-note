@@ -2467,13 +2467,13 @@ ink note line is too thin on high-resolution displays
 ink editor view does not resize itself properly
 	fixed
 note view window "ok" button does not work
-	TODO
+	fixed
 a tag was deleted that is absent in the database
 	at the same time no tags are added
 		so it is not a matter of operation ordering
-	TODO
+	forgot to set deletion action in a foreign constraint
 wrong password message in the sign-in screen is not too informative
 	it says "password"
 	TODO
 note view full screen does not get restored when the window is reactivated
-	TODO
+	fixed
