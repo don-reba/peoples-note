@@ -6,6 +6,8 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
+#include <fstream>
+
 using namespace htmlayout;
 using namespace htmlayout::dom;
 using namespace std;
@@ -58,16 +60,28 @@ void PhotoEditorView::Hide()
 
 void PhotoEditorView::InitiateCapture()
 {
+	SHCAMERACAPTURE settings = { sizeof(settings) };
+	settings.hwndOwner         = hwnd_;
+	settings.pszTitle          = L"Photo note";
+	settings.StillQuality      = CAMERACAPTURE_STILLQUALITY_DEFAULT;
+	settings.nResolutionWidth  = 640;
+	settings.nResolutionHeight = 480;
+	settings.Mode              = CAMERACAPTURE_MODE_STILL;
+	if (S_OK == ::SHCameraCapture(&settings))
+	{
+		photoPath = settings.szFile;
+		SignalCapture();
+	}
 }
 
-void PhotoEditorView::GetImage(Blob & blob)
+wstring PhotoEditorView::GetImagePath()
 {
-	blob.clear();
+	return photoPath;
 }
 
 std::wstring PhotoEditorView::GetTitle()
 {
-	return L"";
+	return element(FindFirstElement("#title")).text().c_str();
 }
 
 void PhotoEditorView::Show()

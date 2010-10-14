@@ -28,6 +28,8 @@ namespace Tools
 
 	std::wstring LoadStringResource(int id);
 
+	bool ReadFile(const std::wstring & path, Blob & data);
+
 	void ReplaceAll
 		(       std::wstring & str
 		, const std::wstring & target

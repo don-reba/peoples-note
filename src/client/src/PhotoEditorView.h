@@ -13,6 +13,8 @@ private:
 	HINSTANCE      instance;
 	SHACTIVATEINFO activateInfo;
 
+	std::wstring photoPath;
+
 	signal SignalCancel;
 	signal SignalOk;
 	signal SignalCapture;
@@ -39,7 +41,7 @@ public:
 
 	virtual void InitiateCapture();
 
-	virtual void GetImage(Blob & blob);
+	virtual std::wstring GetImagePath();
 
 	virtual std::wstring GetTitle();
 

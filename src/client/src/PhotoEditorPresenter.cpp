@@ -47,7 +47,11 @@ void PhotoEditorPresenter::OnCapture()
 
 	// create resource with hash
 	Resource image;
-	photoEditorView.GetImage(image.Data);
+	if (!ReadFile(photoEditorView.GetImagePath(), image.Data))
+	{
+		photoEditorView.Hide();
+		return;
+	}
 	image.Hash = HashWithMD5(image.Data);
 	image.Note = note.guid;
 

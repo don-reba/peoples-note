@@ -2468,3 +2468,12 @@ note list is not cleared on sign-out
 	TODO
 ink editor view does not resize itself properly
 	TODO
+note view window "ok" button does not work
+	TODO
+a tag was deleted that is absent in the database
+	at the same time no tags are added
+		so it is not a matter of operation ordering
+	TODO
+wrong password message in the sign-in screen is not too informative
+	it says "password"
+	TODO

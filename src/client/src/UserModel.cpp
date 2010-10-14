@@ -1028,8 +1028,8 @@ void UserModel::Initialize(wstring name)
 
 	CreateTable
 		( "CREATE TABLE NoteTags"
-			"( note REFERENCES Notes(guid)"
-			", tag  REFERENCES Tags(guid)"
+			"( note REFERENCES Notes(guid) ON DELETE CASCADE ON UPDATE CASCADE"
+			", tag  REFERENCES Tags(guid)  ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
 		);
 }

@@ -104,7 +104,6 @@ void SyncModel::StopSync()
 
 void SyncModel::BeginSync(const wstring & username)
 {
-	userModel.Load(username);
 	CloseThread();
 	userModel.Load(username);
 	syncThread = ::CreateThread

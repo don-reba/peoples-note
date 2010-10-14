@@ -17,7 +17,7 @@ public:
 
 	virtual void InitiateCapture() = 0;
 
-	virtual void GetImage(Blob & blob) = 0;
+	virtual std::wstring GetImagePath() = 0;
 
 	virtual std::wstring GetTitle() = 0;
 
