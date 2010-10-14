@@ -98,6 +98,8 @@ void InkEditorView::Show()
 
 	isDrawingEmpty = true;
 
+	ResizeWindow();
+
 	ShowWindow(hwnd_, SW_SHOW);
 }
 
@@ -283,4 +285,43 @@ ATOM InkEditorView::RegisterClass(const wstring & wndClass)
 	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
 	wc.lpszClassName = wndClass.c_str();
 	return ::RegisterClass(&wc);
+}
+
+void InkEditorView::ResizeWindow()
+{
+	HWND menuBar(::SHFindMenuBar(hwnd_));
+	if (menuBar)
+	{
+		Rect desktopRect;
+		::SystemParametersInfo(SPI_GETWORKAREA, 0, &desktopRect, FALSE);
+
+		Rect menuBarRect;
+		::GetWindowRect(menuBar, &menuBarRect);
+
+		int windowWidth  (desktopRect.GetWidth());
+		int windowHeight (desktopRect.GetHeight() - menuBarRect.GetHeight());
+
+		::MoveWindow
+			( hwnd_              // hwnd
+			, desktopRect.GetX() // x
+			, desktopRect.GetY() // y
+			, windowWidth        // nWidth
+			, windowHeight       // nHeight
+			, TRUE			     // bRepaint
+			);
+	}
+	else
+	{
+		Rect desktopRect;
+		::SystemParametersInfo(SPI_GETWORKAREA, 0, &desktopRect, FALSE);
+
+		::MoveWindow
+			( hwnd_                   // hwnd
+			, desktopRect.GetX()      // x
+			, desktopRect.GetY()      // y
+			, desktopRect.GetWidth()  // nWidth
+			, desktopRect.GetHeight() // nHeight
+			, TRUE			          // bRepaint
+			);
+	}
 }

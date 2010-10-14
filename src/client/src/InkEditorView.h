@@ -81,4 +81,6 @@ private:
 	void AddToDrawingBounds(const POINT & point);
 
 	ATOM RegisterClass(const std::wstring & wndClass);
+
+	void ResizeWindow();
 };

@@ -2464,10 +2464,8 @@ refactor note list reloading
 	this will also help when implementing advanced search features
 ink note line is too thin on high-resolution displays
 	TODO
-note list is not cleared on sign-out
-	TODO
 ink editor view does not resize itself properly
-	TODO
+	fixed
 note view window "ok" button does not work
 	TODO
 a tag was deleted that is absent in the database
