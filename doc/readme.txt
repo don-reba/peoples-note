@@ -29,6 +29,9 @@ gfx
 "src\Evernote API"
 	Win32/C++ port of the Evernote API and Apache Thrift.
 
+"src\Thrift Generate"
+	Win32/C++ Thirft code generator
+
 ------------
 Requirements
 ------------
