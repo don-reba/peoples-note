@@ -5,6 +5,12 @@
 
 namespace Tools
 {
+	template<class T, std::size_t N>
+	std::size_t GetArraySize(const T(&)[N]) throw() 
+	{
+		return N;
+	}
+ 
 	std::string ConvertToAnsi(const std::wstring & str);
 
 	const unsigned char * ConvertToUtf8

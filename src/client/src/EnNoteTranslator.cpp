@@ -6,6 +6,7 @@
 
 #include "windows.h"
 
+#include <algorithm>
 #include <iterator>
 #include <memory>
 
@@ -134,6 +135,39 @@ void EnNoteTranslator::AddXmlAttributes
 	}
 }
 
+bool EnNoteTranslator::AttributeNameSortPredicate
+	( const wchar_t * name1
+	, const wchar_t * name2
+	)
+{
+	return _wcsicmp(name1, name2) < 0;
+}
+
+void EnNoteTranslator::FilterAttributes
+	( xml_node<wchar_t> *  node
+	, const wchar_t     ** whitelistBegin
+	, const wchar_t     ** whitelistEnd
+	)
+{
+	xml_attribute<wchar_t> * attribute(node->first_attribute());
+	while (attribute)
+	{
+		xml_attribute<wchar_t> * next(attribute->next_attribute());
+
+		wstring name(attribute->name(), attribute->name_size());
+		bool exists = binary_search
+			( whitelistBegin
+			, whitelistEnd
+			, name.c_str()
+			, AttributeNameSortPredicate
+			);
+		if (!exists)
+			node->remove_attribute(attribute);
+		
+		attribute = next;
+	}
+}
+
 void EnNoteTranslator::GetXmlAttributes
 	( xml_node<wchar_t> * node
 	, AttributeMap      & map
@@ -242,18 +276,6 @@ void EnNoteTranslator::ReplaceEncryptImg
 	, xml_node<wchar_t>    * child
 	)
 {
-	// remove image attributes
-	vector<const wchar_t *> attributesToRemove;
-	attributesToRemove.push_back(L"src");
-	attributesToRemove.push_back(L"physical-width");
-	attributesToRemove.push_back(L"physical-height");
-	foreach (const wchar_t * name, attributesToRemove)
-	{
-		xml_attribute<wchar_t> * a(child->first_attribute(name));
-		if (a)
-			child->remove_attribute(a);
-	}
-
 	// convert the "content" attribute to value
 	xml_attribute<wchar_t> * contentAttribute(child->first_attribute(L"content"));
 	if (contentAttribute)
@@ -270,6 +292,9 @@ void EnNoteTranslator::ReplaceEncryptImg
 
 	// rename the node
 	child->name(L"en-crypt");
+
+	const wchar_t * whitelist[] = { L"hint", L"cipher", L"length" };
+	FilterAttributes(child, whitelist, whitelist + Tools::GetArraySize(whitelist));
 }
 
 void EnNoteTranslator::ReplaceImg
@@ -325,6 +350,14 @@ void EnNoteTranslator::ReplaceImg
 	child->name(L"en-media");
 	child->append_attribute(store->allocate_attribute(L"hash", hashString));
 	child->append_attribute(store->allocate_attribute(L"type", imageType->second));
+
+	
+	const wchar_t * whitelist[] =
+		{ L"align", L"alt", L"border", L"dir", L"hash", L"height"
+		, L"hspace", L"lang", L"longdesc", L"style", L"title"
+		, L"type", L"usemap", L"vspace", L"width", L"xml:lang"
+		};
+	FilterAttributes(child, whitelist, whitelist + Tools::GetArraySize(whitelist));
 }
 
 void EnNoteTranslator::ReplaceMedia

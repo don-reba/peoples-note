@@ -2477,3 +2477,25 @@ wrong password message in the sign-in screen is not too informative
 	TODO
 note view full screen does not get restored when the window is reactivated
 	fixed
+ink note drawing
+	need to measure performance
+		question to answer
+			is drawing slow or is blitting?
+		methodology
+			keep two timers
+			accumulate results for one second
+			display statistics
+				how?
+				draw on the bitmap
+		better idea
+			keep two timers
+			accumulate results
+			display statistics on mouse up
+				and reset accumulators
+	the verdict is that neither drawing nor painting is at all slow
+notes should never get empty titles
+	should assign a default
+	TODO
+"begin incremental sync" takes far too long
+	investigate
+	TODO

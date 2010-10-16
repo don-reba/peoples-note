@@ -7,6 +7,8 @@
 #include "Tools.h"
 #include "WindowRenderer.h"
 
+#include <sstream>
+
 using namespace std;
 using namespace Tools;
 
@@ -126,9 +128,19 @@ void InkEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 	}
 }
 
+void InkEditorView::OnEraseBackground(Msg<WM_ERASEBKGND> & msg)
+{
+	msg.handled_ = true;
+}
+
 void InkEditorView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
 	::SetCapture(hwnd_);
+
+	drawTime   = 0;
+	drawCount  = 0;
+	paintTime  = 0;
+	paintCount = 0;
 
 	lineStart = msg.Position();
 	AddToDrawingBounds(lineStart);
@@ -138,6 +150,8 @@ void InkEditorView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 
 void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
+	DWORD startTime(::GetTickCount());
+
 	Rect rect;
 
 	rect.left = lineStart.x;
@@ -154,15 +168,25 @@ void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 
 	::LineTo(bmpDc, lineStart.x, lineStart.y);
 	::InvalidateRect(hwnd_, &rect, FALSE);
+
+	drawTime += ::GetTickCount() - startTime;
+	++drawCount;
 }
 
 void InkEditorView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
 	::ReleaseCapture();
+
+	wostringstream stream;
+	stream << L"draw: "  << (1000.0 * drawCount  / drawTime)  << L" fps\n";
+	stream << L"paint: " << (1000.0 * paintCount / paintTime) << L" fps";
+	DisplayMessage(stream.str().c_str());
 }
 
 void InkEditorView::OnPaint(Msg<WM_PAINT> & msg)
 {
+	DWORD startTime(::GetTickCount());
+
 	Rect rect;
 	::GetClientRect(hwnd_, &rect);
 
@@ -179,6 +203,9 @@ void InkEditorView::OnPaint(Msg<WM_PAINT> & msg)
 		, SRCCOPY
 		);
 	msg.EndPaint();
+
+	paintTime += ::GetTickCount() - startTime;
+	++paintCount;
 }
 
 void InkEditorView::OnSize(Msg<WM_SIZE> & msg)
@@ -230,6 +257,7 @@ void InkEditorView::ProcessMessage(WndMsg &msg)
 	{
 		&InkEditorView::OnActivate,
 		&InkEditorView::OnCommand,
+		&InkEditorView::OnEraseBackground,
 		&InkEditorView::OnMouseDown,
 		&InkEditorView::OnMouseMove,
 		&InkEditorView::OnMouseUp,
@@ -273,6 +301,14 @@ void InkEditorView::AddToDrawingBounds(const POINT & point)
 		if (point.y > drawingBounds.bottom)
 			drawingBounds.bottom = point.y;
 	}
+}
+
+void InkEditorView::DisplayMessage(const wchar_t * text)
+{
+	RECT rect;
+	::GetClientRect(hwnd_, &rect);
+	::DrawText(bmpDc, text, -1, &rect, DT_NOCLIP);
+	::InvalidateRect(hwnd_, &rect, FALSE);
 }
 
 ATOM InkEditorView::RegisterClass(const wstring & wndClass)

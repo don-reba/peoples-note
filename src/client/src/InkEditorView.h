@@ -38,6 +38,12 @@ private:
 	signal SignalAccept;
 	signal SignalCancel;
 
+	DWORD drawTime;
+	DWORD drawCount;
+
+	DWORD paintTime;
+	DWORD paintCount;
+
 // interface
 
 public:
@@ -64,13 +70,14 @@ public:
 
 private:
 
-	void OnActivate  (Msg<WM_ACTIVATE>      & msg);
-	void OnCommand   (Msg<WM_COMMAND>       & msg);
-	void OnMouseDown (Msg<WM_LBUTTONDOWN>   & msg);
-	void OnMouseMove (Msg<WM_MOUSEMOVE>     & msg);
-	void OnMouseUp   (Msg<WM_LBUTTONUP>     & msg);
-	void OnPaint     (Msg<WM_PAINT>         & msg);
-	void OnSize      (Msg<WM_SIZE>          & msg);
+	void OnActivate        (Msg<WM_ACTIVATE>    & msg);
+	void OnCommand         (Msg<WM_COMMAND>     & msg);
+	void OnEraseBackground (Msg<WM_ERASEBKGND>  & msg);
+	void OnMouseDown       (Msg<WM_LBUTTONDOWN> & msg);
+	void OnMouseMove       (Msg<WM_MOUSEMOVE>   & msg);
+	void OnMouseUp         (Msg<WM_LBUTTONUP>   & msg);
+	void OnPaint           (Msg<WM_PAINT>       & msg);
+	void OnSize            (Msg<WM_SIZE>        & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 
@@ -79,6 +86,8 @@ private:
 private:
 
 	void AddToDrawingBounds(const POINT & point);
+
+	void DisplayMessage(const wchar_t * text);
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 
