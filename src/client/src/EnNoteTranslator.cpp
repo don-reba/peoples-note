@@ -293,7 +293,7 @@ void EnNoteTranslator::ReplaceEncryptImg
 	// rename the node
 	child->name(L"en-crypt");
 
-	const wchar_t * whitelist[] = { L"hint", L"cipher", L"length" };
+	const wchar_t * whitelist[] = { L"cipher", L"hint", L"length" };
 	FilterAttributes(child, whitelist, whitelist + Tools::GetArraySize(whitelist));
 }
 
@@ -311,7 +311,6 @@ void EnNoteTranslator::ReplaceImg
 		if (type == L"en-crypt")
 		{
 			ReplaceEncryptImg(store, parent, child);
-			child->remove_attribute(typeAttribute);
 			return;
 		}
 	}

@@ -1,5 +1,6 @@
 #pragma once
 
+class IFile;
 class INoteListModel;
 class INoteListView;
 class IPhotoEditorView;
@@ -9,6 +10,7 @@ class PhotoEditorPresenter
 {
 private:
 
+	IFile            & file;
 	INoteListModel   & noteListModel;
 	INoteListView    & noteListView;
 	IPhotoEditorView & photoEditorView;
@@ -17,7 +19,8 @@ private:
 public:
 
 	PhotoEditorPresenter
-		( INoteListModel   & noteListModel
+		( IFile            & file
+		, INoteListModel   & noteListModel
 		, INoteListView    & noteListView
 		, IPhotoEditorView & photoEditorView
 		, IUserModel       & userModel

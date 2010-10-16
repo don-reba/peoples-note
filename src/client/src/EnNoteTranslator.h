@@ -62,6 +62,7 @@ private:
 		, const wchar_t * name2
 		);
 
+	// requires a lowercase-alphabetically sorted whitelist
 	static void FilterAttributes
 		( rapidxml::xml_node<wchar_t> *  node
 		, const wchar_t               ** whitelistBegin

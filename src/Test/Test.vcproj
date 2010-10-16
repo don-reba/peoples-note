@@ -263,6 +263,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockInkEditorView.cpp"
 				>
 			</File>
@@ -571,6 +575,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockEnService.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockFile.h"
 				>
 			</File>
 			<File

@@ -5,7 +5,7 @@ class MockPhotoEditorView : public IPhotoEditorView
 {
 public:
 
-	Blob image;
+	std::wstring imagePath;
 	std::wstring title;
 
 	bool isCaptureInitiated;
@@ -31,7 +31,7 @@ public:
 
 	virtual void InitiateCapture();
 
-	virtual void GetImage(Blob & blob);
+	virtual std::wstring GetImagePath();
 
 	virtual std::wstring GetTitle();
 

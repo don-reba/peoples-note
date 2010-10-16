@@ -34,9 +34,9 @@ void MockPhotoEditorView::InitiateCapture()
 	isCaptureInitiated = true;
 }
 
-void MockPhotoEditorView::GetImage(Blob & blob)
+wstring MockPhotoEditorView::GetImagePath()
 {
-	blob.assign(image.begin(), image.end());
+	return imagePath;
 }
 
 wstring MockPhotoEditorView::GetTitle()

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PhotoEditorPresenter.h"
 
+#include "MockFile.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockPhotoEditorView.h"
@@ -15,6 +16,7 @@ using namespace std;
 
 struct PhotoEditorPresenterFixture
 {
+	MockFile            file;
 	MockNoteListModel   noteListModel;
 	MockNoteListView    noteListView;
 	MockPhotoEditorView photoEditorView;
@@ -24,7 +26,8 @@ struct PhotoEditorPresenterFixture
 
 	PhotoEditorPresenterFixture()
 		: presenter
-			( noteListModel
+			( file
+			, noteListModel
 			, noteListView
 			, photoEditorView
 			, userModel
@@ -54,10 +57,13 @@ BOOST_FIXTURE_TEST_CASE
 	, PhotoEditorPresenterFixture
 	)
 {
+	file.exists = true;
+	file.data.push_back(2);
+	file.data.push_back(3);
+
 	photoEditorView.isShown = true;
 	photoEditorView.title   = L"test title";
-	photoEditorView.image.push_back(2);
-	photoEditorView.image.push_back(3);
+	photoEditorView.imagePath = L"path";
 
 	photoEditorView.SignalCapture();
 

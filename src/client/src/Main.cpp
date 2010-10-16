@@ -12,6 +12,7 @@
 #include "EnImporter.h"
 #include "EnNoteTranslator.h"
 #include "EnService.h"
+#include "File.h"
 #include "HtmlDataLoader.h"
 #include "HtmlLayoutPresenter.h"
 #include "InkEditorPresenter.h"
@@ -133,6 +134,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		bool    highRes      (IsHighRes());
 
 		Animator         animator;
+		File             file;
 		RegistryKey      registryKey(L"Software\\People's Note");
 		DataStore        dataStore;
 		DataStore        syncDataStore;
@@ -227,7 +229,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, enNoteTranslator
 			);
 		PhotoEditorPresenter
-			( noteListModel
+			( file
+			, noteListModel
 			, noteListView
 			, photoEditorView
 			, userModel
