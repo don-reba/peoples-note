@@ -74,10 +74,9 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_APP_TITLE           "People's Note"
     IDC_CLIENT              "CLIENT"
     IDS_SYNC                "Sync"
-    IDS_MAIN_MENU           "Menu"
+    IDS_MENU                "Menu"
     IDS_REGISTRY_KEY        "Software\\People's Note"
     IDS_DOC_FOLDER          "People's Note"
     IDC_NOTE_VIEW           "NOTE-VIEW"

@@ -12,3 +12,8 @@ void CloseWindow(HWND hwnd)
 {
 	PostMessage(hwnd, WM_CLOSE, 0, 0);
 }
+
+HMENU GetWindowMenu(HWND hwnd, int menuId)
+{
+	return reinterpret_cast<HMENU>(::SendMessage(hwnd, SHCMBM_GETSUBMENU, 0, menuId));
+}

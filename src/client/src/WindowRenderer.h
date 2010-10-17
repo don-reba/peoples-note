@@ -25,7 +25,7 @@ public:
 
 	static void RenderThumbnail(HWND window, Thumbnail & thumbnail);
 
-	static void Render(HBITMAP bmp, const RECT & rect, Blob & blob);
+	static void Render(HBITMAP bmp, Blob & blob);
 
 // utility functions
 
@@ -34,8 +34,6 @@ private:
 	static SIZE ComputeWindowSize(HWND window, SIZE size);
 
 	static void CropImage(WORD * data, SIZE & size, const RECT & rect);
-
-	static RECT CropRect(const RECT & rect, const SIZE & size);
 
 	static void FlipImage(WORD * data, SIZE size);
 

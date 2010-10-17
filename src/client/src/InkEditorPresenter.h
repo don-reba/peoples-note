@@ -28,4 +28,7 @@ private:
 	void OnAccept();
 	void OnCancel();
 	void OnNewInkNote();
+	void OnPenChanged();
+
+	COLORREF GetColorValue(const wchar_t * name);
 };

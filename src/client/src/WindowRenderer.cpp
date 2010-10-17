@@ -28,22 +28,22 @@ void WindowRenderer::RenderThumbnail(HWND window, Thumbnail & thumbnail)
 	::DeleteObject(bmp);
 }
 
-void WindowRenderer::Render(HBITMAP bmp, const RECT & rect, Blob & blob)
+void WindowRenderer::Render(HBITMAP bmp, Blob & blob)
 {
 	 BITMAP bmpObject;
 	::GetObject(bmp, sizeof(bmpObject), &bmpObject);
 
-	if (bmpObject.bmBitsPixel != 16)
-		throw std::exception("Invalid bitmap format.");
 	if (bmpObject.bmBits == NULL)
 		throw std::exception("Bitmap data unavailable.");
+
+	if (bmpObject.bmBitsPixel != 16)
+		throw std::exception("Invalid bitmap format.");
 
 	SIZE size = { bmpObject.bmWidth, bmpObject.bmHeight };
 
 	WORD * bits(static_cast<WORD*>(bmpObject.bmBits));
 
 	FlipImage(bits, size);
-	CropImage(bits, size, CropRect(rect, size));
 	ResizeAndCompress(bits, size, size, blob);
 }
 
@@ -82,14 +82,6 @@ void WindowRenderer::CropImage(WORD * data, SIZE & size, const RECT & rect)
 
 	size.cx = rect.right - rect.left;
 	size.cy = rect.bottom - rect.top;
-}
-
-RECT WindowRenderer::CropRect(const RECT & rect, const SIZE & size)
-{
-	RECT srcBounds = { 0, 0, size.cx, size.cy };
-	RECT dstBounds;
-	::IntersectRect(&dstBounds, &srcBounds, &rect);
-	return dstBounds;
 }
 
 void WindowRenderer::FlipImage(WORD * data, SIZE size)

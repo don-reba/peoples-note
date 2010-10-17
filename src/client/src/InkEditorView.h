@@ -1,6 +1,7 @@
 #pragma once
 #include "IInkEditorView.h"
 
+#include "htmlayout_graphin.h"
 #include "window.h"
 
 class InkEditorView : public Window, public IInkEditorView
@@ -26,23 +27,23 @@ private:
 
 	SHACTIVATEINFO activateInfo;
 	HINSTANCE      instance;
-	HBITMAP        bmp;
-	HDC            bmpDc;
 	HWND           menuBar;
 	HWND           parent;
 
+	HIMG img;
+	HGFX gfx;
+
 	POINT lineStart;
 	RECT  drawingBounds;
+	bool  isDrawing;
 	bool  isDrawingEmpty;
+
+	const wchar_t * penColor;
+	int             penWidth;
 
 	signal SignalAccept;
 	signal SignalCancel;
-
-	DWORD drawTime;
-	DWORD drawCount;
-
-	DWORD paintTime;
-	DWORD paintCount;
+	signal SignalPenChanged;
 
 // interface
 
@@ -60,9 +61,17 @@ public:
 
 	virtual void ConnectCancel(slot_type OnCancel);
 
+	virtual void ConnectPenChanged(slot_type OnPenChanged);
+
 	virtual void GetImage(Blob & blob);
 
+	virtual const wchar_t * GetPenColor();
+
+	virtual int GetPenWidth();
+
 	virtual void Hide();
+
+	virtual void SetPen(int width, COLORREF color);
 
 	virtual void Show();
 
@@ -86,8 +95,6 @@ private:
 private:
 
 	void AddToDrawingBounds(const POINT & point);
-
-	void DisplayMessage(const wchar_t * text);
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 

@@ -2499,3 +2499,37 @@ notes should never get empty titles
 "begin incremental sync" takes far too long
 	investigate
 	TODO
+pen configuration
+	pen can be adjusted by the user
+	pen settings can be restored from the registry
+	the logic to handle these things should be in the presenter
+	what should happen on a menu action?
+		the view should record the action
+		and tell the presenter that the pen has been changed
+		the presenter then retrieves this record
+			persists the settings
+			and modifies the pen
+	colour persistence
+		should it be saved by name or by value?
+		what's the difference?
+		saving by name
+			can put a checkmark beside the appropriate option
+				if the value changes
+		saving by value
+			can put a checkmark beside the appripriate option
+				if the name changes
+		value change is more likely
+		lets save by name
+	menu management
+		need to
+			save menu state
+			set menu checks
+Graphin bitmap rendering
+	its great, but produces 32-bit bitmaps
+	need to convert these to 16 bits
+	can do it either in the renderer or in the viewer
+		better do it in the renderer
+		the viewer should contain as little logic as possible
+		the renderer can at least be tested
+	blitting in the renderer gets hairy, however
+	it would be easier to do in the viewer

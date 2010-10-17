@@ -12,14 +12,24 @@
 using namespace std;
 using namespace Tools;
 
+
+#define MacroDeleteObject(o, f) \
+	if (o)                      \
+	{                           \
+		f(o);                   \
+		o = NULL;               \
+	}                           \
+
 //----------
 // interface
 //----------
 
 InkEditorView::InkEditorView(HINSTANCE instance)
-	: bmp      (NULL)
-	, bmpDc    (NULL)
+	: img      (NULL)
 	, instance (instance)
+	, gfx      (NULL)
+	, penColor (L"Black")
+	, penWidth (1)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
@@ -46,29 +56,97 @@ void InkEditorView::ConnectCancel(slot_type OnCancel)
 	SignalCancel.connect(OnCancel);
 }
 
+void InkEditorView::ConnectPenChanged(slot_type OnPenChanged)
+{
+	SignalPenChanged.connect(OnPenChanged);
+}
+
 void InkEditorView::GetImage(Blob & blob)
 {
-	RECT cropRect(drawingBounds);
+	// calculate the rectangle to return
+	Rect cropRect(drawingBounds);
 	::InflateRect(&cropRect, 4, 4);
-	WindowRenderer::Render(bmp, cropRect, blob);
+	
+	Rect clientRect;
+	::GetClientRect(hwnd_, &clientRect);
+
+	Rect rect;
+	::IntersectRect(&rect, &clientRect, &cropRect);
+
+	// create a new bitmap
+ 	BITMAPINFO_BF info = { 0 };
+	info.bmiHeader.biSize         = sizeof(BITMAPINFOHEADER);
+	info.bmiHeader.biWidth        = rect.GetWidth();
+	info.bmiHeader.biHeight       = rect.GetHeight();
+	info.bmiHeader.biPlanes       = 1;
+	info.bmiHeader.biBitCount     = 16;
+	info.bmiHeader.biCompression  = BI_BITFIELDS;
+	info.bmiHeader.biSizeImage    = ((rect.GetWidth() * 2 + 3) & ~3) * rect.GetHeight();
+	info.bmiHeader.biClrUsed      = 1;
+	info.bmiHeader.biClrImportant = 0;
+	info.bmiColorsR               = 0xf800;
+	info.bmiColorsG               = 0x07e0;
+	info.bmiColorsB               = 0x001f;
+
+	HDC windowDc(::GetDC(hwnd_));
+	HDC dstDc(::CreateCompatibleDC(windowDc));
+	::ReleaseDC(hwnd_, windowDc);
+
+	HBITMAP newBmp = ::CreateDIBSection
+		( dstDc                // hdc
+		, info.GetBitmapInfo() // pbmi
+		, DIB_RGB_COLORS       // iUsage
+		, NULL                 // ppvBits
+		, NULL                 // hSection
+		, 0                    // dwOffset
+		);
+	::SelectObject(dstDc, newBmp);
+
+	htmlayout::gapi()->imageBlit
+		( dstDc
+		, 0
+		, 0
+		, img
+		, rect.GetX()
+		, rect.GetY()
+		, rect.GetWidth()
+		, rect.GetHeight()
+		, false
+		);
+
+	::DeleteDC(dstDc);
+
+	WindowRenderer::Render(newBmp, blob);
+}
+
+const wchar_t * InkEditorView::GetPenColor()
+{
+	return penColor;
+}
+
+int InkEditorView::GetPenWidth()
+{
+	return penWidth;
 }
 
 void InkEditorView::Hide()
 {
-	::DeleteObject(bmp);
-	bmp = NULL;
+	MacroDeleteObject(img,   htmlayout::gapi()->imageRelease);
+	MacroDeleteObject(gfx,   htmlayout::gapi()->gRelease);
+	MacroDeleteObject(hwnd_, ::CloseWindow);
+}
 
-	::DeleteDC(bmpDc);
-	bmpDc = NULL;
-
-	CloseWindow(hwnd_);
-	hwnd_ = NULL;
+void InkEditorView::SetPen(int width, COLORREF color)
+{
+	htmlayout::gapi()->gLineColor(gfx, color | 0xFF000000);
+	htmlayout::gapi()->gFillColor(gfx, color | 0xFF000000);
+	htmlayout::gapi()->gLineWidth(gfx, static_cast<DIM>(width));
 }
 
 void InkEditorView::Show()
 {
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
-	wstring wndClass = LoadStringResource(IDC_NOTE_EDIT);
+	wstring wndClass = LoadStringResource(IDC_INK_EDIT);
 
 	DWORD windowStyle(WS_POPUP);
 
@@ -93,11 +171,12 @@ void InkEditorView::Show()
 
 	SHMENUBARINFO menuBarInfo = { sizeof(menuBarInfo) };
 	menuBarInfo.hwndParent = hwnd_;
-	menuBarInfo.nToolBarId = IDR_EDITOR_MENUBAR;
+	menuBarInfo.nToolBarId = IDR_INK_EDITOR_MENUBAR;
 	menuBarInfo.hInstRes   = instance;
 	::SHCreateMenuBar(&menuBarInfo);
 	menuBar = menuBarInfo.hwndMB;
 
+	isDrawing      = false;
 	isDrawingEmpty = true;
 
 	ResizeWindow();
@@ -125,6 +204,58 @@ void InkEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 	{
 	case IDM_OK:     SignalAccept(); break;
 	case IDM_CANCEL: SignalCancel(); break;
+
+	case ID_PENWIDTH_1PX: penWidth = 1; break;
+	case ID_PENWIDTH_2PX: penWidth = 2; break;
+	case ID_PENWIDTH_4PX: penWidth = 4; break;
+	case ID_PENWIDTH_8PX: penWidth = 8; break;
+
+	case ID_COLOR_BLACK:  penColor = L"black";  break;
+	case ID_COLOR_WHITE:  penColor = L"white";  break;
+	case ID_COLOR_YELLOW: penColor = L"yellow"; break;
+	case ID_COLOR_RED:    penColor = L"red";    break;
+	case ID_COLOR_BLUE:   penColor = L"blue";   break;
+	case ID_COLOR_GREEN:  penColor = L"green";  break;
+	}
+
+	switch (msg.CtrlId())
+	{
+	case ID_PENWIDTH_1PX:
+	case ID_PENWIDTH_2PX:
+	case ID_PENWIDTH_4PX:
+	case ID_PENWIDTH_8PX:
+		{
+			HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));
+
+			::CheckMenuItem(menu, ID_PENWIDTH_1PX,  MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_PENWIDTH_2PX,  MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_PENWIDTH_4PX,  MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_PENWIDTH_8PX,  MF_UNCHECKED);
+
+			::CheckMenuItem(menu, msg.CtrlId(), MF_CHECKED);
+
+			SignalPenChanged();
+		} break;
+	case ID_COLOR_BLACK:
+	case ID_COLOR_WHITE:
+	case ID_COLOR_YELLOW:
+	case ID_COLOR_RED:
+	case ID_COLOR_BLUE:
+	case ID_COLOR_GREEN:
+		{
+			HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));
+
+			::CheckMenuItem(menu, ID_COLOR_BLACK,  MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_COLOR_WHITE,  MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_COLOR_YELLOW, MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_COLOR_RED,    MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_COLOR_BLUE,   MF_UNCHECKED);
+			::CheckMenuItem(menu, ID_COLOR_GREEN,  MF_UNCHECKED);
+
+			::CheckMenuItem(menu, msg.CtrlId(), MF_CHECKED);
+
+			SignalPenChanged();
+		} break;
 	}
 }
 
@@ -135,22 +266,23 @@ void InkEditorView::OnEraseBackground(Msg<WM_ERASEBKGND> & msg)
 
 void InkEditorView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
+	if (!gfx)
+		return;
+
+	isDrawing = true;
+
 	::SetCapture(hwnd_);
 
-	drawTime   = 0;
-	drawCount  = 0;
-	paintTime  = 0;
-	paintCount = 0;
-
 	lineStart = msg.Position();
-	AddToDrawingBounds(lineStart);
-	::SetPixel(bmpDc, lineStart.x, lineStart.y, 0xFF000000);
-	::MoveToEx(bmpDc, lineStart.x, lineStart.y, NULL);
 }
 
 void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
-	DWORD startTime(::GetTickCount());
+	if (!gfx)
+		return;
+
+	if (!isDrawing)
+		return;
 
 	Rect rect;
 
@@ -163,92 +295,74 @@ void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 	rect.right  = lineStart.x;
 	rect.bottom = lineStart.y;
 
+	htmlayout::gapi()->gLine
+		( gfx
+		, static_cast<POS>(rect.left)
+		, static_cast<POS>(rect.top)
+		, static_cast<POS>(rect.right)
+		, static_cast<POS>(rect.bottom)
+		);
+
 	rect.Normalize();
-	::InflateRect(&rect, 1, 1);
+	::InflateRect(&rect, penWidth, penWidth);
 
-	::LineTo(bmpDc, lineStart.x, lineStart.y);
 	::InvalidateRect(hwnd_, &rect, FALSE);
-
-	drawTime += ::GetTickCount() - startTime;
-	++drawCount;
 }
 
 void InkEditorView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
+	if (!isDrawing)
+		return;
+
 	::ReleaseCapture();
 
-	wostringstream stream;
-	stream << L"draw: "  << (1000.0 * drawCount  / drawTime)  << L" fps\n";
-	stream << L"paint: " << (1000.0 * paintCount / paintTime) << L" fps";
-	DisplayMessage(stream.str().c_str());
+	isDrawing = false;
 }
 
 void InkEditorView::OnPaint(Msg<WM_PAINT> & msg)
 {
-	DWORD startTime(::GetTickCount());
-
-	Rect rect;
-	::GetClientRect(hwnd_, &rect);
+	if (!img)
+		return;
 
 	msg.BeginPaint(hwnd_);
-	::BitBlt
+	Rect rect(msg.PS().rcPaint);
+	htmlayout::gapi()->imageBlit
 		( msg.PS().hdc
+		, rect.GetX()
+		, rect.GetY()
+		, img
 		, rect.GetX()
 		, rect.GetY()
 		, rect.GetWidth()
 		, rect.GetHeight()
-		, bmpDc
-		, rect.GetX()
-		, rect.GetY()
-		, SRCCOPY
+		, false
 		);
 	msg.EndPaint();
-
-	paintTime += ::GetTickCount() - startTime;
-	++paintCount;
 }
 
 void InkEditorView::OnSize(Msg<WM_SIZE> & msg)
 {
-	// create a new bitmap
-	HDC windowDc(::GetDC(hwnd_));
+	if (gfx)
+	{
+		htmlayout::gapi()->gRelease(gfx);
+		gfx = NULL;
+	}
+	if (img)
+	{
+		htmlayout::gapi()->imageRelease(img);
+		gfx = NULL;
+	}
 
-	if (bmpDc)
-		::DeleteDC(bmpDc);
-	bmpDc = ::CreateCompatibleDC(windowDc);
-	::SelectObject(bmpDc, ::GetStockObject(BLACK_PEN));
-
-	if (bmp)
-		::DeleteObject(bmp);
- 	BITMAPINFO_BF info = { 0 };
-	info.bmiHeader.biSize         = sizeof(BITMAPINFOHEADER);
-	info.bmiHeader.biWidth        = msg.Size().cx;
-	info.bmiHeader.biHeight       = msg.Size().cy;
-	info.bmiHeader.biPlanes       = 1;
-	info.bmiHeader.biBitCount     = 16;
-	info.bmiHeader.biCompression  = BI_BITFIELDS;
-	info.bmiHeader.biSizeImage    = ((msg.Size().cx * 2 + 3) & ~3) * msg.Size().cy;
-	info.bmiHeader.biClrUsed      = 1;
-	info.bmiHeader.biClrImportant = 0;
-	info.bmiColorsR               = 0xf800;
-	info.bmiColorsG               = 0x07e0;
-	info.bmiColorsB               = 0x001f;
-
-	HDC dc(::CreateCompatibleDC(windowDc));
-	bmp = ::CreateDIBSection
-		( dc                   // hdc
-		, info.GetBitmapInfo() // pbmi
-		, DIB_RGB_COLORS       // iUsage
-		, NULL                 // ppvBits
-		, NULL                 // hSection
-		, 0                    // dwOffset
+	htmlayout::gapi()->imageCreate(msg.Size().cx, msg.Size().cy, &img);
+	htmlayout::gapi()->gCreate(img, &gfx);
+	htmlayout::gapi()->gFillColor(gfx, 0xFFFFFFFF);
+	htmlayout::gapi()->gRectangle
+		( gfx
+		, 0.0
+		, 0.0
+		, static_cast<POS>(msg.Size().cx)
+		, static_cast<POS>(msg.Size().cy)
 		);
-	::SelectObject(bmpDc, bmp);
-
-	::ReleaseDC(hwnd_, windowDc);
-
-	RECT rect = { 0, 0, msg.Size().cx, msg.Size().cy };
-	::FillRect(bmpDc, &rect, static_cast<HBRUSH>(::GetStockObject(WHITE_BRUSH)));
 }
 
 void InkEditorView::ProcessMessage(WndMsg &msg)
@@ -301,14 +415,6 @@ void InkEditorView::AddToDrawingBounds(const POINT & point)
 		if (point.y > drawingBounds.bottom)
 			drawingBounds.bottom = point.y;
 	}
-}
-
-void InkEditorView::DisplayMessage(const wchar_t * text)
-{
-	RECT rect;
-	::GetClientRect(hwnd_, &rect);
-	::DrawText(bmpDc, text, -1, &rect, DT_NOCLIP);
-	::InvalidateRect(hwnd_, &rect, FALSE);
 }
 
 ATOM InkEditorView::RegisterClass(const wstring & wndClass)
