@@ -37,8 +37,8 @@ private:
 	bool  isDrawing;
 	bool  isDrawingEmpty;
 
-	const wchar_t * penColor;
-	int             penWidth;
+	PenColor penColor;
+	PenWidth penWidth;
 
 	signal SignalAccept;
 	signal SignalCancel;
@@ -64,13 +64,13 @@ public:
 
 	virtual void GetImage(Blob & blob);
 
-	virtual const wchar_t * GetPenColor();
+	virtual PenColor GetPenColor();
 
-	virtual int GetPenWidth();
+	virtual PenWidth GetPenWidth();
 
 	virtual void Hide();
 
-	virtual void SetPen(int width, COLORREF color);
+	virtual void SetPen(PenWidth width, PenColor color);
 
 	virtual void Show();
 
@@ -95,7 +95,15 @@ private:
 
 	void AddToDrawingBounds(const POINT & point);
 
+	COLORREF GetPenColor(PenColor color);
+
+	int GetPenWidth(PenWidth width);
+
 	ATOM RegisterClass(const std::wstring & wndClass);
 
 	void ResizeWindow();
+
+	void SetPenColorMenuState(PenColor color);
+
+	void SetPenWidthMenuState(PenWidth width);
 };

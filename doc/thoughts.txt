@@ -2524,6 +2524,13 @@ pen configuration
 		need to
 			save menu state
 			set menu checks
+		could manage checks in WM_COMMAND handler
+			but this does not account for changes via SetPen
+			not made in response to WM_COMMAND
+		how to know which menu item to change in response to SetPen?
+		might want to deal with ids only
+		the presenter would change ids to strings for storage
+		the view would change ids to menu ids
 Graphin bitmap rendering
 	its great, but produces 32-bit bitmaps
 	need to convert these to 16 bits
@@ -2533,3 +2540,7 @@ Graphin bitmap rendering
 		the renderer can at least be tested
 	blitting in the renderer gets hairy, however
 	it would be easier to do in the viewer
+Graphin refactor
+	HIMG and HGFX have to be factored out to avoid leaks
+	or they just need scope guards
+	we can also avoid including graphin.h the view

@@ -18,8 +18,8 @@ using namespace Tools;
 
 InkEditorView::InkEditorView(HINSTANCE instance)
 	: instance (instance)
-	, penColor (L"Black")
-	, penWidth (1)
+	, penColor (PenBlack)
+	, penWidth (Pen1px)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
@@ -107,12 +107,12 @@ void InkEditorView::GetImage(Blob & blob)
 	WindowRenderer::Render(newBmp, blob);
 }
 
-const wchar_t * InkEditorView::GetPenColor()
+InkEditorView::PenColor InkEditorView::GetPenColor()
 {
 	return penColor;
 }
 
-int InkEditorView::GetPenWidth()
+InkEditorView::PenWidth InkEditorView::GetPenWidth()
 {
 	return penWidth;
 }
@@ -126,10 +126,12 @@ void InkEditorView::Hide()
 	}
 }
 
-void InkEditorView::SetPen(int width, COLORREF color)
+void InkEditorView::SetPen(PenWidth width, PenColor color)
 {
-	gfx->SetLineWidth(width);
-	gfx->SetLineColor(color);
+	gfx->SetLineWidth(GetPenWidth(width));
+	gfx->SetLineColor(GetPenColor(color));
+	SetPenWidthMenuState(width);
+	SetPenColorMenuState(color);
 }
 
 void InkEditorView::Show()
@@ -194,57 +196,17 @@ void InkEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 	case IDM_OK:     SignalAccept(); break;
 	case IDM_CANCEL: SignalCancel(); break;
 
-	case ID_PENWIDTH_1PX: penWidth = 1; break;
-	case ID_PENWIDTH_2PX: penWidth = 2; break;
-	case ID_PENWIDTH_4PX: penWidth = 4; break;
-	case ID_PENWIDTH_8PX: penWidth = 8; break;
+	case ID_PENWIDTH_1PX: penWidth = Pen1px; SignalPenChanged(); break;
+	case ID_PENWIDTH_2PX: penWidth = Pen2px; SignalPenChanged(); break;
+	case ID_PENWIDTH_4PX: penWidth = Pen4px; SignalPenChanged(); break;
+	case ID_PENWIDTH_8PX: penWidth = Pen8px; SignalPenChanged(); break;
 
-	case ID_COLOR_BLACK:  penColor = L"black";  break;
-	case ID_COLOR_WHITE:  penColor = L"white";  break;
-	case ID_COLOR_YELLOW: penColor = L"yellow"; break;
-	case ID_COLOR_RED:    penColor = L"red";    break;
-	case ID_COLOR_BLUE:   penColor = L"blue";   break;
-	case ID_COLOR_GREEN:  penColor = L"green";  break;
-	}
-
-	switch (msg.CtrlId())
-	{
-	case ID_PENWIDTH_1PX:
-	case ID_PENWIDTH_2PX:
-	case ID_PENWIDTH_4PX:
-	case ID_PENWIDTH_8PX:
-		{
-			HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));
-
-			::CheckMenuItem(menu, ID_PENWIDTH_1PX,  MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_PENWIDTH_2PX,  MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_PENWIDTH_4PX,  MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_PENWIDTH_8PX,  MF_UNCHECKED);
-
-			::CheckMenuItem(menu, msg.CtrlId(), MF_CHECKED);
-
-			SignalPenChanged();
-		} break;
-	case ID_COLOR_BLACK:
-	case ID_COLOR_WHITE:
-	case ID_COLOR_YELLOW:
-	case ID_COLOR_RED:
-	case ID_COLOR_BLUE:
-	case ID_COLOR_GREEN:
-		{
-			HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));
-
-			::CheckMenuItem(menu, ID_COLOR_BLACK,  MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_COLOR_WHITE,  MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_COLOR_YELLOW, MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_COLOR_RED,    MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_COLOR_BLUE,   MF_UNCHECKED);
-			::CheckMenuItem(menu, ID_COLOR_GREEN,  MF_UNCHECKED);
-
-			::CheckMenuItem(menu, msg.CtrlId(), MF_CHECKED);
-
-			SignalPenChanged();
-		} break;
+	case ID_COLOR_BLACK:  penColor = PenBlack;  SignalPenChanged(); break;
+	case ID_COLOR_WHITE:  penColor = PenWhite;  SignalPenChanged(); break;
+	case ID_COLOR_YELLOW: penColor = PenYellow; SignalPenChanged(); break;
+	case ID_COLOR_RED:    penColor = PenRed;    SignalPenChanged(); break;
+	case ID_COLOR_BLUE:   penColor = PenBlue;   SignalPenChanged(); break;
+	case ID_COLOR_GREEN:  penColor = PenGreen;  SignalPenChanged(); break;
 	}
 }
 
@@ -281,7 +243,8 @@ void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 	gfx->DrawLine(rect.left, rect.top, rect.right, rect.bottom);
 
 	rect.Normalize();
-	::InflateRect(&rect, penWidth, penWidth);
+	int radius(GetPenWidth(penWidth) / 2 + 1);
+	::InflateRect(&rect, radius, radius);
 
 	::InvalidateRect(hwnd_, &rect, FALSE);
 }
@@ -371,6 +334,32 @@ void InkEditorView::AddToDrawingBounds(const POINT & point)
 	}
 }
 
+COLORREF InkEditorView::GetPenColor(PenColor color)
+{
+	switch (color)
+	{
+	case PenBlack:  return 0xFF000000;
+	case PenWhite:  return 0xFFFFFFFF;
+	case PenYellow: return 0xFF00FFFF;
+	case PenRed:    return 0xFF0000FF;
+	case PenGreen:  return 0xFF00FF00;
+	case PenBlue:   return 0xFFFF0000;
+	}
+	return 0xFF000000;
+}
+
+int InkEditorView::GetPenWidth(PenWidth width)
+{
+	switch (width)
+	{
+	case Pen1px: return 1;
+	case Pen2px: return 2;
+	case Pen4px: return 4;
+	case Pen8px: return 8;
+	}
+	return 1;
+}
+
 ATOM InkEditorView::RegisterClass(const wstring & wndClass)
 {
 	WNDCLASS wc = { 0 };
@@ -419,5 +408,63 @@ void InkEditorView::ResizeWindow()
 			, desktopRect.GetHeight() // nHeight
 			, TRUE			          // bRepaint
 			);
+	}
+}
+
+void InkEditorView::SetPenColorMenuState(PenColor color)
+{
+	int target;
+	switch (color)
+	{
+	case PenBlack:  target = ID_COLOR_BLACK;  break;
+	case PenWhite:  target = ID_COLOR_WHITE;  break;
+	case PenYellow: target = ID_COLOR_YELLOW; break;
+	case PenRed:    target = ID_COLOR_RED;    break;
+	case PenBlue:   target = ID_COLOR_BLUE;   break;
+	case PenGreen:  target = ID_COLOR_GREEN;  break;
+	default: return;
+	}
+
+	int options[] =
+		{ ID_COLOR_BLACK
+		, ID_COLOR_WHITE
+		, ID_COLOR_YELLOW
+		, ID_COLOR_RED
+		, ID_COLOR_BLUE
+		, ID_COLOR_GREEN
+		};
+
+	HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));
+	for (int i(0); i != GetArraySize(options); ++i)
+	{
+		UINT state((options[i] == target) ? MF_CHECKED : MF_UNCHECKED);
+		::CheckMenuItem(menu, options[i], state);
+	}
+}
+
+void InkEditorView::SetPenWidthMenuState(PenWidth width)
+{
+	int target;
+	switch (width)
+	{
+	case Pen1px: target = ID_PENWIDTH_1PX; break;
+	case Pen2px: target = ID_PENWIDTH_2PX; break;
+	case Pen4px: target = ID_PENWIDTH_4PX; break;
+	case Pen8px: target = ID_PENWIDTH_8PX; break;
+	default: return;
+	}
+
+	int options[] =
+		{ ID_PENWIDTH_1PX
+		, ID_PENWIDTH_2PX
+		, ID_PENWIDTH_4PX
+		, ID_PENWIDTH_8PX
+		};
+
+	HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));
+	for (int i(0); i != GetArraySize(options); ++i)
+	{
+		UINT state((options[i] == target) ? MF_CHECKED : MF_UNCHECKED);
+		::CheckMenuItem(menu, options[i], state);
 	}
 }
