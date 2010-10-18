@@ -89,11 +89,13 @@ void InkEditorPresenter::OnPenChanged()
 
 COLORREF InkEditorPresenter::GetColorValue(const wchar_t * name)
 {
+	if (!name)
+		return 0xFF000000;
 	if (0 == wcscmp(name, L"black"))  return 0xFF000000;
 	if (0 == wcscmp(name, L"white"))  return 0xFFFFFFFF;
 	if (0 == wcscmp(name, L"yellow")) return 0xFF00FFFF;
 	if (0 == wcscmp(name, L"red"))    return 0xFF0000FF;
 	if (0 == wcscmp(name, L"green"))  return 0xFF00FF00;
 	if (0 == wcscmp(name, L"blue"))   return 0xFFFF0000;
-	return 0x00000000;
+	return 0xFF000000;
 }

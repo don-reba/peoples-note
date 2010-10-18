@@ -12,22 +12,12 @@
 using namespace std;
 using namespace Tools;
 
-
-#define MacroDeleteObject(o, f) \
-	if (o)                      \
-	{                           \
-		f(o);                   \
-		o = NULL;               \
-	}                           \
-
 //----------
 // interface
 //----------
 
 InkEditorView::InkEditorView(HINSTANCE instance)
-	: img      (NULL)
-	, instance (instance)
-	, gfx      (NULL)
+	: instance (instance)
 	, penColor (L"Black")
 	, penWidth (1)
 {
@@ -102,16 +92,14 @@ void InkEditorView::GetImage(Blob & blob)
 		);
 	::SelectObject(dstDc, newBmp);
 
-	htmlayout::gapi()->imageBlit
+	gfx->BitBlt
 		( dstDc
 		, 0
 		, 0
-		, img
 		, rect.GetX()
 		, rect.GetY()
 		, rect.GetWidth()
 		, rect.GetHeight()
-		, false
 		);
 
 	::DeleteDC(dstDc);
@@ -131,16 +119,17 @@ int InkEditorView::GetPenWidth()
 
 void InkEditorView::Hide()
 {
-	MacroDeleteObject(img,   htmlayout::gapi()->imageRelease);
-	MacroDeleteObject(gfx,   htmlayout::gapi()->gRelease);
-	MacroDeleteObject(hwnd_, ::CloseWindow);
+	if (hwnd_)
+	{
+		::CloseWindow(hwnd_);
+		hwnd_ = NULL;
+	}
 }
 
 void InkEditorView::SetPen(int width, COLORREF color)
 {
-	htmlayout::gapi()->gLineColor(gfx, color | 0xFF000000);
-	htmlayout::gapi()->gFillColor(gfx, color | 0xFF000000);
-	htmlayout::gapi()->gLineWidth(gfx, static_cast<DIM>(width));
+	gfx->SetLineWidth(width);
+	gfx->SetLineColor(color);
 }
 
 void InkEditorView::Show()
@@ -266,9 +255,6 @@ void InkEditorView::OnEraseBackground(Msg<WM_ERASEBKGND> & msg)
 
 void InkEditorView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
-	if (!gfx)
-		return;
-
 	isDrawing = true;
 
 	::SetCapture(hwnd_);
@@ -278,9 +264,6 @@ void InkEditorView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 
 void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
-	if (!gfx)
-		return;
-
 	if (!isDrawing)
 		return;
 
@@ -295,13 +278,7 @@ void InkEditorView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 	rect.right  = lineStart.x;
 	rect.bottom = lineStart.y;
 
-	htmlayout::gapi()->gLine
-		( gfx
-		, static_cast<POS>(rect.left)
-		, static_cast<POS>(rect.top)
-		, static_cast<POS>(rect.right)
-		, static_cast<POS>(rect.bottom)
-		);
+	gfx->DrawLine(rect.left, rect.top, rect.right, rect.bottom);
 
 	rect.Normalize();
 	::InflateRect(&rect, penWidth, penWidth);
@@ -321,48 +298,25 @@ void InkEditorView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 
 void InkEditorView::OnPaint(Msg<WM_PAINT> & msg)
 {
-	if (!img)
-		return;
-
 	msg.BeginPaint(hwnd_);
 	Rect rect(msg.PS().rcPaint);
-	htmlayout::gapi()->imageBlit
+	gfx->BitBlt
 		( msg.PS().hdc
 		, rect.GetX()
 		, rect.GetY()
-		, img
 		, rect.GetX()
 		, rect.GetY()
 		, rect.GetWidth()
 		, rect.GetHeight()
-		, false
 		);
 	msg.EndPaint();
 }
 
 void InkEditorView::OnSize(Msg<WM_SIZE> & msg)
 {
-	if (gfx)
-	{
-		htmlayout::gapi()->gRelease(gfx);
-		gfx = NULL;
-	}
-	if (img)
-	{
-		htmlayout::gapi()->imageRelease(img);
-		gfx = NULL;
-	}
-
-	htmlayout::gapi()->imageCreate(msg.Size().cx, msg.Size().cy, &img);
-	htmlayout::gapi()->gCreate(img, &gfx);
-	htmlayout::gapi()->gFillColor(gfx, 0xFFFFFFFF);
-	htmlayout::gapi()->gRectangle
-		( gfx
-		, 0.0
-		, 0.0
-		, static_cast<POS>(msg.Size().cx)
-		, static_cast<POS>(msg.Size().cy)
-		);
+	gfx.reset(new GraphinGfx(msg.Size().cx, msg.Size().cy));
+	gfx->SetFillColor(0xFFFFFFFF);
+	gfx->DrawRectangle(0, 0, msg.Size().cx, msg.Size().cy);
 }
 
 void InkEditorView::ProcessMessage(WndMsg &msg)

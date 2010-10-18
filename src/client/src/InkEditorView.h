@@ -1,7 +1,7 @@
 #pragma once
 #include "IInkEditorView.h"
 
-#include "htmlayout_graphin.h"
+#include "GraphinGfx.h"
 #include "window.h"
 
 class InkEditorView : public Window, public IInkEditorView
@@ -30,8 +30,7 @@ private:
 	HWND           menuBar;
 	HWND           parent;
 
-	HIMG img;
-	HGFX gfx;
+	std::auto_ptr<GraphinGfx> gfx;
 
 	POINT lineStart;
 	RECT  drawingBounds;
