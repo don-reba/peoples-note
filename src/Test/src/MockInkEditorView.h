@@ -9,8 +9,15 @@ public:
 
 	Blob image;
 
+	InkPenColor penColor;
+	InkPenWidth penWidth;
+
+	InkPenColor setPenColor;
+	InkPenWidth setPenWidth;
+
 	signal SignalAccept;
 	signal SignalCancel;
+	signal SignalPenChanged;
 	
 public:
 
@@ -18,9 +25,17 @@ public:
 
 	virtual void ConnectCancel(slot_type OnCancel);
 
+	virtual void ConnectPenChanged(slot_type OnPenChanged);
+
 	virtual void GetImage(Blob & image);
 
+	virtual InkPenColor GetPenColor();
+
+	virtual InkPenWidth GetPenWidth();
+
 	virtual void Hide();
+
+	virtual void SetPen(InkPenWidth width, InkPenColor color);
 
 	virtual void Show();
 };

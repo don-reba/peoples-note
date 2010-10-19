@@ -4,9 +4,9 @@
 using namespace std;
 
 wstring MockRegistryKey::GetString
-		( const wstring & value
-		, const wstring & defaultData
-		) const
+	( const wchar_t * value
+	, const wchar_t * defaultData
+	) const
 {
 	DataType::const_iterator datum = data.find(value);
 	if (data.end() == datum)
@@ -16,8 +16,8 @@ wstring MockRegistryKey::GetString
 }
 
 void MockRegistryKey::SetString
-	( const wstring & value
-	, const wstring & data
+	( const wchar_t * value
+	, const wchar_t * data
 	)
 {
 	this->data[value] = data;

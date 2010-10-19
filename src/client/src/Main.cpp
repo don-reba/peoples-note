@@ -15,6 +15,7 @@
 #include "File.h"
 #include "HtmlDataLoader.h"
 #include "HtmlLayoutPresenter.h"
+#include "InkEditorModel.h"
 #include "InkEditorPresenter.h"
 #include "InkEditorView.h"
 #include "InstrumentationPresenter.h"
@@ -145,6 +146,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		SyncLogger       syncLogger(documentPath);
 
 		CredentialsModel newCredentials;
+		InkEditorModel   inkEditorModel(registryKey);
 		LastUserModel    lastUserModel(registryKey);
 		UserModel        userModel(dataStore, documentPath);
 		UserModel        syncUserModel(syncDataStore, documentPath);
@@ -204,7 +206,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, htmlDataLoader
 			);
 		InkEditorPresenter
-			( inkEditorView
+			( inkEditorModel
+			, inkEditorView
 			, noteListModel
 			, noteListView
 			, userModel

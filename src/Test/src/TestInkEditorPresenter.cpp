@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "InkEditorPresenter.h"
 
+#include "MockInkEditorModel.h"
+#include "MockInkEditorView.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
-#include "MockInkEditorView.h"
 #include "MockUserModel.h"
 
 using namespace boost;
@@ -15,16 +16,18 @@ using namespace std;
 
 struct InkEditorPresenterFixture
 {
-	MockInkEditorView InkEditorView;
-	MockNoteListModel noteListModel;
-	MockNoteListView  noteListView;
-	MockUserModel     userModel;
+	MockInkEditorModel inkEditorModel;
+	MockInkEditorView  inkEditorView;
+	MockNoteListModel  noteListModel;
+	MockNoteListView   noteListView;
+	MockUserModel      userModel;
 
 	InkEditorPresenter presenter;
 
 	InkEditorPresenterFixture()
 		: presenter
-			( InkEditorView
+			( inkEditorModel
+			, inkEditorView
 			, noteListModel
 			, noteListView
 			, userModel
@@ -42,11 +45,11 @@ BOOST_FIXTURE_TEST_CASE
 	, InkEditorPresenterFixture
 	)
 {
-	InkEditorView.isShown = true;
+	inkEditorView.isShown = true;
 
-	InkEditorView.SignalCancel();
+	inkEditorView.SignalCancel();
 	
-	BOOST_CHECK(!InkEditorView.isShown);
+	BOOST_CHECK(!inkEditorView.isShown);
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -54,13 +57,13 @@ BOOST_FIXTURE_TEST_CASE
 	, InkEditorPresenterFixture
 	)
 {
-	InkEditorView.isShown = true;
-	InkEditorView.image.push_back(2);
-	InkEditorView.image.push_back(3);
+	inkEditorView.isShown = true;
+	inkEditorView.image.push_back(2);
+	inkEditorView.image.push_back(3);
 
-	InkEditorView.SignalAccept();
+	inkEditorView.SignalAccept();
 
-	BOOST_CHECK(!InkEditorView.isShown);
+	BOOST_CHECK(!inkEditorView.isShown);
 
 	BOOST_REQUIRE_EQUAL(userModel.notes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.notes.at(0).name,    L"Ink note");
@@ -88,13 +91,36 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( InkEditorPresenter_NewInk
+	( InkEditorPresenter_NewInkNote
 	, InkEditorPresenterFixture
 	)
 {
-	InkEditorView.isShown = false;
+	inkEditorModel.penWidth = L"2px";
+	inkEditorModel.penColor = L"red";
+
+	inkEditorView.isShown = false;
 
 	noteListView.SignalNewInkNote();
 	
-	BOOST_CHECK(InkEditorView.isShown);
+	BOOST_CHECK(inkEditorView.isShown);
+
+	BOOST_CHECK_EQUAL(inkEditorView.setPenWidth, Pen2px);
+	BOOST_CHECK_EQUAL(inkEditorView.setPenColor, PenRed);
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( InkEditorPresenter_PenChanged
+	, InkEditorPresenterFixture
+	)
+{
+	inkEditorView.penWidth = Pen2px;
+	inkEditorView.penColor = PenRed;
+
+	inkEditorView.SignalPenChanged();
+
+	BOOST_CHECK_EQUAL(inkEditorModel.penWidth, L"2px");
+	BOOST_CHECK_EQUAL(inkEditorModel.penColor, L"red");
+
+	BOOST_CHECK_EQUAL(inkEditorView.setPenWidth, Pen2px);
+	BOOST_CHECK_EQUAL(inkEditorView.setPenColor, PenRed);
 }

@@ -15,12 +15,12 @@ public:
 	virtual ~IRegistryKey() {}
 
 	virtual std::wstring GetString
-		( const std::wstring & value
-		, const std::wstring & defaultData
+		( const wchar_t * value
+		, const wchar_t * defaultData
 		) const = 0;
 
 	virtual void SetString
-		( const std::wstring & value
-		, const std::wstring & data
+		( const wchar_t * value
+		, const wchar_t * data
 		) = 0;
 };

@@ -107,12 +107,12 @@ void InkEditorView::GetImage(Blob & blob)
 	WindowRenderer::Render(newBmp, blob);
 }
 
-InkEditorView::PenColor InkEditorView::GetPenColor()
+InkPenColor InkEditorView::GetPenColor()
 {
 	return penColor;
 }
 
-InkEditorView::PenWidth InkEditorView::GetPenWidth()
+InkPenWidth InkEditorView::GetPenWidth()
 {
 	return penWidth;
 }
@@ -126,8 +126,10 @@ void InkEditorView::Hide()
 	}
 }
 
-void InkEditorView::SetPen(PenWidth width, PenColor color)
+void InkEditorView::SetPen(InkPenWidth width, InkPenColor color)
 {
+	penWidth = width;
+	penColor = color;
 	gfx->SetLineWidth(GetPenWidth(width));
 	gfx->SetLineColor(GetPenColor(color));
 	SetPenWidthMenuState(width);
@@ -334,7 +336,7 @@ void InkEditorView::AddToDrawingBounds(const POINT & point)
 	}
 }
 
-COLORREF InkEditorView::GetPenColor(PenColor color)
+COLORREF InkEditorView::GetPenColor(InkPenColor color)
 {
 	switch (color)
 	{
@@ -348,7 +350,7 @@ COLORREF InkEditorView::GetPenColor(PenColor color)
 	return 0xFF000000;
 }
 
-int InkEditorView::GetPenWidth(PenWidth width)
+int InkEditorView::GetPenWidth(InkPenWidth width)
 {
 	switch (width)
 	{
@@ -411,7 +413,7 @@ void InkEditorView::ResizeWindow()
 	}
 }
 
-void InkEditorView::SetPenColorMenuState(PenColor color)
+void InkEditorView::SetPenColorMenuState(InkPenColor color)
 {
 	int target;
 	switch (color)
@@ -442,7 +444,7 @@ void InkEditorView::SetPenColorMenuState(PenColor color)
 	}
 }
 
-void InkEditorView::SetPenWidthMenuState(PenWidth width)
+void InkEditorView::SetPenWidthMenuState(InkPenWidth width)
 {
 	int target;
 	switch (width)

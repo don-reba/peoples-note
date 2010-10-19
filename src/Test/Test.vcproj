@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\InkEditorModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\InkEditorPresenter.cpp"
 				>
 			</File>
@@ -264,6 +268,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockInkEditorModel.cpp"
 				>
 			</File>
 			<File
@@ -436,6 +444,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestInkEditorModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestInkEditorPresenter.cpp"
 				>
 			</File>
@@ -579,6 +591,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockFile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockInkEditorModel.h"
 				>
 			</File>
 			<File

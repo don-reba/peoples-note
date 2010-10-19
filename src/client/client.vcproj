@@ -504,6 +504,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\InkEditorModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\InkEditorPresenter.cpp"
 				>
 			</File>
@@ -907,6 +911,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\IInkEditorModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\IInkEditorView.h"
 				>
 			</File>
@@ -923,11 +931,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\InkEditorModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\InkEditorPresenter.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\InkEditorView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\InkPen.h"
 				>
 			</File>
 			<File

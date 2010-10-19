@@ -16,5 +16,5 @@ wstring LastUserModel::GetUsername()
 
 void LastUserModel::SetUsername(const std::wstring & username)
 {
-	registryKey.SetString(L"username", username);
+	registryKey.SetString(L"username", username.c_str());
 }
