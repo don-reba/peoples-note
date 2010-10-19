@@ -48,6 +48,9 @@ void PhotoEditorPresenter::OnCapture()
 	note.isDirty      = true;
 	note.usn          = 0;
 
+	if (note.name.empty())
+		note.name = L"Photo";
+
 	// create resource with hash
 	Resource image;
 	if (!file.Read(photoEditorView.GetImagePath(), image.Data))

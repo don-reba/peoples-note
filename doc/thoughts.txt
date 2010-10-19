@@ -2495,7 +2495,7 @@ ink note drawing
 	the verdict is that neither drawing nor painting is at all slow
 notes should never get empty titles
 	should assign a default
-	TODO
+	done
 "begin incremental sync" takes far too long
 	investigate
 	TODO
@@ -2544,3 +2544,7 @@ Graphin refactor
 	HIMG and HGFX have to be factored out to avoid leaks
 	or they just need scope guards
 	we can also avoid including graphin.h the view
+failing to upload a single note stops sync
+	should persevere
+	mark the failed note somehow
+	TODO

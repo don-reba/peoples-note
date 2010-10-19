@@ -61,8 +61,8 @@ BOOST_FIXTURE_TEST_CASE
 	file.data.push_back(2);
 	file.data.push_back(3);
 
-	photoEditorView.isShown = true;
-	photoEditorView.title   = L"test title";
+	photoEditorView.isShown   = true;
+	photoEditorView.title     = L"";
 	photoEditorView.imagePath = L"path";
 
 	photoEditorView.SignalCapture();
@@ -70,7 +70,7 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(!photoEditorView.isShown);
 
 	BOOST_REQUIRE_EQUAL(userModel.notes.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.notes.at(0).name,    L"test title");
+	BOOST_CHECK_EQUAL(userModel.notes.at(0).name,    L"Photo");
 	BOOST_CHECK_EQUAL(userModel.notes.at(0).isDirty, true);
 	BOOST_CHECK_EQUAL(userModel.notes.at(0).usn,     0);
 	BOOST_CHECK_EQUAL
