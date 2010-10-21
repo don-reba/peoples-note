@@ -1201,6 +1201,14 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\html\button.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\button.png"
+				>
+			</File>
+			<File
 				RelativePath=".\html\card-top.png"
 				>
 			</File>
@@ -1229,19 +1237,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\corner.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\corner.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\edit.png"
+				RelativePath=".\html\corner.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\edit.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\edit.png"
 				>
 			</File>
 			<File
@@ -1261,11 +1269,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\gradient-64.png"
+				RelativePath=".\html\gradient-64.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\gradient-64.png"
+				RelativePath=".\html-lr\gradient-64.png"
 				>
 			</File>
 			<File
@@ -1285,19 +1293,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\inputshadow.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\inputshadow.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\photo-note.png"
+				RelativePath=".\html\inputshadow.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\photo-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\photo-note.png"
 				>
 			</File>
 			<File
@@ -1333,11 +1341,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-hide.png"
+				RelativePath=".\html\rt-hide.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-hide.png"
+				RelativePath=".\html-lr\rt-hide.png"
 				>
 			</File>
 			<File
@@ -1349,11 +1357,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-indent-inc.png"
+				RelativePath=".\html-lr\rt-indent-inc.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-indent-inc.png"
+				RelativePath=".\html\rt-indent-inc.png"
 				>
 			</File>
 			<File
@@ -1381,19 +1389,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-redo.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\rt-redo.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-strong.png"
+				RelativePath=".\html\rt-redo.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\rt-strong.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\rt-strong.png"
 				>
 			</File>
 			<File
@@ -1421,19 +1429,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\status-gray.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html\status-gray.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\status-green.png"
+				RelativePath=".\html-lr\status-gray.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\status-green.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\status-green.png"
 				>
 			</File>
 			<File
@@ -1457,19 +1465,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\view-fullscreen.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html\view-fullscreen.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\view-restore.png"
+				RelativePath=".\html-lr\view-fullscreen.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\view-restore.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\view-restore.png"
 				>
 			</File>
 			<File

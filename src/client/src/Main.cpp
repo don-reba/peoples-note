@@ -75,9 +75,8 @@ bool IsHighRes()
 
 bool SwitchToPreviousInstance(HINSTANCE instance)
 {
-	std::wstring title       = LoadStringResource(IDS_APP_TITLE);
-	std::wstring windowClass = LoadStringResource(IDC_CLIENT);
-	HWND hwnd = FindWindow(windowClass.c_str(), title.c_str());	
+	std::wstring windowClass(LoadStringResource(IDC_CLIENT));
+	HWND hwnd = FindWindow(windowClass.c_str(), NULL);
 	if (hwnd)
 	{
 		HWND activeOwnedWindow = (HWND)((ULONG)hwnd | 1);

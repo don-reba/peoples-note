@@ -2498,6 +2498,15 @@ notes should never get empty titles
 	done
 "begin incremental sync" takes far too long
 	investigate
+	does it reproduce on the emulator?
+		yep
+	looks like we don't get the changes from the server
+		so sync logic decides to upload all local notes
+	wait
+	GetNotes takes a while...
+		probably because it gets all resources for each note
+		only resource Guids, actually
+		still, it is hundreds of querries
 	TODO
 pen configuration
 	pen can be adjusted by the user
@@ -2547,4 +2556,26 @@ Graphin refactor
 failing to upload a single note stops sync
 	should persevere
 	mark the failed note somehow
+	TODO
+storing db on the storage card
+	need an option to move the db from device memory and back
+	need to be able to locate it again
+		we have a default location on the device
+			My Documents\People's Note
+		can replicate this on the storage card
+		then look in both places
+	the move would be done from the profile page
+		the profile page would display
+			username
+			database location
+			database size
+			button to switch between device and storage card
+		this is also relevant for the anonymous user
+			what to call the menu item?
+				"Profile"
+			what is it called in Evernote?
+				"Account properties"
+				does not apply to the anonymous case
+note update
+	does not seem to update local resources
 	TODO

@@ -581,6 +581,18 @@
          stdDeviation="4.8409453"
          id="feGaussianBlur3804-4" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3883"
+       x="-0.021026625"
+       width="1.0420533"
+       y="-0.12504993"
+       height="1.2500999">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.5531027"
+         id="feGaussianBlur3885" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -590,8 +602,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.93338095"
-     inkscape:cx="-74.317521"
-     inkscape:cy="303.58582"
+     inkscape:cx="-112.44794"
+     inkscape:cy="291.90856"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -605,7 +617,7 @@
      showguides="false"
      inkscape:guide-bbox="true"
      inkscape:window-width="1680"
-     inkscape:window-height="1030"
+     inkscape:window-height="1028"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -657,7 +669,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Background"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline"
        id="rect2928"
@@ -723,37 +736,6 @@
          x="15.274277"
          y="573.26825"
          id="tspan2915">DonReba</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:36.99126816px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       x="19.06543"
-       y="695.80133"
-       id="text2917"><tspan
-         sodipodi:role="line"
-         id="tspan2919"
-         x="19.06543"
-         y="695.80133"
-         style="font-size:29px">Current monthly usage:</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       x="65.353806"
-       y="744.84131"
-       id="text2926"><tspan
-         sodipodi:role="line"
-         id="tspan2928"
-         x="65.353806"
-         y="744.84131">0.2 MB out 40 MB used</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       x="63.328903"
-       y="794.02289"
-       id="text2930"><tspan
-         sodipodi:role="line"
-         id="tspan2932"
-         x="63.328903"
-         y="794.02289">12 days left in cycle</tspan></text>
     <g
        id="g3122"
        transform="translate(242.14275,62.68532)">
@@ -785,17 +767,98 @@
          x="1.0000044"
          y="35.006653" />
     </g>
+    <g
+       id="g3887"
+       transform="translate(-121.12868,-22.395764)">
+      <rect
+         style="fill:#606060;fill-opacity:1;stroke:none;filter:url(#filter3883)"
+         id="rect3881"
+         width="291.4137"
+         height="49"
+         x="141.65613"
+         y="831.5553"
+         rx="12.000001"
+         ry="12" />
+      <rect
+         ry="12"
+         rx="12.000001"
+         y="831.5553"
+         x="141.65613"
+         height="49"
+         width="291.4137"
+         id="rect3111"
+         style="fill:#ffffff;fill-opacity:1;stroke:#606060;stroke-width:1;stroke-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3107"
+         y="863.80042"
+         x="156.42059"
+         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         xml:space="preserve"><tspan
+           y="863.80042"
+           x="156.42059"
+           id="tspan3109"
+           sodipodi:role="line">Move to storage card</tspan></text>
+    </g>
     <text
        xml:space="preserve"
-       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       x="20.141602"
-       y="645.81262"
-       id="text3127"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       x="97.790009"
+       y="684.85046"
+       id="text3893"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan3129"
-         x="20.141602"
-         y="645.81262">Account type: Free</tspan></text>
+         x="97.790009"
+         y="684.85046"
+         id="tspan3899">My Documents\People's Note</tspan><tspan
+         sodipodi:role="line"
+         x="97.790009"
+         y="719.85046"
+         id="tspan3994">\DonReba.db</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       x="17.935547"
+       y="684.85046"
+       id="text3903"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3905"
+         x="17.935547"
+         y="684.85046">Path:</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3923"
+       y="772.65192"
+       x="17.935547"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       xml:space="preserve"><tspan
+         y="772.65192"
+         x="17.935547"
+         id="tspan3925"
+         sodipodi:role="line">Size:</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3927"
+       y="772.65192"
+       x="97.790009"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       xml:space="preserve"><tspan
+         id="tspan3931"
+         y="772.65192"
+         x="97.790009"
+         sodipodi:role="line">40 MB</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3954"
+       y="620.72937"
+       x="17.935547"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       xml:space="preserve"><tspan
+         y="620.72937"
+         x="17.935547"
+         id="tspan3956"
+         sodipodi:role="line">Database Settings</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -821,13 +884,14 @@
        id="rect3078"
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline" />
     <image
-       transform="translate(0,-412.36218)"
-       style="display:inline"
+       sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/window title.png"
        xlink:href="icons/window title.png"
-       width="480"
-       height="52"
-       id="image3080"
+       y="412.36218"
        x="-0.00024768067"
-       y="412.36218" />
+       id="image3080"
+       height="52"
+       width="480"
+       style="display:inline"
+       transform="translate(0,-412.36218)" />
   </g>
 </svg>

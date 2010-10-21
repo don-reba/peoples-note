@@ -7,28 +7,41 @@
 				background-image    : url(card-top.png);
 				background-position : 24px 288px 0px 32px;
 				background-repeat   : expand;
+				font-size           : 28px;
 				margin              : 0px;
-				padding             : 24px 0px 0px 20px;
+				padding             : 24px 0px 0px 0px;
+			}
+			button
+			{
+				background-image    : url(button.png);
+				background-position : 20px 20px 20px 20px;
+				background-repeat   : expand;
+				margin              : 0px 0px 24 15px;
+				padding             : 16px;
 			}
 			h1
 			{
-				font-size   : 64px;
+				font-size   : 54px;
 				font-weight : normal;
-				margin      : 8px 0px;
+				margin      : 8px 20px 8px 20px;
+			}
+			h2
+			{
+				font-size   : 28px;
+				font-weight : normal;
+				margin      : 8px 20px 40px 20px;
 			}
 			p
 			{
-				font-size   : 28px;
-				font-weight : normal;
-			}
-			li
-			{
-				font-size   : 28px;
-				font-weight : normal;
+				margin : 0px 20px 24px 20px;
 			}
 		</style>
 	</head>
 	<body>
-	<h1>The profile page is under construction</h1>
+		<h1 #name>Anonymous</h1>
+		<h2>Database settings</h2>
+		<p>Path: <span #path /></p>
+		<p>Size: <span #size /></p>
+		<button #move>Move to storage card</button>
 	</body>
 </html>

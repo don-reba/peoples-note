@@ -446,7 +446,7 @@ void UserModel::GetNoteResources
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT Resources.guid"
+		( "SELECT guid"
 		"  FROM Resources"
 		"  WHERE note = ?"
 		);
@@ -1008,6 +1008,8 @@ void UserModel::Initialize(wstring name)
 			")"
 		);
 
+	CreateTable("CREATE INDEX NotesNotebooks ON Notes(notebook)");
+
 	CreateTable
 		( "CREATE TABLE Resources"
 			"( guid PRIMARY KEY"
@@ -1016,6 +1018,8 @@ void UserModel::Initialize(wstring name)
 			", note REFERENCES Notes(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
 		);
+
+	CreateTable("CREATE INDEX ResourcesNote ON Resources(note)");
 
 	CreateTable
 		( "CREATE TABLE Tags"

@@ -119,6 +119,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 //
 
 ABOUT.HTM               HTML                    "html\\about.htm"
+BUTTON.PNG              HTML                    "html\\button.png"
 CLEAR.PNG               HTML                    "html\\clear.png"
 CARD_TOP.PNG            HTML                    "html\\card-top.png"
 CORNER.PNG              HTML                    "html\\corner.png"
@@ -159,6 +160,7 @@ VIEW_FULLSCREEN.PNG     HTML                    "html\\view-fullscreen.png"
 VIEW_RESTORE.PNG        HTML                    "html\\view-restore.png"
 VOICE_NOTE.PNG          HTML                    "html\\voice-note.png"
 LR_ABOUT.HTM            HTML                    "html-lr\\about.htm"
+LR_BUTTON.PNG           HTML                    "html-lr\\button.png"
 LR_CLEAR.PNG            HTML                    "html-lr\\clear.png"
 LR_CARD_TOP.PNG         HTML                    "html-lr\\card-top.png"
 LR_CORNER.PNG           HTML                    "html-lr\\corner.png"
