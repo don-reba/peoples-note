@@ -76,7 +76,6 @@ public:
 	NoteList     notes;
 	TagList      tags;
 	ResourceList resources;
-	
 
 	std::map<std::string, std::wstring> noteBodies;
 	std::map<std::string, Thumbnail>    noteThumbnails;
@@ -100,8 +99,10 @@ public:
 	mutable std::wstring searchSelection;
 
 	std::wstring folder;
+	std::wstring path;
 
 	__int64 lastSyncEnTime;
+	__int64 size;
 	int     updateCount;
 
 	std::map<std::string, int> notebookUpdateCounts;
@@ -156,7 +157,7 @@ public:
 
 	virtual int GetDirtyNoteCount(const Notebook & notebook);
 
-	virtual std::wstring GetFolder() const;
+	virtual std::wstring GetFolder();
 
 	virtual __int64 GetLastSyncEnTime();
 
@@ -203,6 +204,10 @@ public:
 		, NoteList           & notes
 		);
 
+	virtual std::wstring GetPath();
+
+	virtual __int64 GetSize();
+
 	virtual void GetResource
 		( const std::string & hash
 		, Blob              & blob
@@ -229,6 +234,10 @@ public:
 	virtual void MakeNotebookDefault(const Notebook & notebook);
 
 	virtual void MakeNotebookLastUsed(const Notebook & notebook);
+
+	virtual void MoveToCard();
+
+	virtual void MoveToDevice();
 
 	virtual void SetCredentials
 		( const std::wstring & username

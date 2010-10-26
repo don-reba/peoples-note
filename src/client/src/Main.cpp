@@ -42,13 +42,28 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
-#include <sstream>
+#include <projects.h>
 #include <vector>
 
 using namespace std;
 using namespace Tools;
 
-wstring GetDocumentPath()
+wstring GetCardDocumentPath()
+{
+	WIN32_FIND_DATA find;
+	HANDLE handle(::FindFirstFlashCard(&find));
+	if (handle == INVALID_HANDLE_VALUE || !find.cFileName || !*find.cFileName)
+		return L"";
+	::CloseHandle(handle);
+
+	wstring path(L"\\");
+	path.append(find.cFileName);
+	path.append(L"\\");
+	path.append(LoadStringResource(IDS_DOC_FOLDER));
+	return path;
+}
+
+wstring GetDeviceDocumentPath()
 {
 	vector<wchar_t> folder(MAX_PATH);
 	::SHGetSpecialFolderPath
@@ -57,10 +72,9 @@ wstring GetDocumentPath()
 		, CSIDL_PERSONAL // nFolder
 		, TRUE           // fCreate
 		);
-	wstringstream stream;
-	stream << &folder[0] << L'\\' << LoadStringResource(IDS_DOC_FOLDER);
-	wstring path(stream.str());
-	::CreateDirectory(path.c_str(), NULL);
+	wstring path(&folder[0]);
+	path.append(L"\\");
+	path.append(LoadStringResource(IDS_DOC_FOLDER));
 	return path;
 }
 
@@ -130,8 +144,9 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
-		wstring documentPath (GetDocumentPath());
-		bool    highRes      (IsHighRes());
+		wstring cardDocumentPath   (GetCardDocumentPath());
+		wstring deviceDocumentPath (GetDeviceDocumentPath());
+		bool    highRes            (IsHighRes());
 
 		Animator         animator;
 		File             file;
@@ -142,13 +157,13 @@ int WINAPI WinMain(HINSTANCE instance,
 		EnNoteTranslator enNoteTranslator;
 		EnService        enService;
 		MessagePump      messagePump;
-		SyncLogger       syncLogger(documentPath);
+		SyncLogger       syncLogger(deviceDocumentPath);
 
 		CredentialsModel newCredentials;
 		InkEditorModel   inkEditorModel(registryKey);
 		LastUserModel    lastUserModel(registryKey);
-		UserModel        userModel(dataStore, documentPath);
-		UserModel        syncUserModel(syncDataStore, documentPath);
+		UserModel        userModel     (dataStore,     cardDocumentPath, deviceDocumentPath);
+		UserModel        syncUserModel (syncDataStore, cardDocumentPath, deviceDocumentPath);
 
 		NoteListModel noteListModel(20, userModel);
 		SyncModel     syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
@@ -240,6 +255,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		ProfilePresenter profilePresenter
 			( profileView
 			, noteListView
+			, userModel
 			);
 		SearchPresenter searchPresenter
 			( noteListModel

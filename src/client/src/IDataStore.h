@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DbLocation.h"
 #include "Note.h"
 #include "Notebook.h"
 
@@ -20,9 +21,13 @@ public:
 
 	virtual void Close() = 0;
 
-	virtual bool Create(std::wstring path, int flags) = 0;
+	virtual bool Open(const wchar_t * path, DbLocation location, int flags) = 0;
 
 	virtual __int64 GetLastInsertRowid() = 0;
+
+	virtual DbLocation GetLocation() = 0;
+
+	virtual std::wstring GetPath() = 0;
 
 	virtual Blob MakeBlob
 		( const char * table

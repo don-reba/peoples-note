@@ -10,6 +10,8 @@ MockUserModel::MockUserModel()
 	: isInTransaction  (false)
 	, loadCount        (0)
 	, loadMethod       (LoadMethodNone)
+	, path             (L"card-path")
+	, size             (42)
 {
 	defaultNotebook.name  = L"default-notebook";
 	lastUsedNotebook.name = L"last-used-notebook";
@@ -113,7 +115,7 @@ int MockUserModel::GetDirtyNoteCount(const Notebook & notebook)
 	return count;
 }
 
-wstring MockUserModel::GetFolder() const
+wstring MockUserModel::GetFolder()
 {
 	return folder;
 }
@@ -232,6 +234,16 @@ void MockUserModel::GetNoteThumbnail
 		thumbnail = noteThumbnails[guid];
 }
 
+wstring MockUserModel::GetPath()
+{
+	return path;
+}
+
+__int64 MockUserModel::GetSize()
+{
+	return size;
+}
+
 void MockUserModel::GetResource
 	( const string & hash
 	, Blob         & blob
@@ -310,6 +322,16 @@ void MockUserModel::MakeNotebookDefault(const Notebook & notebook)
 void MockUserModel::MakeNotebookLastUsed(const Notebook & notebook)
 {
 	lastUsedNotebook = notebook;
+}
+
+void MockUserModel::MoveToCard()
+{
+	path = L"card-path";
+}
+
+void MockUserModel::MoveToDevice()
+{
+	path = L"device-path";
 }
 
 void MockUserModel::SetCredentials

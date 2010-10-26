@@ -11,7 +11,8 @@ private:
 
 	IDataStore & dataStore;
 
-	std::wstring folder;
+	const std::wstring cardFolder;
+	const std::wstring deviceFolder;
 
 	signal SignalLoaded;
 
@@ -19,7 +20,11 @@ private:
 
 public:
 
-	UserModel(IDataStore & dataStore, std::wstring folder);
+	UserModel
+		( IDataStore         & dataStore
+		, const std::wstring & cardFolder
+		, const std::wstring & deviceFolder
+		);
 
 	int GetNoteCount();
 
@@ -71,11 +76,11 @@ public:
 
 	virtual int GetDirtyNoteCount(const Notebook & notebook);
 
-	virtual std::wstring GetFolder() const;
-
 	virtual __int64 GetLastSyncEnTime();
 
 	virtual void GetLastUsedNotebook(Notebook & notebook);
+
+	virtual DbLocation GetLocation();
 
 	virtual Note GetNote(Guid guid);
 
@@ -118,6 +123,10 @@ public:
 		, NoteList           & notes
 		);
 
+	virtual std::wstring GetPath();
+
+	virtual __int64 GetSize();
+
 	virtual void GetResource
 		( const std::string & hash
 		, Blob              & blob
@@ -144,6 +153,10 @@ public:
 	virtual void MakeNotebookDefault(const Notebook & notebook);
 
 	virtual void MakeNotebookLastUsed(const Notebook & notebook);
+
+	virtual void MoveToCard();
+
+	virtual void MoveToDevice();
 
 	virtual void SetCredentials
 		( const std::wstring & username
@@ -180,9 +193,15 @@ public:
 
 private:
 
-	void Create(std::wstring path);
+	void Create
+		( const std::wstring & path
+		, DbLocation           location
+		);
 
-	std::wstring CreatePathFromName(std::wstring name);
+	std::wstring CreatePathFromName
+		( const std::wstring & folder
+		, const std::wstring & name
+		);
 
 	void CreateTable(const char * sql);
 
@@ -193,12 +212,21 @@ private:
 
 	void Initialize(std::wstring name);
 
+	void Move
+		( const std::wstring & oldPath
+		, const std::wstring & newPath
+		, const std::wstring & username
+		);
+
 	void SetPragma(const char * sql);
 
 	template <typename T>
 	void SetProperty(const std::wstring & key, const T & value);
 
-	bool TryLoad(std::wstring path);
+	bool TryLoad
+		( const std::wstring & path
+		, DbLocation           location
+		);
 
 	void Update();
 };

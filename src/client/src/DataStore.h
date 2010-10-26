@@ -9,6 +9,9 @@ private:
 
 	sqlite3 * db;
 
+	DbLocation   location;
+	std::wstring path;
+
 // interface
 
 public:
@@ -23,9 +26,13 @@ public:
 
 	virtual void Close();
 
-	virtual bool Create(std::wstring path, int flags);
+	virtual bool Open(const wchar_t * path, DbLocation location, int flags);
 
 	virtual __int64 GetLastInsertRowid();
+
+	virtual DbLocation GetLocation();
+
+	virtual std::wstring GetPath();
 
 	virtual Blob MakeBlob
 		( const char * table

@@ -7,6 +7,7 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
+using namespace htmlayout::dom;
 using namespace std;
 using namespace Tools;
 
@@ -30,6 +31,11 @@ void ProfileView::Create(HWND parent)
 		throw std::exception("Class could not be registered.");
 }
 
+void ProfileView::RegisterEventHandlers()
+{
+	ConnectBehavior("#move", BUTTON_CLICK, &ProfileView::OnDbMove);
+}
+
 //--------------------------
 // IProfileView implementation
 //--------------------------
@@ -39,9 +45,45 @@ void ProfileView::ConnectClose(slot_type OnClose)
 	SignalClose.connect(OnClose);
 }
 
+void ProfileView::ConnectDbMove(slot_type OnDbMove)
+{
+	SignalDbMove.connect(OnDbMove);
+}
+
 void ProfileView::Hide()
 {
 	::CloseWindow(hwnd_);
+	hwnd_ = 0;
+}
+
+bool ProfileView::IsShown()
+{
+	return hwnd_ != 0;
+}
+
+void ProfileView::SetDbPath(const wstring & path)
+{
+	element(FindFirstElement("#path")).set_text(path.c_str());
+}
+
+void ProfileView::SetDbSize(const wstring & size)
+{
+	element(FindFirstElement("#size")).set_text(size.c_str());
+}
+
+void ProfileView::SetMoveButtonText(const wstring & text)
+{
+	element(FindFirstElement("#move")).set_text(text.c_str());
+}
+
+void ProfileView::SetMoveErrorMessage(const wstring & message)
+{
+	element(FindFirstElement("#error")).set_text(message.c_str());
+}
+
+void ProfileView::SetUsername(const wstring & username)
+{
+	element(FindFirstElement("#name")).set_text(username.c_str());
 }
 
 void ProfileView::Show()
@@ -77,6 +119,12 @@ void ProfileView::Show()
 // window message handlers
 //------------------------
 
+void ProfileView::OnActivate(Msg<WM_ACTIVATE> & msg)
+{
+	if (msg.GetActiveState() != WA_INACTIVE)
+		::SHFullScreen(hwnd_, SHFS_HIDESIPBUTTON);
+}
+
 void ProfileView::OnCommand(Msg<WM_COMMAND> & msg)
 {
 	if (msg.CtrlId() == IDOK)
@@ -99,6 +147,7 @@ void ProfileView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
 	{
+		&ProfileView::OnActivate,
 		&ProfileView::OnCommand,
 		&ProfileView::OnKeyUp,
 	};
@@ -112,6 +161,11 @@ void ProfileView::ProcessMessage(WndMsg &msg)
 		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
 		throw e;
 	}
+}
+
+void ProfileView::OnDbMove(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalDbMove();
 }
 
 //------------------

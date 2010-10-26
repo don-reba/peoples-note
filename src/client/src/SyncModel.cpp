@@ -167,9 +167,6 @@ void SyncModel::GetNotes
 	, EnInteropNoteList & notes
 	)
 {
-	DWORD functionStart(::GetTickCount());
-	DWORD queryTime(0);
-
 	NoteList source;
 	userModel.GetNotesByNotebook(notebook, source);
 	foreach (const Note & note, source)
@@ -184,10 +181,6 @@ void SyncModel::GetNotes
 
 		userModel.GetNoteResources(note.guid, notes.back().resources);
 	}
-
-	DWORD functionTime(::GetTickCount() - functionStart);
-
-	DEBUGMSG(true, (L"%d/Td\n", functionTime));
 }
 void SyncModel::FinishSync
 	( const wchar_t * logMessage

@@ -88,6 +88,20 @@ BOOST_AUTO_TEST_CASE(ToolsDecodeBase64)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(ToolsMakeSizeString)
+{
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(0LL),                            L"0 B");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(-2LL),                           L"-2 B");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(1023LL),                         L"1023 B");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(1024LL),                         L"1 KB");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(-3072LL),                        L"-3 KB");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(1024LL* 1024LL - 1LL),           L"1023 KB");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(1024LL * 1024LL),                L"1 MB");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(1024LL * 1024LL * 1024LL - 1LL), L"1023 MB");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(1024LL * 1024LL * 1024LL),       L"1 GB");
+	BOOST_CHECK_EQUAL (Tools::MakeSizeString(5LL * 1024LL * 1024LL * 1024LL), L"5 GB");
+}
+
 BOOST_AUTO_TEST_CASE(ToolsReplaceAll)
 {
 	wstring test;

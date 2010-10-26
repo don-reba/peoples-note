@@ -2,6 +2,7 @@
 
 #include "Blob.h"
 #include "Credentials.h"
+#include "DbLocation.h"
 #include "ISignalProvider.h"
 #include "Guid.h"
 #include "Note.h"
@@ -56,11 +57,11 @@ public:
 
 	virtual int GetDirtyNoteCount(const Notebook & notebook) = 0;
 
-	virtual std::wstring GetFolder() const = 0;
-
 	virtual __int64 GetLastSyncEnTime() = 0;
 
 	virtual void GetLastUsedNotebook(Notebook & notebook) = 0;
+
+	virtual DbLocation GetLocation() = 0;
 
 	// TODO: changed Note to a reference parameter
 	virtual Note GetNote(Guid guid) = 0;
@@ -104,6 +105,10 @@ public:
 		, NoteList           & notes
 		) = 0;
 
+	virtual std::wstring GetPath() = 0;
+
+	virtual __int64 GetSize() = 0;
+
 	virtual void GetResource
 		( const std::string & hash
 		, Blob              & blob
@@ -130,6 +135,10 @@ public:
 	virtual void MakeNotebookDefault(const Notebook & notebook) = 0;
 
 	virtual void MakeNotebookLastUsed(const Notebook & notebook) = 0;
+
+	virtual void MoveToCard() = 0;
+
+	virtual void MoveToDevice() = 0;
 
 	virtual void SetCredentials
 		( const std::wstring & username

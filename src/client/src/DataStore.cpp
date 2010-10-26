@@ -14,7 +14,8 @@ using namespace Tools;
 //----------
 
 DataStore::DataStore()
-	: db (NULL)
+	: db       (NULL)
+	, location (DbLocationNone)
 {
 }
 
@@ -31,12 +32,14 @@ void DataStore::Close()
 {
 	if (NULL != db)
 	{
-		sqlite3_close(db);
+		int result(sqlite3_close(db));
 		db = NULL;
+		path.clear();
+		location = DbLocationNone;
 	}
 }
 
-bool DataStore::Create(std::wstring path, int flags)
+bool DataStore::Open(const wchar_t * path, DbLocation location, int flags)
 {
 	assert(db == NULL);
 
@@ -56,12 +59,27 @@ bool DataStore::Create(std::wstring path, int flags)
 
 	sqlite3_busy_handler(db, &HandleBusy, this);
 
+	sqlite3_extended_result_codes(db, true);
+
+	this->location = location;
+	this->path     = path;
+
 	return true;
 }
 
 __int64 DataStore::GetLastInsertRowid()
 {
 	return sqlite3_last_insert_rowid(db);
+}
+
+DbLocation DataStore::GetLocation()
+{
+	return location;
+}
+
+wstring DataStore::GetPath()
+{
+	return path;
 }
 
 IDataStore::Blob DataStore::MakeBlob

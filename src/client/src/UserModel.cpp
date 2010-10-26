@@ -21,11 +21,13 @@ using namespace std;
 //----------
 
 UserModel::UserModel
-	( IDataStore & dataStore
-	, wstring      folder
+	( IDataStore    & dataStore
+	, const wstring & cardFolder
+	, const wstring & deviceFolder
 	)
-	: dataStore (dataStore)
-	, folder    (folder)
+	: dataStore    (dataStore)
+	, cardFolder   (cardFolder)
+	, deviceFolder (deviceFolder)
 {
 }
 
@@ -311,7 +313,10 @@ void UserModel::EndTransaction()
 
 bool UserModel::Exists(const wstring & username)
 {
-	wstring path(CreatePathFromName(username));
+	wstring path(CreatePathFromName(deviceFolder, username));
+	if (INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str()))
+		return true;
+	path = CreatePathFromName(cardFolder, username);
 	return INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str());
 }
 
@@ -359,11 +364,6 @@ int UserModel::GetDirtyNoteCount(const Notebook & notebook)
 	return count;
 }
 
-wstring UserModel::GetFolder() const
-{
-	return folder;
-}
-
 __int64 UserModel::GetLastSyncEnTime()
 {
 	__int64 enTime(0);
@@ -393,6 +393,11 @@ void UserModel::GetLastUsedNotebook(Notebook & notebook)
 	statement->Get(2, notebook.name);
 	statement->Get(3, notebook.isDirty);
 	notebook.guid = guidString;
+}
+
+DbLocation UserModel::GetLocation()
+{
+	return dataStore.GetLocation();
 }
 
 Note UserModel::GetNote(Guid guid)
@@ -638,6 +643,34 @@ void UserModel::GetNotesBySearch
 	}
 }
 
+wstring UserModel::GetPath()
+{
+	return dataStore.GetPath();
+}
+
+__int64 UserModel::GetSize()
+{
+	HANDLE file = ::CreateFile
+		( dataStore.GetPath().c_str()        // lpFileName
+		, GENERIC_READ                       // dwDesiredAccess
+		, FILE_SHARE_READ | FILE_SHARE_WRITE // dwShareMode
+		, NULL                               // lpSecurityAttributes
+		, OPEN_EXISTING                      // dwCreationDisposition
+		, FILE_ATTRIBUTE_NORMAL              // dwFlagsAndAttributes
+		, NULL                               // hTemplateFile
+		);
+	if (file == INVALID_HANDLE_VALUE)
+		throw std::exception("Could not access file.");
+
+	ULARGE_INTEGER size;
+	size.LowPart = ::GetFileSize(file, &size.HighPart);
+	::CloseHandle(file);
+	if (size.LowPart == 0xFFFFFFFF && ::GetLastError() != NO_ERROR)
+		throw std::exception("Could not retreive file size.");
+
+	return size.QuadPart;
+}
+
 void UserModel::GetResource
 	( const string & hash
 	, Blob         & blob
@@ -743,9 +776,13 @@ int UserModel::GetUpdateCount()
 
 void UserModel::Load(const wstring & username)
 {
-	wstring path = CreatePathFromName(username);
-	if (!TryLoad(path))
-		throw std::exception("Database could not be loaded.");
+	wstring path(CreatePathFromName(deviceFolder.c_str(), username));
+	if (!TryLoad(path, DbLocationDevice))
+	{
+		path = CreatePathFromName(cardFolder.c_str(), username);
+		if (!TryLoad(path, DbLocationCard))
+			throw std::exception("Database could not be loaded.");
+	}
 	Update();
 	SignalLoaded();
 }
@@ -755,11 +792,18 @@ void UserModel::LoadAs
 	, const std::wstring & newUsername
 	)
 {
-	wstring oldPath = CreatePathFromName(oldUsername);
-	wstring newPath = CreatePathFromName(newUsername);
+	wstring    oldPath  (CreatePathFromName(deviceFolder, oldUsername));
+	wstring    newPath  (CreatePathFromName(deviceFolder, newUsername));
+	DbLocation location (DbLocationDevice);
+	if (INVALID_FILE_ATTRIBUTES == ::GetFileAttributes(oldPath.c_str()))
+	{
+		oldPath  = CreatePathFromName(cardFolder, oldUsername);
+		newPath  = CreatePathFromName(cardFolder, newUsername);
+		location = DbLocationCard;
+	}
 	if (!::MoveFile(oldPath.c_str(), newPath.c_str()))
 		throw std::exception("Database could not be renamed.");
-	if (!TryLoad(newPath))
+	if (!TryLoad(newPath, location))
 		throw std::exception("Database could not be loaded.");
 	Update();
 	SetProperty(L"username", newUsername);
@@ -768,16 +812,24 @@ void UserModel::LoadAs
 
 void UserModel::LoadOrCreate(const wstring & username)
 {
-	wstring path = CreatePathFromName(username);
-	if (TryLoad(path))
+	wstring    path     (CreatePathFromName(deviceFolder, username));
+	DbLocation location (DbLocationDevice);
+	if (INVALID_FILE_ATTRIBUTES == ::GetFileAttributes(path.c_str()))
 	{
-		if (GetVersion() != 0)
-			throw std::exception("Incorrect database version.");
+		path     = CreatePathFromName(cardFolder, username);
+		location = DbLocationCard;
+	}
+	if (!TryLoad(path, location))
+	{
+		path = CreatePathFromName(deviceFolder, username);
+		::CreateDirectory(deviceFolder.c_str(), NULL);
+		Create(path, DbLocationDevice);
+		Initialize(username);
 	}
 	else
 	{
-		Create(path);
-		Initialize(username);
+		if (GetVersion() > 0)
+			throw std::exception("Incorrect database version.");
 	}
 	Update();
 	SignalLoaded();
@@ -817,6 +869,32 @@ void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
 		);
 	setNew->Bind(1, notebook.guid);
 	setNew->Execute();
+}
+
+void UserModel::MoveToCard()
+{
+	if (cardFolder.empty())
+		throw std::exception("No storage card available.");
+	wstring username;
+	GetProperty(L"username", username);
+	::CreateDirectory(cardFolder.c_str(), NULL);
+	Move
+		( CreatePathFromName(deviceFolder, username)
+		, CreatePathFromName(cardFolder,   username)
+		, username
+		);
+}
+
+void UserModel::MoveToDevice()
+{
+	wstring username;
+	GetProperty(L"username", username);
+	::CreateDirectory(deviceFolder.c_str(), NULL);
+	Move
+		( CreatePathFromName(cardFolder,   username)
+		, CreatePathFromName(deviceFolder, username)
+		, username
+		);
 }
 
 void UserModel::SetCredentials
@@ -912,16 +990,18 @@ void UserModel::UpdateTag
 // utility functions
 //------------------
 
-void UserModel::Create(wstring path)
+void UserModel::Create(const wstring & path, DbLocation location)
 {
 	int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
-	if (!dataStore.Create(path, flags))
+	if (!dataStore.Open(path.c_str(), location, flags))
 		throw std::exception("Database could not be created.");
 }
 
-wstring UserModel::CreatePathFromName(wstring name)
+wstring UserModel::CreatePathFromName
+	( const wstring & folder
+	, const wstring & name
+	)
 {
-	// TODO: filter name characters
 	wstringstream stream;
 	stream << folder << L'\\' << name << L".db";
 	return stream.str();
@@ -1042,16 +1122,27 @@ void UserModel::SetPragma(const char * sql)
 {
 	dataStore.MakeStatement(sql)->Execute();
 }
+void UserModel::Move
+	( const wstring & oldPath
+	, const wstring & newPath
+	, const wstring & username
+	)
+{
+	Unload();
+	::MoveFile(oldPath.c_str(), newPath.c_str());
+	Load(username);
+}
 
-bool UserModel::TryLoad(wstring path)
+bool UserModel::TryLoad(const wstring & path, DbLocation location)
 {
 	int flags = SQLITE_OPEN_READWRITE;
-	return dataStore.Create(path, flags);
+	return dataStore.Open(path.c_str(), location, flags);
 }
 
 void UserModel::Update()
 {
 	SetPragma("PRAGMA foreign_keys = ON");
+	SetPragma("PRAGMA locking_mode = EXCLUSIVE");
 	Transaction transaction(*this);
 	if (GetNotebookCount() == 0)
 	{

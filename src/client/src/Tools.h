@@ -34,6 +34,8 @@ namespace Tools
 
 	std::wstring LoadStringResource(int id);
 
+	std::wstring MakeSizeString(__int64 size);
+
 	void ReplaceAll
 		(       std::wstring & str
 		, const std::wstring & target

@@ -452,6 +452,25 @@ void Tools::ReplaceAll
 	}
 }
 
+wstring Tools::MakeSizeString(__int64 size)
+{
+	wstringstream stream;
+	if (size < 0)
+	{
+		stream << L"-";
+		size = -size;
+	}
+	if (size < 0x400L)
+		stream << size << L" B";
+	else if(size < 0x100000L)
+		stream << (size / 0x400L) << L" KB";
+	else if (size < 0x40000000L)
+		stream << (size / 0x100000L) << L" MB";
+	else
+		stream << (size / 0x40000000L) << L" GB";
+	return stream.str();
+}
+
 bool Tools::StartsWith(const wchar_t * text, const wchar_t * prefix)
 {
 	if (!(text && prefix))

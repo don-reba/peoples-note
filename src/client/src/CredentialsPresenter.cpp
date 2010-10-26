@@ -5,9 +5,11 @@
 #include "ICredentialsView.h"
 #include "IEnService.h"
 #include "IUserStore.h"
+#include "Tools.h"
 
 using namespace boost;
 using namespace std;
+using namespace Tools;
 
 CredentialsPresenter::CredentialsPresenter
 	( ICredentialsModel & credentialsModel
@@ -65,8 +67,15 @@ void CredentialsPresenter::OnOk()
 			enService.GetUserStore()->GetAuthenticationToken(username, password);
 		if (authenticationResult.IsGood)
 		{
-			credentialsView.Close();
-			credentialsModel.SetCredentials(username, password);
+			try
+			{
+				credentialsModel.SetCredentials(username, password);
+				credentialsView.Close();
+			}
+			catch (const std::exception & e)
+			{
+				credentialsView.SetMessage(ConvertToUnicode(e.what()));
+			}
 		}
 		else
 		{

@@ -35,13 +35,24 @@
 			{
 				margin : 0px 20px 24px 20px;
 			}
+			td
+			{
+				vertical-align : text-bottom;
+			}
+			#path
+			{
+				text-wrap : unrestricted;
+			}
 		</style>
 	</head>
 	<body>
 		<h1 #name>Anonymous</h1>
 		<h2>Database settings</h2>
-		<p>Path: <span #path /></p>
-		<p>Size: <span #size /></p>
+		<table cellspacing=24px>
+			<tr><td>Path:</td><td #path></td></tr>
+			<tr><td>Size:</td><td #size></td></tr>
+		</table>
 		<button #move>Move to storage card</button>
+		<p #error></p>
 	</body>
 </html>
