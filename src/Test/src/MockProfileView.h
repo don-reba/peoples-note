@@ -7,16 +7,14 @@ public:
 
 	bool isShown;
 
-	MoveButtonState moveButtonState;
-
 	std::wstring dbPath;
 	std::wstring dbSize;
+	std::wstring moveButtonText;
 	std::wstring moveErrorMessage;
 	std::wstring username;
 
 	signal SignalClose;
-	signal SignalMoveToCard;
-	signal SignalMoveToDevice;
+	signal SignalDbMove;
 
 public:
 
@@ -26,21 +24,21 @@ public:
 
 	virtual void ConnectClose(slot_type OnClose);
 
-	virtual void ConnectMoveToCard(slot_type OnMoveToCard);
-
-	virtual void ConnectMoveToDevice(slot_type OnMoveToDevice);
+	virtual void ConnectDbMove(slot_type OnDbMove);
 
 	virtual void Hide();
 
-	virtual void SetDbPath(const wchar_t * path);
+	virtual bool IsShown();
 
-	virtual void SetDbSize(const wchar_t * size);
+	virtual void SetDbPath(const std::wstring & path);
 
-	virtual void SetMoveButtonState(MoveButtonState state);
+	virtual void SetDbSize(const std::wstring & size);
 
-	virtual void SetMoveErrorMessage(const wchar_t * message);
+	virtual void SetMoveButtonText(const std::wstring & text);
 
-	virtual void SetUsername(const wchar_t * username);
+	virtual void SetMoveErrorMessage(const std::wstring & message);
+
+	virtual void SetUsername(const std::wstring & username);
 
 	virtual void Show();
 };

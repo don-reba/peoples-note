@@ -2579,3 +2579,65 @@ storing db on the storage card
 note update
 	does not seem to update local resources
 	TODO
+do I need both Credentials and ICredentialsModel?
+	TODO
+how should LoadAs handle folder choice?
+	should find where the database is located
+		move it to the new name in the same folder
+		load the new name
+	what's the problem?
+		seems like the search is done repeatedly
+		it used to be done repeatedly before
+		except with only one folder
+	what about LoadOrCreate?
+		should load from device first
+		should only create if both folders are empty
+	so, what to do if the flash card is missing?
+		then attempts to create files there will fail
+		simple
+		wait
+		where is "there"?
+		would have to use some invalid path
+			and hope that it stays invalid
+		how about we abstract away the number of storage locations?
+			created a class
+			return locations in order of priority
+			have UserModel check all locations in order
+the icon is missing when installing on Samsung Blackjack II
+	TODO
+might not want to create the "People's Note" folder on the storate card needlessly
+	TODO
+should not change the status of the "move" button unless the move succeeded
+	can subscribe to the Load event
+	but then, we want to know where the database is
+		to set the state correctly
+	this way, the button state would be in sinc with the path
+	so, we ask the database where it is
+	how does it answer?
+	it could either
+		check where it is
+			- a little slow
+		remember where it was stored
+			- multiple code changes
+	actually, since it has to be in sync...
+	the answer should be retreived the same way as the path
+		from the data store
+	then this info should be remembered when data store is loaded
+discovering the storage card at startup is a bad idea
+	TODO
+transactions seem to fail on the storage card
+	at the end
+	although the changes are made
+	SQLITE_IOERR_DELETE
+	solved by setting exclusive open mode
+	Heuston, we have a problem!
+	exclusive open mode prevents opening 
+	possible solutions
+		avoid exclusive opening
+			- may cause problems
+		open the file only once
+			- significant code changes
+	lets see, whether lack of the flag causes problems on a real storage card
+		TODO
+should disable the database move button for the duration of operation
+	TODO

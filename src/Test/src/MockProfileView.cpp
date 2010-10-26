@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "MockProfileView.h"
 
+using namespace std;
+
 MockProfileView::MockProfileView()
 	: isShown (false)
 {
@@ -11,14 +13,9 @@ void MockProfileView::ConnectClose(slot_type OnClose)
 	SignalClose.connect(OnClose);
 }
 
-void MockProfileView::ConnectMoveToCard(slot_type OnMoveToCard)
+void MockProfileView::ConnectDbMove(slot_type OnDbMove)
 {
-	SignalMoveToCard.connect(OnMoveToCard);
-}
-
-void MockProfileView::ConnectMoveToDevice(slot_type OnMoveToDevice)
-{
-	SignalMoveToDevice.connect(OnMoveToDevice);
+	SignalDbMove.connect(OnDbMove);
 }
 
 void MockProfileView::Hide()
@@ -26,27 +23,32 @@ void MockProfileView::Hide()
 	isShown = false;
 }
 
-void MockProfileView::SetDbPath(const wchar_t * path)
+bool MockProfileView::IsShown()
+{
+	return isShown;
+}
+
+void MockProfileView::SetDbPath(const wstring & path)
 {
 	dbPath = path;
 }
 
-void MockProfileView::SetDbSize(const wchar_t * size)
+void MockProfileView::SetDbSize(const wstring & size)
 {
 	dbSize = size;
 }
 
-void MockProfileView::SetMoveButtonState(MoveButtonState state)
+void MockProfileView::SetMoveButtonText(const wstring & text)
 {
-	moveButtonState = state;
+	moveButtonText = text;
 }
 
-void MockProfileView::SetMoveErrorMessage(const wchar_t * message)
+void MockProfileView::SetMoveErrorMessage(const wstring & message)
 {
 	moveErrorMessage = message;
 }
 
-void MockProfileView::SetUsername(const wchar_t * username)
+void MockProfileView::SetUsername(const wstring & username)
 {
 	this->username = username;
 }

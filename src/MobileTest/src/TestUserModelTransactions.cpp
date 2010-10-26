@@ -9,23 +9,21 @@ const wchar_t * const storeName   = L"test";
 const wchar_t * const storeFolder = L"Program Files\\MobileTest";
 const wchar_t * const storeFile   = L"Program Files\\MobileTest\\test.db";
 
-DWORD WINAPI UserModelTransactionsrThread(LPVOID)
+DWORD WINAPI UserModelTransactionsThread(LPVOID)
 {
 	try
 	{
 		DataStore store;
-		UserModel model(store, storeFolder);
+		UserModel model(store, L"", storeFolder);
 
 		model.LoadOrCreate(storeName);
 
 		Transaction transaction(model);
-		Notebook notebook;
-		notebook.name = L"notebook-1";
-		model.AddNotebook(notebook);
+		model.AddNotebook(Notebook());
 	}
 	catch (...)
 	{
-		// if we get here, the test won't pass
+		return 1;
 	}
 
 	return 0;
@@ -34,27 +32,40 @@ DWORD WINAPI UserModelTransactionsrThread(LPVOID)
 AUTO_TEST_CASE(TestUserModelTransactions)
 {
 	DataStore store;
-	UserModel model(store, storeFolder);
+	UserModel model(store, L"", storeFolder);
 
 	::DeleteFile(storeFile);
 	model.LoadOrCreate(storeName);
 
 	TEST_CHECK_EQUAL(model.GetNotebookCount(), 1);
 
+	HANDLE thread(NULL);
+	DWORD  threadId(-1);
 	{
 		Transaction transaction(model);
 
 		model.AddNotebook(Notebook());
-
 		
 		Transaction nestedTransaction(model);
 
-		HANDLE otherThread(::CreateThread(NULL, 0, &UserModelTransactionsrThread, NULL, 0, NULL));
-		TEST_CHECK(otherThread != 0);
+		thread = ::CreateThread(NULL, 0, &UserModelTransactionsThread, NULL, 0, &threadId);
+		TEST_CHECK(thread != NULL);
+		if (!thread)
+			return;
 		::Sleep(100);
+
 		TEST_CHECK_EQUAL(model.GetNotebookCount(), 2);
 	}
 
-	::Sleep(100);
+	DWORD waitResult(::WaitForSingleObject(thread, 1000));
+	if (waitResult == WAIT_OBJECT_0)
+		waitResult = threadId;
+	TEST_CHECK_EQUAL(waitResult, threadId);
+
+	DWORD exitCode(-1);
+	::GetExitCodeThread(thread, &exitCode);
+	TEST_CHECK_EQUAL(exitCode, 0);
+	::CloseHandle(thread);
+
 	TEST_CHECK_EQUAL(model.GetNotebookCount(), 3);
 }

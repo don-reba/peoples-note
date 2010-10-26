@@ -99,6 +99,7 @@ public:
 	mutable std::wstring searchSelection;
 
 	std::wstring folder;
+	DbLocation   location;
 	std::wstring path;
 
 	__int64 lastSyncEnTime;
@@ -162,6 +163,8 @@ public:
 	virtual __int64 GetLastSyncEnTime();
 
 	virtual void GetLastUsedNotebook(Notebook & notebook);
+
+	virtual DbLocation GetLocation();
 
 	virtual Note GetNote(Guid guid);
 

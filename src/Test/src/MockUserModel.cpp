@@ -10,6 +10,7 @@ MockUserModel::MockUserModel()
 	: isInTransaction  (false)
 	, loadCount        (0)
 	, loadMethod       (LoadMethodNone)
+	, location         (DbLocationNone)
 	, path             (L"card-path")
 	, size             (42)
 {
@@ -128,6 +129,11 @@ __int64 MockUserModel::GetLastSyncEnTime()
 void MockUserModel::GetLastUsedNotebook(Notebook & notebook)
 {
 	notebook = lastUsedNotebook;
+}
+
+DbLocation MockUserModel::GetLocation()
+{
+	return location;
 }
 
 Note MockUserModel::GetNote(Guid guid)
@@ -326,12 +332,14 @@ void MockUserModel::MakeNotebookLastUsed(const Notebook & notebook)
 
 void MockUserModel::MoveToCard()
 {
-	path = L"card-path";
+	location = DbLocationCard;
+	path     = L"card-path";
 }
 
 void MockUserModel::MoveToDevice()
 {
-	path = L"device-path";
+	location = DbLocationDevice;
+	path     = L"device-path";
 }
 
 void MockUserModel::SetCredentials

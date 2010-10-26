@@ -28,7 +28,7 @@ private:
 
 	void OnClose();
 	void OnDbMove();
-	void OnLoad();
+	void OnLoaded();
 	void OnProfile();
 
 // utility functions

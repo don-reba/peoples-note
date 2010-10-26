@@ -1142,7 +1142,8 @@ bool UserModel::TryLoad(const wstring & path, DbLocation location)
 void UserModel::Update()
 {
 	SetPragma("PRAGMA foreign_keys = ON");
-	SetPragma("PRAGMA locking_mode = EXCLUSIVE");
+	//SetPragma("PRAGMA locking_mode = EXCLUSIVE");
+	SetPragma("PRAGMA synchronous = NORMAL");
 	Transaction transaction(*this);
 	if (GetNotebookCount() == 0)
 	{

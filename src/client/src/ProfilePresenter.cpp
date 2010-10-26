@@ -7,8 +7,6 @@
 #include "IUserModel.h"
 #include "Tools.h"
 
-#include <sstream>
-
 using namespace boost;
 using namespace std;
 using namespace Tools;
@@ -25,7 +23,7 @@ ProfilePresenter::ProfilePresenter
 	noteListView.ConnectProfile (bind(&ProfilePresenter::OnProfile, this));
 	profileView.ConnectClose    (bind(&ProfilePresenter::OnClose,   this));
 	profileView.ConnectDbMove   (bind(&ProfilePresenter::OnDbMove,  this));
-	userModel.ConnectLoaded     (bind(&ProfilePresenter::OnLoad,    this));
+	userModel.ConnectLoaded     (bind(&ProfilePresenter::OnLoaded,  this));
 }
 
 //---------------
@@ -55,7 +53,7 @@ void ProfilePresenter::OnDbMove()
 	}
 }
 
-void ProfilePresenter::OnLoad()
+void ProfilePresenter::OnLoaded()
 {
 	if (profileView.IsShown())
 	{

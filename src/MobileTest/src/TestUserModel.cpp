@@ -25,7 +25,7 @@ struct DataStoreFixture
 	UserModel userModel;
 
 	DataStoreFixture()
-		: userModel (store, storeFolder)
+		: userModel (store, L"", storeFolder)
 	{
 		::DeleteFile(storeFile);
 		userModel.LoadOrCreate(storeName);
@@ -282,7 +282,7 @@ FIXTURE_TEST_CASE(UserModelDeleteTag, DataStoreFixture)
 AUTO_TEST_CASE(UserModelExists)
 {
 	DataStore store;
-	UserModel userModel(store, storeFolder);
+	UserModel userModel(store, L"", storeFolder);
 
 	::DeleteFile(storeFile);
 	TEST_CHECK(!userModel.Exists(storeName));
@@ -553,7 +553,7 @@ FIXTURE_TEST_CASE(UserModelLastUsedNotebook, DataStoreFixture)
 AUTO_TEST_CASE(UserModelLoad)
 {
 	DataStore store;
-	UserModel userModel(store, storeFolder);
+	UserModel userModel(store, L"", storeFolder);
 
 	SignalCheck check;
 	userModel.ConnectLoaded(boost::ref(check));
@@ -568,7 +568,7 @@ AUTO_TEST_CASE(UserModelLoad)
 
 	{
 		DataStore store;
-		UserModel userModel(store, storeFolder);
+		UserModel userModel(store, L"", storeFolder);
 		userModel.LoadOrCreate(storeName);
 	}
 
@@ -583,7 +583,7 @@ AUTO_TEST_CASE(UserModelLoad)
 AUTO_TEST_CASE(UserModelLoadAs)
 {
 	DataStore store;
-	UserModel userModel(store, storeFolder);
+	UserModel userModel(store, L"", storeFolder);
 
 	SignalCheck check;
 	userModel.ConnectLoaded(boost::ref(check));
@@ -601,7 +601,7 @@ AUTO_TEST_CASE(UserModelLoadAs)
 
 	{
 		DataStore store;
-		UserModel model(store, storeFolder);
+		UserModel model(store, L"", storeFolder);
 		model.LoadOrCreate(storeName);
 	}
 
@@ -626,7 +626,7 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 {
 	{
 		DataStore store;
-		UserModel userModel(store, storeFolder);
+		UserModel userModel(store, L"", storeFolder);
 
 		SignalCheck check;
 		userModel.ConnectLoaded(boost::ref(check));
@@ -649,7 +649,7 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 	}
 	{
 		DataStore store;
-		UserModel userModel(store, storeFolder);
+		UserModel userModel(store, L"", storeFolder);
 
 		SignalCheck check;
 		userModel.ConnectLoaded(boost::ref(check));

@@ -1,8 +1,10 @@
 #include "stdafx.h"
+#include "ProfilePresenter.h"
+
+#include "DbLocation.h"
 #include "MockProfileView.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
-#include "ProfilePresenter.h"
 
 struct ProfilePresenterFixture
 {
@@ -35,43 +37,69 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( ProfilePresenter_MoveToCard
+	( ProfilePresenter_DbMove
 	, ProfilePresenterFixture
 	)
 {
-	userModel.path              = L"path";
-	profileView.dbPath          = L"";
-	profileView.moveButtonState = IProfileView::MoveButtonCard;
+	userModel.location = DbLocationNone;
+	userModel.path     = L"path";
 
-	profileView.SignalMoveToCard();
+	profileView.SignalDbMove();
+
+	BOOST_CHECK_EQUAL(userModel.path, L"device-path");
+	BOOST_CHECK_EQUAL(userModel.location, DbLocationDevice);
+
+	profileView.SignalDbMove();
 
 	BOOST_CHECK_EQUAL(userModel.path, L"card-path");
-	BOOST_CHECK_EQUAL(profileView.dbPath, L"card-path");
-	BOOST_CHECK_EQUAL(profileView.moveErrorMessage, L"");
-	BOOST_CHECK_EQUAL
-		( profileView.moveButtonState
-		, IProfileView::MoveButtonDevice
-		);
+	BOOST_CHECK_EQUAL(userModel.location, DbLocationCard);
+
+	profileView.SignalDbMove();
+
+	BOOST_CHECK_EQUAL(userModel.path, L"device-path");
+	BOOST_CHECK_EQUAL(userModel.location, DbLocationDevice);
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( ProfilePresenter_MoveToDevice
+	( ProfilePresenter_Loaded
 	, ProfilePresenterFixture
 	)
 {
-	userModel.path              = L"path";
-	profileView.dbPath          = L"";
-	profileView.moveButtonState = IProfileView::MoveButtonDevice;
+	// window hidden
+	userModel.path     = L"device-path";
+	userModel.location = DbLocationDevice;
 
-	profileView.SignalMoveToDevice();
+	profileView.isShown        = false;
+	profileView.dbPath         = L"";
+	profileView.moveButtonText = L"";
 
-	BOOST_CHECK_EQUAL(userModel.path, L"device-path");
-	BOOST_CHECK_EQUAL(profileView.dbPath, L"device-path");
-	BOOST_CHECK_EQUAL(profileView.moveErrorMessage, L"");
-	BOOST_CHECK_EQUAL
-		( profileView.moveButtonState
-		, IProfileView::MoveButtonCard
-		);
+	userModel.SignalLoaded();
+
+	BOOST_CHECK_EQUAL(profileView.dbPath,         L"");
+	BOOST_CHECK_EQUAL(profileView.moveButtonText, L"");
+
+	// loaded from device memory
+	profileView.isShown = true;
+
+	userModel.SignalLoaded();
+
+	BOOST_CHECK_EQUAL(profileView.dbPath,         L"device-path");
+	BOOST_CHECK_EQUAL(profileView.moveButtonText, L"Move to storage card");
+
+	// loaded from storage card
+	userModel.location = DbLocationCard;
+
+	userModel.SignalLoaded();
+
+	BOOST_CHECK_EQUAL(profileView.moveButtonText, L"Move to device memory");
+
+	// database closed
+	profileView.moveButtonText = L"";
+	userModel.location         = DbLocationNone;
+
+	userModel.SignalLoaded();
+
+	BOOST_CHECK_EQUAL(profileView.moveButtonText, L"");
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -80,7 +108,7 @@ BOOST_FIXTURE_TEST_CASE
 	)
 {
 	profileView.isShown = false;
-	profileView.moveButtonState = IProfileView::MoveButtonDevice;
+	userModel.location  = DbLocationDevice;
 
 	userModel.credentials.SetUsername(L"username");
 	userModel.credentials.SetPassword(L"password");
@@ -92,8 +120,8 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK(profileView.isShown);
 	BOOST_CHECK_EQUAL
-		( profileView.moveButtonState
-		, IProfileView::MoveButtonCard
+		( profileView.moveButtonText
+		, L"Move to storage card"
 		);
 	BOOST_CHECK_EQUAL(profileView.username, L"username");
 	BOOST_CHECK_EQUAL(profileView.dbPath,   L"db-path");
