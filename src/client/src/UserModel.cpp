@@ -1157,8 +1157,10 @@ void UserModel::Move
 	)
 {
 	Unload();
-	::MoveFile(oldPath.c_str(), newPath.c_str());
+	BOOL result(::MoveFile(oldPath.c_str(), newPath.c_str()));
 	Load(username);
+	if (result == FALSE)
+		throw std::exception("Could not move database.");
 }
 
 bool UserModel::TryLoad(const wstring & path, DbLocation location)

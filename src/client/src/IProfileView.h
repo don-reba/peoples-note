@@ -6,11 +6,13 @@ class IProfileView : public ISignalProvider
 {
 public:
 
-public:
-
 	virtual void ConnectClose(slot_type OnClose) = 0;
 
 	virtual void ConnectDbMove(slot_type OnDbMove) = 0;
+
+	virtual void DisableMoveButton() = 0;
+
+	virtual void EnableMoveButton() = 0;
 
 	virtual void Hide() = 0;
 

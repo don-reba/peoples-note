@@ -9,6 +9,13 @@
 using namespace std;
 using namespace Tools;
 
+bool FlashCard::Exists() const
+{
+	WIN32_FIND_DATA find = { 0 };
+	::CloseHandle(::FindFirstFlashCard(&find));
+	return find.cFileName && *find.cFileName;
+}
+
 bool FlashCard::GetPath(wstring & path) const
 {
 	WIN32_FIND_DATA find = { 0 };

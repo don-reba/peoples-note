@@ -2,6 +2,7 @@
 
 #include "DbLocation.h"
 
+class IFlashCard;
 class IProfileView;
 class INoteListView;
 class IUserModel;
@@ -10,6 +11,7 @@ class ProfilePresenter
 {
 private:
 
+	IFlashCard    & flashCard;
 	IProfileView  & profileView;
 	INoteListView & noteListView;
 	IUserModel    & userModel;
@@ -17,10 +19,11 @@ private:
 public:
 
 	ProfilePresenter
-	( IProfileView  & profileView
-	, INoteListView & noteListView
-	, IUserModel    & userModel
-	);
+		( IFlashCard    & flashCard
+		, IProfileView  & profileView
+		, INoteListView & noteListView
+		, IUserModel    & userModel
+		);
 
 // event handlers
 

@@ -2,6 +2,7 @@
 #include "ProfilePresenter.h"
 
 #include "Credentials.h"
+#include "IFlashCard.h"
 #include "IProfileView.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
@@ -12,11 +13,13 @@ using namespace std;
 using namespace Tools;
 
 ProfilePresenter::ProfilePresenter
-	( IProfileView  & profileView
+	( IFlashCard    & flashCard
+	, IProfileView  & profileView
 	, INoteListView & noteListView
 	, IUserModel    & userModel
 	)
-	: profileView  (profileView)
+	: flashCard    (flashCard)
+	, profileView  (profileView)
 	, noteListView (noteListView)
 	, userModel    (userModel)
 {
@@ -39,13 +42,14 @@ void ProfilePresenter::OnDbMove()
 {
 	try
 	{
+		profileView.DisableMoveButton();
+		profileView.SetMoveErrorMessage(L"");
 		switch (userModel.GetLocation())
 		{
 		case DbLocationCard:   userModel.MoveToDevice(); break;
 		case DbLocationDevice: userModel.MoveToCard();   break;
 		case DbLocationNone:   userModel.MoveToDevice(); break;
 		}
-		profileView.SetMoveErrorMessage(L"");
 	}
 	catch (std::exception & e)
 	{
@@ -59,6 +63,7 @@ void ProfilePresenter::OnLoaded()
 	{
 		SetDbPath(userModel.GetPath());
 		SetMoveButtonText(userModel.GetLocation());
+		profileView.EnableMoveButton();
 	}
 }
 
@@ -73,6 +78,9 @@ void ProfilePresenter::OnProfile()
 	SetDbSize(userModel.GetSize());
 	SetMoveButtonText(userModel.GetLocation());
 	SetUsername(credentials.GetUsername());
+
+	if (!flashCard.Exists())
+		profileView.DisableMoveButton();
 }
 
 //------------------

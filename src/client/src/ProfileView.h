@@ -33,6 +33,10 @@ public:
 
 	virtual void ConnectDbMove(slot_type OnDbMove);
 
+	virtual void DisableMoveButton();
+
+	virtual void EnableMoveButton();
+
 	virtual void Hide();
 
 	virtual bool IsShown();

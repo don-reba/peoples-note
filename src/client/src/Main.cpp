@@ -238,7 +238,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			);
 		ProfilePresenter profilePresenter
-			( profileView
+			( flashCard
+			, profileView
 			, noteListView
 			, userModel
 			);

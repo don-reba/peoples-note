@@ -16,8 +16,8 @@ using namespace Tools;
 //----------
 
 ProfileView::ProfileView(HINSTANCE instance, bool highRes)
-	: instance (instance)
-	, HTMLayoutWindow(L"profile.htm", highRes)
+	: instance        (instance)
+	, HTMLayoutWindow (L"profile.htm", highRes)
 {
 }
 
@@ -48,6 +48,18 @@ void ProfileView::ConnectClose(slot_type OnClose)
 void ProfileView::ConnectDbMove(slot_type OnDbMove)
 {
 	SignalDbMove.connect(OnDbMove);
+}
+
+void ProfileView::DisableMoveButton()
+{
+	element(FindFirstElement("#move"))
+		.set_style_attribute("background-image", L"url(button-disabled.png)");
+}
+
+void ProfileView::EnableMoveButton()
+{
+	element(FindFirstElement("#move"))
+		.set_style_attribute("background-image", L"url(button.png)");
 }
 
 void ProfileView::Hide()

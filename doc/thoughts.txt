@@ -2667,3 +2667,6 @@ should disable the database move button for the duration of operation
 	TODO
 should give checkboxes a wider right margin
 	TODO
+note list scrolling does not update after adding an ink note
+	or any other kinf of note...
+	TODO
