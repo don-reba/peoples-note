@@ -2606,7 +2606,7 @@ how should LoadAs handle folder choice?
 the icon is missing when installing on Samsung Blackjack II
 	TODO
 might not want to create the "People's Note" folder on the storate card needlessly
-	TODO
+	ok
 should not change the status of the "move" button unless the move succeeded
 	can subscribe to the Load event
 	but then, we want to know where the database is
@@ -2666,7 +2666,7 @@ transactions seem to fail on the storage card
 should disable the database move button for the duration of operation
 	done
 should give checkboxes a wider right margin
-	TODO
+	done
 note list scrolling does not update after adding an ink note
 	or any other kind of note...
 	it might have to do with the note list view being a parent window
