@@ -450,6 +450,7 @@
 
     TEXT_EDIT_GET_SELECTION_TEXT, // p - TEXT_SELECTION_PARAMS, OutputStreamProc will receive stream of WCHARs
     TEXT_EDIT_GET_SELECTION_HTML, // p - TEXT_SELECTION_PARAMS, OutputStreamProc will receive stream of BYTEs - utf8 encoded html fragment.
+    TEXT_EDIT_CHAR_POS_AT_XY,     // p - TEXT_EDIT_CHAR_POS_AT_XY_PARAMS
 
     IS_EMPTY      = 0xFC,       // p - IS_EMPTY_PARAMS // set VALUE_PARAMS::is_empty (false/true) reflects :empty state of the element.
     GET_VALUE     = 0xFD,       // p - VALUE_PARAMS 
@@ -521,6 +522,16 @@
 
     TEXT_CARET_POSITION_PARAMS() { methodID = TEXT_EDIT_GET_CARET_POSITION; }
   };
+
+  struct TEXT_EDIT_CHAR_POS_AT_XY_PARAMS: METHOD_PARAMS
+  {
+    INT x,y;         // in
+    INT      char_pos;   // out
+    HELEMENT he;     // out
+    int      he_pos; // out
+    TEXT_EDIT_CHAR_POS_AT_XY_PARAMS() { methodID = TEXT_EDIT_CHAR_POS_AT_XY; }
+  };
+
 
   struct TEXT_SELECTION_PARAMS;
   typedef BOOL CALLBACK OutputStreamProc(TEXT_SELECTION_PARAMS* params, UINT data /* BYTE or WCHAR */ );

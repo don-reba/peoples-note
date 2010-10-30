@@ -2668,5 +2668,11 @@ should disable the database move button for the duration of operation
 should give checkboxes a wider right margin
 	TODO
 note list scrolling does not update after adding an ink note
-	or any other kinf of note...
-	TODO
+	or any other kind of note...
+	it might have to do with the note list view being a parent window
+	WM_CLOSE is posted
+		so scrolling is updated while note list view is still disabled
+	UpdaetScrollbar returns early
+		contentSize is zero
+	looks like it was an HtmLayout bug
+		fixed by updating to version 3.3.2.15

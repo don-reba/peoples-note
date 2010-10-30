@@ -146,6 +146,30 @@ EXTERN_C  HLTRESULT HLAPI HTMLiteRender(HTMLITE hLite, HDC hdc,
           INT sx, // width of area to render in pixels  
           INT sy); // height of area to render in pixels  
 
+
+/** Render portion of HTML 
+ * \param[in] hLite \b HTMLITE, handle.
+ * \param[in] hdc \b HDC, device context
+ * \param[in] dst_x \b INT, device pixels, dst_x,dst_y,dst_sx and dst_sy have the same meaning as rcPaint in PAINTSTRUCT
+ * \param[in] dst_y \b INT, 
+ * \param[in] dst_sx \b INT, 
+ * \param[in] dst_sy \b INT, "dirty" rectangle coordinates.
+ * \param[in] src_x \b INT, pixels, src_x,src_y,src_sx and src_sy define portion of document to render at dst
+ * \param[in] src_y \b INT, 
+ * \param[in] src_sx \b INT, Not used at the moment!
+ * \param[in] src_sy \b INT, Not used at the moment! 
+ * \return \b HLTRESULT.
+ **/
+EXTERN_C  HLTRESULT HLAPI HTMLiteRenderEx(HTMLITE hLite, HDC hdc, 
+          INT dst_x,  // x position of area to render in pixels  
+          INT dst_y,  // y position of area to render in pixels  
+          INT dst_sx, // width of area to render in pixels  
+          INT dst_sy, // height of area to render in pixels  
+          INT src_x,  // x position of document area to render
+          INT src_y,  // y position of document area to render
+          INT src_sx, // width of document area to render
+          INT src_sy); // height of document area to render
+
 /** Render HTML on 24bpp or 32bpp dib 
  * \param[in] hLite \b HTMLITE, handle.
  * \param[in] hbmp \b HBITMAP, device context
@@ -392,6 +416,15 @@ public:
     assert(hr == HLT_OK);
     return hr == HLT_OK;
   }
+
+  bool  render(HDC hdc, int x, int y, int width, int height, int src_x, int src_y)
+  {
+    HLTRESULT hr = HTMLiteRenderEx(hLite, hdc, x, y, width, height, src_x, src_y, width, height);
+    assert(hr == HLT_OK);
+    return hr == HLT_OK;
+  }
+
+  
 
   bool  render(HBITMAP hbmp, int x, int y, int width, int height)
   {

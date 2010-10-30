@@ -462,8 +462,8 @@ struct Module
     //if (type == _T("treeview")) return CreateTreeView(pnmcc->inHwndParent, pnmcc);
     CString elementType = GetElementType(pnmcc->helement);
     
-    if (elementType == _T("iframe")) 
-      return CreateHTMLayoutFrame(pnmcc->inHwndParent, pnmcc);
+    //if (elementType == _T("iframe")) 
+    //  return CreateHTMLayoutFrame(pnmcc->inHwndParent, pnmcc);
 
     return 0;
     

@@ -1442,6 +1442,16 @@ namespace htmlayout
           call_behavior_method(&s);
         }
 
+        int char_pos_at_xy(int x, int y) const
+        {
+          TEXT_EDIT_CHAR_POS_AT_XY_PARAMS sp;
+          sp.x = x;
+          sp.y = y;
+          if(!const_cast<editbox*>(this)->call_behavior_method(&sp))
+            return -1;
+          return sp.char_pos;
+        }
+
     };
 
     class scrollbar: public element
