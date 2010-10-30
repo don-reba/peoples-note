@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "DataStore.h"
+#include "MockFlashCard.h"
 #include "Notebook.h"
 #include "Test.h"
 #include "Transaction.h"
@@ -13,8 +14,10 @@ DWORD WINAPI UserModelTransactionsThread(LPVOID)
 {
 	try
 	{
+		MockFlashCard flashCard;
+
 		DataStore store;
-		UserModel model(store, L"", storeFolder);
+		UserModel model(store, storeFolder, flashCard);
 
 		model.LoadOrCreate(storeName);
 
@@ -31,8 +34,10 @@ DWORD WINAPI UserModelTransactionsThread(LPVOID)
 
 AUTO_TEST_CASE(TestUserModelTransactions)
 {
+	MockFlashCard flashCard;
+
 	DataStore store;
-	UserModel model(store, L"", storeFolder);
+	UserModel model(store, storeFolder, flashCard);
 
 	::DeleteFile(storeFile);
 	model.LoadOrCreate(storeName);

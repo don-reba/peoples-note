@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "DataStore.h"
+#include "MockFlashCard.h"
 #include "Note.h"
 #include "Notebook.h"
 #include "Test.h"
@@ -21,11 +22,13 @@ const wchar_t * const storeFile   = L"Program Files\\MobileTest\\test.db";
 
 struct DataStoreFixture
 {
+	MockFlashCard flashCard;
+
 	DataStore store;
 	UserModel userModel;
 
 	DataStoreFixture()
-		: userModel (store, L"", storeFolder)
+		: userModel (store, storeFolder, flashCard)
 	{
 		::DeleteFile(storeFile);
 		userModel.LoadOrCreate(storeName);
@@ -281,8 +284,10 @@ FIXTURE_TEST_CASE(UserModelDeleteTag, DataStoreFixture)
 
 AUTO_TEST_CASE(UserModelExists)
 {
+	MockFlashCard flashCard;
+
 	DataStore store;
-	UserModel userModel(store, L"", storeFolder);
+	UserModel userModel(store, storeFolder, flashCard);
 
 	::DeleteFile(storeFile);
 	TEST_CHECK(!userModel.Exists(storeName));
@@ -552,8 +557,10 @@ FIXTURE_TEST_CASE(UserModelLastUsedNotebook, DataStoreFixture)
 
 AUTO_TEST_CASE(UserModelLoad)
 {
+	MockFlashCard flashCard;
+
 	DataStore store;
-	UserModel userModel(store, L"", storeFolder);
+	UserModel userModel(store, storeFolder, flashCard);
 
 	SignalCheck check;
 	userModel.ConnectLoaded(boost::ref(check));
@@ -567,8 +574,11 @@ AUTO_TEST_CASE(UserModelLoad)
 	TEST_CHECK(!check.signalled);
 
 	{
+		MockFlashCard flashCard;
+
 		DataStore store;
-		UserModel userModel(store, L"", storeFolder);
+		UserModel userModel(store, storeFolder, flashCard);
+
 		userModel.LoadOrCreate(storeName);
 	}
 
@@ -582,8 +592,10 @@ AUTO_TEST_CASE(UserModelLoad)
 
 AUTO_TEST_CASE(UserModelLoadAs)
 {
+	MockFlashCard flashCard;
+
 	DataStore store;
-	UserModel userModel(store, L"", storeFolder);
+	UserModel userModel(store, storeFolder, flashCard);
 
 	SignalCheck check;
 	userModel.ConnectLoaded(boost::ref(check));
@@ -600,9 +612,12 @@ AUTO_TEST_CASE(UserModelLoadAs)
 	TEST_CHECK(!check.signalled);
 
 	{
+		MockFlashCard flashCard;
+
 		DataStore store;
-		UserModel model(store, L"", storeFolder);
-		model.LoadOrCreate(storeName);
+		UserModel userModel(store, storeFolder, flashCard);
+
+		userModel.LoadOrCreate(storeName);
 	}
 
 	{ ofstream(dstFile) << 0; }
@@ -625,8 +640,10 @@ AUTO_TEST_CASE(UserModelLoadAs)
 AUTO_TEST_CASE(UserModelLoadOrCreate)
 {
 	{
+		MockFlashCard flashCard;
+
 		DataStore store;
-		UserModel userModel(store, L"", storeFolder);
+		UserModel userModel(store, storeFolder, flashCard);
 
 		SignalCheck check;
 		userModel.ConnectLoaded(boost::ref(check));
@@ -648,9 +665,10 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 		userModel.AddNotebook(Notebook());
 	}
 	{
-		DataStore store;
-		UserModel userModel(store, L"", storeFolder);
+		MockFlashCard flashCard;
 
+		DataStore store;
+		UserModel userModel(store, storeFolder, flashCard);
 		SignalCheck check;
 		userModel.ConnectLoaded(boost::ref(check));
 

@@ -416,6 +416,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Test\src\MockFlashCard.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\RegistryKey.cpp"
 				>
 			</File>
@@ -530,11 +534,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File

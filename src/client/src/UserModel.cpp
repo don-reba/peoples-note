@@ -2,6 +2,7 @@
 #include "UserModel.h"
 
 #include "IDataStore.h"
+#include "IFlashCard.h"
 #include "ISqlBlob.h"
 #include "ISqlStatement.h"
 #include "Notebook.h"
@@ -21,13 +22,13 @@ using namespace std;
 //----------
 
 UserModel::UserModel
-	( IDataStore    & dataStore
-	, const wstring & cardFolder
-	, const wstring & deviceFolder
+	( IDataStore       & dataStore
+	, const wstring    & deviceFolder
+	, const IFlashCard & flashCard
 	)
 	: dataStore    (dataStore)
-	, cardFolder   (cardFolder)
 	, deviceFolder (deviceFolder)
+	, flashCard    (flashCard)
 {
 }
 
@@ -316,8 +317,9 @@ bool UserModel::Exists(const wstring & username)
 	wstring path(CreatePathFromName(deviceFolder, username));
 	if (INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str()))
 		return true;
-	path = CreatePathFromName(cardFolder, username);
-	return INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str());
+	if (flashCard.GetPath(path))
+		return INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str());
+	return false;
 }
 
 
@@ -779,9 +781,17 @@ void UserModel::Load(const wstring & username)
 	wstring path(CreatePathFromName(deviceFolder.c_str(), username));
 	if (!TryLoad(path, DbLocationDevice))
 	{
-		path = CreatePathFromName(cardFolder.c_str(), username);
-		if (!TryLoad(path, DbLocationCard))
+		wstring cardFolder;
+		if (flashCard.GetPath(cardFolder))
+		{
+			path = CreatePathFromName(cardFolder.c_str(), username);
+			if (!TryLoad(path, DbLocationCard))
+				throw std::exception("Database could not be loaded.");
+		}
+		else
+		{
 			throw std::exception("Database could not be loaded.");
+		}
 	}
 	Update();
 	SignalLoaded();
@@ -797,9 +807,17 @@ void UserModel::LoadAs
 	DbLocation location (DbLocationDevice);
 	if (INVALID_FILE_ATTRIBUTES == ::GetFileAttributes(oldPath.c_str()))
 	{
-		oldPath  = CreatePathFromName(cardFolder, oldUsername);
-		newPath  = CreatePathFromName(cardFolder, newUsername);
-		location = DbLocationCard;
+		wstring cardFolder;
+		if (flashCard.GetPath(cardFolder))
+		{
+			oldPath  = CreatePathFromName(cardFolder, oldUsername);
+			newPath  = CreatePathFromName(cardFolder, newUsername);
+			location = DbLocationCard;
+		}
+		else
+		{
+			throw std::exception("Database could not be found.");
+		}
 	}
 	if (!::MoveFile(oldPath.c_str(), newPath.c_str()))
 		throw std::exception("Database could not be renamed.");
@@ -816,8 +834,12 @@ void UserModel::LoadOrCreate(const wstring & username)
 	DbLocation location (DbLocationDevice);
 	if (INVALID_FILE_ATTRIBUTES == ::GetFileAttributes(path.c_str()))
 	{
-		path     = CreatePathFromName(cardFolder, username);
-		location = DbLocationCard;
+		wstring cardFolder;
+		if (flashCard.GetPath(cardFolder))
+		{
+			path     = CreatePathFromName(cardFolder, username);
+			location = DbLocationCard;
+		}
 	}
 	if (!TryLoad(path, location))
 	{
@@ -873,8 +895,10 @@ void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
 
 void UserModel::MoveToCard()
 {
-	if (cardFolder.empty())
+	wstring cardFolder;
+	if (!flashCard.GetPath(cardFolder))
 		throw std::exception("No storage card available.");
+
 	wstring username;
 	GetProperty(L"username", username);
 	::CreateDirectory(cardFolder.c_str(), NULL);
@@ -887,6 +911,10 @@ void UserModel::MoveToCard()
 
 void UserModel::MoveToDevice()
 {
+	wstring cardFolder;
+	if (!flashCard.GetPath(cardFolder))
+		throw std::exception("No storage card available.");
+
 	wstring username;
 	GetProperty(L"username", username);
 	::CreateDirectory(deviceFolder.c_str(), NULL);

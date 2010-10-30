@@ -2624,7 +2624,30 @@ should not change the status of the "move" button unless the move succeeded
 		from the data store
 	then this info should be remembered when data store is loaded
 discovering the storage card at startup is a bad idea
-	TODO
+	how should it be discovered?
+	events and implications
+		storage card added
+			one more folder to search for database
+			can move the database there
+		storage card removed
+			if the database was there, then quit
+			else, we can no longer move it there
+	lets write down the user stories
+	requirements
+		need discovery to disable the move-db button
+			when the profile page is shown
+			when the database is about to be moved
+		need discovery whenever the database is opened
+			also need the appropriate path
+	solutions
+		storage card path provider
+			would be used by both profile presenter and user model
+		standalone functions to check presence and to get the path
+			- not mockable
+	first choice it is, then
+	API
+		bool GetPath(wstring &)
+	
 transactions seem to fail on the storage card
 	at the end
 	although the changes are made
@@ -2638,6 +2661,9 @@ transactions seem to fail on the storage card
 		open the file only once
 			- significant code changes
 	lets see, whether lack of the flag causes problems on a real storage card
-		TODO
+		does not look like it
+		lets release without the pragma
 should disable the database move button for the duration of operation
+	TODO
+should give checkboxes a wider right margin
 	TODO

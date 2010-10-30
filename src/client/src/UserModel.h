@@ -4,6 +4,7 @@
 #include "CredentialsModel.h"
 
 class IDataStore;
+class IFlashCard;
 
 class UserModel : public IUserModel
 {
@@ -11,7 +12,8 @@ private:
 
 	IDataStore & dataStore;
 
-	const std::wstring cardFolder;
+	const IFlashCard & flashCard;
+
 	const std::wstring deviceFolder;
 
 	signal SignalLoaded;
@@ -22,8 +24,8 @@ public:
 
 	UserModel
 		( IDataStore         & dataStore
-		, const std::wstring & cardFolder
 		, const std::wstring & deviceFolder
+		, const IFlashCard   & flash
 		);
 
 	int GetNoteCount();

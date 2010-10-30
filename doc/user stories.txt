@@ -111,8 +111,16 @@ text note editing
 instrumentation
 	√ when an animation is completed, display the result in the status bar
 profile view
+	√ when the window is opened, the db path and db size texts should be udpated
 	√ when the user selects the profile name from the menu, the "profile" window should be shown
 	√ when the user presses Esc, the profile window should close
+	when there is no storage card, the move-db button should be disabled
+	√ when the db is in device memory, the move-db button should be called "Move to storage card"
+	√ when the db is on a storage card, the move-db button should be called "Move to device memory"
+	√ when the db is in device memory, clicking the move-db button should move the db to storage card
+	√ when the db is on a storage card, clicking the move-db button should move the db to device ememory
+	while the db is being moved, the move-db button should be disabled
+	√ once the db has been moved, the path text should be updated
 ink note creation
 	√ when the user clicks, a dot should be drawn under the cursor
 	√ when the user clicks and drags, a line should be drawn following the cursor

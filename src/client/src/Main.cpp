@@ -13,6 +13,7 @@
 #include "EnNoteTranslator.h"
 #include "EnService.h"
 #include "File.h"
+#include "FlashCard.h"
 #include "HtmlDataLoader.h"
 #include "HtmlLayoutPresenter.h"
 #include "InkEditorModel.h"
@@ -42,26 +43,10 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
-#include <projects.h>
 #include <vector>
 
 using namespace std;
 using namespace Tools;
-
-wstring GetCardDocumentPath()
-{
-	WIN32_FIND_DATA find;
-	HANDLE handle(::FindFirstFlashCard(&find));
-	if (handle == INVALID_HANDLE_VALUE || !find.cFileName || !*find.cFileName)
-		return L"";
-	::CloseHandle(handle);
-
-	wstring path(L"\\");
-	path.append(find.cFileName);
-	path.append(L"\\");
-	path.append(LoadStringResource(IDS_DOC_FOLDER));
-	return path;
-}
 
 wstring GetDeviceDocumentPath()
 {
@@ -144,12 +129,12 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
-		wstring cardDocumentPath   (GetCardDocumentPath());
 		wstring deviceDocumentPath (GetDeviceDocumentPath());
 		bool    highRes            (IsHighRes());
 
 		Animator         animator;
 		File             file;
+		FlashCard        flashCard;
 		RegistryKey      registryKey(L"Software\\People's Note");
 		DataStore        dataStore;
 		DataStore        syncDataStore;
@@ -162,8 +147,8 @@ int WINAPI WinMain(HINSTANCE instance,
 		CredentialsModel newCredentials;
 		InkEditorModel   inkEditorModel(registryKey);
 		LastUserModel    lastUserModel(registryKey);
-		UserModel        userModel     (dataStore,     cardDocumentPath, deviceDocumentPath);
-		UserModel        syncUserModel (syncDataStore, cardDocumentPath, deviceDocumentPath);
+		UserModel        userModel     (dataStore,     deviceDocumentPath, flashCard);
+		UserModel        syncUserModel (syncDataStore, deviceDocumentPath, flashCard);
 
 		NoteListModel noteListModel(20, userModel);
 		SyncModel     syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
