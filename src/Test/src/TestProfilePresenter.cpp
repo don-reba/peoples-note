@@ -2,12 +2,14 @@
 #include "ProfilePresenter.h"
 
 #include "DbLocation.h"
+#include "MockFlashCard.h"
 #include "MockProfileView.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
 
 struct ProfilePresenterFixture
 {
+	MockFlashCard    flashCard;
 	MockProfileView  profileView;
 	MockNoteListView noteListView;
 	MockUserModel    userModel;
@@ -16,7 +18,8 @@ struct ProfilePresenterFixture
 
 	ProfilePresenterFixture()
 		: profilePresenter
-			( profileView
+			( flashCard
+			, profileView
 			, noteListView
 			, userModel
 			)
@@ -44,7 +47,13 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.location = DbLocationNone;
 	userModel.path     = L"path";
 
+	profileView.isMoveButtonEnabled = true;
+	profileView.moveErrorMessage    = L"error";
+
 	profileView.SignalDbMove();
+
+	BOOST_CHECK(!profileView.isMoveButtonEnabled);
+	BOOST_CHECK(profileView.moveErrorMessage.empty());
 
 	BOOST_CHECK_EQUAL(userModel.path, L"device-path");
 	BOOST_CHECK_EQUAL(userModel.location, DbLocationDevice);
@@ -69,12 +78,14 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.path     = L"device-path";
 	userModel.location = DbLocationDevice;
 
-	profileView.isShown        = false;
-	profileView.dbPath         = L"";
-	profileView.moveButtonText = L"";
+	profileView.isMoveButtonEnabled = false;
+	profileView.isShown             = false;
+	profileView.dbPath              = L"";
+	profileView.moveButtonText      = L"";
 
 	userModel.SignalLoaded();
 
+	BOOST_CHECK(!profileView.isMoveButtonEnabled);
 	BOOST_CHECK_EQUAL(profileView.dbPath,         L"");
 	BOOST_CHECK_EQUAL(profileView.moveButtonText, L"");
 
@@ -83,6 +94,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	userModel.SignalLoaded();
 
+	BOOST_CHECK(profileView.isMoveButtonEnabled);
 	BOOST_CHECK_EQUAL(profileView.dbPath,         L"device-path");
 	BOOST_CHECK_EQUAL(profileView.moveButtonText, L"Move to storage card");
 

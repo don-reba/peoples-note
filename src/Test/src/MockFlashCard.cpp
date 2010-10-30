@@ -3,6 +3,11 @@
 
 using namespace std;
 
+bool MockFlashCard::Exists() const
+{
+	return !path.empty();
+}
+
 bool MockFlashCard::GetPath(wstring & path) const
 {
 	path = this->path;

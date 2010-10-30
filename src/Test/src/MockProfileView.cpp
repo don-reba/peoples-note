@@ -4,7 +4,8 @@
 using namespace std;
 
 MockProfileView::MockProfileView()
-	: isShown (false)
+	: isMoveButtonEnabled (true)
+	, isShown             (false)
 {
 }
 
@@ -16,6 +17,16 @@ void MockProfileView::ConnectClose(slot_type OnClose)
 void MockProfileView::ConnectDbMove(slot_type OnDbMove)
 {
 	SignalDbMove.connect(OnDbMove);
+}
+
+void MockProfileView::DisableMoveButton()
+{
+	isMoveButtonEnabled = false;
+}
+
+void MockProfileView::EnableMoveButton()
+{
+	isMoveButtonEnabled = true;
 }
 
 void MockProfileView::Hide()

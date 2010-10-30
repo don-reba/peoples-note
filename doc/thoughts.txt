@@ -2664,7 +2664,7 @@ transactions seem to fail on the storage card
 		does not look like it
 		lets release without the pragma
 should disable the database move button for the duration of operation
-	TODO
+	done
 should give checkboxes a wider right margin
 	TODO
 note list scrolling does not update after adding an ink note

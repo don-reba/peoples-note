@@ -9,5 +9,7 @@ public:
 
 public:
 
+	bool Exists() const;
+
 	bool GetPath(std::wstring & path) const;
 };
