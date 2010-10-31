@@ -17,6 +17,7 @@ using namespace Tools;
 
 EditorView::EditorView(HINSTANCE instance, bool highRes)
 	: instance        (instance)
+	, isMaximized     (false)
 	, parent          (NULL)
 	, HTMLayoutWindow (L"note-edit.htm", highRes)
 {
@@ -194,6 +195,8 @@ void EditorView::OnHidePanel(BEHAVIOR_EVENT_PARAMS * params)
 		.set_style_attribute("display", L"none");
 	element(FindFirstElement("#show"))
 		.set_style_attribute("display", L"block");
+	isMaximized = true;
+	ResizeWindow();
 }
 
 void EditorView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
@@ -211,6 +214,8 @@ void EditorView::OnShowPanel(BEHAVIOR_EVENT_PARAMS * params)
 		.set_style_attribute("display", L"none");
 	element(FindFirstElement("#panel"))
 		.set_style_attribute("display", L"block");
+	isMaximized = false;
+	ResizeWindow();
 }
 
 //------------------
@@ -231,44 +236,35 @@ ATOM EditorView::RegisterClass(const wstring & wndClass)
 
 void EditorView::ResizeWindow()
 {
+	::SHFullScreen
+		( hwnd_
+		, isMaximized
+		? SHFS_HIDETASKBAR
+		: SHFS_SHOWTASKBAR
+		);
+
 	SIPINFO sipInfo = { sizeof(sipInfo) };
-	if (::SipGetInfo(&sipInfo))
+	if (!::SipGetInfo(&sipInfo))
+		return;
+
+	Rect rect(sipInfo.rcVisibleDesktop);
+
+	if (isMaximized)
+		rect.top = 0;
+
+	if (menuBar && (sipInfo.fdwFlags & SIPF_ON) != SIPF_ON)
 	{
-		if ((sipInfo.fdwFlags & SIPF_ON) == SIPF_ON)
-		{
-			Rect rect(sipInfo.rcVisibleDesktop);
-			::MoveWindow
-				( hwnd_            // hwnd
-				, rect.GetX()      // x
-				, rect.GetY()      // y
-				, rect.GetWidth()  // nWidth
-				, rect.GetHeight() // nHeight
-				, TRUE             // bRepaint
-				);
-		}
-		else
-		{
-			HWND menuBar(::SHFindMenuBar(hwnd_));
-			if (menuBar)
-			{
-				Rect desktopRect(sipInfo.rcVisibleDesktop);
-
-				Rect menuBarRect;
-				::GetWindowRect(menuBar, &menuBarRect);
-
-				int windowWidth  (desktopRect.GetWidth());
-				int windowHeight (desktopRect.GetHeight() - menuBarRect.GetHeight());
-
-				::MoveWindow
-					( hwnd_              // hwnd
-					, desktopRect.GetX() // x
-					, desktopRect.GetY() // y
-					, windowWidth        // nWidth
-					, windowHeight       // nHeight
-					, TRUE			     // bRepaint
-					);
-			}
-
-		}
+		Rect menuBarRect;
+		::GetWindowRect(menuBar, &menuBarRect);
+		rect.bottom -= menuBarRect.GetHeight();
 	}
+
+	::MoveWindow
+		( hwnd_            // hwnd
+		, rect.GetX()      // x
+		, rect.GetY()      // y
+		, rect.GetWidth()  // nWidth
+		, rect.GetHeight() // nHeight
+		, TRUE             // bRepaint
+		);
 }

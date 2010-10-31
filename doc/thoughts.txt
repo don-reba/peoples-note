@@ -2679,4 +2679,19 @@ note list scrolling does not update after adding an ink note
 should maximize the note editor window when the toolbar is hidden
 	can copy the resizing code from the note view window
 	aside: interesting how similar these windows are becoming
-	TODO
+	how to resize the editor view window
+		4 states
+			maximized, sip
+				extended sipInfo.rcVisibleDesktop
+			maximized, no sip
+				CM_CXSCREEN x CM_CYSCREEN - menuBarRect
+			restored, sip
+				sipInfo.rcVisibleDesktop
+			restored, no sip
+				SPI_GETWORKAREA - menuBarRect
+		so, basically
+		get sipInfo.rcVisibleDesktop
+		if isMaximized
+			extend to the upper edge
+		if no sip
+			subtract menuBarRect

@@ -76,7 +76,7 @@ private:
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 
-	void UpdateFullScreen();
+	void UpdateWindowState();
 
 // window message handlers
 

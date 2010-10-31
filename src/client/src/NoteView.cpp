@@ -134,7 +134,7 @@ bool NoteView::IsMaximized()
 void NoteView::MaximizeWindow()
 {
 	isMaximized = true;
-	UpdateFullScreen();
+	UpdateWindowState();
 }
 
 void NoteView::Render(Thumbnail & thumbnail)
@@ -149,7 +149,7 @@ void NoteView::Render(Thumbnail & thumbnail)
 void NoteView::RestoreWindow()
 {
 	isMaximized = false;
-	UpdateFullScreen();
+	UpdateWindowState();
 }
 
 void NoteView::SetNote
@@ -213,7 +213,7 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void NoteView::UpdateFullScreen()
+void NoteView::UpdateWindowState()
 {
 	::SHFullScreen
 		( hwnd_
@@ -258,7 +258,7 @@ void NoteView::UpdateFullScreen()
 void NoteView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
 	if (msg.GetActiveState() != WA_INACTIVE)
-		UpdateFullScreen();
+		UpdateWindowState();
 }
 
 void NoteView::OnClose(Msg<WM_CLOSE> & msg)

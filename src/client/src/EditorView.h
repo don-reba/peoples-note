@@ -15,6 +15,8 @@ private:
 	HINSTANCE      instance;
 	SHACTIVATEINFO activateInfo;
 
+	bool isMaximized;
+
 	Note note;
 
 	signal SignalAccept;
