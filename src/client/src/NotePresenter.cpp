@@ -31,8 +31,9 @@ NotePresenter::NotePresenter
 	, userModel        (userModel)
 	, enNoteTranslator (enNoteTranslator)
 {
-	noteListView.ConnectOpenNote (bind(&NotePresenter::OnOpenNote,    this));
-	noteView.ConnectClose        (bind(&NotePresenter::OnCloseNote,   this));
+	noteListView.ConnectOpenNote   (bind(&NotePresenter::OnOpenNote,       this));
+	noteView.ConnectClose          (bind(&NotePresenter::OnCloseNote,      this));
+	noteView.ConnectToggleMaximize (bind(&NotePresenter::OnToggleMaximize, this));
 }
 
 //---------------
@@ -111,4 +112,12 @@ void NotePresenter::OnOpenNote()
 
 	noteView.SetNote(note, note.name, subtitle, html);
 	noteView.Show();
+}
+
+void NotePresenter::OnToggleMaximize()
+{
+	if (noteView.IsMaximized())
+		noteView.RestoreWindow();
+	else
+		noteView.MaximizeWindow();
 }

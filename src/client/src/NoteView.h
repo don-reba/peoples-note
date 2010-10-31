@@ -15,10 +15,11 @@ private:
 	Note note;
 
 	bool isDirty;
-	bool isFullScreen;
+	bool isMaximized;
 
 	signal SignalClose;
 	signal SignalEdit;
+	signal SignalToggleMaximize;
 
 // interface
 
@@ -38,6 +39,8 @@ public:
 
 	virtual void ConnectEdit(slot_type OnEdit);
 
+	virtual void ConnectToggleMaximize(slot_type OnToggleMaximize);
+
 	virtual void GetBody(std::wstring & html);
 
 	virtual void GetNote(Note & note);
@@ -48,7 +51,13 @@ public:
 
 	virtual bool IsDirty();
 
+	virtual bool IsMaximized();
+
+	virtual void MaximizeWindow();
+
 	virtual void Render(Thumbnail & thumbnail);
+
+	virtual void RestoreWindow();
 
 	virtual void SetNote
 		( const Note         & note
@@ -83,8 +92,8 @@ private:
 
 private:
 
-	void OnEdit       (BEHAVIOR_EVENT_PARAMS * params);
-	void OnFullScreen (BEHAVIOR_EVENT_PARAMS * params);
-	void OnHome       (BEHAVIOR_EVENT_PARAMS * params);
-	void OnInput      (BEHAVIOR_EVENT_PARAMS * params);
+	void OnEdit   (BEHAVIOR_EVENT_PARAMS * params);
+	void OnToggle (BEHAVIOR_EVENT_PARAMS * params);
+	void OnHome   (BEHAVIOR_EVENT_PARAMS * params);
+	void OnInput  (BEHAVIOR_EVENT_PARAMS * params);
 };

@@ -34,4 +34,5 @@ private:
 
 	void OnCloseNote();
 	void OnOpenNote();
+	void OnToggleMaximize();
 };

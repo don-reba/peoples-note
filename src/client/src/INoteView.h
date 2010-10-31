@@ -14,6 +14,8 @@ public:
 
 	virtual void ConnectEdit(slot_type OnEdit) = 0;
 
+	virtual void ConnectToggleMaximize(slot_type OnToggleMaximize) = 0;
+
 	virtual void GetBody(std::wstring & html) = 0;
 
 	virtual void GetNote(Note & note) = 0;
@@ -24,7 +26,13 @@ public:
 
 	virtual bool IsDirty() = 0;
 
+	virtual bool IsMaximized() = 0;
+
+	virtual void MaximizeWindow() = 0;
+
 	virtual void Render(Thumbnail & thumbnail) = 0;
+
+	virtual void RestoreWindow() = 0;
 
 	virtual void SetNote
 		( const Note         & note

@@ -2463,7 +2463,7 @@ refactor note list reloading
 		TODO
 	this will also help when implementing advanced search features
 ink note line is too thin on high-resolution displays
-	TODO
+	adding choice of line widths
 ink editor view does not resize itself properly
 	fixed
 note view window "ok" button does not work
@@ -2507,7 +2507,7 @@ notes should never get empty titles
 		probably because it gets all resources for each note
 		only resource Guids, actually
 		still, it is hundreds of querries
-	TODO
+	foreign keys were missing indices
 pen configuration
 	pen can be adjusted by the user
 	pen settings can be restored from the registry
@@ -2676,3 +2676,7 @@ note list scrolling does not update after adding an ink note
 		contentSize is zero
 	looks like it was an HtmLayout bug
 		fixed by updating to version 3.3.2.15
+should maximize the note editor window when the toolbar is hidden
+	can copy the resizing code from the note view window
+	aside: interesting how similar these windows are becoming
+	TODO

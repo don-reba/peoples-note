@@ -13,6 +13,7 @@ public:
 	std::wstring title;
 	std::wstring windowTitle;
 	bool         isDirty;
+	bool         isMaximized;
 	bool         isShown;
 
 	Note note;
@@ -21,6 +22,7 @@ public:
 
 	signal SignalClose;
 	signal SignalEdit;
+	signal SignalToggleMaximize;
 
 public:
 
@@ -29,6 +31,8 @@ public:
 	virtual void ConnectClose(slot_type OnClose);
 
 	virtual void ConnectEdit(slot_type OnEdit);
+
+	virtual void ConnectToggleMaximize(slot_type OnToggleMaximize);
 
 	virtual void GetBody(std::wstring & html);
 
@@ -40,7 +44,13 @@ public:
 
 	virtual bool IsDirty();
 
+	virtual bool IsMaximized();
+
+	virtual void MaximizeWindow();
+
 	virtual void Render(Thumbnail & thumbnail);
+
+	virtual void RestoreWindow();
 
 	virtual void SetNote
 		( const Note         & note

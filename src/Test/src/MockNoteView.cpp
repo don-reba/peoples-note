@@ -6,8 +6,9 @@
 using namespace std;
 
 MockNoteView::MockNoteView()
-	: isDirty (false)
-	, isShown (false)
+	: isDirty     (false)
+	, isMaximized (false)
+	, isShown     (false)
 {
 }
 
@@ -19,6 +20,11 @@ void MockNoteView::ConnectClose(slot_type OnClose)
 void MockNoteView::ConnectEdit(slot_type OnEdit)
 {
 	SignalEdit.connect(OnEdit);
+}
+
+void MockNoteView::ConnectToggleMaximize(slot_type OnToggleMaximize)
+{
+	SignalToggleMaximize.connect(OnToggleMaximize);
 }
 
 void MockNoteView::GetBody(wstring & html)
@@ -46,10 +52,25 @@ bool MockNoteView::IsDirty()
 	return isDirty;
 }
 
+bool MockNoteView::IsMaximized()
+{
+	return isMaximized;
+}
+
+void MockNoteView::MaximizeWindow()
+{
+	isMaximized = true;
+}
+
 void MockNoteView::Render(Thumbnail & thumbnail)
 {
 	renderSize.cx = thumbnail.Width;
 	renderSize.cy = thumbnail.Height;
+}
+
+void MockNoteView::RestoreWindow()
+{
+	isMaximized = false;
 }
 
 void MockNoteView::SetNote

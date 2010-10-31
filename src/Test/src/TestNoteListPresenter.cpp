@@ -45,6 +45,7 @@ struct NoteListPresenterFixture
 // test cases
 //-----------
 
+// Note: the output of this test depends on your time zone.
 BOOST_FIXTURE_TEST_CASE
 	( NoteListPresenter_NoteListChanged_Test
 	, NoteListPresenterFixture
@@ -81,15 +82,15 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_REQUIRE_EQUAL(noteListView.notes.size(), 3);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(0).html
-		, L"<img #thumb src=\"thumb:{0}\"/><text #time>1970-01-01 02:00</text><text #title>Note</text>"
+		, L"<img #thumb src=\"thumb:{0}\"/><text #time>1970-01-01 01:00</text><text #title>Note</text>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(1).html
-		, L"<img #thumb src=\"thumb:{1}\"/><text #time>1970-01-01 02:00</text><text #title></text>"
+		, L"<img #thumb src=\"thumb:{1}\"/><text #time>1970-01-01 01:00</text><text #title></text>"
 		);
 	BOOST_CHECK_EQUAL
 		( noteListView.notes.at(2).html
-		, L"<img #thumb src=\"thumb:{2}\"/><text #time>1970-01-01 02:00</text><text #title>&lt;td id=&quot;</text>"
+		, L"<img #thumb src=\"thumb:{2}\"/><text #time>1970-01-01 01:00</text><text #title>&lt;td id=&quot;</text>"
 		);
 
 	BOOST_CHECK_EQUAL(noteListView.syncText, L"3");

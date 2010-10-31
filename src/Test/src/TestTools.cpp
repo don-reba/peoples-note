@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(ToolsUnixTimeToSystemTime_Test)
 	BOOST_CHECK_EQUAL(systemTime.wYear,         1970);
 	BOOST_CHECK_EQUAL(systemTime.wMonth,        1);
 	BOOST_CHECK_EQUAL(systemTime.wDay,          1);
-	BOOST_CHECK_EQUAL(systemTime.wHour,         2);
+	BOOST_CHECK_EQUAL(systemTime.wHour,         1);
 	BOOST_CHECK_EQUAL(systemTime.wMinute,       0);
 	BOOST_CHECK_EQUAL(systemTime.wSecond,       0);
 	BOOST_CHECK_EQUAL(systemTime.wMilliseconds, 0);
