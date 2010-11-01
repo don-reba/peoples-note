@@ -95,5 +95,5 @@ public:
 
 	virtual void UpdateNotes() = 0;
 
-	virtual void UpdateThumbnail(const Guid & guid) = 0;
+	virtual void UpdateThumbnail(const Guid & note) = 0;
 };

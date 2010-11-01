@@ -188,7 +188,7 @@ void NoteStore::ListEntries
 	chunk.updateCount  = 1;
 	while (chunk.chunkHighUSN < chunk.updateCount)
 	{
-		chunk = noteStore.getSyncChunk(token, chunk.chunkHighUSN, 20, true);
+		chunk = noteStore.getSyncChunk(token, chunk.chunkHighUSN, 150, true);
 		ListEntries(chunk, 0, notes, notebooks, tags, notebookFilter);
 	}
 }
@@ -341,9 +341,25 @@ void NoteStore::ListEntries
 	wstring notebookFilterGuid(ConvertToUnicode(notebookFilter));
 	if (!notebookFilter.IsLocal())
 	{
+		int noteCount(0);
 		foreach (const EDAM::Types::Note & note, chunk.notes)
 		{
 			if (note.__isset.active && !note.active)
+				continue;
+			if (note.updateSequenceNum <= globalUpdateCount)
+				continue;
+			if (note.notebookGuid != notebookFilterGuid)
+				continue;
+			++noteCount;
+		}
+		notes.clear();
+		notes.reserve(noteCount);
+
+		foreach (const EDAM::Types::Note & note, chunk.notes)
+		{
+			if (note.__isset.active && !note.active)
+				continue;
+			if (note.updateSequenceNum <= globalUpdateCount)
 				continue;
 			if (note.notebookGuid != notebookFilterGuid)
 				continue;
@@ -362,7 +378,15 @@ void NoteStore::ListEntries
 			notes.back().usn     = notes.back().note.usn;
 			notes.back().isDirty = notes.back().note.isDirty;
 
-			// WARN: might be slow for large resource counts
+			int resourceCount(0);
+			foreach (const EDAM::Types::Resource & resource, note.resources)
+			{
+				if (resource.noteGuid == note.guid)
+					++resourceCount;
+			}
+			notes.back().resources.clear();
+			notes.back().resources.reserve(resourceCount);
+
 			foreach (const EDAM::Types::Resource & resource, note.resources)
 			{
 				if (resource.noteGuid == note.guid)

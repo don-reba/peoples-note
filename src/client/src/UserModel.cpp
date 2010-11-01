@@ -139,7 +139,8 @@ void UserModel::AddNote
 		IDataStore::Statement updateNote = dataStore.MakeStatement
 			( "UPDATE Notes"
 			"  SET    guid = ?, usn = ?, creationDate = ?, title = ?,"
-			"         body = ?, isDirty = ?, notebook = ?"
+			"         body = ?, isDirty = ?, notebook = ?, thumbnail = NULL,"
+			"         thumbnailWidth = 0, thumbnailHeight = 0"
 			"  WHERE  rowid = ?"
 			);
 		updateNote->Bind(1, note.guid);

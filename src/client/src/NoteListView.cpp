@@ -366,10 +366,10 @@ void NoteListView::UpdateNotes()
 	UpdateScrollbar();
 }
 
-void NoteListView::UpdateThumbnail(const Guid & guid)
+void NoteListView::UpdateThumbnail(const Guid & note)
 {
 	wstring uri(L"thumb:");
-	uri.append(ConvertToUnicode(guid));
+	uri.append(ConvertToUnicode(note));
 	SetHtmlUri(uri.c_str());
 
 	SignalLoadHtmlData();

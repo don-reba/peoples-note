@@ -1,11 +1,8 @@
 #pragma once
-#ifdef POCKETPC2003_UI_MODEL
-#include "resourceppc.h"
-#endif 
+#include "INoteListView.h"
 
 #include "HTMLayoutWindow.h"
 #include "IAnimator.h"
-#include "INoteListView.h"
 #include "NoteView.h"
 
 class NoteListView : public HTMLayoutWindow, public INoteListView
@@ -176,7 +173,7 @@ public:
 
 	virtual void UpdateNotes();
 
-	virtual void UpdateThumbnail(const Guid & guid);
+	virtual void UpdateThumbnail(const Guid & note);
 
 // utility functions
 

@@ -2578,7 +2578,10 @@ storing db on the storage card
 				does not apply to the anonymous case
 note update
 	does not seem to update local resources
-	TODO
+	testing shows that it downloads updated images
+	the updated note is added, not updated, for some reason
+	this is because updating is for locally modified notes
+	resources do not need to be udpated in this case
 do I need both Credentials and ICredentialsModel?
 	TODO
 how should LoadAs handle folder choice?
@@ -2695,3 +2698,9 @@ should maximize the note editor window when the toolbar is hidden
 			extend to the upper edge
 		if no sip
 			subtract menuBarRect
+note thumbnails are not updated after sync
+	could delete thumbnails for updated notes
+	what happens is the new note is added
+	not enough
+	need to refresh the thumbnail image in note list view
+	TODO
