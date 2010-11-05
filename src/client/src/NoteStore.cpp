@@ -352,8 +352,7 @@ void NoteStore::ListEntries
 				continue;
 			++noteCount;
 		}
-		notes.clear();
-		notes.reserve(noteCount);
+		notes.reserve(notes.size() + noteCount);
 
 		foreach (const EDAM::Types::Note & note, chunk.notes)
 		{
@@ -384,7 +383,6 @@ void NoteStore::ListEntries
 				if (resource.noteGuid == note.guid)
 					++resourceCount;
 			}
-			notes.back().resources.clear();
 			notes.back().resources.reserve(resourceCount);
 
 			foreach (const EDAM::Types::Resource & resource, note.resources)

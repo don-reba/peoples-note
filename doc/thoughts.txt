@@ -2703,4 +2703,17 @@ note thumbnails are not updated after sync
 	what happens is the new note is added
 	not enough
 	need to refresh the thumbnail image in note list view
+	want to avoid caching all thumbnails
 	TODO
+need to revisit note updating
+	TODO
+default notebook changes are not synchronized
+	TODO
+it looks like there is a problem with replaced ink notes
+	generating a thumbnail
+	can't find a resource
+	offline client shows the note as a binary attachment
+	offline client continues to show the correct thumbnail
+	hypothesis
+		sync changes hash
+	lets check a new note

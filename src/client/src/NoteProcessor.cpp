@@ -73,6 +73,12 @@ void NoteProcessor::Create(const EnInteropNote & local)
 
 	userModel.DeleteNote(local.note.guid);
 	userModel.AddNote(replacement, body, bodyText, notebook);
+
+	foreach (Resource & resource, resources)
+	{
+		resource.Note = replacement.guid;
+		userModel.AddResource(resource);
+	}
 }
 
 void NoteProcessor::Merge
