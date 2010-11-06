@@ -173,13 +173,14 @@ void UserModel::AddNotebook(const Notebook & notebook)
 void UserModel::AddResource(const Resource & resource)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Resources(guid, hash, data, note)"
-		"  VALUES (?, ?, ?, ?)"
+		( "INSERT OR REPLACE INTO Resources(guid, hash, data, mime, note)"
+		"  VALUES (?, ?, ?, ?, ?)"
 		);
 	statement->Bind(1, resource.Guid);
 	statement->Bind(2, resource.Hash);
 	statement->Bind(3, resource.Data);
-	statement->Bind(4, resource.Note);
+	statement->Bind(4, resource.Mime);
+	statement->Bind(5, resource.Note);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -849,11 +850,6 @@ void UserModel::LoadOrCreate(const wstring & username)
 		Create(path, DbLocationDevice);
 		Initialize(username);
 	}
-	else
-	{
-		if (GetVersion() > 0)
-			throw std::exception("Incorrect database version.");
-	}
 	Update();
 	SignalLoaded();
 }
@@ -1036,11 +1032,6 @@ wstring UserModel::CreatePathFromName
 	return stream.str();
 }
 
-void UserModel::CreateTable(const char * sql)
-{
-	dataStore.MakeStatement(sql)->Execute();
-}
-
 void UserModel::GetFirstNotebook(Notebook & notebook)
 {
 	Transaction transaction(*this);
@@ -1071,19 +1062,19 @@ void UserModel::GetFirstNotebook(Notebook & notebook)
 
 void UserModel::Initialize(wstring name)
 {
-	CreateTable
+	dataStore.MakeStatement
 		( "CREATE TABLE Properties"
 			"( key PRIMARY KEY"
 			", value NOT NULL"
 			")"
-		);
-	SetProperty(L"version",      0);
+		)->Execute();
+	SetProperty(L"version",      1);
 	SetProperty(L"username",     name);
 	SetProperty(L"password",     L"");
 	SetProperty(L"lastSyncTime", 0);
 	SetProperty(L"updateCount",  0);
 
-	CreateTable
+	dataStore.MakeStatement
 		( "CREATE TABLE Notebooks"
 			"( guid PRIMARY KEY"
 			", usn"
@@ -1093,16 +1084,16 @@ void UserModel::Initialize(wstring name)
 			", isDefault  DEFAULT 0"
 			", isLastUsed DEFAULT 0"
 			")"
-		);
+		)->Execute();
 
-	CreateTable
+	dataStore.MakeStatement
 		( "CREATE VIRTUAL TABLE NoteText USING fts3"
 			"( title"
 			", body"
 			")"
-		);
+		)->Execute();
 
-	CreateTable
+	dataStore.MakeStatement
 		( "CREATE TABLE Notes"
 			"( guid PRIMARY KEY"
 			", usn"
@@ -1115,42 +1106,51 @@ void UserModel::Initialize(wstring name)
 			", thumbnailHeight DEFAULT 0"
 			", notebook REFERENCES Notebooks(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
-		);
+		)->Execute();
 
-	CreateTable("CREATE INDEX NotesNotebooks ON Notes(notebook)");
+	dataStore.MakeStatement
+		( "CREATE INDEX NotesNotebooks ON Notes(notebook)"
+		)->Execute();
 
-	CreateTable
+	dataStore.MakeStatement
 		( "CREATE TABLE Resources"
 			"( guid PRIMARY KEY"
 			", hash UNIQUE"
 			", data"
+			", mime"
 			", note REFERENCES Notes(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
-		);
+		)->Execute();
 
-	CreateTable("CREATE INDEX ResourcesNote ON Resources(note)");
+	dataStore.MakeStatement
+		( "CREATE INDEX ResourcesNote ON Resources(note)"
+		)->Execute();
 
-	CreateTable
+	dataStore.MakeStatement
 		( "CREATE TABLE Tags"
 			"( guid PRIMARY KEY"
 			", usn"
 			", name"
 			", isDirty"
 			")"
-		);
+		)->Execute();
 
-	CreateTable
+	dataStore.MakeStatement
 		( "CREATE TABLE NoteTags"
 			"( note REFERENCES Notes(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			", tag  REFERENCES Tags(guid)  ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
-		);
+		)->Execute();
 }
 
-void UserModel::SetPragma(const char * sql)
+void UserModel::MigrateFrom0To1()
 {
-	dataStore.MakeStatement(sql)->Execute();
+	dataStore.MakeStatement
+		( "ALTER TABLE Resources ADD COLUMN mime"
+		)->Execute();
+	SetProperty(L"version", 1);
 }
+
 void UserModel::Move
 	( const wstring & oldPath
 	, const wstring & newPath
@@ -1162,6 +1162,11 @@ void UserModel::Move
 	Load(username);
 	if (result == FALSE)
 		throw std::exception("Could not move database.");
+}
+
+void UserModel::SetPragma(const char * sql)
+{
+	dataStore.MakeStatement(sql)->Execute();
 }
 
 bool UserModel::TryLoad(const wstring & path, DbLocation location)
@@ -1176,6 +1181,16 @@ void UserModel::Update()
 	//SetPragma("PRAGMA locking_mode = EXCLUSIVE");
 	SetPragma("PRAGMA synchronous = NORMAL");
 	Transaction transaction(*this);
+	switch (GetVersion())
+	{
+	case 0:
+		MigrateFrom0To1();
+		break;
+	case 1:
+		break;
+	default:
+		throw std::exception("Incorrect database version.");
+	}
 	if (GetNotebookCount() == 0)
 	{
 		Notebook notebook;

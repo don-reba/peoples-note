@@ -60,6 +60,7 @@ void PhotoEditorPresenter::OnCapture()
 	}
 	image.Hash = HashWithMD5(image.Data);
 	image.Note = note.guid;
+	image.Mime = L"image/jpeg";
 
 	// create note body referencing resource by hash
 	wstring body =

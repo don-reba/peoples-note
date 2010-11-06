@@ -205,14 +205,14 @@ private:
 		, const std::wstring & name
 		);
 
-	void CreateTable(const char * sql);
-
 	void GetFirstNotebook(Notebook & notebook);
 
 	template<typename T>
 	void GetProperty(const std::wstring & name, T & value);
 
 	void Initialize(std::wstring name);
+
+	void MigrateFrom0To1();
 
 	void Move
 		( const std::wstring & oldPath

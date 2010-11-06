@@ -46,6 +46,9 @@ void SyncPresenter::OnSyncComplete()
 	userModel.GetNotesByNotebook(notebook, notes);
 	noteListModel.SetNotes(notes);
 
+	foreach (Note & note, notes)
+		noteListView.UpdateThumbnail(note.guid);
+
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
 

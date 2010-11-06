@@ -2708,6 +2708,11 @@ note thumbnails are not updated after sync
 need to revisit note updating
 	TODO
 default notebook changes are not synchronized
+	what is missing?
+	when note processor fetches a note, it should check defaultness
+	but note store does not get that information
+		no point in storing it in the note structure
+		just add a boolean output parameter
 	TODO
 it looks like there is a problem with replaced ink notes
 	generating a thumbnail
@@ -2717,3 +2722,15 @@ it looks like there is a problem with replaced ink notes
 	hypothesis
 		sync changes hash
 	lets check a new note
+	no, the replacement always has the same body
+	note deletions cascade to resources
+other clients are not recognizing my image notes
+	turns out, I had to set resource mime type
+	but where do I get it from?
+	have to store it in the database
+need to update EnImporter tests
+	done
+is version checked in all load paths?
+	no
+	should move version checking into Update
+		which is called in all load paths

@@ -64,9 +64,13 @@ void NoteStore::CreateNote
 	for (int i(0); i != resources.size(); ++i)
 	{
 		EDAM::Types::Resource & resource(enNote.resources.at(i));
+
 		resource.__isset.data = true;
 		resource.data.__isset.body = true;
 		resource.data.__isset.size = true;
+
+		resource.__isset.mime = true;
+		resource.mime = L"image/jpeg";
 
 		copy
 			( resources.at(i).Data.begin()
@@ -157,6 +161,7 @@ void NoteStore::GetNoteResource
 	resource.Hash = HashWithMD5(resource.Data);
 	resource.Guid = enResource.guid;
 	resource.Note = enResource.noteGuid;
+	resource.Mime = enResource.mime;
 }
 
 void NoteStore::GetNoteTagNames

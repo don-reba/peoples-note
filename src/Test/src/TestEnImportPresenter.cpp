@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
 	EnNoteTranslator  enNoteTranslator;
 	MockEnImporter    enImporter;
 	MockNoteListModel noteListModel;
-	MockNoteListView  noteListView;
+	MockNoteListView	  noteListView;
 	MockUserModel     userModel;
 
 	EnImportPresenter enImportPresenter
@@ -129,6 +129,7 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
 	BYTE data[] = { 2, 3, 5, 7 };
 	PushArray(enImporter.resources.back().Data, data);
 	enImporter.resources.back().Note = guid;
+	enImporter.resources.back().Mime = L"mime/type";
 
 	noteListView.hasEnexPath = true;
 	noteListView.enexPath    = L"data\\Mixed.enex";
@@ -138,4 +139,5 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Resourceimport_Test)
 	BOOST_REQUIRE_EQUAL(userModel.resources.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.resources.at(0).Data.size(), 4);
 	BOOST_CHECK_EQUAL(userModel.resources.at(0).Note, guid);
+	BOOST_CHECK_EQUAL(userModel.resources.at(0).Mime, L"mime/type");
 }

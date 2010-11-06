@@ -65,18 +65,21 @@ void EnImporter::ImportNotes
 				if (0 == wcscmp(noteNode->name(), L"resource"))
 				{
 					xml_node<wchar_t> * resourceNode(noteNode->first_node());
+					resources.push_back(Resource());
 					while (resourceNode)
 					{
 						if (0 == wcscmp(resourceNode->name(), L"data"))
 						{
-							resources.push_back(Resource());
 							resources.back().Note = guid;
 							Tools::DecodeBase64
 								( resourceNode->value()
 								, resources.back().Data
 								);
 							resources.back().Hash = HashWithMD5(resources.back().Data);
-							break;
+						}
+						else if (0 == wcscmp(resourceNode->name(), L"mime"))
+						{
+							resources.back().Mime = resourceNode->value();
 						}
 						resourceNode = resourceNode->next_sibling();
 					}
