@@ -125,4 +125,6 @@ private:
 	void Sync();
 
 	static DWORD WINAPI Sync(LPVOID param);
+
+	void UpdateDefaultNotebook(INoteStore & noteStore);
 };

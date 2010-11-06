@@ -132,9 +132,9 @@ public:
 
 	virtual void LoadOrCreate(const std::wstring & username) = 0;
 
-	virtual void MakeNotebookDefault(const Notebook & notebook) = 0;
+	virtual void MakeNotebookDefault(const Guid & notebook) = 0;
 
-	virtual void MakeNotebookLastUsed(const Notebook & notebook) = 0;
+	virtual void MakeNotebookLastUsed(const Guid & notebook) = 0;
 
 	virtual void MoveToCard() = 0;
 

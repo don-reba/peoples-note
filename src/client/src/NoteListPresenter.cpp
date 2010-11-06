@@ -197,7 +197,7 @@ void NoteListPresenter::UpdateActiveNotebook()
 		( noteListView.GetSelectedNotebookGuid()
 		, notebook
 		);
-	userModel.MakeNotebookLastUsed(notebook);
+	userModel.MakeNotebookLastUsed(notebook.guid);
 }
 
 void NoteListPresenter::UpdateNotebookListView()

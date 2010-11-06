@@ -51,6 +51,8 @@ public:
 		, Tag       & replacement
 		);
 
+	virtual void GetDefaultNotebook(Guid & notebook);
+
 	virtual void GetNoteBody
 		( const Note   & note
 		, std::wstring & content

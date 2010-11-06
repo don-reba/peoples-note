@@ -553,6 +553,7 @@ void SyncModel::Sync()
 		ProcessNotebooks (remoteNotebooks, *noteStore, fullSync);
 		ProcessTags      (remoteTags,      *noteStore, fullSync);
 
+		UpdateDefaultNotebook(*noteStore);
 		userModel.GetLastUsedNotebook(notebook);
 
 		ProcessNotes(remoteNotes, *noteStore, notebook, fullSync);
@@ -614,4 +615,11 @@ DWORD WINAPI SyncModel::Sync(LPVOID param)
 {
 	reinterpret_cast<SyncModel*>(param)->Sync();
 	return 0;
+}
+
+void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
+{
+	Guid defaultNotebook;
+	noteStore.GetDefaultNotebook(defaultNotebook);
+	userModel.MakeNotebookDefault(defaultNotebook);
 }

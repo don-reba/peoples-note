@@ -152,9 +152,9 @@ public:
 
 	virtual void LoadOrCreate(const std::wstring & username);
 
-	virtual void MakeNotebookDefault(const Notebook & notebook);
+	virtual void MakeNotebookDefault(const Guid & notebook);
 
-	virtual void MakeNotebookLastUsed(const Notebook & notebook);
+	virtual void MakeNotebookLastUsed(const Guid & notebook);
 
 	virtual void MoveToCard();
 

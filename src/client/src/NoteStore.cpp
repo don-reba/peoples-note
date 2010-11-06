@@ -129,6 +129,12 @@ void NoteStore::CreateTag
 	replacement.isDirty = false;
 }
 
+void NoteStore::GetDefaultNotebook(Guid & notebook)
+{
+	EDAM::Types::Notebook enNotebook(noteStore.getDefaultNotebook(token));
+	notebook = enNotebook.guid;
+}
+
 void NoteStore::GetNoteBody
 	( const Note & note
 	, wstring    & content

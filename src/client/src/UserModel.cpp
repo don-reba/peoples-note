@@ -263,20 +263,16 @@ void UserModel::DeleteNotebook(const Guid & notebook)
 {
 	Transaction transaction(*this);
 
-	bool isDefault, isLastUsed;
+	bool isLastUsed;
 	{
 		IDataStore::Statement statement = dataStore.MakeStatement
-			( "SELECT isDefault, isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
+			( "SELECT isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
 			);
 		statement->Bind(1, notebook);
 		if (statement->Execute())
 			return;
-		statement->Get(0, isDefault);
-		statement->Get(1, isLastUsed);
+		statement->Get(0, isLastUsed);
 	}
-
-	if (isDefault)
-		throw std::exception("Cannot delete the default notebook.");
 
 	{
 		IDataStore::Statement statement = dataStore.MakeStatement
@@ -290,8 +286,8 @@ void UserModel::DeleteNotebook(const Guid & notebook)
 	if (isLastUsed)
 	{
 		Notebook notebook;
-		GetDefaultNotebook(notebook);
-		MakeNotebookLastUsed(notebook);
+		GetFirstNotebook(notebook);
+		MakeNotebookLastUsed(notebook.guid);
 	}
 }
 
@@ -388,7 +384,7 @@ void UserModel::GetLastUsedNotebook(Notebook & notebook)
 	if (statement->Execute())
 	{
 		GetFirstNotebook(notebook);
-		MakeNotebookLastUsed(notebook);
+		MakeNotebookLastUsed(notebook.guid);
 		return;
 	}
 	wstring guidString;
@@ -854,7 +850,7 @@ void UserModel::LoadOrCreate(const wstring & username)
 	SignalLoaded();
 }
 
-void UserModel::MakeNotebookDefault(const Notebook & notebook)
+void UserModel::MakeNotebookDefault(const Guid & notebook)
 {
 	IDataStore::Statement removeOld = dataStore.MakeStatement
 		( "UPDATE Notebooks"
@@ -868,11 +864,11 @@ void UserModel::MakeNotebookDefault(const Notebook & notebook)
 		"  SET isDefault = 1"
 		"  WHERE guid = ?"
 		);
-	setNew->Bind(1, notebook.guid);
+	setNew->Bind(1, notebook);
 	setNew->Execute();
 }
 
-void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
+void UserModel::MakeNotebookLastUsed(const Guid & notebook)
 {
 	IDataStore::Statement removeOld = dataStore.MakeStatement
 		( "UPDATE Notebooks"
@@ -886,7 +882,7 @@ void UserModel::MakeNotebookLastUsed(const Notebook & notebook)
 		"  SET isLastUsed = 1"
 		"  WHERE guid = ?"
 		);
-	setNew->Bind(1, notebook.guid);
+	setNew->Bind(1, notebook);
 	setNew->Execute();
 }
 
@@ -1049,8 +1045,8 @@ void UserModel::GetFirstNotebook(Notebook & notebook)
 		notebook.isDirty = true;
 		notebook.usn     = GetUpdateCount();
 		AddNotebook(notebook);
-		MakeNotebookDefault(notebook);
-		MakeNotebookLastUsed(notebook);
+		MakeNotebookDefault(notebook.guid);
+		MakeNotebookLastUsed(notebook.guid);
 	}
 	wstring guidString;
 	statement->Get(0, guidString);
@@ -1198,7 +1194,7 @@ void UserModel::Update()
 		notebook.isDirty = true;
 		notebook.usn     = GetUpdateCount();
 		AddNotebook(notebook);
-		MakeNotebookDefault(notebook);
-		MakeNotebookLastUsed(notebook);
+		MakeNotebookDefault(notebook.guid);
+		MakeNotebookLastUsed(notebook.guid);
 	}
 }
