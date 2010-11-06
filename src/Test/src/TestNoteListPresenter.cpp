@@ -182,7 +182,6 @@ BOOST_FIXTURE_TEST_CASE
 	)
 {
 	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"notebook-0";
 	userModel.notebooks.back().guid = noteListView.selectedNotebookGuid;
 
 	userModel.notes.push_back(Note());
@@ -196,13 +195,13 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.SignalNotebookSelected();
 
 	BOOST_CHECK_EQUAL
-		( userModel.lastUsedNotebook.guid
+		( userModel.lastUsedNotebook
 		, noteListView.selectedNotebookGuid
 		);
 
 	BOOST_CHECK(noteListModel.isReloaded);
 
-	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"notebook-0");
+	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
 }
 
 BOOST_FIXTURE_TEST_CASE

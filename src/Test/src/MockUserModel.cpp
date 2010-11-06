@@ -14,8 +14,6 @@ MockUserModel::MockUserModel()
 	, path             (L"card-path")
 	, size             (42)
 {
-	defaultNotebook.name  = L"default-notebook";
-	lastUsedNotebook.name = L"last-used-notebook";
 }
 
 void MockUserModel::AddNote
@@ -102,7 +100,8 @@ void MockUserModel::GetCredentials(Credentials & credentials)
 
 void MockUserModel::GetDefaultNotebook(Notebook & notebook)
 {
-	notebook = defaultNotebook;
+	notebook.guid = defaultNotebook;
+	notebook.name = L"default-notebook";
 }
 
 int MockUserModel::GetDirtyNoteCount(const Notebook & notebook)
@@ -128,7 +127,8 @@ __int64 MockUserModel::GetLastSyncEnTime()
 
 void MockUserModel::GetLastUsedNotebook(Notebook & notebook)
 {
-	notebook = lastUsedNotebook;
+	notebook.guid = lastUsedNotebook;
+	notebook.name = L"last-used-notebook";
 }
 
 DbLocation MockUserModel::GetLocation()
@@ -320,12 +320,12 @@ void MockUserModel::LoadOrCreate(const wstring & username)
 	loadMethod = LoadMethodLoadOrCreate;
 }
 
-void MockUserModel::MakeNotebookDefault(const Notebook & notebook)
+void MockUserModel::MakeNotebookDefault(const Guid & notebook)
 {
 	defaultNotebook = notebook;
 }
 
-void MockUserModel::MakeNotebookLastUsed(const Notebook & notebook)
+void MockUserModel::MakeNotebookLastUsed(const Guid & notebook)
 {
 	lastUsedNotebook = notebook;
 }

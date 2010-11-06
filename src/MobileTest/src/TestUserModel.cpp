@@ -257,7 +257,7 @@ FIXTURE_TEST_CASE(UserModelDeleteNotebook, DataStoreFixture)
 
 	Notebook newNotebook;
 	userModel.AddNotebook(newNotebook);
-	userModel.MakeNotebookLastUsed(newNotebook);
+	userModel.MakeNotebookLastUsed(newNotebook.guid);
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 
 	Notebook lastUsedNotebook;
@@ -347,7 +347,7 @@ FIXTURE_TEST_CASE(UserModelDefaultNotebook, DataStoreFixture)
 	Notebook notebook;
 	notebook.name = L"test-notebook";
 	userModel.AddNotebook(notebook);
-	userModel.MakeNotebookDefault(notebook);
+	userModel.MakeNotebookDefault(notebook.guid);
 
 	Notebook defaultNotebook;
 	userModel.GetDefaultNotebook(defaultNotebook);
@@ -544,7 +544,7 @@ FIXTURE_TEST_CASE(UserModelLastUsedNotebook, DataStoreFixture)
 	userModel.AddNotebook(notebook0);
 	userModel.AddNotebook(notebook1);
 	userModel.AddNotebook(notebook2);
-	userModel.MakeNotebookLastUsed(notebook1);
+	userModel.MakeNotebookLastUsed(notebook1.guid);
 
 	Notebook lastUsedNotebook;
 	lastUsedNotebook.isDirty = false;

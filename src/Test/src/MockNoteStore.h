@@ -41,6 +41,8 @@ public:
 	Notebook replacementNotebook;
 	Tag      replacementTag;
 
+	Guid defaultNotebook;
+
 	Guid notebookFilter;
 
 	SyncState syncState;
@@ -64,6 +66,8 @@ public:
 		( const Tag & tag
 		, Tag       & replacement
 		);
+
+	virtual void GetDefaultNotebook(Guid & notebook);
 
 	virtual void GetNoteBody
 		( const Note   & note

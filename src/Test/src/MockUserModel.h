@@ -69,8 +69,8 @@ public:
 
 	Credentials credentials;
 
-	Notebook defaultNotebook;
-	Notebook lastUsedNotebook;
+	Guid defaultNotebook;
+	Guid lastUsedNotebook;
 
 	NotebookList notebooks;
 	NoteList     notes;
@@ -234,9 +234,9 @@ public:
 
 	virtual void LoadOrCreate(const std::wstring & name);
 
-	virtual void MakeNotebookDefault(const Notebook & notebook);
+	virtual void MakeNotebookDefault(const Guid & notebook);
 
-	virtual void MakeNotebookLastUsed(const Notebook & notebook);
+	virtual void MakeNotebookLastUsed(const Guid & notebook);
 
 	virtual void MoveToCard();
 

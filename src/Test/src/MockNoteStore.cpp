@@ -41,6 +41,11 @@ void MockNoteStore::CreateTag
 	replacement = replacementTag;
 }
 
+void MockNoteStore::GetDefaultNotebook(Guid & notebook)
+{
+	notebook = defaultNotebook;
+}
+
 void MockNoteStore::GetNoteBody
 	( const Note   & note
 	, std::wstring & content
