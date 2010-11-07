@@ -229,7 +229,8 @@
 				ExecutionBucket="7"
 				Optimization="2"
 				FavorSizeOrSpeed="2"
-				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;..\HTMLayout\include;&quot;..\Evernote API\include&quot;"
+				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_OMIT_UTF16;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -250,6 +251,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.01"
+				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; &quot;$(SolutionDir)Evernote API\$(PlatformName)\$(ConfigurationName)\Evernote API.lib&quot; &quot;$(SolutionDir)CallDump\$(PlatformName)\$(ConfigurationName)\CallDump.lib&quot; wininet.lib Imaging.lib note_prj.lib"
 				OutputFile="$(OutDir)/pnote.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
@@ -280,12 +282,13 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy/y &quot;$(TargetDir)$(TargetName).map&quot; &quot;$(SolutionDir)Call Analyzer\data\&quot;"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
-				RemoteDirectory=""
+				RemoteDirectory="%CSIDL_PROGRAM_FILES%\People&apos;s Note"
 				RegisterOutput="0"
-				AdditionalFiles=""
+				AdditionalFiles="htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\People&apos;s Note\|0"
 			/>
 			<DebuggerTool
 			/>
@@ -555,6 +558,14 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Release|Windows Mobile 6 Professional SDK (ARMV4I)"
 					>
 					<Tool
@@ -657,6 +668,14 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
 						WarningLevel="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
