@@ -45,6 +45,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
+				AdditionalIncludeDirectories="$(ProjectDir)"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -86,6 +87,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="assemble &gt;nul"
 			/>
 			<DeploymentTool
 				ForceDirty="-1"
@@ -858,11 +860,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\NoteStore.h"
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
+					RelativePath=".\Evernote\EDAM\NoteStore.h"
 					>
 				</File>
 				<File
@@ -934,11 +936,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
+					RelativePath=".\Evernote\EDAM\UserStore.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Evernote\EDAM\UserStore.h"
+					RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
 					>
 				</File>
 			</Filter>

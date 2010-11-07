@@ -2750,3 +2750,5 @@ is version checked in all load paths?
 	no
 	should move version checking into Update
 		which is called in all load paths
+add an option of forcing full synchronization
+	TODO
