@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ce_setup.h"
 
+#include <fstream>
+
 const wchar_t * const szTargetFilename = L"AppIcon.png";
 
 struct DpiInfo

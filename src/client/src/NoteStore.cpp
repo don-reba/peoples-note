@@ -357,8 +357,6 @@ void NoteStore::ListEntries
 		{
 			if (note.__isset.active && !note.active)
 				continue;
-			if (note.updateSequenceNum <= globalUpdateCount)
-				continue;
 			if (note.notebookGuid != notebookFilterGuid)
 				continue;
 			++noteCount;
@@ -368,8 +366,6 @@ void NoteStore::ListEntries
 		foreach (const EDAM::Types::Note & note, chunk.notes)
 		{
 			if (note.__isset.active && !note.active)
-				continue;
-			if (note.updateSequenceNum <= globalUpdateCount)
 				continue;
 			if (note.notebookGuid != notebookFilterGuid)
 				continue;
