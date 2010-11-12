@@ -43,7 +43,7 @@ void EnImportPresenter::OnImport()
 void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 {
 	wstring fileContents;
-	ReadFile(fileName, fileContents);
+	ReadUtf8File(fileName, fileContents);
 	if (fileContents.empty())
 		return;
 
@@ -74,19 +74,4 @@ void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 		userModel.AddResource(resource);
 
 	noteListModel.Reload();
-}
-
-void EnImportPresenter::ReadFile
-	( const wchar_t * fileName
-	, std::wstring  & contents
-	)
-{
-	basic_ifstream<unsigned char> stream(fileName, ios_base::in | ios_base::binary);
-	vector<unsigned char> text
-		( (istreambuf_iterator<unsigned char>(stream))
-		, istreambuf_iterator<unsigned char>()
-		);
-	text.reserve(text.size() + 1);
-	text.push_back(L'\0');
-	contents = ConvertToUnicode(&text[0]);
 }

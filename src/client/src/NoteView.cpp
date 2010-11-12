@@ -89,7 +89,7 @@ void NoteView::ConnectToggleMaximize(slot_type OnToggleMaximize)
 static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
 {
 	wstring * dst(reinterpret_cast<wstring*>(param));
-	*dst = ConvertToUnicode(utf8);
+	ConvertToUnicode(utf8, *dst);
 }
 
 void NoteView::GetBody(wstring & html)

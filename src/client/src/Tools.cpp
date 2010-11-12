@@ -148,7 +148,10 @@ wstring Tools::ConvertToUnicode(const string & str)
 	return &result[0];
 }
 
-std::wstring Tools::ConvertToUnicode(const unsigned char * str)
+void Tools::ConvertToUnicode
+	( const unsigned char * str
+	, wstring             & result
+	)
 {
 	LPCSTR cStr = reinterpret_cast<LPCSTR>(str);
 	int length = strlen(cStr);
@@ -163,7 +166,7 @@ std::wstring Tools::ConvertToUnicode(const unsigned char * str)
 		, NULL     // lpWideCharStr
 		, 0        // cchWideChar
 		);
-	vector<wchar_t> result(resultSize + 1);
+	result.resize(resultSize + 1);
 	MultiByteToWideChar
 		( codePage   // CodePage
 		, flags      // dwFlags
@@ -172,7 +175,7 @@ std::wstring Tools::ConvertToUnicode(const unsigned char * str)
 		, &result[0] // lpWideCharStr
 		, resultSize // cchWideChar
 		);
-	return &result[0];
+	result.resize(resultSize);
 }
 
 void Tools::DecodeBase64(const wchar_t * text, Blob & data)
@@ -434,6 +437,37 @@ wstring Tools::LoadStringResource(int id)
 	vector<wchar_t> str(1 + *resource);
 	CopyMemory(&str[0], resource + 1, *resource * sizeof(wchar_t));
 	return &str[0];
+}
+
+void Tools::ReadUtf8File
+	( const wchar_t * fileName
+	, std::wstring  & contents
+	)
+{
+	HANDLE file = ::CreateFile
+		( fileName              // lpFileName
+		, GENERIC_READ          // dwDesiredAccess
+		, FILE_SHARE_READ       // dwShareMode
+		, NULL                  // lpSecurityAttributes
+		, OPEN_EXISTING         // dwCreationDisposition
+		, FILE_ATTRIBUTE_NORMAL // dwFlagsAndAttributes
+		, NULL                  // hTemplateFile
+		);
+	if (file == INVALID_HANDLE_VALUE)
+		return;
+
+	DWORD size(::GetFileSize(file, NULL));
+	if (!size)
+		return;
+
+	vector<unsigned char> utf8(size);
+
+	DWORD bytesRead(0);
+	::ReadFile(file, &utf8[0], size, &bytesRead, NULL);
+	if (bytesRead != size)
+		return;
+
+	ConvertToUnicode(&utf8[0], contents);
 }
 
 void Tools::ReplaceAll

@@ -6,6 +6,7 @@
 
 #include "RapidXML/rapidxml.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 
@@ -28,8 +29,9 @@ void EnImporter::ImportNotes
 		typedef xml_document<wchar_t> XmlDocument;
 		auto_ptr<XmlDocument> doc(new XmlDocument());
 
-		vector<wchar_t> textCopy(text.begin(), text.end());
-		textCopy.reserve(textCopy.size() + 1);
+		vector<wchar_t> textCopy;
+		textCopy.reserve(text.size() + 1);
+		copy(text.begin(), text.end(), ::back_inserter(textCopy));
 		textCopy.push_back(L'\0');
 		doc->parse<0>(&textCopy[0]);
 

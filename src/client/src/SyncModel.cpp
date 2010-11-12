@@ -238,7 +238,6 @@ void SyncModel::ProcessNotes
 	EnInteropNoteList local;
 	GetNotes(notebook, local);
 	syncLogger.ListNotes(L"Local notes", local);
-	syncLogger.BeginSyncStage(L"notes");
 
 	vector<SyncLogic::Action<EnInteropNote> > actions;
 	SyncLogic::Sync(fullSync, remote, local, actions);
@@ -246,6 +245,8 @@ void SyncModel::ProcessNotes
 		return;
 
 	NoteProcessor processor(enNoteTranslator, userModel, noteStore, notebook);
+
+	syncLogger.BeginSyncStage(L"notes");
 
 	// count the number of valid actions
 	double actionCount(0.0);

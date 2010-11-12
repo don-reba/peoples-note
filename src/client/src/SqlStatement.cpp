@@ -119,7 +119,7 @@ void SqlStatement::Get(int index, string & text)
 
 void SqlStatement::Get(int index, wstring & text)
 {
-	text = ConvertToUnicode(sqlite3_column_text(statement, index));
+	ConvertToUnicode(sqlite3_column_text(statement, index), text);
 }
 
 bool SqlStatement::IsNull(int index)

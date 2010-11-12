@@ -20,7 +20,10 @@ namespace Tools
 
 	std::wstring ConvertToUnicode(const std::string & str);
 
-	std::wstring ConvertToUnicode(const unsigned char * str);
+	void ConvertToUnicode
+		( const unsigned char * str
+		, std::wstring        & result
+		);
 
 	void DecodeBase64(const wchar_t * text, Blob & data);
 
@@ -35,6 +38,11 @@ namespace Tools
 	std::wstring LoadStringResource(int id);
 
 	std::wstring MakeSizeString(__int64 size);
+
+	void ReadUtf8File
+		( const wchar_t * fileName
+		, std::wstring  & contents
+		);
 
 	void ReplaceAll
 		(       std::wstring & str

@@ -316,7 +316,10 @@ bool UserModel::Exists(const wstring & username)
 	if (INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str()))
 		return true;
 	if (flashCard.GetPath(path))
+	{
+		path = CreatePathFromName(path, username);
 		return INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str());
+	}
 	return false;
 }
 
