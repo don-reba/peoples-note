@@ -129,7 +129,7 @@ ink note creation
 		√ the size of the picture equal to the size of the drawing
 	√ when the user selects "Cancel", the window should close
 photo note creation
-	when the user selects "OK", a camera capture dialog box with the specified settings should be invoked
-	when the user selects "OK", the settings should be saved
-	when the camera capture dialog closes, a photo with the chosen title should be created and the window closed
-	when the user selects "Cancel", the window should close
+	√ when the user selects "OK", a camera capture dialog box with the specified settings should be invoked
+	when the user selects "OK", the settings should be persisted
+	√ when the camera capture dialog closes, a photo with the chosen title should be created and the window closed
+	√ when the user selects "Cancel", the window should close

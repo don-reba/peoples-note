@@ -8,6 +8,9 @@ public:
 	std::wstring imagePath;
 	std::wstring title;
 
+	PhotoQuality    quality;
+	PhotoResolution resolution;
+
 	bool isCaptureInitiated;
 	bool isShown;
 
@@ -21,19 +24,27 @@ public:
 
 public:
 
+	virtual void ConnectCapture(slot_type OnCapture);
+
 	virtual void ConnectCancel(slot_type OnCancel);
 
 	virtual void ConnectOk(slot_type OnOk);
 
-	virtual void ConnectCapture(slot_type OnCapture);
+	virtual std::wstring GetImagePath();
+
+	virtual PhotoQuality GetQuality();
+
+	virtual PhotoResolution GetResolution();
+
+	virtual std::wstring GetTitle();
 
 	virtual void Hide();
 
 	virtual void InitiateCapture();
 
-	virtual std::wstring GetImagePath();
+	virtual void SetQuality(PhotoQuality quality);
 
-	virtual std::wstring GetTitle();
+	virtual void SetResolution(PhotoResolution resolution);
 
 	virtual void Show();
 };

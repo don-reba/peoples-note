@@ -4,6 +4,7 @@
 #include "IFile.h"
 #include "INoteListModel.h"
 #include "INoteListView.h"
+#include "IPhotoEditorModel.h"
 #include "IPhotoEditorView.h"
 #include "IUserModel.h"
 #include "Note.h"
@@ -16,17 +17,19 @@ using namespace std;
 using namespace Tools;
 
 PhotoEditorPresenter::PhotoEditorPresenter
-	( IFile            & file
-	, INoteListModel   & noteListModel
-	, INoteListView    & noteListView
-	, IPhotoEditorView & photoEditorView
-	, IUserModel       & userModel
+	( IFile             & file
+	, INoteListModel    & noteListModel
+	, INoteListView     & noteListView
+	, IPhotoEditorModel & photoEditorModel
+	, IPhotoEditorView  & photoEditorView
+	, IUserModel        & userModel
 	)
-	: file            (file)
-	, noteListModel   (noteListModel)
-	, noteListView    (noteListView)
-	, photoEditorView (photoEditorView)
-	, userModel       (userModel)
+	: file             (file)
+	, noteListModel    (noteListModel)
+	, noteListView     (noteListView)
+	, photoEditorModel (photoEditorModel)
+	, photoEditorView  (photoEditorView)
+	, userModel        (userModel)
 {
 	noteListView.ConnectNewPhotoNote (bind(&PhotoEditorPresenter::OnNewPhotoNote, *this));
 	photoEditorView.ConnectCancel    (bind(&PhotoEditorPresenter::OnCancel,       *this));
@@ -79,6 +82,13 @@ void PhotoEditorPresenter::OnCapture()
 		userModel.AddResource(image);
 	}
 
+	photoEditorModel.SetQuality
+		( GetQualityName(photoEditorView.GetQuality())
+		);
+	photoEditorModel.SetResolution
+		( GetResolutionName(photoEditorView.GetResolution())
+		);
+
 	photoEditorView.Hide();
 
 	noteListModel.Reload();
@@ -87,9 +97,61 @@ void PhotoEditorPresenter::OnCapture()
 void PhotoEditorPresenter::OnNewPhotoNote()
 {
 	photoEditorView.Show();
+
+	wstring quality;
+	photoEditorModel.GetQuality(quality);
+	photoEditorView.SetQuality(GetQuality(quality.c_str()));
+
+	wstring resolution;
+	photoEditorModel.GetResolution(resolution);
+	photoEditorView.SetResolution(GetResolution(resolution.c_str()));
 }
 
 void PhotoEditorPresenter::OnOk()
 {
 	photoEditorView.InitiateCapture();
+}
+
+PhotoQuality PhotoEditorPresenter::GetQuality(const wchar_t * quality)
+{
+	if (0 == wcscmp(quality, L"default")) return PhotoQualityDefault;
+	if (0 == wcscmp(quality, L"low"))     return PhotoQualityLow;
+	if (0 == wcscmp(quality, L"normal"))  return PhotoQualityNormal;
+	if (0 == wcscmp(quality, L"high"))    return PhotoQualityHigh;
+	return PhotoQualityDefault;
+}
+
+PhotoResolution PhotoEditorPresenter::GetResolution(const wchar_t * resolution)
+{
+	if (0 == wcscmp(resolution, L"qvga")) return PhotoResolutionQvga;
+	if (0 == wcscmp(resolution, L"vga"))  return PhotoResolutionVga;
+	if (0 == wcscmp(resolution, L"1m"))   return PhotoResolution1M;
+	if (0 == wcscmp(resolution, L"2m"))   return PhotoResolution2M;
+	if (0 == wcscmp(resolution, L"3m"))   return PhotoResolution3M;
+	return PhotoResolutionVga;
+}
+
+const wchar_t * PhotoEditorPresenter::GetQualityName(PhotoQuality quality)
+{
+	switch (quality)
+	{
+	case PhotoQualityDefault: return L"default";
+	case PhotoQualityLow:     return L"low";
+	case PhotoQualityNormal:  return L"normal";
+	case PhotoQualityHigh:    return L"high";
+	}
+	return L"";
+}
+
+const wchar_t * PhotoEditorPresenter::GetResolutionName(PhotoResolution resolution)
+{
+	switch (resolution)
+	{
+	case PhotoResolutionQvga: return L"qvga";
+	case PhotoResolutionVga:  return L"vga";
+	case PhotoResolution1M:   return L"1m";
+	case PhotoResolution2M:   return L"2m";
+	case PhotoResolution3M:   return L"3m";
+	}
+	return L"";
 }

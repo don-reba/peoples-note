@@ -52,6 +52,20 @@ void PhotoEditorView::ConnectOk(slot_type OnOk)
 	SignalOk.connect(OnOk);
 }
 
+PhotoQuality PhotoEditorView::GetQuality()
+{
+	return static_cast<PhotoQuality>
+		( element(FindFirstElement("#quality")).get_value().get(0)
+		);
+}
+
+PhotoResolution PhotoEditorView::GetResolution()
+{
+	return static_cast<PhotoResolution>
+		( element(FindFirstElement("#resolution")).get_value().get(0)
+		);
+}
+
 void PhotoEditorView::Hide()
 {
 	CloseWindow(hwnd_);
@@ -60,12 +74,15 @@ void PhotoEditorView::Hide()
 
 void PhotoEditorView::InitiateCapture()
 {
+	PhotoQuality    quality    (GetQuality());
+	PhotoResolution resolution (GetResolution());
+
 	SHCAMERACAPTURE settings = { sizeof(settings) };
 	settings.hwndOwner         = hwnd_;
 	settings.pszTitle          = L"Photo note";
-	settings.StillQuality      = CAMERACAPTURE_STILLQUALITY_DEFAULT;
-	settings.nResolutionWidth  = 640;
-	settings.nResolutionHeight = 480;
+	settings.StillQuality      = GetPhotoQuality(quality);
+	settings.nResolutionWidth  = GetPhotoWidth(resolution);
+	settings.nResolutionHeight = GetPhotoHeight(resolution);
 	settings.Mode              = CAMERACAPTURE_MODE_STILL;
 	if (S_OK == ::SHCameraCapture(&settings))
 	{
@@ -82,6 +99,16 @@ wstring PhotoEditorView::GetImagePath()
 std::wstring PhotoEditorView::GetTitle()
 {
 	return element(FindFirstElement("#title")).text().c_str();
+}
+
+void PhotoEditorView::SetQuality(PhotoQuality quality)
+{
+	element(FindFirstElement("#quality")).set_value(quality);
+}
+
+void PhotoEditorView::SetResolution(PhotoResolution resolution)
+{
+	element(FindFirstElement("#resolution")).set_value(resolution);
 }
 
 void PhotoEditorView::Show()
@@ -118,9 +145,89 @@ void PhotoEditorView::Show()
 	ShowWindow(hwnd_, SW_SHOW);
 }
 
+//------------------------
+// window message handlers
+//------------------------
+
+void PhotoEditorView::OnActivate(Msg<WM_ACTIVATE> & msg)
+{
+	if (msg.GetActiveState() != WA_INACTIVE)
+	{
+		::SHFullScreen(hwnd_, SHFS_SHOWSIPBUTTON);
+		::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
+		msg.handled_ = true;
+	}
+}
+
+void PhotoEditorView::OnCommand(Msg<WM_COMMAND> & msg)
+{
+	switch (msg.CtrlId())
+	{
+	case IDM_OK:     SignalOk();     break;
+	case IDM_CANCEL: SignalCancel(); break;
+	}
+}
+
+void PhotoEditorView::ProcessMessage(WndMsg &msg)
+{
+	static Handler mmp[] =
+	{
+		&PhotoEditorView::OnActivate,
+		&PhotoEditorView::OnCommand,
+	};
+	try
+	{
+		if (!Handler::Call(mmp, this, msg))
+			__super::ProcessMessage(msg);
+	}
+	catch (const std::exception & e)
+	{
+		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
+		throw e;
+	}
+}
+
 //------------------
 // utility functions
 //------------------
+
+DWORD PhotoEditorView::GetPhotoHeight(PhotoResolution resolution)
+{
+	switch (resolution)
+	{
+	case PhotoResolutionQvga: return 240;
+	case PhotoResolutionVga:  return 480;
+	case PhotoResolution1M:   return 960;
+	case PhotoResolution2M:   return 1200;
+	case PhotoResolution3M:   return 1536;
+	}
+	return 480;
+}
+
+CAMERACAPTURE_STILLQUALITY PhotoEditorView::GetPhotoQuality(PhotoQuality quality)
+{
+	switch (quality)
+	{
+	case PhotoQualityDefault: return CAMERACAPTURE_STILLQUALITY_DEFAULT;
+	case PhotoQualityLow:     return CAMERACAPTURE_STILLQUALITY_LOW;
+	case PhotoQualityNormal:  return CAMERACAPTURE_STILLQUALITY_NORMAL;
+	case PhotoQualityHigh:    return CAMERACAPTURE_STILLQUALITY_HIGH;
+	}
+	return CAMERACAPTURE_STILLQUALITY_DEFAULT;
+}
+
+DWORD PhotoEditorView::GetPhotoWidth(PhotoResolution resolution)
+{
+	switch (resolution)
+	{
+	case PhotoResolutionQvga: return 320;
+	case PhotoResolutionVga:  return 640;
+	case PhotoResolution1M:   return 1280;
+	case PhotoResolution2M:   return 1600;
+	case PhotoResolution3M:   return 2048;
+	}
+	return 640;
+}
 
 ATOM PhotoEditorView::RegisterClass(const wstring & wndClass)
 {
@@ -170,47 +277,5 @@ void PhotoEditorView::ResizeWindow()
 			, desktopRect.GetHeight() // nHeight
 			, TRUE			          // bRepaint
 			);
-	}
-}
-
-//------------------------
-// window message handlers
-//------------------------
-
-void PhotoEditorView::OnActivate(Msg<WM_ACTIVATE> & msg)
-{
-	if (msg.GetActiveState() != WA_INACTIVE)
-	{
-		::SHFullScreen(hwnd_, SHFS_SHOWSIPBUTTON);
-		::SHHandleWMActivate(hwnd_, msg.wprm_, msg.lprm_, &activateInfo, 0);
-		msg.handled_ = true;
-	}
-}
-
-void PhotoEditorView::OnCommand(Msg<WM_COMMAND> & msg)
-{
-	switch (msg.CtrlId())
-	{
-	case IDM_OK:     SignalOk();     break;
-	case IDM_CANCEL: SignalCancel(); break;
-	}
-}
-
-void PhotoEditorView::ProcessMessage(WndMsg &msg)
-{
-	static Handler mmp[] =
-	{
-		&PhotoEditorView::OnActivate,
-		&PhotoEditorView::OnCommand,
-	};
-	try
-	{
-		if (!Handler::Call(mmp, this, msg))
-			__super::ProcessMessage(msg);
-	}
-	catch (const std::exception & e)
-	{
-		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
-		throw e;
 	}
 }

@@ -26,6 +26,7 @@
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
 #include "NotePresenter.h"
+#include "PhotoEditorModel.h"
 #include "PhotoEditorView.h"
 #include "PhotoEditorPresenter.h"
 #include "ProfilePresenter.h"
@@ -147,6 +148,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		CredentialsModel newCredentials;
 		InkEditorModel   inkEditorModel(registryKey);
 		LastUserModel    lastUserModel(registryKey);
+		PhotoEditorModel photoEditorModel(registryKey);
 		UserModel        userModel     (dataStore,     deviceDocumentPath, flashCard);
 		UserModel        syncUserModel (syncDataStore, deviceDocumentPath, flashCard);
 
@@ -234,6 +236,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			( file
 			, noteListModel
 			, noteListView
+			, photoEditorModel
 			, photoEditorView
 			, userModel
 			);

@@ -25,10 +25,82 @@
 				margin              : 16px 0px;
 				width               : 100%%;
 			}
+			#note
+			{
+				margin-top: 48px;
+			}
+			.row
+			{
+				flow  : horizontal;
+				width : 100%%;
+			}
+			.row > .name
+			{
+				vertical-align : middle;
+				width          : 100%%;
+			}
+			.row > widget
+			{
+				height : 40px;
+				margin : 16px 0px;
+				width  : 300px;
+			}
+
+			@set std-select-dropdown
+			{
+				:root
+				{
+					background : none;
+					border     : none;
+				}
+				:root:focus > caption
+				{
+					color: windowtext;
+				}
+				:root > caption
+				{
+					background-image    : url(inputshadow.png);
+					background-position : 13px 13px 13px 13px;
+					background-repeat   : expand;
+					border              : none;
+					font-size           : 24px;
+					height              : 40px;
+					margin              : 0px;
+					padding             : 0px 10px;
+				}
+				:root > button
+				{
+					background-image : url(dropdown-arrow.png);
+					border-style     : none;
+					height           : 40px;
+					margin           : 0px;
+					width            : 40px;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<h1>Photo note</h1>
 		<input #title type="text" />
+		<div .row>
+			<div .name>Resolution</div>
+			<widget #resolution type="select-dropdown">
+				<option value="0">QVGA: 320x240</option>
+				<option value="1">VGA: 640x480</option>
+				<option value="2">1M: 1280x960</option>
+				<option value="3">2M: 1600x1200</option>
+				<option value="4">3M: 2048x1536</option>
+			</widget>
+		</div>
+		<div .row>
+			<div .name>Quality</div>
+			<widget #quality type="select-dropdown">
+				<option value="0">Default</option>
+				<option value="1">Low</option>
+				<option value="2">Normal</option>
+				<option value="3">High</option>
+			</widget>
+		</div>
+		<p #note>Note: some settings do not apply to some devices.</p>
 	</body>
 </html>

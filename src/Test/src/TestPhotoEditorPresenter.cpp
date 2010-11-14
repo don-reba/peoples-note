@@ -4,6 +4,7 @@
 #include "MockFile.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
+#include "MockPhotoEditorModel.h"
 #include "MockPhotoEditorView.h"
 #include "MockUserModel.h"
 
@@ -16,11 +17,12 @@ using namespace std;
 
 struct PhotoEditorPresenterFixture
 {
-	MockFile            file;
-	MockNoteListModel   noteListModel;
-	MockNoteListView    noteListView;
-	MockPhotoEditorView photoEditorView;
-	MockUserModel       userModel;
+	MockFile             file;
+	MockNoteListModel    noteListModel;
+	MockNoteListView     noteListView;
+	MockPhotoEditorModel photoEditorModel;
+	MockPhotoEditorView  photoEditorView;
+	MockUserModel        userModel;
 
 	PhotoEditorPresenter presenter;
 
@@ -29,6 +31,7 @@ struct PhotoEditorPresenterFixture
 			( file
 			, noteListModel
 			, noteListView
+			, photoEditorModel
 			, photoEditorView
 			, userModel
 			)
@@ -61,11 +64,16 @@ BOOST_FIXTURE_TEST_CASE
 	file.data.push_back(2);
 	file.data.push_back(3);
 
-	photoEditorView.isShown   = true;
-	photoEditorView.title     = L"";
-	photoEditorView.imagePath = L"path";
+	photoEditorView.isShown    = true;
+	photoEditorView.title      = L"";
+	photoEditorView.imagePath  = L"path";
+	photoEditorView.quality    = PhotoQualityLow;
+	photoEditorView.resolution = PhotoResolution1M;
 
 	photoEditorView.SignalCapture();
+
+	BOOST_CHECK_EQUAL(photoEditorModel.quality,    L"low");
+	BOOST_CHECK_EQUAL(photoEditorModel.resolution, L"1m");
 
 	BOOST_CHECK(!photoEditorView.isShown);
 
@@ -99,11 +107,17 @@ BOOST_FIXTURE_TEST_CASE
 	, PhotoEditorPresenterFixture
 	)
 {
+	photoEditorModel.quality    = L"normal";
+	photoEditorModel.resolution = L"2m";
+
 	photoEditorView.isShown = false;
 
 	noteListView.SignalNewPhotoNote();
 	
 	BOOST_CHECK(photoEditorView.isShown);
+
+	BOOST_CHECK_EQUAL(photoEditorView.quality,    PhotoQualityNormal);
+	BOOST_CHECK_EQUAL(photoEditorView.resolution, PhotoResolution2M);
 }
 
 BOOST_FIXTURE_TEST_CASE

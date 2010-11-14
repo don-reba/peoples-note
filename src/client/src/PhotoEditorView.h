@@ -37,13 +37,21 @@ public:
 
 	virtual void ConnectOk(slot_type OnOk);
 
+	virtual std::wstring GetImagePath();
+
+	virtual PhotoQuality GetQuality();
+
+	virtual PhotoResolution GetResolution();
+
+	virtual std::wstring GetTitle();
+
 	virtual void Hide();
 
 	virtual void InitiateCapture();
 
-	virtual std::wstring GetImagePath();
+	virtual void SetQuality(PhotoQuality quality);
 
-	virtual std::wstring GetTitle();
+	virtual void SetResolution(PhotoResolution resolution);
 
 	virtual void Show();
 
@@ -59,6 +67,12 @@ private:
 // utility functions
 
 private:
+
+	DWORD GetPhotoHeight(PhotoResolution resolution);
+
+	CAMERACAPTURE_STILLQUALITY GetPhotoQuality(PhotoQuality quality);
+
+	DWORD GetPhotoWidth(PhotoResolution resolution);
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 

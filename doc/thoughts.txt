@@ -2752,3 +2752,5 @@ is version checked in all load paths?
 		which is called in all load paths
 add an option of forcing full synchronization
 	TODO
+photo settings
+	need a model

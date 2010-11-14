@@ -29,19 +29,39 @@ void MockPhotoEditorView::Hide()
 	isShown = false;
 }
 
-void MockPhotoEditorView::InitiateCapture()
-{
-	isCaptureInitiated = true;
-}
-
 wstring MockPhotoEditorView::GetImagePath()
 {
 	return imagePath;
 }
 
+PhotoQuality MockPhotoEditorView::GetQuality()
+{
+	return quality;
+}
+
+PhotoResolution MockPhotoEditorView::GetResolution()
+{
+	return resolution;
+}
+
 wstring MockPhotoEditorView::GetTitle()
 {
 	return title;
+}
+
+void MockPhotoEditorView::InitiateCapture()
+{
+	isCaptureInitiated = true;
+}
+
+void MockPhotoEditorView::SetQuality(PhotoQuality quality)
+{
+	this->quality = quality;
+}
+
+void MockPhotoEditorView::SetResolution(PhotoResolution resolution)
+{
+	this->resolution = resolution;
 }
 
 void MockPhotoEditorView::Show()
