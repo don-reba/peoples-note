@@ -1140,6 +1140,10 @@ void UserModel::Initialize(wstring name)
 			", tag  REFERENCES Tags(guid)  ON DELETE CASCADE ON UPDATE CASCADE"
 			")"
 		)->Execute();
+
+	dataStore.MakeStatement
+		( "CREATE INDEX NoteTagsNote ON NoteTags(note)"
+		)->Execute();
 }
 
 void UserModel::MigrateFrom0To1()

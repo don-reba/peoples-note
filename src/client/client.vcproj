@@ -1614,11 +1614,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html-lr\note-edit.htm"
+				>
+			</File>
+			<File
 				RelativePath=".\html\note-edit.htm"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\note-edit.htm"
+				RelativePath=".\html\note-view.htm"
 				>
 			</File>
 			<File
@@ -1626,7 +1630,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\note-view.htm"
+				RelativePath=".\html-lr\photo-edit.htm"
 				>
 			</File>
 			<File

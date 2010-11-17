@@ -2754,3 +2754,19 @@ add an option of forcing full synchronization
 	TODO
 photo settings
 	need a model
+	done
+tag indexing
+	how are tags stored, anyway?
+		Notes, Tags, NoteTags
+		a many-to-many relationship
+	I recall there were some glitches with them
+		displaying multiple copies of a tag
+			seems fine...
+	to search for a tag
+		get all Tags matching given name
+			sequential search without an index
+		get all NoteTags for each tag
+			again sequential search
+		combine notes
+	with full text search
+		I could add tag names to the text title
