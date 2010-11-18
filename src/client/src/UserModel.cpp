@@ -1138,6 +1138,7 @@ void UserModel::Initialize(wstring name)
 		( "CREATE TABLE NoteTags"
 			"( note REFERENCES Notes(guid) ON DELETE CASCADE ON UPDATE CASCADE"
 			", tag  REFERENCES Tags(guid)  ON DELETE CASCADE ON UPDATE CASCADE"
+			", UNIQUE (note, tag) ON CONFLICT REPLACE"
 			")"
 		)->Execute();
 
