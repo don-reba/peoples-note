@@ -13,11 +13,8 @@ private:
 	HINSTANCE      instance;
 	SHACTIVATEINFO activateInfo;
 
-	std::wstring photoPath;
-
 	signal SignalCancel;
 	signal SignalOk;
-	signal SignalCapture;
 
 // interface
 
@@ -31,13 +28,11 @@ public:
 
 public:
 
-	virtual void ConnectCapture(slot_type OnCapture);
+	virtual int CapturePhoto(int quality, int width, int height, std::wstring & path);
 
 	virtual void ConnectCancel(slot_type OnCancel);
 
 	virtual void ConnectOk(slot_type OnOk);
-
-	virtual std::wstring GetImagePath();
 
 	virtual PhotoQuality GetQuality();
 
@@ -47,9 +42,9 @@ public:
 
 	virtual void Hide();
 
-	virtual void InitiateCapture();
-
 	virtual void SetQuality(PhotoQuality quality);
+
+	virtual void SetMessage(const std::wstring & message);
 
 	virtual void SetResolution(PhotoResolution resolution);
 
@@ -67,12 +62,6 @@ private:
 // utility functions
 
 private:
-
-	DWORD GetPhotoHeight(PhotoResolution resolution);
-
-	CAMERACAPTURE_STILLQUALITY GetPhotoQuality(PhotoQuality quality);
-
-	DWORD GetPhotoWidth(PhotoResolution resolution);
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 

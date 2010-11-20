@@ -131,5 +131,7 @@ ink note creation
 photo note creation
 	√ when the user selects "OK", a camera capture dialog box with the specified settings should be invoked
 	when the user selects "OK", the settings should be persisted
-	√ when the camera capture dialog closes, a photo with the chosen title should be created and the window closed
+	√ when the camera capture dialog closes with success, a photo with the chosen title should be created and the window closed
+	when the camera capture dialog closes with failure, a meaningful message should be displayed
 	√ when the user selects "Cancel", the window should close
+

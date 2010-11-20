@@ -4,9 +4,22 @@
 using namespace std;
 
 MockPhotoEditorView::MockPhotoEditorView()
-	: isCaptureInitiated (false)
-	, isShown            (false)
+	: isShown     (false)
+	, photoResult (0)
 {
+}
+int MockPhotoEditorView::CapturePhoto
+	( int            quality
+	, int            width
+	, int            height
+	, std::wstring & path
+	)
+{
+	photoQuality = quality;
+	photoWidth   = width;
+	photoHeight  = height;
+	path = this->path;
+	return photoResult;
 }
 
 void MockPhotoEditorView::ConnectCancel(slot_type OnCancel)
@@ -19,19 +32,9 @@ void MockPhotoEditorView::ConnectOk(slot_type OnOk)
 	SignalOk.connect(OnOk);
 }
 
-void MockPhotoEditorView::ConnectCapture(slot_type OnCapture)
-{
-	SignalCapture.connect(OnCapture);
-}
-
 void MockPhotoEditorView::Hide()
 {
 	isShown = false;
-}
-
-wstring MockPhotoEditorView::GetImagePath()
-{
-	return imagePath;
 }
 
 PhotoQuality MockPhotoEditorView::GetQuality()
@@ -49,9 +52,9 @@ wstring MockPhotoEditorView::GetTitle()
 	return title;
 }
 
-void MockPhotoEditorView::InitiateCapture()
+void MockPhotoEditorView::SetMessage(const wstring & message)
 {
-	isCaptureInitiated = true;
+	this->message = message;
 }
 
 void MockPhotoEditorView::SetQuality(PhotoQuality quality)

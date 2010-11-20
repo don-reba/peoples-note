@@ -56,7 +56,33 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( PhotoEditorPresenter_Capture
+	( PhotoEditorPresenter_Messages
+	, PhotoEditorPresenterFixture
+	)
+{
+	photoEditorView.photoResult = 0;
+	photoEditorView.SignalOk();
+	BOOST_CHECK_EQUAL(photoEditorView.message, L"");
+
+	photoEditorView.photoResult = 1;
+	photoEditorView.SignalOk();
+	BOOST_CHECK_EQUAL(photoEditorView.message, L"Photo capture was cancelled.");
+
+	photoEditorView.photoResult = 0x8007000E;
+	photoEditorView.SignalOk();
+	BOOST_CHECK_EQUAL(photoEditorView.message, L"Not enough memory.");
+
+	photoEditorView.photoResult = 0x80070057;
+	photoEditorView.SignalOk();
+	BOOST_CHECK_EQUAL(photoEditorView.message, L"Invalid settings.");
+
+	photoEditorView.photoResult = 42;
+	photoEditorView.SignalOk();
+	BOOST_CHECK_EQUAL(photoEditorView.message, L"What just happened? Error code: 2a.");
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( PhotoEditorPresenter_Ok
 	, PhotoEditorPresenterFixture
 	)
 {
@@ -66,11 +92,15 @@ BOOST_FIXTURE_TEST_CASE
 
 	photoEditorView.isShown    = true;
 	photoEditorView.title      = L"";
-	photoEditorView.imagePath  = L"path";
+	photoEditorView.path       = L"path";
 	photoEditorView.quality    = PhotoQualityLow;
 	photoEditorView.resolution = PhotoResolution1M;
 
-	photoEditorView.SignalCapture();
+	photoEditorView.SignalOk();
+
+	BOOST_CHECK_EQUAL(photoEditorView.photoQuality, 1);
+	BOOST_CHECK_EQUAL(photoEditorView.photoWidth,   1280);
+	BOOST_CHECK_EQUAL(photoEditorView.photoHeight,  960);
 
 	BOOST_CHECK_EQUAL(photoEditorModel.quality,    L"low");
 	BOOST_CHECK_EQUAL(photoEditorModel.resolution, L"1m");
@@ -118,16 +148,4 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK_EQUAL(photoEditorView.quality,    PhotoQualityNormal);
 	BOOST_CHECK_EQUAL(photoEditorView.resolution, PhotoResolution2M);
-}
-
-BOOST_FIXTURE_TEST_CASE
-	( PhotoEditorPresenter_Ok
-	, PhotoEditorPresenterFixture
-	)
-{
-	photoEditorView.isCaptureInitiated = false;
-
-	photoEditorView.SignalOk();
-	
-	BOOST_CHECK(photoEditorView.isCaptureInitiated);
 }

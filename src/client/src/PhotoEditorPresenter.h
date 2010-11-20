@@ -40,9 +40,15 @@ private:
 
 private:
 
+	void CreatePhotoNote(const std::wstring & imagePath);
+
 	PhotoQuality    GetQuality    (const wchar_t * quality);
 	PhotoResolution GetResolution (const wchar_t * resolution);
 
 	const wchar_t * GetQualityName    (PhotoQuality quality);
 	const wchar_t * GetResolutionName (PhotoResolution resolution);
+
+	int GetPhotoHeight  (PhotoResolution resolution);
+	int GetPhotoQuality (PhotoQuality    quality);
+	int GetPhotoWidth   (PhotoResolution resolution);
 };

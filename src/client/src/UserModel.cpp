@@ -1187,11 +1187,8 @@ void UserModel::Update()
 	Transaction transaction(*this);
 	switch (GetVersion())
 	{
-	case 0:
-		MigrateFrom0To1();
-		break;
-	case 1:
-		break;
+	case 0: MigrateFrom0To1();
+	case 1: break;
 	default:
 		throw std::exception("Incorrect database version.");
 	}

@@ -5,18 +5,22 @@ class MockPhotoEditorView : public IPhotoEditorView
 {
 public:
 
-	std::wstring imagePath;
 	std::wstring title;
+	std::wstring message;
+	std::wstring path;
 
 	PhotoQuality    quality;
 	PhotoResolution resolution;
 
-	bool isCaptureInitiated;
+	int photoQuality;
+	int photoWidth;
+	int photoHeight;
+	int photoResult;
+
 	bool isShown;
 
 	signal SignalCancel;
 	signal SignalOk;
-	signal SignalCapture;
 
 public:
 
@@ -24,13 +28,16 @@ public:
 
 public:
 
-	virtual void ConnectCapture(slot_type OnCapture);
+	virtual int CapturePhoto
+		( int            quality
+		, int            width
+		, int            height
+		, std::wstring & path
+		);
 
 	virtual void ConnectCancel(slot_type OnCancel);
 
 	virtual void ConnectOk(slot_type OnOk);
-
-	virtual std::wstring GetImagePath();
 
 	virtual PhotoQuality GetQuality();
 
@@ -40,7 +47,7 @@ public:
 
 	virtual void Hide();
 
-	virtual void InitiateCapture();
+	virtual void SetMessage(const std::wstring & message);
 
 	virtual void SetQuality(PhotoQuality quality);
 

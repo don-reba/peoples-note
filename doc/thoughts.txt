@@ -2786,8 +2786,13 @@ tag indexing
 			might be
 		now, I add the tag field to the FTS table
 		then add a migration
+			I don't think I can migrate a virtual table...
+			but lets try
+			it can't be done
 cancelled photos
 	need to make it more clear when a photo is cancelled
 	TODO
 photo dialog does not show up on square displays
+	TODO
+should add keyboard handling to the photo dialog
 	TODO

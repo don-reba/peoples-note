@@ -37,9 +37,20 @@ void PhotoEditorView::Create(HWND parent)
 // IPhotoEditorView implementation
 //--------------------------------
 
-void PhotoEditorView::ConnectCapture(slot_type OnCapture)
+int PhotoEditorView::CapturePhoto(int quality, int width, int height, wstring & path)
 {
-	SignalCapture.connect(OnCapture);
+	SHCAMERACAPTURE settings = { sizeof(settings) };
+	settings.hwndOwner         = hwnd_;
+	settings.pszTitle          = L"Photo note";
+	settings.StillQuality      = static_cast<CAMERACAPTURE_STILLQUALITY>(quality);
+	settings.nResolutionWidth  = width;
+	settings.nResolutionHeight = height;
+	settings.Mode              = CAMERACAPTURE_MODE_STILL;
+
+	HRESULT result(::SHCameraCapture(&settings));
+	if (result == S_OK)
+		path = settings.szFile;
+	return result;
 }
 
 void PhotoEditorView::ConnectCancel(slot_type OnCancel)
@@ -72,30 +83,6 @@ void PhotoEditorView::Hide()
 	hwnd_ = NULL;
 }
 
-void PhotoEditorView::InitiateCapture()
-{
-	PhotoQuality    quality    (GetQuality());
-	PhotoResolution resolution (GetResolution());
-
-	SHCAMERACAPTURE settings = { sizeof(settings) };
-	settings.hwndOwner         = hwnd_;
-	settings.pszTitle          = L"Photo note";
-	settings.StillQuality      = GetPhotoQuality(quality);
-	settings.nResolutionWidth  = GetPhotoWidth(resolution);
-	settings.nResolutionHeight = GetPhotoHeight(resolution);
-	settings.Mode              = CAMERACAPTURE_MODE_STILL;
-	if (S_OK == ::SHCameraCapture(&settings))
-	{
-		photoPath = settings.szFile;
-		SignalCapture();
-	}
-}
-
-wstring PhotoEditorView::GetImagePath()
-{
-	return photoPath;
-}
-
 std::wstring PhotoEditorView::GetTitle()
 {
 	return element(FindFirstElement("#title")).text().c_str();
@@ -104,6 +91,11 @@ std::wstring PhotoEditorView::GetTitle()
 void PhotoEditorView::SetQuality(PhotoQuality quality)
 {
 	element(FindFirstElement("#quality")).set_value(quality);
+}
+
+void PhotoEditorView::SetMessage(const wstring & message)
+{
+	element(FindFirstElement("#message")).set_text(message.c_str());
 }
 
 void PhotoEditorView::SetResolution(PhotoResolution resolution)
@@ -190,44 +182,6 @@ void PhotoEditorView::ProcessMessage(WndMsg &msg)
 //------------------
 // utility functions
 //------------------
-
-DWORD PhotoEditorView::GetPhotoHeight(PhotoResolution resolution)
-{
-	switch (resolution)
-	{
-	case PhotoResolutionQvga: return 240;
-	case PhotoResolutionVga:  return 480;
-	case PhotoResolution1M:   return 960;
-	case PhotoResolution2M:   return 1200;
-	case PhotoResolution3M:   return 1536;
-	}
-	return 480;
-}
-
-CAMERACAPTURE_STILLQUALITY PhotoEditorView::GetPhotoQuality(PhotoQuality quality)
-{
-	switch (quality)
-	{
-	case PhotoQualityDefault: return CAMERACAPTURE_STILLQUALITY_DEFAULT;
-	case PhotoQualityLow:     return CAMERACAPTURE_STILLQUALITY_LOW;
-	case PhotoQualityNormal:  return CAMERACAPTURE_STILLQUALITY_NORMAL;
-	case PhotoQualityHigh:    return CAMERACAPTURE_STILLQUALITY_HIGH;
-	}
-	return CAMERACAPTURE_STILLQUALITY_DEFAULT;
-}
-
-DWORD PhotoEditorView::GetPhotoWidth(PhotoResolution resolution)
-{
-	switch (resolution)
-	{
-	case PhotoResolutionQvga: return 320;
-	case PhotoResolutionVga:  return 640;
-	case PhotoResolution1M:   return 1280;
-	case PhotoResolution2M:   return 1600;
-	case PhotoResolution3M:   return 2048;
-	}
-	return 640;
-}
 
 ATOM PhotoEditorView::RegisterClass(const wstring & wndClass)
 {

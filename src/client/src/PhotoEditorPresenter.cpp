@@ -34,7 +34,6 @@ PhotoEditorPresenter::PhotoEditorPresenter
 	noteListView.ConnectNewPhotoNote (bind(&PhotoEditorPresenter::OnNewPhotoNote, *this));
 	photoEditorView.ConnectCancel    (bind(&PhotoEditorPresenter::OnCancel,       *this));
 	photoEditorView.ConnectOk        (bind(&PhotoEditorPresenter::OnOk,           *this));
-	photoEditorView.ConnectCapture   (bind(&PhotoEditorPresenter::OnCapture,      *this));
 }
 
 void PhotoEditorPresenter::OnCancel()
@@ -42,7 +41,62 @@ void PhotoEditorPresenter::OnCancel()
 	photoEditorView.Hide();
 }
 
-void PhotoEditorPresenter::OnCapture()
+void PhotoEditorPresenter::OnNewPhotoNote()
+{
+	photoEditorView.Show();
+
+	wstring quality;
+	photoEditorModel.GetQuality(quality);
+	photoEditorView.SetQuality(GetQuality(quality.c_str()));
+
+	wstring resolution;
+	photoEditorModel.GetResolution(resolution);
+	photoEditorView.SetResolution(GetResolution(resolution.c_str()));
+}
+
+void PhotoEditorPresenter::OnOk()
+{
+	PhotoQuality    quality    (photoEditorView.GetQuality());
+	PhotoResolution resolution (photoEditorView.GetResolution());
+
+	wstring path;
+	int result = photoEditorView.CapturePhoto
+		( GetPhotoQuality(quality)
+		, GetPhotoWidth(resolution)
+		, GetPhotoHeight(resolution)
+		, path
+		);
+	switch (result)
+	{
+	case S_OK:
+		CreatePhotoNote(path);
+		break;
+	case S_FALSE:
+		photoEditorView.SetMessage(L"Photo capture was cancelled.");
+		break;
+	case E_OUTOFMEMORY:
+		photoEditorView.SetMessage(L"Not enough memory.");
+		break;
+	case E_INVALIDARG:
+		photoEditorView.SetMessage(L"Invalid settings.");
+		break;
+	default:
+		wchar_t str[10];
+		_itow(result, str, 16);
+
+		wstring message(L"What just happened? Error code: ");
+		message.append(str);
+		message.append(L".");
+
+		photoEditorView.SetMessage(message);
+	}
+}
+
+//------------------
+// utility functions
+//------------------
+
+void PhotoEditorPresenter::CreatePhotoNote(const wstring & imagePath)
 {
 	// create note 
 	Note note;
@@ -56,7 +110,7 @@ void PhotoEditorPresenter::OnCapture()
 
 	// create resource with hash
 	Resource image;
-	if (!file.Read(photoEditorView.GetImagePath(), image.Data))
+	if (!file.Read(imagePath, image.Data))
 	{
 		photoEditorView.Hide();
 		return;
@@ -92,24 +146,6 @@ void PhotoEditorPresenter::OnCapture()
 	photoEditorView.Hide();
 
 	noteListModel.Reload();
-}
-
-void PhotoEditorPresenter::OnNewPhotoNote()
-{
-	photoEditorView.Show();
-
-	wstring quality;
-	photoEditorModel.GetQuality(quality);
-	photoEditorView.SetQuality(GetQuality(quality.c_str()));
-
-	wstring resolution;
-	photoEditorModel.GetResolution(resolution);
-	photoEditorView.SetResolution(GetResolution(resolution.c_str()));
-}
-
-void PhotoEditorPresenter::OnOk()
-{
-	photoEditorView.InitiateCapture();
 }
 
 PhotoQuality PhotoEditorPresenter::GetQuality(const wchar_t * quality)
@@ -154,4 +190,42 @@ const wchar_t * PhotoEditorPresenter::GetResolutionName(PhotoResolution resoluti
 	case PhotoResolution3M:   return L"3m";
 	}
 	return L"";
+}
+
+int PhotoEditorPresenter::GetPhotoHeight(PhotoResolution resolution)
+{
+	switch (resolution)
+	{
+	case PhotoResolutionQvga: return 240;
+	case PhotoResolutionVga:  return 480;
+	case PhotoResolution1M:   return 960;
+	case PhotoResolution2M:   return 1200;
+	case PhotoResolution3M:   return 1536;
+	}
+	return 480;
+}
+
+int PhotoEditorPresenter::GetPhotoQuality(PhotoQuality quality)
+{
+	switch (quality)
+	{
+	case PhotoQualityDefault: return 0;
+	case PhotoQualityLow:     return 1;
+	case PhotoQualityNormal:  return 2;
+	case PhotoQualityHigh:    return 3;
+	}
+	return 1;
+}
+
+int PhotoEditorPresenter::GetPhotoWidth(PhotoResolution resolution)
+{
+	switch (resolution)
+	{
+	case PhotoResolutionQvga: return 320;
+	case PhotoResolutionVga:  return 640;
+	case PhotoResolution1M:   return 1280;
+	case PhotoResolution2M:   return 1600;
+	case PhotoResolution3M:   return 2048;
+	}
+	return 640;
 }
