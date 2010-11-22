@@ -146,6 +146,19 @@ void NoteListPresenter::OnSyncBegin()
 
 void NoteListPresenter::OnSyncEnd()
 {
+	Transaction transaction(userModel);
+
+	UpdateTitle();
+	noteListModel.Reload();
+
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
+	
+	wstring menuHtml;
+	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
+	noteListView.SetNotebookMenu(menuHtml);
+
+	UpdateSyncCounter();
 	noteListView.EnableSync();
 }
 

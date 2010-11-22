@@ -159,7 +159,7 @@ void UserModel::AddNote
 void UserModel::AddNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Notebooks(guid, usn, name, isDirty)"
+		( "INSERT OR IGNORE INTO Notebooks(guid, usn, name, isDirty)"
 		"  VALUES (?, ?, ?, ?)"
 		);
 	statement->Bind(1, notebook.guid);
@@ -1067,7 +1067,7 @@ void UserModel::Initialize(wstring name)
 			", value NOT NULL"
 			")"
 		)->Execute();
-	SetProperty(L"version",      1);
+	SetProperty(L"version",      2);
 	SetProperty(L"username",     name);
 	SetProperty(L"password",     L"");
 	SetProperty(L"lastSyncTime", 0);
@@ -1130,8 +1130,13 @@ void UserModel::Initialize(wstring name)
 			"( guid PRIMARY KEY"
 			", usn"
 			", name"
+			", searchName UNIQUE"
 			", isDirty"
 			")"
+		)->Execute();
+
+	dataStore.MakeStatement
+		( "CREATE INDEX TagsSearchName ON Tags(searchName)"
 		)->Execute();
 
 	dataStore.MakeStatement
@@ -1153,6 +1158,22 @@ void UserModel::MigrateFrom0To1()
 		( "ALTER TABLE Resources ADD COLUMN mime"
 		)->Execute();
 	SetProperty(L"version", 1);
+}
+
+void UserModel::MigrateFrom1To2()
+{
+	dataStore.MakeStatement
+		( "CREATE TRIGGER ReplaceNotebook"
+		"  BEFORE INSERT ON Notebooks"
+		"  BEGIN"
+		"  UPDATE Notebooks"
+		"  SET    usn = NEW.usn, name = NEW.name, updateCount = NEW.updateCount,"
+		"         isDirty = NEW.isDirty, isDefault = NEW.isDefault,"
+		"         isLastUsed = NEW.isLastUsed"
+		"  WHERE  guid = NEW.guid;"
+		"  END"
+		)->Execute();
+	SetProperty(L"version", 2);
 }
 
 void UserModel::Move
@@ -1188,7 +1209,8 @@ void UserModel::Update()
 	switch (GetVersion())
 	{
 	case 0: MigrateFrom0To1();
-	case 1: break;
+	case 1: MigrateFrom1To2();
+	case 2: break;
 	default:
 		throw std::exception("Incorrect database version.");
 	}

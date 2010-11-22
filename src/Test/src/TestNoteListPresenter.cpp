@@ -238,9 +238,27 @@ BOOST_FIXTURE_TEST_CASE
 	, NoteListPresenterFixture
 	)
 {
+	userModel.notebooks.push_back(Notebook());
+	userModel.notebooks.back().name = L"notebook-0";
+	userModel.notebooks.back().guid = Guid("guid-0");
+	userModel.notebooks.push_back(Notebook());
+	userModel.notebooks.back().name = L"notebook-1";
+	userModel.notebooks.back().guid = Guid("guid-1");
+
 	noteListView.isSyncEnabled = false;
+	noteListView.syncText      = L"";
 
 	syncModel.SignalSyncComplete();
+
+	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
+	BOOST_CHECK_EQUAL(noteListView.syncText,    L"0");
+
+	BOOST_CHECK_EQUAL
+		( noteListView.notebookMenu
+		,
+			L"<li guid=\"guid-0\">notebook-0</li>"
+			L"<li guid=\"guid-1\">notebook-1</li>"
+		);
 
 	BOOST_CHECK(noteListView.isSyncEnabled);
 }

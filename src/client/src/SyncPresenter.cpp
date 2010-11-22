@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "SyncPresenter.h"
 
-#include "INoteListModel.h"
 #include "INoteListView.h"
 #include "ISyncModel.h"
 #include "IUserModel.h"
@@ -15,18 +14,15 @@ using namespace std;
 using namespace Tools;
 
 SyncPresenter::SyncPresenter
-	( INoteListModel & noteListModel
-	, INoteListView  & noteListView
+	( INoteListView  & noteListView
 	, ISyncModel     & syncModel
 	, IUserModel     & userModel
 	)
-	: noteListModel (noteListModel)
-	, noteListView  (noteListView)
+	: noteListView  (noteListView)
 	, syncModel     (syncModel)
 	, userModel     (userModel)
 {
 	noteListView.ConnectSync(bind(&SyncPresenter::OnSync, this));
-	syncModel.ConnectSyncComplete(bind(&SyncPresenter::OnSyncComplete, this));
 }
 
 void SyncPresenter::OnSync()
@@ -35,21 +31,4 @@ void SyncPresenter::OnSync()
 	userModel.GetCredentials(credentials);
 
 	syncModel.BeginSync(credentials.GetUsername());
-}
-
-void SyncPresenter::OnSyncComplete()
-{
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-
-	NoteList notes;
-	userModel.GetNotesByNotebook(notebook, notes);
-	noteListModel.SetNotes(notes);
-
-	NotebookList notebooks;
-	userModel.GetNotebooks(notebooks);
-
-	wstring menuHtml;
-	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
-	noteListView.SetNotebookMenu(menuHtml);
 }

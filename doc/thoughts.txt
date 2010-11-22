@@ -2774,21 +2774,48 @@ tag indexing
 	to search for a tag
 		get all Tags matching given name
 			sequential search without an index
+			and what is the "given name", anyway?
+				could be a search word combination
+				searching for all combinations would be a bad idea
+			alternatively, search for each word
+				then search the whole search term for the tag
+			simpler, require entire search term to be in the tag
+				that would be the "given name"
+				migration is much more difficult this way, however
+					since we can't add a UNIQUE column
 		get all NoteTags for each tag
 			again sequential search
 		combine notes
 	with full text search
 		I could add tag names to the text title
+			could I?
+			how to update the field when either title or tags change?
+			only be rebuilding it completely
+			this would create O(N²) complexity for tag addition
+				even assuming DB lookup is constant-time
 		is there anything wrong with this?
-		could I tell which part of the note matched?
-			no...
-			is this a problem?
-			might be
+			could I tell which part of the note matched?
+				no...
+				is this a problem?
+				might be
 		now, I add the tag field to the FTS table
 		then add a migration
 			I don't think I can migrate a virtual table...
 			but lets try
 			it can't be done
+		lets abondon this idea
+	SQL
+		SELECT DISTINCT n.guid, n.usn, n.title, n.creationDate, n.isDirty
+		FROM   Notes as n, NoteTags as nt, Tags as t
+		WHERE  t.searchName = ? AND nt.tag = t.guid AND n.guid = nt.guid
+	migration
+		add a UNIQUE column with uppercase tag names
+			rename the tags table
+			get all the tags out of it
+			create a new table with this column
+			insert tags into the new table
+		add an index for this table
+		add an index for tag->note matching
 cancelled photos
 	need to make it more clear when a photo is cancelled
 	TODO

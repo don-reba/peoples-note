@@ -252,8 +252,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListView
 			);
 		SyncPresenter syncPresenter
-			( noteListModel
-			, noteListView
+			( noteListView
 			, syncModel
 			, userModel
 			);
