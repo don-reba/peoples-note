@@ -1086,6 +1086,18 @@ void UserModel::Initialize(wstring name)
 		)->Execute();
 
 	dataStore.MakeStatement
+		( "CREATE TRIGGER ReplaceNotebook"
+		"  BEFORE INSERT ON Notebooks"
+		"  BEGIN"
+		"  UPDATE Notebooks"
+		"  SET    usn = NEW.usn, name = NEW.name, updateCount = NEW.updateCount,"
+		"         isDirty = NEW.isDirty, isDefault = NEW.isDefault,"
+		"         isLastUsed = NEW.isLastUsed"
+		"  WHERE  guid = NEW.guid;"
+		"  END"
+		)->Execute();
+
+	dataStore.MakeStatement
 		( "CREATE VIRTUAL TABLE NoteText USING fts3"
 			"( title"
 			", body"
