@@ -639,9 +639,21 @@ void UserModel::GetNotesBySearch
 		( "SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
 		"  FROM   Notes as n, NoteText"
 		"  WHERE  n.rowid = NoteText.rowid AND NoteText MATCH ?"
+		"  UNION"
+		"  SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
+		"  FROM   Notes as n, NoteTags as nt, Tags as t"
+		"  WHERE  t.searchName = ? AND nt.tag = t.guid AND n.guid = nt.note"
 		"  ORDER  BY n.creationDate DESC"
 		);
+	wstring tagName;
+	transform
+		( search.begin()
+		, search.end()
+		, back_inserter(tagName)
+		, towupper
+		);
 	statement->Bind(1, search);
+	statement->Bind(2, tagName);
 	while (!statement->Execute())
 	{
 		string  guid;
