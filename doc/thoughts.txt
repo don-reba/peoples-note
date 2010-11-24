@@ -2827,4 +2827,6 @@ should add keyboard handling to the photo dialog
 a thumbnail gets opened in IE following full sync
 	TODO
 removal of tags from notes is not being seen
+	how to fix this?
+	need to remove old tags before adding the new
 	TODO

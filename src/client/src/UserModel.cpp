@@ -950,6 +950,15 @@ void UserModel::MoveToDevice()
 		);
 }
 
+void UserModel::RemoveNoteTags(const Guid & note)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "DELETE FROM NoteTags WHERE note = ?"
+		);
+	statement->Bind(1, note);
+	statement->Execute();
+}
+
 void UserModel::SetCredentials
 	( const wstring & username
 	, const wstring & password

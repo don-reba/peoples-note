@@ -160,6 +160,8 @@ public:
 
 	virtual void MoveToDevice();
 
+	virtual void RemoveNoteTags(const Guid & note);
+
 	virtual void SetCredentials
 		( const std::wstring & username
 		, const std::wstring & password

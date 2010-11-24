@@ -45,6 +45,7 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 		// string checkHash = HashWithMD5(resource.Data);
 		userModel.AddResource(resource);
 	}
+	userModel.RemoveNoteTags(remote.note.guid);
 	foreach (const wstring & tagName, tagNames)
 		userModel.AddTagToNote(tagName, remote.note);
 }
