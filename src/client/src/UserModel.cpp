@@ -187,14 +187,23 @@ void UserModel::AddResource(const Resource & resource)
 
 void UserModel::AddTag(const Tag & tag)
 {
+	wstring searchName;
+	transform
+		( tag.name.begin()
+		, tag.name.end()
+		, back_inserter(searchName)
+		, towupper
+		);
+
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Tags(guid, usn, name, isDirty)"
-		"  VALUES (?, ?, ?, ?)"
+		( "INSERT OR REPLACE INTO Tags(guid, usn, name, searchName, isDirty)"
+		"  VALUES (?, ?, ?, ?, ?)"
 		);
 	statement->Bind(1, tag.guid);
 	statement->Bind(2, tag.usn);
 	statement->Bind(3, tag.name);
-	statement->Bind(4, tag.isDirty);
+	statement->Bind(4, searchName);
+	statement->Bind(5, tag.isDirty);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -204,14 +213,22 @@ void UserModel::AddTagToNote
 	, const Note    & note
 	)
 {
+	wstring searchName;
+	transform
+		( tagName.begin()
+		, tagName.end()
+		, back_inserter(searchName)
+		, towupper
+		);
+
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "INSERT OR REPLACE INTO NoteTags(note, tag)"
 			" SELECT ?, guid"
 			" FROM   tags"
-			" WHERE  upper(name) = upper(?)"
+			" WHERE  searchName = ?"
 		);
 	statement->Bind(1, note.guid);
-	statement->Bind(2, tagName);
+	statement->Bind(2, searchName);
 	statement->Execute();
 	statement->Finalize();
 }
@@ -1067,7 +1084,7 @@ void UserModel::Initialize(wstring name)
 			", value NOT NULL"
 			")"
 		)->Execute();
-	SetProperty(L"version",      2);
+	SetProperty(L"version",      3);
 	SetProperty(L"username",     name);
 	SetProperty(L"password",     L"");
 	SetProperty(L"lastSyncTime", 0);
@@ -1164,30 +1181,6 @@ void UserModel::Initialize(wstring name)
 		)->Execute();
 }
 
-void UserModel::MigrateFrom0To1()
-{
-	dataStore.MakeStatement
-		( "ALTER TABLE Resources ADD COLUMN mime"
-		)->Execute();
-	SetProperty(L"version", 1);
-}
-
-void UserModel::MigrateFrom1To2()
-{
-	dataStore.MakeStatement
-		( "CREATE TRIGGER ReplaceNotebook"
-		"  BEFORE INSERT ON Notebooks"
-		"  BEGIN"
-		"  UPDATE Notebooks"
-		"  SET    usn = NEW.usn, name = NEW.name, updateCount = NEW.updateCount,"
-		"         isDirty = NEW.isDirty, isDefault = NEW.isDefault,"
-		"         isLastUsed = NEW.isLastUsed"
-		"  WHERE  guid = NEW.guid;"
-		"  END"
-		)->Execute();
-	SetProperty(L"version", 2);
-}
-
 void UserModel::Move
 	( const wstring & oldPath
 	, const wstring & newPath
@@ -1220,11 +1213,9 @@ void UserModel::Update()
 	Transaction transaction(*this);
 	switch (GetVersion())
 	{
-	case 0: MigrateFrom0To1();
-	case 1: MigrateFrom1To2();
-	case 2: break;
+	case 3: break;
 	default:
-		throw std::exception("Incorrect database version.");
+		throw std::exception("Incompatible database version.");
 	}
 	if (GetNotebookCount() == 0)
 	{

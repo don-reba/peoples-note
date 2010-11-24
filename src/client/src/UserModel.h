@@ -212,9 +212,6 @@ private:
 
 	void Initialize(std::wstring name);
 
-	void MigrateFrom0To1();
-	void MigrateFrom1To2();
-
 	void Move
 		( const std::wstring & oldPath
 		, const std::wstring & newPath

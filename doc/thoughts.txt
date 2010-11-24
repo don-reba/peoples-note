@@ -2823,3 +2823,5 @@ photo dialog does not show up on square displays
 	TODO
 should add keyboard handling to the photo dialog
 	TODO
+a thumbnail gets opened in IE following full sync
+	TODO
