@@ -342,6 +342,15 @@ void MockUserModel::MoveToDevice()
 	path     = L"device-path";
 }
 
+void MockUserModel::RemoveNoteTags(const Guid & note)
+{
+	::remove_if
+		( noteTags.begin()
+		, noteTags.end()
+		, NoteTagEqualToNote(note)
+		);
+}
+
 void MockUserModel::SetCredentials
 		( const wstring & username
 		, const wstring & password

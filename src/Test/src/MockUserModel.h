@@ -63,6 +63,25 @@ public:
 		}
 	};
 
+	struct NoteTagEqualToNote
+	{
+	private:
+
+		const Guid & note;
+
+	public:
+
+		NoteTagEqualToNote(const Guid & note)
+			: note (note)
+		{
+		}
+
+		bool operator() (const NoteTag & other)
+		{
+			return note == other.note;
+		}
+	};
+
 // data
 
 public:
@@ -241,6 +260,8 @@ public:
 	virtual void MoveToCard();
 
 	virtual void MoveToDevice();
+
+	virtual void RemoveNoteTags(const Guid & note);
 
 	virtual void SetCredentials
 		( const std::wstring & username
