@@ -116,6 +116,12 @@ namespace htmlayout
         return on_data_arrived(he, params.initiator, params.data, params.dataSize, params.dataType ); 
       }
 
+    // gesture events
+    virtual BOOL handle_gesture (HELEMENT he, GESTURE_PARAMS& params ) 
+      {
+        return FALSE;
+      }
+
     //
     // alternative set of event handlers (aka old set).
     //
@@ -179,9 +185,10 @@ namespace htmlayout
               else
                 return pThis->handle_method_call(he, *p ); 
             }
-          case HANDLE_DATA_ARRIVED:     { DATA_ARRIVED_PARAMS *p = (DATA_ARRIVED_PARAMS *)prms; return pThis->handle_data_arrived(he, *p ); }
-          case HANDLE_SIZE:  {  pThis->handle_size(he); return FALSE; }
-          case HANDLE_SCROLL:           { SCROLL_PARAMS *p = (SCROLL_PARAMS *)prms; return pThis->handle_scroll(he, *p ); }
+          case HANDLE_DATA_ARRIVED: { DATA_ARRIVED_PARAMS *p = (DATA_ARRIVED_PARAMS *)prms; return pThis->handle_data_arrived(he, *p ); }
+          case HANDLE_SIZE:         {  pThis->handle_size(he); return FALSE; }
+          case HANDLE_SCROLL:       { SCROLL_PARAMS *p = (SCROLL_PARAMS *)prms; return pThis->handle_scroll(he, *p ); }
+          case HANDLE_GESTURE:      { GESTURE_PARAMS *p = (GESTURE_PARAMS *)prms; return pThis->handle_gesture(he, *p ); }
 
           default:
             assert(false);

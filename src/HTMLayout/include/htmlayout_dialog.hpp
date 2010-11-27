@@ -226,7 +226,7 @@ namespace htmlayout
        if(params.cmd != KEY_DOWN)
          return FALSE;
 
-       dom::element root = he;
+       dom::element root = dom::element::root_element(hwnd);
 
        switch(params.key_code)
        {
