@@ -49,6 +49,8 @@ public:
 
 	virtual void AddNotebook(const Notebook & notebook);
 
+	virtual void AddRecognitionEntry(const RecognitionEntry & entry);
+
 	virtual void AddResource(const Resource & resource);
 
 	virtual void AddTag(const Tag & tag);

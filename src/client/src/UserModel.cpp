@@ -167,7 +167,22 @@ void UserModel::AddNotebook(const Notebook & notebook)
 	statement->Bind(3, notebook.name);
 	statement->Bind(4, notebook.isDirty);
 	statement->Execute();
-	statement->Finalize();
+}
+
+void UserModel::AddRecognitionEntry(const RecognitionEntry & entry)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "INSERT INTO Recognition(text, weight, x, y, w, h, resource)"
+		"  VALUES (?, ?, ?, ?, ?, ?, ?)"
+		);
+	statement->Bind(1, ucEntry);
+	statement->Bind(2, entry.Weight);
+	statement->Bind(3, entry.X);
+	statement->Bind(4, entry.Y);
+	statement->Bind(5, entry.W);
+	statement->Bind(6, entry.H);
+	statement->Bind(7, entry.Resource);
+	statement->Execute();
 }
 
 void UserModel::AddResource(const Resource & resource)
@@ -643,17 +658,22 @@ void UserModel::GetNotesBySearch
 		"  SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
 		"  FROM   Notes as n, NoteTags as nt, Tags as t"
 		"  WHERE  t.searchName = ? AND nt.tag = t.guid AND n.guid = nt.note"
+		"  UNION"
+		"  SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
+		"  FROM   Notes as n, Resources as rs, Recognition as rc"
+		"  WHERE  rc.text = ? AND rc.resource = rs.guid AND rs.note = n.guid"
 		"  ORDER  BY n.creationDate DESC"
 		);
-	wstring tagName;
+	wstring ucSearch;
 	transform
 		( search.begin()
 		, search.end()
-		, back_inserter(tagName)
+		, back_inserter(ucSearch)
 		, towupper
 		);
 	statement->Bind(1, search);
-	statement->Bind(2, tagName);
+	statement->Bind(2, ucSearch);
+	statement->Bind(3, ucSearch);
 	while (!statement->Execute())
 	{
 		string  guid;
@@ -1199,6 +1219,22 @@ void UserModel::Initialize(wstring name)
 
 	dataStore.MakeStatement
 		( "CREATE INDEX NoteTagsNote ON NoteTags(note)"
+		)->Execute();
+
+	dataStore.MakeStatement
+		( "CREATE TABLE Recognition"
+			"( text"
+			", weight"
+			", x"
+			", y"
+			", w"
+			", h"
+			", resource REFERENCES Resources(guid) ON DELETE CASCADE ON UPDATE CASCADE"
+			")"
+		)->Execute();
+
+	dataStore.MakeStatement
+		( "CREATE INDEX RecognitionResource ON Recognition(resource)"
 		)->Execute();
 }
 

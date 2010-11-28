@@ -80,5 +80,8 @@ void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 	foreach (const Resource & resource, resources)
 		userModel.AddResource(resource);
 
+	foreach (const RecognitionEntry & entry, recognitionEntries)
+		userModel.AddRecognitionEntry(entry);
+
 	noteListModel.Reload();
 }
