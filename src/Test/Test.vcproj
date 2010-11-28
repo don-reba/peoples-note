@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EnRecognitionParser.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\EnServiceTools.cpp"
 				>
 			</File>
@@ -453,6 +457,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestEnNoteTranslator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestEnRecognitionParser.cpp"
 				>
 			</File>
 			<File

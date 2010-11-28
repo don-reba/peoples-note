@@ -2830,3 +2830,40 @@ removal of tags from notes is not being seen
 	how to fix this?
 	need to remove old tags before adding the new
 	TODO
+image search
+	lets check the reference first
+		import
+			en-export > note > resource > recognition
+			contains CDATA with custom XML
+		sync
+			NoteStore.getResource
+				withRecognition parameter
+				returns Data
+					which a string with a hash
+			NoteStore.getResourceRecognition
+				return string
+			both methods probably return XML
+		custom XML format
+			top recoIndex element
+				rectangular regions — items@x,y,w,h
+					reocgnized words with weights — t@w
+	database
+		need to store items with positions for each resource
+			do I want a separate region table?
+			I don't see why I would
+			this would imply the need to search by region
+			but I probably want to store weights
+				just in case
+	import integration
+		we want a separate testable class handling recognition XML
+		this class would be used by the importer
+	implementation plan
+		add a table to the database
+		create the XML processing engine
+		update integration
+		update search
+		update synchronization
+	xml processign engine
+		should extract the tags
+		does it mean I need a separate structure for this?
+		lets add it
