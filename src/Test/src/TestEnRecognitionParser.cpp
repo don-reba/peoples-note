@@ -33,27 +33,27 @@ BOOST_AUTO_TEST_CASE(EnRecognitionParser_Parse)
 
 	BOOST_REQUIRE_EQUAL(entries.size(), 3);
 
-	BOOST_CHECK_EQUAL(entries.at(0).text,     L"CLIPS");
-	BOOST_CHECK_EQUAL(entries.at(0).weight,   68);
-	BOOST_CHECK_EQUAL(entries.at(0).x,        151);
-	BOOST_CHECK_EQUAL(entries.at(0).y,        219);
-	BOOST_CHECK_EQUAL(entries.at(0).w,        323);
-	BOOST_CHECK_EQUAL(entries.at(0).h,        159);
-	BOOST_CHECK_EQUAL(entries.at(0).resource, Guid("{0}"));
+	BOOST_CHECK_EQUAL(entries.at(0).Text,     L"CLIPS");
+	BOOST_CHECK_EQUAL(entries.at(0).Weight,   68);
+	BOOST_CHECK_EQUAL(entries.at(0).X,        151);
+	BOOST_CHECK_EQUAL(entries.at(0).Y,        219);
+	BOOST_CHECK_EQUAL(entries.at(0).W,        323);
+	BOOST_CHECK_EQUAL(entries.at(0).H,        159);
+	BOOST_CHECK_EQUAL(entries.at(0).Resource, Guid("{0}"));
 
-	BOOST_CHECK_EQUAL(entries.at(1).text,     L"NOTES");
-	BOOST_CHECK_EQUAL(entries.at(1).weight,   40);
-	BOOST_CHECK_EQUAL(entries.at(1).x,        481);
-	BOOST_CHECK_EQUAL(entries.at(1).y,        387);
-	BOOST_CHECK_EQUAL(entries.at(1).w,        266);
-	BOOST_CHECK_EQUAL(entries.at(1).h,        120);
-	BOOST_CHECK_EQUAL(entries.at(1).resource, Guid("{0}"));
+	BOOST_CHECK_EQUAL(entries.at(1).Text,     L"NOTES");
+	BOOST_CHECK_EQUAL(entries.at(1).Weight,   40);
+	BOOST_CHECK_EQUAL(entries.at(1).X,        481);
+	BOOST_CHECK_EQUAL(entries.at(1).Y,        387);
+	BOOST_CHECK_EQUAL(entries.at(1).W,        266);
+	BOOST_CHECK_EQUAL(entries.at(1).H,        120);
+	BOOST_CHECK_EQUAL(entries.at(1).Resource, Guid("{0}"));
 
-	BOOST_CHECK_EQUAL(entries.at(2).text,     L"NOTTS");
-	BOOST_CHECK_EQUAL(entries.at(2).weight,   32);
-	BOOST_CHECK_EQUAL(entries.at(2).x,        481);
-	BOOST_CHECK_EQUAL(entries.at(2).y,        387);
-	BOOST_CHECK_EQUAL(entries.at(2).w,        266);
-	BOOST_CHECK_EQUAL(entries.at(2).h,        120);
-	BOOST_CHECK_EQUAL(entries.at(2).resource, Guid("{0}"));
+	BOOST_CHECK_EQUAL(entries.at(2).Text,     L"NOTTS");
+	BOOST_CHECK_EQUAL(entries.at(2).Weight,   32);
+	BOOST_CHECK_EQUAL(entries.at(2).X,        481);
+	BOOST_CHECK_EQUAL(entries.at(2).Y,        387);
+	BOOST_CHECK_EQUAL(entries.at(2).W,        266);
+	BOOST_CHECK_EQUAL(entries.at(2).H,        120);
+	BOOST_CHECK_EQUAL(entries.at(2).Resource, Guid("{0}"));
 }

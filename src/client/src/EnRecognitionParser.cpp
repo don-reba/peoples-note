@@ -29,24 +29,24 @@ void EnRecognitionParser::Parse
 		while (item)
 		{
 			RecognitionEntry entry = { };
-			entry.resource = resource;
+			entry.Resource = resource;
 
 			xml_attribute<wchar_t> * a(item->first_attribute());
 			while (a)
 			{
 				wstring name  (a->name(),  a->name_size());
 				wstring value (a->value(), a->value_size());
-				if      (name == L"x") entry.x = _wtoi(value.c_str());
-				else if (name == L"y") entry.y = _wtoi(value.c_str());
-				else if (name == L"w") entry.w = _wtoi(value.c_str());
-				else if (name == L"h") entry.h = _wtoi(value.c_str());
+				if      (name == L"x") entry.X = _wtoi(value.c_str());
+				else if (name == L"y") entry.Y = _wtoi(value.c_str());
+				else if (name == L"w") entry.W = _wtoi(value.c_str());
+				else if (name == L"h") entry.H = _wtoi(value.c_str());
 				a = a->next_attribute();
 			}
 
 			xml_node<wchar_t> * t(item->first_node(L"t"));
 			while (t)
 			{
-				entry.text.assign(t->value(), t->value_size());
+				entry.Text.assign(t->value(), t->value_size());
 
 				xml_attribute<wchar_t> * a(t->first_attribute());
 				while (a)
@@ -54,7 +54,7 @@ void EnRecognitionParser::Parse
 					wstring name  (a->name(),  a->name_size());
 					wstring value (a->value(), a->value_size());
 					if (name == L"w")
-						entry.weight = _wtoi(value.c_str());
+						entry.Weight = _wtoi(value.c_str());
 					a = a->next_attribute();
 				}
 

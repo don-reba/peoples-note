@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnImporter.h"
 
+#include "EnRecognitionParser.h"
 #include "Note.h"
 #include "Tools.h"
 
@@ -16,10 +17,11 @@ using namespace std;
 using namespace Tools;
 
 void EnImporter::ImportNotes
-	( const std::wstring & text
-	, NoteList           & notes
-	, NoteBodyList       & bodies
-	, ResourceList       & resources
+	( const wstring        & text
+	, NoteList             & notes
+	, NoteBodyList         & bodies
+	, ResourceList         & resources
+	, RecognitionEntryList & recognitionEntries
 	)
 {
 	if (text.empty())
@@ -52,25 +54,31 @@ void EnImporter::ImportNotes
 			xml_node<wchar_t> * noteNode(node->first_node());
 			while (noteNode)
 			{
-				if (0 == wcscmp(noteNode->name(), L"content"))
+				wstring name(noteNode->name(), noteNode->name_size());
+				if (name == L"content")
 				{
 					if (noteNode->value_size() > 0)
 						body = noteNode->value();
 					else
 					{
-						xml_node<wchar_t> * contentNode
-							= noteNode->first_node();
+						xml_node<wchar_t> * contentNode(noteNode->first_node());
 						if (contentNode)
-							body = contentNode->value();
+						{
+							body.assign
+								( contentNode->value()
+								, contentNode->value_size()
+								);
+						}
 					}
 				}
-				if (0 == wcscmp(noteNode->name(), L"resource"))
+				else if (name == L"resource")
 				{
 					xml_node<wchar_t> * resourceNode(noteNode->first_node());
 					resources.push_back(Resource());
 					while (resourceNode)
 					{
-						if (0 == wcscmp(resourceNode->name(), L"data"))
+						wstring name(resourceNode->name(), resourceNode->name_size());
+						if (name == L"data")
 						{
 							resources.back().Note = guid;
 							Tools::DecodeBase64
@@ -79,16 +87,27 @@ void EnImporter::ImportNotes
 								);
 							resources.back().Hash = HashWithMD5(resources.back().Data);
 						}
-						else if (0 == wcscmp(resourceNode->name(), L"mime"))
+						else if (name == L"mime")
 						{
 							resources.back().Mime = resourceNode->value();
+						}
+						else if (name == L"recognition")
+						{
+							xml_node<wchar_t> * dataNode(resourceNode->first_node());
+							if (dataNode)
+							{
+								wstring value(dataNode->value(), dataNode->value_size());
+
+								EnRecognitionParser parser;
+								parser.Parse(value, recognitionEntries, resources.back().Guid);
+							}
 						}
 						resourceNode = resourceNode->next_sibling();
 					}
 				}
-				if (0 == wcscmp(noteNode->name(), L"title"))
+				else if (name == L"title")
 					title = noteNode->value();
-				if (0 == wcscmp(noteNode->name(), L"created"))
+				else if (name == L"created")
 					created = noteNode->value();
 				noteNode = noteNode->next_sibling();
 			}

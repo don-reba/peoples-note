@@ -7,17 +7,19 @@ class MockEnImporter : public IEnImporter
 {
 public:
 
-	NoteBodyList bodies;
-	NoteList     notes;
-	ResourceList resources;
-	std::wstring text;
+	NoteBodyList         bodies;
+	NoteList             notes;
+	ResourceList         resources;
+	RecognitionEntryList recognitionEntries;
+	std::wstring         text;
 
 public:
 
 	virtual void ImportNotes
-		( const std::wstring & text
-		, NoteList           & notes
-		, NoteBodyList       & bodies
-		, ResourceList       & resources
+		( const std::wstring   & text
+		, NoteList             & notes
+		, NoteBodyList         & bodies
+		, ResourceList         & resources
+		, RecognitionEntryList & recognitionEntries
 		);
 };

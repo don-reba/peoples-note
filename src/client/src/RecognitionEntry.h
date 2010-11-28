@@ -2,13 +2,13 @@
 
 struct RecognitionEntry
 {
-	std::wstring text;
-	int          weight;
-	int          x;
-	int          y;
-	int          w;
-	int          h;
-	Guid         resource;
+	std::wstring Text;
+	int          Weight;
+	int          X;
+	int          Y;
+	int          W;
+	int          H;
+	Guid         Resource;
 };
 
 typedef std::vector<RecognitionEntry> RecognitionEntryList;

@@ -7,10 +7,11 @@ class EnImporter : public IEnImporter
 public:
 
 	virtual void ImportNotes
-		( const std::wstring & text
-		, NoteList           & notes
-		, NoteBodyList       & bodies
-		, ResourceList       & resources
+		( const std::wstring   & text
+		, NoteList             & notes
+		, NoteBodyList         & bodies
+		, ResourceList         & resources
+		, RecognitionEntryList & recognitionEntries
 		);
 
 private:

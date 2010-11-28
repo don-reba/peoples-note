@@ -52,11 +52,18 @@ void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 	Notebook notebook;
 	userModel.GetLastUsedNotebook(notebook);
 
-	NoteList     notes;
-	NoteBodyList bodies;
-	ResourceList resources;
+	NoteList             notes;
+	NoteBodyList         bodies;
+	ResourceList         resources;
+	RecognitionEntryList recognitionEntries;
 
-	enImporter.ImportNotes(fileContents, notes, bodies, resources);
+	enImporter.ImportNotes
+		( fileContents
+		, notes
+		, bodies
+		, resources
+		, recognitionEntries
+		);
 	assert(notes.size() == bodies.size());
 
 	for (int i(0); i != notes.size(); ++i)
