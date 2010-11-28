@@ -175,7 +175,7 @@ void UserModel::AddRecognitionEntry(const RecognitionEntry & entry)
 		( "INSERT INTO Recognition(text, weight, x, y, w, h, resource)"
 		"  VALUES (?, ?, ?, ?, ?, ?, ?)"
 		);
-	statement->Bind(1, ucEntry);
+	statement->Bind(1, entry.Text);
 	statement->Bind(2, entry.Weight);
 	statement->Bind(3, entry.X);
 	statement->Bind(4, entry.Y);
