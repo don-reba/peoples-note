@@ -38,12 +38,13 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 	userModel.AddNote(remote.note, body, bodyText, notebook);
 	foreach (const Guid & guid, remote.resources)
 	{
-		Resource resource;
-		noteStore.GetNoteResource(guid, resource);
-		// TODO: check the hash here
-		// handle incomplete downloads somehow
-		// string checkHash = HashWithMD5(resource.Data);
+		Resource             resource;
+		RecognitionEntryList recognitionEntries;
+
+		noteStore.GetNoteResource(guid, resource, recognitionEntries);
 		userModel.AddResource(resource);
+		foreach (const RecognitionEntry & entry, recognitionEntries)
+			userModel.AddRecognitionEntry(entry);
 	}
 	userModel.RemoveNoteTags(remote.note.guid);
 	foreach (const wstring & tagName, tagNames)
@@ -101,9 +102,13 @@ void NoteProcessor::Merge
 
 	foreach (const Guid & guid, remote.resources)
 	{
-		Resource resource;
-		noteStore.GetNoteResource(guid, resource);
+		Resource             resource;
+		RecognitionEntryList recognitionEntries;
+
+		noteStore.GetNoteResource(guid, resource, recognitionEntries);
 		userModel.AddResource(resource);
+		foreach (const RecognitionEntry & entry, recognitionEntries)
+			userModel.AddRecognitionEntry(entry);
 	}
 }
 

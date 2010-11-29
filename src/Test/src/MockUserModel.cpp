@@ -33,6 +33,11 @@ void MockUserModel::AddNotebook(const Notebook & notebook)
 	notebooks.push_back(notebook);
 }
 
+void MockUserModel::AddRecognitionEntry(const RecognitionEntry & entry)
+{
+	recognitionEntries.push_back(entry);
+}
+
 void MockUserModel::AddResource(const Resource & resource)
 {
 	resources.push_back(resource);
@@ -344,11 +349,15 @@ void MockUserModel::MoveToDevice()
 
 void MockUserModel::RemoveNoteTags(const Guid & note)
 {
-	::remove_if
-		( noteTags.begin()
-		, noteTags.end()
-		, NoteTagEqualToNote(note)
-		);
+	set<NoteTag>::iterator i(noteTags.begin());
+	while (i != noteTags.end())
+	{
+		set<NoteTag>::iterator next(i);
+		++next;
+		if (note == i->note)
+			noteTags.erase(i);
+		i = next;
+	}
 }
 
 void MockUserModel::SetCredentials

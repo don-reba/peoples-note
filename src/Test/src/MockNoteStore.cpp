@@ -57,17 +57,23 @@ void MockNoteStore::GetNoteBody
 }
 
 void MockNoteStore::GetNoteResource
-	( const Guid & guid
-	, Resource   & resource
+	( const Guid           & guid
+	, Resource             & resource
+	, RecognitionEntryList & recognitionEntries
 	)
 {
 	foreach (Resource & r, this->resources)
 	{
-		if (r.Guid == guid)
+		if (r.Guid != guid)
+			continue;
+		resource = r;
+		foreach (const RecognitionEntry & entry, this->recognitionEntries)
 		{
-			resource = r;
-			return;
+			if (entry.Resource != r.Guid)
+				continue;
+			recognitionEntries.push_back(entry);
 		}
+		return;
 	}
 }
 

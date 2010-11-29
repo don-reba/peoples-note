@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "NoteStore.h"
 
+#include "EnRecognitionParser.h"
 #include "Guid.h"
 #include "Tools.h"
 
@@ -147,17 +148,19 @@ void NoteStore::GetNoteBody
 }
 
 void NoteStore::GetNoteResource
-	( const Guid & guid
-	, Resource   & resource
+	( const Guid           & guid
+	, Resource             & resource
+	, RecognitionEntryList & recognitionEntries
 	)
 {
+	wstring guidString(ConvertToUnicode(guid));
 	EDAM::Types::Resource enResource = noteStore.getResource
-		( token                  // authenticationToken
-		, ConvertToUnicode(guid) // guid
-		, true                   // withData
-		, false                  // withRecognition
-		, false                  // withAttributes
-		, false                  // withAlternateData
+		( token       // authenticationToken
+		, guidString  // guid
+		, true        // withData
+		, true        // withRecognition
+		, false       // withAttributes
+		, false       // withAlternateData
 		);
 	copy
 		( enResource.data.body.begin()
@@ -168,6 +171,15 @@ void NoteStore::GetNoteResource
 	resource.Guid = enResource.guid;
 	resource.Note = enResource.noteGuid;
 	resource.Mime = enResource.mime;
+
+	if (enResource.__isset.recognition)
+	{
+		wstring info;
+		ConvertToUnicode(&enResource.recognition.body.at(0), info);
+
+		EnRecognitionParser parser;
+		parser.Parse(info, recognitionEntries, guid);
+	}
 }
 
 void NoteStore::GetNoteTagNames

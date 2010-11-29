@@ -57,3 +57,13 @@ BOOST_AUTO_TEST_CASE(EnRecognitionParser_Parse)
 	BOOST_CHECK_EQUAL(entries.at(2).H,        120);
 	BOOST_CHECK_EQUAL(entries.at(2).Resource, Guid("{0}"));
 }
+
+BOOST_AUTO_TEST_CASE(EnRecognitionParser_ParseEmpty)
+{
+	RecognitionEntryList entries;
+
+	EnRecognitionParser parser;
+	parser.Parse(L"", entries, Guid("{0}"));
+
+	BOOST_REQUIRE_EQUAL(entries.size(), 0);
+}

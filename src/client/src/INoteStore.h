@@ -2,6 +2,7 @@
 
 #include "EnInteropNote.h"
 #include "Notebook.h"
+#include "RecognitionEntry.h"
 #include "Resource.h"
 #include "SyncState.h"
 #include "Tag.h"
@@ -38,8 +39,9 @@ public:
 		) = 0;
 
 	virtual void GetNoteResource
-		( const Guid & guid
-		, Resource   & resource
+		( const Guid           & guid
+		, Resource             & resource
+		, RecognitionEntryList & recognitionEntries
 		) = 0;
 
 	virtual void GetNoteTagNames

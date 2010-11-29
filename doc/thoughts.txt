@@ -2867,3 +2867,7 @@ image search
 		should extract the tags
 		does it mean I need a separate structure for this?
 		lets add it
+	synchronization
+		need to remove previous entries before updating a resource
+		if resources are even updated
+		TODO

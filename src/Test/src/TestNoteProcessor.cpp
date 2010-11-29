@@ -60,14 +60,19 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 	userModel.tags.push_back(Tag());
 	userModel.tags.back().guid = Guid("{1}");
 	userModel.tags.back().name = L"tag-1";
+	userModel.tags.push_back(Tag());
+	userModel.tags.back().guid = Guid("{2}");
+	userModel.tags.back().name = L"tag-2";
+
+	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{2}"));
 
 	noteProcessor.Add(note);
 
-	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
+	BOOST_REQUIRE_EQUAL(userModel.addedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).body, L"<en-note>test-body</en-note>");
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).note.name, L"test-note");
 
-	BOOST_CHECK_EQUAL(userModel.resources.size(), 2);
+	BOOST_REQUIRE_EQUAL(userModel.resources.size(), 2);
 	BOOST_CHECK_EQUAL
 		( static_cast<string>(userModel.resources.at(0).Note)
 		, "{0}"
@@ -84,7 +89,8 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 		( userModel.resources.at(1).Hash
 		, "4816b20bbb2673692f5d8327d331fc00"
 		);
-	BOOST_CHECK_EQUAL(userModel.noteTags.size(), 2);
+
+	BOOST_REQUIRE_EQUAL(userModel.noteTags.size(), 2);
 	BOOST_CHECK
 		(  userModel.noteTags.find(MockUserModel::NoteTag("{0}", "{0}"))
 		!= userModel.noteTags.end()

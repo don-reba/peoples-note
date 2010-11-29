@@ -5,6 +5,7 @@
 #include "Note.h"
 #include "Notebook.h"
 #include "Resource.h"
+#include "RecognitionEntry.h"
 #include "SyncState.h"
 #include "Tag.h"
 
@@ -19,9 +20,10 @@ public:
 
 public:
 
-	EnInteropNoteList remoteNotes;
-	NotebookList      remoteNotebooks;
-	TagList           remoteTags;
+	EnInteropNoteList    remoteNotes;
+	NotebookList         remoteNotebooks;
+	RecognitionEntryList recognitionEntries;
+	TagList              remoteTags;
 
 	NoteBodyMap noteBodies;
 	NoteTagMap  noteTags;
@@ -75,8 +77,9 @@ public:
 		);
 
 	virtual void GetNoteResource
-		( const Guid & guid
-		, Resource   & resource
+		( const Guid           & note
+		, Resource             & resource
+		, RecognitionEntryList & recognitionEntries
 		);
 
 	virtual void GetNoteTagNames

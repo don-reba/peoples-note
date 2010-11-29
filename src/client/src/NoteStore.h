@@ -59,8 +59,9 @@ public:
 		);
 
 	virtual void GetNoteResource
-		( const Guid & guid
-		, Resource   & resource
+		( const Guid           & guid
+		, Resource             & resource
+		, RecognitionEntryList & recognitionEntries
 		);
 
 	virtual void GetNoteTagNames
