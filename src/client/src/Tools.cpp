@@ -153,6 +153,12 @@ void Tools::ConvertToUnicode
 	, wstring             & result
 	)
 {
+	if (!str)
+	{
+		result.clear();
+		return;
+	}
+
 	LPCSTR cStr = reinterpret_cast<LPCSTR>(str);
 	int length = strlen(cStr);
 

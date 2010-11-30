@@ -656,7 +656,7 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 
 		Credentials credentials;
 		userModel.GetCredentials(credentials);
-		TEST_CHECK_EQUAL(userModel.GetVersion(),       1);
+		TEST_CHECK_EQUAL(userModel.GetVersion(),       3);
 		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
 
@@ -677,7 +677,7 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 
 		Credentials credentials;
 		userModel.GetCredentials(credentials);
-		TEST_CHECK_EQUAL(userModel.GetVersion(),       1);
+		TEST_CHECK_EQUAL(userModel.GetVersion(),       3);
 		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
 		TEST_CHECK_EQUAL(credentials.GetPassword(),    L"test-pwd");
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);

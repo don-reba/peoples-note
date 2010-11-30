@@ -9,6 +9,8 @@
 #include "Transaction.h"
 #include "IUserModel.h"
 
+#include "htmlayout.h"
+
 using namespace std;
 using namespace Tools;
 
@@ -46,7 +48,8 @@ bool HtmlDataLoader::LoadFromUri(const wchar_t * uri)
 		switch (ClassifyUri(uri))
 		{
 		case UriTypeHtml:      LoadHtmlUri      (uri); return true;
-		case UriTypeHttp:      LoadHttpUri      (uri); return true;
+		case UriTypeHttpHtml:  LoadHttpHtmlUri  (uri); return true;
+		case UriTypeHttpImg:   LoadHttpImgUri   (uri); return true;
 		case UriTypeResource:  LoadResourceUri  (uri); return true;
 		case UriTypeThumbnail: LoadThumbnailUri (uri); return true;
 		}
@@ -56,6 +59,22 @@ bool HtmlDataLoader::LoadFromUri(const wchar_t * uri)
 		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
 	}
 	return false;
+}
+
+HtmlDataLoader::UriType HtmlDataLoader::ClassifyHttpUri(const wchar_t * uri)
+{
+	const wchar_t * dotPosition(wcsrchr(uri, L'.'));
+	if (!dotPosition)
+		return UriTypeHttpHtml;
+	if (0 == wcsicmp(dotPosition, L".gif"))
+		return UriTypeHttpImg;
+	if (0 == wcsicmp(dotPosition, L".jpg"))
+		return UriTypeHttpImg;
+	if (0 == wcsicmp(dotPosition, L".jpeg"))
+		return UriTypeHttpImg;
+	if (0 == wcsicmp(dotPosition, L".png"))
+		return UriTypeHttpImg;
+	return UriTypeHttpHtml;
 }
 
 HtmlDataLoader::UriType HtmlDataLoader::ClassifyUri(const wchar_t * uri)
@@ -68,7 +87,9 @@ HtmlDataLoader::UriType HtmlDataLoader::ClassifyUri(const wchar_t * uri)
 	if (IsPrefix(uri, colonPosition, L"img"))
 		return UriTypeResource;
 	if (IsPrefix(uri, colonPosition, L"http"))
-		return UriTypeHttp;
+		return ClassifyHttpUri(uri);
+	if (IsPrefix(uri, colonPosition, L"https"))
+		return ClassifyHttpUri(uri);
 	return UriTypeUnknown;
 }
 
@@ -96,7 +117,7 @@ void HtmlDataLoader::LoadHtmlUri(const wchar_t * uri)
 	blob.assign(resource.data, resource.data + resource.size);
 }
 
-void HtmlDataLoader::LoadHttpUri(const wchar_t * uri)
+void HtmlDataLoader::LoadHttpHtmlUri(const wchar_t * uri)
 {
 	blob.clear();
 
@@ -105,6 +126,11 @@ void HtmlDataLoader::LoadHttpUri(const wchar_t * uri)
 	info.lpVerb = L"open";
 	info.lpFile = uri;
 	::ShellExecuteEx(&info);
+}
+
+void HtmlDataLoader::LoadHttpImgUri(const wchar_t * uri)
+{
+	blob.clear();
 }
 
 void HtmlDataLoader::LoadResourceUri(const wchar_t * uri)

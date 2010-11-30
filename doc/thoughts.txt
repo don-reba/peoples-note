@@ -2825,7 +2825,19 @@ photo dialog does not show up on square displays
 should add keyboard handling to the photo dialog
 	TODO
 a thumbnail gets opened in IE following full sync
-	TODO
+	time to test this
+	list-style-image is retrieved over http
+	html data loader opens it in IE
+		because it starts with http:
+	how to address this problem?
+		we want to be able to download images over http
+		htmlayout has this ability
+		but html data loader does not depend on htmlayout
+			do I want to add this dependency?
+				could try and see if tests pass
+		returning NULL might work, actually
+			lets try it
+		seems to work
 removal of tags from notes is not being seen
 	how to fix this?
 	need to remove old tags before adding the new
@@ -2871,3 +2883,26 @@ image search
 		need to remove previous entries before updating a resource
 		if resources are even updated
 		TODO
+slow synchronization
+	frequently times out
+	looks like it was a connection problem
+recognition parser failure
+	missing "<" in some notes
+	for some reason, the string ends with a "P"
+		character count problem?
+		maybe passing the data straight to ConvertToUnicode is a bad idea
+		maybe it is not null-terminated
+	null-terminating the data seems to have helped
+db profiling
+	need to time queries
+		record the time of each query
+			or just the statistics
+		how to identify queries?
+			they are all static strings
+			so we could store a set of pointers
+		report
+			convert pointers to indices
+				perhaps, use map, instead of set
+			print out the queries
+			print out the stats
+	TODO

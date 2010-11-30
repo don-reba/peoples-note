@@ -174,6 +174,9 @@ void NoteStore::GetNoteResource
 
 	if (enResource.__isset.recognition)
 	{
+		enResource.recognition.body.reserve(enResource.recognition.body.size() + 1);
+		enResource.recognition.body.push_back(L'\0');
+
 		wstring info;
 		ConvertToUnicode(&enResource.recognition.body.at(0), info);
 

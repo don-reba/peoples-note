@@ -15,7 +15,8 @@ private:
 	enum UriType
 	{
 		UriTypeHtml,
-		UriTypeHttp,
+		UriTypeHttpHtml,
+		UriTypeHttpImg,
 		UriTypeResource,
 		UriTypeThumbnail,
 		UriTypeUnknown,
@@ -50,7 +51,8 @@ public:
 
 private:
 
-	UriType ClassifyUri(const wchar_t * uri);
+	UriType ClassifyHttpUri (const wchar_t * uri);
+	UriType ClassifyUri     (const wchar_t * uri);
 
 	bool IsPrefix
 		( const wchar_t * begin
@@ -59,7 +61,8 @@ private:
 		);
 
 	void LoadHtmlUri      (const wchar_t * uri);
-	void LoadHttpUri      (const wchar_t * uri);
+	void LoadHttpHtmlUri  (const wchar_t * uri);
+	void LoadHttpImgUri   (const wchar_t * uri);
 	void LoadResourceUri  (const wchar_t * uri);
 	void LoadThumbnailUri (const wchar_t * uri);
 };
