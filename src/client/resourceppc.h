@@ -40,6 +40,7 @@
 #define ID_COLOR_BLUE                   32792
 #define ID_COLOR_YELLOW                 32793
 #define ID_COLOR_GREEN                  32794
+#define ID_DELETE_NOTE                  32795
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

@@ -38,8 +38,8 @@ BOOST_FIXTURE_TEST_CASE(TagProcessor_Delete_Test, TagProcessorFixture)
 
 	tagProcessor.Delete(tag);
 
-	BOOST_CHECK_EQUAL(userModel.deletedTags.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.deletedTags.at(0), tag.guid);
+	BOOST_CHECK_EQUAL(userModel.expungedTags.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.expungedTags.at(0), tag.guid);
 }
 
 BOOST_FIXTURE_TEST_CASE(TagProcessor_Rename_Test, TagProcessorFixture)

@@ -51,8 +51,8 @@ BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Delete_Test, NotebookProcessorFixture)
 
 	notebookProcessor.Delete(notebook);
 
-	BOOST_CHECK_EQUAL(userModel.deletedNotebooks.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.deletedNotebooks.at(0), notebook.guid);
+	BOOST_CHECK_EQUAL(userModel.expungedNotebooks.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.expungedNotebooks.at(0), notebook.guid);
 }
 
 BOOST_FIXTURE_TEST_CASE(NotebookProcessor_RenameAdd_Test, NotebookProcessorFixture)

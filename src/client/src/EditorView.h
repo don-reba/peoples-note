@@ -21,6 +21,7 @@ private:
 
 	signal SignalAccept;
 	signal SignalCancel;
+	signal SignalDeleteNote;
 
 // interface
 
@@ -39,6 +40,8 @@ public:
 	virtual void ConnectAccept(slot_type OnAccept);
 
 	virtual void ConnectCancel(slot_type OnCancel);
+
+	virtual void ConnectDeleteNote(slot_type OnDeleteNote);
 
 	virtual void GetBody(std::wstring & html);
 

@@ -527,7 +527,7 @@ void SyncModel::Sync()
 					try
 					{
 						syncLogger.PerformAction(L"Delete", &guid, NULL);
-						userModel.DeleteNote(guid);
+						userModel.ExpungeNote(guid);
 					}
 					catch (const std::exception &)
 					{
@@ -537,12 +537,12 @@ void SyncModel::Sync()
 				foreach (Guid & guid, expungedNotebooks)
 				{
 					syncLogger.PerformAction(L"Delete", &guid, NULL);
-					userModel.DeleteNotebook(guid);
+					userModel.ExpungeNotebook(guid);
 				}
 				foreach (Guid & guid, expungedTags)
 				{
 					syncLogger.PerformAction(L"Delete", &guid, NULL);
-					userModel.DeleteTag(guid);
+					userModel.ExpungeTag(guid);
 				}
 			}
 		}

@@ -53,7 +53,7 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 
 void NoteProcessor::Delete(const EnInteropNote & local)
 {
-	userModel.DeleteNote(local.note.guid);
+	userModel.ExpungeNote(local.note.guid);
 }
 
 void NoteProcessor::Create(const EnInteropNote & local)
@@ -73,7 +73,7 @@ void NoteProcessor::Create(const EnInteropNote & local)
 	Note replacement;
 	noteStore.CreateNote(local.note, body, resources, notebook.guid, replacement);
 
-	userModel.DeleteNote(local.note.guid);
+	userModel.ExpungeNote(local.note.guid);
 	userModel.AddNote(replacement, body, bodyText, notebook);
 
 	foreach (Resource & resource, resources)
@@ -90,7 +90,7 @@ void NoteProcessor::Merge
 {
 	Transaction transaction(userModel);
 
-	userModel.DeleteNote(local.note.guid);
+	userModel.ExpungeNote(local.note.guid);
 
 	wstring body;
 	noteStore.GetNoteBody(remote.note, body);
@@ -138,6 +138,6 @@ void NoteProcessor::Update(const EnInteropNote & local)
 	Note replacement;
 	noteStore.UpdateNote(local.note, body, resources, notebook.guid, replacement);
 
-	userModel.DeleteNote(local.note.guid);
+	userModel.ExpungeNote(local.note.guid);
 	userModel.AddNote(replacement, body, bodyText, notebook);
 }

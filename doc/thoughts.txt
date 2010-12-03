@@ -2906,3 +2906,15 @@ db profiling
 			print out the queries
 			print out the stats
 	TODO
+note deletion
+	there seems to be no action for deletion of remote resources
+	it is not in the spec, either
+	so, we need an "expunged note" list
+	a new table or a new column?
+		column would make it easier to preserve resources
+			there is no SQL command for moving row to another table
+			it would not make sense for foreign constraints, anyway
+			so recording deletion in a new table would not be reversible
+				bad design choice
+		organizing a trash bin would be equally easy either way
+		listing notes is a little more difficult with a column

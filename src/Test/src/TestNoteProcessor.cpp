@@ -134,8 +134,8 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Delete_Test, NoteProcessorFixture)
 
 	noteProcessor.Delete(note);
 
-	BOOST_CHECK_EQUAL(userModel.deletedNotes.size(), 1);
-	BOOST_CHECK_EQUAL(userModel.deletedNotes.at(0), note.guid);
+	BOOST_CHECK_EQUAL(userModel.expungedNotes.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.expungedNotes.at(0), note.guid);
 }
 
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)

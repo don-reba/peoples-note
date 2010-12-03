@@ -18,6 +18,11 @@ void MockEditorView::ConnectCancel(slot_type OnCancel)
 	SignalCancel.connect(OnCancel);
 }
 
+void MockEditorView::ConnectDeleteNote(slot_type OnDeleteNote)
+{
+	SignalDeleteNote.connect(OnDeleteNote);
+}
+
 void MockEditorView::GetBody(wstring & html)
 {
 	html = body;

@@ -64,15 +64,17 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
-	virtual void DeleteNote(const Guid & note);
-
-	virtual void DeleteNotebook(const Guid & notebook);
-
-	virtual void DeleteTag(const Guid & tag);
+	//virtual void DeleteNote(const Guid & note);
 
 	virtual void EndTransaction();
 
 	virtual bool Exists(const std::wstring & username);
+
+	virtual void ExpungeNote(const Guid & note);
+
+	virtual void ExpungeNotebook(const Guid & notebook);
+
+	virtual void ExpungeTag(const Guid & tag);
 
 	virtual void GetCredentials(Credentials & credentials);
 

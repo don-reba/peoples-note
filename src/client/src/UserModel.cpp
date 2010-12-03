@@ -262,68 +262,16 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
-void UserModel::DeleteNote(const Guid & note)
-{
-	Transaction transaction(*this);
-	__int64 rowid(0L);
-	{
-		IDataStore::Statement statement = dataStore.MakeStatement
-			( "SELECT rowid FROM Notes Where guid = ?"
-			);
-		statement->Bind(1, note);
-		if (statement->Execute())
-			return;
-		statement->Get(0, rowid);
-	}
-	{
-		IDataStore::Statement statement = dataStore.MakeStatement
-			( "DELETE FROM Notes WHERE rowid = ?"
-			);
-		statement->Bind(1, rowid);
-		statement->Execute();
-	}
-	{
-		IDataStore::Statement statement = dataStore.MakeStatement
-			( "DELETE FROM NoteText WHERE rowid = ?"
-			);
-		statement->Bind(1, rowid);
-		statement->Execute();
-	}
-}
+//bool UserModel::DeleteNote(const Guid & note)
+//{
+//	IDataStore::Statement statement = dataStore.MakeStatement
+//		( "UPDATE Notebooks"
+//		"  SET guid = ?, usn = ?, name = ?, isDirty = ?"
+//		"  WHERE guid = ?"
+//		);
+//}
 
-void UserModel::DeleteNotebook(const Guid & notebook)
-{
-	Transaction transaction(*this);
-
-	bool isLastUsed;
-	{
-		IDataStore::Statement statement = dataStore.MakeStatement
-			( "SELECT isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
-			);
-		statement->Bind(1, notebook);
-		if (statement->Execute())
-			return;
-		statement->Get(0, isLastUsed);
-	}
-
-	{
-		IDataStore::Statement statement = dataStore.MakeStatement
-			( "DELETE FROM Notebooks WHERE guid = ?"
-			);
-		statement->Bind(1, notebook);
-		statement->Execute();
-		statement->Finalize();
-	}
-
-	if (isLastUsed)
-	{
-		Notebook notebook;
-		GetFirstNotebook(notebook);
-		MakeNotebookLastUsed(notebook.guid);
-	}
-}
-
-void UserModel::DeleteTag(const Guid & tag)
+void UserModel::ExpungeTag(const Guid & tag)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "DELETE FROM Tags WHERE guid = ?"
@@ -355,6 +303,66 @@ bool UserModel::Exists(const wstring & username)
 	return false;
 }
 
+void UserModel::ExpungeNote(const Guid & note)
+{
+	Transaction transaction(*this);
+	__int64 rowid(0L);
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "SELECT rowid FROM Notes Where guid = ?"
+			);
+		statement->Bind(1, note);
+		if (statement->Execute())
+			return;
+		statement->Get(0, rowid);
+	}
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "DELETE FROM Notes WHERE rowid = ?"
+			);
+		statement->Bind(1, rowid);
+		statement->Execute();
+	}
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "DELETE FROM NoteText WHERE rowid = ?"
+			);
+		statement->Bind(1, rowid);
+		statement->Execute();
+	}
+}
+
+void UserModel::ExpungeNotebook(const Guid & notebook)
+{
+	Transaction transaction(*this);
+
+	bool isLastUsed;
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "SELECT isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
+			);
+		statement->Bind(1, notebook);
+		if (statement->Execute())
+			return;
+		statement->Get(0, isLastUsed);
+	}
+
+	{
+		IDataStore::Statement statement = dataStore.MakeStatement
+			( "DELETE FROM Notebooks WHERE guid = ?"
+			);
+		statement->Bind(1, notebook);
+		statement->Execute();
+		statement->Finalize();
+	}
+
+	if (isLastUsed)
+	{
+		Notebook notebook;
+		GetFirstNotebook(notebook);
+		MakeNotebookLastUsed(notebook.guid);
+	}
+}
 
 void UserModel::GetCredentials(Credentials & credentials)
 {

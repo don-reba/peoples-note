@@ -30,13 +30,13 @@ void TagProcessor::Create
 
 	Tag replacement;
 	noteStore.CreateTag(local, replacement);
-	userModel.DeleteTag(local.guid);
+	userModel.ExpungeTag(local.guid);
 	userModel.AddTag(replacement);
 }
 
 void TagProcessor::Delete(const Tag & local)
 {
-	userModel.DeleteTag(local.guid);
+	userModel.ExpungeTag(local.guid);
 }
 
 void TagProcessor::Merge

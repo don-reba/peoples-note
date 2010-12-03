@@ -12,6 +12,8 @@ public:
 
 	virtual void ConnectCancel(slot_type OnCancel) = 0;
 
+	virtual void ConnectDeleteNote(slot_type OnDeleteNote) = 0;
+
 	virtual void GetBody(std::wstring & html) = 0;
 
 	virtual void GetNote(Note & note) = 0;

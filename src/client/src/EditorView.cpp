@@ -53,6 +53,11 @@ void EditorView::ConnectCancel(slot_type OnCancel)
 	SignalCancel.connect(OnCancel);
 }
 
+void EditorView::ConnectDeleteNote(slot_type OnDeleteNote)
+{
+	SignalDeleteNote.connect(OnDeleteNote);
+}
+
 void EditorView::GetBody(wstring & html)
 {
 	html = element(FindFirstElement("#body")).get_value().to_string();
@@ -144,8 +149,9 @@ void EditorView::OnCommand(Msg<WM_COMMAND> & msg)
 {
 	switch (msg.CtrlId())
 	{
-	case IDM_OK:     SignalAccept(); break;
-	case IDM_CANCEL: SignalCancel(); break;
+	case IDM_OK:         SignalAccept();     break;
+	case IDM_CANCEL:     SignalCancel();     break;
+	case ID_DELETE_NOTE: SignalDeleteNote(); break;
 	}
 }
 

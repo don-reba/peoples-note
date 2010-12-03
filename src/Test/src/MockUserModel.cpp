@@ -73,21 +73,6 @@ void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
-void MockUserModel::DeleteNote(const Guid & note)
-{
-	deletedNotes.push_back(note);
-}
-
-void MockUserModel::DeleteNotebook(const Guid & notebook)
-{
-	deletedNotebooks.push_back(notebook);
-}
-
-void MockUserModel::DeleteTag(const Guid & tag)
-{
-	deletedTags.push_back(tag);
-}
-
 void MockUserModel::EndTransaction()
 {
 	isInTransaction = false;
@@ -96,6 +81,21 @@ void MockUserModel::EndTransaction()
 bool MockUserModel::Exists(const wstring & username)
 {
 	return validUsernames.find(username) != validUsernames.end();
+}
+
+void MockUserModel::ExpungeNote(const Guid & note)
+{
+	expungedNotes.push_back(note);
+}
+
+void MockUserModel::ExpungeNotebook(const Guid & notebook)
+{
+	expungedNotebooks.push_back(notebook);
+}
+
+void MockUserModel::ExpungeTag(const Guid & tag)
+{
+	expungedTags.push_back(tag);
 }
 
 void MockUserModel::GetCredentials(Credentials & credentials)

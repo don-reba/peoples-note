@@ -34,7 +34,7 @@ struct EditorPresenterFixture
 };
 
 BOOST_FIXTURE_TEST_CASE
-	( EditorPresenter_Accept_Test
+	( EditorPresenter_Accept
 	, EditorPresenterFixture
 	)
 {
@@ -81,7 +81,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( EditorPresenter_Cancel_Test
+	( EditorPresenter_Cancel
 	, EditorPresenterFixture
 	)
 {
@@ -108,7 +108,25 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( EditorPresenter_EditNote_Test
+	( EditorPresenter_DeleteNote
+	, EditorPresenterFixture
+	)
+{
+	userModel.notes.push_back(editorView.note);
+
+	editorView.SignalDeleteNote();
+
+	BOOST_REQUIRE_EQUAL(userModel.expungedNotes.size(), 1);
+	BOOST_CHECK_EQUAL
+		( userModel.expungedNotes.at(0)
+		, editorView.note.guid
+		);
+
+	BOOST_CHECK(!editorView.isShown);
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( EditorPresenter_EditNote
 	, EditorPresenterFixture
 	)
 {

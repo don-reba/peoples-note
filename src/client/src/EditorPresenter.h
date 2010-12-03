@@ -35,6 +35,7 @@ private:
 
 	void OnAccept();
 	void OnCancel();
+	void OnDeleteNote();
 	void OnEditNote();
 	void OnNewNote();
 };
