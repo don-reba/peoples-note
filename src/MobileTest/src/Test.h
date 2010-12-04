@@ -66,6 +66,12 @@ public:
 		++failCount_;
 	}
 
+	void ExpectedException(LPCWSTR eStr)
+	{
+		Fail();
+		out_ << "Expected exception " << eStr << "\n";
+	}
+
 	void HandleException(const std::exception & e)
 	{
 		PrintHeader();
@@ -200,10 +206,11 @@ public:
 #define TEST_CHECK_NOT_EQUAL(l, r)                           \
     TEST_OPEN TEST.CheckNotEqual(l, r, L#l, L#r); TEST_CLOSE \
 
-#define TEST_CHECK_EXCEPTION(expr, exception, predicate)                   \
+#define TEST_CHECK_EXCEPTION(expr, exception, predicate)             \
     try                                                              \
     {                                                                \
         expr;                                                        \
+		TEST.ExpectedException(L#exception);                         \
     }                                                                \
     catch (const exception & e)                                      \
     {                                                                \

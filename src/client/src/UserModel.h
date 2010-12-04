@@ -64,7 +64,7 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
-	//virtual void DeleteNote(const Guid & note);
+	virtual void DeleteNote(const Guid & note);
 
 	virtual void EndTransaction();
 
@@ -79,6 +79,8 @@ public:
 	virtual void GetCredentials(Credentials & credentials);
 
 	virtual void GetDefaultNotebook(Notebook & notebook);
+
+	virtual void GetDeletedNotes(GuidList & notes);
 
 	virtual int GetDirtyNoteCount(const Notebook & notebook);
 
@@ -217,6 +219,8 @@ private:
 	void GetProperty(const std::wstring & name, T & value);
 
 	void Initialize(std::wstring name);
+
+	void MigrateFrom3To4();
 
 	void Move
 		( const std::wstring & oldPath

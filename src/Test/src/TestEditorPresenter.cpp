@@ -116,9 +116,9 @@ BOOST_FIXTURE_TEST_CASE
 
 	editorView.SignalDeleteNote();
 
-	BOOST_REQUIRE_EQUAL(userModel.expungedNotes.size(), 1);
+	BOOST_REQUIRE_EQUAL(userModel.deletedNotes.size(), 1);
 	BOOST_CHECK_EQUAL
-		( userModel.expungedNotes.at(0)
+		( userModel.deletedNotes.at(0)
 		, editorView.note.guid
 		);
 

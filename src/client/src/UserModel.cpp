@@ -37,6 +37,7 @@ int UserModel::GetNoteCount()
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT COUNT(*)"
 		"  FROM Notes"
+		"  WHERE isDeleted = 0"
 		);
 	statement->Execute();
 	int count(0);
@@ -118,7 +119,6 @@ void UserModel::AddNote
 		insertText->Bind(2, note.name);
 		insertText->Bind(3, bodyText);
 		insertText->Execute();
-		insertText->Finalize();
 	}
 	else
 	{
@@ -138,9 +138,9 @@ void UserModel::AddNote
 
 		IDataStore::Statement updateNote = dataStore.MakeStatement
 			( "UPDATE Notes"
-			"  SET    guid = ?, usn = ?, creationDate = ?, title = ?,"
-			"         body = ?, isDirty = ?, notebook = ?, thumbnail = NULL,"
-			"         thumbnailWidth = 0, thumbnailHeight = 0"
+			"  SET    guid = ?, usn = ?, creationDate = ?, title = ?, body = ?,"
+			"         isDirty = ?, isDeleted = 0, notebook = ?,"
+			"         thumbnail = NULL, thumbnailWidth = 0, thumbnailHeight = 0"
 			"  WHERE  rowid = ?"
 			);
 		updateNote->Bind(1, note.guid);
@@ -152,7 +152,6 @@ void UserModel::AddNote
 		updateNote->Bind(7, notebook.guid);
 		updateNote->Bind(8, rowid);
 		updateNote->Execute();
-		updateNote->Finalize();
 	}
 }
 
@@ -197,7 +196,6 @@ void UserModel::AddResource(const Resource & resource)
 	statement->Bind(4, resource.Mime);
 	statement->Bind(5, resource.Note);
 	statement->Execute();
-	statement->Finalize();
 }
 
 void UserModel::AddTag(const Tag & tag)
@@ -220,7 +218,6 @@ void UserModel::AddTag(const Tag & tag)
 	statement->Bind(4, searchName);
 	statement->Bind(5, tag.isDirty);
 	statement->Execute();
-	statement->Finalize();
 }
 
 void UserModel::AddTagToNote
@@ -245,7 +242,6 @@ void UserModel::AddTagToNote
 	statement->Bind(1, note.guid);
 	statement->Bind(2, searchName);
 	statement->Execute();
-	statement->Finalize();
 }
 
 void UserModel::BeginTransaction()
@@ -254,7 +250,6 @@ void UserModel::BeginTransaction()
 		( "BEGIN TRANSACTION"
 		);
 	statement->Execute();
-	statement->Finalize();
 }
 
 void UserModel::ConnectLoaded(slot_type OnLoaded)
@@ -262,23 +257,15 @@ void UserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
-//bool UserModel::DeleteNote(const Guid & note)
-//{
-//	IDataStore::Statement statement = dataStore.MakeStatement
-//		( "UPDATE Notebooks"
-//		"  SET guid = ?, usn = ?, name = ?, isDirty = ?"
-//		"  WHERE guid = ?"
-//		);
-//}
-
-void UserModel::ExpungeTag(const Guid & tag)
+void UserModel::DeleteNote(const Guid & note)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "DELETE FROM Tags WHERE guid = ?"
+		( "UPDATE Notes"
+		"  SET isDeleted = 1, isDirty = 1"
+		"  WHERE guid = ?"
 		);
-	statement->Bind(1, tag);
+	statement->Bind(1, note);
 	statement->Execute();
-	statement->Finalize();
 }
 
 void UserModel::EndTransaction()
@@ -287,7 +274,6 @@ void UserModel::EndTransaction()
 		( "END TRANSACTION"
 		);
 	statement->Execute();
-	statement->Finalize();
 }
 
 bool UserModel::Exists(const wstring & username)
@@ -353,7 +339,6 @@ void UserModel::ExpungeNotebook(const Guid & notebook)
 			);
 		statement->Bind(1, notebook);
 		statement->Execute();
-		statement->Finalize();
 	}
 
 	if (isLastUsed)
@@ -362,6 +347,15 @@ void UserModel::ExpungeNotebook(const Guid & notebook)
 		GetFirstNotebook(notebook);
 		MakeNotebookLastUsed(notebook.guid);
 	}
+}
+
+void UserModel::ExpungeTag(const Guid & tag)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "DELETE FROM Tags WHERE guid = ?"
+		);
+	statement->Bind(1, tag);
+	statement->Execute();
 }
 
 void UserModel::GetCredentials(Credentials & credentials)
@@ -392,12 +386,28 @@ void UserModel::GetDefaultNotebook(Notebook & notebook)
 	notebook.guid = guidString;
 }
 
+void UserModel::GetDeletedNotes(GuidList & notes)
+{
+	notes.clear();
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT guid"
+		"  FROM Notes"
+		"  WHERE isDeleted = 1"
+		);
+	while (!statement->Execute())
+	{
+		string guid;
+		statement->Get(0, guid);
+		notes.push_back(guid);
+	}
+}
+
 int UserModel::GetDirtyNoteCount(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT Count(*)"
 		"  FROM Notes"
-		"  WHERE isDirty = 1 AND notebook = ?"
+		"  WHERE isDeleted = 0 AND isDirty = 1 AND notebook = ?"
 		);
 	statement->Bind(1, notebook.guid);
 	if (statement->Execute())
@@ -627,7 +637,7 @@ void UserModel::GetNotesByNotebook
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, usn, title, creationDate, isDirty"
 		"  FROM Notes"
-		"  WHERE notebook = ?"
+		"  WHERE isDeleted = 0 AND notebook = ?"
 		"  ORDER BY creationDate DESC"
 		);
 	statement->Bind(1, notebook.guid);
@@ -661,15 +671,15 @@ void UserModel::GetNotesBySearch
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
 		"  FROM   Notes as n, NoteText"
-		"  WHERE  n.rowid = NoteText.rowid AND NoteText MATCH ?"
+		"  WHERE  n.isDeleted = 0 AND n.rowid = NoteText.rowid AND NoteText MATCH ?"
 		"  UNION"
 		"  SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
 		"  FROM   Notes as n, NoteTags as nt, Tags as t"
-		"  WHERE  t.searchName = ? AND nt.tag = t.guid AND n.guid = nt.note"
+		"  WHERE  n.isDeleted = 0 AND t.searchName = ? AND nt.tag = t.guid AND n.guid = nt.note"
 		"  UNION"
 		"  SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
 		"  FROM   Notes as n, Resources as rs, Recognition as rc"
-		"  WHERE  rc.text = ? AND rc.resource = rs.guid AND rs.note = n.guid"
+		"  WHERE  n.isDeleted = 0 AND rc.text = ? AND rc.resource = rs.guid AND rs.note = n.guid"
 		"  ORDER  BY n.creationDate DESC"
 		);
 	wstring ucSearch;
@@ -1133,7 +1143,7 @@ void UserModel::Initialize(wstring name)
 			", value NOT NULL"
 			")"
 		)->Execute();
-	SetProperty(L"version",      3);
+	SetProperty(L"version",      4);
 	SetProperty(L"username",     name);
 	SetProperty(L"password",     L"");
 	SetProperty(L"lastSyncTime", 0);
@@ -1178,6 +1188,7 @@ void UserModel::Initialize(wstring name)
 			", title"
 			", body"
 			", isDirty"
+			", isDeleted DEFAULT 0"
 			", thumbnail"
 			", thumbnailWidth  DEFAULT 0"
 			", thumbnailHeight DEFAULT 0"
@@ -1246,6 +1257,14 @@ void UserModel::Initialize(wstring name)
 		)->Execute();
 }
 
+void UserModel::MigrateFrom3To4()
+{
+	Transaction transaction(*this);
+	dataStore.MakeStatement
+		( "ALTER TABLE Notes ADD COLUMN isDeleted DEFAULT 0"
+		)->Execute();
+}
+
 void UserModel::Move
 	( const wstring & oldPath
 	, const wstring & newPath
@@ -1278,7 +1297,8 @@ void UserModel::Update()
 	Transaction transaction(*this);
 	switch (GetVersion())
 	{
-	case 3: break;
+	case 3: MigrateFrom3To4();
+	case 4: break;
 	default:
 		throw std::exception("Incompatible database version.");
 	}

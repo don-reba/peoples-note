@@ -21,7 +21,7 @@ SqlStatement::SqlStatement(sqlite3 * db, const char * sql)
 SqlStatement::~SqlStatement()
 {
 	if (statement != NULL)
-		sqlite3_finalize(statement);
+		Finalize();
 }
 
 bool SqlStatement::Execute()

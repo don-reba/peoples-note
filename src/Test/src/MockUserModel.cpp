@@ -73,6 +73,11 @@ void MockUserModel::ConnectLoaded(slot_type OnLoaded)
 	SignalLoaded.connect(OnLoaded);
 }
 
+void MockUserModel::DeleteNote(const Guid & note)
+{
+	deletedNotes.push_back(note);
+}
+
 void MockUserModel::EndTransaction()
 {
 	isInTransaction = false;
@@ -107,6 +112,16 @@ void MockUserModel::GetDefaultNotebook(Notebook & notebook)
 {
 	notebook.guid = defaultNotebook;
 	notebook.name = L"default-notebook";
+}
+
+void MockUserModel::GetDeletedNotes(GuidList & notes)
+{
+	notes.clear();
+	copy
+		( deletedNotes.begin()
+		, deletedNotes.end()
+		, back_inserter(notes)
+		);
 }
 
 int MockUserModel::GetDirtyNoteCount(const Notebook & notebook)

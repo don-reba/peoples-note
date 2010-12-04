@@ -84,9 +84,10 @@ public:
 
 	std::vector<NoteRecord> addedNotes;
 
-	std::vector<Guid> expungedNotes;
-	std::vector<Guid> expungedNotebooks;
-	std::vector<Guid> expungedTags;
+	GuidList deletedNotes;
+	GuidList expungedNotes;
+	GuidList expungedNotebooks;
+	GuidList expungedTags;
 
 	std::set<std::wstring> validUsernames;
 
@@ -145,6 +146,8 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
+	virtual void DeleteNote(const Guid & note);
+
 	virtual void EndTransaction();
 
 	virtual bool Exists(const std::wstring & username);
@@ -158,6 +161,8 @@ public:
 	virtual void GetCredentials(Credentials & credentials);
 
 	virtual void GetDefaultNotebook(Notebook & notebook);
+
+	virtual void GetDeletedNotes(GuidList & notes);
 
 	virtual int GetDirtyNoteCount(const Notebook & notebook);
 

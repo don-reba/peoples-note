@@ -31,3 +31,5 @@ private:
 		, std::string   & result
 		);
 };
+
+typedef std::vector<Guid> GuidList;

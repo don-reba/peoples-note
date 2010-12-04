@@ -44,7 +44,7 @@ public:
 
 	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
 
-	//virtual void DeleteNote(const Guid & note) = 0;
+	virtual void DeleteNote(const Guid & note) = 0;
 
 	virtual void EndTransaction() = 0;
 
@@ -59,6 +59,8 @@ public:
 	virtual void GetCredentials(Credentials & credentials) = 0;
 
 	virtual void GetDefaultNotebook(Notebook & notebook) = 0;
+
+	virtual void GetDeletedNotes(GuidList & notes) = 0;
 
 	virtual int GetDirtyNoteCount(const Notebook & notebook) = 0;
 

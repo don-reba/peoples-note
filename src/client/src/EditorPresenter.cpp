@@ -84,7 +84,7 @@ void EditorPresenter::OnDeleteNote()
 {
 	Note note;
 	editorView.GetNote(note);
-	//userModel.DeleteNote(note.guid);
+	userModel.DeleteNote(note.guid);
 	
 	editorView.Hide();
 
