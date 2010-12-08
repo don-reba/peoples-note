@@ -51,6 +51,8 @@ public:
 		, Tag       & replacement
 		);
 
+	virtual void DeleteNote(const Guid & guid);
+
 	virtual void GetDefaultNotebook(Guid & notebook);
 
 	virtual void GetNoteBody

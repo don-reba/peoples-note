@@ -56,6 +56,11 @@ void NoteProcessor::Delete(const EnInteropNote & local)
 	userModel.ExpungeNote(local.note.guid);
 }
 
+void NoteProcessor::DeleteRemote(const Guid & guid)
+{
+	noteStore.DeleteNote(guid);
+}
+
 void NoteProcessor::Create(const EnInteropNote & local)
 {
 	Transaction transaction(userModel);

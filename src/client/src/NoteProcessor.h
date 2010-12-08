@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Guid.h"
+
 class EnInteropNote;
 class EnNoteTranslator;
 class INoteStore;
@@ -30,6 +32,8 @@ public:
 	void Create(const EnInteropNote & local);
 
 	void Delete(const EnInteropNote & local);
+
+	void DeleteRemote(const Guid & guid);
 
 	void Merge
 		( const EnInteropNote & local

@@ -130,6 +130,11 @@ void NoteStore::CreateTag
 	replacement.isDirty = false;
 }
 
+void NoteStore::DeleteNote(const Guid & guid)
+{
+	noteStore.deleteNote(token, ConvertToUnicode(guid));
+}
+
 void NoteStore::GetDefaultNotebook(Guid & notebook)
 {
 	EDAM::Types::Notebook enNotebook(noteStore.getDefaultNotebook(token));

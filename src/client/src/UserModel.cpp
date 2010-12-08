@@ -1263,6 +1263,7 @@ void UserModel::MigrateFrom3To4()
 	dataStore.MakeStatement
 		( "ALTER TABLE Notes ADD COLUMN isDeleted DEFAULT 0"
 		)->Execute();
+	SetProperty(L"version", 4);
 }
 
 void UserModel::Move

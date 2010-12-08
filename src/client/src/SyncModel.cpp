@@ -57,7 +57,6 @@ void SyncModel::ProcessMessages()
 	ScopedLock lock(lock);
 	while (!messages.IsEmpty())
 	{
-		
 		SyncMessageQueue::Message message(messages.Dequeue());
 		switch (message.Type)
 		{
@@ -241,15 +240,17 @@ void SyncModel::ProcessNotes
 
 	vector<SyncLogic::Action<EnInteropNote> > actions;
 	SyncLogic::Sync(fullSync, remote, local, actions);
-	if (actions.empty())
-		return;
 
 	NoteProcessor processor(enNoteTranslator, userModel, noteStore, notebook);
 
 	syncLogger.BeginSyncStage(L"notes");
 
+	// get the notes to delete
+	GuidList deletedNotes;
+	userModel.GetDeletedNotes(deletedNotes);
+
 	// count the number of valid actions
-	double actionCount(0.0);
+	double actionCount(deletedNotes.size());
 	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
 	{
 		// filter by notes from this notebook
@@ -261,12 +262,24 @@ void SyncModel::ProcessNotes
 	}
 	if (actionCount == 0.0)
 		return;
+	double actionIndex(0.0);
+
+	// sync deleted notes
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Synchronizing deleted notes...");
+
+	foreach (const Guid & note, deletedNotes)
+	{
+		processor.DeleteRemote(note);
+
+		PostProgressMessage(actionIndex / actionCount);
+		actionIndex += 1.0;
+	}
 
 	// perform the actions
 	PostProgressMessage(0.0);
 	PostTextMessage(L"Synchronizing notes...");
 
-	double actionIndex(0.0);
 	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
 	{
 		// filter by notes from this notebook
