@@ -153,7 +153,7 @@ void HTMLayoutWindow::OnDestroy(Msg<WM_DESTROY> & msg)
 	msg.handled_ = true;
 }
 
-void HTMLayoutWindow::ProcessMessage(WndMsg &msg)
+void HTMLayoutWindow::ProcessMessage(WndMsg & msg)
 {
 	static Handler mmp[] =
 	{

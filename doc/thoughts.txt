@@ -705,12 +705,12 @@ kinetic scrolling
 		scroll continuously on idle
 	state
 		idle
-			mouse down, move beyond threshold => dragging
+			mouse down, move beyond threshold → dragging
 		animating
-			mouse down => dragging
-			velocity drops below threshold => idle
+			mouse down → dragging
+			velocity drops below threshold → idle
 		dragging
-			mouse up => animating
+			mouse up → animating
 				set velocity
 		refactoring
 			does it make sense to handle animation in another class?
@@ -1959,9 +1959,9 @@ paging
 			usn:          4
 			isDirty:      1
 		total size: ~300
-		1000 notes => 300 KB
+		1000 notes → 300 KB
 		not too much, actually
-		if memory consumption becomes a problem => use smaller notebooks
+		if memory consumption becomes a problem → use smaller notebooks
 NoteListView::AddNote passes strings by value
 	also AddNotebook
 	fixed
@@ -2918,3 +2918,156 @@ note deletion
 				bad design choice
 		organizing a trash bin would be equally easy either way
 		listing notes is a little more difficult with a column
+note scrolling
+	lets recall the touch scrolling states
+		idle
+			mouse down, move beyond threshold → dragging
+		animating
+			mouse down → dragging
+			velocity drops below threshold → idle
+		dragging
+			mouse up → animating
+				set velocity
+	HTMLayout recently added gestures support
+		lets find out a little more about it
+			support for
+				zooming
+				panning
+				rotation
+				one and two-finger taps
+			inertia processor
+				how to set inertia?
+					GESTURE_FLAG_PAN_WITH_INERTIA
+				looks like I have to actually set positions
+					as before
+				does not seem to be configurable
+		multitouch gestures probably not for WM
+		experiment
+			lets try this on the notes window
+			does not seem to work at all
+		only works in Windows 7
+	now I have to add gestures manually
+		good opportunity to improve it in the note list, also
+		what do I need?
+			handle mouse events
+			handle animation events
+			handle state
+	I really want to encapsulate touch scrolling
+		what state does it have?
+			ButtonDown message
+			click coordinates
+			starting scroll position
+			drag speed
+			drag acceleration
+			click time
+			state id
+		what does it do?
+			OnMouseDown
+				stop animation
+				save initial state
+					time
+					position
+					message
+			OnMouseMove
+				scroll
+			OnMouseUp
+				test distance from MouseDown
+				calculate drag speed
+				start animation
+			AnimateScroll
+				scroll
+				stop animation
+		can create an animation class
+			on MouseDown
+				stop animation
+				ask the class to save initial state
+			OnMouseMove
+				test distance from MouseDown
+				scroll
+			OnMouseUp
+				start animation
+				ask the class to start animation
+			AnimateScroll
+				scrolls by querying the class
+				stops animation by querying the class
+		so, this class is just for handling the math
+		we could have different classes for different kinds of animation
+		but then, each window would talk to its animation class in the same way
+		this is what we really have to factor out
+		so, how do we factor out message handling?
+			can have the animation class filter messages and signal events
+			it would be just a regular switch statement, then
+			but it would not be a large one
+			plus, no casting, because the WinMsg infrastructure could be used
+		how to handle different gestures?
+			don't want to repeat the logic in every gesture processor, either
+				would have been the same as repeating it in every window
+			what is the difference between the different gestures?
+			lets see...
+			what are the different gestures?
+				vertical scrolling of the note list
+					might want to implement vertical gutters
+				2D scrolling of the note note display
+					might want to implement vertical and horizontal gutters
+				horizontal note dragging for deletion from the note list
+					the note should slide back, if not dragged far enough
+			differences
+				note list
+					different horizontal and vertical thresholds
+					either horizontal or vertical animation, but not both
+				note view
+					circular threshold
+					2D animation
+			the animation itself would have to be performed by the window
+			both of these gestures are panning gestures
+			is it possible I might want rotation gestures, or such?
+				conceivable, but unlikely
+			then make a gesture class specialized for panning
+				worry about refactoring later
+				YAGNI
+			how do I differentiate the two different animation styles?
+				I probably should not
+				they don't have all that much in common...
+				or do they?
+				they have the same mouse and animation handling logic
+				that's quite a bit
+			seems like inheritance is the answer here
+				because the two styles have different parameters
+				and because they have a few different functions
+				they also signal different events
+			can this be done without inheritance?
+				each animation style has
+					a constructor with different parameters
+						that saves them
+					a ProcessMessage function
+						that calls the underlying base class
+			hold on
+			Stop the presses!
+			very different animations here
+				totally different states
+				different mouse handling logic
+				might be a good idea to simply make separate classes
+		do I need an interface on the gesture processor?
+			it is only used as a helper by the views
+			views are not tested
+			therefore, no interface is needed
+		there is another issue
+		how is the window involved, exactly?
+			it acts on animation events, of course
+			also determines when an animation begins
+				filters mouse click messages before passing to gesture engine
+		maybe the windows should pass all messages to the gesture engine
+			then the engine would not need a switch statement
+				and no casting
+		seems like a good idea
+			only 3 messages, right?
+	how to handle delayed clicking?
+		need to call process message at some point
+		let the gesture processor handle it
+			expose an event and a property
+	who sets capture?
+		main window
+		it also decides whether to pass messages to the gesture processor
+	how to determine starting scrolling position?
+		signal animation start
+		let the window save scrolling position

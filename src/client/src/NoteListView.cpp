@@ -24,16 +24,19 @@ NoteListView::NoteListView
 	, IAnimator & animator
 	, int         cmdShow
 	)
-	: animator          (animator)
-	, acceleration      (-0.001)
-	, cmdShow           (cmdShow)
+	: cmdShow           (cmdShow)
 	, instance          (instance)
+	, gestureProcessor  (animator)
 	, searchButtonState (SearchButtonSearch)
 	, sipState          (SHFS_HIDESIPBUTTON)
 	, HTMLayoutWindow   (L"main.htm", highRes)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
+
+	gestureProcessor.ConnectDelayedMouseDown (bind(&NoteListView::OnDelayedMouseDown, this));
+	gestureProcessor.ConnectGestureStart     (bind(&NoteListView::OnGestureStart,     this));
+	gestureProcessor.ConnectGestureStep      (bind(&NoteListView::OnGestureStep,      this));
 }
 
 void NoteListView::Create()
@@ -389,24 +392,6 @@ void NoteListView::UpdateThumbnail(const Guid & note)
 // utility functions
 //------------------
 
-void NoteListView::AnimateScroll(DWORD time)
-{
-	const int    t   (time);
-	const int    sgn ((dragSpeed >= 0.0) ? 1 : -1);
-	const double s   (fabs(dragSpeed));
-	const double a   (acceleration);
-	if (s + a * t > 0.001)
-	{
-		int offset(sgn * static_cast<int>(t * (s + 0.5 * a * t)));
-		SetNoteListScrollPos(startScrollPos - offset);
-	}
-	else
-	{
-		state = StateIdle;
-		animator.Unsubscribe(IAnimator::AnimationNoteListScroll);
-	}
-}
-
 element NoteListView::GetChild(element parent, element descendant)
 {
 	if (descendant == parent)
@@ -535,6 +520,25 @@ void NoteListView::UpdateScrollbar()
 	listSlider.set_style_attribute("height", heightText);
 }
 
+//-------------------------
+// gesture message handlers
+//-------------------------
+
+void NoteListView::OnDelayedMouseDown()
+{
+	__super::ProcessMessage(*gestureProcessor.GetMouseDownMessage());
+}
+
+void NoteListView::OnGestureStart()
+{
+	startScrollPos = GetNoteListScrollPos();
+}
+
+void NoteListView::OnGestureStep()
+{
+	SetNoteListScrollPos(startScrollPos + gestureProcessor.GetScrollDistance());
+}
+
 //------------------------
 // window message handlers
 //------------------------
@@ -571,18 +575,9 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 
 	noteList.set_state(STATE_FOCUS);
 
-	if (state == StateAnimating)
-		animator.Unsubscribe(IAnimator::AnimationNoteListScroll);
-
-	state = StateDragging;
-	startTime = ::GetTickCount();
-
-	lButtonDown  = make_shared<WndMsg>(WM_LBUTTONDOWN, msg.lprm_, msg.wprm_);
-	lButtonDownY = msg.Position().y;
-
-	startScrollPos = GetNoteListScrollPos();
-
 	::SetCapture(hwnd_);
+
+	gestureProcessor.OnMouseDown(msg);
 
 	msg.handled_ = true;
 }
@@ -591,41 +586,14 @@ void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
 	msg.handled_ = true;
 
-	if (state == StateDragging)
-		SetNoteListScrollPos(startScrollPos + lButtonDownY - msg.Position().y);
-
+	gestureProcessor.OnMouseMove(msg);
 }
 
 void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
 	::ReleaseCapture();
 
-	if (state == StateDragging)
-	{
-		int distance = msg.Position().y - lButtonDownY;
-		if (12 < abs(distance))
-		{
-			startScrollPos = GetNoteListScrollPos();
-
-			POINT scrollPos;
-			RECT  viewRect;
-			SIZE  contentSize;
-			noteList.get_scroll_info(scrollPos, viewRect, contentSize);
-
-			state     = StateAnimating;
-			dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
-			animator.Subscribe
-				( IAnimator::AnimationNoteListScroll
-				, bind(&NoteListView::AnimateScroll, this, _1)
-				);
-		}
-		else
-		{
-			state = StateIdle;
-			__super::ProcessMessage(*lButtonDown);
-			lButtonDown.reset();
-		}
-	}
+	gestureProcessor.OnMouseUp(msg);
 }
 
 void NoteListView::ProcessMessage(WndMsg &msg)

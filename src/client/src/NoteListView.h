@@ -3,6 +3,7 @@
 
 #include "HTMLayoutWindow.h"
 #include "IAnimator.h"
+#include "NoteListGestureProcessor.h"
 #include "NoteView.h"
 
 class NoteListView : public HTMLayoutWindow, public INoteListView
@@ -15,26 +16,18 @@ private:
 		SearchButtonClear,
 	};
 
-	enum State
-	{
-		StateIdle,
-		StateAnimating,
-		StateDragging,
-	};
-
-	typedef boost::shared_ptr<WndMsg> WndMsgPtr;
-	typedef htmlayout::dom::element   element;
+	typedef htmlayout::dom::element element;
 
 private:
 
-	const double acceleration; // px/ms
-
-	IAnimator & animator;
+	NoteListGestureProcessor gestureProcessor;
 
 	SHACTIVATEINFO activateInfo;
 	int            cmdShow;
 	HINSTANCE      instance;
 	DWORD          sipState;
+
+	int startScrollPos;
 
 	element clickTarget;
 	element noteList;
@@ -45,13 +38,7 @@ private:
 
 	Guid selectedNotebookGuid;
 
-	WndMsgPtr         lButtonDown;
-	int               lButtonDownY;
-	int               startScrollPos;
-	double            dragSpeed;
-	int               startTime;
 	SearchButtonState searchButtonState;
-	State             state;
 
 	signal SignalAbout;
 	signal SignalClearSearch;
@@ -179,8 +166,6 @@ public:
 
 private:
 
-	void AnimateScroll(DWORD time);
-
 	element GetChild(element parent, element descendant);
 
 	int GetNoteListScrollPos();
@@ -194,6 +179,14 @@ private:
 	void SetNoteListScrollPos(int pos);
 
 	void UpdateScrollbar();
+
+// gesture message handlers
+
+private:
+
+	void OnDelayedMouseDown();
+	void OnGestureStart();
+	void OnGestureStep();
 
 // window message handlers
 
