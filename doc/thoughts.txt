@@ -3071,3 +3071,17 @@ note scrolling
 	how to determine starting scrolling position?
 		signal animation start
 		let the window save scrolling position
+gesture improvement
+	clicking is too hard right now
+	fingertips create spurious messages, apparently
+		first one part of the finger touches, then another
+		what messages do I receive, exactly, in this case?
+		lets log mouse messages
+	analyzing the messages now
+		clicks are 140-179 ms, 3-11 px
+		drag is 150-350 ms, >22 px
+	can't use time to differentiate dragging from clicking
+	distances should be in physical units, by the way
+		can limit this to just the threshold, for now
+need to fix black photos
+	TODO

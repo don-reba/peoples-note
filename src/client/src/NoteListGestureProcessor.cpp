@@ -10,7 +10,7 @@ NoteListGestureProcessor::NoteListGestureProcessor
 	)
 	: acceleration (-0.001)
 	, animator     (animator)
-	, sensitivity  (16)
+	, sensitivity  (2.0)
 {}
 
 void NoteListGestureProcessor::ConnectDelayedMouseDown(slot_type OnDelayedMouseDown)
@@ -65,9 +65,15 @@ void NoteListGestureProcessor::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
 	if (state == StateDragging)
 	{
+		HDC hdc(::GetDC(NULL));
+		int dpi(::GetDeviceCaps(hdc, LOGPIXELSX)); // px/in
+		::ReleaseDC(NULL, hdc);
+
+		double threshold(sensitivity * 0.03937 * dpi); // 0.03937 in/mm
+
 		int dx = msg.Position().x - clickPosition.x;
 		int dy = msg.Position().y - clickPosition.y;
-		if (sensitivity * sensitivity < dx * dx + dy * dy)
+		if (threshold * threshold < dx * dx + dy * dy)
 		{
 			SignalGestureStart();
 

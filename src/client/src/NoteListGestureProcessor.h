@@ -21,7 +21,7 @@ private:
 private:
 
 	const double acceleration; // px/ms
-	const int    sensitivity;  // px
+	const double sensitivity;  // mm
 
 	IAnimator & animator;
 
