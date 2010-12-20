@@ -10,6 +10,7 @@ NoteListGestureProcessor::NoteListGestureProcessor
 	)
 	: acceleration (-0.001)
 	, animator     (animator)
+	, sensitivity  (16)
 {}
 
 void NoteListGestureProcessor::ConnectDelayedMouseDown(slot_type OnDelayedMouseDown)
@@ -48,14 +49,14 @@ void NoteListGestureProcessor::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 	startTime = ::GetTickCount();
 
 	lButtonDown  = make_shared<WndMsg>(WM_LBUTTONDOWN, msg.lprm_, msg.wprm_);
-	lButtonDownY = msg.Position().y;
+	clickPosition = msg.Position();
 }
 
 void NoteListGestureProcessor::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
 	if (state == StateDragging)
 	{
-		scrollDistance = lButtonDownY - msg.Position().y;
+		scrollDistance = clickPosition.y - msg.Position().y;
 		SignalGestureStep();
 	}
 }
@@ -64,13 +65,14 @@ void NoteListGestureProcessor::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 {
 	if (state == StateDragging)
 	{
-		int distance = msg.Position().y - lButtonDownY;
-		if (12 < abs(distance))
+		int dx = msg.Position().x - clickPosition.x;
+		int dy = msg.Position().y - clickPosition.y;
+		if (sensitivity * sensitivity < dx * dx + dy * dy)
 		{
 			SignalGestureStart();
 
 			state     = StateAnimating;
-			dragSpeed = distance / static_cast<double>(::GetTickCount() - startTime);
+			dragSpeed = dy / static_cast<double>(::GetTickCount() - startTime);
 			animator.Subscribe
 				( IAnimator::AnimationNoteListScroll
 				, bind(&NoteListGestureProcessor::OnFrameStep, this, _1)

@@ -21,11 +21,12 @@ private:
 private:
 
 	const double acceleration; // px/ms
+	const int    sensitivity;  // px
 
 	IAnimator & animator;
 
 	WndMsgPtr lButtonDown;
-	int       lButtonDownY;
+	POINT     clickPosition;
 	int       scrollDistance;
 	double    dragSpeed;
 	int       startTime;

@@ -1,0 +1,69 @@
+// REFERENCE: System.Drawing.dll
+
+using Nemerle.Collections;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Math;
+using System;
+
+def Parse(line)
+{
+	def parts = line.Split(array[' ']);
+	( int.Parse(parts[0])
+	, parts[1]
+	, int.Parse(parts[2])
+	, int.Parse(parts[3])
+	)
+}
+def Display(events)
+{
+	def (minTime, maxTime) = events.Fold
+		( (int.MaxValue, int.MinValue)
+		, ((t, _, _, _), (min, max)) => (Min(t, min), Max(t, max))
+		);
+	def GetBrush(time)
+	{
+		def value = 0xFF * (time - minTime) / (maxTime - minTime);
+		SolidBrush(Color.FromArgb(value, 0, 0));
+	}
+	using (bmp = Bitmap(480, 640))
+	{
+		using (gfx = Graphics.FromImage(bmp))
+		{
+			def DisplayDownEvent(brush, x, y)
+			{
+				gfx.FillEllipse(brush, x - 5, y - 5, 11, 11);
+			}
+			def DisplayUpEvent(brush, x, y)
+			{
+				gfx.FillRectangle(brush, x - 5, y - 5, 11, 11);
+			}
+			gfx.FillRectangle(Brushes.White, 0, 0, bmp.Width, bmp.Height);
+			gfx.InterpolationMode = InterpolationMode.High;
+			gfx.SmoothingMode     = SmoothingMode.AntiAlias;
+			mutable start;
+			foreach ((t, id, x, y) in events)
+			{
+				//def y = bmp.Height - 1 - y;
+				match (id)
+				{
+					| "D" =>
+						DisplayDownEvent (GetBrush(t), x, y);
+						start = (t, x, y);
+					| "U" =>
+						DisplayUpEvent   (GetBrush(t), x, y);
+						def dt = t - start[0];
+						def dx = x - start[1];
+						def dy = y - start[2];
+						def d  = Sqrt(dx * dx + dy * dy);
+						Console.WriteLine($"$dt ms");
+						Console.WriteLine($"$dx, $dy : $d");
+					| _   => ()
+				}
+			}
+		}
+		bmp.Save("messages.png");
+	}
+}
+Display(File.ReadAllLines("messages.txt").Map(Parse));
