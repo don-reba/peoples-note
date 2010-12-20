@@ -3084,4 +3084,6 @@ gesture improvement
 	distances should be in physical units, by the way
 		can limit this to just the threshold, for now
 need to fix black photos
+	looks like HTMLayout's fault
+need to fix the photo editor's menu
 	TODO
