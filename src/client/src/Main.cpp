@@ -159,7 +159,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		CredentialsView credentialsView (instance, highRes);
 		EditorView      editorView      (instance, highRes);
 		InkEditorView   inkEditorView   (instance);
-		NoteView        noteView        (instance, highRes);
+		NoteView        noteView        (instance, highRes, animator);
 		NoteListView    noteListView    (instance, highRes, animator, nCmdShow);
 		PhotoEditorView photoEditorView (instance, highRes);
 		ProfileView     profileView     (instance, highRes);

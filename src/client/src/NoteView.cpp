@@ -2,12 +2,14 @@
 #include "NoteView.h"
 
 #include "crackers.h"
+#include "IAnimator.h"
 #include "Rect.h"
 #include "resourceppc.h"
 #include "Tools.h"
 
 #include <fstream>
 
+using namespace boost;
 using namespace htmlayout;
 using namespace htmlayout::dom;
 using namespace std;
@@ -17,13 +19,22 @@ using namespace Tools;
 // interface
 //----------
 
-NoteView::NoteView(HINSTANCE instance, bool highRes)
-	: instance        (instance)
-	, isDirty         (false)
-	, isMaximized     (false)
-	, parent          (NULL)
-	, HTMLayoutWindow (L"note-view.htm", highRes)
+NoteView::NoteView
+	( HINSTANCE   instance
+	, bool        highRes
+	, IAnimator & animator
+	)
+	: instance         (instance)
+	, isDirty          (false)
+	, isMaximized      (false)
+	, gestureProcessor (animator)
+	, parent           (NULL)
+	, HTMLayoutWindow  (L"note-view.htm", highRes)
 {
+
+	gestureProcessor.ConnectDelayedMouseDown (bind(&NoteView::OnDelayedMouseDown, this));
+	gestureProcessor.ConnectGestureStart     (bind(&NoteView::OnGestureStart,     this));
+	gestureProcessor.ConnectGestureStep      (bind(&NoteView::OnGestureStep,      this));
 }
 
 void NoteView::Create(HWND parent)
@@ -201,6 +212,16 @@ void NoteView::Show()
 // utility functions
 //------------------
 
+POINT NoteView::GetScrollPos()
+{
+	POINT scrollPos;
+	RECT  viewRect;
+	SIZE  contentSize;
+	element root(element::root_element(hwnd_));
+	root.get_scroll_info(scrollPos, viewRect, contentSize);
+	return scrollPos;
+}
+
 ATOM NoteView::RegisterClass(const wstring & wndClass)
 {
 	WNDCLASS wc = { 0 };
@@ -211,6 +232,47 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
 	wc.lpszClassName = wndClass.c_str();
 	return ::RegisterClass(&wc);
+}
+
+void NoteView::SetScrollPos(POINT pos)
+{
+	element root(element::root_element(hwnd_));
+
+	//POINT scrollPos;
+	//RECT  viewRect;
+	//SIZE  contentSize;
+	//root.get_scroll_info(scrollPos, viewRect, contentSize);
+	//int contentHeight(contentSize.cy);
+
+	//RECT listRect(root.get_location(SCROLLABLE_AREA));
+	//int scrollableHeight(listRect.bottom - listRect.top);
+	//if (scrollableHeight <= 0)
+	//	return;
+
+	//int contentDistance(contentHeight - scrollableHeight);
+	//if (contentDistance <= 0)
+	//	return;
+
+	//RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
+	//int scrollHeight(scrollRect.bottom - scrollRect.top);
+	//if (scrollHeight <= 0)
+	//	return;
+
+	//RECT sliderRect(listSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
+	//int sliderHeight(sliderRect.bottom - sliderRect.top);
+	//if (sliderHeight <= 0)
+	//	return;
+
+	//int scrollDistance(scrollHeight - sliderHeight);
+	//if (scrollDistance <= 0)
+	//	return;
+
+	//pos = min(max(pos, 0), contentDistance);
+
+	root.set_scroll_pos(pos, false);
+
+	//point.y = -static_cast<int>(static_cast<__int64>(pos) * scrollDistance / contentDistance);
+	//listScroll.set_scroll_pos(point, false);
 }
 
 void NoteView::UpdateWindowState()
@@ -251,6 +313,30 @@ void NoteView::UpdateWindowState()
 	img.update();
 }
 
+//-------------------------
+// gesture message handlers
+//-------------------------
+
+void NoteView::OnDelayedMouseDown()
+{
+	__super::ProcessMessage(*gestureProcessor.GetMouseDownMessage());
+}
+
+void NoteView::OnGestureStart()
+{
+	startScrollPos = GetScrollPos();
+}
+
+void NoteView::OnGestureStep()
+{
+	SIZE offset(gestureProcessor.GetScrollDistance());
+	POINT distance =
+		{ startScrollPos.x + offset.cx
+		, startScrollPos.y + offset.cy
+		};
+	SetScrollPos(distance);
+}
+
 //------------------------
 // window message handlers
 //------------------------
@@ -276,6 +362,29 @@ void NoteView::OnCommand(Msg<WM_COMMAND> & msg)
 	}
 }
 
+void NoteView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
+{
+	::SetCapture(hwnd_);
+
+	gestureProcessor.OnMouseDown(msg);
+
+	msg.handled_ = true;
+}
+
+void NoteView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
+{
+	msg.handled_ = true;
+
+	gestureProcessor.OnMouseMove(msg);
+}
+
+void NoteView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
+{
+	::ReleaseCapture();
+
+	gestureProcessor.OnMouseUp(msg);
+}
+
 void NoteView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
@@ -283,6 +392,9 @@ void NoteView::ProcessMessage(WndMsg &msg)
 		&NoteView::OnActivate,
 		&NoteView::OnClose,
 		&NoteView::OnCommand,
+		&NoteView::OnMouseDown,
+		&NoteView::OnMouseMove,
+		&NoteView::OnMouseUp,
 	};
 	try
 	{

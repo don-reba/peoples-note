@@ -584,9 +584,9 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 
 void NoteListView::OnMouseMove(Msg<WM_MOUSEMOVE> & msg)
 {
-	msg.handled_ = true;
-
 	gestureProcessor.OnMouseMove(msg);
+
+	msg.handled_ = true;
 }
 
 void NoteListView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
