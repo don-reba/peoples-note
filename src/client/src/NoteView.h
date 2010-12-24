@@ -90,6 +90,8 @@ private:
 
 	void SetScrollPos(POINT pos);
 
+	void UpdateScrollbar();
+
 	void UpdateWindowState();
 
 // gesture message handlers

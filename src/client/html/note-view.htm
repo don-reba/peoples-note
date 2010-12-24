@@ -23,6 +23,18 @@
 				height    : 100%%;
 				padding   : 0 0 80px 0;
 			}
+			#note
+			{
+				overflow : hidden;
+				width    : 100%%;
+				height   : 100%%;
+			}
+			#note-panel
+			{
+				flow   : horizontal;
+				height : 100%%;
+				width  : 100%;
+			}
 			#tools
 			{
 				flow     : horizontal;
@@ -53,6 +65,21 @@
 			{
 				width: 200%%;
 			}
+			#vscroll
+			{
+				background : white;
+				height     : 100%%;
+				overflow   : hidden;
+				width      : 5px;
+			}
+			#vscroll #slider
+			{
+				background-color : #606060;
+				border-radius    : 2px;
+				display          : none;
+				height           : 128px;
+				width            : 100%%;
+			}
 
 			@set std-checkbox
 			{ 
@@ -64,9 +91,14 @@
 		</style>
 	</head>
 	<body>
-		<div #title />
-		<div #subtitle />
-		<div #body />
+		<div #note-panel>
+			<div #note>
+				<div #title />
+				<div #subtitle />
+				<div #body />
+			</div>
+			<div #vscroll><div #slider /></div>
+		</div>
 		<div #tools>
 			<button #home />
 			<div .spacer />
