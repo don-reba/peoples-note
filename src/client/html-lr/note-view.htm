@@ -23,6 +23,18 @@
 				height    : 100%%;
 				padding   : 0 0 40px 0;
 			}
+			#note
+			{
+				overflow : hidden;
+				width    : 100%%;
+				height   : 100%%;
+			}
+			#note-panel
+			{
+				flow   : horizontal;
+				height : 100%%;
+				width  : 100%;
+			}
 			#tools
 			{
 				flow     : horizontal;
@@ -41,6 +53,22 @@
 			{
 				background : url(home.png);
 			}
+			#hscroll
+			{
+				background   : white;
+				height       : 5px;
+				margin-right : 5px;
+				overflow     : hidden;
+				width        : 100%%;
+			}
+			#hscroll #slider
+			{
+				background-color : #606060;
+				border-radius    : 2px;
+				display          : none;
+				height           : 100%%;
+				width            : 128px;
+			}
 			#edit
 			{
 				background : url(edit.png);
@@ -53,6 +81,21 @@
 			{
 				width: 200%%;
 			}
+			#vscroll
+			{
+				background : white;
+				height     : 100%%;
+				overflow   : hidden;
+				width      : 5px;
+			}
+			#vscroll #slider
+			{
+				background-color : #606060;
+				border-radius    : 2px;
+				display          : none;
+				height           : 128px;
+				width            : 100%%;
+			}
 
 			@set std-checkbox
 			{ 
@@ -64,9 +107,15 @@
 		</style>
 	</head>
 	<body>
-		<div #title />
-		<div #subtitle />
-		<div #body />
+		<div #hscroll><div #slider /></div>
+		<div #note-panel>
+			<div #note>
+				<div #title />
+				<div #subtitle />
+				<div #body />
+			</div>
+			<div #vscroll><div #slider /></div>
+		</div>
 		<div #tools>
 			<button #home />
 			<div .spacer />

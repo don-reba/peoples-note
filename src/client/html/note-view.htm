@@ -53,6 +53,22 @@
 			{
 				background : url(home.png);
 			}
+			#hscroll
+			{
+				background   : white;
+				height       : 5px;
+				margin-right : 5px;
+				overflow     : hidden;
+				width        : 100%%;
+			}
+			#hscroll #slider
+			{
+				background-color : #606060;
+				border-radius    : 2px;
+				display          : none;
+				height           : 100%%;
+				width            : 128px;
+			}
 			#edit
 			{
 				background : url(edit.png);
@@ -91,6 +107,7 @@
 		</style>
 	</head>
 	<body>
+		<div #hscroll><div #slider /></div>
 		<div #note-panel>
 			<div #note>
 				<div #title />
