@@ -72,14 +72,17 @@ void NoteViewGestureProcessor::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 
 		double threshold(sensitivity * 0.03937 * dpi); // 0.03937 in/mm
 
-		int dx = msg.Position().x - clickPosition.x;
-		int dy = msg.Position().y - clickPosition.y;
+		int dx(msg.Position().x - clickPosition.x);
+		int dy(msg.Position().y - clickPosition.y);
 		if (threshold * threshold < dx * dx + dy * dy)
 		{
 			SignalGestureStart();
 
-			state     = StateAnimating;
-			dragSpeed = dy / static_cast<double>(::GetTickCount() - startTime);
+			double dt(::GetTickCount() - startTime);
+
+			state      = StateAnimating;
+			dragSpeedX = dx / dt;
+			dragSpeedY = dy / dt;
 			animator.Subscribe
 				( IAnimator::AnimationNoteListScroll
 				, bind(&NoteViewGestureProcessor::OnFrameStep, this, _1)
@@ -96,14 +99,20 @@ void NoteViewGestureProcessor::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 
 void NoteViewGestureProcessor::OnFrameStep(DWORD time)
 {
-	// TODO: move to 2D
-	const int    t   (time);
-	const int    sgn ((dragSpeed >= 0.0) ? 1 : -1);
-	const double s   (fabs(dragSpeed));
-	const double a   (acceleration);
+	double sx (dragSpeedX);
+	double sy (dragSpeedY);
+
+	const double s(sqrt(sx * sx + sy * sy));
+	sx /= s;
+	sy /= s;
+
+	const int    t (time);
+	const double a (acceleration);
 	if (s + a * t > 0.001)
 	{
-		scrollDistance.cy = -sgn * static_cast<int>(t * (s + 0.5 * a * t));
+		double d(t * (s + 0.5 * a * t));
+		scrollDistance.cx = static_cast<int>(-sx * d);
+		scrollDistance.cy = static_cast<int>(-sy * d);
 		SignalGestureStep();
 	}
 	else

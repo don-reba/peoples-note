@@ -3087,3 +3087,10 @@ need to fix black photos
 	looks like HTMLayout's fault
 need to fix the photo editor's menu
 	TODO
+2D acceleration
+	speed should be a vector now
+	stopping condition should depend on L2 speed magnitude
+	scroll distance should be computed componentwise
+	TODO
+want to hide scrollbars when note view window is hidden
+	TODO

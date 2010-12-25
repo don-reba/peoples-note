@@ -28,7 +28,8 @@ private:
 	WndMsgPtr lButtonDown;
 	POINT     clickPosition;
 	SIZE      scrollDistance;
-	double    dragSpeed;
+	double    dragSpeedX;
+	double    dragSpeedY;
 	int       startTime;
 	State     state;
 
