@@ -12,6 +12,10 @@ class NoteView : public HTMLayoutWindow, public INoteView
 {
 private:
 
+	typedef htmlayout::dom::element element;
+
+private:
+
 	HWND      parent;
 	HINSTANCE instance;
 
@@ -23,6 +27,12 @@ private:
 
 	bool isDirty;
 	bool isMaximized;
+
+	element body;
+	element vScroll;
+	element vSlider;
+	element hScroll;
+	element hSlider;
 
 	signal SignalClose;
 	signal SignalEdit;
@@ -86,9 +96,13 @@ private:
 
 	POINT GetScrollPos();
 
+	void HideScrollbar();
+
 	ATOM RegisterClass(const std::wstring & wndClass);
 
 	void SetScrollPos(POINT pos);
+
+	void ShowScrollbar();
 
 	void UpdateScrollbar();
 

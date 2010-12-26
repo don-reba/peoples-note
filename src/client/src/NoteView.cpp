@@ -76,6 +76,12 @@ void NoteView::RegisterEventHandlers()
 	ConnectBehavior("#edit",        BUTTON_CLICK, &NoteView::OnEdit);
 	ConnectBehavior("#full-screen", BUTTON_CLICK, &NoteView::OnToggle);
 	ConnectBehavior("#home",        BUTTON_CLICK, &NoteView::OnHome);
+
+	body    = FindFirstElement("#note");
+	vScroll = FindFirstElement("#vscroll");
+	vSlider = FindFirstElement("#vscroll > #slider");
+	hScroll = FindFirstElement("#hscroll");
+	hSlider = FindFirstElement("#hscroll > #slider");
 }
 
 //-------------------------
@@ -129,6 +135,7 @@ void NoteView::Hide()
 		return;
 	::EnableWindow(parent, TRUE);
 	::ShowWindow(hwnd_, SW_HIDE);
+	HideScrollbar();
 	SignalClose();
 }
 
@@ -188,9 +195,6 @@ void NoteView::SetNote
 	body.set_html(utf8, utf8Chars.size());
 	ConnectBehavior("#note input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
 
-	POINT scrollPos = { 0 };
-	SetScrollPos(scrollPos);
-	UpdateScrollbar();
 }
 
 void NoteView::SetWindowTitle(const std::wstring & text)
@@ -204,12 +208,16 @@ void NoteView::Show()
 		return;
 
 	::EnableWindow(parent, FALSE);
-	::ShowWindow(hwnd_, SW_SHOW);
-	::UpdateWindow(hwnd_);
 	::BringWindowToTop(hwnd_);
 
-	element root = element::root_element(hwnd_);
-	root.update(true);
+	ShowScrollbar();
+	element(element::root_element(hwnd_)).update(MEASURE_DEEP|REDRAW_NOW);
+	POINT scrollPos = { 0 };
+	SetScrollPos(scrollPos);
+	UpdateScrollbar();
+
+	::ShowWindow(hwnd_, SW_SHOW);
+	::UpdateWindow(hwnd_);
 }
 
 //------------------
@@ -226,6 +234,12 @@ POINT NoteView::GetScrollPos()
 	return scrollPos;
 }
 
+void NoteView::HideScrollbar()
+{
+	vScroll.set_style_attribute("display", L"none");
+	hScroll.set_style_attribute("display", L"none");
+}
+
 ATOM NoteView::RegisterClass(const wstring & wndClass)
 {
 	WNDCLASS wc = { 0 };
@@ -240,12 +254,6 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 
 void NoteView::SetScrollPos(POINT pos)
 {
-	element body    (FindFirstElement("#note"));
-	element vScroll (FindFirstElement("#vscroll"));
-	element vSlider (FindFirstElement("#vscroll > #slider"));
-	element hScroll (FindFirstElement("#hscroll"));
-	element hSlider (FindFirstElement("#hscroll > #slider"));
-
 	POINT scrollPos;
 	Rect  viewRect;
 	SIZE  contentSize;
@@ -260,50 +268,52 @@ void NoteView::SetScrollPos(POINT pos)
 		{ contentSize.cx - listRect.GetWidth()
 		, contentSize.cy - listRect.GetHeight()
 		};
-	if (contentDistance.cx <= 0 || contentDistance.cy <= 0)
-		return;
 
-	pos.x = min(max(pos.x, 0), contentDistance.cx);
-	pos.y = min(max(pos.y, 0), contentDistance.cy);
+	pos.x = max(min(pos.x, contentDistance.cx), 0);
+	pos.y = max(min(pos.y, contentDistance.cy), 0);
 	body.set_scroll_pos(pos, false);
 
-	Rect vScrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-	Rect vSliderRect(vSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
+	if (contentDistance.cy > 0)
+	{
+		Rect vScrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
+		Rect vSliderRect(vSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
 
-	__int64 vScrollDistance(vScrollRect.GetHeight() - vSliderRect.GetHeight());
-	if (vScrollDistance <= 0L)
-		return;
+		__int64 vScrollDistance(vScrollRect.GetHeight() - vSliderRect.GetHeight());
+		if (vScrollDistance <= 0L)
+			return;
 
-	POINT vScrollPos =
-		{ 0
-		, -static_cast<int>(pos.y * vScrollDistance / contentDistance.cy)
-		};
-	vScroll.set_scroll_pos(vScrollPos, false);
+		POINT vScrollPos =
+			{ 0
+			, -static_cast<int>(pos.y * vScrollDistance / contentDistance.cy)
+			};
+		vScroll.set_scroll_pos(vScrollPos, false);
+	}
 
-	Rect hScrollRect(hScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-	Rect hSliderRect(hSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
+	if (contentDistance.cx > 0)
+	{
+		Rect hScrollRect(hScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
+		Rect hSliderRect(hSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
 
-	__int64 hScrollDistance(hScrollRect.GetWidth() - hSliderRect.GetWidth());
-	if (hScrollDistance <= 0L)
-		return;
+		__int64 hScrollDistance(hScrollRect.GetWidth() - hSliderRect.GetWidth());
+		if (hScrollDistance <= 0L)
+			return;
 
-	POINT hScrollPos =
-		{ -static_cast<int>(pos.x * hScrollDistance / contentDistance.cx)
-		, 0
-		};
-	hScroll.set_scroll_pos(hScrollPos, false);
+		POINT hScrollPos =
+			{ -static_cast<int>(pos.x * hScrollDistance / contentDistance.cx)
+			, 0
+			};
+		hScroll.set_scroll_pos(hScrollPos, false);
+	}
+}
+
+void NoteView::ShowScrollbar()
+{
+	vScroll.set_style_attribute("display", L"block");
+	hScroll.set_style_attribute("display", L"block");
 }
 
 void NoteView::UpdateScrollbar()
 {
-	element body    (FindFirstElement("#note"));
-	element vScroll (FindFirstElement("#vscroll"));
-	element vSlider (FindFirstElement("#vscroll > #slider"));
-	element hScroll (FindFirstElement("#hscroll"));
-	element hSlider (FindFirstElement("#hscroll > #slider"));
-
-	body.update(MEASURE_DEEP|REDRAW_NOW);
-
 	Rect listRect(body.get_location(SCROLLABLE_AREA));
 	if (listRect.GetWidth() == 0 || listRect.GetHeight() == 0)
 		return;

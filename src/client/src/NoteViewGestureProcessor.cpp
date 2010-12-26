@@ -99,15 +99,15 @@ void NoteViewGestureProcessor::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 
 void NoteViewGestureProcessor::OnFrameStep(DWORD time)
 {
-	double sx (dragSpeedX);
-	double sy (dragSpeedY);
+	double sx(dragSpeedX);
+	double sy(dragSpeedY);
 
 	const double s(sqrt(sx * sx + sy * sy));
 	sx /= s;
 	sy /= s;
 
-	const int    t (time);
-	const double a (acceleration);
+	const int    t(time);
+	const double a(acceleration);
 	if (s + a * t > 0.001)
 	{
 		double d(t * (s + 0.5 * a * t));
