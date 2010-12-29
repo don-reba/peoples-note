@@ -162,6 +162,8 @@ void InkEditorView::Show()
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
+	::SHDoneButton(hwnd_, SHDB_SHOWCANCEL);
+
 	SHMENUBARINFO menuBarInfo = { sizeof(menuBarInfo) };
 	menuBarInfo.hwndParent = hwnd_;
 	menuBarInfo.nToolBarId = IDR_INK_EDITOR_MENUBAR;
@@ -197,6 +199,7 @@ void InkEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 	{
 	case IDM_OK:     SignalAccept(); break;
 	case IDM_CANCEL: SignalCancel(); break;
+	case IDCANCEL:   SignalCancel(); break;
 
 	case ID_PENWIDTH_1PX: penWidth = Pen1px; SignalPenChanged(); break;
 	case ID_PENWIDTH_2PX: penWidth = Pen2px; SignalPenChanged(); break;
@@ -215,6 +218,15 @@ void InkEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 void InkEditorView::OnEraseBackground(Msg<WM_ERASEBKGND> & msg)
 {
 	msg.handled_ = true;
+}
+
+void InkEditorView::OnKeyUp(Msg<WM_KEYUP> & msg)
+{
+	if (msg.VKey() == 0x1b)
+	{
+		SignalCancel();
+		msg.handled_ = true;
+	}
 }
 
 void InkEditorView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
@@ -291,6 +303,7 @@ void InkEditorView::ProcessMessage(WndMsg &msg)
 		&InkEditorView::OnActivate,
 		&InkEditorView::OnCommand,
 		&InkEditorView::OnEraseBackground,
+		&InkEditorView::OnKeyUp,
 		&InkEditorView::OnMouseDown,
 		&InkEditorView::OnMouseMove,
 		&InkEditorView::OnMouseUp,

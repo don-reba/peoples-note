@@ -30,6 +30,7 @@
 #define IDR_SIGNIN_MENUBAR              32777
 #define IDR_EDITOR_MENUBAR              32778
 #define IDR_INK_EDITOR_MENUBAR          32779
+#define IDR_OK_CANCEL_MENUBAR           32780
 #define ID_PENWIDTH_1PX                 32785
 #define ID_PENWIDTH_2PX                 32786
 #define ID_PENWIDTH_4PX                 32787

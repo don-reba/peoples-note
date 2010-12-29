@@ -81,6 +81,7 @@ private:
 	void OnActivate        (Msg<WM_ACTIVATE>    & msg);
 	void OnCommand         (Msg<WM_COMMAND>     & msg);
 	void OnEraseBackground (Msg<WM_ERASEBKGND>  & msg);
+	void OnKeyUp           (Msg<WM_KEYUP>       & msg);
 	void OnMouseDown       (Msg<WM_LBUTTONDOWN> & msg);
 	void OnMouseMove       (Msg<WM_MOUSEMOVE>   & msg);
 	void OnMouseUp         (Msg<WM_LBUTTONUP>   & msg);

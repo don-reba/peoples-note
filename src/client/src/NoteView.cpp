@@ -465,6 +465,15 @@ void NoteView::OnCommand(Msg<WM_COMMAND> & msg)
 	}
 }
 
+void NoteView::OnKeyUp(Msg<WM_KEYUP> & msg)
+{
+	if (msg.VKey() == 0x1b)
+	{
+		CloseWindow(hwnd_);
+		msg.handled_ = true;
+	}
+}
+
 void NoteView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
 	::SetCapture(hwnd_);
@@ -495,6 +504,7 @@ void NoteView::ProcessMessage(WndMsg &msg)
 		&NoteView::OnActivate,
 		&NoteView::OnClose,
 		&NoteView::OnCommand,
+		&NoteView::OnKeyUp,
 		&NoteView::OnMouseDown,
 		&NoteView::OnMouseMove,
 		&NoteView::OnMouseUp,

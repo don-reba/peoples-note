@@ -126,9 +126,11 @@ void PhotoEditorView::Show()
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
+	::SHDoneButton(hwnd_, SHDB_SHOWCANCEL);
+
 	SHMENUBARINFO menuBarInfo = { sizeof(menuBarInfo) };
 	menuBarInfo.hwndParent = hwnd_;
-	menuBarInfo.nToolBarId = IDR_EDITOR_MENUBAR;
+	menuBarInfo.nToolBarId = IDR_OK_CANCEL_MENUBAR;
 	menuBarInfo.hInstRes   = instance;
 	::SHCreateMenuBar(&menuBarInfo);
 
@@ -157,6 +159,16 @@ void PhotoEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 	{
 	case IDM_OK:     SignalOk();     break;
 	case IDM_CANCEL: SignalCancel(); break;
+	case IDCANCEL:   SignalCancel(); break;
+	}
+}
+
+void PhotoEditorView::OnKeyUp(Msg<WM_KEYUP> & msg)
+{
+	if (msg.VKey() == 0x1b)
+	{
+		SignalCancel();
+		msg.handled_ = true;
 	}
 }
 
@@ -166,6 +178,7 @@ void PhotoEditorView::ProcessMessage(WndMsg &msg)
 	{
 		&PhotoEditorView::OnActivate,
 		&PhotoEditorView::OnCommand,
+		&PhotoEditorView::OnKeyUp,
 	};
 	try
 	{
