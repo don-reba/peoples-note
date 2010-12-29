@@ -465,9 +465,10 @@ void SyncModel::Sync()
 		if (!authenticationResult.IsGood)
 		{
 			FinishSync
-				( L"Authentication failed."
+				( authenticationResult.Message.c_str()
 				, L"Tried to sync, but could not authenticate."
 				);
+			return;
 		}
 
 		IEnService::NoteStorePtr noteStore
@@ -602,6 +603,13 @@ void SyncModel::Sync()
 		FinishSync
 			( EnServiceTools::CreateUserExceptionMessage(e).c_str()
 			, L"Tried to sync, but something went wrong."
+			);
+	}
+	catch (const Thrift::Transport::TTransportException & e)
+	{
+		FinishSync
+			( EnServiceTools::CreateTransportExceptionMessage(e).c_str()
+			, L"Encountered a network error."
 			);
 	}
 	catch (const Thrift::TException & e)

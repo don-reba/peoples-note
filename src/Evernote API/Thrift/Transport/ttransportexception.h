@@ -30,7 +30,7 @@ namespace Transport
 
 		TTransportException(ExceptionType type, const wchar_t * message);
 
-		ExceptionType GetType();
+		ExceptionType GetType() const;
 	};
 
 } // Transport

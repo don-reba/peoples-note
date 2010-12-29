@@ -10,13 +10,13 @@ TTransportException::TTransportException(const wchar_t * message)
 {
 }
 
-TTransportException::TTransportException(ExceptionType, const wchar_t * message)
+TTransportException::TTransportException(ExceptionType type, const wchar_t * message)
 	: type       (type)
 	, TException (message)
 {
 }
 
-TTransportException::ExceptionType TTransportException::GetType()
+TTransportException::ExceptionType TTransportException::GetType() const
 {
 	return type;
 }

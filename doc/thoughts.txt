@@ -2823,7 +2823,7 @@ photo dialog does not show up on square displays
 	it does
 	something else was wrong with that Trio 700wx
 should add keyboard handling to the photo dialog
-	TODO
+	fixed
 a thumbnail gets opened in IE following full sync
 	time to test this
 	list-style-image is retrieved over http
@@ -2841,7 +2841,6 @@ a thumbnail gets opened in IE following full sync
 removal of tags from notes is not being seen
 	how to fix this?
 	need to remove old tags before adding the new
-	TODO
 image search
 	lets check the reference first
 		import
@@ -2882,7 +2881,6 @@ image search
 	synchronization
 		need to remove previous entries before updating a resource
 		if resources are even updated
-		TODO
 slow synchronization
 	frequently times out
 	looks like it was a connection problem
@@ -3086,7 +3084,7 @@ gesture improvement
 need to fix black photos
 	looks like HTMLayout's fault
 need to fix the photo editor's menu
-	TODO
+	fixed
 2D acceleration
 	speed should be a vector now
 	stopping condition should depend on L2 speed magnitude

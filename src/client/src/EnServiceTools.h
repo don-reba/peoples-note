@@ -14,11 +14,19 @@ namespace EnServiceTools
 		( const Evernote::EDAM::Error::EDAMSystemException & e
 		);
 
+	std::wstring CreateTransportExceptionMessage
+		( const Thrift::Transport::TTransportException & e
+		);
+
 	std::wstring CreateUserExceptionMessage
 		( const Evernote::EDAM::Error::EDAMUserException & e
 		);
 
 	std::wstring GetErrorCodeString
-		( const Evernote::EDAM::Error::EDAMErrorCode errorCode
+		( Evernote::EDAM::Error::EDAMErrorCode errorCode
+		);
+
+	std::wstring GetErrorCodeString
+		( Thrift::Transport::TTransportException::ExceptionType type
 		);
 }

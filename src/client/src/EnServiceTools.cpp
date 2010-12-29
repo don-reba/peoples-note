@@ -5,6 +5,7 @@ using namespace EnServiceTools;
 using namespace Evernote::EDAM::Error;
 using namespace std;
 using namespace Thrift;
+using namespace Thrift::Transport;
 
 wstring EnServiceTools::CreateExceptionMessage(const TException & e)
 {
@@ -65,6 +66,18 @@ wstring EnServiceTools::CreateUserExceptionMessage(const EDAMUserException & e)
 	return message;
 }
 
+wstring EnServiceTools::CreateTransportExceptionMessage(const Thrift::Transport::TTransportException & e)
+{
+	wstring message;
+	message.append(L"TTransportException(");
+	message.append(L"errorCode = ");
+	message.append(GetErrorCodeString(e.GetType()));
+	message.append(L", message = ");
+	message.append(e.GetMessageW());
+	message.append(L")");
+	return message;
+}
+
 wstring EnServiceTools::GetErrorCodeString(EDAMErrorCode errorCode)
 {
 	switch (errorCode)
@@ -81,5 +94,18 @@ wstring EnServiceTools::GetErrorCodeString(EDAMErrorCode errorCode)
 	case ENML_VALIDATION:   return L"ENML_VALIDATION";
 	case SHARD_UNAVAILABLE: return L"SHARD_UNAVAILABLE";
 	}
-	return L"UNKNOWN";
+	return L"?";
+}
+
+wstring EnServiceTools::GetErrorCodeString(TTransportException::ExceptionType type)
+{
+	switch (type)
+	{
+	case TTransportException::NotOpen:     return L"NotOpen";     break;
+	case TTransportException::AlreadyOpen: return L"AlreadyOpen"; break;
+	case TTransportException::TimedOut:    return L"TimedOut";    break;
+	case TTransportException::EndOfFile:   return L"EndOfFile";   break;
+	case TTransportException::Unknown:     return L"Unknown";     break;
+	}
+	return L"?";
 }
