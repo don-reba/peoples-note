@@ -1,7 +1,7 @@
 #pragma once
+#include "INoteView.h"
 
 #include "HTMLayoutWindow.h"
-#include "INoteView.h"
 #include "Note.h"
 #include "NoteViewGestureProcessor.h"
 #include "WindowRenderer.h"

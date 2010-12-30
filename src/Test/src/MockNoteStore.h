@@ -33,9 +33,11 @@ public:
 	ResourceList createdResources;
 	TagList      createdTags;
 
-	std::vector<Guid> expungedNotes;
-	std::vector<Guid> expungedNotebooks;
-	std::vector<Guid> expungedTags;
+	GuidList deletedNotes;
+
+	GuidList expungedNotes;
+	GuidList expungedNotebooks;
+	GuidList expungedTags;
 
 	ResourceList resources;
 
@@ -68,6 +70,8 @@ public:
 		( const Tag & tag
 		, Tag       & replacement
 		);
+
+	virtual void DeleteNote(const Guid & guid);
 
 	virtual void GetDefaultNotebook(Guid & notebook);
 

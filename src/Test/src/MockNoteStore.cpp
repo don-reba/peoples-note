@@ -41,6 +41,11 @@ void MockNoteStore::CreateTag
 	replacement = replacementTag;
 }
 
+void MockNoteStore::DeleteNote(const Guid & guid)
+{
+	deletedNotes.push_back(guid);
+}
+
 void MockNoteStore::GetDefaultNotebook(Guid & notebook)
 {
 	notebook = defaultNotebook;

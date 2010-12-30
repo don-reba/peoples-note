@@ -116,21 +116,24 @@ void InkEditorPresenter::OnPenChanged()
 
 InkPenColor InkEditorPresenter::GetPenColor(const wchar_t * name)
 {
-	if (0 == wcscmp(name, L"black"))  return PenBlack;
-	if (0 == wcscmp(name, L"white"))  return PenWhite;
-	if (0 == wcscmp(name, L"yellow")) return PenYellow;
-	if (0 == wcscmp(name, L"red"))    return PenRed;
-	if (0 == wcscmp(name, L"blue"))   return PenBlue;
-	if (0 == wcscmp(name, L"green"))  return PenGreen;
+	if (0 == wcscmp(name, L"black"))     return PenBlack;
+	if (0 == wcscmp(name, L"white"))     return PenWhite;
+	if (0 == wcscmp(name, L"sanguine"))  return PenSanguine;
+	if (0 == wcscmp(name, L"yellow"))    return PenSanguine;
+	if (0 == wcscmp(name, L"red"))       return PenSanguine;
+	if (0 == wcscmp(name, L"turquoise")) return PenTurquoise;
+	if (0 == wcscmp(name, L"blue"))      return PenTurquoise;
+	if (0 == wcscmp(name, L"green"))     return PenTurquoise;
 	return PenBlack;
 }
 
 InkPenWidth InkEditorPresenter::GetPenWidth(const wchar_t * name)
 {
-	if (0 == wcscmp(name, L"1px")) return Pen1px;
-	if (0 == wcscmp(name, L"2px")) return Pen2px;
-	if (0 == wcscmp(name, L"4px")) return Pen4px;
-	if (0 == wcscmp(name, L"8px")) return Pen8px;
+	if (0 == wcscmp(name, L"1px"))  return Pen1px;
+	if (0 == wcscmp(name, L"2px"))  return Pen2px;
+	if (0 == wcscmp(name, L"4px"))  return Pen4px;
+	if (0 == wcscmp(name, L"8px"))  return Pen8px;
+	if (0 == wcscmp(name, L"16px")) return Pen16px;
 	return Pen1px;
 }
 
@@ -138,12 +141,11 @@ const wchar_t * InkEditorPresenter::GetPenColorName(InkPenColor color)
 {
 	switch (color)
 	{
-	case PenBlack:  return L"black";
-	case PenWhite:  return L"white";
-	case PenYellow: return L"yellow";
-	case PenRed:    return L"red";
-	case PenBlue:   return L"blue";
-	case PenGreen:  return L"green";
+	case PenBlack:     return L"black";
+	case PenGray:      return L"gray";
+	case PenWhite:     return L"white";
+	case PenSanguine:  return L"sanguine";
+	case PenTurquoise: return L"turquoise";
 	}
 	return L"";
 }
@@ -152,10 +154,11 @@ const wchar_t * InkEditorPresenter::GetPenWidthName(InkPenWidth width)
 {
 	switch (width)
 	{
-	case Pen1px: return L"1px";
-	case Pen2px: return L"2px";
-	case Pen4px: return L"4px";
-	case Pen8px: return L"8px";
+	case Pen1px:  return L"1px";
+	case Pen2px:  return L"2px";
+	case Pen4px:  return L"4px";
+	case Pen8px:  return L"8px";
+	case Pen16px: return L"16px";
 	}
 	return L"";
 }

@@ -201,17 +201,17 @@ void InkEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 	case IDM_CANCEL: SignalCancel(); break;
 	case IDCANCEL:   SignalCancel(); break;
 
-	case ID_PENWIDTH_1PX: penWidth = Pen1px; SignalPenChanged(); break;
-	case ID_PENWIDTH_2PX: penWidth = Pen2px; SignalPenChanged(); break;
-	case ID_PENWIDTH_4PX: penWidth = Pen4px; SignalPenChanged(); break;
-	case ID_PENWIDTH_8PX: penWidth = Pen8px; SignalPenChanged(); break;
+	case ID_PENWIDTH_1PX:  penWidth = Pen1px;  SignalPenChanged(); break;
+	case ID_PENWIDTH_2PX:  penWidth = Pen2px;  SignalPenChanged(); break;
+	case ID_PENWIDTH_4PX:  penWidth = Pen4px;  SignalPenChanged(); break;
+	case ID_PENWIDTH_8PX:  penWidth = Pen8px;  SignalPenChanged(); break;
+	case ID_PENWIDTH_16PX: penWidth = Pen16px; SignalPenChanged(); break;
 
-	case ID_COLOR_BLACK:  penColor = PenBlack;  SignalPenChanged(); break;
-	case ID_COLOR_WHITE:  penColor = PenWhite;  SignalPenChanged(); break;
-	case ID_COLOR_YELLOW: penColor = PenYellow; SignalPenChanged(); break;
-	case ID_COLOR_RED:    penColor = PenRed;    SignalPenChanged(); break;
-	case ID_COLOR_BLUE:   penColor = PenBlue;   SignalPenChanged(); break;
-	case ID_COLOR_GREEN:  penColor = PenGreen;  SignalPenChanged(); break;
+	case ID_COLOR_BLACK:     penColor = PenBlack;     SignalPenChanged(); break;
+	case ID_COLOR_GRAY:      penColor = PenGray;      SignalPenChanged(); break;
+	case ID_COLOR_WHITE:     penColor = PenWhite;     SignalPenChanged(); break;
+	case ID_COLOR_SANGUINE:  penColor = PenSanguine;  SignalPenChanged(); break;
+	case ID_COLOR_TURQUOISE: penColor = PenTurquoise; SignalPenChanged(); break;
 	}
 }
 
@@ -353,12 +353,11 @@ COLORREF InkEditorView::GetPenColor(InkPenColor color)
 {
 	switch (color)
 	{
-	case PenBlack:  return 0xFF000000;
-	case PenWhite:  return 0xFFFFFFFF;
-	case PenYellow: return 0xFF00FFFF;
-	case PenRed:    return 0xFF0000FF;
-	case PenGreen:  return 0xFF00FF00;
-	case PenBlue:   return 0xFFFF0000;
+	case PenBlack:     return 0xFF000000;
+	case PenGray:      return 0xFF808080;
+	case PenWhite:     return 0xFFFFFFFF;
+	case PenSanguine:  return 0xFF0828A8;
+	case PenTurquoise: return 0xFFA0A828;
 	}
 	return 0xFF000000;
 }
@@ -367,10 +366,11 @@ int InkEditorView::GetPenWidth(InkPenWidth width)
 {
 	switch (width)
 	{
-	case Pen1px: return 1;
-	case Pen2px: return 2;
-	case Pen4px: return 4;
-	case Pen8px: return 8;
+	case Pen1px:  return 1;
+	case Pen2px:  return 2;
+	case Pen4px:  return 4;
+	case Pen8px:  return 8;
+	case Pen16px: return 16;
 	}
 	return 1;
 }
@@ -431,22 +431,20 @@ void InkEditorView::SetPenColorMenuState(InkPenColor color)
 	int target;
 	switch (color)
 	{
-	case PenBlack:  target = ID_COLOR_BLACK;  break;
-	case PenWhite:  target = ID_COLOR_WHITE;  break;
-	case PenYellow: target = ID_COLOR_YELLOW; break;
-	case PenRed:    target = ID_COLOR_RED;    break;
-	case PenBlue:   target = ID_COLOR_BLUE;   break;
-	case PenGreen:  target = ID_COLOR_GREEN;  break;
+	case PenBlack:     target = ID_COLOR_BLACK;     break;
+	case PenGray:      target = ID_COLOR_GRAY;      break;
+	case PenWhite:     target = ID_COLOR_WHITE;     break;
+	case PenSanguine:  target = ID_COLOR_SANGUINE;  break;
+	case PenTurquoise: target = ID_COLOR_TURQUOISE; break;
 	default: return;
 	}
 
 	int options[] =
 		{ ID_COLOR_BLACK
+		, ID_COLOR_GRAY
 		, ID_COLOR_WHITE
-		, ID_COLOR_YELLOW
-		, ID_COLOR_RED
-		, ID_COLOR_BLUE
-		, ID_COLOR_GREEN
+		, ID_COLOR_SANGUINE
+		, ID_COLOR_TURQUOISE
 		};
 
 	HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));
@@ -462,10 +460,11 @@ void InkEditorView::SetPenWidthMenuState(InkPenWidth width)
 	int target;
 	switch (width)
 	{
-	case Pen1px: target = ID_PENWIDTH_1PX; break;
-	case Pen2px: target = ID_PENWIDTH_2PX; break;
-	case Pen4px: target = ID_PENWIDTH_4PX; break;
-	case Pen8px: target = ID_PENWIDTH_8PX; break;
+	case Pen1px:  target = ID_PENWIDTH_1PX;  break;
+	case Pen2px:  target = ID_PENWIDTH_2PX;  break;
+	case Pen4px:  target = ID_PENWIDTH_4PX;  break;
+	case Pen8px:  target = ID_PENWIDTH_8PX;  break;
+	case Pen16px: target = ID_PENWIDTH_16PX; break;
 	default: return;
 	}
 
@@ -474,6 +473,7 @@ void InkEditorView::SetPenWidthMenuState(InkPenWidth width)
 		, ID_PENWIDTH_2PX
 		, ID_PENWIDTH_4PX
 		, ID_PENWIDTH_8PX
+		, ID_PENWIDTH_16PX
 		};
 
 	HMENU menu(::GetWindowMenu(menuBar, IDM_MENU));

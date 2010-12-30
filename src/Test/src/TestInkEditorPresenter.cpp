@@ -96,7 +96,7 @@ BOOST_FIXTURE_TEST_CASE
 	)
 {
 	inkEditorModel.penWidth = L"2px";
-	inkEditorModel.penColor = L"red";
+	inkEditorModel.penColor = L"turquoise";
 
 	inkEditorView.isShown = false;
 
@@ -105,7 +105,7 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(inkEditorView.isShown);
 
 	BOOST_CHECK_EQUAL(inkEditorView.setPenWidth, Pen2px);
-	BOOST_CHECK_EQUAL(inkEditorView.setPenColor, PenRed);
+	BOOST_CHECK_EQUAL(inkEditorView.setPenColor, PenTurquoise);
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -114,13 +114,13 @@ BOOST_FIXTURE_TEST_CASE
 	)
 {
 	inkEditorView.penWidth = Pen2px;
-	inkEditorView.penColor = PenRed;
+	inkEditorView.penColor = PenTurquoise;
 
 	inkEditorView.SignalPenChanged();
 
 	BOOST_CHECK_EQUAL(inkEditorModel.penWidth, L"2px");
-	BOOST_CHECK_EQUAL(inkEditorModel.penColor, L"red");
+	BOOST_CHECK_EQUAL(inkEditorModel.penColor, L"turquoise");
 
 	BOOST_CHECK_EQUAL(inkEditorView.setPenWidth, Pen2px);
-	BOOST_CHECK_EQUAL(inkEditorView.setPenColor, PenRed);
+	BOOST_CHECK_EQUAL(inkEditorView.setPenColor, PenTurquoise);
 }

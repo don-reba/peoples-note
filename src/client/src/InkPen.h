@@ -6,14 +6,14 @@ enum InkPenWidth
 	Pen2px,
 	Pen4px,
 	Pen8px,
+	Pen16px,
 };
 
 enum InkPenColor
 {
 	PenBlack,
+	PenGray,
 	PenWhite,
-	PenYellow,
-	PenRed,
-	PenGreen,
-	PenBlue,
+	PenSanguine,
+	PenTurquoise,
 };

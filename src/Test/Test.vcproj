@@ -568,6 +568,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Evernote API\Thrift\Transport\TTransportException.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\UserLoader.cpp"
 				>
 			</File>

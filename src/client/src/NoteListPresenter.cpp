@@ -8,7 +8,6 @@
 #include "ISyncModel.h"
 #include "IUserModel.h"
 #include "NotebookMenuGenerator.h"
-#include "NoteView.h"
 #include "Notebook.h"
 #include "Tools.h"
 #include "Transaction.h"

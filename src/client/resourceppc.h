@@ -35,12 +35,12 @@
 #define ID_PENWIDTH_2PX                 32786
 #define ID_PENWIDTH_4PX                 32787
 #define ID_PENWIDTH_8PX                 32788
-#define ID_COLOR_BLACK                  32789
-#define ID_COLOR_WHITE                  32790
-#define ID_COLOR_RED                    32791
-#define ID_COLOR_BLUE                   32792
-#define ID_COLOR_YELLOW                 32793
-#define ID_COLOR_GREEN                  32794
+#define ID_PENWIDTH_16PX                32789
+#define ID_COLOR_BLACK                  32790
+#define ID_COLOR_GRAY                   32791
+#define ID_COLOR_WHITE                  32792
+#define ID_COLOR_SANGUINE               32793
+#define ID_COLOR_TURQUOISE              32794
 #define ID_DELETE_NOTE                  32795
 #define IDC_STATIC                      -1
 

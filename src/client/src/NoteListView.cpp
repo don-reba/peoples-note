@@ -5,7 +5,6 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
-#include <cmath>
 #include <sstream>
 
 using namespace boost;
