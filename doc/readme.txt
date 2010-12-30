@@ -46,3 +46,11 @@ Evernote Support
 ----------------
 
 In order to enable this, you need to get a developer API key from Evernote and set it in "src\client\src\API Key.h". Without it, the program will build and run, but won't be able to connect to Evernote's servers.
+
+-----------------------
+Evernote API and Thrift
+-----------------------
+
+To use the API outside of People's Note, you first have to build the "Evernote API" library. Choose the build target as "Win 32" or "Windows Mobile", whichever is appropriate for you. Build the library and copy "Evernote API.lib" with the "include" folder to your application. Evernote API does not require any of the Boost libraries. See NoteStore.cpp and UserStore.cpp for examples of using the API.
+
+To use our Win32 C++ Thrift port for another API, you need the code generator from "src\Thrift Generate". The Thrift code generator itself requires Cygwin to run on Windows, but the generated API does not. Let me know, if you have problems with it, find it useful, or make improvements.
