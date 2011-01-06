@@ -68,7 +68,6 @@ Global
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Debug|Win32.Build.0 = Debug|Win32
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Win32
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Win32
 		{7DAA5AA4-761A-41A0-8FE4-0FC62C5B5B96}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).Build.0 = Debug|Win32
@@ -109,7 +108,6 @@ Global
 		{24EDA49F-836C-48AA-9B79-EBFBD2AC9292}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)
 		{24EDA49F-836C-48AA-9B79-EBFBD2AC9292}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).Build.0 = Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)
 		{24EDA49F-836C-48AA-9B79-EBFBD2AC9292}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Windows Mobile 6 Professional SDK (ARMV4I)
-		{24EDA49F-836C-48AA-9B79-EBFBD2AC9292}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).Build.0 = Debug|Windows Mobile 6 Professional SDK (ARMV4I)
 		{24EDA49F-836C-48AA-9B79-EBFBD2AC9292}.Release|Mixed Platforms.ActiveCfg = Release|Windows Mobile 6 Professional SDK (ARMV4I)
 		{24EDA49F-836C-48AA-9B79-EBFBD2AC9292}.Release|Mixed Platforms.Build.0 = Release|Windows Mobile 6 Professional SDK (ARMV4I)
 		{24EDA49F-836C-48AA-9B79-EBFBD2AC9292}.Release|Mixed Platforms.Deploy.0 = Release|Windows Mobile 6 Professional SDK (ARMV4I)
@@ -123,7 +121,6 @@ Global
 		{9FC7CF9A-0492-4E7A-99CA-57CA787DE214}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)
 		{9FC7CF9A-0492-4E7A-99CA-57CA787DE214}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).Build.0 = Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I)
 		{9FC7CF9A-0492-4E7A-99CA-57CA787DE214}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Windows Mobile 6 Professional SDK (ARMV4I)
-		{9FC7CF9A-0492-4E7A-99CA-57CA787DE214}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).Build.0 = Debug|Windows Mobile 6 Professional SDK (ARMV4I)
 		{9FC7CF9A-0492-4E7A-99CA-57CA787DE214}.Release|Mixed Platforms.ActiveCfg = Release|Windows Mobile 6 Professional SDK (ARMV4I)
 		{9FC7CF9A-0492-4E7A-99CA-57CA787DE214}.Release|Mixed Platforms.Build.0 = Release|Windows Mobile 6 Professional SDK (ARMV4I)
 		{9FC7CF9A-0492-4E7A-99CA-57CA787DE214}.Release|Mixed Platforms.Deploy.0 = Release|Windows Mobile 6 Professional SDK (ARMV4I)
@@ -135,7 +132,6 @@ Global
 		{628AB66B-5B2E-4F66-9EA0-7F67FE6538C5}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{628AB66B-5B2E-4F66-9EA0-7F67FE6538C5}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{628AB66B-5B2E-4F66-9EA0-7F67FE6538C5}.Debug|Win32.ActiveCfg = Debug|Win32
-		{628AB66B-5B2E-4F66-9EA0-7F67FE6538C5}.Debug|Win32.Build.0 = Debug|Win32
 		{628AB66B-5B2E-4F66-9EA0-7F67FE6538C5}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Win32
 		{628AB66B-5B2E-4F66-9EA0-7F67FE6538C5}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).Build.0 = Debug|Win32
 		{628AB66B-5B2E-4F66-9EA0-7F67FE6538C5}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Win32
@@ -151,7 +147,6 @@ Global
 		{D28D4854-00FE-4CBC-BB5C-463D04F1C813}.Debug|Mixed Platforms.ActiveCfg = Debug
 		{D28D4854-00FE-4CBC-BB5C-463D04F1C813}.Debug|Mixed Platforms.Build.0 = Debug
 		{D28D4854-00FE-4CBC-BB5C-463D04F1C813}.Debug|Win32.ActiveCfg = Debug
-		{D28D4854-00FE-4CBC-BB5C-463D04F1C813}.Debug|Win32.Build.0 = Debug
 		{D28D4854-00FE-4CBC-BB5C-463D04F1C813}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug
 		{D28D4854-00FE-4CBC-BB5C-463D04F1C813}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug
 		{D28D4854-00FE-4CBC-BB5C-463D04F1C813}.Release|Mixed Platforms.ActiveCfg = Release
@@ -164,7 +159,6 @@ Global
 		{70118CA6-FDA2-4FAA-A15D-E05618CF92D1}.Debug|Mixed Platforms.ActiveCfg = Debug
 		{70118CA6-FDA2-4FAA-A15D-E05618CF92D1}.Debug|Mixed Platforms.Build.0 = Debug
 		{70118CA6-FDA2-4FAA-A15D-E05618CF92D1}.Debug|Win32.ActiveCfg = Debug
-		{70118CA6-FDA2-4FAA-A15D-E05618CF92D1}.Debug|Win32.Build.0 = Debug
 		{70118CA6-FDA2-4FAA-A15D-E05618CF92D1}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug
 		{70118CA6-FDA2-4FAA-A15D-E05618CF92D1}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug
 		{70118CA6-FDA2-4FAA-A15D-E05618CF92D1}.Release|Mixed Platforms.ActiveCfg = Release

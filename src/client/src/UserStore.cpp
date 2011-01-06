@@ -8,7 +8,6 @@
 
 #include "API Key.h"
 #include "EnServiceTools.h"
-#include "SyncLogic.h"
 #include "Tools.h"
 #include "Transaction.h"
 

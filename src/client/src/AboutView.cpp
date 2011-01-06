@@ -104,7 +104,6 @@ void AboutView::ProcessMessage(WndMsg &msg)
 	};
 	try
 	{
-		DEBUGMSG(true, (L"%s\n", Tools::GetMessageName(msg.id_).c_str()));
 		if (!Handler::Call(mmp, this, msg))
 			__super::ProcessMessage(msg);
 	}

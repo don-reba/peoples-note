@@ -566,7 +566,7 @@ int UserModel::GetNotebookUpdateCount(const Guid & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT updateCount"
-		"  FROM   notebooks"
+		"  FROM   Notebooks"
 		"  WHERE  guid = ?"
 		);
 	statement->Bind(1, notebook);

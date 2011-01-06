@@ -3091,3 +3091,27 @@ need to fix the photo editor's menu
 	scroll distance should be computed componentwise
 want to hide scrollbars when note view window is hidden
 	done
+too many notes get updated after changing default notebook
+	lets begin with this dude
+	debug on the device
+	set breakpoint at note sync
+	all remote notes are added
+		lets see why
+		both remote and local notes are present
+		the local note is clean
+		normal behavior
+	why does it even scan that far back?
+		notebookUpdateCount is 0
+		it is zero in the database
+		why is it zero?
+	TODO
+connections time out too early
+	TODO
+password stars can be the wrong colour
+	TODO
+moving db to storage card fails
+	button becomes disabled, but nothing happens
+	no error is displayed
+	TODO
+local notes get lost after first synchronization
+	TODO
