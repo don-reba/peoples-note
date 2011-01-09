@@ -9,14 +9,14 @@
 				background-repeat   : expand;
 				font-size           : 14px;
 				margin              : 0px;
-				padding             : 14px 0px 0px 0px;
+				padding             : 12px 0px 0px 0px;
 			}
 			button
 			{
 				background-image    : url(button.png);
 				background-position : 10px 10px 10px 10px;
 				background-repeat   : expand;
-				margin              : 0px 0px 24 8px;
+				margin              : 0px 0px 12 8px;
 				padding             : 8px;
 				color               : black;
 			}
@@ -41,14 +41,24 @@
 			{
 				margin : 0px 10px 12px 10px;
 			}
+			td
+			{
+				vertical-align : text-bottom;
+			}
+			#path
+			{
+				text-wrap : unrestricted;
+			}
 		</style>
 	</head>
 	<body>
 		<h1 #name>Anonymous</h1>
 		<h2>Database settings</h2>
-		<p>Path: <span #path /></p>
-		<p>Size: <span #size /></p>
+		<table cellspacing=12px>
+			<tr><td>Path:</td><td #path></td></tr>
+			<tr><td>Size:</td><td #size></td></tr>
+		</table>
 		<button #move>Move to storage card</button>
+		<p #error></p>
 	</body>
 </html>
-
