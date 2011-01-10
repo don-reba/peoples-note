@@ -3112,6 +3112,9 @@ password stars can be the wrong colour
 moving db to storage card fails
 	button becomes disabled, but nothing happens
 	no error is displayed
-	TODO
+	turned out to be a low-res layout error
 local notes get lost after first synchronization
+	TODO
+adding note view menu
+	the menu shows up on the note list view
 	TODO

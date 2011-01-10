@@ -31,6 +31,7 @@
 #define IDR_EDITOR_MENUBAR              32778
 #define IDR_INK_EDITOR_MENUBAR          32779
 #define IDR_OK_CANCEL_MENUBAR           32780
+#define IDR_NOTE_VIEW_MENUBAR           32781
 #define ID_PENWIDTH_1PX                 32785
 #define ID_PENWIDTH_2PX                 32786
 #define ID_PENWIDTH_4PX                 32787
@@ -42,6 +43,8 @@
 #define ID_COLOR_SANGUINE               32793
 #define ID_COLOR_TURQUOISE              32794
 #define ID_DELETE_NOTE                  32795
+#define ID_EDIT_NOTE                    32796
+#define ID_FULL_SCREEN                  32797
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

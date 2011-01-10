@@ -69,14 +69,20 @@ void NoteView::Create(HWND parent)
 		);
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
+
+	SHMENUBARINFO menuBarInfo = { sizeof(menuBarInfo) };
+	menuBarInfo.hwndParent = hwnd_;
+	menuBarInfo.dwFlags    = SHCMBF_HIDDEN | SHCMBF_HIDESIPBUTTON;
+	menuBarInfo.nToolBarId = IDR_NOTE_VIEW_MENUBAR;
+	menuBarInfo.hInstRes   = instance;
+	::SHCreateMenuBar(&menuBarInfo);
+	menuBar = menuBarInfo.hwndMB;
+
+	UpdateWindowState();
 }
 
 void NoteView::RegisterEventHandlers()
 {
-	ConnectBehavior("#edit",        BUTTON_CLICK, &NoteView::OnEdit);
-	ConnectBehavior("#full-screen", BUTTON_CLICK, &NoteView::OnToggle);
-	ConnectBehavior("#home",        BUTTON_CLICK, &NoteView::OnHome);
-
 	body    = FindFirstElement("#note");
 	vScroll = FindFirstElement("#vscroll");
 	vSlider = FindFirstElement("#vscroll > #slider");
@@ -134,7 +140,8 @@ void NoteView::Hide()
 	if (!::IsWindowVisible(hwnd_))
 		return;
 	::EnableWindow(parent, TRUE);
-	::ShowWindow(hwnd_, SW_HIDE);
+	::ShowWindow(hwnd_,   SW_HIDE);
+	::ShowWindow(menuBar, SW_HIDE);
 	HideScrollbar();
 	SignalClose();
 }
@@ -216,7 +223,8 @@ void NoteView::Show()
 	SetScrollPos(scrollPos);
 	UpdateScrollbar();
 
-	::ShowWindow(hwnd_, SW_SHOW);
+	::ShowWindow(hwnd_,   SW_SHOW);
+	::ShowWindow(menuBar, SW_SHOW);
 	::UpdateWindow(hwnd_);
 }
 
@@ -374,7 +382,7 @@ void NoteView::UpdateScrollbar()
 
 		wchar_t text[16];
 		_itow_s(sliderWidth, text, 16, 10);
-		hSlider.set_style_attribute("height", text);
+		hSlider.set_style_attribute("width", text);
 	}
 }
 
@@ -398,6 +406,12 @@ void NoteView::UpdateWindowState()
 	{
 		::SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, FALSE);
 	}
+	if (menuBar)
+	{
+		Rect menuBarRect;
+		::GetWindowRect(menuBar, &menuBarRect);
+		rect.bottom -= menuBarRect.GetHeight();
+	}
 	::MoveWindow
 		( hwnd_
 		, rect.GetX()
@@ -406,14 +420,6 @@ void NoteView::UpdateWindowState()
 		, rect.GetHeight()
 		, TRUE
 		);
-	element img(FindFirstElement("#full-screen"));
-	img.set_style_attribute
-		( "background-image"
-		, isMaximized
-		? L"url(view-restore.png)"
-		: L"url(view-fullscreen.png)"
-		);
-	img.update();
 }
 
 //-------------------------
@@ -447,7 +453,10 @@ void NoteView::OnGestureStep()
 void NoteView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
 	if (msg.GetActiveState() != WA_INACTIVE)
+	{
 		UpdateWindowState();
+		msg.handled_ = true;
+	}
 }
 
 void NoteView::OnClose(Msg<WM_CLOSE> & msg)
@@ -458,10 +467,13 @@ void NoteView::OnClose(Msg<WM_CLOSE> & msg)
 
 void NoteView::OnCommand(Msg<WM_COMMAND> & msg)
 {
-	if (msg.CtrlId() == IDOK)
+	switch (msg.CtrlId())
 	{
-		CloseWindow(hwnd_);
-		msg.handled_ = true;
+	case IDOK:           CloseWindow(hwnd_);     break;
+	case IDM_OK:         CloseWindow(hwnd_);     break;
+	case IDM_CANCEL:     CloseWindow(hwnd_);     break;
+	case ID_EDIT_NOTE:   SignalEdit();           break;
+	case ID_FULL_SCREEN: SignalToggleMaximize(); break;
 	}
 }
 
@@ -497,6 +509,15 @@ void NoteView::OnMouseUp(Msg<WM_LBUTTONUP> & msg)
 	gestureProcessor.OnMouseUp(msg);
 }
 
+void NoteView::OnSettingChange(Msg<WM_SETTINGCHANGE> & msg)
+{
+	if (msg.Flag() == SPI_SETSIPINFO)
+	{
+		UpdateWindowState();
+		msg.handled_ = true;
+	}
+}
+
 void NoteView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
@@ -508,6 +529,7 @@ void NoteView::ProcessMessage(WndMsg &msg)
 		&NoteView::OnMouseDown,
 		&NoteView::OnMouseMove,
 		&NoteView::OnMouseUp,
+		&NoteView::OnSettingChange,
 	};
 	try
 	{
@@ -524,21 +546,6 @@ void NoteView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
-
-void NoteView::OnEdit(BEHAVIOR_EVENT_PARAMS * params)
-{
-	SignalEdit();
-}
-
-void NoteView::OnToggle(BEHAVIOR_EVENT_PARAMS * params)
-{
-	SignalToggleMaximize();
-}
-
-void NoteView::OnHome(BEHAVIOR_EVENT_PARAMS * params)
-{
-	CloseWindow(hwnd_);
-}
 
 void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 {

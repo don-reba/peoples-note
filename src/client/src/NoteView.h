@@ -16,8 +16,9 @@ private:
 
 private:
 
-	HWND      parent;
 	HINSTANCE instance;
+	HWND      menuBar;
+	HWND      parent;
 
 	NoteViewGestureProcessor gestureProcessor;
 
@@ -120,13 +121,14 @@ private:
 
 private:
 
-	void OnActivate  (Msg<WM_ACTIVATE>    & msg);
-	void OnClose     (Msg<WM_CLOSE>       & msg);
-	void OnCommand   (Msg<WM_COMMAND>     & msg);
-	void OnMouseDown (Msg<WM_LBUTTONDOWN> & msg);
-	void OnMouseUp   (Msg<WM_LBUTTONUP>   & msg);
-	void OnMouseMove (Msg<WM_MOUSEMOVE>   & msg);
-	void OnKeyUp     (Msg<WM_KEYUP>       & msg);
+	void OnActivate      (Msg<WM_ACTIVATE>      & msg);
+	void OnClose         (Msg<WM_CLOSE>         & msg);
+	void OnCommand       (Msg<WM_COMMAND>       & msg);
+	void OnMouseDown     (Msg<WM_LBUTTONDOWN>   & msg);
+	void OnMouseUp       (Msg<WM_LBUTTONUP>     & msg);
+	void OnMouseMove     (Msg<WM_MOUSEMOVE>     & msg);
+	void OnKeyUp         (Msg<WM_KEYUP>         & msg);
+	void OnSettingChange (Msg<WM_SETTINGCHANGE> & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 
@@ -134,8 +136,5 @@ private:
 
 private:
 
-	void OnEdit   (BEHAVIOR_EVENT_PARAMS * params);
-	void OnToggle (BEHAVIOR_EVENT_PARAMS * params);
-	void OnHome   (BEHAVIOR_EVENT_PARAMS * params);
 	void OnInput  (BEHAVIOR_EVENT_PARAMS * params);
 };
