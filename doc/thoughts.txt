@@ -3117,4 +3117,4 @@ local notes get lost after first synchronization
 	TODO
 adding note view menu
 	the menu shows up on the note list view
-	TODO
+	should have created it hidden

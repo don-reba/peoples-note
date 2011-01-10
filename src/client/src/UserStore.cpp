@@ -7,7 +7,6 @@
 #include "Evernote/EDAM/UserStore.h"
 
 #include "API Key.h"
-#include "EnServiceTools.h"
 #include "Tools.h"
 #include "Transaction.h"
 
@@ -18,8 +17,6 @@ using namespace Thrift::Protocol;
 using namespace Thrift::Transport;
 
 using namespace Evernote;
-
-using namespace EnServiceTools;
 
 IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 	( wstring username
@@ -62,21 +59,13 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 		result.ShardId = authenticationResult.user.shardId;
 		result.Token   = authenticationResult.authenticationToken; 
 	}
-	catch (const EDAM::Error::EDAMUserException & e)
+	catch (const Thrift::Transport::TTransportException &)
 	{
-		result.Message = CreateUserExceptionMessage(e);
-	}
-	catch (const EDAM::Error::EDAMSystemException & e)
-	{
-		result.Message = CreateSystemExceptionMessage(e);
-	}
-	catch (const Thrift::Transport::TTransportException & e)
-	{
-		result.Message = CreateTransportExceptionMessage(e);
+		result.Message = L"Network error";
 	}
 	catch (const TException & e)
 	{
-		result.Message = CreateExceptionMessage(e);
+		result.Message = e.GetMessageW();
 	}
 	return result;
 }
