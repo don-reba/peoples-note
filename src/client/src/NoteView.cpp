@@ -118,7 +118,7 @@ static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
 void NoteView::GetBody(wstring & html)
 {
 	HTMLayoutGetElementHtmlCB
-		( FindFirstElement("#note") // he
+		( FindFirstElement("#body") // he
 		, false                     // outer
 		, _writer_a                 // cb
 		, &html                     // cb_param
@@ -198,9 +198,9 @@ void NoteView::SetNote
 	vector<unsigned char> utf8Chars;
 	const unsigned char * utf8 = Tools::ConvertToUtf8(bodyHtml, utf8Chars);
 
-	DisconnectBehavior("#note input");
+	DisconnectBehavior("#body input");
 	body.set_html(utf8, utf8Chars.size());
-	ConnectBehavior("#note input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
+	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
 
 }
 

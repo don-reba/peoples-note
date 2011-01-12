@@ -3118,3 +3118,5 @@ local notes get lost after first synchronization
 adding note view menu
 	the menu shows up on the note list view
 	should have created it hidden
+should remove unnecessary icons
+	TODO
