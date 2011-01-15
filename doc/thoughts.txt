@@ -3120,3 +3120,14 @@ adding note view menu
 	should have created it hidden
 should remove unnecessary icons
 	TODO
+need to handle failed notes better when syncing
+	if a note fails
+		mark it as failed
+			maybe better to mark synced notes, instead
+		continue to other notes
+		at the end
+			notify the user of failure
+				"Some notes could not be synchronized."
+	TODO
+mark unsynced notes
+	TODO

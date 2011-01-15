@@ -258,16 +258,20 @@ void EnNoteTranslator::ReplaceDiv
 	, xml_node<wchar_t>    * child
 	)
 {
+	const wchar_t * whitelist[] =
+		{ L"align", L"bgcolor", L"dir", L"lang", L"style"
+		, L"text", L"title", L"type", L"xml:lang", L"xmlns"
+		};
+	FilterAttributes(child, whitelist, whitelist + Tools::GetArraySize(whitelist));
+
 	xml_attribute<wchar_t> * typeAttribute(child->first_attribute(L"type"));
 	if (!typeAttribute)
 		return;
 	wstring type(typeAttribute->value(), typeAttribute->value_size());
 
 	if (type == L"en-note")
-	{
-		child->remove_attribute(typeAttribute);
 		child->name(L"en-note");
-	}
+	child->remove_attribute(typeAttribute);
 }
 
 void EnNoteTranslator::ReplaceEncryptImg
@@ -350,7 +354,6 @@ void EnNoteTranslator::ReplaceImg
 	child->append_attribute(store->allocate_attribute(L"hash", hashString));
 	child->append_attribute(store->allocate_attribute(L"type", imageType->second));
 
-	
 	const wchar_t * whitelist[] =
 		{ L"align", L"alt", L"border", L"dir", L"hash", L"height"
 		, L"hspace", L"lang", L"longdesc", L"style", L"title"
