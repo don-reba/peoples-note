@@ -30,8 +30,7 @@ void NotebookProcessor::Create
 
 	Notebook replacement;
 	noteStore.CreateNotebook(local, replacement);
-	userModel.ExpungeNotebook(local.guid);
-	userModel.AddNotebook(replacement);
+	userModel.UpdateNotebook(local, replacement);
 }
 
 void NotebookProcessor::Delete(const Notebook & local)

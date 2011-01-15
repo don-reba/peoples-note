@@ -2706,8 +2706,6 @@ note thumbnails are not updated after sync
 	want to avoid caching all thumbnails
 	can add a loop to SyncPresenter...
 	TODO
-need to revisit note updating
-	TODO
 default notebook changes are not synchronized
 	what is missing?
 	when note processor fetches a note, it should check defaultness
@@ -3146,3 +3144,21 @@ mark unsynced notes
 		yes, the corner graphic
 		lets draw another one
 	TODO
+what happens at first sync, if the account contains notes from anonymous account
+	same as usual
+	local notes are uploaded
+		but remote are not downloaded
+	note that the Notes notebook is never duplicated
+		so, if it exists on the client
+			but not on the server
+			is it deleted?
+				only if clean
+	oops
+	when a notebook is uploaded
+		we get its replacement
+		then we delete the old notebook
+			along with all the notes!
+		then we add the replacement
+	
+	instead
+		we should update the local notebook
