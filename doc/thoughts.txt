@@ -3130,4 +3130,11 @@ need to handle failed notes better when syncing
 				"Some notes could not be synchronized."
 	TODO
 mark unsynced notes
+	need to mark a note after editing it
+	should this be done by the database or by the app?
+	app is better, because it can be tested
+		although, then there is no guarantee that every modification is marked
+		but this might not even always be desirable
+			such as when?
+			such as when importing notes, perchaps
 	TODO

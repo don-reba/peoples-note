@@ -22,10 +22,7 @@ menu li
 {  
 	text-align: left;
 	width:*;
-	padding-left:8px;
-	padding-right:20px; /* room for the arrow */
-	padding-top:4px; 
-	padding-bottom:4px; 
+	padding: 8px 20px 8px 8px; /* includes room for the arrow */
 	foreground-repeat: no-repeat;
 	foreground-position: 2px 50%;
 	color:windowtext;
