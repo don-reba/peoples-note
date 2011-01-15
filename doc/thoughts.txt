@@ -3108,18 +3108,21 @@ too many notes get updated after changing default notebook
 connections time out too early
 	TODO
 password stars can be the wrong colour
-	TODO
+	maybe they are not the wrong colour
+	maybe the user's font does not have the '•' symbol
+	lets change it to '*'
 moving db to storage card fails
 	button becomes disabled, but nothing happens
 	no error is displayed
 	turned out to be a low-res layout error
 local notes get lost after first synchronization
+	this is indeed the case lets investigate
 	TODO
 adding note view menu
 	the menu shows up on the note list view
 	should have created it hidden
 should remove unnecessary icons
-	TODO
+	done
 need to handle failed notes better when syncing
 	if a note fails
 		mark it as failed
@@ -3131,10 +3134,15 @@ need to handle failed notes better when syncing
 	TODO
 mark unsynced notes
 	need to mark a note after editing it
-	should this be done by the database or by the app?
-	app is better, because it can be tested
+	should this be done by the database or by the presenters?
+	presenters are better, because they are easier to test
 		although, then there is no guarantee that every modification is marked
 		but this might not even always be desirable
 			such as when?
 			such as when importing notes, perchaps
+	how should unsynced notes look?
+		maybe a little darker
+		will this interfere with any images?
+		yes, the corner graphic
+		lets draw another one
 	TODO
