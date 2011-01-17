@@ -10,6 +10,33 @@
 
 using namespace std;
 
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_InvalidChars)
+{
+	EnNoteTranslator enNoteTranslator;
+
+	wstring html;
+	wstring xml;
+	
+	html = L"<a href=\"http://www.google.com/search?q=TEST&ie=UTF-8\">Google</a>";
+	enNoteTranslator.ConvertToXml(html, xml);
+	BOOST_CHECK_EQUAL
+		( xml
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note><a href=\"http://www.google.com/search?q=TEST&amp;ie=UTF-8\">Google</a></en-note>"
+		);
+
+	enNoteTranslator.ConvertToHtml(xml, html);
+	BOOST_CHECK_EQUAL
+		( html
+		,
+			L"<div type=\"en-note\">"
+				L"<a href=\"http://www.google.com/search?q=TEST&ie=UTF-8\">Google</a>"
+			L"</div>"
+		);
+}
+
 BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToText)
 {
 	EnNoteTranslator enNoteTranslator;

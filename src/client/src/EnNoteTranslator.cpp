@@ -42,8 +42,9 @@ void EnNoteTranslator::ConvertToHtml
 
 	html.clear();
 	print(back_inserter(html), *doc, print_no_indenting | print_no_char_expansion);
-	// apostropies are escaped in XML, but not in HTML
+	// apostropies and amperstands are escaped in XML, but not in HTML
 	Tools::ReplaceAll(html, L"&apos;", L"'");
+	Tools::ReplaceAll(html, L"&amp;",  L"&");
 }
 
 void EnNoteTranslator::ConvertToText
@@ -103,6 +104,8 @@ void EnNoteTranslator::ConvertToXml
 	, wstring & xml
 	)
 {
+	Tools::ReplaceAll(html, L"&", L"&amp;");
+
 	typedef xml_document<wchar_t> XmlDocument;
 	auto_ptr<XmlDocument> doc(new XmlDocument());
 	doc->parse<parse_non_destructive>(&html[0]);
