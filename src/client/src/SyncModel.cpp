@@ -270,7 +270,8 @@ void SyncModel::ProcessNotes
 
 	foreach (const Guid & note, deletedNotes)
 	{
-		processor.DeleteRemote(note);
+		if (!note.IsLocal())
+			processor.DeleteRemote(note);
 
 		PostProgressMessage(actionIndex / actionCount);
 		actionIndex += 1.0;

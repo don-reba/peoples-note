@@ -30,11 +30,7 @@ void NoteListModel::GetCurrentPage
 	)
 {
 	// the checks could be simpler, if not for iterator verification
-	begin =
-		(notes.end() - notes.begin() > currentPage * pageSize)
-		? notes.begin() + currentPage * pageSize
-		: notes.end()
-		;
+	begin = notes.begin() + currentPage * pageSize;
 	end =
 		(notes.end() - begin > pageSize)
 		? begin + pageSize
