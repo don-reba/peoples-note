@@ -13,6 +13,7 @@ public:
 	virtual void AddNote
 		( const std::wstring & html
 		, const std::wstring & value
+		,       bool           isDirty
 		) = 0;
 
 	virtual void ConnectAbout(slot_type OnAbout) = 0;

@@ -3124,13 +3124,13 @@ should remove unnecessary icons
 need to handle failed notes better when syncing
 	if a note fails
 		mark it as failed
-			maybe better to mark synced notes, instead
+			maybe better to mark dirty notes, instead
 		continue to other notes
 		at the end
 			notify the user of failure
 				"Some notes could not be synchronized."
 	TODO
-mark unsynced notes
+mark dirty notes
 	need to mark a note after editing it
 	should this be done by the database or by the presenters?
 	presenters are better, because they are easier to test
@@ -3140,10 +3140,10 @@ mark unsynced notes
 			such as when importing notes, perchaps
 	how should unsynced notes look?
 		maybe a little darker
+			or a little lighter, less saturated
 		will this interfere with any images?
 		yes, the corner graphic
 		lets draw another one
-	TODO
 what happens at first sync, if the account contains notes from anonymous account
 	same as usual
 	local notes are uploaded
@@ -3162,3 +3162,9 @@ what happens at first sync, if the account contains notes from anonymous account
 	
 	instead
 		we should update the local notebook
+have to set text colour
+	TODO
+want to add stack support
+	TODO
+need to check local note deletion
+	fixed

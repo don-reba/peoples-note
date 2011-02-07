@@ -16,11 +16,13 @@ MockNoteListView::MockNoteListView()
 void MockNoteListView::AddNote
 	( const wstring & html
 	, const wstring & value
+	,       bool      isDirty
 	)
 {
 	notes.push_back(NoteRecord());
-	notes.back().html  = html;
-	notes.back().value = value;
+	notes.back().html    = html;
+	notes.back().value   = value;
+	notes.back().isDirty = isDirty;
 	notesUpdated = false;
 }
 

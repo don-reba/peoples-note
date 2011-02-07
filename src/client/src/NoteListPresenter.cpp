@@ -121,7 +121,7 @@ void NoteListPresenter::OnNoteListChanged()
 	{
 		const Note & note(*notesBegin);
 		wstring guid(ConvertToUnicode(note.guid));
-		noteListView.AddNote(ConvertToHtml(note, guid), guid);
+		noteListView.AddNote(ConvertToHtml(note, guid), guid, note.isDirty);
 	}
 	noteListView.UpdateNotes();
 

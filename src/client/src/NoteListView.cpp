@@ -98,6 +98,7 @@ void NoteListView::RegisterEventHandlers()
 void NoteListView::AddNote
 	( const wstring & html
 	, const wstring & value
+	,       bool      isDirty
 	)
 {
 	vector<unsigned char> htmlUtf8Chars;
@@ -107,6 +108,8 @@ void NoteListView::AddNote
 	noteList.insert(note, noteList.children_count() - 1);
 	note.set_attribute("class", L"note");
 	note.set_attribute("value", value.c_str());
+	if (isDirty)
+		note.set_attribute("dirty", L"");
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
 }
 

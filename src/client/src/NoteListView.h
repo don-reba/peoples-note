@@ -78,6 +78,7 @@ public:
 	virtual void AddNote
 		( const std::wstring & html
 		, const std::wstring & value
+		,       bool           isDirty
 		);
 
 	virtual void ClearNotes();

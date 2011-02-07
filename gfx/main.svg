@@ -18,10 +18,25 @@
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="main.svg"
    inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\main.png"
-   inkscape:export-xdpi="360"
-   inkscape:export-ydpi="360">
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180">
   <defs
      id="defs4">
+    <linearGradient
+       id="linearGradient4038">
+      <stop
+         id="stop4040"
+         offset="0"
+         style="stop-color:#f0ecb0;stop-opacity:1;" />
+      <stop
+         style="stop-color:#cac75f;stop-opacity:1;"
+         offset="0.79000002"
+         id="stop4046" />
+      <stop
+         id="stop4044"
+         offset="1"
+         style="stop-color:#a5a30e;stop-opacity:1;" />
+    </linearGradient>
     <linearGradient
        id="linearGradient4056">
       <stop
@@ -1002,7 +1017,7 @@
        y2="683.3653" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3706"
+       xlink:href="#linearGradient4038"
        id="linearGradient3247"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.91428571,0,0,0.91428571,40.742857,56.571055)"
@@ -1107,8 +1122,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="175.98706"
-     inkscape:cy="282.32266"
+     inkscape:cx="235.57367"
+     inkscape:cy="324.79412"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1259,14 +1274,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/text-note.png"
            xlink:href="icons/text-note.png"
-           y="487.36218"
-           x="184"
-           id="image3769"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3769"
+           x="184"
+           y="487.36218" />
       </g>
       <g
          transform="translate(-37.706059,51.999997)"
@@ -1298,14 +1313,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/voice-note.png"
            xlink:href="icons/voice-note.png"
-           y="487.36218"
-           x="255.66663"
-           id="image3783"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3783"
+           x="255.66663"
+           y="487.36218" />
       </g>
       <g
          transform="translate(-17.853261,51.999997)"
@@ -1337,14 +1352,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/photo-note.png"
            xlink:href="icons/photo-note.png"
-           y="487.36218"
-           x="331.33331"
-           id="image3797"
-           height="56"
-           width="56"
-           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           width="56"
+           height="56"
+           id="image3797"
+           x="331.33331"
+           y="487.36218" />
       </g>
       <g
          transform="translate(3.9995832,51.999997)"
@@ -1375,14 +1390,14 @@
         <image
            sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/ink-note.png"
            xlink:href="icons/ink-note.png"
-           y="491.36218"
-           x="409"
-           id="image3811"
-           height="48"
-           width="48"
-           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           inkscape:export-ydpi="360"
            inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360" />
+           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+           width="48"
+           height="48"
+           id="image3811"
+           x="409"
+           y="491.36218" />
       </g>
       <rect
          inkscape:export-ydpi="360"
@@ -1408,11 +1423,11 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         width="164"
-         height="100"
-         id="image3931"
+         y="615.32898"
          x="0"
-         y="615.32898" />
+         id="image3931"
+         height="100"
+         width="164" />
       <g
          id="g3933"
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)">
@@ -1474,16 +1489,16 @@
          sodipodi:nodetypes="ccccc"
          id="path3225"
          d="m 164,615.32897 0,100 312,0 0,-99.96679 -312,-0.0332 z"
-         style="fill:#f0ec40;fill-opacity:1;stroke:none"
+         style="fill:#f0ecb0;fill-opacity:1;stroke:none"
          inkscape:connector-curvature="0" />
       <image
          sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         y="615.32898"
-         x="0"
-         id="image3227"
+         width="164"
          height="100"
-         width="164" />
+         id="image3227"
+         x="0"
+         y="615.32898" />
       <g
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)"
          id="g3229">
@@ -1494,14 +1509,14 @@
            clip-path="url(#clipPath3880)"
            inkscape:connector-curvature="0" />
         <path
-           style="fill:url(#linearGradient3247);fill-opacity:1;stroke:none"
+           style="fill:url(#linearGradient3247);fill-opacity:1.0;stroke:none"
            d="m 438,665.32897 32,32 -32,0 0,-32"
            id="path3233"
            inkscape:connector-curvature="0" />
         <path
            id="path3235"
            d="m 470,697.32897 -32,-32 32,0 0,32"
-           style="fill:#f0ec40;fill-opacity:1;stroke:none"
+           style="fill:#f0ecb0;fill-opacity:1;stroke:none"
            inkscape:connector-curvature="0" />
       </g>
       <text
@@ -1558,11 +1573,11 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         width="164"
-         height="100"
-         id="image3253"
+         y="615.32898"
          x="0"
-         y="615.32898" />
+         id="image3253"
+         height="100"
+         width="164" />
       <g
          id="g3255"
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)">
@@ -1707,11 +1722,11 @@
       <image
          sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/preview.png"
          xlink:href="icons/preview.png"
-         y="615.32898"
-         x="0"
-         id="image3279"
+         width="164"
          height="100"
-         width="164" />
+         id="image3279"
+         x="0"
+         y="615.32898" />
       <g
          transform="matrix(0.75,0,0,0.75,123.5,115.86546)"
          id="g3281">
@@ -1832,12 +1847,12 @@
     <image
        sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/view-refresh.png"
        xlink:href="icons/view-refresh.png"
-       width="43.389828"
-       height="40"
-       id="image3929"
-       x="2.8050842"
+       style="fill:url(#linearGradient4031);fill-opacity:1"
        y="1007.8622"
-       style="fill:url(#linearGradient4031);fill-opacity:1" />
+       x="2.8050842"
+       id="image3929"
+       height="40"
+       width="43.389828" />
     <rect
        style="fill:url(#linearGradient4130);fill-opacity:1;stroke:none"
        id="rect4001"
@@ -1890,10 +1905,10 @@
     <image
        sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/window title.png"
        xlink:href="icons/window title.png"
-       width="480"
-       height="52"
-       id="image3052"
+       y="0"
        x="0"
-       y="0" />
+       id="image3052"
+       height="52"
+       width="480" />
   </g>
 </svg>
