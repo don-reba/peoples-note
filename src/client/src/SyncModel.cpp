@@ -181,6 +181,7 @@ void SyncModel::GetNotes
 		userModel.GetNoteResources(note.guid, notes.back().resources);
 	}
 }
+
 void SyncModel::FinishSync
 	( const wchar_t * logMessage
 	, const wchar_t * friendlyMessage
@@ -197,6 +198,8 @@ void SyncModel::FinishSync
 SyncModel::ExceptionMessage SyncModel::GetExceptionMessage()
 try
 {
+	// this function is meant to be called from a catch block
+	// rethrow the exception to catch it again
 	throw;
 }
 catch (const Evernote::EDAM::Error::EDAMNotFoundException & e)
@@ -348,36 +351,44 @@ void SyncModel::ProcessNotes
 		if (action.Remote && action.Remote->notebook != notebook.guid)
 			continue;
 
-		switch (action.Type)
+		try
 		{
-		case SyncLogic::ActionAdd:
-			syncLogger.PerformAction(L"Add", NULL, &action.Remote->guid);
-			processor.Add(*action.Remote);
-			break;
-		case SyncLogic::ActionDelete:
-			syncLogger.PerformAction(L"Delete", &action.Local->guid, NULL);
-			processor.Delete(*action.Local);
-			break;
-		case SyncLogic::ActionMerge:
-			syncLogger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
-			processor.Merge(*action.Local, *action.Remote);
-			break;
-		case SyncLogic::ActionRenameAdd:
-			syncLogger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
-			processor.RenameAdd(*action.Local, *action.Remote);
-			break;
-		case SyncLogic::ActionUpload:
-			if (action.Local->guid.IsLocal())
+			switch (action.Type)
 			{
-				syncLogger.PerformAction(L"Create", &action.Local->guid, NULL);
-				processor.Create(*action.Local);
+			case SyncLogic::ActionAdd:
+				syncLogger.PerformAction(L"Add", NULL, &action.Remote->guid);
+				processor.Add(*action.Remote);
+				break;
+			case SyncLogic::ActionDelete:
+				syncLogger.PerformAction(L"Delete", &action.Local->guid, NULL);
+				processor.Delete(*action.Local);
+				break;
+			case SyncLogic::ActionMerge:
+				syncLogger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
+				processor.Merge(*action.Local, *action.Remote);
+				break;
+			case SyncLogic::ActionRenameAdd:
+				syncLogger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
+				processor.RenameAdd(*action.Local, *action.Remote);
+				break;
+			case SyncLogic::ActionUpload:
+				if (action.Local->guid.IsLocal())
+				{
+					syncLogger.PerformAction(L"Create", &action.Local->guid, NULL);
+					processor.Create(*action.Local);
+				}
+				else
+				{
+					syncLogger.PerformAction(L"Update", &action.Local->guid, NULL);
+					processor.Update(*action.Local);
+				}
+				break;
 			}
-			else
-			{
-				syncLogger.PerformAction(L"Update", &action.Local->guid, NULL);
-				processor.Update(*action.Local);
-			}
-			break;
+		}
+		catch (...)
+		{
+			ExceptionMessage message = GetExceptionMessage();
+			syncLogger.Error(message.Message);
 		}
 
 		PostProgressMessage(actionIndex / actionCount);
@@ -636,11 +647,15 @@ try
 	userModel.SetUpdateCount(syncState.UpdateCount);
 	userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
 
+	int dirtyNoteCount(userModel.GetDirtyNoteCount(notebook));
+
 	FinishSync
 		( L""
 		, fullSync
 		? L"Tip: choose a notebook and sync again to get the notes."
-		: L""
+		: (dirtyNoteCount > 0)
+			? L"Some notes could not be synchronized."
+			: L""
 		);
 }
 catch (...)

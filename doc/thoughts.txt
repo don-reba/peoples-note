@@ -3137,6 +3137,15 @@ need to handle failed notes better when syncing
 				"Some notes could not be synchronized."
 				requires a flag to be set?
 				or else could count the number of notes not synced
+			how to notify?
+				NoteListPresenter handles this
+				at the end, if some notes are left
+					it should display a message
+				but message display and dirty note counts are handled separately
+				and independently of which state they are called from
+				lets create a new function to do this
+				or I could set status from the model
+				that would be simpler
 	TODO
 mark dirty notes
 	need to mark a note after editing it
