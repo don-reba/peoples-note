@@ -49,10 +49,18 @@ void InkEditorPresenter::OnAccept()
 
 	// create resource with hash
 	Resource image;
-	inkEditorView.GetImage(image.Data);
-	image.Hash = HashWithMD5(image.Data);
-	image.Note = note.guid;
-	image.Mime = L"image/jpeg";
+	try
+	{
+		inkEditorView.GetImage(image.Data);
+		image.Hash = HashWithMD5(image.Data);
+		image.Note = note.guid;
+		image.Mime = L"image/jpeg";
+	}
+	catch (const std::exception &)
+	{
+		inkEditorView.Hide();
+		return;
+	}
 
 	// create note body referencing resource by hash
 	wstring body =
