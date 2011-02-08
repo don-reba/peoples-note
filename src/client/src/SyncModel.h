@@ -18,6 +18,25 @@ class IUserModel;
 
 class SyncModel : public ISyncModel
 {
+// types
+
+private:
+
+	struct ExceptionMessage
+	{
+		std::wstring Title;
+		std::wstring Message;
+
+		ExceptionMessage
+			( const std::wstring & title
+			, const std::wstring & message
+			)
+			: Title   (title)
+			, Message (message)
+		{
+		}
+	};
+
 // data
 
 private:
@@ -98,6 +117,8 @@ private:
 		( const wchar_t * logMessage
 		, const wchar_t * friendlyMessage
 		);
+
+	ExceptionMessage GetExceptionMessage();
 
 	void PostProgressMessage     (double          progress);
 	void PostTextMessage         (const wchar_t * text);

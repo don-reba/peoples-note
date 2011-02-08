@@ -63,9 +63,13 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 	{
 		result.Message = L"Network error";
 	}
-	catch (const TException & e)
+	catch (const EDAM::Error::EDAMUserException &)
 	{
-		result.Message = e.GetMessageW();
+		result.Message = L"Invalid username or password";
+	}
+	catch (const TException &)
+	{
+		result.Message = L"Something went wrong";
 	}
 	return result;
 }

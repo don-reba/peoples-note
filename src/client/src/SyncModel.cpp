@@ -194,6 +194,65 @@ void SyncModel::FinishSync
 	userModel.Unload();
 }
 
+SyncModel::ExceptionMessage SyncModel::GetExceptionMessage()
+try
+{
+	throw;
+}
+catch (const Evernote::EDAM::Error::EDAMNotFoundException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateNotFoundExceptionMessage(e).c_str()
+		);
+}
+catch (const Evernote::EDAM::Error::EDAMSystemException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateSystemExceptionMessage(e).c_str()
+		);
+}
+catch (const Evernote::EDAM::Error::EDAMUserException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateUserExceptionMessage(e).c_str()
+		);
+}
+catch (const Thrift::Transport::TTransportException & e)
+{
+	return ExceptionMessage
+		( L"Encountered a network error."
+		, EnServiceTools::CreateTransportExceptionMessage(e).c_str()
+		);
+}
+catch (const Thrift::TException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateExceptionMessage(e).c_str()
+		);
+}
+catch (const std::exception & e)
+{
+	wstring message;
+	message.append(L"exception(");
+	message.append(ConvertToUnicode(e.what()));
+	message.append(L")");
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, message.c_str()
+		);
+}
+catch (...)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, L"Unknown exception."
+		);
+}
+
 void SyncModel::PostProgressMessage(double progress)
 {
 	SyncMessageQueue::Message message
@@ -449,189 +508,145 @@ void SyncModel::ProcessTags
 }
 
 void SyncModel::Sync()
+try
 {
-	try
+	PostTextMessage(L"Connecting...");
+
+	IEnService::UserStorePtr userStore(enService.GetUserStore());
+	Credentials credentials;
+	userModel.GetCredentials(credentials);
+	IUserStore::AuthenticationResult authenticationResult
+		( userStore->GetAuthenticationToken
+			( credentials.GetUsername()
+			, credentials.GetPassword()
+			)
+		);
+	if (!authenticationResult.IsGood)
 	{
-		PostTextMessage(L"Connecting...");
-
-		IEnService::UserStorePtr userStore(enService.GetUserStore());
-		Credentials credentials;
-		userModel.GetCredentials(credentials);
-		IUserStore::AuthenticationResult authenticationResult
-			( userStore->GetAuthenticationToken
-				( credentials.GetUsername()
-				, credentials.GetPassword()
-				)
+		FinishSync
+			( authenticationResult.Message.c_str()
+			, L"Tried to sync, but could not authenticate."
 			);
-		if (!authenticationResult.IsGood)
+		return;
+	}
+
+	IEnService::NoteStorePtr noteStore
+		( enService.GetNoteStore
+			( authenticationResult.Token
+			, authenticationResult.ShardId
+			)
+		);
+
+	SyncState syncState;
+	noteStore->GetSyncState(syncState);
+	bool fullSync(userModel.GetLastSyncEnTime() < syncState.FullSyncBefore);
+
+	syncLogger.BeginSyncStage(fullSync ? L"full" : L"incremental");
+
+	PostTextMessage(fullSync ? L"Begin full sync..." : L"Begin incremental sync...");
+
+	EnInteropNoteList remoteNotes;
+	NotebookList      remoteNotebooks;
+	TagList           remoteTags;
+
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+	bool isLocalNotebook(notebook.guid.IsLocal());
+
+	if (fullSync)
+	{
+		int globalUpdateCount(userModel.GetUpdateCount());
+		if (globalUpdateCount < syncState.UpdateCount)
 		{
-			FinishSync
-				( authenticationResult.Message.c_str()
-				, L"Tried to sync, but could not authenticate."
+			noteStore->ListEntries
+				( remoteNotes
+				, remoteNotebooks
+				, remoteTags
+				, notebook.guid
 				);
-			return;
 		}
-
-		IEnService::NoteStorePtr noteStore
-			( enService.GetNoteStore
-				( authenticationResult.Token
-				, authenticationResult.ShardId
-				)
-			);
-
-		SyncState syncState;
-		noteStore->GetSyncState(syncState);
-		bool fullSync(userModel.GetLastSyncEnTime() < syncState.FullSyncBefore);
-
-		syncLogger.BeginSyncStage(fullSync ? L"full" : L"incremental");
-
-		PostTextMessage(fullSync ? L"Begin full sync..." : L"Begin incremental sync...");
-
-		EnInteropNoteList remoteNotes;
-		NotebookList      remoteNotebooks;
-		TagList           remoteTags;
-
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-		bool isLocalNotebook(notebook.guid.IsLocal());
-
-		if (fullSync)
+	}
+	else
+	{
+		int notebookUpdateCount(userModel.GetNotebookUpdateCount(notebook.guid));
+		if (notebookUpdateCount < syncState.UpdateCount)
 		{
 			int globalUpdateCount(userModel.GetUpdateCount());
-			if (globalUpdateCount < syncState.UpdateCount)
+
+			vector<Guid> expungedNotes;
+			vector<Guid> expungedNotebooks;
+			vector<Guid> expungedTags;
+			vector<Guid> resources;
+
+			noteStore->ListEntries
+				( globalUpdateCount
+				, notebookUpdateCount
+				, remoteNotes
+				, remoteNotebooks
+				, remoteTags
+				, expungedNotes
+				, expungedNotebooks
+				, expungedTags
+				, resources
+				, notebook.guid
+				);
+
+			syncLogger.ListGuids(L"Expunged notes",     expungedNotes);
+			syncLogger.ListGuids(L"Expunged notebooks", expungedNotebooks);
+			syncLogger.ListGuids(L"Expunged tags",      expungedTags);
+
+			foreach (Guid & guid, expungedNotes)
 			{
-				noteStore->ListEntries
-					( remoteNotes
-					, remoteNotebooks
-					, remoteTags
-					, notebook.guid
-					);
-			}
-		}
-		else
-		{
-			int notebookUpdateCount(userModel.GetNotebookUpdateCount(notebook.guid));
-			if (notebookUpdateCount < syncState.UpdateCount)
-			{
-				int globalUpdateCount(userModel.GetUpdateCount());
-
-				vector<Guid> expungedNotes;
-				vector<Guid> expungedNotebooks;
-				vector<Guid> expungedTags;
-				vector<Guid> resources;
-
-				noteStore->ListEntries
-					( globalUpdateCount
-					, notebookUpdateCount
-					, remoteNotes
-					, remoteNotebooks
-					, remoteTags
-					, expungedNotes
-					, expungedNotebooks
-					, expungedTags
-					, resources
-					, notebook.guid
-					);
-
-				syncLogger.ListGuids(L"Expunged notes",     expungedNotes);
-				syncLogger.ListGuids(L"Expunged notebooks", expungedNotebooks);
-				syncLogger.ListGuids(L"Expunged tags",      expungedTags);
-
-				foreach (Guid & guid, expungedNotes)
-				{
-					try
-					{
-						syncLogger.PerformAction(L"Delete", &guid, NULL);
-						userModel.ExpungeNote(guid);
-					}
-					catch (const std::exception &)
-					{
-						// ignore deletion errors
-					}
-				}
-				foreach (Guid & guid, expungedNotebooks)
+				try
 				{
 					syncLogger.PerformAction(L"Delete", &guid, NULL);
-					userModel.ExpungeNotebook(guid);
+					userModel.ExpungeNote(guid);
 				}
-				foreach (Guid & guid, expungedTags)
+				catch (const std::exception &)
 				{
-					syncLogger.PerformAction(L"Delete", &guid, NULL);
-					userModel.ExpungeTag(guid);
+					// ignore deletion errors
 				}
 			}
+			foreach (Guid & guid, expungedNotebooks)
+			{
+				syncLogger.PerformAction(L"Delete", &guid, NULL);
+				userModel.ExpungeNotebook(guid);
+			}
+			foreach (Guid & guid, expungedTags)
+			{
+				syncLogger.PerformAction(L"Delete", &guid, NULL);
+				userModel.ExpungeTag(guid);
+			}
 		}
-
-		syncLogger.ListNotes     (L"Remote notes",     remoteNotes);
-		syncLogger.ListNotebooks (L"Remote notebooks", remoteNotebooks);
-		syncLogger.ListTags      (L"Remote tags",      remoteTags);
-
-		ProcessNotebooks (remoteNotebooks, *noteStore, fullSync);
-		ProcessTags      (remoteTags,      *noteStore, fullSync);
-
-		UpdateDefaultNotebook(*noteStore);
-		userModel.GetLastUsedNotebook(notebook);
-
-		ProcessNotes(remoteNotes, *noteStore, notebook, fullSync);
-
-		userModel.SetNotebookUpdateCount(notebook.guid, isLocalNotebook ? 0 : syncState.UpdateCount);
-		userModel.SetUpdateCount(syncState.UpdateCount);
-		userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
-
-		FinishSync
-			( L""
-			, fullSync
-			? L"Tip: choose a notebook and sync again to get the notes."
-			: L""
-			);
 	}
-	catch (const Evernote::EDAM::Error::EDAMNotFoundException & e)
-	{
-		FinishSync
-			( EnServiceTools::CreateNotFoundExceptionMessage(e).c_str()
-			, L"Tried to sync, but something went wrong."
-			);
-	}
-	catch (const Evernote::EDAM::Error::EDAMSystemException & e)
-	{
-		FinishSync
-			( EnServiceTools::CreateSystemExceptionMessage(e).c_str()
-			, L"Tried to sync, but something went wrong."
-			);
-	}
-	catch (const Evernote::EDAM::Error::EDAMUserException & e)
-	{
-		FinishSync
-			( EnServiceTools::CreateUserExceptionMessage(e).c_str()
-			, L"Tried to sync, but something went wrong."
-			);
-	}
-	catch (const Thrift::Transport::TTransportException & e)
-	{
-		FinishSync
-			( EnServiceTools::CreateTransportExceptionMessage(e).c_str()
-			, L"Encountered a network error."
-			);
-	}
-	catch (const Thrift::TException & e)
-	{
-		FinishSync
-			( EnServiceTools::CreateExceptionMessage(e).c_str()
-			, L"Tried to sync, but something went wrong."
-			);
-	}
-	catch (const std::exception & e)
-	{
-		wstring message;
-		message.append(L"exception(");
-		message.append(ConvertToUnicode(e.what()));
-		message.append(L")");
 
-		FinishSync
-			( message.c_str()
-			, L"Tried to sync, but something went wrong."
-			);
-	}
+	syncLogger.ListNotes     (L"Remote notes",     remoteNotes);
+	syncLogger.ListNotebooks (L"Remote notebooks", remoteNotebooks);
+	syncLogger.ListTags      (L"Remote tags",      remoteTags);
+
+	ProcessNotebooks (remoteNotebooks, *noteStore, fullSync);
+	ProcessTags      (remoteTags,      *noteStore, fullSync);
+
+	UpdateDefaultNotebook(*noteStore);
+	userModel.GetLastUsedNotebook(notebook);
+
+	ProcessNotes(remoteNotes, *noteStore, notebook, fullSync);
+
+	userModel.SetNotebookUpdateCount(notebook.guid, isLocalNotebook ? 0 : syncState.UpdateCount);
+	userModel.SetUpdateCount(syncState.UpdateCount);
+	userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
+
+	FinishSync
+		( L""
+		, fullSync
+		? L"Tip: choose a notebook and sync again to get the notes."
+		: L""
+		);
+}
+catch (...)
+{
+	ExceptionMessage message = GetExceptionMessage();
+	FinishSync(message.Message.c_str(), message.Title.c_str());
 }
 
 DWORD WINAPI SyncModel::Sync(LPVOID param)

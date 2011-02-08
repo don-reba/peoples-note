@@ -3125,10 +3125,18 @@ need to handle failed notes better when syncing
 	if a note fails
 		mark it as failed
 			maybe better to mark dirty notes, instead
+		log the error
+			do I want to repeat all the exception handlers?
+			there has to be a better way…
+			so, I catch the exception, then what?
+			can't use visitor pattern
+				since hierarchy is not completely defined by me
 		continue to other notes
 		at the end
 			notify the user of failure
 				"Some notes could not be synchronized."
+				requires a flag to be set?
+				or else could count the number of notes not synced
 	TODO
 mark dirty notes
 	need to mark a note after editing it
@@ -3168,3 +3176,5 @@ want to add stack support
 	TODO
 need to check local note deletion
 	fixed
+need to improve the message on wrong password
+	done
