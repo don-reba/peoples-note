@@ -3,13 +3,15 @@
 #include "INoteListModel.h"
 #include "Note.h"
 
+class IRegistryKey;
 class IUserModel;
 
 class NoteListModel : public INoteListModel
 {
 private:
 
-	IUserModel & userModel;
+	IRegistryKey & registryKey;
+	IUserModel   & userModel;
 
 	const int pageSize;
 
@@ -22,8 +24,9 @@ private:
 public:
 
 	NoteListModel
-		( int          pageSize
-		, IUserModel & userModel
+		( int            pageSize
+		, IUserModel   & userModel
+		, IRegistryKey & registryKey
 		);
 
 	virtual void ConnectChanged(slot_type OnReset);
@@ -32,6 +35,8 @@ public:
 		( NoteList::const_iterator & begin
 		, NoteList::const_iterator & end
 		);
+
+	virtual bool GetNotebookTitleState();
 
 	virtual bool HasNextNotes();
 
@@ -42,6 +47,8 @@ public:
 	virtual void SelectNextPage();
 
 	virtual void SelectPreviousPage();
+
+	virtual void SetNotebookTitleState(bool isEnabled);
 
 	virtual void SetNotes(const NoteList & notes);
 };

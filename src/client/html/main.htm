@@ -21,6 +21,14 @@
 				width          : 0px;
 				vertical-align : middle;
 			}
+			#notebook-title
+			{
+				border-style : none;
+				display      : none;
+				height       : 32px;
+				overflow     : hidden;
+				width        : 100%;
+			}
 			#note-list-panel
 			{
 				flow   : horizontal;
@@ -233,6 +241,8 @@
 		</style>
 	</head>
 	<body>
+		<div #notebook-title>
+		</div>
 		<div #search-frame>
 			<widget #search-box    type="text"   tabindex="2" />
 			<widget #search-button type="button" tabindex="3" />
@@ -262,6 +272,8 @@
 					<menu>
 						<li #menu-profile />
 						<li #menu-signin>Sign in</li>
+						<hr />
+						<li #menu-notebook-title>Show notebook title</li>
 						<hr />
 						<li>Notebook <menu #notebook-list /></li>
 						<li #menu-import>Import notes</li>

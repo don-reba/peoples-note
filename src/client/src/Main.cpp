@@ -152,7 +152,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		UserModel        userModel     (dataStore,     deviceDocumentPath, flashCard);
 		UserModel        syncUserModel (syncDataStore, deviceDocumentPath, flashCard);
 
-		NoteListModel noteListModel(20, userModel);
+		NoteListModel noteListModel(20, userModel, registryKey);
 		SyncModel     syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
 
 		AboutView       aboutView       (instance, highRes);

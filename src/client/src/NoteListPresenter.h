@@ -44,6 +44,7 @@ private:
 	void OnNotebooksChanged();
 	void OnTagsChanged();
 	void OnNotebookSelected();
+	void OnNotebookTitle();
 	void OnNoteListChanged();
 	void OnPageDown();
 	void OnPageUp();
@@ -59,6 +60,8 @@ private:
 	void UpdateActiveNotebook();
 
 	void UpdateNotebookListView();
+
+	void UpdateNotebookTitleState();
 
 	void UpdateSyncCounter();
 

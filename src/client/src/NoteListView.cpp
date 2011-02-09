@@ -68,21 +68,22 @@ void NoteListView::Create()
 
 void NoteListView::RegisterEventHandlers()
 {
-	ConnectBehavior("#menu-profile",  MENU_ITEM_CLICK,    &NoteListView::OnMenuProfile);
-	ConnectBehavior("#menu-about",    MENU_ITEM_CLICK,    &NoteListView::OnMenuAbout);
-	ConnectBehavior("#menu-exit",     MENU_ITEM_CLICK,    &NoteListView::OnMenuExit);
-	ConnectBehavior("#menu-import",   MENU_ITEM_CLICK,    &NoteListView::OnMenuImport);
-	ConnectBehavior("#menu-signin",   MENU_ITEM_CLICK,    &NoteListView::OnMenuSignIn);
-	ConnectBehavior("#note-list",     BUTTON_CLICK,       &NoteListView::OnNote);
-	ConnectBehavior("#new-ink",       BUTTON_CLICK,       &NoteListView::OnNewInk);
-	ConnectBehavior("#new-photo",     BUTTON_CLICK,       &NoteListView::OnNewPhoto);
-	ConnectBehavior("#new-text",      BUTTON_CLICK,       &NoteListView::OnNewText);
-	ConnectBehavior("#page-down",     BUTTON_CLICK,       &NoteListView::OnPageDown);
-	ConnectBehavior("#page-up",       BUTTON_CLICK,       &NoteListView::OnPageUp);
-	ConnectBehavior("#search-box",    EDIT_VALUE_CHANGED, &NoteListView::OnSearchChanged);
-	ConnectBehavior("#search-button", BUTTON_CLICK,       &NoteListView::OnSearch);
-	ConnectBehavior("#status-button", BUTTON_CLICK,       &NoteListView::OnStatus);
-	ConnectBehavior("#sync-panel",    BUTTON_CLICK,       &NoteListView::OnSync);
+	ConnectBehavior("#menu-about",          MENU_ITEM_CLICK,    &NoteListView::OnMenuAbout);
+	ConnectBehavior("#menu-exit",           MENU_ITEM_CLICK,    &NoteListView::OnMenuExit);
+	ConnectBehavior("#menu-import",         MENU_ITEM_CLICK,    &NoteListView::OnMenuImport);
+	ConnectBehavior("#menu-notebook-title", MENU_ITEM_CLICK,    &NoteListView::OnMenuNotebookTitle);
+	ConnectBehavior("#menu-profile",        MENU_ITEM_CLICK,    &NoteListView::OnMenuProfile);
+	ConnectBehavior("#menu-signin",         MENU_ITEM_CLICK,    &NoteListView::OnMenuSignIn);
+	ConnectBehavior("#new-ink",             BUTTON_CLICK,       &NoteListView::OnNewInk);
+	ConnectBehavior("#new-photo",           BUTTON_CLICK,       &NoteListView::OnNewPhoto);
+	ConnectBehavior("#new-text",            BUTTON_CLICK,       &NoteListView::OnNewText);
+	ConnectBehavior("#note-list",           BUTTON_CLICK,       &NoteListView::OnNote);
+	ConnectBehavior("#page-down",           BUTTON_CLICK,       &NoteListView::OnPageDown);
+	ConnectBehavior("#page-up",             BUTTON_CLICK,       &NoteListView::OnPageUp);
+	ConnectBehavior("#search-box",          EDIT_VALUE_CHANGED, &NoteListView::OnSearchChanged);
+	ConnectBehavior("#search-button",       BUTTON_CLICK,       &NoteListView::OnSearch);
+	ConnectBehavior("#status-button",       BUTTON_CLICK,       &NoteListView::OnStatus);
+	ConnectBehavior("#sync-panel",          BUTTON_CLICK,       &NoteListView::OnSync);
 
 	noteList     = FindFirstElement("#note-list");
 	listScroll   = FindFirstElement("#scroll");
@@ -111,6 +112,12 @@ void NoteListView::AddNote
 	if (isDirty)
 		note.set_attribute("dirty", L"");
 	note.set_html(htmlUtf8, htmlUtf8Chars.size());
+}
+
+void NoteListView::CheckNotebookTitleOption()
+{
+	element(FindFirstElement("#menu-notebook-title"))
+		.set_attribute("checked", L"");
 }
 
 void NoteListView::ClearNotes()
@@ -156,6 +163,11 @@ void NoteListView::ConnectNewPhotoNote(slot_type OnNewPhotoNote)
 void NoteListView::ConnectNotebookSelected(slot_type OnNotebookSelected)
 {
 	SignalNotebookSelected.connect(OnNotebookSelected);
+}
+
+void NoteListView::ConnectNotebookTitle(slot_type OnNotebookTitle)
+{
+	SignalNotebookTitle.connect(OnNotebookTitle);
 }
 
 void NoteListView::ConnectOpenNote(slot_type OnOpenNote)
@@ -253,6 +265,12 @@ void NoteListView::GetThumbSize(SIZE & size)
 	size.cy = e.get_attribute_int("thumb-height");
 }
 
+void NoteListView::HideNotebookTitle()
+{
+	element(FindFirstElement("#notebook-title"))
+		.set_style_attribute("display", L"none");
+}
+
 void NoteListView::HidePageDown()
 {
 	element(FindFirstElement("#page-down"))
@@ -269,6 +287,12 @@ void NoteListView::HideSyncButton()
 {
 	element(FindFirstElement("#sync-panel"))
 		.set_style_attribute("display", L"none");
+}
+
+bool NoteListView::IsNotebookTitleOptionChecked()
+{
+	return element(FindFirstElement("#menu-notebook-title"))
+		.get_attribute("checked") != NULL;
 }
 
 void NoteListView::SetNotebookMenu(const std::wstring & html)
@@ -330,6 +354,12 @@ void NoteListView::SetSigninText(const wstring & text)
 		.set_text(text.c_str());
 }
 
+void NoteListView::ShowNotebookTitle()
+{
+	element(FindFirstElement("#notebook-title"))
+		.set_style_attribute("display", L"block");
+}
+
 void NoteListView::ShowPageDown()
 {
 	element(FindFirstElement("#page-down"))
@@ -361,7 +391,15 @@ void NoteListView::SetSyncText(const wstring & text)
 
 void NoteListView::SetWindowTitle(const wstring & text)
 {
+	element(FindFirstElement("#notebook-title"))
+		.set_text(text.c_str());
 	::SetWindowText(hwnd_, text.c_str());
+}
+
+void NoteListView::UncheckNotebookTitleOption()
+{
+	element(FindFirstElement("#menu-notebook-title"))
+		.remove_attribute("checked");
 }
 
 void NoteListView::UpdateNotes()
@@ -671,6 +709,11 @@ void NoteListView::OnMenuNotebook(BEHAVIOR_EVENT_PARAMS * params)
 	element notebook(params->heTarget);
 	selectedNotebookGuid = Guid(notebook.get_attribute("guid"));
 	SignalNotebookSelected();
+}
+
+void NoteListView::OnMenuNotebookTitle(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalNotebookTitle();
 }
 
 void NoteListView::OnMenuProfile(BEHAVIOR_EVENT_PARAMS * params)

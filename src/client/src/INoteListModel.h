@@ -16,6 +16,8 @@ public:
 		, NoteList::const_iterator & end
 		) = 0;
 
+	virtual bool GetNotebookTitleState() = 0;
+
 	virtual bool HasNextNotes() = 0;
 
 	virtual bool HasPreviousNotes() = 0;
@@ -25,6 +27,8 @@ public:
 	virtual void SelectNextPage() = 0;
 
 	virtual void SelectPreviousPage() = 0;
+
+	virtual void SetNotebookTitleState(bool isEnabled) = 0;
 
 	virtual void SetNotes(const NoteList & notes) = 0;
 };

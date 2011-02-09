@@ -47,6 +47,7 @@ private:
 	signal SignalNewNote;
 	signal SignalNewPhotoNote;
 	signal SignalNotebookSelected;
+	signal SignalNotebookTitle;
 	signal SignalOpenNote;
 	signal SignalPageDown;
 	signal SignalPageUp;
@@ -81,6 +82,8 @@ public:
 		,       bool           isDirty
 		);
 
+	virtual void CheckNotebookTitleOption();
+
 	virtual void ClearNotes();
 
 	virtual void ConnectAbout(slot_type OnAbout);
@@ -96,6 +99,8 @@ public:
 	virtual void ConnectNewPhotoNote(slot_type OnNewPhotoNote);
 
 	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
+
+	virtual void ConnectNotebookTitle(slot_type OnNotebookTitle);
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 
@@ -127,11 +132,15 @@ public:
 
 	virtual void GetThumbSize(SIZE & size);
 
+	virtual void HideNotebookTitle();
+
 	virtual void HidePageDown();
 
 	virtual void HidePageUp();
 
 	virtual void HideSyncButton();
+
+	virtual bool IsNotebookTitleOptionChecked();
 
 	virtual void SetNotebookMenu(const std::wstring & html);
 
@@ -153,11 +162,15 @@ public:
 
 	virtual void SetWindowTitle(const std::wstring & text);
 
+	virtual void ShowNotebookTitle();
+
 	virtual void ShowPageDown();
 
 	virtual void ShowPageUp();
 
 	virtual void ShowSyncButton();
+
+	virtual void UncheckNotebookTitleOption();
 
 	virtual void UpdateNotes();
 
@@ -209,20 +222,21 @@ private:
 	virtual BOOL OnFocus (FOCUS_PARAMS * params);
 	virtual BOOL OnKey   (KEY_PARAMS   * params);
 
-	void OnMenuAbout     (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuExit      (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuImport    (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuNotebook  (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuProfile   (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuSignIn    (BEHAVIOR_EVENT_PARAMS * params);
-	void OnNewInk        (BEHAVIOR_EVENT_PARAMS * params);
-	void OnNewPhoto      (BEHAVIOR_EVENT_PARAMS * params);
-	void OnNewText       (BEHAVIOR_EVENT_PARAMS * params);
-	void OnNote          (BEHAVIOR_EVENT_PARAMS * params);
-	void OnPageDown      (BEHAVIOR_EVENT_PARAMS * params);
-	void OnPageUp        (BEHAVIOR_EVENT_PARAMS * params);
-	void OnSearch        (BEHAVIOR_EVENT_PARAMS * params);
-	void OnSearchChanged (BEHAVIOR_EVENT_PARAMS * params);
-	void OnStatus        (BEHAVIOR_EVENT_PARAMS * params);
-	void OnSync          (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuAbout         (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuExit          (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuImport        (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuNotebook      (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuNotebookTitle (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuProfile       (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenuSignIn        (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNewInk            (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNewPhoto          (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNewText           (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNote              (BEHAVIOR_EVENT_PARAMS * params);
+	void OnPageDown          (BEHAVIOR_EVENT_PARAMS * params);
+	void OnPageUp            (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSearch            (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSearchChanged     (BEHAVIOR_EVENT_PARAMS * params);
+	void OnStatus            (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSync              (BEHAVIOR_EVENT_PARAMS * params);
 };

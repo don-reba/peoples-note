@@ -3115,7 +3115,7 @@ moving db to storage card fails
 	turned out to be a low-res layout error
 local notes get lost after first synchronization
 	this is indeed the case lets investigate
-	TODO
+	fixed
 adding note view menu
 	the menu shows up on the note list view
 	should have created it hidden
@@ -3146,7 +3146,6 @@ need to handle failed notes better when syncing
 				lets create a new function to do this
 				or I could set status from the model
 				that would be simpler
-	TODO
 mark dirty notes
 	need to mark a note after editing it
 	should this be done by the database or by the presenters?
@@ -3187,3 +3186,17 @@ need to check local note deletion
 	fixed
 need to improve the message on wrong password
 	done
+should not store password in the database!
+	TODO
+note titles
+	need to
+		add a menu option
+		to switch notebook title on or off
+		notebook title would mirror the window title
+	action plan
+		add high-res markup
+		add output
+		test
+		add menu logic
+		test
+		add low-res markup
