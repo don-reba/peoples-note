@@ -3179,7 +3179,7 @@ what happens at first sync, if the account contains notes from anonymous account
 	instead
 		we should update the local notebook
 have to set text colour
-	TODO
+	phew… fixed
 want to add stack support
 	TODO
 need to check local note deletion

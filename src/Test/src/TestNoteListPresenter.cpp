@@ -47,7 +47,7 @@ struct NoteListPresenterFixture
 
 // Note: the output of this test depends on your time zone.
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_NoteListChanged_Test
+	( NoteListPresenter_NoteListChanged
 	, NoteListPresenterFixture
 	)
 {
@@ -106,7 +106,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_AnonymousUserLoaded_Test
+	( NoteListPresenter_AnonymousUserLoaded
 	, NoteListPresenterFixture
 	)
 {
@@ -125,12 +125,14 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.profileText, L"Profile");
 	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign in");
 	BOOST_CHECK_EQUAL(noteListView.isSyncButtonShown, false);
+	BOOST_CHECK_EQUAL(noteListView.isNotebookTitleEnabled, false);
+	BOOST_CHECK_EQUAL(noteListView.isNotebookTitleVisible, false);
 
 	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_NamedUserLoaded_Test
+	( NoteListPresenter_NamedUserLoaded
 	, NoteListPresenterFixture
 	)
 {
@@ -141,6 +143,8 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.push_back(Note());
 	userModel.notes.back().name = L"note-1";
 
+	noteListModel.notebookTitleState = true;
+
 	userModel.SignalLoaded();
 
 	BOOST_CHECK(noteListModel.isReloaded);
@@ -148,12 +152,14 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.profileText, L"test-usr");
 	BOOST_CHECK_EQUAL(noteListView.signinText,  L"Sign out");
 	BOOST_CHECK_EQUAL(noteListView.isSyncButtonShown, true);
+	BOOST_CHECK_EQUAL(noteListView.isNotebookTitleEnabled, true);
+	BOOST_CHECK_EQUAL(noteListView.isNotebookTitleVisible, true);
 
 	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_NotebooksChanged_Test
+	( NoteListPresenter_NotebooksChanged
 	, NoteListPresenterFixture
 	)
 {
@@ -183,7 +189,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_NotebookSelected_Test
+	( NoteListPresenter_NotebookSelected
 	, NoteListPresenterFixture
 	)
 {
@@ -211,7 +217,30 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_NotesChanged_Test
+	( NoteListPresenter_NotebookTitle
+	, NoteListPresenterFixture
+	)
+{
+	noteListModel.notebookTitleState = false;
+
+	noteListView.isNotebookTitleVisible = false;
+	noteListView.isNotebookTitleEnabled = false;
+
+	noteListView.SignalNotebookTitle();
+
+	BOOST_CHECK(noteListModel.notebookTitleState);
+	BOOST_CHECK(noteListView.isNotebookTitleVisible);
+	BOOST_CHECK(noteListView.isNotebookTitleEnabled);
+
+	noteListView.SignalNotebookTitle();
+
+	BOOST_CHECK(!noteListModel.notebookTitleState);
+	BOOST_CHECK(!noteListView.isNotebookTitleVisible);
+	BOOST_CHECK(!noteListView.isNotebookTitleEnabled);
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( NoteListPresenter_NotesChanged
 	, NoteListPresenterFixture
 	)
 {
@@ -228,7 +257,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_SyncBegin_Test
+	( NoteListPresenter_SyncBegin
 	, NoteListPresenterFixture
 	)
 {
@@ -240,7 +269,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_SyncEnd_Test
+	( NoteListPresenter_SyncEnd
 	, NoteListPresenterFixture
 	)
 {
@@ -270,7 +299,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_TagsChanged_Test
+	( NoteListPresenter_TagsChanged
 	, NoteListPresenterFixture
 	)
 {
@@ -286,7 +315,7 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_UpdateNotebookList_Test
+	( NoteListPresenter_UpdateNotebookList
 	, NoteListPresenterFixture
 	)
 {

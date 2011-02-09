@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "NoteListModel.h"
 
+#include "MockRegistryKey.h"
 #include "MockUserModel.h"
 #include "SignalCheck.h"
 
@@ -36,8 +37,10 @@ public:
 
 BOOST_AUTO_TEST_CASE(NoteListModel_Empty)
 {
+	MockRegistryKey registryKey;
+
 	MockUserModel userModel;
-	NoteListModel noteListModel(2, userModel);
+	NoteListModel noteListModel(2, userModel, registryKey);
 
 	NoteList::const_iterator begin;
 	NoteList::const_iterator end;
@@ -63,8 +66,10 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Empty)
 
 BOOST_AUTO_TEST_CASE(NoteListModel_Even)
 {
+	MockRegistryKey registryKey;
+
 	MockUserModel userModel;
-	NoteListModel noteListModel(3, userModel);
+	NoteListModel noteListModel(3, userModel, registryKey);
 
 	NoteList::const_iterator begin;
 	NoteList::const_iterator end;
@@ -88,8 +93,10 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Even)
 
 BOOST_AUTO_TEST_CASE(NoteListModel_Odd)
 {
+	MockRegistryKey registryKey;
+
 	MockUserModel userModel;
-	NoteListModel noteListModel(3, userModel);
+	NoteListModel noteListModel(3, userModel, registryKey);
 
 	NoteList::const_iterator begin;
 	NoteList::const_iterator end;
@@ -113,8 +120,10 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Odd)
 
 BOOST_AUTO_TEST_CASE(NoteListModel_Reload)
 {
+	MockRegistryKey registryKey;
+
 	MockUserModel userModel;
-	NoteListModel noteListModel(2, userModel);
+	NoteListModel noteListModel(2, userModel, registryKey);
 
 	NoteList::const_iterator begin;
 	NoteList::const_iterator end;
@@ -145,4 +154,20 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Reload)
 	BOOST_CHECK_EQUAL(begin[1].name, L"note 1");
 
 	BOOST_CHECK(signalChangedCheck);
+}
+
+BOOST_AUTO_TEST_CASE(NoteListModel_NotebookTitle)
+{
+	MockRegistryKey registryKey;
+
+	MockUserModel userModel;
+	NoteListModel noteListModel(2, userModel, registryKey);
+
+	noteListModel.SetNotebookTitleState(true);
+	BOOST_CHECK_EQUAL(registryKey.GetString(L"notebook title state", L""), L"enabled");
+	BOOST_CHECK(noteListModel.GetNotebookTitleState());
+
+	noteListModel.SetNotebookTitleState(false);
+	BOOST_CHECK_EQUAL(registryKey.GetString(L"notebook title state", L""), L"disabled");
+	BOOST_CHECK(!noteListModel.GetNotebookTitleState());
 }

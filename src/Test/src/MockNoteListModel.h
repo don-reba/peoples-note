@@ -12,6 +12,7 @@ public:
 	bool hasNextNotes;
 	bool hasPreviousNotes;
 	bool isReloaded;
+	bool notebookTitleState;
 	bool nextPageSelected;
 	bool previousPageSelected;
 
@@ -28,6 +29,8 @@ public:
 		, NoteList::const_iterator & end
 		);
 
+	virtual bool GetNotebookTitleState();
+
 	virtual bool HasNextNotes();
 
 	virtual bool HasPreviousNotes();
@@ -37,6 +40,8 @@ public:
 	virtual void SelectNextPage();
 
 	virtual void SelectPreviousPage();
+
+	virtual void SetNotebookTitleState(bool isEnabled);
 
 	virtual void SetNotes(const NoteList & notes);
 };

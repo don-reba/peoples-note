@@ -8,6 +8,7 @@ MockNoteListModel::MockNoteListModel()
 	: hasNextNotes         (false)
 	, hasPreviousNotes     (false)
 	, isReloaded           (false)
+	, notebookTitleState   (false)
 	, nextPageSelected     (false)
 	, previousPageSelected (false)
 {
@@ -26,6 +27,11 @@ void MockNoteListModel::GetCurrentPage
 {
 	begin = notes.begin();
 	end   = notes.end();
+}
+
+bool MockNoteListModel::GetNotebookTitleState()
+{
+	return notebookTitleState;
 }
 
 bool MockNoteListModel::HasNextNotes()
@@ -53,6 +59,10 @@ void MockNoteListModel::SelectPreviousPage()
 	previousPageSelected = true;
 }
 
+void MockNoteListModel::SetNotebookTitleState(bool isEnabled)
+{
+	notebookTitleState = isEnabled;
+}
 
 void MockNoteListModel::SetNotes(const NoteList & notes)
 {

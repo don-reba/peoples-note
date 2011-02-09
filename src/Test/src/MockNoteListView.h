@@ -43,6 +43,8 @@ public:
 
 	SIZE thumbSize;
 
+	bool isNotebookTitleEnabled;
+	bool isNotebookTitleVisible;
 	bool isPageDownVisible;
 	bool isPageUpVisible;
 	bool isSyncButtonShown;
@@ -57,6 +59,7 @@ public:
 	signal SignalNewNote;
 	signal SignalNewPhotoNote;
 	signal SignalNotebookSelected;
+	signal SignalNotebookTitle;
 	signal SignalOpenNote;
 	signal SignalPageDown;
 	signal SignalPageUp;
@@ -76,6 +79,8 @@ public:
 		,       bool           isDirty
 		);
 
+	virtual void CheckNotebookTitleOption();
+
 	virtual void ClearNotes();
 
 	virtual void ConnectAbout(slot_type OnAbout);
@@ -93,6 +98,8 @@ public:
 	virtual void ConnectNewPhotoNote(slot_type OnNewPhoto);
 
 	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
+
+	virtual void ConnectNotebookTitle(slot_type OnNotebookTitle);
 
 	virtual void ConnectOpenNote(slot_type OnOpenNote);
 
@@ -124,11 +131,15 @@ public:
 
 	virtual void GetThumbSize(SIZE & size);
 
+	virtual void HideNotebookTitle();
+
 	virtual void HidePageDown();
 
 	virtual void HidePageUp();
 
 	virtual void HideSyncButton();
+
+	virtual bool IsNotebookTitleOptionChecked();
 
 	virtual void SetNotebookMenu(const std::wstring & html);
 
@@ -150,11 +161,15 @@ public:
 
 	virtual void SetWindowTitle(const std::wstring & text);
 
+	virtual void ShowNotebookTitle();
+
 	virtual void ShowPageDown();
 
 	virtual void ShowPageUp();
 
 	virtual void ShowSyncButton();
+
+	virtual void UncheckNotebookTitleOption();
 
 	virtual void UpdateNotes();
 
