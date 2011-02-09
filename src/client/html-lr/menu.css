@@ -8,9 +8,9 @@ menu  /* popup menu */
 	padding          : 1px;
 	max-width        : max-intrinsic;
 	/*min-width      : max-intrinsic;*/
-	border           : 1px solid threedshadow;
-	background-color : window;
-	color            : windowtext;
+	border           : 1px solid black;
+	background-color : white;
+	color            : black;
 	margin           : 0 1px; /* to offset it from parent li */
 }
 menu menu /* secondary popup menu */
@@ -28,11 +28,11 @@ menu li
 	padding-bottom      : 4px;
 	foreground-repeat   : no-repeat;
 	foreground-position : 2px 50%;
-	color               : windowtext;
+	color               : black;
 }
 menu li:disabled
 {
-	color            : graytext;
+	color            : gray
 	foreground-image : none;
 }
 menu li[checked]
@@ -47,11 +47,12 @@ menu li span.accesskey
 	display      : inline-block;
 	margin-left  : *; /* spring to attach it to the right */
 	padding-left : 1em;
-	color        : threedshadow;
+	color        : black;
 }
 menu li:current span.accesskey
 {
-	color : #FFD700;
+	background-color : #3498ff;
+	color            : black;
 }
 /* menu with single <menu> inside - submenu */
 menu li:has-child-of-type(menu)
@@ -70,4 +71,56 @@ menu li:current
 menu hr 
 {
 	margin : 2px;
+}
+
+
+input, widget[type=text]
+{
+	background-image    : url(inputshadow.png);
+	background-position : 7px 7px 7px 7px;
+	background-repeat   : expand;
+	border-style        : none;
+	color               : black;
+	font-size           : 12px;
+	height              : 20px;
+	padding             : 0px 5px;
+}
+
+
+@set std-select-dropdown
+{
+	:root
+	{
+		background : none;
+		border     : none;
+		color      : black;
+	}
+	:root *
+	{
+		color : black;
+	}
+	:root > caption
+	{
+		background-image    : url(inputshadow.png);
+		background-position : 7px 7px 7px 7px;
+		background-repeat   : expand;
+		border              : none;
+		font-size           : 12px;
+		height              : 20px;
+		margin              : 0px;
+		padding             : 0px 5px;
+	}
+	:root > button
+	{
+		background-image : url(dropdown-arrow.png);
+		border-style     : none;
+		height           : 20px;
+		margin           : 0px;
+		width            : 20px;
+	}
+	:root > popup option:current
+	{
+		background-color : #3498ff;
+		color            : black;
+	}
 }

@@ -1,9 +1,11 @@
 ﻿<html>
 	<head>
 		<style>
+			@import url(menu.css);
 			body
 			{
 				background-color : #f0ec40;
+				color            : black;
 				margin           : 0px;
 				padding          : 0px 10px;
 			}
@@ -15,15 +17,8 @@
 			}
 			input
 			{
-				background-image    : url(inputshadow.png);
-				background-position : 13px 13px 13px 13px;
-				background-repeat   : expand;
-				border-style        : none;
-				font-size           : 24px;
-				height              : 40px;
-				padding             : 0px 10px;
-				margin              : 16px 0px;
-				width               : 100%%;
+				margin : 16px 0px;
+				width  : 100%%;
 			}
 			.row
 			{
@@ -40,38 +35,6 @@
 				height : 40px;
 				margin : 16px 0px;
 				width  : 300px;
-			}
-
-			@set std-select-dropdown
-			{
-				:root
-				{
-					background : none;
-					border     : none;
-				}
-				:root:focus > caption
-				{
-					color: windowtext;
-				}
-				:root > caption
-				{
-					background-image    : url(inputshadow.png);
-					background-position : 13px 13px 13px 13px;
-					background-repeat   : expand;
-					border              : none;
-					font-size           : 24px;
-					height              : 40px;
-					margin              : 0px;
-					padding             : 0px 10px;
-				}
-				:root > button
-				{
-					background-image : url(dropdown-arrow.png);
-					border-style     : none;
-					height           : 40px;
-					margin           : 0px;
-					width            : 40px;
-				}
 			}
 		</style>
 	</head>

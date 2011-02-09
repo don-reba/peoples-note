@@ -1,11 +1,13 @@
 ﻿<html>
 	<head>
 		<style>
+			@import url(menu.css);
 			body
 			{
-				background-color: white;
-				margin:           0px;
-				padding:          0px;
+				background-color : white;
+				color            : black;
+				margin           : 0px;
+				padding          : 0px;
 			}
 			#show
 			{
@@ -13,60 +15,54 @@
 			}
 			#toolbar
 			{
-				flow:             vertical;
-				background-color: silver;
-				text-align:       center;
+				flow             : vertical;
+				background-color : silver;
+				text-align       : center;
 			}
 			#toolbar div
 			{
-				background-image: url(gradient-64.png) repeat-x;
-				flow:             horizontal;
-				width:            100%;
+				background-image : url(gradient-64.png) repeat-x;
+				flow             : horizontal;
+				width            : 100%;
 			}
 			#toolbar div .blank
 			{
-				width: 64px;
+				width : 64px;
 			}
 			#toolbar div .separator
 			{
-				width: 16px;
+				width : 16px;
 			}
 			.tb-button
 			{
-				behavior: clickable;
-				border:   none;
-				height:   64px;
-				margin:   0px;
-				padding:  0px;
-				width:    64px;
+				behavior : clickable;
+				border   : none;
+				height   : 64px;
+				margin   : 0px;
+				padding  : 0px;
+				width    : 64px;
 			}
 			#title-frame
 			{
-				background-color: #f0ec40;
-				width:            100%;
+				background-color : #f0ec40;
+				width            : 100%;
 			}
 			#title
 			{
-				background-image:    url(inputshadow.png);
-				background-position: 13px 13px 13px 13px;
-				background-repeat:   expand;
-				font-size:           24px;
-				height:              40px;
-				margin:              8px;
-				padding:             0px 10px;
-				width:               100%%;
+				margin : 8px;
+				width  : 100%%;
 			}
 			#body
 			{
-				width:  100%%;
-				height: 100%%;
+				width  : 100%%;
+				height : 100%%;
 			}
 
 			@set std-checkbox
 			{ 
 				input:root
 				{
-					padding-right: 24px;
+					padding-right : 24px;
 				}
 			}
 		</style>
