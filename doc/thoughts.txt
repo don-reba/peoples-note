@@ -3200,3 +3200,24 @@ note titles
 		add menu logic
 		test
 		add low-res markup
+weird sync problem
+	got it
+		when a note is synced, it gets a new USN
+		this USN is greater than the one from note listing
+		at next sync, this note is downloaded as new
+			replacing the old note
+				even if the old note is changed
+	how to fix it?
+		another client might be syncing at the same time
+		it can make changes
+			after the listing
+			before note upload
+		does this mean I will have to download this note in any case?
+			well, no
+			I get the replacement note after upload
+			and I save the usn
+			before I merge notes, I should look at the USN
+				if they are the same, the current note should be uploaded
+				but the USN is being replaced with the global USN on note edit
+				this is a problem
+				because the global USN is older

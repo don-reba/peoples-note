@@ -231,7 +231,12 @@ void SyncLogic::IncrementalSync
 		{
 			const T & l(*l->second);
 			if (l.isDirty)
-				actions.push_back(Action<T>(ActionMerge, &l, &r));
+			{
+				if (l.usn < r.usn)
+					actions.push_back(Action<T>(ActionMerge, &l, &r));
+				else
+					actions.push_back(Action<T>(ActionUpload, &l, NULL));
+			}
 			else
 				actions.push_back(Action<T>(ActionAdd, NULL, &r));
 		}
