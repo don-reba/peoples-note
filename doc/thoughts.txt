@@ -3221,3 +3221,24 @@ weird sync problem
 				but the USN is being replaced with the global USN on note edit
 				this is a problem
 				because the global USN is older
+editing problem
+	the editor HTML should be flat
+	it should not be wrapped in a div with type="en-note"
+	the en-note tag should be removed when creating html
+	but if I remove it, then the children are not processed recursively
+	alternatives
+		process children before transforming
+		recurse from the transformation function
+			- mixing responsibilities
+		back up after the transformation
+			- too specialized
+			- complicated
+	what happens if the children are processes first?
+		the child might have an unprocessed parent then
+		is this ever a problem?
+			can't think of a case, in which it would be
+		lets test it
+relative URLs
+	might want to convert relative URLs in notes into absolute URLs
+		given the note's source URL
+	TODO

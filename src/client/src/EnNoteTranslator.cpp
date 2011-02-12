@@ -195,14 +195,15 @@ void EnNoteTranslator::ProcessNode
 	xml_node<wchar_t> * child(node->first_node());
 	while (child)
 	{
-		xml_node<wchar_t> * sibling = child->next_sibling();
+		xml_node<wchar_t> * sibling(child->next_sibling());
+
+		ProcessNode(store, child, transforms);
 
 		wstring name(child->name(), child->name_size());
 
-		TransformMap::const_iterator transform = transforms.find(name);
+		TransformMap::const_iterator transform(transforms.find(name));
 		if (transform != transforms.end())
 			(*transform->second)(store, node, child);
-		ProcessNode(store, child, transforms);
 
 		child = sibling;
 	}
@@ -409,8 +410,15 @@ void EnNoteTranslator::ReplaceNote
 	, xml_node<wchar_t>    * child
 	)
 {
-	child->name(L"div");
-	child->append_attribute(store->allocate_attribute(L"type", L"en-note"));
+	xml_node<wchar_t> * grandchild(child->first_node());
+	while (grandchild)
+	{
+		xml_node<wchar_t> * sibling(grandchild->next_sibling());
+		child->remove_node(grandchild);
+		parent->insert_node(child, grandchild);
+		grandchild = sibling;
+	}
+	parent->remove_node(child);
 }
 
 void EnNoteTranslator::ReplaceTodo
