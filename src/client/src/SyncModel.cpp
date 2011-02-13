@@ -496,6 +496,8 @@ void SyncModel::ProcessTags
 void SyncModel::Sync()
 try
 {
+	SyncLoggerRAII loggerRaii(syncLogger);
+
 	PostTextMessage(L"Connecting...");
 
 	IEnService::UserStorePtr userStore(enService.GetUserStore());
@@ -650,4 +652,19 @@ void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
 	Guid defaultNotebook;
 	noteStore.GetDefaultNotebook(defaultNotebook);
 	userModel.MakeNotebookDefault(defaultNotebook);
+}
+
+//--------------------------
+// UserModel::SyncLoggerRAII
+//--------------------------
+
+SyncModel::SyncLoggerRAII::SyncLoggerRAII(ISyncLogger & syncLogger)
+	: syncLogger (syncLogger)
+{
+	syncLogger.Clear();
+}
+
+SyncModel::SyncLoggerRAII::~SyncLoggerRAII()
+{
+	syncLogger.Flush();
 }

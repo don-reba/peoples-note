@@ -45,6 +45,19 @@ private:
 		}
 	};
 
+	class SyncLoggerRAII
+	{
+	private:
+
+		ISyncLogger & syncLogger;
+
+	public:
+
+		SyncLoggerRAII(ISyncLogger & syncLogger);
+
+		~SyncLoggerRAII();
+	};
+
 // data
 
 private:

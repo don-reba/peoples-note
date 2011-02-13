@@ -7,13 +7,25 @@ using namespace std;
 using namespace Tools;
 
 SyncLogger::SyncLogger(const wstring & documentPath)
-	: stream((documentPath + L"\\sync log.txt").c_str())
+	: path(documentPath + L"\\sync log.txt")
 {
+	stream.open(path.c_str(), wofstream::out | wofstream::app);
 }
 
 //---------------------------
 // ISyncLogger implementation
 //---------------------------
+
+void SyncLogger::Clear()
+{
+	stream.close();
+	stream.open(path.c_str(), wofstream::out | wofstream::trunc);
+}
+
+void SyncLogger::Flush()
+{
+	stream.flush();
+}
 
 void SyncLogger::ListNotes(const wstring & listTitle, const EnInteropNoteList & notes)
 {

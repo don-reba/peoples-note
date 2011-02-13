@@ -8,6 +8,7 @@ class SyncLogger : public ISyncLogger
 {
 private:
 
+	std::wstring   path;
 	std::wofstream stream;
 
 public:
@@ -17,6 +18,10 @@ public:
 // ISyncLogger implementation
 
 public:
+
+	virtual void Clear();
+
+	virtual void Flush();
 
 	virtual void ListNotes     (const std::wstring & listTitle, const EnInteropNoteList & notes);
 	virtual void ListNotebooks (const std::wstring & listTitle, const NotebookList      & notebooks);

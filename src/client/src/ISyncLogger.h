@@ -8,6 +8,10 @@ class ISyncLogger
 {
 public:
 
+	virtual void Clear() = 0;
+
+	virtual void Flush() = 0;
+
 	virtual void ListNotes     (const std::wstring & listTitle, const EnInteropNoteList & notes)     = 0;
 	virtual void ListNotebooks (const std::wstring & listTitle, const NotebookList      & notebooks) = 0;
 	virtual void ListTags      (const std::wstring & listTitle, const TagList           & tags)      = 0;

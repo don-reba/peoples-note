@@ -8,7 +8,11 @@ class IFlashCard;
 
 class UserModel : public IUserModel
 {
+// events
+
 	MacroEvent(Loaded)
+
+// data
 
 private:
 
