@@ -4,11 +4,10 @@
 
 class ICredentialsModel : public ISignalProvider
 {
+	MacroIEvent(Updated)
+	MacroIEvent(Updating)
+
 public:
-
-	virtual void ConnectUpdated(slot_type OnUpdated) = 0;
-
-	virtual void ConnectUpdating(slot_type OnUpdating) = 0;
 	
 	virtual std::wstring GetUsername() const = 0;
 

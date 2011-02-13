@@ -3242,3 +3242,7 @@ relative URLs
 	might want to convert relative URLs in notes into absolute URLs
 		given the note's source URL
 	TODO
+should write sync log to disk more often
+	TODO
+CredentialsPresenter.OnViewCreated is untested
+	TODO

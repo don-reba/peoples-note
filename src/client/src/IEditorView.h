@@ -6,13 +6,11 @@ class Note;
 
 class IEditorView : public ISignalProvider
 {
+	MacroIEvent(Accept)
+	MacroIEvent(Cancel)
+	MacroIEvent(DeleteNote)
+
 public:
-
-	virtual void ConnectAccept(slot_type OnAccept) = 0;
-
-	virtual void ConnectCancel(slot_type OnCancel) = 0;
-
-	virtual void ConnectDeleteNote(slot_type OnDeleteNote) = 0;
 
 	virtual void GetBody(std::wstring & html) = 0;
 

@@ -5,11 +5,11 @@
 
 class INoteListModel : public ISignalProvider
 {
+	MacroIEvent(Changed)
+
 public:
 
 	virtual ~INoteListModel() {}
-
-	virtual void ConnectChanged(slot_type OnReset) = 0;
 
 	virtual void GetCurrentPage
 		( NoteList::const_iterator & begin

@@ -115,31 +115,6 @@ void SyncModel::BeginSync(const wstring & username)
 		);
 }
 
-void SyncModel::ConnectNotebooksChanged(slot_type OnNotebooksChanged)
-{
-	SignalNotebooksChanged.connect(OnNotebooksChanged);
-}
-
-void SyncModel::ConnectNotesChanged(slot_type OnNotesChanged)
-{
-	SignalNotesChanged.connect(OnNotesChanged);
-}
-
-void SyncModel::ConnectStatusUpdated(slot_type OnStatusUpdated)
-{
-	SignalStatusUpdated.connect(OnStatusUpdated);
-}
-
-void SyncModel::ConnectTagsChanged(slot_type OnTagsChanged)
-{
-	SignalTagsChanged.connect(OnTagsChanged);
-}
-
-void SyncModel::ConnectSyncComplete(slot_type OnSyncComplete)
-{
-	SignalSyncComplete.connect(OnSyncComplete);
-}
-
 const wchar_t * SyncModel::GetStatusText()
 {
 	return statusText.c_str();

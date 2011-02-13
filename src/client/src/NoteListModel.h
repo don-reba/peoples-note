@@ -8,6 +8,8 @@ class IUserModel;
 
 class NoteListModel : public INoteListModel
 {
+	MacroEvent(Changed)
+
 private:
 
 	IRegistryKey & registryKey;
@@ -19,8 +21,6 @@ private:
 
 	int currentPage;
 
-	signal SignalChanged;
-
 public:
 
 	NoteListModel
@@ -28,8 +28,6 @@ public:
 		, IUserModel   & userModel
 		, IRegistryKey & registryKey
 		);
-
-	virtual void ConnectChanged(slot_type OnReset);
 
 	virtual void GetCurrentPage
 		( NoteList::const_iterator & begin

@@ -34,11 +34,6 @@ void AboutView::Create(HWND parent)
 // IAboutView implementation
 //--------------------------
 
-void AboutView::ConnectClose(slot_type OnClose)
-{
-	SignalClose.connect(OnClose);
-}
-
 void AboutView::Hide()
 {
 	::CloseWindow(hwnd_);

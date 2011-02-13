@@ -18,11 +18,6 @@ Animator::Animator()
 // IAnimator implementation
 //-------------------------
 
-void Animator::ConnectAnimationCompleted(slot_type OnAnimationCompleted)
-{
-	SignalAnimationCompleted.connect(OnAnimationCompleted);
-}
-
 int Animator::GetLastAnimationId()
 {
 	return lastId;

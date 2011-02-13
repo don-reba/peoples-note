@@ -40,16 +40,6 @@ void ProfileView::RegisterEventHandlers()
 // IProfileView implementation
 //----------------------------
 
-void ProfileView::ConnectClose(slot_type OnClose)
-{
-	SignalClose.connect(OnClose);
-}
-
-void ProfileView::ConnectDbMove(slot_type OnDbMove)
-{
-	SignalDbMove.connect(OnDbMove);
-}
-
 void ProfileView::DisableMoveButton()
 {
 	element(FindFirstElement("#move"))

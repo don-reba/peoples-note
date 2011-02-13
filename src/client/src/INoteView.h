@@ -8,13 +8,11 @@ class Note;
 
 class INoteView : public ISignalProvider
 {
+	MacroIEvent(Close)
+	MacroIEvent(Edit)
+	MacroIEvent(ToggleMaximize)
+
 public:
-
-	virtual void ConnectClose(slot_type OnClose) = 0;
-
-	virtual void ConnectEdit(slot_type OnEdit) = 0;
-
-	virtual void ConnectToggleMaximize(slot_type OnToggleMaximize) = 0;
 
 	virtual void GetBody(std::wstring & html) = 0;
 

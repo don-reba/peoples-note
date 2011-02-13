@@ -18,6 +18,14 @@ class IUserModel;
 
 class SyncModel : public ISyncModel
 {
+// events
+
+	MacroEvent(NotebooksChanged)
+	MacroEvent(NotesChanged)
+	MacroEvent(StatusUpdated)
+	MacroEvent(TagsChanged)
+	MacroEvent(SyncComplete)
+
 // types
 
 private:
@@ -58,12 +66,6 @@ private:
 	std::wstring statusText;
 	double       syncProgress;
 
-	signal SignalNotebooksChanged;
-	signal SignalNotesChanged;
-	signal SignalTagsChanged;
-	signal SignalStatusUpdated;
-	signal SignalSyncComplete;
-
 // interface
 
 public:
@@ -87,16 +89,6 @@ public:
 public:
 
 	virtual void BeginSync(const std::wstring & username);
-
-	virtual void ConnectNotebooksChanged(slot_type OnNotebooksChanged);
-
-	virtual void ConnectNotesChanged(slot_type OnNotesChanged);
-
-	virtual void ConnectStatusUpdated(slot_type OnStatusUpdated);
-
-	virtual void ConnectTagsChanged(slot_type OnTagsChanged);
-
-	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
 
 	virtual const wchar_t * GetStatusText();
 

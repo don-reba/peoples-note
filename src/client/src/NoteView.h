@@ -10,6 +10,10 @@ class IAnimator;
 
 class NoteView : public HTMLayoutWindow, public INoteView
 {
+	MacroEvent(Close)
+	MacroEvent(Edit)
+	MacroEvent(ToggleMaximize)
+
 private:
 
 	typedef htmlayout::dom::element element;
@@ -35,10 +39,6 @@ private:
 	element hScroll;
 	element hSlider;
 
-	signal SignalClose;
-	signal SignalEdit;
-	signal SignalToggleMaximize;
-
 // interface
 
 public:
@@ -55,12 +55,6 @@ public:
 // INoteView implementation
 
 public:
-
-	virtual void ConnectClose(slot_type OnClose);
-
-	virtual void ConnectEdit(slot_type OnEdit);
-
-	virtual void ConnectToggleMaximize(slot_type OnToggleMaximize);
 
 	virtual void GetBody(std::wstring & html);
 

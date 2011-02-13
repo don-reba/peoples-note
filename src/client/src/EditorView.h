@@ -6,6 +6,12 @@
 
 class EditorView : public HTMLayoutWindow, public IEditorView
 {
+// events
+
+	MacroEvent(Accept)
+	MacroEvent(Cancel)
+	MacroEvent(DeleteNote)
+
 // data
 
 private:
@@ -18,10 +24,6 @@ private:
 	bool isMaximized;
 
 	Note note;
-
-	signal SignalAccept;
-	signal SignalCancel;
-	signal SignalDeleteNote;
 
 // interface
 
@@ -36,12 +38,6 @@ public:
 // IEditorView implementation
 
 public:
-
-	virtual void ConnectAccept(slot_type OnAccept);
-
-	virtual void ConnectCancel(slot_type OnCancel);
-
-	virtual void ConnectDeleteNote(slot_type OnDeleteNote);
 
 	virtual void GetBody(std::wstring & html);
 

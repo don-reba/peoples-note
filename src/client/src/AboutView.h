@@ -7,12 +7,16 @@ class IHtmlDataLoader;
 
 class AboutView : public HTMLayoutWindow, public IAboutView
 {
+// events
+
+	MacroEvent(Close)
+
+// data
+
 private:
 
 	HINSTANCE instance;
 	HWND      parent;
-
-	signal SignalClose;
 
 // interface
 
@@ -25,8 +29,6 @@ public:
 // IAboutView implementation
 
 public:
-
-	virtual void ConnectClose(slot_type OnClose);
 
 	virtual void Hide();
 

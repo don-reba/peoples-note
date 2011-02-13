@@ -4,17 +4,15 @@
 
 class ICredentialsView : public ISignalProvider
 {
+	MacroIEvent(Cancel)
+	MacroIEvent(Created)
+	MacroIEvent(Ok)
+
 public:
 
 	virtual ~ICredentialsView() {}
 
 	virtual void Close() = 0;
-
-	virtual void ConnectCancel(slot_type OnCancel) = 0;
-
-	virtual void ConnectCreated(slot_type OnCreated) = 0;
-
-	virtual void ConnectOk(slot_type OnOk) = 0;
 
 	virtual std::wstring GetPassword() const = 0;
 

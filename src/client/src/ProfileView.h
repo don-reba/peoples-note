@@ -7,13 +7,13 @@ class IHtmlDataLoader;
 
 class ProfileView : public HTMLayoutWindow, public IProfileView
 {
+	MacroEvent(Close)
+	MacroEvent(DbMove)
+
 private:
 
 	HINSTANCE instance;
 	HWND      parent;
-
-	signal SignalClose;
-	signal SignalDbMove;
 
 // interface
 
@@ -28,10 +28,6 @@ public:
 // IProfileView implementation
 
 public:
-
-	virtual void ConnectClose(slot_type OnClose);
-
-	virtual void ConnectDbMove(slot_type OnDbMove);
 
 	virtual void DisableMoveButton();
 

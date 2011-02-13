@@ -5,6 +5,9 @@
 
 class PhotoEditorView : public HTMLayoutWindow, public IPhotoEditorView
 {
+	MacroEvent(Cancel)
+	MacroEvent(Ok)
+
 // data
 
 private:
@@ -12,9 +15,6 @@ private:
 	HWND           parent;
 	HINSTANCE      instance;
 	SHACTIVATEINFO activateInfo;
-
-	signal SignalCancel;
-	signal SignalOk;
 
 // interface
 
@@ -29,10 +29,6 @@ public:
 public:
 
 	virtual int CapturePhoto(int quality, int width, int height, std::wstring & path);
-
-	virtual void ConnectCancel(slot_type OnCancel);
-
-	virtual void ConnectOk(slot_type OnOk);
 
 	virtual PhotoQuality GetQuality();
 

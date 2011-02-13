@@ -6,13 +6,11 @@
 
 class IInkEditorView : public ISignalProvider
 {
+	MacroIEvent(Accept)
+	MacroIEvent(Cancel)
+	MacroIEvent(PenChanged)
+
 public:
-
-	virtual void ConnectAccept(slot_type OnAccept) = 0;
-
-	virtual void ConnectCancel(slot_type OnCancel) = 0;
-
-	virtual void ConnectPenChanged(slot_type OnPenChanged) = 0;
 
 	virtual void GetImage(Blob & image) = 0;
 

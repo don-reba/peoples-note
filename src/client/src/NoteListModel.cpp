@@ -21,12 +21,6 @@ NoteListModel::NoteListModel
 {
 }
 
-void NoteListModel::ConnectChanged(slot_type OnReset)
-{
-	SignalChanged.connect(OnReset);
-}
-
-
 void NoteListModel::GetCurrentPage
 	( NoteList::const_iterator & begin
 	, NoteList::const_iterator & end

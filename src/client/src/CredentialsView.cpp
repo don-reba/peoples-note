@@ -37,21 +37,6 @@ void CredentialsView::Close()
 	hwnd_ = NULL;
 }
 
-void CredentialsView::ConnectCancel(slot_type OnCancel)
-{
-	SignalCancel.connect(OnCancel);
-}
-
-void CredentialsView::ConnectCreated(slot_type OnCreated)
-{
-	SignalCreated.connect(OnCreated);
-}
-
-void CredentialsView::ConnectOk(slot_type OnOk)
-{
-	SignalOk.connect(OnOk);
-}
-
 wstring CredentialsView::GetPassword() const
 {
 	element root = element::root_element(hwnd_);

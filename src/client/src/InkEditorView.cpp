@@ -36,21 +36,6 @@ void InkEditorView::Create(HWND parent)
 // IInkEditorView implementation
 //------------------------------
 
-void InkEditorView::ConnectAccept(slot_type OnAccept)
-{
-	SignalAccept.connect(OnAccept);
-}
-
-void InkEditorView::ConnectCancel(slot_type OnCancel)
-{
-	SignalCancel.connect(OnCancel);
-}
-
-void InkEditorView::ConnectPenChanged(slot_type OnPenChanged)
-{
-	SignalPenChanged.connect(OnPenChanged);
-}
-
 void InkEditorView::GetImage(Blob & blob)
 {
 	// calculate the rectangle to return

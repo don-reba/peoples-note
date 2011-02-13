@@ -53,16 +53,6 @@ int PhotoEditorView::CapturePhoto(int quality, int width, int height, wstring & 
 	return result;
 }
 
-void PhotoEditorView::ConnectCancel(slot_type OnCancel)
-{
-	SignalCancel.connect(OnCancel);
-}
-
-void PhotoEditorView::ConnectOk(slot_type OnOk)
-{
-	SignalOk.connect(OnOk);
-}
-
 PhotoQuality PhotoEditorView::GetQuality()
 {
 	return static_cast<PhotoQuality>

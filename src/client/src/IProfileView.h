@@ -4,11 +4,10 @@
 
 class IProfileView : public ISignalProvider
 {
+	MacroIEvent(Close)
+	MacroIEvent(DbMove)
+
 public:
-
-	virtual void ConnectClose(slot_type OnClose) = 0;
-
-	virtual void ConnectDbMove(slot_type OnDbMove) = 0;
 
 	virtual void DisableMoveButton() = 0;
 

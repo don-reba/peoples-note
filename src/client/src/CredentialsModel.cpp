@@ -1,16 +1,6 @@
 #include "stdafx.h"
 #include "CredentialsModel.h"
 
-void CredentialsModel::ConnectUpdated(slot_type OnUpdated)
-{
-	SignalUpdated.connect(OnUpdated);
-}
-
-void CredentialsModel::ConnectUpdating(slot_type OnUpdating)
-{
-	SignalUpdating.connect(OnUpdating);
-}
-
 
 std::wstring CredentialsModel::GetUsername() const
 {

@@ -4,19 +4,15 @@
 
 class CredentialsModel : public ICredentialsModel
 {
+	MacroEvent(Updated)
+	MacroEvent(Updating)
+
 private:
 
 	std::wstring username;
 	std::wstring password;
 
-	signal SignalUpdated;
-	signal SignalUpdating;
-
 public:
-
-	virtual void ConnectUpdated(slot_type OnUpdated);
-
-	virtual void ConnectUpdating(slot_type OnUpdating);
 	
 	virtual std::wstring GetUsername() const;
 

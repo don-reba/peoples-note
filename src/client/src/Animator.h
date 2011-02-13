@@ -6,6 +6,10 @@
 
 class Animator : public IAnimator
 {
+// events
+
+	MacroEvent(AnimationCompleted)
+
 // types
 
 private:
@@ -26,8 +30,6 @@ private:
 	AnimationId       lastId;
 	double            lastFps;
 
-	signal SignalAnimationCompleted;
-
 // interface
 
 public:
@@ -37,8 +39,6 @@ public:
 // IAnimator implementation
 
 public:
-
-	virtual void ConnectAnimationCompleted(slot_type OnAnimationCompleted);
 
 	virtual int GetLastAnimationId();
 

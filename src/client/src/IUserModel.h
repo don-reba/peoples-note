@@ -16,6 +16,8 @@ class ICredentialsModel;
 
 class IUserModel : public ISignalProvider
 {
+	MacroIEvent(Loaded)
+
 public:
 
 	virtual ~IUserModel() {}
@@ -41,8 +43,6 @@ public:
 		) = 0;
 
 	virtual void BeginTransaction() = 0;
-
-	virtual void ConnectLoaded(slot_type OnLoaded) = 0;
 
 	virtual void DeleteNote(const Guid & note) = 0;
 

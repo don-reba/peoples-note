@@ -6,6 +6,14 @@
 
 class InkEditorView : public Window, public IInkEditorView
 {
+// events
+
+	MacroEvent(Accept)
+	MacroEvent(Cancel)
+	MacroEvent(PenChanged)
+
+// types
+
 private:
 
 	struct BITMAPINFO_BF
@@ -40,10 +48,6 @@ private:
 	InkPenColor penColor;
 	InkPenWidth penWidth;
 
-	signal SignalAccept;
-	signal SignalCancel;
-	signal SignalPenChanged;
-
 // interface
 
 public:
@@ -55,12 +59,6 @@ public:
 // IInkEditorView implementation
 
 public:
-
-	virtual void ConnectAccept(slot_type OnAccept);
-
-	virtual void ConnectCancel(slot_type OnCancel);
-
-	virtual void ConnectPenChanged(slot_type OnPenChanged);
 
 	virtual void GetImage(Blob & blob);
 

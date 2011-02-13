@@ -252,11 +252,6 @@ void UserModel::BeginTransaction()
 	statement->Execute();
 }
 
-void UserModel::ConnectLoaded(slot_type OnLoaded)
-{
-	SignalLoaded.connect(OnLoaded);
-}
-
 void UserModel::DeleteNote(const Guid & note)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement

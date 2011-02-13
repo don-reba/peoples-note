@@ -6,6 +6,9 @@
 
 class IPhotoEditorView : public ISignalProvider
 {
+	MacroIEvent(Cancel)
+	MacroIEvent(Ok)
+
 public:
 
 	virtual int CapturePhoto
@@ -14,10 +17,6 @@ public:
 		, int            height
 		, std::wstring & path
 		) = 0;
-
-	virtual void ConnectCancel(slot_type OnCancel) = 0;
-
-	virtual void ConnectOk(slot_type OnOk) = 0;
 
 	virtual PhotoQuality GetQuality() = 0;
 

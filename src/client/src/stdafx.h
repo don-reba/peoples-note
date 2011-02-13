@@ -47,6 +47,7 @@
 
 #include <altcecrt.h>
 
+#include "Event.h"
 #include "foreach.h"
 
 // HTMLayout behaviours

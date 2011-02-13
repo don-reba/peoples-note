@@ -8,6 +8,23 @@
 
 class NoteListView : public HTMLayoutWindow, public INoteListView
 {
+	MacroEvent(About)
+	MacroEvent(ClearSearch)
+	MacroEvent(Import)
+	MacroEvent(NewInkNote)
+	MacroEvent(NewNote)
+	MacroEvent(NewPhotoNote)
+	MacroEvent(NotebookSelected)
+	MacroEvent(NotebookTitle)
+	MacroEvent(OpenNote)
+	MacroEvent(PageDown)
+	MacroEvent(PageUp)
+	MacroEvent(Profile)
+	MacroEvent(Search)
+	MacroEvent(SearchChanged)
+	MacroEvent(SignIn)
+	MacroEvent(Sync)
+
 private:
 
 	enum SearchButtonState
@@ -40,23 +57,6 @@ private:
 
 	SearchButtonState searchButtonState;
 
-	signal SignalAbout;
-	signal SignalClearSearch;
-	signal SignalImport;
-	signal SignalNewInkNote;
-	signal SignalNewNote;
-	signal SignalNewPhotoNote;
-	signal SignalNotebookSelected;
-	signal SignalNotebookTitle;
-	signal SignalOpenNote;
-	signal SignalPageDown;
-	signal SignalPageUp;
-	signal SignalProfile;
-	signal SignalSearch;
-	signal SignalSearchChanged;
-	signal SignalSignIn;
-	signal SignalSync;
-
 // interface
 
 public:
@@ -85,38 +85,6 @@ public:
 	virtual void CheckNotebookTitleOption();
 
 	virtual void ClearNotes();
-
-	virtual void ConnectAbout(slot_type OnAbout);
-
-	virtual void ConnectClearSearch(slot_type OnClearSearch);
-
-	virtual void ConnectImport(slot_type OnImport);
-
-	virtual void ConnectNewInkNote(slot_type OnNewInkNote);
-
-	virtual void ConnectNewNote(slot_type OnNewNote);
-
-	virtual void ConnectNewPhotoNote(slot_type OnNewPhotoNote);
-
-	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
-
-	virtual void ConnectNotebookTitle(slot_type OnNotebookTitle);
-
-	virtual void ConnectOpenNote(slot_type OnOpenNote);
-
-	virtual void ConnectPageDown(slot_type OnPageDown);
-
-	virtual void ConnectPageUp(slot_type OnPageUp);
-
-	virtual void ConnectProfile(slot_type OnProfile);
-
-	virtual void ConnectSearch(slot_type OnSearch);
-
-	virtual void ConnectSearchChanged(slot_type OnSearchChanged);
-
-	virtual void ConnectSignIn(slot_type OnSignin);
-
-	virtual void ConnectSync(slot_type OnSync);
 
 	virtual void DisableSync();
 

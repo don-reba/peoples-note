@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include "Event.h"
 #include "foreach.h"
 
 #include <string>

@@ -8,6 +8,8 @@ class IFlashCard;
 
 class UserModel : public IUserModel
 {
+	MacroEvent(Loaded)
+
 private:
 
 	IDataStore & dataStore;
@@ -15,8 +17,6 @@ private:
 	const IFlashCard & flashCard;
 
 	const std::wstring deviceFolder;
-
-	signal SignalLoaded;
 
 // interface
 
@@ -61,8 +61,6 @@ public:
 		);
 
 	virtual void BeginTransaction();
-
-	virtual void ConnectLoaded(slot_type OnLoaded);
 
 	virtual void DeleteNote(const Guid & note);
 

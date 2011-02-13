@@ -4,9 +4,9 @@
 
 class IAboutView : public ISignalProvider
 {
-public:
+	MacroIEvent(Close);
 
-	virtual void ConnectClose(slot_type OnClose) = 0;
+public:
 
 	virtual void Hide() = 0;
 

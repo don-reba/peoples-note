@@ -94,21 +94,6 @@ void NoteView::RegisterEventHandlers()
 // INoteView implementation
 //-------------------------
 
-void NoteView::ConnectClose(slot_type OnClose)
-{
-	SignalClose.connect(OnClose);
-}
-
-void NoteView::ConnectEdit(slot_type OnEdit)
-{
-	SignalEdit.connect(OnEdit);
-}
-
-void NoteView::ConnectToggleMaximize(slot_type OnToggleMaximize)
-{
-	SignalToggleMaximize.connect(OnToggleMaximize);
-}
-
 static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
 {
 	wstring * dst(reinterpret_cast<wstring*>(param));

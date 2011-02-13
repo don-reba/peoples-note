@@ -43,21 +43,6 @@ void EditorView::RegisterEventHandlers()
 // IEditorView implementation
 //---------------------------
 
-void EditorView::ConnectAccept(slot_type OnAccept)
-{
-	SignalAccept.connect(OnAccept);
-}
-
-void EditorView::ConnectCancel(slot_type OnCancel)
-{
-	SignalCancel.connect(OnCancel);
-}
-
-void EditorView::ConnectDeleteNote(slot_type OnDeleteNote)
-{
-	SignalDeleteNote.connect(OnDeleteNote);
-}
-
 void EditorView::GetBody(wstring & html)
 {
 	html = element(FindFirstElement("#body")).get_value().to_string();

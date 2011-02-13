@@ -7,6 +7,12 @@ class IHtmlDataLoader;
 
 class CredentialsView : public HTMLayoutWindow, public ICredentialsView
 {
+// events
+
+	MacroEvent(Cancel)
+	MacroEvent(Created)
+	MacroEvent(Ok)
+
 // data
 
 private:
@@ -14,9 +20,6 @@ private:
 	HWND           parent;
 	HINSTANCE      instance;
 	SHACTIVATEINFO activateInfo;
-
-	signal SignalCancel;
-	signal SignalOk;
 
 // interface
 
@@ -31,12 +34,6 @@ public:
 public:
 
 	virtual void Close();
-
-	virtual void ConnectCancel(slot_type OnCancel);
-
-	virtual void ConnectCreated(slot_type OnCreated);
-
-	virtual void ConnectOk(slot_type OnOk);
 
 	virtual std::wstring GetPassword() const;
 

@@ -6,6 +6,23 @@
 
 class INoteListView : public ISignalProvider
 {
+	MacroIEvent(About)
+	MacroIEvent(ClearSearch)
+	MacroIEvent(Import)
+	MacroIEvent(NewInkNote)
+	MacroIEvent(NewNote)
+	MacroIEvent(NewPhotoNote)
+	MacroIEvent(NotebookSelected)
+	MacroIEvent(NotebookTitle)
+	MacroIEvent(OpenNote)
+	MacroIEvent(PageDown)
+	MacroIEvent(PageUp)
+	MacroIEvent(Profile)
+	MacroIEvent(Search)
+	MacroIEvent(SearchChanged)
+	MacroIEvent(SignIn)
+	MacroIEvent(Sync)
+
 public:
 
 	virtual ~INoteListView() {}
@@ -17,38 +34,6 @@ public:
 		) = 0;
 
 	virtual void CheckNotebookTitleOption() = 0;
-
-	virtual void ConnectAbout(slot_type OnAbout) = 0;
-
-	virtual void ConnectClearSearch(slot_type OnClearSearch) = 0;
-
-	virtual void ConnectImport(slot_type OnImport) = 0;
-
-	virtual void ConnectNewInkNote(slot_type OnNewInkNote) = 0;
-
-	virtual void ConnectNewNote(slot_type OnNewNote) = 0;
-
-	virtual void ConnectNewPhotoNote(slot_type OnNewPhoto) = 0;
-
-	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected) = 0;
-
-	virtual void ConnectNotebookTitle(slot_type OnNotebookTitle) = 0;
-
-	virtual void ConnectOpenNote(slot_type OnOpenNote) = 0;
-
-	virtual void ConnectPageDown(slot_type OnPageDown) = 0;
-
-	virtual void ConnectPageUp(slot_type OnPageUp) = 0;
-
-	virtual void ConnectProfile(slot_type OnProfile) = 0;
-
-	virtual void ConnectSearch(slot_type OnSearch) = 0;
-
-	virtual void ConnectSearchChanged(slot_type OnSearchChanged) = 0;
-
-	virtual void ConnectSignIn(slot_type OnSignin) = 0;
-
-	virtual void ConnectSync(slot_type OnSync) = 0;
 
 	virtual void ClearNotes() = 0;
 

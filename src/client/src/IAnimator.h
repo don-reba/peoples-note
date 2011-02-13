@@ -6,6 +6,8 @@
 
 class IAnimator : public ISignalProvider
 {
+	MacroIEvent(AnimationCompleted)
+
 public:
 
 	enum AnimationId
@@ -19,8 +21,6 @@ public:
 	typedef boost::function<void(DWORD)> Animation;
 
 public:
-
-	virtual void ConnectAnimationCompleted(slot_type OnAnimationCompleted) = 0;
 
 	virtual int GetLastAnimationId() = 0;
 
