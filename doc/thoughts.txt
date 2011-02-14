@@ -3279,5 +3279,6 @@ sync logger → general logger
 				in order to log the error, I need the original
 				then I have an idea: let UserStore log it
 				problem solved
+	all done
 logging is untested
 	TODO

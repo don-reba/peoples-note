@@ -67,14 +67,17 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 	}
 	catch (const Thrift::Transport::TTransportException &)
 	{
+		logger.AuthorizationError(username, logger.GetExceptionMessage().Message);
 		result.Message = L"Network error";
 	}
 	catch (const EDAM::Error::EDAMUserException &)
 	{
+		logger.AuthorizationError(username, logger.GetExceptionMessage().Message);
 		result.Message = L"Invalid username or password";
 	}
 	catch (const TException &)
 	{
+		logger.AuthorizationError(username, logger.GetExceptionMessage().Message);
 		result.Message = L"Something went wrong";
 	}
 	return result;
