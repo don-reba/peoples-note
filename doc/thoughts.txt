@@ -3243,6 +3243,6 @@ relative URLs
 		given the note's source URL
 	TODO
 should write sync log to disk more often
-	TODO
+	done
 CredentialsPresenter.OnViewCreated is untested
 	TODO
