@@ -13,7 +13,7 @@ Logger::Logger(const wstring & documentPath)
 }
 
 //---------------------------
-// ISyncLogger implementation
+// ILogger implementation
 //---------------------------
 
 void Logger::Clear()
@@ -90,7 +90,7 @@ void Logger::PerformAction
 	}
 }
 
-void Logger::Error(const std::wstring & message)
+void Logger::SyncError(const std::wstring & message)
 {
 	stream << L"Error: " << message << L"\n";
 }

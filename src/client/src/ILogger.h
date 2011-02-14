@@ -4,7 +4,7 @@
 #include "Notebook.h"
 #include "Tag.h"
 
-class ISyncLogger
+class ILogger
 {
 public:
 
@@ -25,5 +25,5 @@ public:
 		, const Guid    * remote
 		) = 0;
 
-	virtual void Error(const std::wstring & message) = 0;
+	virtual void SyncError(const std::wstring & message) = 0;
 };

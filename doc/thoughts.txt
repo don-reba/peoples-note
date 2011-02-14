@@ -3257,3 +3257,5 @@ sync logger → general logger
 		add authorization error output from SyncModel
 		add a reference to the CredentialsPresenter
 		add authorization error output from CredentialsPresenter
+logging is untested
+	TODO

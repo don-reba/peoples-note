@@ -1,10 +1,14 @@
 #pragma once
 
-#include "ISyncLogger.h"
+#include "ILogger.h"
 
-class MockSyncLogger : public ISyncLogger
+class MockLogger : public ILogger
 {
 public:
+
+	virtual void Clear();
+
+	virtual void Flush();
 
 	virtual void ListNotes     (const std::wstring & listTitle, const EnInteropNoteList & notes);
 	virtual void ListNotebooks (const std::wstring & listTitle, const NotebookList      & notebooks);
@@ -19,5 +23,5 @@ public:
 		, const Guid    * remote
 		);
 
-	virtual void Error(const std::wstring & message);
+	virtual void SyncError(const std::wstring & message);
 };

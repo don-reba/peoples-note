@@ -12,7 +12,7 @@ class EnNoteTranslator;
 class IEnService;
 class IMessagePump;
 class INoteStore;
-class ISyncLogger;
+class ILogger;
 class IUserModel;
 
 
@@ -49,11 +49,11 @@ private:
 	{
 	private:
 
-		ISyncLogger & logger;
+		ILogger & logger;
 
 	public:
 
-		SyncLoggerRAII(ISyncLogger & logger);
+		SyncLoggerRAII(ILogger & logger);
 
 		~SyncLoggerRAII();
 	};
@@ -65,7 +65,7 @@ private:
 	EnNoteTranslator & enNoteTranslator;
 	IEnService       & enService;
 	IMessagePump     & messagePump;
-	ISyncLogger      & logger;
+	ILogger      & logger;
 	IUserModel       & userModel;
 
 	HANDLE syncThread;
@@ -88,7 +88,7 @@ public:
 		, IEnService       & enService
 		, IMessagePump     & messagePump
 		, IUserModel       & userModel
-		, ISyncLogger      & logger
+		, ILogger      & logger
 		);
 
 	~SyncModel();

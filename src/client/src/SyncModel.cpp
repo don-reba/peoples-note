@@ -7,7 +7,7 @@
 #include "IEnService.h"
 #include "IMessagePump.h"
 #include "INoteStore.h"
-#include "ISyncLogger.h"
+#include "ILogger.h"
 #include "IUserModel.h"
 #include "IUserStore.h"
 #include "NotebookProcessor.h"
@@ -34,7 +34,7 @@ SyncModel::SyncModel
 	, IEnService       & enService
 	, IMessagePump     & messagePump
 	, IUserModel       & userModel
-	, ISyncLogger      & logger
+	, ILogger      & logger
 	)
 	: enNoteTranslator (enNoteTranslator)
 	, syncThread       (NULL)
@@ -164,7 +164,7 @@ void SyncModel::FinishSync
 {
 	PostProgressMessage(0.0);
 	if (*logMessage)
-		logger.Error(logMessage);
+		logger.SyncError(logMessage);
 	PostTextMessage(friendlyMessage);
 	PostSyncCompleteMessage();
 	userModel.Unload();
@@ -363,7 +363,7 @@ void SyncModel::ProcessNotes
 		catch (...)
 		{
 			ExceptionMessage message = GetExceptionMessage();
-			logger.Error(message.Message);
+			logger.SyncError(message.Message);
 		}
 
 		PostProgressMessage(actionIndex / actionCount);
@@ -658,7 +658,7 @@ void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
 // UserModel::SyncLoggerRAII
 //--------------------------
 
-SyncModel::SyncLoggerRAII::SyncLoggerRAII(ISyncLogger & logger)
+SyncModel::SyncLoggerRAII::SyncLoggerRAII(ILogger & logger)
 	: logger (logger)
 {
 	logger.Clear();

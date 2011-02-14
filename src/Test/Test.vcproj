@@ -291,6 +291,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockLogger.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockMessagePump.cpp"
 				>
 			</File>
@@ -324,10 +328,6 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockSyncLogger.cpp"
 				>
 			</File>
 			<File
@@ -638,6 +638,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockLogger.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockMessagePump.h"
 				>
 			</File>
@@ -671,10 +675,6 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MockSyncLogger.h"
 				>
 			</File>
 			<File

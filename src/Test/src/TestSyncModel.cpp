@@ -4,7 +4,7 @@
 #include "EnNoteTranslator.h"
 #include "MockEnService.h"
 #include "MockMessagePump.h"
-#include "MockSyncLogger.h"
+#include "MockLogger.h"
 #include "MockUserModel.h"
 #include "SignalCheck.h"
 
@@ -18,7 +18,7 @@ struct SyncModelFixture
 	EnNoteTranslator enNoteTranslator;
 	MockEnService    enService;
 	MockMessagePump  messagePump;
-	MockSyncLogger   logger;
+	MockLogger       logger;
 	MockUserModel    userModel;
 
 	SyncModel syncModel;

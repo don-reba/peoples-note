@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ISyncLogger.h"
+#include "ILogger.h"
 
 #include <fstream>
 
-class Logger : public ISyncLogger
+class Logger : public ILogger
 {
 private:
 
@@ -15,7 +15,7 @@ public:
 
 	Logger(const std::wstring & documentPath);
 
-// ISyncLogger implementation
+// ILogger implementation
 
 public:
 
@@ -36,7 +36,7 @@ public:
 		, const Guid    * remote
 		);
 
-	virtual void Error(const std::wstring & message);
+	virtual void SyncError(const std::wstring & message);
 
 // utility functions
 

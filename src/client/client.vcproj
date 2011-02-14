@@ -1002,6 +1002,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ILogger.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ImagingException.h"
 				>
 			</File>
@@ -1075,10 +1079,6 @@
 			</File>
 			<File
 				RelativePath=".\src\ISqlStatement.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\ISyncLogger.h"
 				>
 			</File>
 			<File
