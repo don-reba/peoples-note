@@ -3,7 +3,6 @@
 
 #include "DataStore.h"
 #include "EnNoteTranslator.h"
-#include "EnServiceTools.h"
 #include "IEnService.h"
 #include "IMessagePump.h"
 #include "INoteStore.h"
@@ -170,67 +169,6 @@ void SyncModel::FinishSync
 	userModel.Unload();
 }
 
-SyncModel::ExceptionMessage SyncModel::GetExceptionMessage()
-try
-{
-	// this function is meant to be called from a catch block
-	// rethrow the exception to catch it again
-	throw;
-}
-catch (const Evernote::EDAM::Error::EDAMNotFoundException & e)
-{
-	return ExceptionMessage
-		( L"Tried to sync, but something went wrong."
-		, EnServiceTools::CreateNotFoundExceptionMessage(e).c_str()
-		);
-}
-catch (const Evernote::EDAM::Error::EDAMSystemException & e)
-{
-	return ExceptionMessage
-		( L"Tried to sync, but something went wrong."
-		, EnServiceTools::CreateSystemExceptionMessage(e).c_str()
-		);
-}
-catch (const Evernote::EDAM::Error::EDAMUserException & e)
-{
-	return ExceptionMessage
-		( L"Tried to sync, but something went wrong."
-		, EnServiceTools::CreateUserExceptionMessage(e).c_str()
-		);
-}
-catch (const Thrift::Transport::TTransportException & e)
-{
-	return ExceptionMessage
-		( L"Encountered a network error."
-		, EnServiceTools::CreateTransportExceptionMessage(e).c_str()
-		);
-}
-catch (const Thrift::TException & e)
-{
-	return ExceptionMessage
-		( L"Tried to sync, but something went wrong."
-		, EnServiceTools::CreateExceptionMessage(e).c_str()
-		);
-}
-catch (const std::exception & e)
-{
-	wstring message;
-	message.append(L"exception(");
-	message.append(ConvertToUnicode(e.what()));
-	message.append(L")");
-	return ExceptionMessage
-		( L"Tried to sync, but something went wrong."
-		, message.c_str()
-		);
-}
-catch (...)
-{
-	return ExceptionMessage
-		( L"Tried to sync, but something went wrong."
-		, L"Unknown exception."
-		);
-}
-
 void SyncModel::PostProgressMessage(double progress)
 {
 	SyncMessageQueue::Message message
@@ -362,7 +300,7 @@ void SyncModel::ProcessNotes
 		}
 		catch (...)
 		{
-			ExceptionMessage message = GetExceptionMessage();
+			ExceptionMessage message = logger.GetExceptionMessage();
 			logger.SyncError(message.Message);
 		}
 
@@ -496,7 +434,7 @@ void SyncModel::ProcessTags
 void SyncModel::Sync()
 try
 {
-	SyncLoggerRAII loggerRaii(logger);
+	LoggerRAII loggerRaii(logger);
 
 	PostTextMessage(L"Connecting...");
 
@@ -637,7 +575,7 @@ try
 }
 catch (...)
 {
-	ExceptionMessage message = GetExceptionMessage();
+	ExceptionMessage message = logger.GetExceptionMessage();
 	FinishSync(message.Message.c_str(), message.Title.c_str());
 }
 
@@ -655,16 +593,16 @@ void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
 }
 
 //--------------------------
-// UserModel::SyncLoggerRAII
+// UserModel::LoggerRAII
 //--------------------------
 
-SyncModel::SyncLoggerRAII::SyncLoggerRAII(ILogger & logger)
+SyncModel::LoggerRAII::LoggerRAII(ILogger & logger)
 	: logger (logger)
 {
 	logger.Clear();
 }
 
-SyncModel::SyncLoggerRAII::~SyncLoggerRAII()
+SyncModel::LoggerRAII::~LoggerRAII()
 {
 	logger.Flush();
 }

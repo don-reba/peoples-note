@@ -7,6 +7,7 @@
 #include "Evernote/EDAM/UserStore.h"
 
 #include "API Key.h"
+#include "ILogger.h"
 #include "Tools.h"
 #include "Transaction.h"
 
@@ -17,6 +18,11 @@ using namespace Thrift::Protocol;
 using namespace Thrift::Transport;
 
 using namespace Evernote;
+
+UserStore::UserStore(ILogger & logger)
+	: logger (logger)
+{
+}
 
 IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 	( wstring username

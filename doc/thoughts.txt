@@ -3257,5 +3257,27 @@ sync logger → general logger
 		add authorization error output from SyncModel
 		add a reference to the CredentialsPresenter
 		add authorization error output from CredentialsPresenter
+	but UserStore catches exceptions
+		and it rewrites the message
+		this is good, because it prevents crashes
+			where an error is expected behaviour
+		this is bad, because it hides the cause of error
+			by not including the root error
+		obvious solution
+			add the root error to the return structure
+			lets see if this is even viable
+			whether I can throw an error by base class
+			…
+			actually, no
+		then log this root error
+			oh, and the error parsing code should be moved into the logger
+		another solution
+			throw the error, not return it
+			but then it would be an expected error
+				but which of the errors is the expected one?
+				all of them?
+				in order to log the error, I need the original
+				then I have an idea: let UserStore log it
+				problem solved
 logging is untested
 	TODO

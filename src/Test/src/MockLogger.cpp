@@ -11,6 +11,11 @@ void MockLogger::Flush()
 {
 }
 
+ExceptionMessage MockLogger::GetExceptionMessage()
+{
+	return ExceptionMessage(wstring(), wstring());
+}
+
 void MockLogger::ListNotes(const wstring & listTitle, const EnInteropNoteList & notes)
 {
 }
@@ -35,6 +40,13 @@ void MockLogger::PerformAction
 	( const wchar_t * action
 	, const Guid    * local
 	, const Guid    * remote
+	)
+{
+}
+
+void MockLogger::AuthorizationError
+	( const std::wstring & username
+	, const std::wstring & message
 	)
 {
 }

@@ -141,9 +141,10 @@ int WINAPI WinMain(HINSTANCE instance,
 		DataStore        syncDataStore;
 		EnImporter       enImporter;
 		EnNoteTranslator enNoteTranslator;
-		EnService        enService;
 		MessagePump      messagePump;
-		Logger       logger(deviceDocumentPath);
+		Logger           logger(deviceDocumentPath);
+		
+		EnService enService(logger);
 
 		CredentialsModel newCredentials;
 		InkEditorModel   inkEditorModel(registryKey);

@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "Logger.h"
 
+#include "EnServiceTools.h"
 #include "Tools.h"
 
 using namespace std;
 using namespace Tools;
 
 Logger::Logger(const wstring & documentPath)
-	: path(documentPath + L"\\sync log.txt")
+	: path(documentPath + L"\\log.txt")
 {
 	stream.open(path.c_str(), wofstream::out | wofstream::app);
 }
@@ -25,6 +26,67 @@ void Logger::Clear()
 void Logger::Flush()
 {
 	stream.flush();
+}
+
+ExceptionMessage Logger::GetExceptionMessage()
+try
+{
+	// this function is meant to be called from a catch block
+	// rethrow the exception to catch it again
+	throw;
+}
+catch (const Evernote::EDAM::Error::EDAMNotFoundException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateNotFoundExceptionMessage(e).c_str()
+		);
+}
+catch (const Evernote::EDAM::Error::EDAMSystemException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateSystemExceptionMessage(e).c_str()
+		);
+}
+catch (const Evernote::EDAM::Error::EDAMUserException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateUserExceptionMessage(e).c_str()
+		);
+}
+catch (const Thrift::Transport::TTransportException & e)
+{
+	return ExceptionMessage
+		( L"Encountered a network error."
+		, EnServiceTools::CreateTransportExceptionMessage(e).c_str()
+		);
+}
+catch (const Thrift::TException & e)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, EnServiceTools::CreateExceptionMessage(e).c_str()
+		);
+}
+catch (const std::exception & e)
+{
+	wstring message;
+	message.append(L"exception(");
+	message.append(ConvertToUnicode(e.what()));
+	message.append(L")");
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, message.c_str()
+		);
+}
+catch (...)
+{
+	return ExceptionMessage
+		( L"Tried to sync, but something went wrong."
+		, L"Unknown exception."
+		);
 }
 
 void Logger::ListNotes(const wstring & listTitle, const EnInteropNoteList & notes)
@@ -90,9 +152,17 @@ void Logger::PerformAction
 	}
 }
 
+void Logger::AuthorizationError
+	( const std::wstring & username
+	, const std::wstring & message
+	)
+{
+	stream << L"Auth error: '" << username << "' - " << message << L"\n";
+}
+
 void Logger::SyncError(const std::wstring & message)
 {
-	stream << L"Error: " << message << L"\n";
+	stream << L"Sync error: " << message << L"\n";
 }
 
 //------------------

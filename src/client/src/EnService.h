@@ -4,7 +4,13 @@
 
 class EnService : public IEnService
 {
+private:
+
+	ILogger & logger;
+
 public:
+
+	EnService(ILogger & logger);
 
 	virtual UserStorePtr GetUserStore();
 

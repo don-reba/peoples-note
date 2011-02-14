@@ -2,8 +2,9 @@
 
 #include "AuthenticationToken.h"
 
-class IUserStore;
+class ILogger;
 class INoteStore;
+class IUserStore;
 
 class IEnService
 {

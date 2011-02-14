@@ -10,6 +10,8 @@ public:
 
 	virtual void Flush();
 
+	virtual ExceptionMessage GetExceptionMessage();
+
 	virtual void ListNotes     (const std::wstring & listTitle, const EnInteropNoteList & notes);
 	virtual void ListNotebooks (const std::wstring & listTitle, const NotebookList      & notebooks);
 	virtual void ListTags      (const std::wstring & listTitle, const TagList           & tags);
@@ -21,6 +23,11 @@ public:
 		( const wchar_t * action
 		, const Guid    * local
 		, const Guid    * remote
+		);
+
+	virtual void AuthorizationError
+		( const std::wstring & username
+		, const std::wstring & message
 		);
 
 	virtual void SyncError(const std::wstring & message);
