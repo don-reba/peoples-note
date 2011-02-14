@@ -4,7 +4,7 @@
 
 #include <fstream>
 
-class SyncLogger : public ISyncLogger
+class Logger : public ISyncLogger
 {
 private:
 
@@ -13,7 +13,7 @@ private:
 
 public:
 
-	SyncLogger(const std::wstring & documentPath);
+	Logger(const std::wstring & documentPath);
 
 // ISyncLogger implementation
 

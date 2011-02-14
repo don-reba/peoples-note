@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "SyncLogger.h"
+#include "Logger.h"
 
 #include "Tools.h"
 
 using namespace std;
 using namespace Tools;
 
-SyncLogger::SyncLogger(const wstring & documentPath)
+Logger::Logger(const wstring & documentPath)
 	: path(documentPath + L"\\sync log.txt")
 {
 	stream.open(path.c_str(), wofstream::out | wofstream::app);
@@ -16,18 +16,18 @@ SyncLogger::SyncLogger(const wstring & documentPath)
 // ISyncLogger implementation
 //---------------------------
 
-void SyncLogger::Clear()
+void Logger::Clear()
 {
 	stream.close();
 	stream.open(path.c_str(), wofstream::out | wofstream::trunc);
 }
 
-void SyncLogger::Flush()
+void Logger::Flush()
 {
 	stream.flush();
 }
 
-void SyncLogger::ListNotes(const wstring & listTitle, const EnInteropNoteList & notes)
+void Logger::ListNotes(const wstring & listTitle, const EnInteropNoteList & notes)
 {
 	if (notes.empty())
 		return;
@@ -36,7 +36,7 @@ void SyncLogger::ListNotes(const wstring & listTitle, const EnInteropNoteList & 
 		WriteListEntry(note.name, note.guid);
 }
 
-void SyncLogger::ListNotebooks(const wstring & listTitle, const NotebookList & notebooks)
+void Logger::ListNotebooks(const wstring & listTitle, const NotebookList & notebooks)
 {
 	if (notebooks.empty())
 		return;
@@ -45,7 +45,7 @@ void SyncLogger::ListNotebooks(const wstring & listTitle, const NotebookList & n
 		WriteListEntry(notebook.name, notebook.guid);
 }
 
-void SyncLogger::ListTags(const wstring & listTitle, const TagList & tags)
+void Logger::ListTags(const wstring & listTitle, const TagList & tags)
 {
 	if (tags.empty())
 		return;
@@ -54,7 +54,7 @@ void SyncLogger::ListTags(const wstring & listTitle, const TagList & tags)
 		WriteListEntry(tag.name, tag.guid);
 }
 
-void SyncLogger::ListGuids(const wstring & listTitle, const vector<Guid> & guids)
+void Logger::ListGuids(const wstring & listTitle, const vector<Guid> & guids)
 {
 	if (guids.empty())
 		return;
@@ -63,12 +63,12 @@ void SyncLogger::ListGuids(const wstring & listTitle, const vector<Guid> & guids
 		WriteListEntry(L"", guid);
 }
 
-void SyncLogger::BeginSyncStage(const wstring & name)
+void Logger::BeginSyncStage(const wstring & name)
 {
 	stream << L"Sync " << name << L":\n";
 }
 
-void SyncLogger::PerformAction
+void Logger::PerformAction
 	( const wchar_t * action
 	, const Guid    * local
 	, const Guid    * remote
@@ -90,7 +90,7 @@ void SyncLogger::PerformAction
 	}
 }
 
-void SyncLogger::Error(const std::wstring & message)
+void Logger::Error(const std::wstring & message)
 {
 	stream << L"Error: " << message << L"\n";
 }
@@ -99,22 +99,22 @@ void SyncLogger::Error(const std::wstring & message)
 // utility functions
 //------------------
 
-void SyncLogger::WriteListHeader(const wstring & text)
+void Logger::WriteListHeader(const wstring & text)
 {
 	stream << text << ":\n";
 }
 
-void SyncLogger::WriteListEntry(const wstring & name, const Guid & guid)
+void Logger::WriteListEntry(const wstring & name, const Guid & guid)
 {
 	stream << ConvertToUnicode(guid) << L"\n";
 }
 
-void SyncLogger::WriteOperation(const wchar_t * name, const Guid & guid)
+void Logger::WriteOperation(const wchar_t * name, const Guid & guid)
 {
 	stream << name << L"( " << ConvertToUnicode(guid) << L" )\n";
 }
 
-void SyncLogger::WriteOperation
+void Logger::WriteOperation
 	( const wchar_t * name
 	, const Guid    & guid1
 	, const Guid    & guid2

@@ -49,11 +49,11 @@ private:
 	{
 	private:
 
-		ISyncLogger & syncLogger;
+		ISyncLogger & logger;
 
 	public:
 
-		SyncLoggerRAII(ISyncLogger & syncLogger);
+		SyncLoggerRAII(ISyncLogger & logger);
 
 		~SyncLoggerRAII();
 	};
@@ -65,7 +65,7 @@ private:
 	EnNoteTranslator & enNoteTranslator;
 	IEnService       & enService;
 	IMessagePump     & messagePump;
-	ISyncLogger      & syncLogger;
+	ISyncLogger      & logger;
 	IUserModel       & userModel;
 
 	HANDLE syncThread;

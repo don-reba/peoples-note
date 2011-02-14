@@ -18,7 +18,7 @@ struct SyncModelFixture
 	EnNoteTranslator enNoteTranslator;
 	MockEnService    enService;
 	MockMessagePump  messagePump;
-	MockSyncLogger   syncLogger;
+	MockSyncLogger   logger;
 	MockUserModel    userModel;
 
 	SyncModel syncModel;
@@ -29,7 +29,7 @@ struct SyncModelFixture
 			, enService
 			, messagePump
 			, userModel
-			, syncLogger
+			, logger
 			)
 	{
 		enService.userStore->authenticationResult.IsGood = true;

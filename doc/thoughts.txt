@@ -3246,3 +3246,14 @@ should write sync log to disk more often
 	done
 CredentialsPresenter.OnViewCreated is untested
 	TODO
+sync logger → general logger
+	goal
+		use the sync logger more generally
+	restrictions
+		the logger should be responsible for formatting
+		so it should take in high-level information
+	implementation
+		rename SyncLogger to Logger
+		add authorization error output from SyncModel
+		add a reference to the CredentialsPresenter
+		add authorization error output from CredentialsPresenter

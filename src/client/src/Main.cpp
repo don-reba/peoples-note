@@ -33,7 +33,7 @@
 #include "ProfileView.h"
 #include "RegistryKey.h"
 #include "SearchPresenter.h"
-#include "SyncLogger.h"
+#include "Logger.h"
 #include "SyncModel.h"
 #include "SyncPresenter.h"
 #include "UserLoader.h"
@@ -143,7 +143,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		EnNoteTranslator enNoteTranslator;
 		EnService        enService;
 		MessagePump      messagePump;
-		SyncLogger       syncLogger(deviceDocumentPath);
+		Logger       logger(deviceDocumentPath);
 
 		CredentialsModel newCredentials;
 		InkEditorModel   inkEditorModel(registryKey);
@@ -153,7 +153,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		UserModel        syncUserModel (syncDataStore, deviceDocumentPath, flashCard);
 
 		NoteListModel noteListModel(20, userModel, registryKey);
-		SyncModel     syncModel(enNoteTranslator, enService, messagePump, syncUserModel, syncLogger);
+		SyncModel     syncModel(enNoteTranslator, enService, messagePump, syncUserModel, logger);
 
 		AboutView       aboutView       (instance, highRes);
 		CredentialsView credentialsView (instance, highRes);

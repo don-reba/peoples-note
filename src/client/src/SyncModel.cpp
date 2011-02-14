@@ -42,7 +42,7 @@ SyncModel::SyncModel
 	, messagePump      (messagePump)
 	, userModel        (userModel)
 	, stopRequested    (false)
-	, syncLogger       (logger)
+	, logger       (logger)
 {
 	::InitializeCriticalSection(&lock);
 }
@@ -164,7 +164,7 @@ void SyncModel::FinishSync
 {
 	PostProgressMessage(0.0);
 	if (*logMessage)
-		syncLogger.Error(logMessage);
+		logger.Error(logMessage);
 	PostTextMessage(friendlyMessage);
 	PostSyncCompleteMessage();
 	userModel.Unload();
@@ -273,14 +273,14 @@ void SyncModel::ProcessNotes
 {
 	EnInteropNoteList local;
 	GetNotes(notebook, local);
-	syncLogger.ListNotes(L"Local notes", local);
+	logger.ListNotes(L"Local notes", local);
 
 	vector<SyncLogic::Action<EnInteropNote> > actions;
 	SyncLogic::Sync(fullSync, remote, local, actions);
 
 	NoteProcessor processor(enNoteTranslator, userModel, noteStore, notebook);
 
-	syncLogger.BeginSyncStage(L"notes");
+	logger.BeginSyncStage(L"notes");
 
 	// get the notes to delete
 	GuidList deletedNotes;
@@ -331,30 +331,30 @@ void SyncModel::ProcessNotes
 			switch (action.Type)
 			{
 			case SyncLogic::ActionAdd:
-				syncLogger.PerformAction(L"Add", NULL, &action.Remote->guid);
+				logger.PerformAction(L"Add", NULL, &action.Remote->guid);
 				processor.Add(*action.Remote);
 				break;
 			case SyncLogic::ActionDelete:
-				syncLogger.PerformAction(L"Delete", &action.Local->guid, NULL);
+				logger.PerformAction(L"Delete", &action.Local->guid, NULL);
 				processor.Delete(*action.Local);
 				break;
 			case SyncLogic::ActionMerge:
-				syncLogger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
+				logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 				processor.Merge(*action.Local, *action.Remote);
 				break;
 			case SyncLogic::ActionRenameAdd:
-				syncLogger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
+				logger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
 				processor.RenameAdd(*action.Local, *action.Remote);
 				break;
 			case SyncLogic::ActionUpload:
 				if (action.Local->guid.IsLocal())
 				{
-					syncLogger.PerformAction(L"Create", &action.Local->guid, NULL);
+					logger.PerformAction(L"Create", &action.Local->guid, NULL);
 					processor.Create(*action.Local);
 				}
 				else
 				{
-					syncLogger.PerformAction(L"Update", &action.Local->guid, NULL);
+					logger.PerformAction(L"Update", &action.Local->guid, NULL);
 					processor.Update(*action.Local);
 				}
 				break;
@@ -363,7 +363,7 @@ void SyncModel::ProcessNotes
 		catch (...)
 		{
 			ExceptionMessage message = GetExceptionMessage();
-			syncLogger.Error(message.Message);
+			logger.Error(message.Message);
 		}
 
 		PostProgressMessage(actionIndex / actionCount);
@@ -379,7 +379,7 @@ void SyncModel::ProcessNotebooks
 {
 	NotebookList local;
 	userModel.GetNotebooks(local);
-	syncLogger.ListNotebooks(L"Local notebooks", local);
+	logger.ListNotebooks(L"Local notebooks", local);
 
 	vector<SyncLogic::Action<Notebook> > actions;
 	SyncLogic::Sync(fullSync, remote, local, actions);
@@ -391,37 +391,37 @@ void SyncModel::ProcessNotebooks
 
 	NotebookProcessor processor(userModel);
 
-	syncLogger.BeginSyncStage(L"notebooks");
+	logger.BeginSyncStage(L"notebooks");
 	double actionIndex(0.0);
 	foreach (const SyncLogic::Action<Notebook> action, actions)
 	{
 		switch (action.Type)
 		{
 		case SyncLogic::ActionAdd:
-			syncLogger.PerformAction(L"Add", NULL, &action.Remote->guid);
+			logger.PerformAction(L"Add", NULL, &action.Remote->guid);
 			processor.Add(*action.Remote);
 			break;
 		case SyncLogic::ActionDelete:
-			syncLogger.PerformAction(L"Delete", &action.Local->guid, NULL);
+			logger.PerformAction(L"Delete", &action.Local->guid, NULL);
 			processor.Delete(*action.Local);
 			break;
 		case SyncLogic::ActionMerge:
-			syncLogger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
+			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 			processor.Merge(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionRenameAdd:
-			syncLogger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
+			logger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
 			processor.RenameAdd(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionUpload:
 			if (action.Local->guid.IsLocal())
 			{
-					syncLogger.PerformAction(L"Create", &action.Local->guid, NULL);
+					logger.PerformAction(L"Create", &action.Local->guid, NULL);
 					processor.Create(*action.Local, noteStore);
 			}
 			else
 			{
-					syncLogger.PerformAction(L"Update", &action.Local->guid, NULL);
+					logger.PerformAction(L"Update", &action.Local->guid, NULL);
 					processor.Update(*action.Local, noteStore);
 			}
 			break;
@@ -440,7 +440,7 @@ void SyncModel::ProcessTags
 {
 	TagList local;
 	userModel.GetTags(local);
-	syncLogger.ListTags(L"Local tags", local);
+	logger.ListTags(L"Local tags", local);
 
 	vector<SyncLogic::Action<Tag> > actions;
 	SyncLogic::Sync(fullSync, remote, local, actions);
@@ -452,37 +452,37 @@ void SyncModel::ProcessTags
 
 	TagProcessor processor(userModel);
 
-	syncLogger.BeginSyncStage(L"tags");
+	logger.BeginSyncStage(L"tags");
 	double actionIndex(0.0);
 	foreach (const SyncLogic::Action<Tag> action, actions)
 	{
 		switch (action.Type)
 		{
 		case SyncLogic::ActionAdd:
-			syncLogger.PerformAction(L"Add", NULL, &action.Remote->guid);
+			logger.PerformAction(L"Add", NULL, &action.Remote->guid);
 			processor.Add(*action.Remote);
 			break;
 		case SyncLogic::ActionDelete:
-			syncLogger.PerformAction(L"Delete", &action.Local->guid, NULL);
+			logger.PerformAction(L"Delete", &action.Local->guid, NULL);
 			processor.Delete(*action.Local);
 			break;
 		case SyncLogic::ActionMerge:
-			syncLogger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
+			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 			processor.Merge(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionRenameAdd:
-			syncLogger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
+			logger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
 			processor.RenameAdd(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionUpload:
 			if (action.Local->guid.IsLocal())
 			{
-				syncLogger.PerformAction(L"Create", &action.Local->guid, NULL);
+				logger.PerformAction(L"Create", &action.Local->guid, NULL);
 				processor.Create(*action.Local, noteStore);
 			}
 			else
 			{
-				syncLogger.PerformAction(L"Update", &action.Local->guid, NULL);
+				logger.PerformAction(L"Update", &action.Local->guid, NULL);
 				processor.Update(*action.Local, noteStore);
 			}
 			break;
@@ -496,7 +496,7 @@ void SyncModel::ProcessTags
 void SyncModel::Sync()
 try
 {
-	SyncLoggerRAII loggerRaii(syncLogger);
+	SyncLoggerRAII loggerRaii(logger);
 
 	PostTextMessage(L"Connecting...");
 
@@ -529,7 +529,7 @@ try
 	noteStore->GetSyncState(syncState);
 	bool fullSync(userModel.GetLastSyncEnTime() < syncState.FullSyncBefore);
 
-	syncLogger.BeginSyncStage(fullSync ? L"full" : L"incremental");
+	logger.BeginSyncStage(fullSync ? L"full" : L"incremental");
 
 	PostTextMessage(fullSync ? L"Begin full sync..." : L"Begin incremental sync...");
 
@@ -579,15 +579,15 @@ try
 				, notebook.guid
 				);
 
-			syncLogger.ListGuids(L"Expunged notes",     expungedNotes);
-			syncLogger.ListGuids(L"Expunged notebooks", expungedNotebooks);
-			syncLogger.ListGuids(L"Expunged tags",      expungedTags);
+			logger.ListGuids(L"Expunged notes",     expungedNotes);
+			logger.ListGuids(L"Expunged notebooks", expungedNotebooks);
+			logger.ListGuids(L"Expunged tags",      expungedTags);
 
 			foreach (Guid & guid, expungedNotes)
 			{
 				try
 				{
-					syncLogger.PerformAction(L"Delete", &guid, NULL);
+					logger.PerformAction(L"Delete", &guid, NULL);
 					userModel.ExpungeNote(guid);
 				}
 				catch (const std::exception &)
@@ -597,20 +597,20 @@ try
 			}
 			foreach (Guid & guid, expungedNotebooks)
 			{
-				syncLogger.PerformAction(L"Delete", &guid, NULL);
+				logger.PerformAction(L"Delete", &guid, NULL);
 				userModel.ExpungeNotebook(guid);
 			}
 			foreach (Guid & guid, expungedTags)
 			{
-				syncLogger.PerformAction(L"Delete", &guid, NULL);
+				logger.PerformAction(L"Delete", &guid, NULL);
 				userModel.ExpungeTag(guid);
 			}
 		}
 	}
 
-	syncLogger.ListNotes     (L"Remote notes",     remoteNotes);
-	syncLogger.ListNotebooks (L"Remote notebooks", remoteNotebooks);
-	syncLogger.ListTags      (L"Remote tags",      remoteTags);
+	logger.ListNotes     (L"Remote notes",     remoteNotes);
+	logger.ListNotebooks (L"Remote notebooks", remoteNotebooks);
+	logger.ListTags      (L"Remote tags",      remoteTags);
 
 	ProcessNotebooks (remoteNotebooks, *noteStore, fullSync);
 	ProcessTags      (remoteTags,      *noteStore, fullSync);
@@ -658,13 +658,13 @@ void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
 // UserModel::SyncLoggerRAII
 //--------------------------
 
-SyncModel::SyncLoggerRAII::SyncLoggerRAII(ISyncLogger & syncLogger)
-	: syncLogger (syncLogger)
+SyncModel::SyncLoggerRAII::SyncLoggerRAII(ISyncLogger & logger)
+	: logger (logger)
 {
-	syncLogger.Clear();
+	logger.Clear();
 }
 
 SyncModel::SyncLoggerRAII::~SyncLoggerRAII()
 {
-	syncLogger.Flush();
+	logger.Flush();
 }
