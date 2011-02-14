@@ -74,7 +74,7 @@ menu hr
 }
 
 
-input, widget[type=text]
+input:not([type]), input[type=text], input[type=password], widget[type=text], widget[type=password]
 {
 	background-image    : url(inputshadow.png);
 	background-position : 7px 7px 7px 7px;

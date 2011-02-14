@@ -157,12 +157,12 @@ void Logger::AuthorizationError
 	, const std::wstring & message
 	)
 {
-	stream << L"Auth error: '" << username << "' - " << message << L"\n" << flush;
+	stream << L"Auth error: '" << username << "' - " << message << endl;
 }
 
 void Logger::SyncError(const std::wstring & message)
 {
-	stream << L"Sync error: " << message << L"\n" << flush;
+	stream << L"Sync error: " << message << endl;
 }
 
 //------------------
