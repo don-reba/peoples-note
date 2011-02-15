@@ -10,12 +10,11 @@
 #include <iterator>
 #include <sstream>
 #include <vector>
+#include "wininet.h"
 
 using namespace std;
 using namespace Thrift::Protocol;
 using namespace Thrift::Transport;
-
-int dbgCounter = 1;
 
 THttpTransport::THttpTransport(LPCWSTR url)
 	: url            (url)
@@ -144,7 +143,7 @@ HINTERNET THttpTransport::BeginSession
 		, 0                     // dwContext
 		);
 	if (NULL == sessionHandle)
-		throw TTransportException(TTransportException::Unknown, L"Coult not begin session.");
+		throw TTransportException(TTransportException::Unknown, L"Could not begin session.");
 	return sessionHandle;
 }
 
@@ -166,7 +165,7 @@ HINTERNET THttpTransport::ConnectToInternet(LPCWSTR agent)
 		, 0                            // dwFlags
 		);
 	if (NULL == sessionHandle)
-		throw TTransportException(TTransportException::Unknown, L"Coult not establish internet connection.");
+		throw TTransportException(TTransportException::Unknown, L"Could not establish internet connection.");
 
 	unsigned long connectTimeout(8000);
 	::InternetSetOption
@@ -265,14 +264,8 @@ void THttpTransport::SendRequest
 
 	DWORD securityFlags(0);
 	DWORD securityFlagsSize(sizeof(securityFlags));
-	BOOL dbgSuccess = ::InternetQueryOption
-		( requestHandle
-		, INTERNET_OPTION_SECURITY_FLAGS
-		, reinterpret_cast<void*>(&securityFlags)
-		, &securityFlagsSize
-		);
 	securityFlags |= SECURITY_FLAG_IGNORE_UNKNOWN_CA;
-	dbgSuccess = ::InternetSetOption
+	::InternetSetOption
 		( requestHandle
 		, INTERNET_OPTION_SECURITY_FLAGS
 		, reinterpret_cast<void*>(&securityFlags)
@@ -304,7 +297,9 @@ void THttpTransport::SendRequest
 			, NULL          // Arguments
 			);
 		throw TTransportException
-			( TTransportException::Unknown
+			( error == ERROR_INTERNET_TIMEOUT
+			? TTransportException::TimedOut
+			: TTransportException::Unknown
 			, buffer[0]
 			? &buffer[0]
 			: L"Request could not be sent."
