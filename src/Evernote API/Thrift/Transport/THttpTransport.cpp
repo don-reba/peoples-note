@@ -167,21 +167,21 @@ HINTERNET THttpTransport::ConnectToInternet(LPCWSTR agent)
 	if (NULL == sessionHandle)
 		throw TTransportException(TTransportException::Unknown, L"Could not establish internet connection.");
 
-	unsigned long connectTimeout(8000);
+	unsigned long connectTimeout(12000);
 	::InternetSetOption
 		( sessionHandle
 		, INTERNET_OPTION_CONNECT_TIMEOUT
 		, &connectTimeout
 		, sizeof(connectTimeout)
 		);
-	unsigned long receiveTimeout(8000);
+	unsigned long receiveTimeout(12000);
 	::InternetSetOption
 		( sessionHandle
 		, INTERNET_OPTION_RECEIVE_TIMEOUT
 		, &receiveTimeout
 		, sizeof(receiveTimeout)
 		);
-	unsigned long sendTimeout(8000);
+	unsigned long sendTimeout(12000);
 	::InternetSetOption
 		( sessionHandle
 		, INTERNET_OPTION_SEND_TIMEOUT 
