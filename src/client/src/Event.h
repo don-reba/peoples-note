@@ -13,3 +13,11 @@
             Signal##name.connect(On##name);            \
         }                                              \
 
+#define MacroTestEvent(name)                           \
+    public:                                            \
+        signal Signal##name;                           \
+        virtual void Connect##name(slot_type On##name) \
+        {                                              \
+            Signal##name.connect(On##name);            \
+        }                                              \
+

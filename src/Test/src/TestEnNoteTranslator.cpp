@@ -30,10 +30,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_InvalidChars)
 	enNoteTranslator.ConvertToHtml(xml, html);
 	BOOST_CHECK_EQUAL
 		( html
-		,
-			L"<div type=\"en-note\">"
-				L"<a href=\"http://www.google.com/search?q=TEST&ie=UTF-8\">Google</a>"
-			L"</div>"
+		, L"<a href=\"http://www.google.com/search?q=TEST&ie=UTF-8\">Google</a>"
 		);
 }
 
@@ -45,11 +42,11 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToText)
 		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 		L"<en-note>"
-			L"text1"
+			L"<p>text1</p>"
 			L"<table><tr><td>cell1</td></tr><tr><td>cell2</td></tr></table>"
-			L"text2"
+			L"<p>text2</p>"
 			L"<en-crypt>CIPHER</en-crypt>"
-			L"text3"
+			L"<p>text3</p>"
 		L"</en-note>";
 	wstring text;
 	enNoteTranslator.ConvertToText(xml, text);
@@ -123,7 +120,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt_Test)
 		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 		L"<en-note>"
-			L"note"
+			L"<p>note</p>"
 			L"<en-crypt hint=\"Hint\">CIPHER</en-crypt>"
 		L"</en-note>";
 	wstring html;
@@ -132,10 +129,8 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt_Test)
 	BOOST_CHECK_EQUAL
 		( html
 		,
-			L"<div type=\"en-note\">"
-				L"note"
-				L"<img hint=\"Hint\" type=\"en-crypt\" src=\"encrypt.png\" content=\"CIPHER\"/>"
-			L"</div>"
+			L"<p>note</p>"
+			L"<img hint=\"Hint\" type=\"en-crypt\" src=\"encrypt.png\" content=\"CIPHER\"/>"
 		);
 
 	wstring xml2;
@@ -151,7 +146,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Media_Test)
 		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 		L"<en-note>"
-			L"note"
+			L"<p>note</p>"
 			L"<en-media border=\"1\" hash=\"d978\" type=\"image/jpeg\"/>"
 		L"</en-note>";
 	wstring html;
@@ -160,10 +155,8 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Media_Test)
 	BOOST_CHECK_EQUAL
 		( html
 		,
-			L"<div type=\"en-note\">"
-				L"note"
-				L"<img border=\"1\" src=\"img:d978.jpg\"/>"
-			L"</div>"
+			L"<p>note</p>"
+			L"<img border=\"1\" src=\"img:d978.jpg\"/>"
 		);
 
 	wstring xml2;
@@ -179,7 +172,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 		L"<en-note>"
-			L"note"
+			L"<p>note</p>"
 			L"<en-todo checked=\"true\"/>"
 			L"<en-todo checked=\"false\"/>"
 			L"<en-todo/>"
@@ -190,12 +183,10 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 	BOOST_CHECK_EQUAL
 		( html
 		,
-			L"<div type=\"en-note\">"
-				L"note"
-				L"<input type=\"checkbox\" checked=\"true\"/>"
-				L"<input type=\"checkbox\"/>"
-				L"<input type=\"checkbox\"/>"
-			L"</div>"
+			L"<p>note</p>"
+			L"<input type=\"checkbox\" checked=\"true\"/>"
+			L"<input type=\"checkbox\"/>"
+			L"<input type=\"checkbox\"/>"
 		);
 
 
@@ -207,7 +198,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 			L"<en-note>"
-				L"note"
+				L"<p>note</p>"
 				L"<en-todo checked=\"true\"/>"
 				L"<en-todo checked=\"false\"/>"
 				L"<en-todo checked=\"false\"/>"

@@ -7,6 +7,24 @@
 
 class MockNoteListView : public INoteListView
 {
+	MacroTestEvent(About)
+	MacroTestEvent(ClearSearch)
+	MacroTestEvent(Import)
+	MacroTestEvent(NewInkNote)
+	MacroTestEvent(NewNote)
+	MacroTestEvent(NewPhotoNote)
+	MacroTestEvent(NewVoiceNote)
+	MacroTestEvent(NotebookSelected)
+	MacroTestEvent(NotebookTitle)
+	MacroTestEvent(OpenNote)
+	MacroTestEvent(PageDown)
+	MacroTestEvent(PageUp)
+	MacroTestEvent(Profile)
+	MacroTestEvent(Search)
+	MacroTestEvent(SearchChanged)
+	MacroTestEvent(SignIn)
+	MacroTestEvent(Sync)
+
 public:
 
 	struct NoteRecord
@@ -51,24 +69,6 @@ public:
 	bool isSyncEnabled;
 	bool isSearchButtonSetToSearch;
 
-	signal SignalAbout;
-	signal SignalClearSearch;
-	signal SignalCreated;
-	signal SignalImport;
-	signal SignalNewInkNote;
-	signal SignalNewNote;
-	signal SignalNewPhotoNote;
-	signal SignalNotebookSelected;
-	signal SignalNotebookTitle;
-	signal SignalOpenNote;
-	signal SignalPageDown;
-	signal SignalPageUp;
-	signal SignalProfile;
-	signal SignalSearch;
-	signal SignalSearchChanged;
-	signal SignalSignIn;
-	signal SignalSync;
-
 public:
 
 	MockNoteListView();
@@ -82,40 +82,6 @@ public:
 	virtual void CheckNotebookTitleOption();
 
 	virtual void ClearNotes();
-
-	virtual void ConnectAbout(slot_type OnAbout);
-
-	virtual void ConnectClearSearch(slot_type OnClearSearch);
-
-	virtual void ConnectCreated(slot_type OnCreated);
-
-	virtual void ConnectImport(slot_type OnImport);
-
-	virtual void ConnectNewInkNote(slot_type OnNewInkNote);
-
-	virtual void ConnectNewNote(slot_type OnNewNote);
-
-	virtual void ConnectNewPhotoNote(slot_type OnNewPhoto);
-
-	virtual void ConnectNotebookSelected(slot_type OnNotebookSelected);
-
-	virtual void ConnectNotebookTitle(slot_type OnNotebookTitle);
-
-	virtual void ConnectOpenNote(slot_type OnOpenNote);
-
-	virtual void ConnectPageDown(slot_type OnPageDown);
-
-	virtual void ConnectPageUp(slot_type OnPageUp);
-
-	virtual void ConnectProfile(slot_type OnProfile);
-
-	virtual void ConnectSearch(slot_type OnSearch);
-
-	virtual void ConnectSearchChanged(slot_type OnSearchChanged);
-
-	virtual void ConnectSignIn(slot_type OnSignIn);
-
-	virtual void ConnectSync(slot_type OnSync);
 
 	virtual void DisableSync();
 

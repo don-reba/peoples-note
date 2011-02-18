@@ -108,11 +108,11 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.back().name = L"note-title";
 
 	noteListView.selectedNoteGuid = Guid("{0}");
-	userModel.noteBodies["{0}"] = L"<en-note>test-note</en-note>";
+	userModel.noteBodies["{0}"] = L"<en-note><p>test-note</p></en-note>";
 
 	noteListView.SignalOpenNote();
 
-	BOOST_CHECK_EQUAL(noteView.body, L"<div type=\"en-note\">test-note</div>");
+	BOOST_CHECK_EQUAL(noteView.body, L"<p>test-note</p>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
 	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 01:00");
 	BOOST_CHECK(noteView.isShown);
@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	noteListView.SignalOpenNote();
 
-	BOOST_CHECK_EQUAL(noteView.body, L"<div type=\"en-note\">test-note</div>");
+	BOOST_CHECK_EQUAL(noteView.body, L"<p>test-note</p>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
 	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 01:00\ntags: tag-0, tag-1");
 	BOOST_CHECK(noteView.isShown);

@@ -14,6 +14,7 @@ class NoteListView : public HTMLayoutWindow, public INoteListView
 	MacroEvent(NewInkNote)
 	MacroEvent(NewNote)
 	MacroEvent(NewPhotoNote)
+	MacroEvent(NewVoiceNote)
 	MacroEvent(NotebookSelected)
 	MacroEvent(NotebookTitle)
 	MacroEvent(OpenNote)
@@ -200,6 +201,7 @@ private:
 	void OnNewInk            (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNewPhoto          (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNewText           (BEHAVIOR_EVENT_PARAMS * params);
+	void OnNewVoice          (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNote              (BEHAVIOR_EVENT_PARAMS * params);
 	void OnPageDown          (BEHAVIOR_EVENT_PARAMS * params);
 	void OnPageUp            (BEHAVIOR_EVENT_PARAMS * params);

@@ -12,6 +12,7 @@ class INoteListView : public ISignalProvider
 	MacroIEvent(NewInkNote)
 	MacroIEvent(NewNote)
 	MacroIEvent(NewPhotoNote)
+	MacroIEvent(NewVoiceNote)
 	MacroIEvent(NotebookSelected)
 	MacroIEvent(NotebookTitle)
 	MacroIEvent(OpenNote)
