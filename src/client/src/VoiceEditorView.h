@@ -1,12 +1,11 @@
 #pragma once
-#include "IPhotoEditorView.h"
+#include "IVoiceEditorView.h"
 
 #include "HTMLayoutWindow.h"
 
-class PhotoEditorView : public HTMLayoutWindow, public IPhotoEditorView
+class VoiceEditorView : public HTMLayoutWindow, public IVoiceEditorView
 {
 	MacroEvent(Cancel)
-	MacroEvent(Ok)
 
 // data
 
@@ -20,29 +19,15 @@ private:
 
 public:
 
-	PhotoEditorView(HINSTANCE instance, bool highRes);
+	VoiceEditorView(HINSTANCE instance, bool highRes);
 
 	void Create(HWND parent);
 
-// IPhotoEditorView implementation
+// IVoiceEditorView implementation
 
 public:
 
-	virtual int CapturePhoto(int quality, int width, int height, std::wstring & path);
-
-	virtual PhotoQuality GetQuality();
-
-	virtual PhotoResolution GetResolution();
-
-	virtual std::wstring GetTitle();
-
 	virtual void Hide();
-
-	virtual void SetQuality(PhotoQuality quality);
-
-	virtual void SetMessage(const std::wstring & message);
-
-	virtual void SetResolution(PhotoResolution resolution);
 
 	virtual void Show();
 

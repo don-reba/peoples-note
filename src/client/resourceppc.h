@@ -18,6 +18,7 @@
 #define IDC_PROFILE_VIEW                14
 #define IDC_INK_EDIT                    15
 #define IDC_PHOTO_EDIT                  16
+#define IDC_VOICE_EDIT                  17
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104
