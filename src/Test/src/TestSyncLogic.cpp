@@ -203,8 +203,9 @@ BOOST_FIXTURE_TEST_CASE(SyncLogic_IncrementalSyncTest, SyncLogicFixture)
 	local.push_back(MockResource(L"1", Guid(), 0, false, StatusDeleted));
 
 	Guid guid0;
-	remote.push_back(MockResource(L"2", guid0, 0, false, StatusMerged));
-	local.push_back(MockResource(L"3", guid0, 0, true, StatusMerged));
+
+	remote.push_back(MockResource(L"2", guid0, 0, false, StatusClear));
+	local.push_back(MockResource(L"3", guid0, 0, true, StatusUploaded));
 
 	Guid guid1;
 	remote.push_back(MockResource(L"4", guid1, 0, false, StatusAdded));
@@ -213,6 +214,10 @@ BOOST_FIXTURE_TEST_CASE(SyncLogic_IncrementalSyncTest, SyncLogicFixture)
 	local.push_back(MockResource(L"6", Guid(), 0, true, StatusUploaded));
 
 	local.push_back(MockResource(L"7", Guid(), 0, false, StatusClear));
+
+	Guid guid2;
+	remote.push_back(MockResource(L"2", guid2, 1, false, StatusMerged));
+	local.push_back(MockResource(L"3", guid2, 0, true, StatusMerged));
 
 	IncrementalSync();
 

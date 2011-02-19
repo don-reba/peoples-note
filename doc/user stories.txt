@@ -65,10 +65,6 @@ note list paging
 	√ when the "earlier notes" link is clicked, the previous page should be set as the note list
 note view
 	√ when the user signs in, the list of notebooks should be filled in
-	when the user flicks the note left, the next note should be displayed
-		unless the note is the last
-	when the user flicks the note right, the previous note should be displayed
-		unless the note is the first
 	√ when the user clicks a TODO checkbox, the checkbox should be toggled
 	√ when a note is closed, the TODO checkbox state is persisted
 	√ when a note is closed, its thumbnail should be updated
@@ -86,8 +82,8 @@ storage
 	√ when a note is added, it is stored in the database
 database
 	√ when file does not exist, create a new one for the current version
-	when the file exists and has a lesser version, convert it to current version
-	when the file exists and has a greater version, refuse to open it
+	√ when the file exists and has a lesser version, convert it to current version
+	√ when the file exists and has a greater version, refuse to open it
 	√ when the file exists and has the correct version, use it
 	√ when a database for a named user cannot be opened, switch to the anonymous user
 	when a database for the anonymous user cannot be opened, show an error message and quit
@@ -96,16 +92,11 @@ Evernote import
 	√ when an .enex file is imported, add the notes from it to the last used notebook
 	when notes are imported, the sync counter should be updated
 text note viewing
-	when an HTTP url is clicked, open it in the browser
+	√ when an HTTP url is clicked, open it in the browser
 text note editing
 	when the screen is tilted, the editor should rotate
 	√ when the "full screen" button is clicked, the body text field should expand to full screen
 	√ when the "show toolbar" button is clicked, the body text field should restore from full screen
-	when a new note is open, the title screen should say "New note in %notebook%"
-	when the editable surface is selected, enable the toolbar
-	when anything, but the editable surface is selected, disable the toolbar
-	when the note is unchanged, the "OK" button should be disabled
-	when the note is changed, the "OK" button should be enabled
 	√ when the "OK" button is pressed, the note should be saved and the window close
 	√ when the "Cancel" button is pressed, the window should close
 instrumentation
@@ -134,4 +125,5 @@ photo note creation
 	√ when the camera capture dialog closes with success, a photo with the chosen title should be created and the window closed
 	√ when the camera capture dialog closes with failure, a meaningful message should be displayed
 	√ when the user selects "Cancel", the window should close
-
+photo note creation
+	√ when the user selects "Cancel", the window should close

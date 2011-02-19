@@ -3282,3 +3282,14 @@ sync logger → general logger
 	all done
 logging is untested
 	TODO
+note transformation
+	removing <en-note> means plain text can end up in the root node
+	this breaks the reverse transformation
+	better transform <en-note> to <div>
+	but does the editor have to return a single root node?
+		better pre-process instead
+		wait, no
+		single root node is not the problem
+		plain text is the problem
+		it is not valid HTML
+		so, just have to adjust the tests
