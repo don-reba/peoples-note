@@ -14,16 +14,10 @@ HtmlLayoutPresenter::HtmlLayoutPresenter
 	, HTMLayoutWindow & noteListView
 	, HTMLayoutWindow & photoEditorView
 	, HTMLayoutWindow & profileView
+	, HTMLayoutWindow & voiceEditorView
 	, IHtmlDataLoader & htmlDataLoader
 	)
-	: aboutView       (aboutView)
-    , credentialsView (credentialsView)
-    , editorView      (editorView)
-    , htmlDataLoader  (htmlDataLoader)
-    , noteView        (noteView)
-    , noteListView    (noteListView)
-	, photoEditorView (photoEditorView)
-	, profileView     (profileView)
+	: htmlDataLoader  (htmlDataLoader)
 {
 	aboutView       .ConnectLoadHtmlData(bind(&HtmlLayoutPresenter::OnLoadHtmlData, this, ref(aboutView)));
 	credentialsView .ConnectLoadHtmlData(bind(&HtmlLayoutPresenter::OnLoadHtmlData, this, ref(credentialsView)));
@@ -32,6 +26,7 @@ HtmlLayoutPresenter::HtmlLayoutPresenter
 	noteListView    .ConnectLoadHtmlData(bind(&HtmlLayoutPresenter::OnLoadHtmlData, this, ref(noteListView)));
 	photoEditorView .ConnectLoadHtmlData(bind(&HtmlLayoutPresenter::OnLoadHtmlData, this, ref(photoEditorView)));
 	profileView     .ConnectLoadHtmlData(bind(&HtmlLayoutPresenter::OnLoadHtmlData, this, ref(profileView)));
+	voiceEditorView .ConnectLoadHtmlData(bind(&HtmlLayoutPresenter::OnLoadHtmlData, this, ref(voiceEditorView)));
 }
 
 void HtmlLayoutPresenter::OnLoadHtmlData(HTMLayoutWindow & view)

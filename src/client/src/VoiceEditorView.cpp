@@ -7,6 +7,7 @@
 #include "Tools.h"
 
 #include <fstream>
+#include <voicectl.h>
 
 using namespace htmlayout;
 using namespace htmlayout::dom;
@@ -29,8 +30,15 @@ VoiceEditorView::VoiceEditorView(HINSTANCE instance, bool highRes)
 void VoiceEditorView::Create(HWND parent)
 {
 	this->parent = parent;
-	if (!RegisterClass(LoadStringResource(IDC_PHOTO_EDIT)))
+	if (!RegisterClass(LoadStringResource(IDC_VOICE_EDIT)))
 		throw std::exception("Class could not be registered.");
+}
+
+void VoiceEditorView::RegisterEventHandlers()
+{
+	ConnectBehavior("#play",   BUTTON_CLICK, &VoiceEditorView::OnVoicePlay);
+	ConnectBehavior("#record", BUTTON_CLICK, &VoiceEditorView::OnVoiceRecord);
+	ConnectBehavior("#stop",   BUTTON_CLICK, &VoiceEditorView::OnVoiceStop);
 }
 
 //--------------------------------
@@ -39,14 +47,17 @@ void VoiceEditorView::Create(HWND parent)
 
 void VoiceEditorView::Hide()
 {
-	CloseWindow(hwnd_);
-	hwnd_ = NULL;
+	if (hwnd_)
+	{
+		CloseWindow(hwnd_);
+		hwnd_ = NULL;
+	}
 }
 
 void VoiceEditorView::Show()
 {
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
-	wstring wndClass = LoadStringResource(IDC_PHOTO_EDIT);
+	wstring wndClass = LoadStringResource(IDC_VOICE_EDIT);
 
 	DWORD windowStyle(WS_POPUP);
 
@@ -77,6 +88,21 @@ void VoiceEditorView::Show()
 	ResizeWindow();
 
 	ShowWindow(hwnd_, SW_SHOW);
+}
+
+void VoiceEditorView::OnVoicePlay(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalPlay();
+}
+
+void VoiceEditorView::OnVoiceRecord(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalRecord();
+}
+
+void VoiceEditorView::OnVoiceStop(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalStop();
 }
 
 //------------------------

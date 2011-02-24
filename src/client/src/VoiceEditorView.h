@@ -6,6 +6,9 @@
 class VoiceEditorView : public HTMLayoutWindow, public IVoiceEditorView
 {
 	MacroEvent(Cancel)
+	MacroEvent(Play)
+	MacroEvent(Stop)
+	MacroEvent(Record)
 
 // data
 
@@ -22,6 +25,8 @@ public:
 	VoiceEditorView(HINSTANCE instance, bool highRes);
 
 	void Create(HWND parent);
+
+	virtual void RegisterEventHandlers();
 
 // IVoiceEditorView implementation
 
@@ -40,6 +45,14 @@ private:
 	void OnKeyUp    (Msg<WM_KEYUP>    & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
+
+// HTMLayout message handlers
+
+private:
+
+	void OnVoicePlay   (BEHAVIOR_EVENT_PARAMS * params);
+	void OnVoiceRecord (BEHAVIOR_EVENT_PARAMS * params);
+	void OnVoiceStop   (BEHAVIOR_EVENT_PARAMS * params);
 
 // utility functions
 

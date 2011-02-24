@@ -25,11 +25,47 @@
 				flow  : horizontal;
 				width : 100%%;
 			}
+			#controls
+			{
+				flow : horizontal;
+			}
+			#controls .spacer
+			{
+				width : 100%%;
+			}
+			#play
+			{
+				background : url(voice-play.png);
+			}
+			#record
+			{
+				background : url(voice-record.png);
+			}
+			#stop
+			{
+				background : url(voice-stop.png);
+			}
+			#controls widget
+			{
+				background-repeat : no-repeat;
+				border-style      : none;
+				height            : 114px;
+				margin            : 0px;
+				padding           : 0px;
+				width             : 116px;
+			}
 		</style>
 	</head>
 	<body>
 		<h1>Voice note<br>(under construction)</h1>
 		<input #title type="text" />
+		<div #controls>
+			<div .spacer />
+			<widget type="button" #record />
+			<widget type="button" #stop   />
+			<widget type="button" #play   />
+			<div .spacer />
+		</div>
 		<div .row #message></div>
 	</body>
 </html>

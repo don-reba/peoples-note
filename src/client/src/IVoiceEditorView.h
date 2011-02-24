@@ -4,6 +4,9 @@
 class IVoiceEditorView : public ISignalProvider
 {
 	MacroIEvent(Cancel)
+	MacroIEvent(Play)
+	MacroIEvent(Stop)
+	MacroIEvent(Record)
 
 public:
 

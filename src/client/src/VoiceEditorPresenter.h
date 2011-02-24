@@ -30,4 +30,7 @@ private:
 
 	void OnCancel();
 	void OnNewVoiceNote();
+	void OnPlay();
+	void OnRecord();
+	void OnStop();
 };

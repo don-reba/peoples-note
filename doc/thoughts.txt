@@ -3293,3 +3293,5 @@ note transformation
 		plain text is the problem
 		it is not valid HTML
 		so, just have to adjust the tests
+displaying record control
+	can't seem to do it on an HTMLayout form

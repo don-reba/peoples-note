@@ -210,6 +210,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListView
 			, photoEditorView
 			, profileView
+			, voiceEditorView
 			, htmlDataLoader
 			);
 		InkEditorPresenter
@@ -287,6 +288,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		credentialsView.Create (noteListView.hwnd_);
 		aboutView.Create       (noteListView.hwnd_);
 		profileView.Create     (noteListView.hwnd_);
+		voiceEditorView.Create (noteListView.hwnd_);
 
 		userLoader.Run();
 		int result(RunMessageLoop(animator, syncModel));

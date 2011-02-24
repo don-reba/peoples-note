@@ -25,7 +25,10 @@ VoiceEditorPresenter::VoiceEditorPresenter
 {
 	noteListView.ConnectNewVoiceNote(bind(&VoiceEditorPresenter::OnNewVoiceNote, this));
 
-	voiceEditorView.ConnectCancel(bind(&VoiceEditorPresenter::OnCancel, this));
+	voiceEditorView.ConnectCancel (bind(&VoiceEditorPresenter::OnCancel, this));
+	voiceEditorView.ConnectPlay   (bind(&VoiceEditorPresenter::OnPlay,   this));
+	voiceEditorView.ConnectRecord (bind(&VoiceEditorPresenter::OnRecord, this));
+	voiceEditorView.ConnectStop   (bind(&VoiceEditorPresenter::OnStop,   this));
 }
 
 void VoiceEditorPresenter::OnCancel()
@@ -36,4 +39,16 @@ void VoiceEditorPresenter::OnCancel()
 void VoiceEditorPresenter::OnNewVoiceNote()
 {
 	voiceEditorView.Show();
+}
+
+void VoiceEditorPresenter::OnPlay()
+{
+}
+
+void VoiceEditorPresenter::OnRecord()
+{
+}
+
+void VoiceEditorPresenter::OnStop()
+{
 }
