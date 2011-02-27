@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "VoiceEditorPresenter.h"
 
+#include "IAudio.h"
 #include "IFile.h"
 #include "INoteListView.h"
 #include "IVoiceEditorModel.h"
@@ -11,13 +12,13 @@ using namespace boost;
 using namespace std;
 
 VoiceEditorPresenter::VoiceEditorPresenter
-	( IFile             & file
+	( IAudio            & audio
 	, INoteListView     & noteListView
 	, IVoiceEditorModel & voiceEditorModel
 	, IVoiceEditorView  & voiceEditorView
 	, IUserModel        & userModel
 	)
-	: file             (file)
+	: audio            (audio)
 	, noteListView     (noteListView)
 	, voiceEditorModel (voiceEditorModel)
 	, voiceEditorView  (voiceEditorView)
@@ -43,12 +44,15 @@ void VoiceEditorPresenter::OnNewVoiceNote()
 
 void VoiceEditorPresenter::OnPlay()
 {
+	audio.Play();
 }
 
 void VoiceEditorPresenter::OnRecord()
 {
+	audio.Record();
 }
 
 void VoiceEditorPresenter::OnStop()
 {
+	audio.Stop();
 }

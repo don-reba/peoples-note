@@ -3,6 +3,7 @@
 #include "AboutPresenter.h"
 #include "AboutView.h"
 #include "Animator.h"
+#include "Audio.h"
 #include "CredentialsPresenter.h"
 #include "CredentialsView.h"
 #include "DataStore.h"
@@ -147,6 +148,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		MessagePump      messagePump;
 		Logger           logger(deviceDocumentPath);
 		
+		Audio     audio(file);
 		EnService enService(logger);
 
 		CredentialsModel newCredentials;
@@ -273,7 +275,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			);
 		VoiceEditorPresenter voiceEditorPresenter
-			( file
+			( audio
 			, noteListView
 			, voiceEditorModel
 			, voiceEditorView

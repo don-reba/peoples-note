@@ -4,6 +4,9 @@
 class MockVoiceEditorView : public IVoiceEditorView
 {
 	MacroTestEvent(Cancel)
+	MacroTestEvent(Play)
+	MacroTestEvent(Record)
+	MacroTestEvent(Stop)
 
 public:
 

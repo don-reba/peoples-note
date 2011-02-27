@@ -213,14 +213,6 @@
          x="-6.1309156e-006"
          y="559.92859" />
     </clipPath>
-    <filter
-       inkscape:collect="always"
-       id="filter3881">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.36"
-         id="feGaussianBlur3883" />
-    </filter>
     <clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath3076">
@@ -305,6 +297,18 @@
          offset="1"
          id="stop3950-40-2-2" />
     </linearGradient>
+    <filter
+       inkscape:collect="always"
+       id="filter3970"
+       x="-0.10103945"
+       width="1.2020789"
+       y="-0.091211901"
+       height="1.1824238">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.6745081"
+         id="feGaussianBlur3972" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -313,11 +317,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.93338095"
-     inkscape:cx="470.5926"
-     inkscape:cy="201.66919"
+     inkscape:zoom="0.66"
+     inkscape:cx="288.1352"
+     inkscape:cy="402.27081"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      borderlayer="false"
      inkscape:showpageshadow="true"
@@ -448,13 +452,12 @@
            height="303.19882"
            x="-107.13739"
            y="202.87944" /></flowRegion><flowPara
-         id="flowPara3107"></flowPara></flowRoot>  </g>
+         id="flowPara3107" /></flowRoot>  </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Page border"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <path
        style="fill:#000000;fill-opacity:1;stroke:none;display:inline"
        d="m -66,-56 0,752 612,0 0,-752 -612,0 z M 0,0 480,0 480,640 0,640 0,0 z"
@@ -475,12 +478,12 @@
     <image
        sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/window title.png"
        xlink:href="icons/window title.png"
-       style="display:inline"
-       y="0"
-       x="-0.00025027155"
-       id="image3052"
+       width="480.00046"
        height="52"
-       width="480.00046" />
+       id="image3052"
+       x="-0.00025027155"
+       y="0"
+       style="display:inline" />
     <g
        transform="translate(0,-412.36218)"
        id="g3095">
@@ -508,7 +511,7 @@
          style="font-size:29px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans Bold"
          xml:space="preserve"><tspan
            y="1034.3839"
-           x="327.17383"
+           x="374.05103"
            id="tspan3688"
            sodipodi:role="line">Cancel</tspan></text>
       <g
@@ -716,6 +719,69 @@
            id="rect3821"
            style="fill:#000000;fill-opacity:1;stroke:none" />
       </g>
+    </g>
+    <g
+       id="g3984"
+       transform="translate(3.6999104,0)">
+      <path
+         sodipodi:type="arc"
+         style="fill:#666666;fill-opacity:1;stroke:none;filter:url(#filter3970)"
+         id="path3974"
+         sodipodi:cx="90.999825"
+         sodipodi:cy="261.33627"
+         sodipodi:rx="19.887379"
+         sodipodi:ry="22.030127"
+         d="m 110.8872,261.33627 c 0,12.16691 -8.90388,22.03013 -19.887375,22.03013 -10.983496,0 -19.887379,-9.86322 -19.887379,-22.03013 0,-12.1669 8.903883,-22.03012 19.887379,-22.03012 10.983495,0 19.887375,9.86322 19.887375,22.03012 z"
+         transform="matrix(2.4135911,0,0,2.1788345,132.36351,-283.82141)" />
+      <image
+         width="96"
+         height="96"
+         xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/voice-play.png"
+         id="image3135"
+         x="303.99988"
+         y="237.58708" />
+    </g>
+    <g
+       id="g3988"
+       transform="translate(-0.30007555,0)">
+      <path
+         transform="matrix(2.4135911,0,0,2.1788345,20.363496,-283.82141)"
+         d="m 110.8872,261.33627 c 0,12.16691 -8.90388,22.03013 -19.887375,22.03013 -10.983496,0 -19.887379,-9.86322 -19.887379,-22.03013 0,-12.1669 8.903883,-22.03012 19.887379,-22.03012 10.983495,0 19.887375,9.86322 19.887375,22.03012 z"
+         sodipodi:ry="22.030127"
+         sodipodi:rx="19.887379"
+         sodipodi:cy="261.33627"
+         sodipodi:cx="90.999825"
+         id="path3976"
+         style="fill:#666666;fill-opacity:1;stroke:none;filter:url(#filter3970)"
+         sodipodi:type="arc" />
+      <image
+         y="237.58708"
+         x="191.99986"
+         id="image3172"
+         xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/voice-stop.png"
+         height="96"
+         width="96" />
+    </g>
+    <g
+       id="g3992"
+       transform="translate(-4.3000906,0)">
+      <path
+         transform="matrix(2.4135911,0,0,2.1788345,-91.636489,-283.82141)"
+         d="m 110.8872,261.33627 c 0,12.16691 -8.90388,22.03013 -19.887375,22.03013 -10.983496,0 -19.887379,-9.86322 -19.887379,-22.03013 0,-12.1669 8.903883,-22.03012 19.887379,-22.03012 10.983495,0 19.887375,9.86322 19.887375,22.03012 z"
+         sodipodi:ry="22.030127"
+         sodipodi:rx="19.887379"
+         sodipodi:cy="261.33627"
+         sodipodi:cx="90.999825"
+         id="path3176"
+         style="fill:#666666;fill-opacity:1;stroke:none;filter:url(#filter3970)"
+         sodipodi:type="arc" />
+      <image
+         y="237.58708"
+         x="79.999878"
+         id="image3174"
+         xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/voice-record.png"
+         height="96"
+         width="96" />
     </g>
   </g>
 </svg>

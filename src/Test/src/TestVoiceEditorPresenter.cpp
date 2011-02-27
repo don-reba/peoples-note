@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "VoiceEditorPresenter.h"
 
-#include "MockFile.h"
+#include "MockAudio.h"
 #include "MockNoteListView.h"
 #include "MockVoiceEditorModel.h"
 #include "MockVoiceEditorView.h"
@@ -16,7 +16,7 @@ using namespace std;
 
 struct VoiceEditorPresenterFixture
 {
-	MockFile             file;
+	MockAudio            audio;
 	MockNoteListView     noteListView;
 	MockVoiceEditorModel voiceEditorModel;
 	MockVoiceEditorView  voiceEditorView;
@@ -26,7 +26,7 @@ struct VoiceEditorPresenterFixture
 
 	VoiceEditorPresenterFixture()
 		: presenter
-			( file
+			( audio
 			, noteListView
 			, voiceEditorModel
 			, voiceEditorView

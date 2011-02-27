@@ -3295,3 +3295,23 @@ note transformation
 		so, just have to adjust the tests
 displaying record control
 	can't seem to do it on an HTMLayout form
+	internets also claim the control has focus issues
+	coupoled with general lack of usability...
+		screw the record control!
+recording waveform audio
+	lets do this by hand, shall we?
+	the waveform audio provides functions for recording and playback
+	call order
+		waveInOpen 
+		waveInPrepareHeader 
+		waveInAddBuffer 
+		waveInStart 
+		waveInUnprepareHeader 
+		waveInClose 
+	implementation
+		implement recording to memory
+		implement playback from memory
+		test that they work
+		implement WAV file serialization
+		implement voice note creation
+		implement voice note viewing
