@@ -39,6 +39,11 @@ namespace Tools
 
 	std::wstring MakeSizeString(__int64 size);
 
+	void ReadBinaryFile
+		( const wchar_t * fileName
+		, Blob          & data
+		);
+
 	void ReadUtf8File
 		( const wchar_t * fileName
 		, std::wstring  & contents

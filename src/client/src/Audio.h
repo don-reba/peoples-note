@@ -1,23 +1,26 @@
 #pragma once
 #include "IAudio.h"
 
-class IFile;
-
 class Audio : public IAudio
 {
-private:
+public:
 
-	IFile & file;
+	Audio();
 
 public:
 
-	Audio(IFile & file);
+	virtual void Play(Blob & blob);
 
-public:
-
-	virtual void Play();
-
-	virtual void Record();
+	virtual void Record(Blob & blob);
 
 	virtual void Stop();
+
+private:
+
+	static void Read
+		( Blob   & blob
+		, size_t   begin
+		, size_t   end
+		, void   * destination
+		);
 };

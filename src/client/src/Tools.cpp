@@ -445,9 +445,9 @@ wstring Tools::LoadStringResource(int id)
 	return &str[0];
 }
 
-void Tools::ReadUtf8File
+void Tools::ReadBinaryFile
 	( const wchar_t * fileName
-	, std::wstring  & contents
+	, Blob          & data
 	)
 {
 	HANDLE file = ::CreateFile
@@ -465,14 +465,21 @@ void Tools::ReadUtf8File
 	DWORD size(::GetFileSize(file, NULL));
 	if (!size)
 		return;
-
-	vector<unsigned char> utf8(size);
+	data.resize(size);
 
 	DWORD bytesRead(0);
-	::ReadFile(file, &utf8[0], size, &bytesRead, NULL);
+	::ReadFile(file, &data[0], size, &bytesRead, NULL);
 	if (bytesRead != size)
 		return;
+}
 
+void Tools::ReadUtf8File
+	( const wchar_t * fileName
+	, std::wstring  & contents
+	)
+{
+	vector<unsigned char> utf8;
+	ReadBinaryFile(fileName, utf8);
 	ConvertToUnicode(&utf8[0], contents);
 }
 

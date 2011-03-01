@@ -380,6 +380,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\client\src\Audio.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Credentials.cpp"
 				>
 			</File>
@@ -482,6 +486,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\TestAudio.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\src\TestRegistryKey.cpp"
