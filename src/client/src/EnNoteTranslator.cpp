@@ -106,11 +106,14 @@ void EnNoteTranslator::ConvertToXml
 {
 	Tools::ReplaceAll(html, L"&", L"&amp;");
 
+	EncloseInDiv(html);
+
 	typedef xml_document<wchar_t> XmlDocument;
 	auto_ptr<XmlDocument> doc(new XmlDocument());
 	doc->parse<parse_non_destructive>(&html[0]);
 
 	ProcessNode(doc.get(), doc.get(), htmlTransforms);
+	DeleteNode(doc.get(), doc.get(), doc->first_node());
 	SetRootToEnNote(doc.get());
 
 	xml =
@@ -144,6 +147,32 @@ bool EnNoteTranslator::AttributeNameSortPredicate
 	)
 {
 	return _wcsicmp(name1, name2) < 0;
+}
+
+void EnNoteTranslator::DeleteNode
+	( memory_pool<wchar_t> * store
+	, xml_node<wchar_t>    * parent
+	, xml_node<wchar_t>    * child
+	)
+{
+	xml_node<wchar_t> * grandchild(child->first_node());
+	while (grandchild)
+	{
+		xml_node<wchar_t> * sibling(grandchild->next_sibling());
+		child->remove_node(grandchild);
+		parent->insert_node(child, grandchild);
+		grandchild = sibling;
+	}
+	parent->remove_node(child);
+}
+
+void EnNoteTranslator::EncloseInDiv(wstring & text)
+{
+	const wchar_t * openDiv  (L"<div>");
+	const wchar_t * closeDiv (L"</div>");
+	text.reserve(text.size() + wcslen(openDiv) + wcslen(closeDiv));
+	text.insert(0, openDiv);
+	text.append(closeDiv);
 }
 
 void EnNoteTranslator::FilterAttributes
@@ -410,15 +439,7 @@ void EnNoteTranslator::ReplaceNote
 	, xml_node<wchar_t>    * child
 	)
 {
-	xml_node<wchar_t> * grandchild(child->first_node());
-	while (grandchild)
-	{
-		xml_node<wchar_t> * sibling(grandchild->next_sibling());
-		child->remove_node(grandchild);
-		parent->insert_node(child, grandchild);
-		grandchild = sibling;
-	}
-	parent->remove_node(child);
+	DeleteNode(store, parent, child);
 }
 
 void EnNoteTranslator::ReplaceTodo

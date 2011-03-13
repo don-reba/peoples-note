@@ -44,12 +44,14 @@ void VoiceEditorPresenter::OnNewVoiceNote()
 
 void VoiceEditorPresenter::OnPlay()
 {
-	audio.Play();
+	Blob empty;
+	audio.Play(empty);
 }
 
 void VoiceEditorPresenter::OnRecord()
 {
-	audio.Record();
+	Blob empty;
+	audio.Record(empty);
 }
 
 void VoiceEditorPresenter::OnStop()

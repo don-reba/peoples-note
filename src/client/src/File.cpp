@@ -44,3 +44,9 @@ bool File::Read(const wstring & path, Blob & data)
 
 	return true;
 }
+
+bool File::Write(const std::wstring & path, const Blob & data)
+{
+	// TODO
+	return false;
+}

@@ -3315,3 +3315,22 @@ recording waveform audio
 		implement WAV file serialization
 		implement voice note creation
 		implement voice note viewing
+	formats
+		there is a number of pre-set audio formats
+		the app should display supported formats
+			and let the user choose one
+		interface
+			get an array of format names
+			set format by index
+		should let the user choose device, as well
+		alternatively, we could choose the best device
+			this is much better!
+		how to erase all bits, except the highest one?
+			do I need to?
+			not really
+handling HTML without root node
+	surround with <div></div> before parsing
+		strip after conversion, if needed
+		it would definitely be needed
+		the rest can proceed as usual
+	TODO

@@ -138,6 +138,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		bool    highRes            (IsHighRes());
 
 		Animator         animator;
+		Audio            audio;
 		File             file;
 		FlashCard        flashCard;
 		RegistryKey      registryKey(L"Software\\People's Note");
@@ -147,8 +148,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		EnNoteTranslator enNoteTranslator;
 		MessagePump      messagePump;
 		Logger           logger(deviceDocumentPath);
-		
-		Audio     audio(file);
+
 		EnService enService(logger);
 
 		CredentialsModel newCredentials;

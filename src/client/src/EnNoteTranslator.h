@@ -62,6 +62,14 @@ private:
 		, const wchar_t * name2
 		);
 
+	static void DeleteNode
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
+		);
+
+	static void EncloseInDiv(std::wstring & text);
+
 	// requires a lowercase-alphabetically sorted whitelist
 	static void FilterAttributes
 		( rapidxml::xml_node<wchar_t> *  node
@@ -128,7 +136,7 @@ private:
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void EnNoteTranslator::SetRootToEnNote
+	static void SetRootToEnNote
 		( rapidxml::xml_document<wchar_t> * doc
 		);
 };

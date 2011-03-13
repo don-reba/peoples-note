@@ -6,9 +6,9 @@ class IAudio
 {
 public:
 
-	virtual void Play(Blob & blob) = 0;
+	virtual void Play(const Blob & data) = 0;
 
-	virtual void Record(Blob & blob) = 0;
+	virtual void Record(Blob & data) = 0;
 
 	virtual void Stop() = 0;
 };

@@ -13,8 +13,9 @@ using namespace std;
 AUTO_TEST_CASE(AudioRecord)
 {
 	Blob data;
-	Tools::ReadBinaryFile(L"My Documents\\People's Note\\start.wav", data);
+	//Tools::ReadBinaryFile(L"My Documents\\People's Note\\tito.wav", data);
 
 	Audio audio;
-	audio.Play(data);
+	//audio.Play(data);
+	audio.Record(data);
 }
