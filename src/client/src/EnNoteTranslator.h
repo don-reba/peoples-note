@@ -68,8 +68,6 @@ private:
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void EncloseInDiv(std::wstring & text);
-
 	// requires a lowercase-alphabetically sorted whitelist
 	static void FilterAttributes
 		( rapidxml::xml_node<wchar_t> *  node
@@ -139,4 +137,6 @@ private:
 	static void SetRootToEnNote
 		( rapidxml::xml_document<wchar_t> * doc
 		);
+
+	static void WrapInDiv(std::wstring & text);
 };

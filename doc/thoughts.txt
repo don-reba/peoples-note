@@ -2087,7 +2087,7 @@ claim note title is shown incorrectly
 	its just too long
 in note view, apostrophies are not translated
 	they are translated in XML, but not in HTML
-	they amperstand in &apos; gets encoded somehow
+	the amperstand in &apos; gets encoded somehow
 		XML->HTML conversion should not encode symbols
 		the parser performs no entity translation
 		the printer does
@@ -3333,4 +3333,10 @@ handling HTML without root node
 		strip after conversion, if needed
 		it would definitely be needed
 		the rest can proceed as usual
-	TODO
+amperstand handling
+	escaping amperstands can be a bad idea
+		because they can be part of other escape sequences
+	how can I tell, if they are part of escape sequence or not?
+	what if I write "&amp;" in the note?
+	unescaping amperstands was a bad idea even before that
+	only apostrophies should be unescaped

@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "MockAudio.h"
 
-void MockAudio::Play()
+void MockAudio::Play(const Blob & data)
 {
 }
 
-void MockAudio::Record()
+void MockAudio::Record(Blob & data)
 {
 }
 

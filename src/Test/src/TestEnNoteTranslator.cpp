@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_InvalidChars)
 	wstring html;
 	wstring xml;
 	
-	html = L"<a href=\"http://www.google.com/search?q=TEST&ie=UTF-8\">Google</a>";
+	html = L"<a href=\"http://www.google.com/search?q=TEST&amp;ie=UTF-8\">Google</a>";
 	enNoteTranslator.ConvertToXml(html, xml);
 	BOOST_CHECK_EQUAL
 		( xml
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_InvalidChars)
 	enNoteTranslator.ConvertToHtml(xml, html);
 	BOOST_CHECK_EQUAL
 		( html
-		, L"<a href=\"http://www.google.com/search?q=TEST&ie=UTF-8\">Google</a>"
+		, L"<a href=\"http://www.google.com/search?q=TEST&amp;ie=UTF-8\">Google</a>"
 		);
 }
 

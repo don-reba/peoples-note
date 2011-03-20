@@ -44,7 +44,6 @@ void EnNoteTranslator::ConvertToHtml
 	print(back_inserter(html), *doc, print_no_indenting | print_no_char_expansion);
 	// apostropies and amperstands are escaped in XML, but not in HTML
 	Tools::ReplaceAll(html, L"&apos;", L"'");
-	Tools::ReplaceAll(html, L"&amp;",  L"&");
 }
 
 void EnNoteTranslator::ConvertToText
@@ -104,9 +103,7 @@ void EnNoteTranslator::ConvertToXml
 	, wstring & xml
 	)
 {
-	Tools::ReplaceAll(html, L"&", L"&amp;");
-
-	EncloseInDiv(html);
+	WrapInDiv(html);
 
 	typedef xml_document<wchar_t> XmlDocument;
 	auto_ptr<XmlDocument> doc(new XmlDocument());
@@ -164,15 +161,6 @@ void EnNoteTranslator::DeleteNode
 		grandchild = sibling;
 	}
 	parent->remove_node(child);
-}
-
-void EnNoteTranslator::EncloseInDiv(wstring & text)
-{
-	const wchar_t * openDiv  (L"<div>");
-	const wchar_t * closeDiv (L"</div>");
-	text.reserve(text.size() + wcslen(openDiv) + wcslen(closeDiv));
-	text.insert(0, openDiv);
-	text.append(closeDiv);
 }
 
 void EnNoteTranslator::FilterAttributes
@@ -475,4 +463,13 @@ void EnNoteTranslator::SetRootToEnNote(xml_document<wchar_t> * doc)
 		}
 		doc->append_node(root);
 	}
+}
+
+void EnNoteTranslator::WrapInDiv(wstring & str)
+{
+	const wchar_t * openDiv  (L"<div>");
+	const wchar_t * closeDiv (L"</div>");
+	str.reserve(str.size() + wcslen(openDiv) + wcslen(closeDiv));
+	str.insert(0, openDiv);
+	str.append(closeDiv);
 }

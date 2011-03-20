@@ -5,9 +5,9 @@ class MockAudio : public IAudio
 {
 public:
 
-	virtual void Play();
+	virtual void Play(const Blob & data);
 
-	virtual void Record();
+	virtual void Record(Blob & data);
 
 	virtual void Stop();
 };
