@@ -3340,3 +3340,10 @@ amperstand handling
 	what if I write "&amp;" in the note?
 	unescaping amperstands was a bad idea even before that
 	only apostrophies should be unescaped
+new note button active states
+	mouse-down events delayed
+		maybe they should not be
+		only mouse-up events trigger clicks
+			true fot buttons
+			not true for notes
+		should check whether a button is being pressed

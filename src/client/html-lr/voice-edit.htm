@@ -25,11 +25,59 @@
 				flow  : horizontal;
 				width : 100%%;
 			}
+			#controls
+			{
+				flow : horizontal;
+			}
+			#controls .spacer
+			{
+				width : 100%%;
+			}
+			#play
+			{
+				background : url(voice-play.png);
+			}
+			#play:active
+			{
+				background : url(voice-play-pressed.png);
+			}
+			#record
+			{
+				background : url(voice-record.png);
+			}
+			#record:active
+			{
+				background : url(voice-record-pressed.png);
+			}
+			#stop
+			{
+				background : url(voice-stop.png);
+			}
+			#stop:active
+			{
+				background : url(voice-stop-pressed.png);
+			}
+			#controls widget
+			{
+				background-repeat : no-repeat;
+				border-style      : none;
+				height            : 57px;
+				margin            : 0px;
+				padding           : 0px;
+				width             : 58px;
+			}
 		</style>
 	</head>
 	<body>
-		<h1>Voice note (under construction)</h1>
+		<h1>Voice note<br>(under construction)</h1>
 		<input #title type="text" />
+		<div #controls>
+			<div .spacer />
+			<widget type="button" #record />
+			<widget type="button" #stop   />
+			<widget type="button" #play   />
+			<div .spacer />
+		</div>
 		<div .row #message></div>
 	</body>
 </html>

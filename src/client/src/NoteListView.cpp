@@ -536,10 +536,14 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 
 	noteList.set_state(STATE_FOCUS);
 
+	const wchar_t * type(clickTarget.get_attribute("type"));
+	if (type && 0 == wcsicmp(type, L"button"))
+		return;
+
 	::SetCapture(hwnd_);
 
 	gestureProcessor.OnMouseDown(msg);
-
+	
 	msg.handled_ = true;
 }
 
