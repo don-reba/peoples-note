@@ -15,8 +15,9 @@ class AboutView : public HTMLayoutWindow, public IAboutView
 
 private:
 
-	HINSTANCE instance;
 	HWND      parent;
+	HWND      menuBar;
+	HINSTANCE instance;
 
 // interface
 
@@ -48,4 +49,6 @@ private:
 private:
 
 	ATOM RegisterClass(const std::wstring & wndClass);
+
+	void ResizeWindow();
 };

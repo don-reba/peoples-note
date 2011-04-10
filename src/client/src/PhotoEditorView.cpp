@@ -123,6 +123,7 @@ void PhotoEditorView::Show()
 	menuBarInfo.nToolBarId = IDR_OK_CANCEL_MENUBAR;
 	menuBarInfo.hInstRes   = instance;
 	::SHCreateMenuBar(&menuBarInfo);
+	menuBar = menuBarInfo.hwndMB;
 
 	ResizeWindow();
 
@@ -200,39 +201,21 @@ ATOM PhotoEditorView::RegisterClass(const wstring & wndClass)
 
 void PhotoEditorView::ResizeWindow()
 {
-	HWND menuBar(::SHFindMenuBar(hwnd_));
-	if (menuBar)
-	{
-		Rect desktopRect;
-		::SystemParametersInfo(SPI_GETWORKAREA, 0, &desktopRect, FALSE);
+	Rect desktopRect;
+	::SystemParametersInfo(SPI_GETWORKAREA, 0, &desktopRect, FALSE);
 
-		Rect menuBarRect;
-		::GetWindowRect(menuBar, &menuBarRect);
+	Rect menuBarRect;
+	::GetWindowRect(menuBar, &menuBarRect);
 
-		int windowWidth  (desktopRect.GetWidth());
-		int windowHeight (desktopRect.GetHeight() - menuBarRect.GetHeight());
+	int windowWidth  (desktopRect.GetWidth());
+	int windowHeight (desktopRect.GetHeight() - menuBarRect.GetHeight());
 
-		::MoveWindow
-			( hwnd_              // hwnd
-			, desktopRect.GetX() // x
-			, desktopRect.GetY() // y
-			, windowWidth        // nWidth
-			, windowHeight       // nHeight
-			, TRUE			     // bRepaint
-			);
-	}
-	else
-	{
-		Rect desktopRect;
-		::SystemParametersInfo(SPI_GETWORKAREA, 0, &desktopRect, FALSE);
-
-		::MoveWindow
-			( hwnd_                   // hwnd
-			, desktopRect.GetX()      // x
-			, desktopRect.GetY()      // y
-			, desktopRect.GetWidth()  // nWidth
-			, desktopRect.GetHeight() // nHeight
-			, TRUE			          // bRepaint
-			);
-	}
+	::MoveWindow
+		( hwnd_              // hwnd
+		, desktopRect.GetX() // x
+		, desktopRect.GetY() // y
+		, windowWidth        // nWidth
+		, windowHeight       // nHeight
+		, TRUE			     // bRepaint
+		);
 }
