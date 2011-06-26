@@ -3347,3 +3347,9 @@ new note button active states
 			true fot buttons
 			not true for notes
 		should check whether a button is being pressed
+db streaming
+	needs to be done asynchronously
+	can guarantee that the database is not modified within the same session
+	so, no need to start a separate session
+	I wonder what would happen, if I played audio during sync of the same note
+		TODO

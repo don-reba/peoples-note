@@ -2,11 +2,9 @@
 
 #include "Blob.h"
 
-class IAudio
+class IAudioRecorder
 {
 public:
-
-	virtual void Play(const Blob & data) = 0;
 
 	virtual void Record(Blob & data) = 0;
 

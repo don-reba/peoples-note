@@ -188,7 +188,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles=""
+				AdditionalFiles="tito.wav|$(ProjectDir)|%CSIDL_PROGRAM_FILES%\MobileTest\|0"
 			/>
 			<DebuggerTool
 			/>
@@ -380,7 +380,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\client\src\Audio.cpp"
+				RelativePath="..\client\src\AudioPlayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\AudioRecorder.cpp"
 				>
 			</File>
 			<File
@@ -488,7 +492,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\TestAudio.cpp"
+				RelativePath=".\src\TestAudioPlayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestAudioRecorder.cpp"
 				>
 			</File>
 			<File
@@ -531,6 +539,10 @@
 				RelativePath="..\client\src\UserModel.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\client\src\WaveOut.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -542,11 +554,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File

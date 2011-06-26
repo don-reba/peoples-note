@@ -255,7 +255,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -410,6 +410,37 @@
          style="fill:#666666;fill-opacity:1;stroke:none"
          rx="5" />
     </g>
+    <rect
+       style="fill:#f0ec40;fill-opacity:1;stroke:none"
+       id="rect2915-6"
+       width="470"
+       height="64"
+       x="-5.6843419e-013"
+       y="936.36218"
+       rx="0"
+       ry="0" />
+    <g
+       id="g3750-6"
+       transform="translate(-176.25214,525.60199)">
+      <text
+         xml:space="preserve"
+         style="font-size:38.50821304px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Bitstream Vera Sans"
+         x="261.86182"
+         y="453.55731"
+         id="text3726-7"><tspan
+           sodipodi:role="line"
+           id="tspan3728-1"
+           x="261.86182"
+           y="453.55731"
+           style="font-size:29px;font-weight:normal;fill:#000000;-inkscape-font-specification:Bitstream Vera Sans">Sounds.wav</tspan></text>
+    </g>
+    <image
+       y="936.36218"
+       x="-5.6843419e-013"
+       id="image3086"
+       xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/sound-attachment.png"
+       height="64"
+       width="64" />
   </g>
   <g
      inkscape:groupmode="layer"
