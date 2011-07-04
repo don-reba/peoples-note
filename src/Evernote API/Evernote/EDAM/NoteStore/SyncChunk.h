@@ -16,7 +16,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -44,20 +44,24 @@ public:
 		bool expungedNotebooks;
 		bool expungedTags;
 		bool expungedSearches;
+		bool linkedNotebooks;
+		bool expungedLinkedNotebooks;
 	};
 
-	Evernote::EDAM::Types::Timestamp currentTime;
+	Evernote::EDAM::Type::Timestamp currentTime;
 	__int32 chunkHighUSN;
 	__int32 updateCount;
-	std::vector<Evernote::EDAM::Types::Note > notes;
-	std::vector<Evernote::EDAM::Types::Notebook > notebooks;
-	std::vector<Evernote::EDAM::Types::Tag > tags;
-	std::vector<Evernote::EDAM::Types::SavedSearch > searches;
-	std::vector<Evernote::EDAM::Types::Resource > resources;
-	std::vector<Evernote::EDAM::Types::Guid > expungedNotes;
-	std::vector<Evernote::EDAM::Types::Guid > expungedNotebooks;
-	std::vector<Evernote::EDAM::Types::Guid > expungedTags;
-	std::vector<Evernote::EDAM::Types::Guid > expungedSearches;
+	std::vector<Evernote::EDAM::Type::Note > notes;
+	std::vector<Evernote::EDAM::Type::Notebook > notebooks;
+	std::vector<Evernote::EDAM::Type::Tag > tags;
+	std::vector<Evernote::EDAM::Type::SavedSearch > searches;
+	std::vector<Evernote::EDAM::Type::Resource > resources;
+	std::vector<Evernote::EDAM::Type::Guid > expungedNotes;
+	std::vector<Evernote::EDAM::Type::Guid > expungedNotebooks;
+	std::vector<Evernote::EDAM::Type::Guid > expungedTags;
+	std::vector<Evernote::EDAM::Type::Guid > expungedSearches;
+	std::vector<Evernote::EDAM::Type::LinkedNotebook > linkedNotebooks;
+	std::vector<Evernote::EDAM::Type::Guid > expungedLinkedNotebooks;
 
 	Isset __isset;
 

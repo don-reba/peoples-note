@@ -16,7 +16,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -34,60 +34,68 @@ public:
 	public:
 		virtual SyncState getSyncState(Thrift::Protocol::TString authenticationToken) = 0;
 		virtual SyncChunk getSyncChunk(Thrift::Protocol::TString authenticationToken, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly) = 0;
-		virtual std::vector<Evernote::EDAM::Types::Notebook > listNotebooks(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual Evernote::EDAM::Types::Notebook getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Evernote::EDAM::Types::Notebook getDefaultNotebook(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual Evernote::EDAM::Types::Notebook createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook) = 0;
-		virtual __int32 updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook) = 0;
-		virtual __int32 expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual std::vector<Evernote::EDAM::Types::Tag > listTags(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual std::vector<Evernote::EDAM::Types::Tag > listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid notebookGuid) = 0;
-		virtual Evernote::EDAM::Types::Tag getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Evernote::EDAM::Types::Tag createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag) = 0;
-		virtual __int32 updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag) = 0;
-		virtual void untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual __int32 expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual std::vector<Evernote::EDAM::Types::SavedSearch > listSearches(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual Evernote::EDAM::Types::SavedSearch getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Evernote::EDAM::Types::SavedSearch createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search) = 0;
-		virtual __int32 updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search) = 0;
-		virtual __int32 expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
+		virtual SyncState getLinkedNotebookSyncState(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook) = 0;
+		virtual SyncChunk getLinkedNotebookSyncChunk(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly) = 0;
+		virtual std::vector<Evernote::EDAM::Type::Notebook > listNotebooks(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual Evernote::EDAM::Type::Notebook getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Evernote::EDAM::Type::Notebook getDefaultNotebook(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual Evernote::EDAM::Type::Notebook createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook) = 0;
+		virtual __int32 updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook) = 0;
+		virtual __int32 expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual std::vector<Evernote::EDAM::Type::Tag > listTags(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual std::vector<Evernote::EDAM::Type::Tag > listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid notebookGuid) = 0;
+		virtual Evernote::EDAM::Type::Tag getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Evernote::EDAM::Type::Tag createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag) = 0;
+		virtual __int32 updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag) = 0;
+		virtual void untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual __int32 expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual std::vector<Evernote::EDAM::Type::SavedSearch > listSearches(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual Evernote::EDAM::Type::SavedSearch getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Evernote::EDAM::Type::SavedSearch createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search) = 0;
+		virtual __int32 updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search) = 0;
+		virtual __int32 expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
 		virtual NoteList findNotes(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes) = 0;
+		virtual __int32 findNoteOffset(Thrift::Protocol::TString authenticationToken, NoteFilter filter, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual NotesMetadataList findNotesMetadata(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes, NotesMetadataResultSpec resultSpec) = 0;
 		virtual NoteCollectionCounts findNoteCounts(Thrift::Protocol::TString authenticationToken, NoteFilter filter, bool withTrash) = 0;
-		virtual Evernote::EDAM::Types::Note getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData) = 0;
-		virtual Thrift::Protocol::TString getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Thrift::Protocol::TString getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual std::vector<Thrift::Protocol::TString > getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Evernote::EDAM::Types::Note createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note) = 0;
-		virtual Evernote::EDAM::Types::Note updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note) = 0;
-		virtual __int32 deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual __int32 expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual __int32 expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Types::Guid > noteGuids) = 0;
+		virtual Evernote::EDAM::Type::Note getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData) = 0;
+		virtual Thrift::Protocol::TString getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Thrift::Protocol::TString getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool noteOnly, bool tokenizeForIndexing) = 0;
+		virtual Thrift::Protocol::TString getResourceSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual std::vector<Thrift::Protocol::TString > getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Evernote::EDAM::Type::Note createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note) = 0;
+		virtual Evernote::EDAM::Type::Note updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note) = 0;
+		virtual __int32 deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual __int32 expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual __int32 expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Type::Guid > noteGuids) = 0;
 		virtual __int32 expungeInactiveNotes(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual Evernote::EDAM::Types::Note copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid) = 0;
-		virtual std::vector<NoteVersionId > listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid) = 0;
-		virtual Evernote::EDAM::Types::Note getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData) = 0;
-		virtual Evernote::EDAM::Types::Resource getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData) = 0;
-		virtual __int32 updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Resource resource) = 0;
-		virtual Thrift::Protocol::TBinary getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Evernote::EDAM::Types::Resource getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData) = 0;
-		virtual Thrift::Protocol::TBinary getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Thrift::Protocol::TBinary getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
-		virtual Evernote::EDAM::Types::ResourceAttributes getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid) = 0;
+		virtual Evernote::EDAM::Type::Note copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Evernote::EDAM::Type::Guid toNotebookGuid) = 0;
+		virtual std::vector<NoteVersionId > listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid) = 0;
+		virtual Evernote::EDAM::Type::Note getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData) = 0;
+		virtual Evernote::EDAM::Type::Resource getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData) = 0;
+		virtual __int32 updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Resource resource) = 0;
+		virtual Thrift::Protocol::TBinary getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Evernote::EDAM::Type::Resource getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData) = 0;
+		virtual Thrift::Protocol::TBinary getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Thrift::Protocol::TBinary getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Evernote::EDAM::Type::ResourceAttributes getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
 		virtual __int64 getAccountSize(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual std::vector<Evernote::EDAM::Types::Ad > getAds(Thrift::Protocol::TString authenticationToken, AdParameters adParameters) = 0;
-		virtual Evernote::EDAM::Types::Ad getRandomAd(Thrift::Protocol::TString authenticationToken, AdParameters adParameters) = 0;
-		virtual Evernote::EDAM::Types::Notebook getPublicNotebook(Evernote::EDAM::Types::UserID userId, Thrift::Protocol::TString publicUri) = 0;
-		virtual Evernote::EDAM::Types::SharedNotebook createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SharedNotebook sharedNotebook) = 0;
-		virtual std::vector<Evernote::EDAM::Types::SharedNotebook > listSharedNotebooks(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual std::vector<Evernote::EDAM::Type::Ad > getAds(Thrift::Protocol::TString authenticationToken, AdParameters adParameters) = 0;
+		virtual Evernote::EDAM::Type::Ad getRandomAd(Thrift::Protocol::TString authenticationToken, AdParameters adParameters) = 0;
+		virtual Evernote::EDAM::Type::Notebook getPublicNotebook(Evernote::EDAM::Type::UserID userId, Thrift::Protocol::TString publicUri) = 0;
+		virtual Evernote::EDAM::Type::SharedNotebook createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SharedNotebook sharedNotebook) = 0;
+		virtual std::vector<Evernote::EDAM::Type::SharedNotebook > listSharedNotebooks(Thrift::Protocol::TString authenticationToken) = 0;
 		virtual __int32 expungeSharedNotebooks(Thrift::Protocol::TString authenticationToken, std::vector<__int64 > sharedNotebookIds) = 0;
-		virtual Evernote::EDAM::Types::LinkedNotebook createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook) = 0;
-		virtual Evernote::EDAM::Types::LinkedNotebook updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook) = 0;
-		virtual std::vector<Evernote::EDAM::Types::LinkedNotebook > listLinkedNotebooks(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual __int32 expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, __int64 linkedNotebookId) = 0;
+		virtual Evernote::EDAM::Type::LinkedNotebook createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook) = 0;
+		virtual __int32 updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook) = 0;
+		virtual std::vector<Evernote::EDAM::Type::LinkedNotebook > listLinkedNotebooks(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual __int32 expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
 		virtual Evernote::EDAM::UserStore::AuthenticationResult authenticateToSharedNotebook(Thrift::Protocol::TString shareKey, Thrift::Protocol::TString authenticationToken) = 0;
-		virtual Evernote::EDAM::Types::SharedNotebook getSharedNotebookByAuth(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual Evernote::EDAM::Type::SharedNotebook getSharedNotebookByAuth(Thrift::Protocol::TString authenticationToken) = 0;
 		virtual void emailNote(Thrift::Protocol::TString authenticationToken, NoteEmailParameters parameters) = 0;
+		virtual Thrift::Protocol::TString shareNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual void stopSharingNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid) = 0;
+		virtual Evernote::EDAM::UserStore::AuthenticationResult authenticateToSharedNote(Thrift::Protocol::TString guid, Thrift::Protocol::TString noteKey) = 0;
 	};
 
 	class Client : public Iface
@@ -117,168 +125,192 @@ public:
 		SyncChunk getSyncChunk(Thrift::Protocol::TString authenticationToken, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly);
 		void send_getSyncChunk(Thrift::Protocol::TString authenticationToken, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly);
 		SyncChunk recv_getSyncChunk();
-		std::vector<Evernote::EDAM::Types::Notebook > listNotebooks(Thrift::Protocol::TString authenticationToken);
+		SyncState getLinkedNotebookSyncState(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook);
+		void send_getLinkedNotebookSyncState(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook);
+		SyncState recv_getLinkedNotebookSyncState();
+		SyncChunk getLinkedNotebookSyncChunk(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly);
+		void send_getLinkedNotebookSyncChunk(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly);
+		SyncChunk recv_getLinkedNotebookSyncChunk();
+		std::vector<Evernote::EDAM::Type::Notebook > listNotebooks(Thrift::Protocol::TString authenticationToken);
 		void send_listNotebooks(Thrift::Protocol::TString authenticationToken);
-		std::vector<Evernote::EDAM::Types::Notebook > recv_listNotebooks();
-		Evernote::EDAM::Types::Notebook getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		Evernote::EDAM::Types::Notebook recv_getNotebook();
-		Evernote::EDAM::Types::Notebook getDefaultNotebook(Thrift::Protocol::TString authenticationToken);
+		std::vector<Evernote::EDAM::Type::Notebook > recv_listNotebooks();
+		Evernote::EDAM::Type::Notebook getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		Evernote::EDAM::Type::Notebook recv_getNotebook();
+		Evernote::EDAM::Type::Notebook getDefaultNotebook(Thrift::Protocol::TString authenticationToken);
 		void send_getDefaultNotebook(Thrift::Protocol::TString authenticationToken);
-		Evernote::EDAM::Types::Notebook recv_getDefaultNotebook();
-		Evernote::EDAM::Types::Notebook createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook);
-		void send_createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook);
-		Evernote::EDAM::Types::Notebook recv_createNotebook();
-		__int32 updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook);
-		void send_updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook);
+		Evernote::EDAM::Type::Notebook recv_getDefaultNotebook();
+		Evernote::EDAM::Type::Notebook createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook);
+		void send_createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook);
+		Evernote::EDAM::Type::Notebook recv_createNotebook();
+		__int32 updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook);
+		void send_updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook);
 		__int32 recv_updateNotebook();
-		__int32 expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		__int32 expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		__int32 recv_expungeNotebook();
-		std::vector<Evernote::EDAM::Types::Tag > listTags(Thrift::Protocol::TString authenticationToken);
+		std::vector<Evernote::EDAM::Type::Tag > listTags(Thrift::Protocol::TString authenticationToken);
 		void send_listTags(Thrift::Protocol::TString authenticationToken);
-		std::vector<Evernote::EDAM::Types::Tag > recv_listTags();
-		std::vector<Evernote::EDAM::Types::Tag > listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid notebookGuid);
-		void send_listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid notebookGuid);
-		std::vector<Evernote::EDAM::Types::Tag > recv_listTagsByNotebook();
-		Evernote::EDAM::Types::Tag getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		Evernote::EDAM::Types::Tag recv_getTag();
-		Evernote::EDAM::Types::Tag createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag);
-		void send_createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag);
-		Evernote::EDAM::Types::Tag recv_createTag();
-		__int32 updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag);
-		void send_updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag);
+		std::vector<Evernote::EDAM::Type::Tag > recv_listTags();
+		std::vector<Evernote::EDAM::Type::Tag > listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid notebookGuid);
+		void send_listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid notebookGuid);
+		std::vector<Evernote::EDAM::Type::Tag > recv_listTagsByNotebook();
+		Evernote::EDAM::Type::Tag getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		Evernote::EDAM::Type::Tag recv_getTag();
+		Evernote::EDAM::Type::Tag createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag);
+		void send_createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag);
+		Evernote::EDAM::Type::Tag recv_createTag();
+		__int32 updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag);
+		void send_updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag);
 		__int32 recv_updateTag();
-		void untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		void untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		void recv_untagAll();
-		__int32 expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		__int32 expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		__int32 recv_expungeTag();
-		std::vector<Evernote::EDAM::Types::SavedSearch > listSearches(Thrift::Protocol::TString authenticationToken);
+		std::vector<Evernote::EDAM::Type::SavedSearch > listSearches(Thrift::Protocol::TString authenticationToken);
 		void send_listSearches(Thrift::Protocol::TString authenticationToken);
-		std::vector<Evernote::EDAM::Types::SavedSearch > recv_listSearches();
-		Evernote::EDAM::Types::SavedSearch getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		Evernote::EDAM::Types::SavedSearch recv_getSearch();
-		Evernote::EDAM::Types::SavedSearch createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search);
-		void send_createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search);
-		Evernote::EDAM::Types::SavedSearch recv_createSearch();
-		__int32 updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search);
-		void send_updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search);
+		std::vector<Evernote::EDAM::Type::SavedSearch > recv_listSearches();
+		Evernote::EDAM::Type::SavedSearch getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		Evernote::EDAM::Type::SavedSearch recv_getSearch();
+		Evernote::EDAM::Type::SavedSearch createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search);
+		void send_createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search);
+		Evernote::EDAM::Type::SavedSearch recv_createSearch();
+		__int32 updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search);
+		void send_updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search);
 		__int32 recv_updateSearch();
-		__int32 expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		__int32 expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		__int32 recv_expungeSearch();
 		NoteList findNotes(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes);
 		void send_findNotes(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes);
 		NoteList recv_findNotes();
+		__int32 findNoteOffset(Thrift::Protocol::TString authenticationToken, NoteFilter filter, Evernote::EDAM::Type::Guid guid);
+		void send_findNoteOffset(Thrift::Protocol::TString authenticationToken, NoteFilter filter, Evernote::EDAM::Type::Guid guid);
+		__int32 recv_findNoteOffset();
+		NotesMetadataList findNotesMetadata(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes, NotesMetadataResultSpec resultSpec);
+		void send_findNotesMetadata(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes, NotesMetadataResultSpec resultSpec);
+		NotesMetadataList recv_findNotesMetadata();
 		NoteCollectionCounts findNoteCounts(Thrift::Protocol::TString authenticationToken, NoteFilter filter, bool withTrash);
 		void send_findNoteCounts(Thrift::Protocol::TString authenticationToken, NoteFilter filter, bool withTrash);
 		NoteCollectionCounts recv_findNoteCounts();
-		Evernote::EDAM::Types::Note getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
-		void send_getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
-		Evernote::EDAM::Types::Note recv_getNote();
-		Thrift::Protocol::TString getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		Evernote::EDAM::Type::Note getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
+		void send_getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
+		Evernote::EDAM::Type::Note recv_getNote();
+		Thrift::Protocol::TString getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		Thrift::Protocol::TString recv_getNoteContent();
-		Thrift::Protocol::TString getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		Thrift::Protocol::TString getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool noteOnly, bool tokenizeForIndexing);
+		void send_getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool noteOnly, bool tokenizeForIndexing);
 		Thrift::Protocol::TString recv_getNoteSearchText();
-		std::vector<Thrift::Protocol::TString > getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		Thrift::Protocol::TString getResourceSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getResourceSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		Thrift::Protocol::TString recv_getResourceSearchText();
+		std::vector<Thrift::Protocol::TString > getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		std::vector<Thrift::Protocol::TString > recv_getNoteTagNames();
-		Evernote::EDAM::Types::Note createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note);
-		void send_createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note);
-		Evernote::EDAM::Types::Note recv_createNote();
-		Evernote::EDAM::Types::Note updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note);
-		void send_updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note);
-		Evernote::EDAM::Types::Note recv_updateNote();
-		__int32 deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		Evernote::EDAM::Type::Note createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note);
+		void send_createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note);
+		Evernote::EDAM::Type::Note recv_createNote();
+		Evernote::EDAM::Type::Note updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note);
+		void send_updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note);
+		Evernote::EDAM::Type::Note recv_updateNote();
+		__int32 deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		__int32 recv_deleteNote();
-		__int32 expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		__int32 expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		__int32 recv_expungeNote();
-		__int32 expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Types::Guid > noteGuids);
-		void send_expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Types::Guid > noteGuids);
+		__int32 expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Type::Guid > noteGuids);
+		void send_expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Type::Guid > noteGuids);
 		__int32 recv_expungeNotes();
 		__int32 expungeInactiveNotes(Thrift::Protocol::TString authenticationToken);
 		void send_expungeInactiveNotes(Thrift::Protocol::TString authenticationToken);
 		__int32 recv_expungeInactiveNotes();
-		Evernote::EDAM::Types::Note copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid);
-		void send_copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid);
-		Evernote::EDAM::Types::Note recv_copyNote();
-		std::vector<NoteVersionId > listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid);
-		void send_listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid);
+		Evernote::EDAM::Type::Note copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Evernote::EDAM::Type::Guid toNotebookGuid);
+		void send_copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Evernote::EDAM::Type::Guid toNotebookGuid);
+		Evernote::EDAM::Type::Note recv_copyNote();
+		std::vector<NoteVersionId > listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid);
+		void send_listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid);
 		std::vector<NoteVersionId > recv_listNoteVersions();
-		Evernote::EDAM::Types::Note getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
-		void send_getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
-		Evernote::EDAM::Types::Note recv_getNoteVersion();
-		Evernote::EDAM::Types::Resource getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData);
-		void send_getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData);
-		Evernote::EDAM::Types::Resource recv_getResource();
-		__int32 updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Resource resource);
-		void send_updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Resource resource);
+		Evernote::EDAM::Type::Note getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
+		void send_getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData);
+		Evernote::EDAM::Type::Note recv_getNoteVersion();
+		Evernote::EDAM::Type::Resource getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData);
+		void send_getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData);
+		Evernote::EDAM::Type::Resource recv_getResource();
+		__int32 updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Resource resource);
+		void send_updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Resource resource);
 		__int32 recv_updateResource();
-		Thrift::Protocol::TBinary getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		Thrift::Protocol::TBinary getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		Thrift::Protocol::TBinary recv_getResourceData();
-		Evernote::EDAM::Types::Resource getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData);
-		void send_getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData);
-		Evernote::EDAM::Types::Resource recv_getResourceByHash();
-		Thrift::Protocol::TBinary getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		Evernote::EDAM::Type::Resource getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData);
+		void send_getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData);
+		Evernote::EDAM::Type::Resource recv_getResourceByHash();
+		Thrift::Protocol::TBinary getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		Thrift::Protocol::TBinary recv_getResourceRecognition();
-		Thrift::Protocol::TBinary getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
+		Thrift::Protocol::TBinary getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		Thrift::Protocol::TBinary recv_getResourceAlternateData();
-		Evernote::EDAM::Types::ResourceAttributes getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		void send_getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid);
-		Evernote::EDAM::Types::ResourceAttributes recv_getResourceAttributes();
+		Evernote::EDAM::Type::ResourceAttributes getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		Evernote::EDAM::Type::ResourceAttributes recv_getResourceAttributes();
 		__int64 getAccountSize(Thrift::Protocol::TString authenticationToken);
 		void send_getAccountSize(Thrift::Protocol::TString authenticationToken);
 		__int64 recv_getAccountSize();
-		std::vector<Evernote::EDAM::Types::Ad > getAds(Thrift::Protocol::TString authenticationToken, AdParameters adParameters);
+		std::vector<Evernote::EDAM::Type::Ad > getAds(Thrift::Protocol::TString authenticationToken, AdParameters adParameters);
 		void send_getAds(Thrift::Protocol::TString authenticationToken, AdParameters adParameters);
-		std::vector<Evernote::EDAM::Types::Ad > recv_getAds();
-		Evernote::EDAM::Types::Ad getRandomAd(Thrift::Protocol::TString authenticationToken, AdParameters adParameters);
+		std::vector<Evernote::EDAM::Type::Ad > recv_getAds();
+		Evernote::EDAM::Type::Ad getRandomAd(Thrift::Protocol::TString authenticationToken, AdParameters adParameters);
 		void send_getRandomAd(Thrift::Protocol::TString authenticationToken, AdParameters adParameters);
-		Evernote::EDAM::Types::Ad recv_getRandomAd();
-		Evernote::EDAM::Types::Notebook getPublicNotebook(Evernote::EDAM::Types::UserID userId, Thrift::Protocol::TString publicUri);
-		void send_getPublicNotebook(Evernote::EDAM::Types::UserID userId, Thrift::Protocol::TString publicUri);
-		Evernote::EDAM::Types::Notebook recv_getPublicNotebook();
-		Evernote::EDAM::Types::SharedNotebook createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SharedNotebook sharedNotebook);
-		void send_createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SharedNotebook sharedNotebook);
-		Evernote::EDAM::Types::SharedNotebook recv_createSharedNotebook();
-		std::vector<Evernote::EDAM::Types::SharedNotebook > listSharedNotebooks(Thrift::Protocol::TString authenticationToken);
+		Evernote::EDAM::Type::Ad recv_getRandomAd();
+		Evernote::EDAM::Type::Notebook getPublicNotebook(Evernote::EDAM::Type::UserID userId, Thrift::Protocol::TString publicUri);
+		void send_getPublicNotebook(Evernote::EDAM::Type::UserID userId, Thrift::Protocol::TString publicUri);
+		Evernote::EDAM::Type::Notebook recv_getPublicNotebook();
+		Evernote::EDAM::Type::SharedNotebook createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SharedNotebook sharedNotebook);
+		void send_createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SharedNotebook sharedNotebook);
+		Evernote::EDAM::Type::SharedNotebook recv_createSharedNotebook();
+		std::vector<Evernote::EDAM::Type::SharedNotebook > listSharedNotebooks(Thrift::Protocol::TString authenticationToken);
 		void send_listSharedNotebooks(Thrift::Protocol::TString authenticationToken);
-		std::vector<Evernote::EDAM::Types::SharedNotebook > recv_listSharedNotebooks();
+		std::vector<Evernote::EDAM::Type::SharedNotebook > recv_listSharedNotebooks();
 		__int32 expungeSharedNotebooks(Thrift::Protocol::TString authenticationToken, std::vector<__int64 > sharedNotebookIds);
 		void send_expungeSharedNotebooks(Thrift::Protocol::TString authenticationToken, std::vector<__int64 > sharedNotebookIds);
 		__int32 recv_expungeSharedNotebooks();
-		Evernote::EDAM::Types::LinkedNotebook createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook);
-		void send_createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook);
-		Evernote::EDAM::Types::LinkedNotebook recv_createLinkedNotebook();
-		Evernote::EDAM::Types::LinkedNotebook updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook);
-		void send_updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook);
-		Evernote::EDAM::Types::LinkedNotebook recv_updateLinkedNotebook();
-		std::vector<Evernote::EDAM::Types::LinkedNotebook > listLinkedNotebooks(Thrift::Protocol::TString authenticationToken);
+		Evernote::EDAM::Type::LinkedNotebook createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook);
+		void send_createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook);
+		Evernote::EDAM::Type::LinkedNotebook recv_createLinkedNotebook();
+		__int32 updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook);
+		void send_updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook);
+		__int32 recv_updateLinkedNotebook();
+		std::vector<Evernote::EDAM::Type::LinkedNotebook > listLinkedNotebooks(Thrift::Protocol::TString authenticationToken);
 		void send_listLinkedNotebooks(Thrift::Protocol::TString authenticationToken);
-		std::vector<Evernote::EDAM::Types::LinkedNotebook > recv_listLinkedNotebooks();
-		__int32 expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, __int64 linkedNotebookId);
-		void send_expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, __int64 linkedNotebookId);
+		std::vector<Evernote::EDAM::Type::LinkedNotebook > recv_listLinkedNotebooks();
+		__int32 expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
 		__int32 recv_expungeLinkedNotebook();
 		Evernote::EDAM::UserStore::AuthenticationResult authenticateToSharedNotebook(Thrift::Protocol::TString shareKey, Thrift::Protocol::TString authenticationToken);
 		void send_authenticateToSharedNotebook(Thrift::Protocol::TString shareKey, Thrift::Protocol::TString authenticationToken);
 		Evernote::EDAM::UserStore::AuthenticationResult recv_authenticateToSharedNotebook();
-		Evernote::EDAM::Types::SharedNotebook getSharedNotebookByAuth(Thrift::Protocol::TString authenticationToken);
+		Evernote::EDAM::Type::SharedNotebook getSharedNotebookByAuth(Thrift::Protocol::TString authenticationToken);
 		void send_getSharedNotebookByAuth(Thrift::Protocol::TString authenticationToken);
-		Evernote::EDAM::Types::SharedNotebook recv_getSharedNotebookByAuth();
+		Evernote::EDAM::Type::SharedNotebook recv_getSharedNotebookByAuth();
 		void emailNote(Thrift::Protocol::TString authenticationToken, NoteEmailParameters parameters);
 		void send_emailNote(Thrift::Protocol::TString authenticationToken, NoteEmailParameters parameters);
 		void recv_emailNote();
+		Thrift::Protocol::TString shareNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_shareNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		Thrift::Protocol::TString recv_shareNote();
+		void stopSharingNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void send_stopSharingNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid);
+		void recv_stopSharingNote();
+		Evernote::EDAM::UserStore::AuthenticationResult authenticateToSharedNote(Thrift::Protocol::TString guid, Thrift::Protocol::TString noteKey);
+		void send_authenticateToSharedNote(Thrift::Protocol::TString guid, Thrift::Protocol::TString noteKey);
+		Evernote::EDAM::UserStore::AuthenticationResult recv_authenticateToSharedNote();
 	};
 
 	class Processor : public Thrift::TProcessor
@@ -297,6 +329,8 @@ public:
 		bool Process(Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getSyncState_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getSyncChunk_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void getLinkedNotebookSyncState_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void getLinkedNotebookSyncChunk_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void listNotebooks_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getNotebook_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getDefaultNotebook_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
@@ -316,10 +350,13 @@ public:
 		void updateSearch_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void expungeSearch_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void findNotes_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void findNoteOffset_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void findNotesMetadata_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void findNoteCounts_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getNoteContent_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getNoteSearchText_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void getResourceSearchText_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getNoteTagNames_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void createNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void updateNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
@@ -351,6 +388,9 @@ public:
 		void authenticateToSharedNotebook_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void getSharedNotebookByAuth_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 		void emailNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void shareNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void stopSharingNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
+		void authenticateToSharedNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot);
 	};
 
 
@@ -448,6 +488,108 @@ public:
 		void Write(Thrift::Protocol::TProtocol & oprot);
 	};
 
+	class getLinkedNotebookSyncState_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool linkedNotebook;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Type::LinkedNotebook linkedNotebook;
+
+		Isset __isset;
+
+		getLinkedNotebookSyncState_args();
+		virtual ~getLinkedNotebookSyncState_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class getLinkedNotebookSyncState_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		SyncState success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		getLinkedNotebookSyncState_result();
+		virtual ~getLinkedNotebookSyncState_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class getLinkedNotebookSyncChunk_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool linkedNotebook;
+			bool afterUSN;
+			bool maxEntries;
+			bool fullSyncOnly;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Type::LinkedNotebook linkedNotebook;
+		__int32 afterUSN;
+		__int32 maxEntries;
+		bool fullSyncOnly;
+
+		Isset __isset;
+
+		getLinkedNotebookSyncChunk_args();
+		virtual ~getLinkedNotebookSyncChunk_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class getLinkedNotebookSyncChunk_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		SyncChunk success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		getLinkedNotebookSyncChunk_result();
+		virtual ~getLinkedNotebookSyncChunk_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
 	class listNotebooks_args	
 	{
 	public:
@@ -479,7 +621,7 @@ public:
 			bool systemException;
 		};
 
-		std::vector<Evernote::EDAM::Types::Notebook > success;
+		std::vector<Evernote::EDAM::Type::Notebook > success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -503,7 +645,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -526,7 +668,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Notebook success;
+		Evernote::EDAM::Type::Notebook success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -571,7 +713,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::Notebook success;
+		Evernote::EDAM::Type::Notebook success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -595,7 +737,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Notebook notebook;
+		Evernote::EDAM::Type::Notebook notebook;
 
 		Isset __isset;
 
@@ -617,7 +759,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::Notebook success;
+		Evernote::EDAM::Type::Notebook success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -641,7 +783,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Notebook notebook;
+		Evernote::EDAM::Type::Notebook notebook;
 
 		Isset __isset;
 
@@ -689,7 +831,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -757,7 +899,7 @@ public:
 			bool systemException;
 		};
 
-		std::vector<Evernote::EDAM::Types::Tag > success;
+		std::vector<Evernote::EDAM::Type::Tag > success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -781,7 +923,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid notebookGuid;
+		Evernote::EDAM::Type::Guid notebookGuid;
 
 		Isset __isset;
 
@@ -804,7 +946,7 @@ public:
 			bool notFoundException;
 		};
 
-		std::vector<Evernote::EDAM::Types::Tag > success;
+		std::vector<Evernote::EDAM::Type::Tag > success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -829,7 +971,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -852,7 +994,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Tag success;
+		Evernote::EDAM::Type::Tag success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -877,7 +1019,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Tag tag;
+		Evernote::EDAM::Type::Tag tag;
 
 		Isset __isset;
 
@@ -900,7 +1042,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Tag success;
+		Evernote::EDAM::Type::Tag success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -925,7 +1067,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Tag tag;
+		Evernote::EDAM::Type::Tag tag;
 
 		Isset __isset;
 
@@ -973,7 +1115,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1019,7 +1161,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1087,7 +1229,7 @@ public:
 			bool systemException;
 		};
 
-		std::vector<Evernote::EDAM::Types::SavedSearch > success;
+		std::vector<Evernote::EDAM::Type::SavedSearch > success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -1111,7 +1253,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1134,7 +1276,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::SavedSearch success;
+		Evernote::EDAM::Type::SavedSearch success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -1159,7 +1301,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::SavedSearch search;
+		Evernote::EDAM::Type::SavedSearch search;
 
 		Isset __isset;
 
@@ -1181,7 +1323,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::SavedSearch success;
+		Evernote::EDAM::Type::SavedSearch success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -1205,7 +1347,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::SavedSearch search;
+		Evernote::EDAM::Type::SavedSearch search;
 
 		Isset __isset;
 
@@ -1253,7 +1395,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1342,6 +1484,110 @@ public:
 		void Write(Thrift::Protocol::TProtocol & oprot);
 	};
 
+	class findNoteOffset_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool filter;
+			bool guid;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		NoteFilter filter;
+		Evernote::EDAM::Type::Guid guid;
+
+		Isset __isset;
+
+		findNoteOffset_args();
+		virtual ~findNoteOffset_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class findNoteOffset_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		__int32 success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		findNoteOffset_result();
+		virtual ~findNoteOffset_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class findNotesMetadata_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool filter;
+			bool offset;
+			bool maxNotes;
+			bool resultSpec;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		NoteFilter filter;
+		__int32 offset;
+		__int32 maxNotes;
+		NotesMetadataResultSpec resultSpec;
+
+		Isset __isset;
+
+		findNotesMetadata_args();
+		virtual ~findNotesMetadata_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class findNotesMetadata_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		NotesMetadataList success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		findNotesMetadata_result();
+		virtual ~findNotesMetadata_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
 	class findNoteCounts_args	
 	{
 	public:
@@ -1407,7 +1653,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 		bool withContent;
 		bool withResourcesData;
 		bool withResourcesRecognition;
@@ -1434,7 +1680,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Note success;
+		Evernote::EDAM::Type::Note success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -1459,7 +1705,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1504,10 +1750,14 @@ public:
 		{
 			bool authenticationToken;
 			bool guid;
+			bool noteOnly;
+			bool tokenizeForIndexing;
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
+		bool noteOnly;
+		bool tokenizeForIndexing;
 
 		Isset __isset;
 
@@ -1544,6 +1794,54 @@ public:
 		void Write(Thrift::Protocol::TProtocol & oprot);
 	};
 
+	class getResourceSearchText_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool guid;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Type::Guid guid;
+
+		Isset __isset;
+
+		getResourceSearchText_args();
+		virtual ~getResourceSearchText_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class getResourceSearchText_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool systemException;
+			bool notFoundException;
+		};
+
+		Thrift::Protocol::TString success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+
+		Isset __isset;
+
+		getResourceSearchText_result();
+		virtual ~getResourceSearchText_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
 	class getNoteTagNames_args	
 	{
 	public:
@@ -1555,7 +1853,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1603,7 +1901,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Note note;
+		Evernote::EDAM::Type::Note note;
 
 		Isset __isset;
 
@@ -1626,7 +1924,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Note success;
+		Evernote::EDAM::Type::Note success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -1651,7 +1949,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Note note;
+		Evernote::EDAM::Type::Note note;
 
 		Isset __isset;
 
@@ -1674,7 +1972,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Note success;
+		Evernote::EDAM::Type::Note success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -1699,7 +1997,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1747,7 +2045,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -1795,7 +2093,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		std::vector<Evernote::EDAM::Types::Guid > noteGuids;
+		std::vector<Evernote::EDAM::Type::Guid > noteGuids;
 
 		Isset __isset;
 
@@ -1888,8 +2186,8 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid noteGuid;
-		Evernote::EDAM::Types::Guid toNotebookGuid;
+		Evernote::EDAM::Type::Guid noteGuid;
+		Evernote::EDAM::Type::Guid toNotebookGuid;
 
 		Isset __isset;
 
@@ -1912,7 +2210,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Note success;
+		Evernote::EDAM::Type::Note success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -1937,7 +2235,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid noteGuid;
+		Evernote::EDAM::Type::Guid noteGuid;
 
 		Isset __isset;
 
@@ -1989,7 +2287,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid noteGuid;
+		Evernote::EDAM::Type::Guid noteGuid;
 		__int32 updateSequenceNum;
 		bool withResourcesData;
 		bool withResourcesRecognition;
@@ -2016,7 +2314,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Note success;
+		Evernote::EDAM::Type::Note success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -2045,7 +2343,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 		bool withData;
 		bool withRecognition;
 		bool withAttributes;
@@ -2072,7 +2370,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Resource success;
+		Evernote::EDAM::Type::Resource success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -2097,7 +2395,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Resource resource;
+		Evernote::EDAM::Type::Resource resource;
 
 		Isset __isset;
 
@@ -2145,7 +2443,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -2197,7 +2495,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid noteGuid;
+		Evernote::EDAM::Type::Guid noteGuid;
 		Thrift::Protocol::TBinary contentHash;
 		bool withData;
 		bool withRecognition;
@@ -2224,7 +2522,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Resource success;
+		Evernote::EDAM::Type::Resource success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -2249,7 +2547,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -2297,7 +2595,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -2345,7 +2643,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::Guid guid;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -2368,7 +2666,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::ResourceAttributes success;
+		Evernote::EDAM::Type::ResourceAttributes success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
@@ -2459,7 +2757,7 @@ public:
 			bool systemException;
 		};
 
-		std::vector<Evernote::EDAM::Types::Ad > success;
+		std::vector<Evernote::EDAM::Type::Ad > success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -2505,7 +2803,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::Ad success;
+		Evernote::EDAM::Type::Ad success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 
@@ -2528,7 +2826,7 @@ public:
 			bool publicUri;
 		};
 
-		Evernote::EDAM::Types::UserID userId;
+		Evernote::EDAM::Type::UserID userId;
 		Thrift::Protocol::TString publicUri;
 
 		Isset __isset;
@@ -2551,7 +2849,7 @@ public:
 			bool notFoundException;
 		};
 
-		Evernote::EDAM::Types::Notebook success;
+		Evernote::EDAM::Type::Notebook success;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 
@@ -2575,7 +2873,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::SharedNotebook sharedNotebook;
+		Evernote::EDAM::Type::SharedNotebook sharedNotebook;
 
 		Isset __isset;
 
@@ -2598,7 +2896,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::SharedNotebook success;
+		Evernote::EDAM::Type::SharedNotebook success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
@@ -2644,7 +2942,7 @@ public:
 			bool systemException;
 		};
 
-		std::vector<Evernote::EDAM::Types::SharedNotebook > success;
+		std::vector<Evernote::EDAM::Type::SharedNotebook > success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
@@ -2717,7 +3015,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::LinkedNotebook linkedNotebook;
+		Evernote::EDAM::Type::LinkedNotebook linkedNotebook;
 
 		Isset __isset;
 
@@ -2740,7 +3038,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::LinkedNotebook success;
+		Evernote::EDAM::Type::LinkedNotebook success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
@@ -2765,7 +3063,7 @@ public:
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		Evernote::EDAM::Types::LinkedNotebook linkedNotebook;
+		Evernote::EDAM::Type::LinkedNotebook linkedNotebook;
 
 		Isset __isset;
 
@@ -2788,7 +3086,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::LinkedNotebook success;
+		__int32 success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
@@ -2834,7 +3132,7 @@ public:
 			bool systemException;
 		};
 
-		std::vector<Evernote::EDAM::Types::LinkedNotebook > success;
+		std::vector<Evernote::EDAM::Type::LinkedNotebook > success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
@@ -2855,11 +3153,11 @@ public:
 		struct Isset
 		{
 			bool authenticationToken;
-			bool linkedNotebookId;
+			bool guid;
 		};
 
 		Thrift::Protocol::TString authenticationToken;
-		__int64 linkedNotebookId;
+		Evernote::EDAM::Type::Guid guid;
 
 		Isset __isset;
 
@@ -2976,7 +3274,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::SharedNotebook success;
+		Evernote::EDAM::Type::SharedNotebook success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
@@ -3031,6 +3329,148 @@ public:
 
 		emailNote_result();
 		virtual ~emailNote_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class shareNote_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool guid;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Type::Guid guid;
+
+		Isset __isset;
+
+		shareNote_args();
+		virtual ~shareNote_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class shareNote_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool notFoundException;
+			bool systemException;
+		};
+
+		Thrift::Protocol::TString success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+
+		Isset __isset;
+
+		shareNote_result();
+		virtual ~shareNote_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class stopSharingNote_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool authenticationToken;
+			bool guid;
+		};
+
+		Thrift::Protocol::TString authenticationToken;
+		Evernote::EDAM::Type::Guid guid;
+
+		Isset __isset;
+
+		stopSharingNote_args();
+		virtual ~stopSharingNote_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class stopSharingNote_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool userException;
+			bool notFoundException;
+			bool systemException;
+		};
+
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+
+		Isset __isset;
+
+		stopSharingNote_result();
+		virtual ~stopSharingNote_result() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class authenticateToSharedNote_args	
+	{
+	public:
+
+		struct Isset
+		{
+			bool guid;
+			bool noteKey;
+		};
+
+		Thrift::Protocol::TString guid;
+		Thrift::Protocol::TString noteKey;
+
+		Isset __isset;
+
+		authenticateToSharedNote_args();
+		virtual ~authenticateToSharedNote_args() throw() {}
+
+		void Read(Thrift::Protocol::TProtocol & iprot);
+		void Write(Thrift::Protocol::TProtocol & oprot);
+	};
+
+	class authenticateToSharedNote_result	
+	{
+	public:
+
+		struct Isset
+		{
+			bool success;
+			bool userException;
+			bool notFoundException;
+			bool systemException;
+		};
+
+		Evernote::EDAM::UserStore::AuthenticationResult success;
+		Evernote::EDAM::Error::EDAMUserException userException;
+		Evernote::EDAM::Error::EDAMNotFoundException notFoundException;
+		Evernote::EDAM::Error::EDAMSystemException systemException;
+
+		Isset __isset;
+
+		authenticateToSharedNote_result();
+		virtual ~authenticateToSharedNote_result() throw() {}
 
 		void Read(Thrift::Protocol::TProtocol & iprot);
 		void Write(Thrift::Protocol::TProtocol & oprot);

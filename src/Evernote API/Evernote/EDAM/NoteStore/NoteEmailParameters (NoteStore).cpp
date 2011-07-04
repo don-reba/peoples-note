@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -23,7 +23,7 @@ using namespace Evernote::EDAM::NoteStore;
 
 NoteEmailParameters::NoteEmailParameters()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteEmailParameters::Read(Thrift::Protocol::TProtocol & iprot)
@@ -41,7 +41,6 @@ void NoteEmailParameters::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -65,14 +64,13 @@ void NoteEmailParameters::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list71;
-					iprot.ReadListBegin(_list71);
-					for (int _i72 = 0; _i72 < _list71.GetCount(); ++_i72)
+					Thrift::Protocol::TList _list95;
+					iprot.ReadListBegin(_list95);
+					for (int _i96 = 0; _i96 < _list95.GetCount(); ++_i96)
 					{
-						Thrift::Protocol::TString _elem73;
-						_elem73;
-						iprot.ReadString(_elem73);
-						this->toAddresses.push_back(_elem73);
+						Thrift::Protocol::TString _elem97;
+						iprot.ReadString(_elem97);
+						this->toAddresses.push_back(_elem97);
 					}
 					iprot.ReadListEnd();
 				}
@@ -87,14 +85,13 @@ void NoteEmailParameters::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list74;
-					iprot.ReadListBegin(_list74);
-					for (int _i75 = 0; _i75 < _list74.GetCount(); ++_i75)
+					Thrift::Protocol::TList _list98;
+					iprot.ReadListBegin(_list98);
+					for (int _i99 = 0; _i99 < _list98.GetCount(); ++_i99)
 					{
-						Thrift::Protocol::TString _elem76;
-						_elem76;
-						iprot.ReadString(_elem76);
-						this->ccAddresses.push_back(_elem76);
+						Thrift::Protocol::TString _elem100;
+						iprot.ReadString(_elem100);
+						this->ccAddresses.push_back(_elem100);
 					}
 					iprot.ReadListEnd();
 				}
@@ -108,7 +105,6 @@ void NoteEmailParameters::Read(Thrift::Protocol::TProtocol & iprot)
 		case 5:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->subject;
 				iprot.ReadString(this->subject);
 				this->__isset.subject = true;
 			}
@@ -120,7 +116,6 @@ void NoteEmailParameters::Read(Thrift::Protocol::TProtocol & iprot)
 		case 6:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->message;
 				iprot.ReadString(this->message);
 				this->__isset.message = true;
 			}
@@ -175,9 +170,9 @@ void NoteEmailParameters::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->toAddresses.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Thrift::Protocol::TString >::iterator _iter77(this->toAddresses.begin()), end(this->toAddresses.end()); _iter77 != end; ++_iter77)
+			for (std::vector<Thrift::Protocol::TString >::iterator _iter101(this->toAddresses.begin()), end(this->toAddresses.end()); _iter101 != end; ++_iter101)
 			{
-				oprot.WriteString((*_iter77));
+				oprot.WriteString((*_iter101));
 				oprot.WriteListEnd();
 			}
 		}
@@ -195,9 +190,9 @@ void NoteEmailParameters::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->ccAddresses.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Thrift::Protocol::TString >::iterator _iter78(this->ccAddresses.begin()), end(this->ccAddresses.end()); _iter78 != end; ++_iter78)
+			for (std::vector<Thrift::Protocol::TString >::iterator _iter102(this->ccAddresses.begin()), end(this->ccAddresses.end()); _iter102 != end; ++_iter102)
 			{
-				oprot.WriteString((*_iter78));
+				oprot.WriteString((*_iter102));
 				oprot.WriteListEnd();
 			}
 		}

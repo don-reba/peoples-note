@@ -14,14 +14,14 @@
 #include <Thrift/Thrift.h>
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 
 using namespace Evernote::EDAM::UserStore;
 
 PublicUserInfo::PublicUserInfo()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void PublicUserInfo::Read(Thrift::Protocol::TProtocol & iprot)
@@ -49,7 +49,6 @@ void PublicUserInfo::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->shardId;
 				iprot.ReadString(this->shardId);
 			}
 			else
@@ -60,7 +59,7 @@ void PublicUserInfo::Read(Thrift::Protocol::TProtocol & iprot)
 		case 3:
 			if (field.GetType() == Thrift::Protocol::TypeI32)
 			{
-				this->privilege = (const Evernote::EDAM::Types::PrivilegeLevel)iprot.ReadI32();
+				this->privilege = (const Evernote::EDAM::Type::PrivilegeLevel)iprot.ReadI32();
 				this->__isset.privilege = true;
 			}
 			else
@@ -71,7 +70,6 @@ void PublicUserInfo::Read(Thrift::Protocol::TProtocol & iprot)
 		case 4:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->username;
 				iprot.ReadString(this->username);
 				this->__isset.username = true;
 			}

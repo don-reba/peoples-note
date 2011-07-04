@@ -16,7 +16,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -43,7 +43,7 @@ public:
 	};
 
 	Thrift::Protocol::TString guid;
-	Evernote::EDAM::Types::Note note;
+	Evernote::EDAM::Type::Note note;
 	std::vector<Thrift::Protocol::TString > toAddresses;
 	std::vector<Thrift::Protocol::TString > ccAddresses;
 	Thrift::Protocol::TString subject;

@@ -16,7 +16,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -39,8 +39,8 @@ public:
 		bool trashCount;
 	};
 
-	std::map<Evernote::EDAM::Types::Guid, __int32 > notebookCounts;
-	std::map<Evernote::EDAM::Types::Guid, __int32 > tagCounts;
+	std::map<Evernote::EDAM::Type::Guid, __int32 > notebookCounts;
+	std::map<Evernote::EDAM::Type::Guid, __int32 > tagCounts;
 	__int32 trashCount;
 
 	Isset __isset;

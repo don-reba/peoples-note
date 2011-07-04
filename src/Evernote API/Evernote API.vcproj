@@ -131,7 +131,7 @@
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -178,6 +178,63 @@
 				AdditionalFiles=""
 			/>
 			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="$(ProjectDir)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
@@ -341,63 +398,6 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
-			ConfigurationType="4"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="$(ProjectDir)"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
@@ -460,607 +460,363 @@
 		<Filter
 			Name="Evernote"
 			>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Accounting (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Accounting.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Ad (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Ad.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\AdParameters (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\AdParameters.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult (UserStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Limits\Constants (Limits).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Constants (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\Constants (UserStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Limits\Constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\Constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Data (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Data.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error\EDAMErrorCode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException (Errors).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error\EDAMSystemException (Errors).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error\EDAMSystemException.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error\EDAMUserException (Errors).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error\EDAMUserException.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Error.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Guid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Limits.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\LinkedNotebook (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\LinkedNotebook.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Note (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Note.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\NoteAttributes (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\NoteAttributes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Notebook (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Notebook.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteList (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteMetadata (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteMetadata.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataList (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataResultSpec (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataResultSpec.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\NoteSortOrder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteStore (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\PremiumOrderStatus.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\PrivilegeLevel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo (UserStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Publishing (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Publishing.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\QueryFormat.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Resource (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\ResourceAttributes (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\ResourceAttributes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\SavedSearch (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\SavedSearch.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\SharedNotebook (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\SharedNotebook.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\SyncState (NoteStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\NoteStore\SyncState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Tag (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Tag.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\Timestamp.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\User (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\User.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\UserAttributes (Types).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\UserAttributes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\Type\UserID.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\UserStore (UserStore).cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
+				>
+			</File>
 			<Filter
 				Name="cpp"
 				Filter="cpp"
 				>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Accounting (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Ad (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\AdParameters (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult (UserStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Limits\Constants (Limits).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Constants (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\Constants (UserStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Data (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException (Errors).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error\EDAMSystemException (Errors).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error\EDAMUserException (Errors).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\LinkedNotebook (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Note (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\NoteAttributes (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Notebook (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteList (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo (UserStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Publishing (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Resource (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\ResourceAttributes (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\SavedSearch (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\SharedNotebook (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\SyncState (NoteStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Tag (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\User (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\UserAttributes (Types).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\UserStore (UserStore).cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
 			</Filter>
 			<Filter
 				Name="h"
 				Filter="h"
 				>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Accounting.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Ad.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\AdParameters.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Constants.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\Constants.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Limits\Constants.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Data.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error\EDAMErrorCode.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error\EDAMSystemException.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error\EDAMUserException.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Error.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Guid.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Limits.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\LinkedNotebook.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Note.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\NoteAttributes.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Notebook.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteList.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\NoteSortOrder.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\PremiumOrderStatus.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\PrivilegeLevel.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Publishing.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\QueryFormat.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Resource.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\ResourceAttributes.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\SavedSearch.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\SharedNotebook.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\NoteStore\SyncState.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Tag.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\Timestamp.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\User.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\UserAttributes.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\Types\UserID.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Evernote\EDAM\UserStore.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

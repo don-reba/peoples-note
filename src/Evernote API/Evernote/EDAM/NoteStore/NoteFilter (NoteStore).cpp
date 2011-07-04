@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -23,7 +23,7 @@ using namespace Evernote::EDAM::NoteStore;
 
 NoteFilter::NoteFilter()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteFilter::Read(Thrift::Protocol::TProtocol & iprot)
@@ -63,7 +63,6 @@ void NoteFilter::Read(Thrift::Protocol::TProtocol & iprot)
 		case 3:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->words;
 				iprot.ReadString(this->words);
 				this->__isset.words = true;
 			}
@@ -75,7 +74,6 @@ void NoteFilter::Read(Thrift::Protocol::TProtocol & iprot)
 		case 4:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->notebookGuid;
 				iprot.ReadString(this->notebookGuid);
 				this->__isset.notebookGuid = true;
 			}
@@ -88,14 +86,13 @@ void NoteFilter::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list36;
-					iprot.ReadListBegin(_list36);
-					for (int _i37 = 0; _i37 < _list36.GetCount(); ++_i37)
+					Thrift::Protocol::TList _list44;
+					iprot.ReadListBegin(_list44);
+					for (int _i45 = 0; _i45 < _list44.GetCount(); ++_i45)
 					{
-						Evernote::EDAM::Types::Guid _elem38;
-						_elem38;
-						iprot.ReadString(_elem38);
-						this->tagGuids.push_back(_elem38);
+						Evernote::EDAM::Type::Guid _elem46;
+						iprot.ReadString(_elem46);
+						this->tagGuids.push_back(_elem46);
 					}
 					iprot.ReadListEnd();
 				}
@@ -109,7 +106,6 @@ void NoteFilter::Read(Thrift::Protocol::TProtocol & iprot)
 		case 6:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->timeZone;
 				iprot.ReadString(this->timeZone);
 				this->__isset.timeZone = true;
 			}
@@ -195,9 +191,9 @@ void NoteFilter::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->tagGuids.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Guid >::iterator _iter39(this->tagGuids.begin()), end(this->tagGuids.end()); _iter39 != end; ++_iter39)
+			for (std::vector<Evernote::EDAM::Type::Guid >::iterator _iter47(this->tagGuids.begin()), end(this->tagGuids.end()); _iter47 != end; ++_iter47)
 			{
-				oprot.WriteString((*_iter39));
+				oprot.WriteString((*_iter47));
 				oprot.WriteListEnd();
 			}
 		}

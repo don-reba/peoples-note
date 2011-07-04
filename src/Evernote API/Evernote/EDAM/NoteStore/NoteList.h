@@ -16,7 +16,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -36,13 +36,15 @@ public:
 	{
 		bool stoppedWords;
 		bool searchedWords;
+		bool updateCount;
 	};
 
 	__int32 startIndex;
 	__int32 totalNotes;
-	std::vector<Evernote::EDAM::Types::Note > notes;
+	std::vector<Evernote::EDAM::Type::Note > notes;
 	std::vector<Thrift::Protocol::TString > stoppedWords;
 	std::vector<Thrift::Protocol::TString > searchedWords;
+	__int32 updateCount;
 
 	Isset __isset;
 

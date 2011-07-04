@@ -14,7 +14,7 @@
 #include <Thrift/Thrift.h>
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 
 using namespace Evernote::EDAM::UserStore;
@@ -156,7 +156,7 @@ AuthenticationResult UserStore::Client::recv_refreshAuthentication()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"refreshAuthentication failed: unknown result");
 }
 
-Evernote::EDAM::Types::User UserStore::Client::getUser(Thrift::Protocol::TString authenticationToken)
+Evernote::EDAM::Type::User UserStore::Client::getUser(Thrift::Protocol::TString authenticationToken)
 {
 	send_getUser(authenticationToken);
 	return recv_getUser();
@@ -173,7 +173,7 @@ void UserStore::Client::send_getUser(Thrift::Protocol::TString authenticationTok
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::User UserStore::Client::recv_getUser()
+Evernote::EDAM::Type::User UserStore::Client::recv_getUser()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -396,9 +396,9 @@ UserStore::checkVersion_args::checkVersion_args()
 {
 	edamVersionMajor = 1;
 
-	edamVersionMinor = 15;
+	edamVersionMinor = 19;
 
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::checkVersion_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -416,7 +416,6 @@ void UserStore::checkVersion_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->clientName;
 				iprot.ReadString(this->clientName);
 				this->__isset.clientName = true;
 			}
@@ -497,7 +496,7 @@ void UserStore::checkVersion_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 UserStore::checkVersion_result::checkVersion_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::checkVersion_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -554,7 +553,7 @@ void UserStore::checkVersion_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 UserStore::authenticate_args::authenticate_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::authenticate_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -572,7 +571,6 @@ void UserStore::authenticate_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->username;
 				iprot.ReadString(this->username);
 				this->__isset.username = true;
 			}
@@ -584,7 +582,6 @@ void UserStore::authenticate_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->password;
 				iprot.ReadString(this->password);
 				this->__isset.password = true;
 			}
@@ -596,7 +593,6 @@ void UserStore::authenticate_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 3:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->consumerKey;
 				iprot.ReadString(this->consumerKey);
 				this->__isset.consumerKey = true;
 			}
@@ -608,7 +604,6 @@ void UserStore::authenticate_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 4:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->consumerSecret;
 				iprot.ReadString(this->consumerSecret);
 				this->__isset.consumerSecret = true;
 			}
@@ -677,7 +672,7 @@ void UserStore::authenticate_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 UserStore::authenticate_result::authenticate_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::authenticate_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -776,7 +771,7 @@ void UserStore::authenticate_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 UserStore::refreshAuthentication_args::refreshAuthentication_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::refreshAuthentication_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -794,7 +789,6 @@ void UserStore::refreshAuthentication_args::Read(Thrift::Protocol::TProtocol & i
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -833,7 +827,7 @@ void UserStore::refreshAuthentication_args::Write(Thrift::Protocol::TProtocol & 
 
 UserStore::refreshAuthentication_result::refreshAuthentication_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::refreshAuthentication_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -932,7 +926,7 @@ void UserStore::refreshAuthentication_result::Write(Thrift::Protocol::TProtocol 
 }
 UserStore::getUser_args::getUser_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::getUser_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -950,7 +944,6 @@ void UserStore::getUser_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -989,7 +982,7 @@ void UserStore::getUser_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 UserStore::getUser_result::getUser_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::getUser_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -1088,7 +1081,7 @@ void UserStore::getUser_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 UserStore::getPublicUserInfo_args::getPublicUserInfo_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::getPublicUserInfo_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -1106,7 +1099,6 @@ void UserStore::getPublicUserInfo_args::Read(Thrift::Protocol::TProtocol & iprot
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->username;
 				iprot.ReadString(this->username);
 				this->__isset.username = true;
 			}
@@ -1145,7 +1137,7 @@ void UserStore::getPublicUserInfo_args::Write(Thrift::Protocol::TProtocol & opro
 
 UserStore::getPublicUserInfo_result::getPublicUserInfo_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void UserStore::getPublicUserInfo_result::Read(Thrift::Protocol::TProtocol & iprot)

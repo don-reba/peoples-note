@@ -16,7 +16,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -46,8 +46,8 @@ public:
 	__int32 order;
 	bool ascending;
 	Thrift::Protocol::TString words;
-	Evernote::EDAM::Types::Guid notebookGuid;
-	std::vector<Evernote::EDAM::Types::Guid > tagGuids;
+	Evernote::EDAM::Type::Guid notebookGuid;
+	std::vector<Evernote::EDAM::Type::Guid > tagGuids;
 	Thrift::Protocol::TString timeZone;
 	bool inactive;
 

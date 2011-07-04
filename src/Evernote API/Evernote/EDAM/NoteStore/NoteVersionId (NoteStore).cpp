@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -60,7 +60,17 @@ void NoteVersionId::Read(Thrift::Protocol::TProtocol & iprot)
 		case 3:
 			if (field.GetType() == Thrift::Protocol::TypeI64)
 			{
-				this->serviceUpdated = iprot.ReadI64();
+				this->saved = iprot.ReadI64();
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 4:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->title);
 			}
 			else
 			{
@@ -101,11 +111,20 @@ void NoteVersionId::Write(Thrift::Protocol::TProtocol & oprot)
 	}
 	{
 		Thrift::Protocol::TField field;
-		field.SetName(L"serviceUpdated");
+		field.SetName(L"saved");
 		field.SetType(Thrift::Protocol::TypeI64);
 		field.SetID(3);
 		oprot.WriteFieldBegin(field);
-		oprot.WriteI64(this->serviceUpdated);
+		oprot.WriteI64(this->saved);
+		oprot.WriteFieldEnd();
+	}
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"title");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(4);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->title);
 		oprot.WriteFieldEnd();
 	}
 	oprot.WriteFieldStop();

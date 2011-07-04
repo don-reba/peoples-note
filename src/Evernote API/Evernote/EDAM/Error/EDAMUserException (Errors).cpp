@@ -19,7 +19,7 @@ using namespace Evernote::EDAM::Error;
 
 EDAMUserException::EDAMUserException()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void EDAMUserException::Read(Thrift::Protocol::TProtocol & iprot)
@@ -47,7 +47,6 @@ void EDAMUserException::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->parameter;
 				iprot.ReadString(this->parameter);
 				this->__isset.parameter = true;
 			}

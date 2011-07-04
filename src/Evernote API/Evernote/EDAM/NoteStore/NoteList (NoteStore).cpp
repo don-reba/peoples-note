@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -23,7 +23,7 @@ using namespace Evernote::EDAM::NoteStore;
 
 NoteList::NoteList()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteList::Read(Thrift::Protocol::TProtocol & iprot)
@@ -62,13 +62,13 @@ void NoteList::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list40;
-					iprot.ReadListBegin(_list40);
-					for (int _i41 = 0; _i41 < _list40.GetCount(); ++_i41)
+					Thrift::Protocol::TList _list48;
+					iprot.ReadListBegin(_list48);
+					for (int _i49 = 0; _i49 < _list48.GetCount(); ++_i49)
 					{
-						Evernote::EDAM::Types::Note _elem42;
-						_elem42.Read(iprot);
-						this->notes.push_back(_elem42);
+						Evernote::EDAM::Type::Note _elem50;
+						_elem50.Read(iprot);
+						this->notes.push_back(_elem50);
 					}
 					iprot.ReadListEnd();
 				}
@@ -82,14 +82,13 @@ void NoteList::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list43;
-					iprot.ReadListBegin(_list43);
-					for (int _i44 = 0; _i44 < _list43.GetCount(); ++_i44)
+					Thrift::Protocol::TList _list51;
+					iprot.ReadListBegin(_list51);
+					for (int _i52 = 0; _i52 < _list51.GetCount(); ++_i52)
 					{
-						Thrift::Protocol::TString _elem45;
-						_elem45;
-						iprot.ReadString(_elem45);
-						this->stoppedWords.push_back(_elem45);
+						Thrift::Protocol::TString _elem53;
+						iprot.ReadString(_elem53);
+						this->stoppedWords.push_back(_elem53);
 					}
 					iprot.ReadListEnd();
 				}
@@ -104,18 +103,28 @@ void NoteList::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list46;
-					iprot.ReadListBegin(_list46);
-					for (int _i47 = 0; _i47 < _list46.GetCount(); ++_i47)
+					Thrift::Protocol::TList _list54;
+					iprot.ReadListBegin(_list54);
+					for (int _i55 = 0; _i55 < _list54.GetCount(); ++_i55)
 					{
-						Thrift::Protocol::TString _elem48;
-						_elem48;
-						iprot.ReadString(_elem48);
-						this->searchedWords.push_back(_elem48);
+						Thrift::Protocol::TString _elem56;
+						iprot.ReadString(_elem56);
+						this->searchedWords.push_back(_elem56);
 					}
 					iprot.ReadListEnd();
 				}
 				this->__isset.searchedWords = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 6:
+			if (field.GetType() == Thrift::Protocol::TypeI32)
+			{
+				this->updateCount = iprot.ReadI32();
+				this->__isset.updateCount = true;
 			}
 			else
 			{
@@ -165,9 +174,9 @@ void NoteList::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->notes.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Note >::iterator _iter49(this->notes.begin()), end(this->notes.end()); _iter49 != end; ++_iter49)
+			for (std::vector<Evernote::EDAM::Type::Note >::iterator _iter57(this->notes.begin()), end(this->notes.end()); _iter57 != end; ++_iter57)
 			{
-				(*_iter49).Write(oprot);
+				(*_iter57).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -185,9 +194,9 @@ void NoteList::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->stoppedWords.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Thrift::Protocol::TString >::iterator _iter50(this->stoppedWords.begin()), end(this->stoppedWords.end()); _iter50 != end; ++_iter50)
+			for (std::vector<Thrift::Protocol::TString >::iterator _iter58(this->stoppedWords.begin()), end(this->stoppedWords.end()); _iter58 != end; ++_iter58)
 			{
-				oprot.WriteString((*_iter50));
+				oprot.WriteString((*_iter58));
 				oprot.WriteListEnd();
 			}
 		}
@@ -205,12 +214,22 @@ void NoteList::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->searchedWords.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Thrift::Protocol::TString >::iterator _iter51(this->searchedWords.begin()), end(this->searchedWords.end()); _iter51 != end; ++_iter51)
+			for (std::vector<Thrift::Protocol::TString >::iterator _iter59(this->searchedWords.begin()), end(this->searchedWords.end()); _iter59 != end; ++_iter59)
 			{
-				oprot.WriteString((*_iter51));
+				oprot.WriteString((*_iter59));
 				oprot.WriteListEnd();
 			}
 		}
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.updateCount)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"updateCount");
+		field.SetType(Thrift::Protocol::TypeI32);
+		field.SetID(6);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteI32(this->updateCount);
 		oprot.WriteFieldEnd();
 	}
 	oprot.WriteFieldStop();

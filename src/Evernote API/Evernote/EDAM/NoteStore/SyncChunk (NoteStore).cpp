@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -23,7 +23,7 @@ using namespace Evernote::EDAM::NoteStore;
 
 SyncChunk::SyncChunk()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
@@ -77,7 +77,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list0);
 					for (int _i1 = 0; _i1 < _list0.GetCount(); ++_i1)
 					{
-						Evernote::EDAM::Types::Note _elem2;
+						Evernote::EDAM::Type::Note _elem2;
 						_elem2.Read(iprot);
 						this->notes.push_back(_elem2);
 					}
@@ -98,7 +98,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list3);
 					for (int _i4 = 0; _i4 < _list3.GetCount(); ++_i4)
 					{
-						Evernote::EDAM::Types::Notebook _elem5;
+						Evernote::EDAM::Type::Notebook _elem5;
 						_elem5.Read(iprot);
 						this->notebooks.push_back(_elem5);
 					}
@@ -119,7 +119,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list6);
 					for (int _i7 = 0; _i7 < _list6.GetCount(); ++_i7)
 					{
-						Evernote::EDAM::Types::Tag _elem8;
+						Evernote::EDAM::Type::Tag _elem8;
 						_elem8.Read(iprot);
 						this->tags.push_back(_elem8);
 					}
@@ -140,7 +140,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list9);
 					for (int _i10 = 0; _i10 < _list9.GetCount(); ++_i10)
 					{
-						Evernote::EDAM::Types::SavedSearch _elem11;
+						Evernote::EDAM::Type::SavedSearch _elem11;
 						_elem11.Read(iprot);
 						this->searches.push_back(_elem11);
 					}
@@ -161,7 +161,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list12);
 					for (int _i13 = 0; _i13 < _list12.GetCount(); ++_i13)
 					{
-						Evernote::EDAM::Types::Resource _elem14;
+						Evernote::EDAM::Type::Resource _elem14;
 						_elem14.Read(iprot);
 						this->resources.push_back(_elem14);
 					}
@@ -182,8 +182,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list15);
 					for (int _i16 = 0; _i16 < _list15.GetCount(); ++_i16)
 					{
-						Evernote::EDAM::Types::Guid _elem17;
-						_elem17;
+						Evernote::EDAM::Type::Guid _elem17;
 						iprot.ReadString(_elem17);
 						this->expungedNotes.push_back(_elem17);
 					}
@@ -204,8 +203,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list18);
 					for (int _i19 = 0; _i19 < _list18.GetCount(); ++_i19)
 					{
-						Evernote::EDAM::Types::Guid _elem20;
-						_elem20;
+						Evernote::EDAM::Type::Guid _elem20;
 						iprot.ReadString(_elem20);
 						this->expungedNotebooks.push_back(_elem20);
 					}
@@ -226,8 +224,7 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list21);
 					for (int _i22 = 0; _i22 < _list21.GetCount(); ++_i22)
 					{
-						Evernote::EDAM::Types::Guid _elem23;
-						_elem23;
+						Evernote::EDAM::Type::Guid _elem23;
 						iprot.ReadString(_elem23);
 						this->expungedTags.push_back(_elem23);
 					}
@@ -248,14 +245,55 @@ void SyncChunk::Read(Thrift::Protocol::TProtocol & iprot)
 					iprot.ReadListBegin(_list24);
 					for (int _i25 = 0; _i25 < _list24.GetCount(); ++_i25)
 					{
-						Evernote::EDAM::Types::Guid _elem26;
-						_elem26;
+						Evernote::EDAM::Type::Guid _elem26;
 						iprot.ReadString(_elem26);
 						this->expungedSearches.push_back(_elem26);
 					}
 					iprot.ReadListEnd();
 				}
 				this->__isset.expungedSearches = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 13:
+			if (field.GetType() == Thrift::Protocol::TypeList)
+			{
+				{
+					Thrift::Protocol::TList _list27;
+					iprot.ReadListBegin(_list27);
+					for (int _i28 = 0; _i28 < _list27.GetCount(); ++_i28)
+					{
+						Evernote::EDAM::Type::LinkedNotebook _elem29;
+						_elem29.Read(iprot);
+						this->linkedNotebooks.push_back(_elem29);
+					}
+					iprot.ReadListEnd();
+				}
+				this->__isset.linkedNotebooks = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 14:
+			if (field.GetType() == Thrift::Protocol::TypeList)
+			{
+				{
+					Thrift::Protocol::TList _list30;
+					iprot.ReadListBegin(_list30);
+					for (int _i31 = 0; _i31 < _list30.GetCount(); ++_i31)
+					{
+						Evernote::EDAM::Type::Guid _elem32;
+						iprot.ReadString(_elem32);
+						this->expungedLinkedNotebooks.push_back(_elem32);
+					}
+					iprot.ReadListEnd();
+				}
+				this->__isset.expungedLinkedNotebooks = true;
 			}
 			else
 			{
@@ -316,9 +354,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->notes.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Note >::iterator _iter27(this->notes.begin()), end(this->notes.end()); _iter27 != end; ++_iter27)
+			for (std::vector<Evernote::EDAM::Type::Note >::iterator _iter33(this->notes.begin()), end(this->notes.end()); _iter33 != end; ++_iter33)
 			{
-				(*_iter27).Write(oprot);
+				(*_iter33).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -336,9 +374,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->notebooks.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Notebook >::iterator _iter28(this->notebooks.begin()), end(this->notebooks.end()); _iter28 != end; ++_iter28)
+			for (std::vector<Evernote::EDAM::Type::Notebook >::iterator _iter34(this->notebooks.begin()), end(this->notebooks.end()); _iter34 != end; ++_iter34)
 			{
-				(*_iter28).Write(oprot);
+				(*_iter34).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -356,9 +394,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->tags.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Tag >::iterator _iter29(this->tags.begin()), end(this->tags.end()); _iter29 != end; ++_iter29)
+			for (std::vector<Evernote::EDAM::Type::Tag >::iterator _iter35(this->tags.begin()), end(this->tags.end()); _iter35 != end; ++_iter35)
 			{
-				(*_iter29).Write(oprot);
+				(*_iter35).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -376,9 +414,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->searches.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::SavedSearch >::iterator _iter30(this->searches.begin()), end(this->searches.end()); _iter30 != end; ++_iter30)
+			for (std::vector<Evernote::EDAM::Type::SavedSearch >::iterator _iter36(this->searches.begin()), end(this->searches.end()); _iter36 != end; ++_iter36)
 			{
-				(*_iter30).Write(oprot);
+				(*_iter36).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -396,9 +434,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->resources.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Resource >::iterator _iter31(this->resources.begin()), end(this->resources.end()); _iter31 != end; ++_iter31)
+			for (std::vector<Evernote::EDAM::Type::Resource >::iterator _iter37(this->resources.begin()), end(this->resources.end()); _iter37 != end; ++_iter37)
 			{
-				(*_iter31).Write(oprot);
+				(*_iter37).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -416,9 +454,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->expungedNotes.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Guid >::iterator _iter32(this->expungedNotes.begin()), end(this->expungedNotes.end()); _iter32 != end; ++_iter32)
+			for (std::vector<Evernote::EDAM::Type::Guid >::iterator _iter38(this->expungedNotes.begin()), end(this->expungedNotes.end()); _iter38 != end; ++_iter38)
 			{
-				oprot.WriteString((*_iter32));
+				oprot.WriteString((*_iter38));
 				oprot.WriteListEnd();
 			}
 		}
@@ -436,9 +474,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->expungedNotebooks.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Guid >::iterator _iter33(this->expungedNotebooks.begin()), end(this->expungedNotebooks.end()); _iter33 != end; ++_iter33)
+			for (std::vector<Evernote::EDAM::Type::Guid >::iterator _iter39(this->expungedNotebooks.begin()), end(this->expungedNotebooks.end()); _iter39 != end; ++_iter39)
 			{
-				oprot.WriteString((*_iter33));
+				oprot.WriteString((*_iter39));
 				oprot.WriteListEnd();
 			}
 		}
@@ -456,9 +494,9 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->expungedTags.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Guid >::iterator _iter34(this->expungedTags.begin()), end(this->expungedTags.end()); _iter34 != end; ++_iter34)
+			for (std::vector<Evernote::EDAM::Type::Guid >::iterator _iter40(this->expungedTags.begin()), end(this->expungedTags.end()); _iter40 != end; ++_iter40)
 			{
-				oprot.WriteString((*_iter34));
+				oprot.WriteString((*_iter40));
 				oprot.WriteListEnd();
 			}
 		}
@@ -476,9 +514,49 @@ void SyncChunk::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->expungedSearches.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Guid >::iterator _iter35(this->expungedSearches.begin()), end(this->expungedSearches.end()); _iter35 != end; ++_iter35)
+			for (std::vector<Evernote::EDAM::Type::Guid >::iterator _iter41(this->expungedSearches.begin()), end(this->expungedSearches.end()); _iter41 != end; ++_iter41)
 			{
-				oprot.WriteString((*_iter35));
+				oprot.WriteString((*_iter41));
+				oprot.WriteListEnd();
+			}
+		}
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.linkedNotebooks)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"linkedNotebooks");
+		field.SetType(Thrift::Protocol::TypeList);
+		field.SetID(13);
+		oprot.WriteFieldBegin(field);
+		{
+			Thrift::Protocol::TList list;
+			list.SetElementType(Thrift::Protocol::TypeStruct);
+			list.SetCount(this->linkedNotebooks.size());
+			oprot.WriteListBegin(list);
+			for (std::vector<Evernote::EDAM::Type::LinkedNotebook >::iterator _iter42(this->linkedNotebooks.begin()), end(this->linkedNotebooks.end()); _iter42 != end; ++_iter42)
+			{
+				(*_iter42).Write(oprot);
+				oprot.WriteListEnd();
+			}
+		}
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.expungedLinkedNotebooks)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"expungedLinkedNotebooks");
+		field.SetType(Thrift::Protocol::TypeList);
+		field.SetID(14);
+		oprot.WriteFieldBegin(field);
+		{
+			Thrift::Protocol::TList list;
+			list.SetElementType(Thrift::Protocol::TypeString);
+			list.SetCount(this->expungedLinkedNotebooks.size());
+			oprot.WriteListBegin(list);
+			for (std::vector<Evernote::EDAM::Type::Guid >::iterator _iter43(this->expungedLinkedNotebooks.begin()), end(this->expungedLinkedNotebooks.end()); _iter43 != end; ++_iter43)
+			{
+				oprot.WriteString((*_iter43));
 				oprot.WriteListEnd();
 			}
 		}

@@ -15,7 +15,7 @@
 #include <Thrift/Thrift.h>
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 
 
@@ -36,9 +36,9 @@ public:
 		bool username;
 	};
 
-	Evernote::EDAM::Types::UserID userId;
+	Evernote::EDAM::Type::UserID userId;
 	Thrift::Protocol::TString shardId;
-	Evernote::EDAM::Types::PrivilegeLevel privilege;
+	Evernote::EDAM::Type::PrivilegeLevel privilege;
 	Thrift::Protocol::TString username;
 
 	Isset __isset;

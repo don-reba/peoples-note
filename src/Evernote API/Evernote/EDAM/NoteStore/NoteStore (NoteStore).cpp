@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -117,7 +117,115 @@ SyncChunk NoteStore::Client::recv_getSyncChunk()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getSyncChunk failed: unknown result");
 }
 
-std::vector<Evernote::EDAM::Types::Notebook > NoteStore::Client::listNotebooks(Thrift::Protocol::TString authenticationToken)
+SyncState NoteStore::Client::getLinkedNotebookSyncState(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook)
+{
+	send_getLinkedNotebookSyncState(authenticationToken, linkedNotebook);
+	return recv_getLinkedNotebookSyncState();
+}
+
+void NoteStore::Client::send_getLinkedNotebookSyncState(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getLinkedNotebookSyncState", Thrift::Protocol::MessageCall, seqid_));
+	getLinkedNotebookSyncState_args args;
+	args.authenticationToken = authenticationToken;
+	args.__isset.authenticationToken = true;
+	args.linkedNotebook = linkedNotebook;
+	args.__isset.linkedNotebook = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+SyncState NoteStore::Client::recv_getLinkedNotebookSyncState()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	getLinkedNotebookSyncState_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.success)
+	{
+		return result.success;
+	}
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getLinkedNotebookSyncState failed: unknown result");
+}
+
+SyncChunk NoteStore::Client::getLinkedNotebookSyncChunk(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly)
+{
+	send_getLinkedNotebookSyncChunk(authenticationToken, linkedNotebook, afterUSN, maxEntries, fullSyncOnly);
+	return recv_getLinkedNotebookSyncChunk();
+}
+
+void NoteStore::Client::send_getLinkedNotebookSyncChunk(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook, __int32 afterUSN, __int32 maxEntries, bool fullSyncOnly)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getLinkedNotebookSyncChunk", Thrift::Protocol::MessageCall, seqid_));
+	getLinkedNotebookSyncChunk_args args;
+	args.authenticationToken = authenticationToken;
+	args.__isset.authenticationToken = true;
+	args.linkedNotebook = linkedNotebook;
+	args.__isset.linkedNotebook = true;
+	args.afterUSN = afterUSN;
+	args.__isset.afterUSN = true;
+	args.maxEntries = maxEntries;
+	args.__isset.maxEntries = true;
+	args.fullSyncOnly = fullSyncOnly;
+	args.__isset.fullSyncOnly = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+SyncChunk NoteStore::Client::recv_getLinkedNotebookSyncChunk()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	getLinkedNotebookSyncChunk_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.success)
+	{
+		return result.success;
+	}
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getLinkedNotebookSyncChunk failed: unknown result");
+}
+
+std::vector<Evernote::EDAM::Type::Notebook > NoteStore::Client::listNotebooks(Thrift::Protocol::TString authenticationToken)
 {
 	send_listNotebooks(authenticationToken);
 	return recv_listNotebooks();
@@ -134,7 +242,7 @@ void NoteStore::Client::send_listNotebooks(Thrift::Protocol::TString authenticat
 	oprot_.GetTransport().Flush();
 }
 
-std::vector<Evernote::EDAM::Types::Notebook > NoteStore::Client::recv_listNotebooks()
+std::vector<Evernote::EDAM::Type::Notebook > NoteStore::Client::recv_listNotebooks()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -162,13 +270,13 @@ std::vector<Evernote::EDAM::Types::Notebook > NoteStore::Client::recv_listNotebo
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"listNotebooks failed: unknown result");
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Evernote::EDAM::Type::Notebook NoteStore::Client::getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getNotebook(authenticationToken, guid);
 	return recv_getNotebook();
 }
 
-void NoteStore::Client::send_getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getNotebook", Thrift::Protocol::MessageCall, seqid_));
 	getNotebook_args args;
@@ -181,7 +289,7 @@ void NoteStore::Client::send_getNotebook(Thrift::Protocol::TString authenticatio
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::recv_getNotebook()
+Evernote::EDAM::Type::Notebook NoteStore::Client::recv_getNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -213,7 +321,7 @@ Evernote::EDAM::Types::Notebook NoteStore::Client::recv_getNotebook()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getNotebook failed: unknown result");
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::getDefaultNotebook(Thrift::Protocol::TString authenticationToken)
+Evernote::EDAM::Type::Notebook NoteStore::Client::getDefaultNotebook(Thrift::Protocol::TString authenticationToken)
 {
 	send_getDefaultNotebook(authenticationToken);
 	return recv_getDefaultNotebook();
@@ -230,7 +338,7 @@ void NoteStore::Client::send_getDefaultNotebook(Thrift::Protocol::TString authen
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::recv_getDefaultNotebook()
+Evernote::EDAM::Type::Notebook NoteStore::Client::recv_getDefaultNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -258,13 +366,13 @@ Evernote::EDAM::Types::Notebook NoteStore::Client::recv_getDefaultNotebook()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getDefaultNotebook failed: unknown result");
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook)
+Evernote::EDAM::Type::Notebook NoteStore::Client::createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook)
 {
 	send_createNotebook(authenticationToken, notebook);
 	return recv_createNotebook();
 }
 
-void NoteStore::Client::send_createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook)
+void NoteStore::Client::send_createNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"createNotebook", Thrift::Protocol::MessageCall, seqid_));
 	createNotebook_args args;
@@ -277,7 +385,7 @@ void NoteStore::Client::send_createNotebook(Thrift::Protocol::TString authentica
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::recv_createNotebook()
+Evernote::EDAM::Type::Notebook NoteStore::Client::recv_createNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -305,13 +413,13 @@ Evernote::EDAM::Types::Notebook NoteStore::Client::recv_createNotebook()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"createNotebook failed: unknown result");
 }
 
-__int32 NoteStore::Client::updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook)
+__int32 NoteStore::Client::updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook)
 {
 	send_updateNotebook(authenticationToken, notebook);
 	return recv_updateNotebook();
 }
 
-void NoteStore::Client::send_updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Notebook notebook)
+void NoteStore::Client::send_updateNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Notebook notebook)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"updateNotebook", Thrift::Protocol::MessageCall, seqid_));
 	updateNotebook_args args;
@@ -356,13 +464,13 @@ __int32 NoteStore::Client::recv_updateNotebook()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"updateNotebook failed: unknown result");
 }
 
-__int32 NoteStore::Client::expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+__int32 NoteStore::Client::expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_expungeNotebook(authenticationToken, guid);
 	return recv_expungeNotebook();
 }
 
-void NoteStore::Client::send_expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_expungeNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"expungeNotebook", Thrift::Protocol::MessageCall, seqid_));
 	expungeNotebook_args args;
@@ -407,7 +515,7 @@ __int32 NoteStore::Client::recv_expungeNotebook()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"expungeNotebook failed: unknown result");
 }
 
-std::vector<Evernote::EDAM::Types::Tag > NoteStore::Client::listTags(Thrift::Protocol::TString authenticationToken)
+std::vector<Evernote::EDAM::Type::Tag > NoteStore::Client::listTags(Thrift::Protocol::TString authenticationToken)
 {
 	send_listTags(authenticationToken);
 	return recv_listTags();
@@ -424,7 +532,7 @@ void NoteStore::Client::send_listTags(Thrift::Protocol::TString authenticationTo
 	oprot_.GetTransport().Flush();
 }
 
-std::vector<Evernote::EDAM::Types::Tag > NoteStore::Client::recv_listTags()
+std::vector<Evernote::EDAM::Type::Tag > NoteStore::Client::recv_listTags()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -452,13 +560,13 @@ std::vector<Evernote::EDAM::Types::Tag > NoteStore::Client::recv_listTags()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"listTags failed: unknown result");
 }
 
-std::vector<Evernote::EDAM::Types::Tag > NoteStore::Client::listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid notebookGuid)
+std::vector<Evernote::EDAM::Type::Tag > NoteStore::Client::listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid notebookGuid)
 {
 	send_listTagsByNotebook(authenticationToken, notebookGuid);
 	return recv_listTagsByNotebook();
 }
 
-void NoteStore::Client::send_listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid notebookGuid)
+void NoteStore::Client::send_listTagsByNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid notebookGuid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"listTagsByNotebook", Thrift::Protocol::MessageCall, seqid_));
 	listTagsByNotebook_args args;
@@ -471,7 +579,7 @@ void NoteStore::Client::send_listTagsByNotebook(Thrift::Protocol::TString authen
 	oprot_.GetTransport().Flush();
 }
 
-std::vector<Evernote::EDAM::Types::Tag > NoteStore::Client::recv_listTagsByNotebook()
+std::vector<Evernote::EDAM::Type::Tag > NoteStore::Client::recv_listTagsByNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -503,13 +611,13 @@ std::vector<Evernote::EDAM::Types::Tag > NoteStore::Client::recv_listTagsByNoteb
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"listTagsByNotebook failed: unknown result");
 }
 
-Evernote::EDAM::Types::Tag NoteStore::Client::getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Evernote::EDAM::Type::Tag NoteStore::Client::getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getTag(authenticationToken, guid);
 	return recv_getTag();
 }
 
-void NoteStore::Client::send_getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getTag", Thrift::Protocol::MessageCall, seqid_));
 	getTag_args args;
@@ -522,7 +630,7 @@ void NoteStore::Client::send_getTag(Thrift::Protocol::TString authenticationToke
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Tag NoteStore::Client::recv_getTag()
+Evernote::EDAM::Type::Tag NoteStore::Client::recv_getTag()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -554,13 +662,13 @@ Evernote::EDAM::Types::Tag NoteStore::Client::recv_getTag()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getTag failed: unknown result");
 }
 
-Evernote::EDAM::Types::Tag NoteStore::Client::createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag)
+Evernote::EDAM::Type::Tag NoteStore::Client::createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag)
 {
 	send_createTag(authenticationToken, tag);
 	return recv_createTag();
 }
 
-void NoteStore::Client::send_createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag)
+void NoteStore::Client::send_createTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"createTag", Thrift::Protocol::MessageCall, seqid_));
 	createTag_args args;
@@ -573,7 +681,7 @@ void NoteStore::Client::send_createTag(Thrift::Protocol::TString authenticationT
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Tag NoteStore::Client::recv_createTag()
+Evernote::EDAM::Type::Tag NoteStore::Client::recv_createTag()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -605,13 +713,13 @@ Evernote::EDAM::Types::Tag NoteStore::Client::recv_createTag()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"createTag failed: unknown result");
 }
 
-__int32 NoteStore::Client::updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag)
+__int32 NoteStore::Client::updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag)
 {
 	send_updateTag(authenticationToken, tag);
 	return recv_updateTag();
 }
 
-void NoteStore::Client::send_updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Tag tag)
+void NoteStore::Client::send_updateTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Tag tag)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"updateTag", Thrift::Protocol::MessageCall, seqid_));
 	updateTag_args args;
@@ -656,13 +764,13 @@ __int32 NoteStore::Client::recv_updateTag()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"updateTag failed: unknown result");
 }
 
-void NoteStore::Client::untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_untagAll(authenticationToken, guid);
 	recv_untagAll();
 }
 
-void NoteStore::Client::send_untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_untagAll(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"untagAll", Thrift::Protocol::MessageCall, seqid_));
 	untagAll_args args;
@@ -703,13 +811,13 @@ void NoteStore::Client::recv_untagAll()
 	return;
 }
 
-__int32 NoteStore::Client::expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+__int32 NoteStore::Client::expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_expungeTag(authenticationToken, guid);
 	return recv_expungeTag();
 }
 
-void NoteStore::Client::send_expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_expungeTag(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"expungeTag", Thrift::Protocol::MessageCall, seqid_));
 	expungeTag_args args;
@@ -754,7 +862,7 @@ __int32 NoteStore::Client::recv_expungeTag()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"expungeTag failed: unknown result");
 }
 
-std::vector<Evernote::EDAM::Types::SavedSearch > NoteStore::Client::listSearches(Thrift::Protocol::TString authenticationToken)
+std::vector<Evernote::EDAM::Type::SavedSearch > NoteStore::Client::listSearches(Thrift::Protocol::TString authenticationToken)
 {
 	send_listSearches(authenticationToken);
 	return recv_listSearches();
@@ -771,7 +879,7 @@ void NoteStore::Client::send_listSearches(Thrift::Protocol::TString authenticati
 	oprot_.GetTransport().Flush();
 }
 
-std::vector<Evernote::EDAM::Types::SavedSearch > NoteStore::Client::recv_listSearches()
+std::vector<Evernote::EDAM::Type::SavedSearch > NoteStore::Client::recv_listSearches()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -799,13 +907,13 @@ std::vector<Evernote::EDAM::Types::SavedSearch > NoteStore::Client::recv_listSea
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"listSearches failed: unknown result");
 }
 
-Evernote::EDAM::Types::SavedSearch NoteStore::Client::getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Evernote::EDAM::Type::SavedSearch NoteStore::Client::getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getSearch(authenticationToken, guid);
 	return recv_getSearch();
 }
 
-void NoteStore::Client::send_getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getSearch", Thrift::Protocol::MessageCall, seqid_));
 	getSearch_args args;
@@ -818,7 +926,7 @@ void NoteStore::Client::send_getSearch(Thrift::Protocol::TString authenticationT
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::SavedSearch NoteStore::Client::recv_getSearch()
+Evernote::EDAM::Type::SavedSearch NoteStore::Client::recv_getSearch()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -850,13 +958,13 @@ Evernote::EDAM::Types::SavedSearch NoteStore::Client::recv_getSearch()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getSearch failed: unknown result");
 }
 
-Evernote::EDAM::Types::SavedSearch NoteStore::Client::createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search)
+Evernote::EDAM::Type::SavedSearch NoteStore::Client::createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search)
 {
 	send_createSearch(authenticationToken, search);
 	return recv_createSearch();
 }
 
-void NoteStore::Client::send_createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search)
+void NoteStore::Client::send_createSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"createSearch", Thrift::Protocol::MessageCall, seqid_));
 	createSearch_args args;
@@ -869,7 +977,7 @@ void NoteStore::Client::send_createSearch(Thrift::Protocol::TString authenticati
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::SavedSearch NoteStore::Client::recv_createSearch()
+Evernote::EDAM::Type::SavedSearch NoteStore::Client::recv_createSearch()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -897,13 +1005,13 @@ Evernote::EDAM::Types::SavedSearch NoteStore::Client::recv_createSearch()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"createSearch failed: unknown result");
 }
 
-__int32 NoteStore::Client::updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search)
+__int32 NoteStore::Client::updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search)
 {
 	send_updateSearch(authenticationToken, search);
 	return recv_updateSearch();
 }
 
-void NoteStore::Client::send_updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SavedSearch search)
+void NoteStore::Client::send_updateSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SavedSearch search)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"updateSearch", Thrift::Protocol::MessageCall, seqid_));
 	updateSearch_args args;
@@ -948,13 +1056,13 @@ __int32 NoteStore::Client::recv_updateSearch()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"updateSearch failed: unknown result");
 }
 
-__int32 NoteStore::Client::expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+__int32 NoteStore::Client::expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_expungeSearch(authenticationToken, guid);
 	return recv_expungeSearch();
 }
 
-void NoteStore::Client::send_expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_expungeSearch(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"expungeSearch", Thrift::Protocol::MessageCall, seqid_));
 	expungeSearch_args args;
@@ -1054,6 +1162,116 @@ NoteList NoteStore::Client::recv_findNotes()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"findNotes failed: unknown result");
 }
 
+__int32 NoteStore::Client::findNoteOffset(Thrift::Protocol::TString authenticationToken, NoteFilter filter, Evernote::EDAM::Type::Guid guid)
+{
+	send_findNoteOffset(authenticationToken, filter, guid);
+	return recv_findNoteOffset();
+}
+
+void NoteStore::Client::send_findNoteOffset(Thrift::Protocol::TString authenticationToken, NoteFilter filter, Evernote::EDAM::Type::Guid guid)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"findNoteOffset", Thrift::Protocol::MessageCall, seqid_));
+	findNoteOffset_args args;
+	args.authenticationToken = authenticationToken;
+	args.__isset.authenticationToken = true;
+	args.filter = filter;
+	args.__isset.filter = true;
+	args.guid = guid;
+	args.__isset.guid = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+__int32 NoteStore::Client::recv_findNoteOffset()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	findNoteOffset_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.success)
+	{
+		return result.success;
+	}
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"findNoteOffset failed: unknown result");
+}
+
+NotesMetadataList NoteStore::Client::findNotesMetadata(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes, NotesMetadataResultSpec resultSpec)
+{
+	send_findNotesMetadata(authenticationToken, filter, offset, maxNotes, resultSpec);
+	return recv_findNotesMetadata();
+}
+
+void NoteStore::Client::send_findNotesMetadata(Thrift::Protocol::TString authenticationToken, NoteFilter filter, __int32 offset, __int32 maxNotes, NotesMetadataResultSpec resultSpec)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"findNotesMetadata", Thrift::Protocol::MessageCall, seqid_));
+	findNotesMetadata_args args;
+	args.authenticationToken = authenticationToken;
+	args.__isset.authenticationToken = true;
+	args.filter = filter;
+	args.__isset.filter = true;
+	args.offset = offset;
+	args.__isset.offset = true;
+	args.maxNotes = maxNotes;
+	args.__isset.maxNotes = true;
+	args.resultSpec = resultSpec;
+	args.__isset.resultSpec = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+NotesMetadataList NoteStore::Client::recv_findNotesMetadata()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	findNotesMetadata_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.success)
+	{
+		return result.success;
+	}
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"findNotesMetadata failed: unknown result");
+}
+
 NoteCollectionCounts NoteStore::Client::findNoteCounts(Thrift::Protocol::TString authenticationToken, NoteFilter filter, bool withTrash)
 {
 	send_findNoteCounts(authenticationToken, filter, withTrash);
@@ -1107,13 +1325,13 @@ NoteCollectionCounts NoteStore::Client::recv_findNoteCounts()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"findNoteCounts failed: unknown result");
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
+Evernote::EDAM::Type::Note NoteStore::Client::getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
 {
 	send_getNote(authenticationToken, guid, withContent, withResourcesData, withResourcesRecognition, withResourcesAlternateData);
 	return recv_getNote();
 }
 
-void NoteStore::Client::send_getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
+void NoteStore::Client::send_getNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withContent, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getNote", Thrift::Protocol::MessageCall, seqid_));
 	getNote_args args;
@@ -1134,7 +1352,7 @@ void NoteStore::Client::send_getNote(Thrift::Protocol::TString authenticationTok
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::recv_getNote()
+Evernote::EDAM::Type::Note NoteStore::Client::recv_getNote()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -1166,13 +1384,13 @@ Evernote::EDAM::Types::Note NoteStore::Client::recv_getNote()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getNote failed: unknown result");
 }
 
-Thrift::Protocol::TString NoteStore::Client::getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Thrift::Protocol::TString NoteStore::Client::getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getNoteContent(authenticationToken, guid);
 	return recv_getNoteContent();
 }
 
-void NoteStore::Client::send_getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getNoteContent(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getNoteContent", Thrift::Protocol::MessageCall, seqid_));
 	getNoteContent_args args;
@@ -1217,13 +1435,13 @@ Thrift::Protocol::TString NoteStore::Client::recv_getNoteContent()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getNoteContent failed: unknown result");
 }
 
-Thrift::Protocol::TString NoteStore::Client::getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Thrift::Protocol::TString NoteStore::Client::getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool noteOnly, bool tokenizeForIndexing)
 {
-	send_getNoteSearchText(authenticationToken, guid);
+	send_getNoteSearchText(authenticationToken, guid, noteOnly, tokenizeForIndexing);
 	return recv_getNoteSearchText();
 }
 
-void NoteStore::Client::send_getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getNoteSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool noteOnly, bool tokenizeForIndexing)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getNoteSearchText", Thrift::Protocol::MessageCall, seqid_));
 	getNoteSearchText_args args;
@@ -1231,6 +1449,10 @@ void NoteStore::Client::send_getNoteSearchText(Thrift::Protocol::TString authent
 	args.__isset.authenticationToken = true;
 	args.guid = guid;
 	args.__isset.guid = true;
+	args.noteOnly = noteOnly;
+	args.__isset.noteOnly = true;
+	args.tokenizeForIndexing = tokenizeForIndexing;
+	args.__isset.tokenizeForIndexing = true;
 	args.Write(oprot_);
 	oprot_.WriteMessageEnd();
 	oprot_.GetTransport().Flush();
@@ -1268,13 +1490,64 @@ Thrift::Protocol::TString NoteStore::Client::recv_getNoteSearchText()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getNoteSearchText failed: unknown result");
 }
 
-std::vector<Thrift::Protocol::TString > NoteStore::Client::getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Thrift::Protocol::TString NoteStore::Client::getResourceSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
+{
+	send_getResourceSearchText(authenticationToken, guid);
+	return recv_getResourceSearchText();
+}
+
+void NoteStore::Client::send_getResourceSearchText(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResourceSearchText", Thrift::Protocol::MessageCall, seqid_));
+	getResourceSearchText_args args;
+	args.authenticationToken = authenticationToken;
+	args.__isset.authenticationToken = true;
+	args.guid = guid;
+	args.__isset.guid = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+Thrift::Protocol::TString NoteStore::Client::recv_getResourceSearchText()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	getResourceSearchText_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.success)
+	{
+		return result.success;
+	}
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getResourceSearchText failed: unknown result");
+}
+
+std::vector<Thrift::Protocol::TString > NoteStore::Client::getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getNoteTagNames(authenticationToken, guid);
 	return recv_getNoteTagNames();
 }
 
-void NoteStore::Client::send_getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getNoteTagNames(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getNoteTagNames", Thrift::Protocol::MessageCall, seqid_));
 	getNoteTagNames_args args;
@@ -1319,13 +1592,13 @@ std::vector<Thrift::Protocol::TString > NoteStore::Client::recv_getNoteTagNames(
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getNoteTagNames failed: unknown result");
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note)
+Evernote::EDAM::Type::Note NoteStore::Client::createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note)
 {
 	send_createNote(authenticationToken, note);
 	return recv_createNote();
 }
 
-void NoteStore::Client::send_createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note)
+void NoteStore::Client::send_createNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"createNote", Thrift::Protocol::MessageCall, seqid_));
 	createNote_args args;
@@ -1338,7 +1611,7 @@ void NoteStore::Client::send_createNote(Thrift::Protocol::TString authentication
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::recv_createNote()
+Evernote::EDAM::Type::Note NoteStore::Client::recv_createNote()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -1370,13 +1643,13 @@ Evernote::EDAM::Types::Note NoteStore::Client::recv_createNote()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"createNote failed: unknown result");
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note)
+Evernote::EDAM::Type::Note NoteStore::Client::updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note)
 {
 	send_updateNote(authenticationToken, note);
 	return recv_updateNote();
 }
 
-void NoteStore::Client::send_updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Note note)
+void NoteStore::Client::send_updateNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Note note)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"updateNote", Thrift::Protocol::MessageCall, seqid_));
 	updateNote_args args;
@@ -1389,7 +1662,7 @@ void NoteStore::Client::send_updateNote(Thrift::Protocol::TString authentication
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::recv_updateNote()
+Evernote::EDAM::Type::Note NoteStore::Client::recv_updateNote()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -1421,13 +1694,13 @@ Evernote::EDAM::Types::Note NoteStore::Client::recv_updateNote()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"updateNote failed: unknown result");
 }
 
-__int32 NoteStore::Client::deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+__int32 NoteStore::Client::deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_deleteNote(authenticationToken, guid);
 	return recv_deleteNote();
 }
 
-void NoteStore::Client::send_deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_deleteNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"deleteNote", Thrift::Protocol::MessageCall, seqid_));
 	deleteNote_args args;
@@ -1472,13 +1745,13 @@ __int32 NoteStore::Client::recv_deleteNote()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"deleteNote failed: unknown result");
 }
 
-__int32 NoteStore::Client::expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+__int32 NoteStore::Client::expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_expungeNote(authenticationToken, guid);
 	return recv_expungeNote();
 }
 
-void NoteStore::Client::send_expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_expungeNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"expungeNote", Thrift::Protocol::MessageCall, seqid_));
 	expungeNote_args args;
@@ -1523,13 +1796,13 @@ __int32 NoteStore::Client::recv_expungeNote()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"expungeNote failed: unknown result");
 }
 
-__int32 NoteStore::Client::expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Types::Guid > noteGuids)
+__int32 NoteStore::Client::expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Type::Guid > noteGuids)
 {
 	send_expungeNotes(authenticationToken, noteGuids);
 	return recv_expungeNotes();
 }
 
-void NoteStore::Client::send_expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Types::Guid > noteGuids)
+void NoteStore::Client::send_expungeNotes(Thrift::Protocol::TString authenticationToken, std::vector<Evernote::EDAM::Type::Guid > noteGuids)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"expungeNotes", Thrift::Protocol::MessageCall, seqid_));
 	expungeNotes_args args;
@@ -1619,13 +1892,13 @@ __int32 NoteStore::Client::recv_expungeInactiveNotes()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"expungeInactiveNotes failed: unknown result");
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid)
+Evernote::EDAM::Type::Note NoteStore::Client::copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Evernote::EDAM::Type::Guid toNotebookGuid)
 {
 	send_copyNote(authenticationToken, noteGuid, toNotebookGuid);
 	return recv_copyNote();
 }
 
-void NoteStore::Client::send_copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Evernote::EDAM::Types::Guid toNotebookGuid)
+void NoteStore::Client::send_copyNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Evernote::EDAM::Type::Guid toNotebookGuid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"copyNote", Thrift::Protocol::MessageCall, seqid_));
 	copyNote_args args;
@@ -1640,7 +1913,7 @@ void NoteStore::Client::send_copyNote(Thrift::Protocol::TString authenticationTo
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::recv_copyNote()
+Evernote::EDAM::Type::Note NoteStore::Client::recv_copyNote()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -1672,13 +1945,13 @@ Evernote::EDAM::Types::Note NoteStore::Client::recv_copyNote()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"copyNote failed: unknown result");
 }
 
-std::vector<NoteVersionId > NoteStore::Client::listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid)
+std::vector<NoteVersionId > NoteStore::Client::listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid)
 {
 	send_listNoteVersions(authenticationToken, noteGuid);
 	return recv_listNoteVersions();
 }
 
-void NoteStore::Client::send_listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid)
+void NoteStore::Client::send_listNoteVersions(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"listNoteVersions", Thrift::Protocol::MessageCall, seqid_));
 	listNoteVersions_args args;
@@ -1723,13 +1996,13 @@ std::vector<NoteVersionId > NoteStore::Client::recv_listNoteVersions()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"listNoteVersions failed: unknown result");
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
+Evernote::EDAM::Type::Note NoteStore::Client::getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
 {
 	send_getNoteVersion(authenticationToken, noteGuid, updateSequenceNum, withResourcesData, withResourcesRecognition, withResourcesAlternateData);
 	return recv_getNoteVersion();
 }
 
-void NoteStore::Client::send_getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
+void NoteStore::Client::send_getNoteVersion(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, __int32 updateSequenceNum, bool withResourcesData, bool withResourcesRecognition, bool withResourcesAlternateData)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getNoteVersion", Thrift::Protocol::MessageCall, seqid_));
 	getNoteVersion_args args;
@@ -1750,7 +2023,7 @@ void NoteStore::Client::send_getNoteVersion(Thrift::Protocol::TString authentica
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Note NoteStore::Client::recv_getNoteVersion()
+Evernote::EDAM::Type::Note NoteStore::Client::recv_getNoteVersion()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -1782,13 +2055,13 @@ Evernote::EDAM::Types::Note NoteStore::Client::recv_getNoteVersion()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getNoteVersion failed: unknown result");
 }
 
-Evernote::EDAM::Types::Resource NoteStore::Client::getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData)
+Evernote::EDAM::Type::Resource NoteStore::Client::getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData)
 {
 	send_getResource(authenticationToken, guid, withData, withRecognition, withAttributes, withAlternateData);
 	return recv_getResource();
 }
 
-void NoteStore::Client::send_getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData)
+void NoteStore::Client::send_getResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid, bool withData, bool withRecognition, bool withAttributes, bool withAlternateData)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResource", Thrift::Protocol::MessageCall, seqid_));
 	getResource_args args;
@@ -1809,7 +2082,7 @@ void NoteStore::Client::send_getResource(Thrift::Protocol::TString authenticatio
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Resource NoteStore::Client::recv_getResource()
+Evernote::EDAM::Type::Resource NoteStore::Client::recv_getResource()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -1841,13 +2114,13 @@ Evernote::EDAM::Types::Resource NoteStore::Client::recv_getResource()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getResource failed: unknown result");
 }
 
-__int32 NoteStore::Client::updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Resource resource)
+__int32 NoteStore::Client::updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Resource resource)
 {
 	send_updateResource(authenticationToken, resource);
 	return recv_updateResource();
 }
 
-void NoteStore::Client::send_updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Resource resource)
+void NoteStore::Client::send_updateResource(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Resource resource)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"updateResource", Thrift::Protocol::MessageCall, seqid_));
 	updateResource_args args;
@@ -1892,13 +2165,13 @@ __int32 NoteStore::Client::recv_updateResource()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"updateResource failed: unknown result");
 }
 
-Thrift::Protocol::TBinary NoteStore::Client::getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Thrift::Protocol::TBinary NoteStore::Client::getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getResourceData(authenticationToken, guid);
 	return recv_getResourceData();
 }
 
-void NoteStore::Client::send_getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getResourceData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResourceData", Thrift::Protocol::MessageCall, seqid_));
 	getResourceData_args args;
@@ -1943,13 +2216,13 @@ Thrift::Protocol::TBinary NoteStore::Client::recv_getResourceData()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getResourceData failed: unknown result");
 }
 
-Evernote::EDAM::Types::Resource NoteStore::Client::getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData)
+Evernote::EDAM::Type::Resource NoteStore::Client::getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData)
 {
 	send_getResourceByHash(authenticationToken, noteGuid, contentHash, withData, withRecognition, withAlternateData);
 	return recv_getResourceByHash();
 }
 
-void NoteStore::Client::send_getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData)
+void NoteStore::Client::send_getResourceByHash(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid noteGuid, Thrift::Protocol::TBinary contentHash, bool withData, bool withRecognition, bool withAlternateData)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResourceByHash", Thrift::Protocol::MessageCall, seqid_));
 	getResourceByHash_args args;
@@ -1970,7 +2243,7 @@ void NoteStore::Client::send_getResourceByHash(Thrift::Protocol::TString authent
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Resource NoteStore::Client::recv_getResourceByHash()
+Evernote::EDAM::Type::Resource NoteStore::Client::recv_getResourceByHash()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2002,13 +2275,13 @@ Evernote::EDAM::Types::Resource NoteStore::Client::recv_getResourceByHash()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getResourceByHash failed: unknown result");
 }
 
-Thrift::Protocol::TBinary NoteStore::Client::getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Thrift::Protocol::TBinary NoteStore::Client::getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getResourceRecognition(authenticationToken, guid);
 	return recv_getResourceRecognition();
 }
 
-void NoteStore::Client::send_getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getResourceRecognition(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResourceRecognition", Thrift::Protocol::MessageCall, seqid_));
 	getResourceRecognition_args args;
@@ -2053,13 +2326,13 @@ Thrift::Protocol::TBinary NoteStore::Client::recv_getResourceRecognition()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getResourceRecognition failed: unknown result");
 }
 
-Thrift::Protocol::TBinary NoteStore::Client::getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Thrift::Protocol::TBinary NoteStore::Client::getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getResourceAlternateData(authenticationToken, guid);
 	return recv_getResourceAlternateData();
 }
 
-void NoteStore::Client::send_getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getResourceAlternateData(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResourceAlternateData", Thrift::Protocol::MessageCall, seqid_));
 	getResourceAlternateData_args args;
@@ -2104,13 +2377,13 @@ Thrift::Protocol::TBinary NoteStore::Client::recv_getResourceAlternateData()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getResourceAlternateData failed: unknown result");
 }
 
-Evernote::EDAM::Types::ResourceAttributes NoteStore::Client::getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+Evernote::EDAM::Type::ResourceAttributes NoteStore::Client::getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	send_getResourceAttributes(authenticationToken, guid);
 	return recv_getResourceAttributes();
 }
 
-void NoteStore::Client::send_getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::Guid guid)
+void NoteStore::Client::send_getResourceAttributes(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResourceAttributes", Thrift::Protocol::MessageCall, seqid_));
 	getResourceAttributes_args args;
@@ -2123,7 +2396,7 @@ void NoteStore::Client::send_getResourceAttributes(Thrift::Protocol::TString aut
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::ResourceAttributes NoteStore::Client::recv_getResourceAttributes()
+Evernote::EDAM::Type::ResourceAttributes NoteStore::Client::recv_getResourceAttributes()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2200,7 +2473,7 @@ __int64 NoteStore::Client::recv_getAccountSize()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getAccountSize failed: unknown result");
 }
 
-std::vector<Evernote::EDAM::Types::Ad > NoteStore::Client::getAds(Thrift::Protocol::TString authenticationToken, AdParameters adParameters)
+std::vector<Evernote::EDAM::Type::Ad > NoteStore::Client::getAds(Thrift::Protocol::TString authenticationToken, AdParameters adParameters)
 {
 	send_getAds(authenticationToken, adParameters);
 	return recv_getAds();
@@ -2219,7 +2492,7 @@ void NoteStore::Client::send_getAds(Thrift::Protocol::TString authenticationToke
 	oprot_.GetTransport().Flush();
 }
 
-std::vector<Evernote::EDAM::Types::Ad > NoteStore::Client::recv_getAds()
+std::vector<Evernote::EDAM::Type::Ad > NoteStore::Client::recv_getAds()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2247,7 +2520,7 @@ std::vector<Evernote::EDAM::Types::Ad > NoteStore::Client::recv_getAds()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getAds failed: unknown result");
 }
 
-Evernote::EDAM::Types::Ad NoteStore::Client::getRandomAd(Thrift::Protocol::TString authenticationToken, AdParameters adParameters)
+Evernote::EDAM::Type::Ad NoteStore::Client::getRandomAd(Thrift::Protocol::TString authenticationToken, AdParameters adParameters)
 {
 	send_getRandomAd(authenticationToken, adParameters);
 	return recv_getRandomAd();
@@ -2266,7 +2539,7 @@ void NoteStore::Client::send_getRandomAd(Thrift::Protocol::TString authenticatio
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Ad NoteStore::Client::recv_getRandomAd()
+Evernote::EDAM::Type::Ad NoteStore::Client::recv_getRandomAd()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2294,13 +2567,13 @@ Evernote::EDAM::Types::Ad NoteStore::Client::recv_getRandomAd()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getRandomAd failed: unknown result");
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::getPublicNotebook(Evernote::EDAM::Types::UserID userId, Thrift::Protocol::TString publicUri)
+Evernote::EDAM::Type::Notebook NoteStore::Client::getPublicNotebook(Evernote::EDAM::Type::UserID userId, Thrift::Protocol::TString publicUri)
 {
 	send_getPublicNotebook(userId, publicUri);
 	return recv_getPublicNotebook();
 }
 
-void NoteStore::Client::send_getPublicNotebook(Evernote::EDAM::Types::UserID userId, Thrift::Protocol::TString publicUri)
+void NoteStore::Client::send_getPublicNotebook(Evernote::EDAM::Type::UserID userId, Thrift::Protocol::TString publicUri)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"getPublicNotebook", Thrift::Protocol::MessageCall, seqid_));
 	getPublicNotebook_args args;
@@ -2313,7 +2586,7 @@ void NoteStore::Client::send_getPublicNotebook(Evernote::EDAM::Types::UserID use
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::Notebook NoteStore::Client::recv_getPublicNotebook()
+Evernote::EDAM::Type::Notebook NoteStore::Client::recv_getPublicNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2341,13 +2614,13 @@ Evernote::EDAM::Types::Notebook NoteStore::Client::recv_getPublicNotebook()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"getPublicNotebook failed: unknown result");
 }
 
-Evernote::EDAM::Types::SharedNotebook NoteStore::Client::createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SharedNotebook sharedNotebook)
+Evernote::EDAM::Type::SharedNotebook NoteStore::Client::createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SharedNotebook sharedNotebook)
 {
 	send_createSharedNotebook(authenticationToken, sharedNotebook);
 	return recv_createSharedNotebook();
 }
 
-void NoteStore::Client::send_createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::SharedNotebook sharedNotebook)
+void NoteStore::Client::send_createSharedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::SharedNotebook sharedNotebook)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"createSharedNotebook", Thrift::Protocol::MessageCall, seqid_));
 	createSharedNotebook_args args;
@@ -2360,7 +2633,7 @@ void NoteStore::Client::send_createSharedNotebook(Thrift::Protocol::TString auth
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::SharedNotebook NoteStore::Client::recv_createSharedNotebook()
+Evernote::EDAM::Type::SharedNotebook NoteStore::Client::recv_createSharedNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2392,7 +2665,7 @@ Evernote::EDAM::Types::SharedNotebook NoteStore::Client::recv_createSharedNotebo
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"createSharedNotebook failed: unknown result");
 }
 
-std::vector<Evernote::EDAM::Types::SharedNotebook > NoteStore::Client::listSharedNotebooks(Thrift::Protocol::TString authenticationToken)
+std::vector<Evernote::EDAM::Type::SharedNotebook > NoteStore::Client::listSharedNotebooks(Thrift::Protocol::TString authenticationToken)
 {
 	send_listSharedNotebooks(authenticationToken);
 	return recv_listSharedNotebooks();
@@ -2409,7 +2682,7 @@ void NoteStore::Client::send_listSharedNotebooks(Thrift::Protocol::TString authe
 	oprot_.GetTransport().Flush();
 }
 
-std::vector<Evernote::EDAM::Types::SharedNotebook > NoteStore::Client::recv_listSharedNotebooks()
+std::vector<Evernote::EDAM::Type::SharedNotebook > NoteStore::Client::recv_listSharedNotebooks()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2492,13 +2765,13 @@ __int32 NoteStore::Client::recv_expungeSharedNotebooks()
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"expungeSharedNotebooks failed: unknown result");
 }
 
-Evernote::EDAM::Types::LinkedNotebook NoteStore::Client::createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook)
+Evernote::EDAM::Type::LinkedNotebook NoteStore::Client::createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook)
 {
 	send_createLinkedNotebook(authenticationToken, linkedNotebook);
 	return recv_createLinkedNotebook();
 }
 
-void NoteStore::Client::send_createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook)
+void NoteStore::Client::send_createLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"createLinkedNotebook", Thrift::Protocol::MessageCall, seqid_));
 	createLinkedNotebook_args args;
@@ -2511,7 +2784,7 @@ void NoteStore::Client::send_createLinkedNotebook(Thrift::Protocol::TString auth
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::LinkedNotebook NoteStore::Client::recv_createLinkedNotebook()
+Evernote::EDAM::Type::LinkedNotebook NoteStore::Client::recv_createLinkedNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2543,13 +2816,13 @@ Evernote::EDAM::Types::LinkedNotebook NoteStore::Client::recv_createLinkedNotebo
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"createLinkedNotebook failed: unknown result");
 }
 
-Evernote::EDAM::Types::LinkedNotebook NoteStore::Client::updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook)
+__int32 NoteStore::Client::updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook)
 {
 	send_updateLinkedNotebook(authenticationToken, linkedNotebook);
 	return recv_updateLinkedNotebook();
 }
 
-void NoteStore::Client::send_updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Types::LinkedNotebook linkedNotebook)
+void NoteStore::Client::send_updateLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::LinkedNotebook linkedNotebook)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"updateLinkedNotebook", Thrift::Protocol::MessageCall, seqid_));
 	updateLinkedNotebook_args args;
@@ -2562,7 +2835,7 @@ void NoteStore::Client::send_updateLinkedNotebook(Thrift::Protocol::TString auth
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::LinkedNotebook NoteStore::Client::recv_updateLinkedNotebook()
+__int32 NoteStore::Client::recv_updateLinkedNotebook()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2594,7 +2867,7 @@ Evernote::EDAM::Types::LinkedNotebook NoteStore::Client::recv_updateLinkedNotebo
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"updateLinkedNotebook failed: unknown result");
 }
 
-std::vector<Evernote::EDAM::Types::LinkedNotebook > NoteStore::Client::listLinkedNotebooks(Thrift::Protocol::TString authenticationToken)
+std::vector<Evernote::EDAM::Type::LinkedNotebook > NoteStore::Client::listLinkedNotebooks(Thrift::Protocol::TString authenticationToken)
 {
 	send_listLinkedNotebooks(authenticationToken);
 	return recv_listLinkedNotebooks();
@@ -2611,7 +2884,7 @@ void NoteStore::Client::send_listLinkedNotebooks(Thrift::Protocol::TString authe
 	oprot_.GetTransport().Flush();
 }
 
-std::vector<Evernote::EDAM::Types::LinkedNotebook > NoteStore::Client::recv_listLinkedNotebooks()
+std::vector<Evernote::EDAM::Type::LinkedNotebook > NoteStore::Client::recv_listLinkedNotebooks()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2643,20 +2916,20 @@ std::vector<Evernote::EDAM::Types::LinkedNotebook > NoteStore::Client::recv_list
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"listLinkedNotebooks failed: unknown result");
 }
 
-__int32 NoteStore::Client::expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, __int64 linkedNotebookId)
+__int32 NoteStore::Client::expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
-	send_expungeLinkedNotebook(authenticationToken, linkedNotebookId);
+	send_expungeLinkedNotebook(authenticationToken, guid);
 	return recv_expungeLinkedNotebook();
 }
 
-void NoteStore::Client::send_expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, __int64 linkedNotebookId)
+void NoteStore::Client::send_expungeLinkedNotebook(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
 {
 	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"expungeLinkedNotebook", Thrift::Protocol::MessageCall, seqid_));
 	expungeLinkedNotebook_args args;
 	args.authenticationToken = authenticationToken;
 	args.__isset.authenticationToken = true;
-	args.linkedNotebookId = linkedNotebookId;
-	args.__isset.linkedNotebookId = true;
+	args.guid = guid;
+	args.__isset.guid = true;
 	args.Write(oprot_);
 	oprot_.WriteMessageEnd();
 	oprot_.GetTransport().Flush();
@@ -2745,7 +3018,7 @@ Evernote::EDAM::UserStore::AuthenticationResult NoteStore::Client::recv_authenti
 	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"authenticateToSharedNotebook failed: unknown result");
 }
 
-Evernote::EDAM::Types::SharedNotebook NoteStore::Client::getSharedNotebookByAuth(Thrift::Protocol::TString authenticationToken)
+Evernote::EDAM::Type::SharedNotebook NoteStore::Client::getSharedNotebookByAuth(Thrift::Protocol::TString authenticationToken)
 {
 	send_getSharedNotebookByAuth(authenticationToken);
 	return recv_getSharedNotebookByAuth();
@@ -2762,7 +3035,7 @@ void NoteStore::Client::send_getSharedNotebookByAuth(Thrift::Protocol::TString a
 	oprot_.GetTransport().Flush();
 }
 
-Evernote::EDAM::Types::SharedNotebook NoteStore::Client::recv_getSharedNotebookByAuth()
+Evernote::EDAM::Type::SharedNotebook NoteStore::Client::recv_getSharedNotebookByAuth()
 {
 	Thrift::Protocol::TMessage msg;
 	iprot_.ReadMessageBegin(msg);
@@ -2841,10 +3114,161 @@ void NoteStore::Client::recv_emailNote()
 	return;
 }
 
+Thrift::Protocol::TString NoteStore::Client::shareNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
+{
+	send_shareNote(authenticationToken, guid);
+	return recv_shareNote();
+}
+
+void NoteStore::Client::send_shareNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"shareNote", Thrift::Protocol::MessageCall, seqid_));
+	shareNote_args args;
+	args.authenticationToken = authenticationToken;
+	args.__isset.authenticationToken = true;
+	args.guid = guid;
+	args.__isset.guid = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+Thrift::Protocol::TString NoteStore::Client::recv_shareNote()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	shareNote_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.success)
+	{
+		return result.success;
+	}
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"shareNote failed: unknown result");
+}
+
+void NoteStore::Client::stopSharingNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
+{
+	send_stopSharingNote(authenticationToken, guid);
+	recv_stopSharingNote();
+}
+
+void NoteStore::Client::send_stopSharingNote(Thrift::Protocol::TString authenticationToken, Evernote::EDAM::Type::Guid guid)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"stopSharingNote", Thrift::Protocol::MessageCall, seqid_));
+	stopSharingNote_args args;
+	args.authenticationToken = authenticationToken;
+	args.__isset.authenticationToken = true;
+	args.guid = guid;
+	args.__isset.guid = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+void NoteStore::Client::recv_stopSharingNote()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	stopSharingNote_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	return;
+}
+
+Evernote::EDAM::UserStore::AuthenticationResult NoteStore::Client::authenticateToSharedNote(Thrift::Protocol::TString guid, Thrift::Protocol::TString noteKey)
+{
+	send_authenticateToSharedNote(guid, noteKey);
+	return recv_authenticateToSharedNote();
+}
+
+void NoteStore::Client::send_authenticateToSharedNote(Thrift::Protocol::TString guid, Thrift::Protocol::TString noteKey)
+{
+	oprot_.WriteMessageBegin(Thrift::Protocol::TMessage(L"authenticateToSharedNote", Thrift::Protocol::MessageCall, seqid_));
+	authenticateToSharedNote_args args;
+	args.guid = guid;
+	args.__isset.guid = true;
+	args.noteKey = noteKey;
+	args.__isset.noteKey = true;
+	args.Write(oprot_);
+	oprot_.WriteMessageEnd();
+	oprot_.GetTransport().Flush();
+}
+
+Evernote::EDAM::UserStore::AuthenticationResult NoteStore::Client::recv_authenticateToSharedNote()
+{
+	Thrift::Protocol::TMessage msg;
+	iprot_.ReadMessageBegin(msg);
+	if (msg.GetType() == Thrift::Protocol::MessageException)
+	{
+		Thrift::TApplicationException x = Thrift::TApplicationException::Read(iprot_);
+		iprot_.ReadMessageEnd();
+		throw x;
+	}
+	authenticateToSharedNote_result result;
+	result.Read(iprot_);
+	iprot_.ReadMessageEnd();
+	if (result.__isset.success)
+	{
+		return result.success;
+	}
+	if (result.__isset.userException)
+	{
+		throw result.userException;
+	}
+	if (result.__isset.notFoundException)
+	{
+		throw result.notFoundException;
+	}
+	if (result.__isset.systemException)
+	{
+		throw result.systemException;
+	}
+	throw Thrift::TApplicationException(Thrift::TApplicationException::MissingResult, L"authenticateToSharedNote failed: unknown result");
+}
+
 NoteStore::Processor::Processor(Iface & iface) : iface_(iface)
 {
 	processMap_[L"getSyncState"] = &Processor::getSyncState_Process;
 	processMap_[L"getSyncChunk"] = &Processor::getSyncChunk_Process;
+	processMap_[L"getLinkedNotebookSyncState"] = &Processor::getLinkedNotebookSyncState_Process;
+	processMap_[L"getLinkedNotebookSyncChunk"] = &Processor::getLinkedNotebookSyncChunk_Process;
 	processMap_[L"listNotebooks"] = &Processor::listNotebooks_Process;
 	processMap_[L"getNotebook"] = &Processor::getNotebook_Process;
 	processMap_[L"getDefaultNotebook"] = &Processor::getDefaultNotebook_Process;
@@ -2864,10 +3288,13 @@ NoteStore::Processor::Processor(Iface & iface) : iface_(iface)
 	processMap_[L"updateSearch"] = &Processor::updateSearch_Process;
 	processMap_[L"expungeSearch"] = &Processor::expungeSearch_Process;
 	processMap_[L"findNotes"] = &Processor::findNotes_Process;
+	processMap_[L"findNoteOffset"] = &Processor::findNoteOffset_Process;
+	processMap_[L"findNotesMetadata"] = &Processor::findNotesMetadata_Process;
 	processMap_[L"findNoteCounts"] = &Processor::findNoteCounts_Process;
 	processMap_[L"getNote"] = &Processor::getNote_Process;
 	processMap_[L"getNoteContent"] = &Processor::getNoteContent_Process;
 	processMap_[L"getNoteSearchText"] = &Processor::getNoteSearchText_Process;
+	processMap_[L"getResourceSearchText"] = &Processor::getResourceSearchText_Process;
 	processMap_[L"getNoteTagNames"] = &Processor::getNoteTagNames_Process;
 	processMap_[L"createNote"] = &Processor::createNote_Process;
 	processMap_[L"updateNote"] = &Processor::updateNote_Process;
@@ -2899,6 +3326,9 @@ NoteStore::Processor::Processor(Iface & iface) : iface_(iface)
 	processMap_[L"authenticateToSharedNotebook"] = &Processor::authenticateToSharedNotebook_Process;
 	processMap_[L"getSharedNotebookByAuth"] = &Processor::getSharedNotebookByAuth_Process;
 	processMap_[L"emailNote"] = &Processor::emailNote_Process;
+	processMap_[L"shareNote"] = &Processor::shareNote_Process;
+	processMap_[L"stopSharingNote"] = &Processor::stopSharingNote_Process;
+	processMap_[L"authenticateToSharedNote"] = &Processor::authenticateToSharedNote_Process;
 }
 
 bool NoteStore::Processor::Process(Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
@@ -2964,6 +3394,62 @@ void NoteStore::Processor::getSyncChunk_Process(int seqid, Thrift::Protocol::TPr
 		result.systemException = systemException;
 	}
 	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"getSyncChunk", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
+void NoteStore::Processor::getLinkedNotebookSyncState_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	getLinkedNotebookSyncState_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	getLinkedNotebookSyncState_result result;
+	try
+	{
+		result.success = iface_.getLinkedNotebookSyncState(args.authenticationToken, args.linkedNotebook);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"getLinkedNotebookSyncState", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
+void NoteStore::Processor::getLinkedNotebookSyncChunk_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	getLinkedNotebookSyncChunk_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	getLinkedNotebookSyncChunk_result result;
+	try
+	{
+		result.success = iface_.getLinkedNotebookSyncChunk(args.authenticationToken, args.linkedNotebook, args.afterUSN, args.maxEntries, args.fullSyncOnly);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"getLinkedNotebookSyncChunk", Thrift::Protocol::MessageReply, seqid)); 
 	result.Write(oprot);
 	oprot.WriteMessageEnd();
 	oprot.GetTransport().Flush();
@@ -3477,6 +3963,62 @@ void NoteStore::Processor::findNotes_Process(int seqid, Thrift::Protocol::TProto
 	oprot.GetTransport().Flush();
 }
 
+void NoteStore::Processor::findNoteOffset_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	findNoteOffset_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	findNoteOffset_result result;
+	try
+	{
+		result.success = iface_.findNoteOffset(args.authenticationToken, args.filter, args.guid);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"findNoteOffset", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
+void NoteStore::Processor::findNotesMetadata_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	findNotesMetadata_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	findNotesMetadata_result result;
+	try
+	{
+		result.success = iface_.findNotesMetadata(args.authenticationToken, args.filter, args.offset, args.maxNotes, args.resultSpec);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"findNotesMetadata", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
 void NoteStore::Processor::findNoteCounts_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
 {
 	findNoteCounts_args args;
@@ -3569,7 +4111,7 @@ void NoteStore::Processor::getNoteSearchText_Process(int seqid, Thrift::Protocol
 	getNoteSearchText_result result;
 	try
 	{
-		result.success = iface_.getNoteSearchText(args.authenticationToken, args.guid);
+		result.success = iface_.getNoteSearchText(args.authenticationToken, args.guid, args.noteOnly, args.tokenizeForIndexing);
 	}
 	catch (Evernote::EDAM::Error::EDAMUserException userException)
 	{
@@ -3584,6 +4126,34 @@ void NoteStore::Processor::getNoteSearchText_Process(int seqid, Thrift::Protocol
 		result.notFoundException = notFoundException;
 	}
 	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"getNoteSearchText", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
+void NoteStore::Processor::getResourceSearchText_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	getResourceSearchText_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	getResourceSearchText_result result;
+	try
+	{
+		result.success = iface_.getResourceSearchText(args.authenticationToken, args.guid);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"getResourceSearchText", Thrift::Protocol::MessageReply, seqid)); 
 	result.Write(oprot);
 	oprot.WriteMessageEnd();
 	oprot.GetTransport().Flush();
@@ -4333,7 +4903,7 @@ void NoteStore::Processor::expungeLinkedNotebook_Process(int seqid, Thrift::Prot
 	expungeLinkedNotebook_result result;
 	try
 	{
-		result.success = iface_.expungeLinkedNotebook(args.authenticationToken, args.linkedNotebookId);
+		result.success = iface_.expungeLinkedNotebook(args.authenticationToken, args.guid);
 	}
 	catch (Evernote::EDAM::Error::EDAMUserException userException)
 	{
@@ -4437,9 +5007,93 @@ void NoteStore::Processor::emailNote_Process(int seqid, Thrift::Protocol::TProto
 	oprot.GetTransport().Flush();
 }
 
+void NoteStore::Processor::shareNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	shareNote_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	shareNote_result result;
+	try
+	{
+		result.success = iface_.shareNote(args.authenticationToken, args.guid);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"shareNote", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
+void NoteStore::Processor::stopSharingNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	stopSharingNote_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	stopSharingNote_result result;
+	try
+	{
+		iface_.stopSharingNote(args.authenticationToken, args.guid);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"stopSharingNote", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
+void NoteStore::Processor::authenticateToSharedNote_Process(int seqid, Thrift::Protocol::TProtocol & iprot, Thrift::Protocol::TProtocol & oprot)
+{
+	authenticateToSharedNote_args args;
+	args.Read(iprot);
+	iprot.ReadMessageEnd();
+	authenticateToSharedNote_result result;
+	try
+	{
+		result.success = iface_.authenticateToSharedNote(args.guid, args.noteKey);
+	}
+	catch (Evernote::EDAM::Error::EDAMUserException userException)
+	{
+		result.userException = userException;
+	}
+	catch (Evernote::EDAM::Error::EDAMNotFoundException notFoundException)
+	{
+		result.notFoundException = notFoundException;
+	}
+	catch (Evernote::EDAM::Error::EDAMSystemException systemException)
+	{
+		result.systemException = systemException;
+	}
+	oprot.WriteMessageBegin(Thrift::Protocol::TMessage(L"authenticateToSharedNote", Thrift::Protocol::MessageReply, seqid)); 
+	result.Write(oprot);
+	oprot.WriteMessageEnd();
+	oprot.GetTransport().Flush();
+}
+
 NoteStore::getSyncState_args::getSyncState_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSyncState_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -4457,7 +5111,6 @@ void NoteStore::getSyncState_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -4496,7 +5149,7 @@ void NoteStore::getSyncState_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getSyncState_result::getSyncState_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSyncState_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -4595,7 +5248,7 @@ void NoteStore::getSyncState_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::getSyncChunk_args::getSyncChunk_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSyncChunk_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -4613,7 +5266,6 @@ void NoteStore::getSyncChunk_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -4715,7 +5367,7 @@ void NoteStore::getSyncChunk_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getSyncChunk_result::getSyncChunk_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSyncChunk_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -4812,9 +5464,466 @@ void NoteStore::getSyncChunk_result::Write(Thrift::Protocol::TProtocol & oprot)
 	oprot.WriteFieldStop();
 	oprot.WriteStructEnd();
 }
+NoteStore::getLinkedNotebookSyncState_args::getLinkedNotebookSyncState_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::getLinkedNotebookSyncState_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->authenticationToken);
+				this->__isset.authenticationToken = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->linkedNotebook.Read(iprot);
+				this->__isset.linkedNotebook = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::getLinkedNotebookSyncState_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"getLinkedNotebookSyncState_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.authenticationToken)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"authenticationToken");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->authenticationToken);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.linkedNotebook)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"linkedNotebook");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->linkedNotebook.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::getLinkedNotebookSyncState_result::getLinkedNotebookSyncState_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::getLinkedNotebookSyncState_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 0:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->success.Read(iprot);
+				this->__isset.success = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::getLinkedNotebookSyncState_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"getLinkedNotebookSyncState_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.success)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"success");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(0);
+		oprot.WriteFieldBegin(field);
+		this->success.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+NoteStore::getLinkedNotebookSyncChunk_args::getLinkedNotebookSyncChunk_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::getLinkedNotebookSyncChunk_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->authenticationToken);
+				this->__isset.authenticationToken = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->linkedNotebook.Read(iprot);
+				this->__isset.linkedNotebook = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeI32)
+			{
+				this->afterUSN = iprot.ReadI32();
+				this->__isset.afterUSN = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 4:
+			if (field.GetType() == Thrift::Protocol::TypeI32)
+			{
+				this->maxEntries = iprot.ReadI32();
+				this->__isset.maxEntries = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 5:
+			if (field.GetType() == Thrift::Protocol::TypeBool)
+			{
+				this->fullSyncOnly = iprot.ReadBool();
+				this->__isset.fullSyncOnly = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::getLinkedNotebookSyncChunk_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"getLinkedNotebookSyncChunk_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.authenticationToken)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"authenticationToken");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->authenticationToken);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.linkedNotebook)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"linkedNotebook");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->linkedNotebook.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.afterUSN)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"afterUSN");
+		field.SetType(Thrift::Protocol::TypeI32);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteI32(this->afterUSN);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.maxEntries)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"maxEntries");
+		field.SetType(Thrift::Protocol::TypeI32);
+		field.SetID(4);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteI32(this->maxEntries);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.fullSyncOnly)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"fullSyncOnly");
+		field.SetType(Thrift::Protocol::TypeBool);
+		field.SetID(5);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteBool(this->fullSyncOnly);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::getLinkedNotebookSyncChunk_result::getLinkedNotebookSyncChunk_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::getLinkedNotebookSyncChunk_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 0:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->success.Read(iprot);
+				this->__isset.success = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::getLinkedNotebookSyncChunk_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"getLinkedNotebookSyncChunk_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.success)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"success");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(0);
+		oprot.WriteFieldBegin(field);
+		this->success.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
 NoteStore::listNotebooks_args::listNotebooks_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listNotebooks_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -4832,7 +5941,6 @@ void NoteStore::listNotebooks_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -4871,7 +5979,7 @@ void NoteStore::listNotebooks_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::listNotebooks_result::listNotebooks_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listNotebooks_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -4890,13 +5998,13 @@ void NoteStore::listNotebooks_result::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list79;
-					iprot.ReadListBegin(_list79);
-					for (int _i80 = 0; _i80 < _list79.GetCount(); ++_i80)
+					Thrift::Protocol::TList _list103;
+					iprot.ReadListBegin(_list103);
+					for (int _i104 = 0; _i104 < _list103.GetCount(); ++_i104)
 					{
-						Evernote::EDAM::Types::Notebook _elem81;
-						_elem81.Read(iprot);
-						this->success.push_back(_elem81);
+						Evernote::EDAM::Type::Notebook _elem105;
+						_elem105.Read(iprot);
+						this->success.push_back(_elem105);
 					}
 					iprot.ReadListEnd();
 				}
@@ -4956,9 +6064,9 @@ void NoteStore::listNotebooks_result::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Notebook >::iterator _iter82(this->success.begin()), end(this->success.end()); _iter82 != end; ++_iter82)
+			for (std::vector<Evernote::EDAM::Type::Notebook >::iterator _iter106(this->success.begin()), end(this->success.end()); _iter106 != end; ++_iter106)
 			{
-				(*_iter82).Write(oprot);
+				(*_iter106).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -4990,7 +6098,7 @@ void NoteStore::listNotebooks_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::getNotebook_args::getNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5008,7 +6116,6 @@ void NoteStore::getNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -5020,7 +6127,6 @@ void NoteStore::getNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -5069,7 +6175,7 @@ void NoteStore::getNotebook_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getNotebook_result::getNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5189,7 +6295,7 @@ void NoteStore::getNotebook_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::getDefaultNotebook_args::getDefaultNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getDefaultNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5207,7 +6313,6 @@ void NoteStore::getDefaultNotebook_args::Read(Thrift::Protocol::TProtocol & ipro
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -5246,7 +6351,7 @@ void NoteStore::getDefaultNotebook_args::Write(Thrift::Protocol::TProtocol & opr
 
 NoteStore::getDefaultNotebook_result::getDefaultNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getDefaultNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5345,7 +6450,7 @@ void NoteStore::getDefaultNotebook_result::Write(Thrift::Protocol::TProtocol & o
 }
 NoteStore::createNotebook_args::createNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5363,7 +6468,6 @@ void NoteStore::createNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -5423,7 +6527,7 @@ void NoteStore::createNotebook_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::createNotebook_result::createNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5522,7 +6626,7 @@ void NoteStore::createNotebook_result::Write(Thrift::Protocol::TProtocol & oprot
 }
 NoteStore::updateNotebook_args::updateNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5540,7 +6644,6 @@ void NoteStore::updateNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -5600,7 +6703,7 @@ void NoteStore::updateNotebook_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::updateNotebook_result::updateNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5720,7 +6823,7 @@ void NoteStore::updateNotebook_result::Write(Thrift::Protocol::TProtocol & oprot
 }
 NoteStore::expungeNotebook_args::expungeNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5738,7 +6841,6 @@ void NoteStore::expungeNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -5750,7 +6852,6 @@ void NoteStore::expungeNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -5799,7 +6900,7 @@ void NoteStore::expungeNotebook_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::expungeNotebook_result::expungeNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5919,7 +7020,7 @@ void NoteStore::expungeNotebook_result::Write(Thrift::Protocol::TProtocol & opro
 }
 NoteStore::listTags_args::listTags_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listTags_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5937,7 +7038,6 @@ void NoteStore::listTags_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -5976,7 +7076,7 @@ void NoteStore::listTags_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::listTags_result::listTags_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listTags_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -5995,13 +7095,13 @@ void NoteStore::listTags_result::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list83;
-					iprot.ReadListBegin(_list83);
-					for (int _i84 = 0; _i84 < _list83.GetCount(); ++_i84)
+					Thrift::Protocol::TList _list107;
+					iprot.ReadListBegin(_list107);
+					for (int _i108 = 0; _i108 < _list107.GetCount(); ++_i108)
 					{
-						Evernote::EDAM::Types::Tag _elem85;
-						_elem85.Read(iprot);
-						this->success.push_back(_elem85);
+						Evernote::EDAM::Type::Tag _elem109;
+						_elem109.Read(iprot);
+						this->success.push_back(_elem109);
 					}
 					iprot.ReadListEnd();
 				}
@@ -6061,9 +7161,9 @@ void NoteStore::listTags_result::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Tag >::iterator _iter86(this->success.begin()), end(this->success.end()); _iter86 != end; ++_iter86)
+			for (std::vector<Evernote::EDAM::Type::Tag >::iterator _iter110(this->success.begin()), end(this->success.end()); _iter110 != end; ++_iter110)
 			{
-				(*_iter86).Write(oprot);
+				(*_iter110).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -6095,7 +7195,7 @@ void NoteStore::listTags_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::listTagsByNotebook_args::listTagsByNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listTagsByNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6113,7 +7213,6 @@ void NoteStore::listTagsByNotebook_args::Read(Thrift::Protocol::TProtocol & ipro
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -6125,7 +7224,6 @@ void NoteStore::listTagsByNotebook_args::Read(Thrift::Protocol::TProtocol & ipro
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->notebookGuid;
 				iprot.ReadString(this->notebookGuid);
 				this->__isset.notebookGuid = true;
 			}
@@ -6174,7 +7272,7 @@ void NoteStore::listTagsByNotebook_args::Write(Thrift::Protocol::TProtocol & opr
 
 NoteStore::listTagsByNotebook_result::listTagsByNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listTagsByNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6193,13 +7291,13 @@ void NoteStore::listTagsByNotebook_result::Read(Thrift::Protocol::TProtocol & ip
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list87;
-					iprot.ReadListBegin(_list87);
-					for (int _i88 = 0; _i88 < _list87.GetCount(); ++_i88)
+					Thrift::Protocol::TList _list111;
+					iprot.ReadListBegin(_list111);
+					for (int _i112 = 0; _i112 < _list111.GetCount(); ++_i112)
 					{
-						Evernote::EDAM::Types::Tag _elem89;
-						_elem89.Read(iprot);
-						this->success.push_back(_elem89);
+						Evernote::EDAM::Type::Tag _elem113;
+						_elem113.Read(iprot);
+						this->success.push_back(_elem113);
 					}
 					iprot.ReadListEnd();
 				}
@@ -6270,9 +7368,9 @@ void NoteStore::listTagsByNotebook_result::Write(Thrift::Protocol::TProtocol & o
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Tag >::iterator _iter90(this->success.begin()), end(this->success.end()); _iter90 != end; ++_iter90)
+			for (std::vector<Evernote::EDAM::Type::Tag >::iterator _iter114(this->success.begin()), end(this->success.end()); _iter114 != end; ++_iter114)
 			{
-				(*_iter90).Write(oprot);
+				(*_iter114).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -6314,7 +7412,7 @@ void NoteStore::listTagsByNotebook_result::Write(Thrift::Protocol::TProtocol & o
 }
 NoteStore::getTag_args::getTag_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getTag_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6332,7 +7430,6 @@ void NoteStore::getTag_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -6344,7 +7441,6 @@ void NoteStore::getTag_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -6393,7 +7489,7 @@ void NoteStore::getTag_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getTag_result::getTag_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getTag_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6513,7 +7609,7 @@ void NoteStore::getTag_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::createTag_args::createTag_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createTag_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6531,7 +7627,6 @@ void NoteStore::createTag_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -6591,7 +7686,7 @@ void NoteStore::createTag_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::createTag_result::createTag_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createTag_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6711,7 +7806,7 @@ void NoteStore::createTag_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::updateTag_args::updateTag_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateTag_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6729,7 +7824,6 @@ void NoteStore::updateTag_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -6789,7 +7883,7 @@ void NoteStore::updateTag_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::updateTag_result::updateTag_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateTag_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6909,7 +8003,7 @@ void NoteStore::updateTag_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::untagAll_args::untagAll_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::untagAll_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -6927,7 +8021,6 @@ void NoteStore::untagAll_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -6939,7 +8032,6 @@ void NoteStore::untagAll_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -6988,7 +8080,7 @@ void NoteStore::untagAll_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::untagAll_result::untagAll_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::untagAll_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7087,7 +8179,7 @@ void NoteStore::untagAll_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::expungeTag_args::expungeTag_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeTag_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7105,7 +8197,6 @@ void NoteStore::expungeTag_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -7117,7 +8208,6 @@ void NoteStore::expungeTag_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -7166,7 +8256,7 @@ void NoteStore::expungeTag_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::expungeTag_result::expungeTag_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeTag_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7286,7 +8376,7 @@ void NoteStore::expungeTag_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::listSearches_args::listSearches_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listSearches_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7304,7 +8394,6 @@ void NoteStore::listSearches_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -7343,7 +8432,7 @@ void NoteStore::listSearches_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::listSearches_result::listSearches_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listSearches_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7362,13 +8451,13 @@ void NoteStore::listSearches_result::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list91;
-					iprot.ReadListBegin(_list91);
-					for (int _i92 = 0; _i92 < _list91.GetCount(); ++_i92)
+					Thrift::Protocol::TList _list115;
+					iprot.ReadListBegin(_list115);
+					for (int _i116 = 0; _i116 < _list115.GetCount(); ++_i116)
 					{
-						Evernote::EDAM::Types::SavedSearch _elem93;
-						_elem93.Read(iprot);
-						this->success.push_back(_elem93);
+						Evernote::EDAM::Type::SavedSearch _elem117;
+						_elem117.Read(iprot);
+						this->success.push_back(_elem117);
 					}
 					iprot.ReadListEnd();
 				}
@@ -7428,9 +8517,9 @@ void NoteStore::listSearches_result::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::SavedSearch >::iterator _iter94(this->success.begin()), end(this->success.end()); _iter94 != end; ++_iter94)
+			for (std::vector<Evernote::EDAM::Type::SavedSearch >::iterator _iter118(this->success.begin()), end(this->success.end()); _iter118 != end; ++_iter118)
 			{
-				(*_iter94).Write(oprot);
+				(*_iter118).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -7462,7 +8551,7 @@ void NoteStore::listSearches_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::getSearch_args::getSearch_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7480,7 +8569,6 @@ void NoteStore::getSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -7492,7 +8580,6 @@ void NoteStore::getSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -7541,7 +8628,7 @@ void NoteStore::getSearch_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getSearch_result::getSearch_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSearch_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7661,7 +8748,7 @@ void NoteStore::getSearch_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::createSearch_args::createSearch_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7679,7 +8766,6 @@ void NoteStore::createSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -7739,7 +8825,7 @@ void NoteStore::createSearch_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::createSearch_result::createSearch_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createSearch_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7838,7 +8924,7 @@ void NoteStore::createSearch_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::updateSearch_args::updateSearch_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -7856,7 +8942,6 @@ void NoteStore::updateSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -7916,7 +9001,7 @@ void NoteStore::updateSearch_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::updateSearch_result::updateSearch_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateSearch_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8036,7 +9121,7 @@ void NoteStore::updateSearch_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::expungeSearch_args::expungeSearch_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8054,7 +9139,6 @@ void NoteStore::expungeSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -8066,7 +9150,6 @@ void NoteStore::expungeSearch_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -8115,7 +9198,7 @@ void NoteStore::expungeSearch_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::expungeSearch_result::expungeSearch_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeSearch_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8235,7 +9318,7 @@ void NoteStore::expungeSearch_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::findNotes_args::findNotes_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::findNotes_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8253,7 +9336,6 @@ void NoteStore::findNotes_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -8355,7 +9437,7 @@ void NoteStore::findNotes_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::findNotes_result::findNotes_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::findNotes_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8473,9 +9555,487 @@ void NoteStore::findNotes_result::Write(Thrift::Protocol::TProtocol & oprot)
 	oprot.WriteFieldStop();
 	oprot.WriteStructEnd();
 }
+NoteStore::findNoteOffset_args::findNoteOffset_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::findNoteOffset_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->authenticationToken);
+				this->__isset.authenticationToken = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->filter.Read(iprot);
+				this->__isset.filter = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->guid);
+				this->__isset.guid = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::findNoteOffset_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"findNoteOffset_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.authenticationToken)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"authenticationToken");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->authenticationToken);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.filter)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"filter");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->filter.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.guid)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"guid");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->guid);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::findNoteOffset_result::findNoteOffset_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::findNoteOffset_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 0:
+			if (field.GetType() == Thrift::Protocol::TypeI32)
+			{
+				this->success = iprot.ReadI32();
+				this->__isset.success = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::findNoteOffset_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"findNoteOffset_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.success)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"success");
+		field.SetType(Thrift::Protocol::TypeI32);
+		field.SetID(0);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteI32(this->success);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+NoteStore::findNotesMetadata_args::findNotesMetadata_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::findNotesMetadata_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->authenticationToken);
+				this->__isset.authenticationToken = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->filter.Read(iprot);
+				this->__isset.filter = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeI32)
+			{
+				this->offset = iprot.ReadI32();
+				this->__isset.offset = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 4:
+			if (field.GetType() == Thrift::Protocol::TypeI32)
+			{
+				this->maxNotes = iprot.ReadI32();
+				this->__isset.maxNotes = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 5:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->resultSpec.Read(iprot);
+				this->__isset.resultSpec = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::findNotesMetadata_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"findNotesMetadata_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.authenticationToken)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"authenticationToken");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->authenticationToken);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.filter)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"filter");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->filter.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.offset)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"offset");
+		field.SetType(Thrift::Protocol::TypeI32);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteI32(this->offset);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.maxNotes)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"maxNotes");
+		field.SetType(Thrift::Protocol::TypeI32);
+		field.SetID(4);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteI32(this->maxNotes);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.resultSpec)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"resultSpec");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(5);
+		oprot.WriteFieldBegin(field);
+		this->resultSpec.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::findNotesMetadata_result::findNotesMetadata_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::findNotesMetadata_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 0:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->success.Read(iprot);
+				this->__isset.success = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::findNotesMetadata_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"findNotesMetadata_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.success)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"success");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(0);
+		oprot.WriteFieldBegin(field);
+		this->success.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
 NoteStore::findNoteCounts_args::findNoteCounts_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::findNoteCounts_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8493,7 +10053,6 @@ void NoteStore::findNoteCounts_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -8574,7 +10133,7 @@ void NoteStore::findNoteCounts_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::findNoteCounts_result::findNoteCounts_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::findNoteCounts_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8694,7 +10253,7 @@ void NoteStore::findNoteCounts_result::Write(Thrift::Protocol::TProtocol & oprot
 }
 NoteStore::getNote_args::getNote_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNote_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8712,7 +10271,6 @@ void NoteStore::getNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -8724,7 +10282,6 @@ void NoteStore::getNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -8857,7 +10414,7 @@ void NoteStore::getNote_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getNote_result::getNote_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNote_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8977,7 +10534,7 @@ void NoteStore::getNote_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::getNoteContent_args::getNoteContent_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteContent_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -8995,7 +10552,6 @@ void NoteStore::getNoteContent_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -9007,7 +10563,6 @@ void NoteStore::getNoteContent_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -9056,7 +10611,7 @@ void NoteStore::getNoteContent_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getNoteContent_result::getNoteContent_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteContent_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9074,7 +10629,6 @@ void NoteStore::getNoteContent_result::Read(Thrift::Protocol::TProtocol & iprot)
 		case 0:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->success;
 				iprot.ReadString(this->success);
 				this->__isset.success = true;
 			}
@@ -9177,7 +10731,7 @@ void NoteStore::getNoteContent_result::Write(Thrift::Protocol::TProtocol & oprot
 }
 NoteStore::getNoteSearchText_args::getNoteSearchText_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteSearchText_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9195,7 +10749,6 @@ void NoteStore::getNoteSearchText_args::Read(Thrift::Protocol::TProtocol & iprot
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -9207,9 +10760,30 @@ void NoteStore::getNoteSearchText_args::Read(Thrift::Protocol::TProtocol & iprot
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeBool)
+			{
+				this->noteOnly = iprot.ReadBool();
+				this->__isset.noteOnly = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 4:
+			if (field.GetType() == Thrift::Protocol::TypeBool)
+			{
+				this->tokenizeForIndexing = iprot.ReadBool();
+				this->__isset.tokenizeForIndexing = true;
 			}
 			else
 			{
@@ -9250,13 +10824,33 @@ void NoteStore::getNoteSearchText_args::Write(Thrift::Protocol::TProtocol & opro
 		oprot.WriteString(this->guid);
 		oprot.WriteFieldEnd();
 	}
+	if (__isset.noteOnly)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"noteOnly");
+		field.SetType(Thrift::Protocol::TypeBool);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteBool(this->noteOnly);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.tokenizeForIndexing)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"tokenizeForIndexing");
+		field.SetType(Thrift::Protocol::TypeBool);
+		field.SetID(4);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteBool(this->tokenizeForIndexing);
+		oprot.WriteFieldEnd();
+	}
 	oprot.WriteFieldStop();
 	oprot.WriteStructEnd();
 }
 
 NoteStore::getNoteSearchText_result::getNoteSearchText_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteSearchText_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9274,7 +10868,6 @@ void NoteStore::getNoteSearchText_result::Read(Thrift::Protocol::TProtocol & ipr
 		case 0:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->success;
 				iprot.ReadString(this->success);
 				this->__isset.success = true;
 			}
@@ -9375,9 +10968,206 @@ void NoteStore::getNoteSearchText_result::Write(Thrift::Protocol::TProtocol & op
 	oprot.WriteFieldStop();
 	oprot.WriteStructEnd();
 }
+NoteStore::getResourceSearchText_args::getResourceSearchText_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::getResourceSearchText_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->authenticationToken);
+				this->__isset.authenticationToken = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->guid);
+				this->__isset.guid = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::getResourceSearchText_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"getResourceSearchText_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.authenticationToken)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"authenticationToken");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->authenticationToken);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.guid)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"guid");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->guid);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::getResourceSearchText_result::getResourceSearchText_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::getResourceSearchText_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 0:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->success);
+				this->__isset.success = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::getResourceSearchText_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"getResourceSearchText_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.success)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"success");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(0);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->success);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
 NoteStore::getNoteTagNames_args::getNoteTagNames_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteTagNames_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9395,7 +11185,6 @@ void NoteStore::getNoteTagNames_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -9407,7 +11196,6 @@ void NoteStore::getNoteTagNames_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -9456,7 +11244,7 @@ void NoteStore::getNoteTagNames_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getNoteTagNames_result::getNoteTagNames_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteTagNames_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9475,14 +11263,13 @@ void NoteStore::getNoteTagNames_result::Read(Thrift::Protocol::TProtocol & iprot
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list95;
-					iprot.ReadListBegin(_list95);
-					for (int _i96 = 0; _i96 < _list95.GetCount(); ++_i96)
+					Thrift::Protocol::TList _list119;
+					iprot.ReadListBegin(_list119);
+					for (int _i120 = 0; _i120 < _list119.GetCount(); ++_i120)
 					{
-						Thrift::Protocol::TString _elem97;
-						_elem97;
-						iprot.ReadString(_elem97);
-						this->success.push_back(_elem97);
+						Thrift::Protocol::TString _elem121;
+						iprot.ReadString(_elem121);
+						this->success.push_back(_elem121);
 					}
 					iprot.ReadListEnd();
 				}
@@ -9553,9 +11340,9 @@ void NoteStore::getNoteTagNames_result::Write(Thrift::Protocol::TProtocol & opro
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Thrift::Protocol::TString >::iterator _iter98(this->success.begin()), end(this->success.end()); _iter98 != end; ++_iter98)
+			for (std::vector<Thrift::Protocol::TString >::iterator _iter122(this->success.begin()), end(this->success.end()); _iter122 != end; ++_iter122)
 			{
-				oprot.WriteString((*_iter98));
+				oprot.WriteString((*_iter122));
 				oprot.WriteListEnd();
 			}
 		}
@@ -9597,7 +11384,7 @@ void NoteStore::getNoteTagNames_result::Write(Thrift::Protocol::TProtocol & opro
 }
 NoteStore::createNote_args::createNote_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createNote_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9615,7 +11402,6 @@ void NoteStore::createNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -9675,7 +11461,7 @@ void NoteStore::createNote_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::createNote_result::createNote_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createNote_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9795,7 +11581,7 @@ void NoteStore::createNote_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::updateNote_args::updateNote_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateNote_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9813,7 +11599,6 @@ void NoteStore::updateNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -9873,7 +11658,7 @@ void NoteStore::updateNote_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::updateNote_result::updateNote_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateNote_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -9993,7 +11778,7 @@ void NoteStore::updateNote_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::deleteNote_args::deleteNote_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::deleteNote_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10011,7 +11796,6 @@ void NoteStore::deleteNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -10023,7 +11807,6 @@ void NoteStore::deleteNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -10072,7 +11855,7 @@ void NoteStore::deleteNote_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::deleteNote_result::deleteNote_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::deleteNote_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10192,7 +11975,7 @@ void NoteStore::deleteNote_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::expungeNote_args::expungeNote_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeNote_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10210,7 +11993,6 @@ void NoteStore::expungeNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -10222,7 +12004,6 @@ void NoteStore::expungeNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -10271,7 +12052,7 @@ void NoteStore::expungeNote_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::expungeNote_result::expungeNote_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeNote_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10391,7 +12172,7 @@ void NoteStore::expungeNote_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::expungeNotes_args::expungeNotes_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeNotes_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10409,7 +12190,6 @@ void NoteStore::expungeNotes_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -10422,14 +12202,13 @@ void NoteStore::expungeNotes_args::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list99;
-					iprot.ReadListBegin(_list99);
-					for (int _i100 = 0; _i100 < _list99.GetCount(); ++_i100)
+					Thrift::Protocol::TList _list123;
+					iprot.ReadListBegin(_list123);
+					for (int _i124 = 0; _i124 < _list123.GetCount(); ++_i124)
 					{
-						Evernote::EDAM::Types::Guid _elem101;
-						_elem101;
-						iprot.ReadString(_elem101);
-						this->noteGuids.push_back(_elem101);
+						Evernote::EDAM::Type::Guid _elem125;
+						iprot.ReadString(_elem125);
+						this->noteGuids.push_back(_elem125);
 					}
 					iprot.ReadListEnd();
 				}
@@ -10476,9 +12255,9 @@ void NoteStore::expungeNotes_args::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeString);
 			list.SetCount(this->noteGuids.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Guid >::iterator _iter102(this->noteGuids.begin()), end(this->noteGuids.end()); _iter102 != end; ++_iter102)
+			for (std::vector<Evernote::EDAM::Type::Guid >::iterator _iter126(this->noteGuids.begin()), end(this->noteGuids.end()); _iter126 != end; ++_iter126)
 			{
-				oprot.WriteString((*_iter102));
+				oprot.WriteString((*_iter126));
 				oprot.WriteListEnd();
 			}
 		}
@@ -10490,7 +12269,7 @@ void NoteStore::expungeNotes_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::expungeNotes_result::expungeNotes_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeNotes_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10610,7 +12389,7 @@ void NoteStore::expungeNotes_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::expungeInactiveNotes_args::expungeInactiveNotes_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeInactiveNotes_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10628,7 +12407,6 @@ void NoteStore::expungeInactiveNotes_args::Read(Thrift::Protocol::TProtocol & ip
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -10667,7 +12445,7 @@ void NoteStore::expungeInactiveNotes_args::Write(Thrift::Protocol::TProtocol & o
 
 NoteStore::expungeInactiveNotes_result::expungeInactiveNotes_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeInactiveNotes_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10766,7 +12544,7 @@ void NoteStore::expungeInactiveNotes_result::Write(Thrift::Protocol::TProtocol &
 }
 NoteStore::copyNote_args::copyNote_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::copyNote_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10784,7 +12562,6 @@ void NoteStore::copyNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -10796,7 +12573,6 @@ void NoteStore::copyNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->noteGuid;
 				iprot.ReadString(this->noteGuid);
 				this->__isset.noteGuid = true;
 			}
@@ -10808,7 +12584,6 @@ void NoteStore::copyNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 3:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->toNotebookGuid;
 				iprot.ReadString(this->toNotebookGuid);
 				this->__isset.toNotebookGuid = true;
 			}
@@ -10867,7 +12642,7 @@ void NoteStore::copyNote_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::copyNote_result::copyNote_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::copyNote_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -10987,7 +12762,7 @@ void NoteStore::copyNote_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::listNoteVersions_args::listNoteVersions_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listNoteVersions_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11005,7 +12780,6 @@ void NoteStore::listNoteVersions_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -11017,7 +12791,6 @@ void NoteStore::listNoteVersions_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->noteGuid;
 				iprot.ReadString(this->noteGuid);
 				this->__isset.noteGuid = true;
 			}
@@ -11066,7 +12839,7 @@ void NoteStore::listNoteVersions_args::Write(Thrift::Protocol::TProtocol & oprot
 
 NoteStore::listNoteVersions_result::listNoteVersions_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listNoteVersions_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11085,13 +12858,13 @@ void NoteStore::listNoteVersions_result::Read(Thrift::Protocol::TProtocol & ipro
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list103;
-					iprot.ReadListBegin(_list103);
-					for (int _i104 = 0; _i104 < _list103.GetCount(); ++_i104)
+					Thrift::Protocol::TList _list127;
+					iprot.ReadListBegin(_list127);
+					for (int _i128 = 0; _i128 < _list127.GetCount(); ++_i128)
 					{
-						NoteVersionId _elem105;
-						_elem105.Read(iprot);
-						this->success.push_back(_elem105);
+						NoteVersionId _elem129;
+						_elem129.Read(iprot);
+						this->success.push_back(_elem129);
 					}
 					iprot.ReadListEnd();
 				}
@@ -11162,9 +12935,9 @@ void NoteStore::listNoteVersions_result::Write(Thrift::Protocol::TProtocol & opr
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<NoteVersionId >::iterator _iter106(this->success.begin()), end(this->success.end()); _iter106 != end; ++_iter106)
+			for (std::vector<NoteVersionId >::iterator _iter130(this->success.begin()), end(this->success.end()); _iter130 != end; ++_iter130)
 			{
-				(*_iter106).Write(oprot);
+				(*_iter130).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -11206,7 +12979,7 @@ void NoteStore::listNoteVersions_result::Write(Thrift::Protocol::TProtocol & opr
 }
 NoteStore::getNoteVersion_args::getNoteVersion_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteVersion_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11224,7 +12997,6 @@ void NoteStore::getNoteVersion_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -11236,7 +13008,6 @@ void NoteStore::getNoteVersion_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->noteGuid;
 				iprot.ReadString(this->noteGuid);
 				this->__isset.noteGuid = true;
 			}
@@ -11369,7 +13140,7 @@ void NoteStore::getNoteVersion_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getNoteVersion_result::getNoteVersion_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getNoteVersion_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11489,7 +13260,7 @@ void NoteStore::getNoteVersion_result::Write(Thrift::Protocol::TProtocol & oprot
 }
 NoteStore::getResource_args::getResource_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResource_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11507,7 +13278,6 @@ void NoteStore::getResource_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -11519,7 +13289,6 @@ void NoteStore::getResource_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -11652,7 +13421,7 @@ void NoteStore::getResource_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getResource_result::getResource_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResource_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11772,7 +13541,7 @@ void NoteStore::getResource_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::updateResource_args::updateResource_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateResource_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11790,7 +13559,6 @@ void NoteStore::updateResource_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -11850,7 +13618,7 @@ void NoteStore::updateResource_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::updateResource_result::updateResource_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateResource_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11970,7 +13738,7 @@ void NoteStore::updateResource_result::Write(Thrift::Protocol::TProtocol & oprot
 }
 NoteStore::getResourceData_args::getResourceData_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceData_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -11988,7 +13756,6 @@ void NoteStore::getResourceData_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -12000,7 +13767,6 @@ void NoteStore::getResourceData_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -12049,7 +13815,7 @@ void NoteStore::getResourceData_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getResourceData_result::getResourceData_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceData_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12067,7 +13833,6 @@ void NoteStore::getResourceData_result::Read(Thrift::Protocol::TProtocol & iprot
 		case 0:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->success;
 				iprot.ReadBinary(this->success);
 				this->__isset.success = true;
 			}
@@ -12170,7 +13935,7 @@ void NoteStore::getResourceData_result::Write(Thrift::Protocol::TProtocol & opro
 }
 NoteStore::getResourceByHash_args::getResourceByHash_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceByHash_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12188,7 +13953,6 @@ void NoteStore::getResourceByHash_args::Read(Thrift::Protocol::TProtocol & iprot
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -12200,7 +13964,6 @@ void NoteStore::getResourceByHash_args::Read(Thrift::Protocol::TProtocol & iprot
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->noteGuid;
 				iprot.ReadString(this->noteGuid);
 				this->__isset.noteGuid = true;
 			}
@@ -12212,7 +13975,6 @@ void NoteStore::getResourceByHash_args::Read(Thrift::Protocol::TProtocol & iprot
 		case 3:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->contentHash;
 				iprot.ReadBinary(this->contentHash);
 				this->__isset.contentHash = true;
 			}
@@ -12334,7 +14096,7 @@ void NoteStore::getResourceByHash_args::Write(Thrift::Protocol::TProtocol & opro
 
 NoteStore::getResourceByHash_result::getResourceByHash_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceByHash_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12454,7 +14216,7 @@ void NoteStore::getResourceByHash_result::Write(Thrift::Protocol::TProtocol & op
 }
 NoteStore::getResourceRecognition_args::getResourceRecognition_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceRecognition_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12472,7 +14234,6 @@ void NoteStore::getResourceRecognition_args::Read(Thrift::Protocol::TProtocol & 
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -12484,7 +14245,6 @@ void NoteStore::getResourceRecognition_args::Read(Thrift::Protocol::TProtocol & 
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -12533,7 +14293,7 @@ void NoteStore::getResourceRecognition_args::Write(Thrift::Protocol::TProtocol &
 
 NoteStore::getResourceRecognition_result::getResourceRecognition_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceRecognition_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12551,7 +14311,6 @@ void NoteStore::getResourceRecognition_result::Read(Thrift::Protocol::TProtocol 
 		case 0:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->success;
 				iprot.ReadBinary(this->success);
 				this->__isset.success = true;
 			}
@@ -12654,7 +14413,7 @@ void NoteStore::getResourceRecognition_result::Write(Thrift::Protocol::TProtocol
 }
 NoteStore::getResourceAlternateData_args::getResourceAlternateData_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceAlternateData_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12672,7 +14431,6 @@ void NoteStore::getResourceAlternateData_args::Read(Thrift::Protocol::TProtocol 
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -12684,7 +14442,6 @@ void NoteStore::getResourceAlternateData_args::Read(Thrift::Protocol::TProtocol 
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -12733,7 +14490,7 @@ void NoteStore::getResourceAlternateData_args::Write(Thrift::Protocol::TProtocol
 
 NoteStore::getResourceAlternateData_result::getResourceAlternateData_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceAlternateData_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12751,7 +14508,6 @@ void NoteStore::getResourceAlternateData_result::Read(Thrift::Protocol::TProtoco
 		case 0:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->success;
 				iprot.ReadBinary(this->success);
 				this->__isset.success = true;
 			}
@@ -12854,7 +14610,7 @@ void NoteStore::getResourceAlternateData_result::Write(Thrift::Protocol::TProtoc
 }
 NoteStore::getResourceAttributes_args::getResourceAttributes_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceAttributes_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -12872,7 +14628,6 @@ void NoteStore::getResourceAttributes_args::Read(Thrift::Protocol::TProtocol & i
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -12884,7 +14639,6 @@ void NoteStore::getResourceAttributes_args::Read(Thrift::Protocol::TProtocol & i
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->guid;
 				iprot.ReadString(this->guid);
 				this->__isset.guid = true;
 			}
@@ -12933,7 +14687,7 @@ void NoteStore::getResourceAttributes_args::Write(Thrift::Protocol::TProtocol & 
 
 NoteStore::getResourceAttributes_result::getResourceAttributes_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getResourceAttributes_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13053,7 +14807,7 @@ void NoteStore::getResourceAttributes_result::Write(Thrift::Protocol::TProtocol 
 }
 NoteStore::getAccountSize_args::getAccountSize_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getAccountSize_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13071,7 +14825,6 @@ void NoteStore::getAccountSize_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -13110,7 +14863,7 @@ void NoteStore::getAccountSize_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getAccountSize_result::getAccountSize_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getAccountSize_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13209,7 +14962,7 @@ void NoteStore::getAccountSize_result::Write(Thrift::Protocol::TProtocol & oprot
 }
 NoteStore::getAds_args::getAds_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getAds_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13227,7 +14980,6 @@ void NoteStore::getAds_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -13287,7 +15039,7 @@ void NoteStore::getAds_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getAds_result::getAds_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getAds_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13306,13 +15058,13 @@ void NoteStore::getAds_result::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list107;
-					iprot.ReadListBegin(_list107);
-					for (int _i108 = 0; _i108 < _list107.GetCount(); ++_i108)
+					Thrift::Protocol::TList _list131;
+					iprot.ReadListBegin(_list131);
+					for (int _i132 = 0; _i132 < _list131.GetCount(); ++_i132)
 					{
-						Evernote::EDAM::Types::Ad _elem109;
-						_elem109.Read(iprot);
-						this->success.push_back(_elem109);
+						Evernote::EDAM::Type::Ad _elem133;
+						_elem133.Read(iprot);
+						this->success.push_back(_elem133);
 					}
 					iprot.ReadListEnd();
 				}
@@ -13372,9 +15124,9 @@ void NoteStore::getAds_result::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::Ad >::iterator _iter110(this->success.begin()), end(this->success.end()); _iter110 != end; ++_iter110)
+			for (std::vector<Evernote::EDAM::Type::Ad >::iterator _iter134(this->success.begin()), end(this->success.end()); _iter134 != end; ++_iter134)
 			{
-				(*_iter110).Write(oprot);
+				(*_iter134).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -13406,7 +15158,7 @@ void NoteStore::getAds_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::getRandomAd_args::getRandomAd_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getRandomAd_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13424,7 +15176,6 @@ void NoteStore::getRandomAd_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -13484,7 +15235,7 @@ void NoteStore::getRandomAd_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::getRandomAd_result::getRandomAd_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getRandomAd_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13583,7 +15334,7 @@ void NoteStore::getRandomAd_result::Write(Thrift::Protocol::TProtocol & oprot)
 }
 NoteStore::getPublicNotebook_args::getPublicNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getPublicNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13612,7 +15363,6 @@ void NoteStore::getPublicNotebook_args::Read(Thrift::Protocol::TProtocol & iprot
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->publicUri;
 				iprot.ReadString(this->publicUri);
 				this->__isset.publicUri = true;
 			}
@@ -13661,7 +15411,7 @@ void NoteStore::getPublicNotebook_args::Write(Thrift::Protocol::TProtocol & opro
 
 NoteStore::getPublicNotebook_result::getPublicNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getPublicNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13760,7 +15510,7 @@ void NoteStore::getPublicNotebook_result::Write(Thrift::Protocol::TProtocol & op
 }
 NoteStore::createSharedNotebook_args::createSharedNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createSharedNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13778,7 +15528,6 @@ void NoteStore::createSharedNotebook_args::Read(Thrift::Protocol::TProtocol & ip
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -13838,7 +15587,7 @@ void NoteStore::createSharedNotebook_args::Write(Thrift::Protocol::TProtocol & o
 
 NoteStore::createSharedNotebook_result::createSharedNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createSharedNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13958,7 +15707,7 @@ void NoteStore::createSharedNotebook_result::Write(Thrift::Protocol::TProtocol &
 }
 NoteStore::listSharedNotebooks_args::listSharedNotebooks_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listSharedNotebooks_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -13976,7 +15725,6 @@ void NoteStore::listSharedNotebooks_args::Read(Thrift::Protocol::TProtocol & ipr
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -14015,7 +15763,7 @@ void NoteStore::listSharedNotebooks_args::Write(Thrift::Protocol::TProtocol & op
 
 NoteStore::listSharedNotebooks_result::listSharedNotebooks_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listSharedNotebooks_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14034,13 +15782,13 @@ void NoteStore::listSharedNotebooks_result::Read(Thrift::Protocol::TProtocol & i
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list111;
-					iprot.ReadListBegin(_list111);
-					for (int _i112 = 0; _i112 < _list111.GetCount(); ++_i112)
+					Thrift::Protocol::TList _list135;
+					iprot.ReadListBegin(_list135);
+					for (int _i136 = 0; _i136 < _list135.GetCount(); ++_i136)
 					{
-						Evernote::EDAM::Types::SharedNotebook _elem113;
-						_elem113.Read(iprot);
-						this->success.push_back(_elem113);
+						Evernote::EDAM::Type::SharedNotebook _elem137;
+						_elem137.Read(iprot);
+						this->success.push_back(_elem137);
 					}
 					iprot.ReadListEnd();
 				}
@@ -14111,9 +15859,9 @@ void NoteStore::listSharedNotebooks_result::Write(Thrift::Protocol::TProtocol & 
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::SharedNotebook >::iterator _iter114(this->success.begin()), end(this->success.end()); _iter114 != end; ++_iter114)
+			for (std::vector<Evernote::EDAM::Type::SharedNotebook >::iterator _iter138(this->success.begin()), end(this->success.end()); _iter138 != end; ++_iter138)
 			{
-				(*_iter114).Write(oprot);
+				(*_iter138).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -14155,7 +15903,7 @@ void NoteStore::listSharedNotebooks_result::Write(Thrift::Protocol::TProtocol & 
 }
 NoteStore::expungeSharedNotebooks_args::expungeSharedNotebooks_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeSharedNotebooks_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14173,7 +15921,6 @@ void NoteStore::expungeSharedNotebooks_args::Read(Thrift::Protocol::TProtocol & 
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -14186,13 +15933,13 @@ void NoteStore::expungeSharedNotebooks_args::Read(Thrift::Protocol::TProtocol & 
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list115;
-					iprot.ReadListBegin(_list115);
-					for (int _i116 = 0; _i116 < _list115.GetCount(); ++_i116)
+					Thrift::Protocol::TList _list139;
+					iprot.ReadListBegin(_list139);
+					for (int _i140 = 0; _i140 < _list139.GetCount(); ++_i140)
 					{
-						__int64 _elem117 = 0;
-						_elem117 = iprot.ReadI64();
-						this->sharedNotebookIds.push_back(_elem117);
+						__int64 _elem141 = 0;
+						_elem141 = iprot.ReadI64();
+						this->sharedNotebookIds.push_back(_elem141);
 					}
 					iprot.ReadListEnd();
 				}
@@ -14239,9 +15986,9 @@ void NoteStore::expungeSharedNotebooks_args::Write(Thrift::Protocol::TProtocol &
 			list.SetElementType(Thrift::Protocol::TypeI64);
 			list.SetCount(this->sharedNotebookIds.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<__int64 >::iterator _iter118(this->sharedNotebookIds.begin()), end(this->sharedNotebookIds.end()); _iter118 != end; ++_iter118)
+			for (std::vector<__int64 >::iterator _iter142(this->sharedNotebookIds.begin()), end(this->sharedNotebookIds.end()); _iter142 != end; ++_iter142)
 			{
-				oprot.WriteI64((*_iter118));
+				oprot.WriteI64((*_iter142));
 				oprot.WriteListEnd();
 			}
 		}
@@ -14253,7 +16000,7 @@ void NoteStore::expungeSharedNotebooks_args::Write(Thrift::Protocol::TProtocol &
 
 NoteStore::expungeSharedNotebooks_result::expungeSharedNotebooks_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeSharedNotebooks_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14373,7 +16120,7 @@ void NoteStore::expungeSharedNotebooks_result::Write(Thrift::Protocol::TProtocol
 }
 NoteStore::createLinkedNotebook_args::createLinkedNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createLinkedNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14391,7 +16138,6 @@ void NoteStore::createLinkedNotebook_args::Read(Thrift::Protocol::TProtocol & ip
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -14451,7 +16197,7 @@ void NoteStore::createLinkedNotebook_args::Write(Thrift::Protocol::TProtocol & o
 
 NoteStore::createLinkedNotebook_result::createLinkedNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::createLinkedNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14571,7 +16317,7 @@ void NoteStore::createLinkedNotebook_result::Write(Thrift::Protocol::TProtocol &
 }
 NoteStore::updateLinkedNotebook_args::updateLinkedNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateLinkedNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14589,7 +16335,6 @@ void NoteStore::updateLinkedNotebook_args::Read(Thrift::Protocol::TProtocol & ip
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -14649,7 +16394,7 @@ void NoteStore::updateLinkedNotebook_args::Write(Thrift::Protocol::TProtocol & o
 
 NoteStore::updateLinkedNotebook_result::updateLinkedNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::updateLinkedNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14665,9 +16410,9 @@ void NoteStore::updateLinkedNotebook_result::Read(Thrift::Protocol::TProtocol & 
 		switch (field.GetID())
 		{
 		case 0:
-			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			if (field.GetType() == Thrift::Protocol::TypeI32)
 			{
-				this->success.Read(iprot);
+				this->success = iprot.ReadI32();
 				this->__isset.success = true;
 			}
 			else
@@ -14727,10 +16472,10 @@ void NoteStore::updateLinkedNotebook_result::Write(Thrift::Protocol::TProtocol &
 	{
 		Thrift::Protocol::TField field;
 		field.SetName(L"success");
-		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetType(Thrift::Protocol::TypeI32);
 		field.SetID(0);
 		oprot.WriteFieldBegin(field);
-		this->success.Write(oprot);
+		oprot.WriteI32(this->success);
 		oprot.WriteFieldEnd();
 	}
  else if (this->__isset.userException)
@@ -14769,7 +16514,7 @@ void NoteStore::updateLinkedNotebook_result::Write(Thrift::Protocol::TProtocol &
 }
 NoteStore::listLinkedNotebooks_args::listLinkedNotebooks_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listLinkedNotebooks_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14787,7 +16532,6 @@ void NoteStore::listLinkedNotebooks_args::Read(Thrift::Protocol::TProtocol & ipr
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -14826,7 +16570,7 @@ void NoteStore::listLinkedNotebooks_args::Write(Thrift::Protocol::TProtocol & op
 
 NoteStore::listLinkedNotebooks_result::listLinkedNotebooks_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::listLinkedNotebooks_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14845,13 +16589,13 @@ void NoteStore::listLinkedNotebooks_result::Read(Thrift::Protocol::TProtocol & i
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list119;
-					iprot.ReadListBegin(_list119);
-					for (int _i120 = 0; _i120 < _list119.GetCount(); ++_i120)
+					Thrift::Protocol::TList _list143;
+					iprot.ReadListBegin(_list143);
+					for (int _i144 = 0; _i144 < _list143.GetCount(); ++_i144)
 					{
-						Evernote::EDAM::Types::LinkedNotebook _elem121;
-						_elem121.Read(iprot);
-						this->success.push_back(_elem121);
+						Evernote::EDAM::Type::LinkedNotebook _elem145;
+						_elem145.Read(iprot);
+						this->success.push_back(_elem145);
 					}
 					iprot.ReadListEnd();
 				}
@@ -14922,9 +16666,9 @@ void NoteStore::listLinkedNotebooks_result::Write(Thrift::Protocol::TProtocol & 
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->success.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<Evernote::EDAM::Types::LinkedNotebook >::iterator _iter122(this->success.begin()), end(this->success.end()); _iter122 != end; ++_iter122)
+			for (std::vector<Evernote::EDAM::Type::LinkedNotebook >::iterator _iter146(this->success.begin()), end(this->success.end()); _iter146 != end; ++_iter146)
 			{
-				(*_iter122).Write(oprot);
+				(*_iter146).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -14966,7 +16710,7 @@ void NoteStore::listLinkedNotebooks_result::Write(Thrift::Protocol::TProtocol & 
 }
 NoteStore::expungeLinkedNotebook_args::expungeLinkedNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeLinkedNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -14984,7 +16728,6 @@ void NoteStore::expungeLinkedNotebook_args::Read(Thrift::Protocol::TProtocol & i
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -14994,10 +16737,10 @@ void NoteStore::expungeLinkedNotebook_args::Read(Thrift::Protocol::TProtocol & i
 			}
 			break;
 		case 2:
-			if (field.GetType() == Thrift::Protocol::TypeI64)
+			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->linkedNotebookId = iprot.ReadI64();
-				this->__isset.linkedNotebookId = true;
+				iprot.ReadString(this->guid);
+				this->__isset.guid = true;
 			}
 			else
 			{
@@ -15028,14 +16771,14 @@ void NoteStore::expungeLinkedNotebook_args::Write(Thrift::Protocol::TProtocol & 
 		oprot.WriteString(this->authenticationToken);
 		oprot.WriteFieldEnd();
 	}
-	if (__isset.linkedNotebookId)
+	if (__isset.guid)
 	{
 		Thrift::Protocol::TField field;
-		field.SetName(L"linkedNotebookId");
-		field.SetType(Thrift::Protocol::TypeI64);
+		field.SetName(L"guid");
+		field.SetType(Thrift::Protocol::TypeString);
 		field.SetID(2);
 		oprot.WriteFieldBegin(field);
-		oprot.WriteI64(this->linkedNotebookId);
+		oprot.WriteString(this->guid);
 		oprot.WriteFieldEnd();
 	}
 	oprot.WriteFieldStop();
@@ -15044,7 +16787,7 @@ void NoteStore::expungeLinkedNotebook_args::Write(Thrift::Protocol::TProtocol & 
 
 NoteStore::expungeLinkedNotebook_result::expungeLinkedNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::expungeLinkedNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -15164,7 +16907,7 @@ void NoteStore::expungeLinkedNotebook_result::Write(Thrift::Protocol::TProtocol 
 }
 NoteStore::authenticateToSharedNotebook_args::authenticateToSharedNotebook_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::authenticateToSharedNotebook_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -15182,7 +16925,6 @@ void NoteStore::authenticateToSharedNotebook_args::Read(Thrift::Protocol::TProto
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->shareKey;
 				iprot.ReadString(this->shareKey);
 				this->__isset.shareKey = true;
 			}
@@ -15194,7 +16936,6 @@ void NoteStore::authenticateToSharedNotebook_args::Read(Thrift::Protocol::TProto
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -15243,7 +16984,7 @@ void NoteStore::authenticateToSharedNotebook_args::Write(Thrift::Protocol::TProt
 
 NoteStore::authenticateToSharedNotebook_result::authenticateToSharedNotebook_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::authenticateToSharedNotebook_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -15363,7 +17104,7 @@ void NoteStore::authenticateToSharedNotebook_result::Write(Thrift::Protocol::TPr
 }
 NoteStore::getSharedNotebookByAuth_args::getSharedNotebookByAuth_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSharedNotebookByAuth_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -15381,7 +17122,6 @@ void NoteStore::getSharedNotebookByAuth_args::Read(Thrift::Protocol::TProtocol &
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -15420,7 +17160,7 @@ void NoteStore::getSharedNotebookByAuth_args::Write(Thrift::Protocol::TProtocol 
 
 NoteStore::getSharedNotebookByAuth_result::getSharedNotebookByAuth_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::getSharedNotebookByAuth_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -15540,7 +17280,7 @@ void NoteStore::getSharedNotebookByAuth_result::Write(Thrift::Protocol::TProtoco
 }
 NoteStore::emailNote_args::emailNote_args()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::emailNote_args::Read(Thrift::Protocol::TProtocol & iprot)
@@ -15558,7 +17298,6 @@ void NoteStore::emailNote_args::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 				this->__isset.authenticationToken = true;
 			}
@@ -15618,7 +17357,7 @@ void NoteStore::emailNote_args::Write(Thrift::Protocol::TProtocol & oprot)
 
 NoteStore::emailNote_result::emailNote_result()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteStore::emailNote_result::Read(Thrift::Protocol::TProtocol & iprot)
@@ -15682,6 +17421,576 @@ void NoteStore::emailNote_result::Write(Thrift::Protocol::TProtocol & oprot)
 	oprot.WriteStructBegin(struc);
 
 	if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+NoteStore::shareNote_args::shareNote_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::shareNote_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->authenticationToken);
+				this->__isset.authenticationToken = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->guid);
+				this->__isset.guid = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::shareNote_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"shareNote_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.authenticationToken)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"authenticationToken");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->authenticationToken);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.guid)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"guid");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->guid);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::shareNote_result::shareNote_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::shareNote_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 0:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->success);
+				this->__isset.success = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::shareNote_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"shareNote_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.success)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"success");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(0);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->success);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+NoteStore::stopSharingNote_args::stopSharingNote_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::stopSharingNote_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->authenticationToken);
+				this->__isset.authenticationToken = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->guid);
+				this->__isset.guid = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::stopSharingNote_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"stopSharingNote_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.authenticationToken)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"authenticationToken");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->authenticationToken);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.guid)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"guid");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->guid);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::stopSharingNote_result::stopSharingNote_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::stopSharingNote_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::stopSharingNote_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"stopSharingNote_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.userException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"userException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		this->userException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.notFoundException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"notFoundException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		this->notFoundException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.systemException)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"systemException");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(3);
+		oprot.WriteFieldBegin(field);
+		this->systemException.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+NoteStore::authenticateToSharedNote_args::authenticateToSharedNote_args()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::authenticateToSharedNote_args::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->guid);
+				this->__isset.guid = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeString)
+			{
+				iprot.ReadString(this->noteKey);
+				this->__isset.noteKey = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::authenticateToSharedNote_args::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"authenticateToSharedNote_args");
+	oprot.WriteStructBegin(struc);
+	if (__isset.guid)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"guid");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(1);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->guid);
+		oprot.WriteFieldEnd();
+	}
+	if (__isset.noteKey)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"noteKey");
+		field.SetType(Thrift::Protocol::TypeString);
+		field.SetID(2);
+		oprot.WriteFieldBegin(field);
+		oprot.WriteString(this->noteKey);
+		oprot.WriteFieldEnd();
+	}
+	oprot.WriteFieldStop();
+	oprot.WriteStructEnd();
+}
+
+NoteStore::authenticateToSharedNote_result::authenticateToSharedNote_result()
+{
+	::ZeroMemory(&__isset, sizeof(Isset));
+}
+
+void NoteStore::authenticateToSharedNote_result::Read(Thrift::Protocol::TProtocol & iprot)
+{
+	Thrift::Protocol::TStruct struc;
+	iprot.ReadStructBegin(struc);
+	for (;;)
+	{
+		Thrift::Protocol::TField field;
+		iprot.ReadFieldBegin(field);
+		if (field.GetType() == Thrift::Protocol::TypeStop)
+			break;
+		switch (field.GetID())
+		{
+		case 0:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->success.Read(iprot);
+				this->__isset.success = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 1:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->userException.Read(iprot);
+				this->__isset.userException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 2:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->notFoundException.Read(iprot);
+				this->__isset.notFoundException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		case 3:
+			if (field.GetType() == Thrift::Protocol::TypeStruct)
+			{
+				this->systemException.Read(iprot);
+				this->__isset.systemException = true;
+			}
+			else
+			{
+				Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			}
+			break;
+		default: 
+			Thrift::Protocol::TProtocolUtil::Skip(iprot, field.GetType());
+			break;
+		}
+		iprot.ReadFieldEnd();
+	}
+	iprot.ReadStructEnd();
+}
+
+void NoteStore::authenticateToSharedNote_result::Write(Thrift::Protocol::TProtocol & oprot)
+{
+	Thrift::Protocol::TStruct struc;
+	struc.SetName(L"authenticateToSharedNote_result");
+	oprot.WriteStructBegin(struc);
+
+	if (this->__isset.success)
+	{
+		Thrift::Protocol::TField field;
+		field.SetName(L"success");
+		field.SetType(Thrift::Protocol::TypeStruct);
+		field.SetID(0);
+		oprot.WriteFieldBegin(field);
+		this->success.Write(oprot);
+		oprot.WriteFieldEnd();
+	}
+ else if (this->__isset.userException)
 	{
 		Thrift::Protocol::TField field;
 		field.SetName(L"userException");

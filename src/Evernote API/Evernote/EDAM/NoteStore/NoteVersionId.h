@@ -16,7 +16,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -33,8 +33,9 @@ class NoteVersionId
 public:
 
 	__int32 updateSequenceNum;
-	Evernote::EDAM::Types::Timestamp updated;
-	Evernote::EDAM::Types::Timestamp serviceUpdated;
+	Evernote::EDAM::Type::Timestamp updated;
+	Evernote::EDAM::Type::Timestamp saved;
+	Thrift::Protocol::TString title;
 
 	NoteVersionId();
 	virtual ~NoteVersionId() throw() {}

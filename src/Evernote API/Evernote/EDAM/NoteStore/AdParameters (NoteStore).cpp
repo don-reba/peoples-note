@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -23,7 +23,7 @@ using namespace Evernote::EDAM::NoteStore;
 
 AdParameters::AdParameters()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void AdParameters::Read(Thrift::Protocol::TProtocol & iprot)
@@ -41,7 +41,6 @@ void AdParameters::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->clientLanguage;
 				iprot.ReadString(this->clientLanguage);
 				this->__isset.clientLanguage = true;
 			}
@@ -54,13 +53,13 @@ void AdParameters::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeList)
 			{
 				{
-					Thrift::Protocol::TList _list62;
-					iprot.ReadListBegin(_list62);
-					for (int _i63 = 0; _i63 < _list62.GetCount(); ++_i63)
+					Thrift::Protocol::TList _list86;
+					iprot.ReadListBegin(_list86);
+					for (int _i87 = 0; _i87 < _list86.GetCount(); ++_i87)
 					{
-						AdImpressions _elem64;
-						_elem64.Read(iprot);
-						this->impressions.push_back(_elem64);
+						AdImpressions _elem88;
+						_elem88.Read(iprot);
+						this->impressions.push_back(_elem88);
 					}
 					iprot.ReadListEnd();
 				}
@@ -86,17 +85,15 @@ void AdParameters::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeMap)
 			{
 				{
-					Thrift::Protocol::TMap _map65;
-					iprot.ReadMapBegin(_map65);
-					for (int _i66 = 0; _i66 < _map65.GetCount(); ++_i66)
+					Thrift::Protocol::TMap _map89;
+					iprot.ReadMapBegin(_map89);
+					for (int _i90 = 0; _i90 < _map89.GetCount(); ++_i90)
 					{
-						Thrift::Protocol::TString _key67;
-						Thrift::Protocol::TString _val68;
-						_key67;
-						iprot.ReadString(_key67);
-						_val68;
-						iprot.ReadString(_val68);
-						this->clientProperties[_key67] = _val68;
+						Thrift::Protocol::TString _key91;
+						Thrift::Protocol::TString _val92;
+						iprot.ReadString(_key91);
+						iprot.ReadString(_val92);
+						this->clientProperties[_key91] = _val92;
 					}
 					iprot.ReadMapEnd();
 				}
@@ -143,9 +140,9 @@ void AdParameters::Write(Thrift::Protocol::TProtocol & oprot)
 			list.SetElementType(Thrift::Protocol::TypeStruct);
 			list.SetCount(this->impressions.size());
 			oprot.WriteListBegin(list);
-			for (std::vector<AdImpressions >::iterator _iter69(this->impressions.begin()), end(this->impressions.end()); _iter69 != end; ++_iter69)
+			for (std::vector<AdImpressions >::iterator _iter93(this->impressions.begin()), end(this->impressions.end()); _iter93 != end; ++_iter93)
 			{
-				(*_iter69).Write(oprot);
+				(*_iter93).Write(oprot);
 				oprot.WriteListEnd();
 			}
 		}
@@ -174,10 +171,10 @@ void AdParameters::Write(Thrift::Protocol::TProtocol & oprot)
 			map.SetValueType(Thrift::Protocol::TypeString);
 			map.SetCount(this->clientProperties.size());
 			oprot.WriteMapBegin(map);
-			for (std::map<Thrift::Protocol::TString, Thrift::Protocol::TString >::iterator _iter70(this->clientProperties.begin()), end(this->clientProperties.end()); _iter70 != end; ++_iter70)
+			for (std::map<Thrift::Protocol::TString, Thrift::Protocol::TString >::iterator _iter94(this->clientProperties.begin()), end(this->clientProperties.end()); _iter94 != end; ++_iter94)
 			{
-				oprot.WriteString(_iter70->first);
-				oprot.WriteString(_iter70->second);
+				oprot.WriteString(_iter94->first);
+				oprot.WriteString(_iter94->second);
 				oprot.WriteMapEnd();
 			}
 		}

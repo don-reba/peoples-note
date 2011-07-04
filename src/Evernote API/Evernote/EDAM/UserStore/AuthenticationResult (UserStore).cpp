@@ -14,14 +14,14 @@
 #include <Thrift/Thrift.h>
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 
 using namespace Evernote::EDAM::UserStore;
 
 AuthenticationResult::AuthenticationResult()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void AuthenticationResult::Read(Thrift::Protocol::TProtocol & iprot)
@@ -49,7 +49,6 @@ void AuthenticationResult::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->authenticationToken;
 				iprot.ReadString(this->authenticationToken);
 			}
 			else

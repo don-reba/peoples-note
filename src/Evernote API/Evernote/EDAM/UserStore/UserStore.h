@@ -15,7 +15,7 @@
 #include <Thrift/Thrift.h>
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 
 namespace Evernote
@@ -33,7 +33,7 @@ public:
 		virtual bool checkVersion(Thrift::Protocol::TString clientName, __int16 edamVersionMajor, __int16 edamVersionMinor) = 0;
 		virtual AuthenticationResult authenticate(Thrift::Protocol::TString username, Thrift::Protocol::TString password, Thrift::Protocol::TString consumerKey, Thrift::Protocol::TString consumerSecret) = 0;
 		virtual AuthenticationResult refreshAuthentication(Thrift::Protocol::TString authenticationToken) = 0;
-		virtual Evernote::EDAM::Types::User getUser(Thrift::Protocol::TString authenticationToken) = 0;
+		virtual Evernote::EDAM::Type::User getUser(Thrift::Protocol::TString authenticationToken) = 0;
 		virtual PublicUserInfo getPublicUserInfo(Thrift::Protocol::TString username) = 0;
 	};
 
@@ -67,9 +67,9 @@ public:
 		AuthenticationResult refreshAuthentication(Thrift::Protocol::TString authenticationToken);
 		void send_refreshAuthentication(Thrift::Protocol::TString authenticationToken);
 		AuthenticationResult recv_refreshAuthentication();
-		Evernote::EDAM::Types::User getUser(Thrift::Protocol::TString authenticationToken);
+		Evernote::EDAM::Type::User getUser(Thrift::Protocol::TString authenticationToken);
 		void send_getUser(Thrift::Protocol::TString authenticationToken);
-		Evernote::EDAM::Types::User recv_getUser();
+		Evernote::EDAM::Type::User recv_getUser();
 		PublicUserInfo getPublicUserInfo(Thrift::Protocol::TString username);
 		void send_getPublicUserInfo(Thrift::Protocol::TString username);
 		PublicUserInfo recv_getPublicUserInfo();
@@ -266,7 +266,7 @@ public:
 			bool systemException;
 		};
 
-		Evernote::EDAM::Types::User success;
+		Evernote::EDAM::Type::User success;
 		Evernote::EDAM::Error::EDAMUserException userException;
 		Evernote::EDAM::Error::EDAMSystemException systemException;
 

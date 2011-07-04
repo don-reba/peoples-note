@@ -15,7 +15,7 @@
 #include <Thrift/Protocol.h>
 #include <Thrift/Transport.h>
 #include <Evernote/EDAM/UserStore.h>
-#include <Evernote/EDAM/Types.h>
+#include <Evernote/EDAM/Type.h>
 #include <Evernote/EDAM/Error.h>
 #include <Evernote/EDAM/Limits.h>
 
@@ -23,7 +23,7 @@ using namespace Evernote::EDAM::NoteStore;
 
 NoteCollectionCounts::NoteCollectionCounts()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void NoteCollectionCounts::Read(Thrift::Protocol::TProtocol & iprot)
@@ -42,16 +42,15 @@ void NoteCollectionCounts::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeMap)
 			{
 				{
-					Thrift::Protocol::TMap _map52;
-					iprot.ReadMapBegin(_map52);
-					for (int _i53 = 0; _i53 < _map52.GetCount(); ++_i53)
+					Thrift::Protocol::TMap _map76;
+					iprot.ReadMapBegin(_map76);
+					for (int _i77 = 0; _i77 < _map76.GetCount(); ++_i77)
 					{
-						Evernote::EDAM::Types::Guid _key54;
-						__int32 _val55;
-						_key54;
-						iprot.ReadString(_key54);
-						_val55 = iprot.ReadI32();
-						this->notebookCounts[_key54] = _val55;
+						Evernote::EDAM::Type::Guid _key78;
+						__int32 _val79;
+						iprot.ReadString(_key78);
+						_val79 = iprot.ReadI32();
+						this->notebookCounts[_key78] = _val79;
 					}
 					iprot.ReadMapEnd();
 				}
@@ -66,16 +65,15 @@ void NoteCollectionCounts::Read(Thrift::Protocol::TProtocol & iprot)
 			if (field.GetType() == Thrift::Protocol::TypeMap)
 			{
 				{
-					Thrift::Protocol::TMap _map56;
-					iprot.ReadMapBegin(_map56);
-					for (int _i57 = 0; _i57 < _map56.GetCount(); ++_i57)
+					Thrift::Protocol::TMap _map80;
+					iprot.ReadMapBegin(_map80);
+					for (int _i81 = 0; _i81 < _map80.GetCount(); ++_i81)
 					{
-						Evernote::EDAM::Types::Guid _key58;
-						__int32 _val59;
-						_key58;
-						iprot.ReadString(_key58);
-						_val59 = iprot.ReadI32();
-						this->tagCounts[_key58] = _val59;
+						Evernote::EDAM::Type::Guid _key82;
+						__int32 _val83;
+						iprot.ReadString(_key82);
+						_val83 = iprot.ReadI32();
+						this->tagCounts[_key82] = _val83;
 					}
 					iprot.ReadMapEnd();
 				}
@@ -124,10 +122,10 @@ void NoteCollectionCounts::Write(Thrift::Protocol::TProtocol & oprot)
 			map.SetValueType(Thrift::Protocol::TypeI32);
 			map.SetCount(this->notebookCounts.size());
 			oprot.WriteMapBegin(map);
-			for (std::map<Evernote::EDAM::Types::Guid, __int32 >::iterator _iter60(this->notebookCounts.begin()), end(this->notebookCounts.end()); _iter60 != end; ++_iter60)
+			for (std::map<Evernote::EDAM::Type::Guid, __int32 >::iterator _iter84(this->notebookCounts.begin()), end(this->notebookCounts.end()); _iter84 != end; ++_iter84)
 			{
-				oprot.WriteString(_iter60->first);
-				oprot.WriteI32(_iter60->second);
+				oprot.WriteString(_iter84->first);
+				oprot.WriteI32(_iter84->second);
 				oprot.WriteMapEnd();
 			}
 		}
@@ -146,10 +144,10 @@ void NoteCollectionCounts::Write(Thrift::Protocol::TProtocol & oprot)
 			map.SetValueType(Thrift::Protocol::TypeI32);
 			map.SetCount(this->tagCounts.size());
 			oprot.WriteMapBegin(map);
-			for (std::map<Evernote::EDAM::Types::Guid, __int32 >::iterator _iter61(this->tagCounts.begin()), end(this->tagCounts.end()); _iter61 != end; ++_iter61)
+			for (std::map<Evernote::EDAM::Type::Guid, __int32 >::iterator _iter85(this->tagCounts.begin()), end(this->tagCounts.end()); _iter85 != end; ++_iter85)
 			{
-				oprot.WriteString(_iter61->first);
-				oprot.WriteI32(_iter61->second);
+				oprot.WriteString(_iter85->first);
+				oprot.WriteI32(_iter85->second);
 				oprot.WriteMapEnd();
 			}
 		}

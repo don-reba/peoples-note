@@ -19,7 +19,7 @@ using namespace Evernote::EDAM::Error;
 
 EDAMNotFoundException::EDAMNotFoundException()
 {
-	memset(&__isset, 0, sizeof(Isset));
+	::ZeroMemory(&__isset, sizeof(Isset));
 }
 
 void EDAMNotFoundException::Read(Thrift::Protocol::TProtocol & iprot)
@@ -37,7 +37,6 @@ void EDAMNotFoundException::Read(Thrift::Protocol::TProtocol & iprot)
 		case 1:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->identifier;
 				iprot.ReadString(this->identifier);
 				this->__isset.identifier = true;
 			}
@@ -49,7 +48,6 @@ void EDAMNotFoundException::Read(Thrift::Protocol::TProtocol & iprot)
 		case 2:
 			if (field.GetType() == Thrift::Protocol::TypeString)
 			{
-				this->key;
 				iprot.ReadString(this->key);
 				this->__isset.key = true;
 			}
