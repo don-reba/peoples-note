@@ -68,6 +68,9 @@ note view
 	√ when the user clicks a TODO checkbox, the checkbox should be toggled
 	√ when a note is closed, the TODO checkbox state is persisted
 	√ when a note is closed, its thumbnail should be updated
+	for each attachment a note has, append a block with an icon and a title
+	when an audio attachment is clicked, play it
+	when a misc attachment is clicked, propose to save it
 notebooks
 	√ when a user without a notebook is loaded, an empty default notebook should be created
 	√ when the user changes notebooks, search should be cleared and the note list filled from the new notebook

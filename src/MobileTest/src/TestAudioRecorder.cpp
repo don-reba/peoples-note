@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "AudioRecorder.h"
 
 #include "Test.h"
@@ -17,3 +18,4 @@ AUTO_TEST_CASE(TestAudioRecorder)
 	//AudioRecorder recorder;
 	//recorder.Record(data);
 }
+*/

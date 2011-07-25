@@ -117,15 +117,6 @@ void NoteProcessor::Merge
 	}
 }
 
-void NoteProcessor::RenameAdd
-	( const EnInteropNote & local
-	, const EnInteropNote & remote
-	)
-{
-	// note names need not be unique
-	Add(remote);
-}
-
 void NoteProcessor::Update(const EnInteropNote & local)
 {
 	Transaction transaction(userModel);

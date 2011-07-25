@@ -8,8 +8,6 @@ public:
 
 	virtual bool Execute() = 0;
 
-	virtual void Finalize() = 0;
-
 	virtual void Bind(int index, __int32              n)    = 0;
 	virtual void Bind(int index, __int64              n)    = 0;
 	virtual void Bind(int index, const std::string  & text) = 0;

@@ -23,6 +23,9 @@ int WINAPI WinMain
 	, int       cmdShow
 	)
 {
+	SHInitExtraControls();
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
 	const wchar_t * resultsFileName(L"results.txt");
 	std::wofstream resultsFile(resultsFileName);
 

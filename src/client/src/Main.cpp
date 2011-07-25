@@ -3,7 +3,8 @@
 #include "AboutPresenter.h"
 #include "AboutView.h"
 #include "Animator.h"
-#include "Audio.h"
+#include "AudioPlayer.h"
+#include "AudioRecorder.h"
 #include "CredentialsPresenter.h"
 #include "CredentialsView.h"
 #include "DataStore.h"
@@ -138,7 +139,8 @@ int WINAPI WinMain(HINSTANCE instance,
 		bool    highRes            (IsHighRes());
 
 		Animator         animator;
-		Audio            audio;
+		AudioPlayer      audioPlayer;
+		AudioRecorder    audioRecorder;
 		File             file;
 		FlashCard        flashCard;
 		RegistryKey      registryKey(L"Software\\People's Note");
@@ -275,7 +277,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			);
 		VoiceEditorPresenter voiceEditorPresenter
-			( audio
+			( audioPlayer
+			, audioRecorder
 			, noteListView
 			, voiceEditorModel
 			, voiceEditorView

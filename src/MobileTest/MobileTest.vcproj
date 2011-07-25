@@ -131,7 +131,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)client\src&quot;;&quot;$(SolutionDir)Test\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)client\src&quot;;&quot;$(SolutionDir)Test\src&quot;;..\HTMLayout\include"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_OMIT_UTF16;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -154,6 +154,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
+				AdditionalDependencies="&quot;$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)\htmlayout.lib&quot; Imaging.lib"
 				OutputFile="$(OutDir)/MobileTest.exe"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
@@ -188,7 +189,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles="tito.wav|$(ProjectDir)|%CSIDL_PROGRAM_FILES%\MobileTest\|0"
+				AdditionalFiles="tito.wav|$(ProjectDir)|%CSIDL_PROGRAM_FILES%\MobileTest\|0;htmlayout.dll|$(SolutionDir)HTMLayout\bin\windows mobile 5.0 pocket pc sdk (armv4i)|%CSIDL_PROGRAM_FILES%\MobileTest\|0"
 			/>
 			<DebuggerTool
 			/>
@@ -404,6 +405,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\ImagingException.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\Location.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\MD5\md5.c"
 				>
 				<FileConfiguration
@@ -520,7 +529,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestWindowRenderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Thumbnail.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Timer.cpp"
 				>
 			</File>
 			<File
@@ -543,6 +560,10 @@
 				RelativePath="..\client\src\WaveOut.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\client\src\WindowRenderer.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -554,11 +575,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
@@ -571,6 +592,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Test.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Timer.h"
 				>
 			</File>
 		</Filter>

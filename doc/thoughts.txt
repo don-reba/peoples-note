@@ -3353,3 +3353,110 @@ db streaming
 	so, no need to start a separate session
 	I wonder what would happen, if I played audio during sync of the same note
 		TODO
+scrolling does not get updated
+	in note list
+	in note view
+	TODO
+attachment information is missing
+	I generall need to capture more complete information
+	need extra information
+		sourceURL
+		timestamp
+		attachment
+		fileName
+		cameraMake
+		cameraModel
+		longitue
+		altitutde
+should rename Add/Create/Delete/DeleteRemote/Merge/Update
+	not clear whether add is local or remote
+		(it is local)
+	TODO
+update database
+	there has to be smooth migration
+	the database is going to gain many new columns
+	those columns will have to be filled at first sync
+		I could add an extra "synced" column initially set to false
+leaking memory
+	looks like thumbnail generation leaks
+		the original 
+need to test window renderer
+	plan
+		create an HTMLayout window
+		make it render repeatedly
+		measure memory
+		measure time
+	htmlayout
+		required for rendering windows to bitmaps
+		need to include htmlayout in the mobile test project
+		it is probably for the best
+		can't see a reason not to
+	curiously, it does not seem to leak... at all
+	this means that something else is leaking
+maybe thumbnail generation is not leaking
+	maybe app almost runs out of memory before thumbnail generation
+		it is growing indeed, but slowly
+		it stopped growing
+		probably means that it is using the buffers it has
+	after all, we don't generate thumbnails for all notes, do we?
+	only for those we display
+	lazily
+	does not look like it at all
+		memory growth during sync is slight
+		it rapidely spikes thereafter
+	btw, after editing a note
+		don't regenerate the thumbnail
+		just remove it
+		TODO
+	maybe I allocate a buffer too large
+	the memory might also become fragmented
+	it seems to be the case that
+		rendering large note thumbnails is the problem
+	if rendering fails, something else should be done for the thumbnail
+		what, exactly?
+		one way is to retry without the images
+		another is to display a placeholder
+			not a good solution
+	wait, rendering actually succeeds
+	we simply don't get to make a valid DIB
+journal file refreshes like crazy during sync
+	that might be a bad thing
+	TODO
+should empty caches upon closing a note
+	also after rendering a thumbnail
+	TODO
+should mark corrupted notes unsynced
+	or better yet, make note resources properly transactional
+	TODO
+should not throw exceptions in SqlStatement destructor
+	TODO
+I am unable to find some resources
+	while trying to render a thumbnail
+	this is for Da Vinci style turorial
+	this is a serious error
+		out of memory error
+		this is curious, though
+		at that point the data has already been read
+		there is no longer need for memory
+		but the SQL code was wrong
+		I was fetching too much data
+		also, the Execute command does not check for NOMEM
+		TODO
+	it should be handled gracefully
+	maybe finalizing in SqlStatement destructor is a bad idea
+		it might fail
+		reason for failure is important
+		the caller should be notified
+		better would be to handle errors in Execute
+	TODO
+what I should do for the next release
+	√ handle thumbnail rendering failure
+	√ fix SqlStatement destructor
+	empty note caches
+	rename processor methods
+	localize thumbnail rendering to loading code
+	fix scroll updating
+	modify the database
+	add metadata updating
+images don't show up when viewing notes
+	TODO

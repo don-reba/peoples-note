@@ -95,63 +95,66 @@ void UserModel::AddNote
 	existenceCheck->Bind(1, note.guid);
 	if (existenceCheck->Execute())
 	{
-		IDataStore::Statement insertNote = dataStore.MakeStatement
-			( "INSERT INTO Notes(guid, usn, creationDate, title, body, isDirty, notebook)"
-			"  VALUES (?, ?, ?, ?, ?, ?, ?)"
-			);
-		insertNote->Bind(1, note.guid);
-		insertNote->Bind(2, note.usn);
-		insertNote->Bind(3, note.creationDate.GetTime());
-		insertNote->Bind(4, note.name);
-		insertNote->Bind(5, body);
-		insertNote->Bind(6, note.isDirty);
-		insertNote->Bind(7, notebook.guid);
-		insertNote->Execute();
-		insertNote->Finalize();
+		{
+			IDataStore::Statement insertNote = dataStore.MakeStatement
+				( "INSERT INTO Notes(guid, usn, creationDate, title, body, isDirty, notebook)"
+				"  VALUES (?, ?, ?, ?, ?, ?, ?)"
+				);
+			insertNote->Bind(1, note.guid);
+			insertNote->Bind(2, note.usn);
+			insertNote->Bind(3, note.creationDate.GetTime());
+			insertNote->Bind(4, note.name);
+			insertNote->Bind(5, body);
+			insertNote->Bind(6, note.isDirty);
+			insertNote->Bind(7, notebook.guid);
+			insertNote->Execute();
+		}
+		{
+			__int64 rowid(dataStore.GetLastInsertRowid());
 
-		__int64 rowid(dataStore.GetLastInsertRowid());
-
-		IDataStore::Statement insertText = dataStore.MakeStatement
-			( "INSERT INTO NoteText(rowid, title, body)"
-			"  VALUES (?, ?, ?)"
-			);
-		insertText->Bind(1, rowid);
-		insertText->Bind(2, note.name);
-		insertText->Bind(3, bodyText);
-		insertText->Execute();
+			IDataStore::Statement insertText = dataStore.MakeStatement
+				( "INSERT INTO NoteText(rowid, title, body)"
+				"  VALUES (?, ?, ?)"
+				);
+			insertText->Bind(1, rowid);
+			insertText->Bind(2, note.name);
+			insertText->Bind(3, bodyText);
+			insertText->Execute();
+		}
 	}
 	else
 	{
 		__int64 rowid(0);
 		existenceCheck->Get(0, rowid);
-
-		IDataStore::Statement updateText = dataStore.MakeStatement
-			( "UPDATE NoteText"
-			"  SET    title = ?, body = ?"
-			"  WHERE  rowid = ?"
-			);
-		updateText->Bind(1, note.name);
-		updateText->Bind(2, bodyText);
-		updateText->Bind(3, rowid);
-		updateText->Execute();
-		updateText->Finalize();
-
-		IDataStore::Statement updateNote = dataStore.MakeStatement
-			( "UPDATE Notes"
-			"  SET    guid = ?, usn = ?, creationDate = ?, title = ?, body = ?,"
-			"         isDirty = ?, isDeleted = 0, notebook = ?,"
-			"         thumbnail = NULL, thumbnailWidth = 0, thumbnailHeight = 0"
-			"  WHERE  rowid = ?"
-			);
-		updateNote->Bind(1, note.guid);
-		updateNote->Bind(2, note.usn);
-		updateNote->Bind(3, note.creationDate.GetTime());
-		updateNote->Bind(4, note.name);
-		updateNote->Bind(5, body);
-		updateNote->Bind(6, note.isDirty);
-		updateNote->Bind(7, notebook.guid);
-		updateNote->Bind(8, rowid);
-		updateNote->Execute();
+		{
+			IDataStore::Statement updateText = dataStore.MakeStatement
+				( "UPDATE NoteText"
+				"  SET    title = ?, body = ?"
+				"  WHERE  rowid = ?"
+				);
+			updateText->Bind(1, note.name);
+			updateText->Bind(2, bodyText);
+			updateText->Bind(3, rowid);
+			updateText->Execute();
+		}
+		{
+			IDataStore::Statement updateNote = dataStore.MakeStatement
+				( "UPDATE Notes"
+				"  SET    guid = ?, usn = ?, creationDate = ?, title = ?, body = ?,"
+				"         isDirty = ?, isDeleted = 0, notebook = ?,"
+				"         thumbnail = NULL, thumbnailWidth = 0, thumbnailHeight = 0"
+				"  WHERE  rowid = ?"
+				);
+			updateNote->Bind(1, note.guid);
+			updateNote->Bind(2, note.usn);
+			updateNote->Bind(3, note.creationDate.GetTime());
+			updateNote->Bind(4, note.name);
+			updateNote->Bind(5, body);
+			updateNote->Bind(6, note.isDirty);
+			updateNote->Bind(7, notebook.guid);
+			updateNote->Bind(8, rowid);
+			updateNote->Execute();
+		}
 	}
 }
 
@@ -742,7 +745,7 @@ void UserModel::GetResource
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid, data"
+		( "SELECT rowid"
 		"  FROM   Resources"
 		"  WHERE  hash = ?"
 		"  LIMIT  1"

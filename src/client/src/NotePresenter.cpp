@@ -64,8 +64,7 @@ void NotePresenter::OnCloseNote()
 	userModel.GetLastUsedNotebook(notebook);
 	userModel.AddNote(note, bodyXml, bodyText, notebook);
 
-	noteView.SetNote(note, L"", L"", bodyHtml);
-	noteView.SetNote(note, L"", L"", bodyHtml);
+	noteView.SetNote(note, L"", L"", bodyHtml, L"");
 
 	SIZE thumbnailSize;
 	noteListView.GetThumbSize(thumbnailSize);
@@ -110,7 +109,11 @@ void NotePresenter::OnOpenNote()
 	wstring html;
 	enNoteTranslator.ConvertToHtml(body, html);
 
-	noteView.SetNote(note, note.name, subtitle, html);
+	wstring attachment =
+		L"<div><img src='audio-attachment.png' />Placeholder 1 with a very long title that will never fit onto a single line</div>"
+		L"<div><img src='audio-attachment.png' />Placeholder 2</div>";
+
+	noteView.SetNote(note, note.name, subtitle, html, attachment);
 	noteView.Show();
 }
 

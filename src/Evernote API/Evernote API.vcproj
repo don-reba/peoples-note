@@ -460,363 +460,363 @@
 		<Filter
 			Name="Evernote"
 			>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Accounting (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Accounting.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Ad (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Ad.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\AdParameters (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\AdParameters.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult (UserStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Limits\Constants (Limits).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Constants (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\Constants (UserStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Limits\Constants.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\Constants.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Constants.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Data (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Data.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error\EDAMErrorCode.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException (Errors).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error\EDAMSystemException (Errors).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error\EDAMSystemException.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error\EDAMUserException (Errors).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error\EDAMUserException.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Error.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Guid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Limits.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\LinkedNotebook (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\LinkedNotebook.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Note (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Note.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\NoteAttributes (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\NoteAttributes.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Notebook (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Notebook.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteList (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteList.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteMetadata (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteMetadata.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataList (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataList.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataResultSpec (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataResultSpec.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\NoteSortOrder.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteStore (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\PremiumOrderStatus.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\PrivilegeLevel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo (UserStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Publishing (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Publishing.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\QueryFormat.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Resource (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\ResourceAttributes (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\ResourceAttributes.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\SavedSearch (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\SavedSearch.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\SharedNotebook (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\SharedNotebook.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\SyncState (NoteStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\NoteStore\SyncState.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Tag (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Tag.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\Timestamp.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\User (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\User.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\UserAttributes (Types).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\UserAttributes.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\Type\UserID.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\UserStore (UserStore).cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
-				>
-			</File>
 			<Filter
 				Name="cpp"
 				Filter="cpp"
 				>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Accounting (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Ad (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\AdParameters (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult (UserStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Limits\Constants (Limits).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Constants (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\Constants (UserStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Data (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException (Errors).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error\EDAMSystemException (Errors).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error\EDAMUserException (Errors).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\LinkedNotebook (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Note (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\NoteAttributes (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Notebook (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteList (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteMetadata (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataList (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataResultSpec (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo (UserStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Publishing (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Resource (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\ResourceAttributes (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\SavedSearch (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\SharedNotebook (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\SyncState (NoteStore).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Tag (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\User (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\UserAttributes (Types).cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\UserStore (UserStore).cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="h"
 				Filter="h"
 				>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Accounting.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Ad.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\AdImpressions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\AdParameters.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\AuthenticationResult.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\Constants.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Constants.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Limits\Constants.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Data.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error\EDAMErrorCode.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error\EDAMNotFoundException.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error\EDAMSystemException.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error\EDAMUserException.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Error.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Guid.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Limits.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\LinkedNotebook.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Note.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\NoteAttributes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Notebook.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteCollectionCounts.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteEmailParameters.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteFilter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteMetadata.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NotesMetadataResultSpec.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\NoteSortOrder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteStore.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\NoteVersionId.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\PremiumOrderStatus.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\PrivilegeLevel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\PublicUserInfo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Publishing.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\QueryFormat.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Resource.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\ResourceAttributes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\SavedSearch.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\SharedNotebook.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\SyncChunk.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\NoteStore\SyncState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Tag.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\Timestamp.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\User.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\UserAttributes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\Type\UserID.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Evernote\EDAM\UserStore\UserStore.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

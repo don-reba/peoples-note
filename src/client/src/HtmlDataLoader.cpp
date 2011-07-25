@@ -138,7 +138,14 @@ void HtmlDataLoader::LoadResourceUri(const wchar_t * uri)
 	const wchar_t * colonPosition (wcschr(uri,               L':'));
 	const wchar_t * dotPosition   (wcschr(colonPosition + 1, L'.'));
 	wstring hash(colonPosition + 1, dotPosition - colonPosition - 1);
-	userModel.GetResource(ConvertToAnsi(hash), blob);
+	try
+	{
+		userModel.GetResource(ConvertToAnsi(hash), blob);
+	}
+	catch(const std::exception &)
+	{
+		blob.clear();
+	}
 }
 
 void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
@@ -154,6 +161,9 @@ void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
 	noteListView.GetThumbSize(size);
 	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
 	{
+		thumbnail.Width  = size.cx;
+		thumbnail.Height = size.cy;
+
 		wstring body;
 		userModel.GetNoteBody(guid, body);
 
@@ -161,10 +171,8 @@ void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
 		enNoteTranslator.ConvertToHtml(body, html);
 
 		Note note;
-		noteView.SetNote(note, L"", L"", html);
+		noteView.SetNote(note, L"", L"", html, L"");
 
-		thumbnail.Width  = size.cx;
-		thumbnail.Height = size.cy;
 		noteView.Render(thumbnail);
 		userModel.SetNoteThumbnail(guid, thumbnail);
 	}

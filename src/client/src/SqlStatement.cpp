@@ -26,10 +26,15 @@ SqlStatement::~SqlStatement()
 
 bool SqlStatement::Execute()
 {
-	int result = sqlite3_step(statement);
-	if (result == SQLITE_ERROR || result == SQLITE_MISUSE)
+	switch (sqlite3_step(statement))
+	{
+	case SQLITE_OK:   return true;
+	case SQLITE_DONE: return true;
+	case SQLITE_ROW:  return false;
+	default:
 		HandleError(sqlite3_errmsg(db));
-	return result == SQLITE_DONE;
+		return false;
+	}
 }
 
 void SqlStatement::Finalize()
@@ -37,7 +42,7 @@ void SqlStatement::Finalize()
 	int result(sqlite3_finalize(statement));
 	statement = NULL;
 	if (result != SQLITE_OK)
-		HandleError(sqlite3_errmsg(db));
+		HandleError(sqlite3_errmsg(db), false);
 }
 
 void SqlStatement::Bind(int index, __int32 n)
@@ -127,8 +132,9 @@ bool SqlStatement::IsNull(int index)
 	return SQLITE_NULL == sqlite3_column_type(statement, index);
 }
 
-void SqlStatement::HandleError(const std::string msg)
+void SqlStatement::HandleError(const std::string msg, bool canThrow)
 {
 	DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(msg).c_str()));
-	throw std::exception(msg.c_str());
+	if (canThrow)
+		throw std::exception(msg.c_str());
 }

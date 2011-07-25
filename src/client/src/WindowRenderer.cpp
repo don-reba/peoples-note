@@ -148,13 +148,13 @@ void WindowRenderer::ResizeAndCompress
 {
 	HRESULT result;
 
-	IImagingFactory * imageFactory(NULL);
+	CComPtr<IImagingFactory> imageFactory;
 	result = ::CoCreateInstance
 		( CLSID_ImagingFactory
 		, NULL
 		, CLSCTX_INPROC_SERVER
 		, IID_IImagingFactory
-		, reinterpret_cast<void**>(&imageFactory)
+		, reinterpret_cast<void**>(&imageFactory.Ptr())
 		);
 
 	BitmapData bitmapData = { 0 };

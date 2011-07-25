@@ -8,6 +8,7 @@ public:
 
 	std::wstring name;
 	Guid         guid;
+	Guid         parentGuid;
 	int          usn;
 	bool         isDirty;
 };

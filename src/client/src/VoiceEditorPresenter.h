@@ -1,6 +1,7 @@
 #pragma once
 
-class IAudio;
+class IAudioPlayer;
+class IAudioRecorder;
 class INoteListView;
 class IVoiceEditorModel;
 class IVoiceEditorView;
@@ -10,7 +11,8 @@ class VoiceEditorPresenter
 {
 private:
 
-	IAudio            & audio;
+	IAudioPlayer      & audioPlayer;
+	IAudioRecorder    & audioRecorder;
 	INoteListView     & noteListView;
 	IVoiceEditorModel & voiceEditorModel;
 	IVoiceEditorView  & voiceEditorView;
@@ -19,7 +21,8 @@ private:
 public:
 
 	VoiceEditorPresenter
-		( IAudio            & audio
+		( IAudioPlayer      & audioPlayer
+		, IAudioRecorder    & audioRecorder
 		, INoteListView     & noteListView
 		, IVoiceEditorModel & voiceEditorModel
 		, IVoiceEditorView  & voiceEditorView

@@ -280,10 +280,6 @@ void SyncModel::ProcessNotes
 				logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 				processor.Merge(*action.Local, *action.Remote);
 				break;
-			case SyncLogic::ActionRenameAdd:
-				logger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
-				processor.RenameAdd(*action.Local, *action.Remote);
-				break;
 			case SyncLogic::ActionUpload:
 				if (action.Local->guid.IsLocal())
 				{
@@ -347,10 +343,6 @@ void SyncModel::ProcessNotebooks
 			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 			processor.Merge(*action.Local, *action.Remote);
 			break;
-		case SyncLogic::ActionRenameAdd:
-			logger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
-			processor.RenameAdd(*action.Local, *action.Remote);
-			break;
 		case SyncLogic::ActionUpload:
 			if (action.Local->guid.IsLocal())
 			{
@@ -407,10 +399,6 @@ void SyncModel::ProcessTags
 		case SyncLogic::ActionMerge:
 			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 			processor.Merge(*action.Local, *action.Remote);
-			break;
-		case SyncLogic::ActionRenameAdd:
-			logger.PerformAction(L"RenameAdd", &action.Local->guid, &action.Remote->guid);
-			processor.RenameAdd(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionUpload:
 			if (action.Local->guid.IsLocal())

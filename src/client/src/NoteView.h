@@ -79,6 +79,7 @@ public:
 		, const std::wstring & titleText
 		, const std::wstring & subtitleText
 		, const std::wstring & bodyHtml
+		, const std::wstring & attachment
 		);
 
 	virtual void SetWindowTitle(const std::wstring & text);

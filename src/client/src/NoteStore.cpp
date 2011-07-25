@@ -48,48 +48,18 @@ void NoteStore::CreateNote
 	, Note                   & replacement
 	)
 {
-	// initialize an Evernote note structure
-	EDAM::Types::Note enNote;
-	enNote.__isset.title        = true;
-	enNote.__isset.created      = true;
-	enNote.__isset.content      = true;
-	enNote.__isset.resources    = true;
-	enNote.__isset.notebookGuid = true;
+	EDAM::Type::Note enNote;
+	ConvertToEnNote(note, body, notebook, enNote);
 
-	enNote.title        = note.name;
-	enNote.created      = ConvertToEnTime(note.creationDate.GetTime());
-	enNote.content      = body;
-	enNote.notebookGuid = ConvertToUnicode(notebook);
-
+	enNote.__isset.resources = true;
 	enNote.resources.resize(resources.size());
 	for (int i(0); i != resources.size(); ++i)
-	{
-		EDAM::Types::Resource & resource(enNote.resources.at(i));
+		ConvertToEnResource(resources.at(i), enNote.resources.at(i));
 
-		resource.__isset.data = true;
-		resource.data.__isset.body = true;
-		resource.data.__isset.size = true;
-
-		resource.__isset.mime = true;
-		resource.mime = L"image/jpeg";
-
-		copy
-			( resources.at(i).Data.begin()
-			, resources.at(i).Data.end()
-			, back_inserter(resource.data.body)
-			);
-		resource.data.size = resources.at(i).Data.size();
-	}
-
-	// call the createNote API and get the replacement note
-	EDAM::Types::Note enReplacement(noteStore.createNote(token, enNote));
-
-	// get data from the replacement Evernote note structure
-	replacement.guid         = Guid(enReplacement.guid);
-	replacement.name         = enReplacement.title;
-	replacement.creationDate = static_cast<time_t>(ConvertFromEnTime(enReplacement.created));
-	replacement.usn          = enReplacement.updateSequenceNum;
-	replacement.isDirty      = false;
+	ConvertFromEnNote
+		( noteStore.createNote(token, enNote)
+		, replacement
+		);
 }
 
 void NoteStore::CreateNotebook
@@ -97,18 +67,13 @@ void NoteStore::CreateNotebook
 	, Notebook       & replacement
 	)
 {
-	EDAM::Types::Notebook enNotebook;
+	EDAM::Type::Notebook enNotebook;
 	enNotebook.__isset.name = true;
 
 	enNotebook.name = notebook.name;
 
-	EDAM::Types::Notebook enReplacement
-		( noteStore.createNotebook(token, enNotebook)
-		);
-	replacement.guid    = enReplacement.guid;
-	replacement.name    = enReplacement.name;
-	replacement.usn     = enReplacement.updateSequenceNum;
-	replacement.isDirty = false;
+	EDAM::Type::Notebook enReplacement(noteStore.createNotebook(token, enNotebook));
+	ConvertFromEnNotebook(enReplacement, replacement);
 }
 
 void NoteStore::CreateTag
@@ -116,18 +81,13 @@ void NoteStore::CreateTag
 	, Tag       & replacement
 	)
 {
-	EDAM::Types::Tag enTag;
-	enTag.__isset.name = true;
+	EDAM::Type::Tag enTag;
+	ConvertToEnTag(tag, enTag);
 
-	enTag.name = tag.name;
-
-	EDAM::Types::Tag enReplacement
+	ConvertFromEnTag
 		( noteStore.createTag(token, enTag)
+		, replacement
 		);
-	replacement.guid    = enReplacement.guid;
-	replacement.name    = enReplacement.name;
-	replacement.usn     = enReplacement.updateSequenceNum;
-	replacement.isDirty = false;
 }
 
 void NoteStore::DeleteNote(const Guid & guid)
@@ -137,7 +97,7 @@ void NoteStore::DeleteNote(const Guid & guid)
 
 void NoteStore::GetDefaultNotebook(Guid & notebook)
 {
-	EDAM::Types::Notebook enNotebook(noteStore.getDefaultNotebook(token));
+	EDAM::Type::Notebook enNotebook(noteStore.getDefaultNotebook(token));
 	notebook = enNotebook.guid;
 }
 
@@ -159,7 +119,7 @@ void NoteStore::GetNoteResource
 	)
 {
 	wstring guidString(ConvertToUnicode(guid));
-	EDAM::Types::Resource enResource = noteStore.getResource
+	EDAM::Type::Resource enResource = noteStore.getResource
 		( token       // authenticationToken
 		, guidString  // guid
 		, true        // withData
@@ -167,27 +127,7 @@ void NoteStore::GetNoteResource
 		, false       // withAttributes
 		, false       // withAlternateData
 		);
-	copy
-		( enResource.data.body.begin()
-		, enResource.data.body.end()
-		, back_inserter(resource.Data)
-		);
-	resource.Hash = HashWithMD5(resource.Data);
-	resource.Guid = enResource.guid;
-	resource.Note = enResource.noteGuid;
-	resource.Mime = enResource.mime;
-
-	if (enResource.__isset.recognition)
-	{
-		enResource.recognition.body.reserve(enResource.recognition.body.size() + 1);
-		enResource.recognition.body.push_back(L'\0');
-
-		wstring info;
-		ConvertToUnicode(&enResource.recognition.body.at(0), info);
-
-		EnRecognitionParser parser;
-		parser.Parse(info, recognitionEntries, guid);
-	}
+	ConvertFromEnResource(enResource, guid, resource, recognitionEntries);
 }
 
 void NoteStore::GetNoteTagNames
@@ -270,42 +210,18 @@ void NoteStore::UpdateNote
 	, Note                   & replacement
 	)
 {
-	EDAM::Types::Note enNote;
-	enNote.__isset.guid         = true;
-	enNote.__isset.title        = true;
-	enNote.__isset.created      = true;
-	enNote.__isset.content      = true;
-	enNote.__isset.resources    = true;
-	enNote.__isset.notebookGuid = true;
+	EDAM::Type::Note enNote;
+	ConvertToEnNote(note, body, notebook, enNote);
 
-	enNote.guid         = ConvertToUnicode(note.guid);
-	enNote.title        = note.name;
-	enNote.created      = ConvertToEnTime(note.creationDate.GetTime());
-	enNote.content      = body;
-	enNote.notebookGuid = ConvertToUnicode(notebook);
-
+	enNote.__isset.resources = true;
 	enNote.resources.resize(resources.size());
 	for (int i(0); i != resources.size(); ++i)
-	{
-		EDAM::Types::Resource & resource(enNote.resources.at(i));
-		resource.__isset.data = true;
-		resource.data.__isset.body = true;
-		resource.data.__isset.size = true;
+		ConvertToEnResource(resources.at(i), enNote.resources.at(i));
 
-		copy
-			( resources.at(i).Data.begin()
-			, resources.at(i).Data.end()
-			, back_inserter(resource.data.body)
-			);
-		resource.data.size = resources.at(i).Data.size();
-	}
-
-	EDAM::Types::Note enReplacement(noteStore.updateNote(token, enNote));
-	replacement.guid         = Guid(enReplacement.guid);
-	replacement.name         = enReplacement.title;
-	replacement.creationDate = static_cast<time_t>(ConvertFromEnTime(enReplacement.created));
-	replacement.usn          = enReplacement.updateSequenceNum;
-	replacement.isDirty      = false;
+	ConvertFromEnNote
+		( noteStore.updateNote(token, enNote)
+		, replacement
+		);
 }
 
 void NoteStore::UpdateNotebook
@@ -313,17 +229,11 @@ void NoteStore::UpdateNotebook
 	, Notebook       & replacement
 	)
 {
-	EDAM::Types::Notebook enNotebook;
-	enNotebook.__isset.guid = true;
-	enNotebook.__isset.name = true;
+	EDAM::Type::Notebook enNotebook;
+	ConvertToEnNotebook(notebook, enNotebook);
 
-	enNotebook.guid = ConvertToUnicode(notebook.guid);
-	enNotebook.name = notebook.name;
-
-	int replacementUsn(noteStore.updateNotebook(token, enNotebook));
-	replacement.guid    = notebook.guid;
-	replacement.name    = notebook.name;
-	replacement.usn     = replacementUsn;
+	replacement = notebook;
+	replacement.usn     = noteStore.updateNotebook(token, enNotebook);
 	replacement.isDirty = false;
 }
 
@@ -332,16 +242,11 @@ void NoteStore::UpdateTag
 	, Tag       & replacement
 	)
 {
-	EDAM::Types::Tag enTag;
-	enTag.__isset.guid = true;
-	enTag.__isset.name = true;
-
-	enTag.guid = ConvertToUnicode(tag.guid);
-	enTag.name = tag.name;
+	EDAM::Type::Tag enTag;
+	ConvertToEnTag(tag, enTag);
 
 	int replacementUsn(noteStore.updateTag(token, enTag));
-	replacement.guid    = tag.guid;
-	replacement.name    = tag.name;
+	replacement = tag;
 	replacement.usn     = replacementUsn;
 	replacement.isDirty = false;
 }
@@ -350,14 +255,281 @@ void NoteStore::UpdateTag
 // utility functions
 //------------------
 
-__int64 NoteStore::ConvertFromEnTime(__int64 enTime)
+Timestamp NoteStore::ConvertFromEnTime(__int64 enTime)
 {
-	return static_cast<time_t>(enTime / 1000L);
+	return Timestamp(static_cast<time_t>(enTime / 1000L));
 }
 
-__int64 NoteStore::ConvertToEnTime(__int64 time)
+__int64 NoteStore::ConvertToEnTime(Timestamp time)
 {
-	return static_cast<__int64>(time) * 1000L;
+	return time.GetTime() * 1000L;
+}
+
+void NoteStore::ConvertFromEnNote
+	( const EDAM::Type::Note & enNote
+	, Note                   & note
+	)
+{
+	note.guid             = Guid(enNote.guid);
+	note.creationDate     = ConvertFromEnTime(enNote.created);
+	note.modificationDate = ConvertFromEnTime(enNote.updated);
+	note.name             = enNote.title;
+	note.usn              = enNote.updateSequenceNum;
+	note.isDirty          = false;
+	if (enNote.__isset.attributes)
+	{
+		const EDAM::Type::NoteAttributes & attributes(enNote.attributes);
+		if (attributes.__isset.subjectDate)
+			note.subjectDate = ConvertFromEnTime(attributes.subjectDate);
+		if (attributes.__isset.latitude && attributes.__isset.longitude && attributes.__isset.altitude)
+			note.Location = Location(attributes.latitude, attributes.longitude, attributes.altitude);
+		if (attributes.__isset.author)
+			note.Author = attributes.author;
+		if (attributes.__isset.source)
+			note.Source = attributes.source;
+		if (attributes.__isset.sourceURL)
+			note.SourceUrl = attributes.sourceURL;
+		if (attributes.__isset.sourceApplication)
+			note.SourceApplication = attributes.sourceApplication;
+	}
+}
+
+void NoteStore::ConvertToEnNote
+	( const Note       & note
+	, const wstring    & body
+	, const Guid       & notebook
+	, EDAM::Type::Note & enNote
+	)
+{
+	enNote.__isset.title        = true;
+	enNote.__isset.created      = true;
+	enNote.__isset.content      = true;
+	enNote.__isset.notebookGuid = true;
+
+	enNote.title        = note.name;
+	enNote.created      = ConvertToEnTime(note.creationDate);
+	enNote.updated      = ConvertToEnTime(note.modificationDate);
+	enNote.content      = body;
+	enNote.notebookGuid = ConvertToUnicode(notebook);
+
+	// set optional attributes
+	if (note.subjectDate.GetTime())
+	{
+		enNote.__isset.attributes = true;
+		enNote.attributes.__isset.subjectDate = true;
+		enNote.attributes.subjectDate = ConvertToEnTime(note.subjectDate);
+	}
+	if (note.Location.IsValid)
+	{
+		enNote.__isset.attributes = true;
+		enNote.attributes.__isset.altitude  = true;
+		enNote.attributes.__isset.longitude = true;
+		enNote.attributes.__isset.latitude  = true;
+		enNote.attributes.altitude  = note.Location.Altitude;
+		enNote.attributes.longitude = note.Location.Longitude;
+		enNote.attributes.latitude  = note.Location.Latitude;
+	}
+	if (!note.Author.empty())
+	{
+		enNote.__isset.attributes = true;
+		enNote.attributes.__isset.author = true;
+		enNote.attributes.author = note.Author;
+	}
+	if (!note.Source.empty())
+	{
+		enNote.__isset.attributes = true;
+		enNote.attributes.__isset.source = true;
+		enNote.attributes.source = note.Source;
+	}
+	if (!note.SourceUrl.empty())
+	{
+		enNote.__isset.attributes = true;
+		enNote.attributes.__isset.sourceURL = true;
+		enNote.attributes.sourceURL = note.SourceUrl;
+	}
+	if (!note.SourceApplication.empty())
+	{
+		enNote.__isset.attributes = true;
+		enNote.attributes.__isset.sourceApplication = true;
+		enNote.attributes.sourceApplication = note.SourceApplication;
+	}
+}
+
+void NoteStore::ConvertFromEnNotebook
+	( const EDAM::Type::Notebook & enNotebook
+	, Notebook                   & notebook
+	)
+{
+		notebook.guid             = enNotebook.guid;
+		notebook.name             = enNotebook.name;
+		notebook.CreationDate     = ConvertFromEnTime(enNotebook.serviceCreated);
+		notebook.ModificationDate = ConvertFromEnTime(enNotebook.serviceUpdated);
+		notebook.usn              = enNotebook.updateSequenceNum;
+		notebook.isDirty          = false;
+}
+
+void NoteStore::ConvertToEnNotebook
+	( const Notebook       & notebook
+	, EDAM::Type::Notebook & enNotebook
+	)
+{
+	enNotebook.__isset.guid = true;
+	enNotebook.__isset.name = true;
+
+	enNotebook.guid = ConvertToUnicode(notebook.guid);
+	enNotebook.name = notebook.name;
+}
+
+void NoteStore::ConvertFromEnResource
+	( const EDAM::Type::Resource & enResource
+	, const Guid                 & guid
+	, Resource                   & resource
+	, RecognitionEntryList       & recognitionEntries
+	)
+{
+	copy
+		( enResource.data.body.begin()
+		, enResource.data.body.end()
+		, back_inserter(resource.Data)
+		);
+	resource.Hash = HashWithMD5(resource.Data);
+	resource.Guid = enResource.guid;
+	resource.Note = enResource.noteGuid;
+	resource.Mime = enResource.mime;
+	if (enResource.__isset.width && enResource.__isset.height)
+	{
+		resource.Dimensions.Width  = enResource.width;
+		resource.Dimensions.Height = enResource.height;
+		resource.Dimensions.IsValid = true;
+	}
+	if (enResource.__isset.attributes)
+	{
+		const EDAM::Type::ResourceAttributes & attributes(enResource.attributes);
+		if (attributes.__isset.sourceURL)
+			resource.SourceUrl = attributes.sourceURL;
+		if (attributes.__isset.timestamp)
+			resource.Timestamp = ConvertFromEnTime(attributes.timestamp);
+		if (attributes.__isset.latitude && attributes.__isset.longitude && attributes.__isset.altitude)
+			resource.Location = Location(attributes.latitude, attributes.longitude, attributes.altitude);
+		if (attributes.__isset.fileName)
+			resource.FileName = attributes.fileName;
+		if (attributes.__isset.attachment)
+			resource.IsAttachment = attributes.attachment;
+	}
+
+	if (enResource.__isset.recognition)
+	{
+		TBinary recognition;
+		recognition.reserve(enResource.recognition.body.size() + 1);
+		copy
+			( enResource.recognition.body.begin()
+			, enResource.recognition.body.end()
+			, back_inserter(recognition)
+			);
+		recognition.push_back(L'\0');
+
+		wstring info;
+		ConvertToUnicode(&recognition.at(0), info);
+
+		EnRecognitionParser parser;
+		parser.Parse(info, recognitionEntries, guid);
+	}
+}
+
+void NoteStore::ConvertToEnResource
+	( const Resource       & resource
+	, EDAM::Type::Resource & enResource
+	)
+{
+		enResource.__isset.data = true;
+		enResource.data.__isset.body = true;
+		enResource.data.__isset.size = true;
+
+		copy
+			( resource.Data.begin()
+			, resource.Data.end()
+			, back_inserter(enResource.data.body)
+			);
+		enResource.data.size = resource.Data.size();
+
+		enResource.__isset.mime = true;
+		enResource.mime = L"image/jpeg";
+
+		if (resource.Dimensions.IsValid)
+		{
+			enResource.__isset.width  = true;
+			enResource.__isset.height = true;
+			enResource.width  = resource.Dimensions.Width;
+			enResource.height = resource.Dimensions.Height;
+		}
+		if (!resource.SourceUrl.empty())
+		{
+			enResource.__isset.attributes = true;
+			enResource.attributes.__isset.sourceURL = true;
+			enResource.attributes.sourceURL = resource.SourceUrl;
+		}
+		if (resource.Timestamp.GetTime() != 0)
+		{
+			enResource.__isset.attributes = true;
+			enResource.attributes.__isset.timestamp = true;
+			enResource.attributes.timestamp = ConvertToEnTime(resource.Timestamp);
+		}
+		if (resource.Location.IsValid)
+		{
+			enResource.__isset.attributes = true;
+			enResource.attributes.__isset.altitude  = true;
+			enResource.attributes.__isset.longitude = true;
+			enResource.attributes.__isset.latitude  = true;
+			enResource.attributes.altitude  = resource.Location.Altitude;
+			enResource.attributes.longitude = resource.Location.Longitude;
+			enResource.attributes.latitude  = resource.Location.Latitude;
+		}
+		if (!resource.FileName.empty())
+		{
+			enResource.__isset.attributes = true;
+			enResource.attributes.__isset.fileName = true;
+			enResource.attributes.fileName = resource.FileName;
+		}
+		if (resource.IsAttachment)
+		{
+			enResource.__isset.attributes = true;
+			enResource.attributes.__isset.attachment = true;
+			enResource.attributes.attachment = resource.IsAttachment;
+		}
+}
+
+void NoteStore::ConvertFromEnTag
+	( const EDAM::Type::Tag & enTag
+	, Tag                   & tag
+	)
+{
+	tag.name    = enTag.name;
+	tag.guid    = enTag.guid;
+	tag.usn     = enTag.updateSequenceNum;
+	tag.isDirty = false;
+
+	if (enTag.__isset.parentGuid)
+		tag.parentGuid = enTag.parentGuid;
+	else
+		tag.parentGuid = Guid::GetEmpty();
+}
+
+void NoteStore::ConvertToEnTag
+	( const Tag       & tag
+	, EDAM::Type::Tag & enTag
+	)
+{
+	enTag.__isset.guid = true;
+	enTag.__isset.name = true;
+
+	enTag.guid = ConvertToUnicode(tag.guid);
+	enTag.name = tag.name;
+
+	if (!tag.parentGuid.IsEmpty())
+	{
+		enTag.__isset.parentGuid = true;
+		enTag.parentGuid = ConvertToUnicode(tag.parentGuid);
+	}
 }
 
 void NoteStore::ListEntries
@@ -373,7 +545,7 @@ void NoteStore::ListEntries
 	if (!notebookFilter.IsLocal())
 	{
 		int noteCount(0);
-		foreach (const EDAM::Types::Note & note, chunk.notes)
+		foreach (const EDAM::Type::Note & note, chunk.notes)
 		{
 			if (note.__isset.active && !note.active)
 				continue;
@@ -383,21 +555,16 @@ void NoteStore::ListEntries
 		}
 		notes.reserve(notes.size() + noteCount);
 
-		foreach (const EDAM::Types::Note & note, chunk.notes)
+		foreach (const EDAM::Type::Note & note, chunk.notes)
 		{
 			if (note.__isset.active && !note.active)
 				continue;
 			if (note.notebookGuid != notebookFilterGuid)
 				continue;
 			notes.push_back(EnInteropNote());
+			ConvertFromEnNote(note, notes.back().note);
 
 			notes.back().notebook = note.notebookGuid;
-
-			notes.back().note.guid         = note.guid;
-			notes.back().note.name         = note.title;
-			notes.back().note.creationDate = static_cast<time_t>(ConvertFromEnTime(note.created));
-			notes.back().note.usn          = note.updateSequenceNum;
-			notes.back().note.isDirty      = false;
 
 			notes.back().guid    = notes.back().note.guid;
 			notes.back().name    = notes.back().note.name;
@@ -405,31 +572,28 @@ void NoteStore::ListEntries
 			notes.back().isDirty = notes.back().note.isDirty;
 
 			int resourceCount(0);
-			foreach (const EDAM::Types::Resource & resource, note.resources)
+			foreach (const EDAM::Type::Resource & resource, note.resources)
 			{
 				if (resource.noteGuid == note.guid)
 					++resourceCount;
 			}
 			notes.back().resources.reserve(resourceCount);
 
-			foreach (const EDAM::Types::Resource & resource, note.resources)
+			foreach (const EDAM::Type::Resource & resource, note.resources)
 			{
 				if (resource.noteGuid == note.guid)
 					notes.back().resources.push_back(resource.guid);
 			}
 		}
 	}
-	foreach (const EDAM::Types::Notebook & notebook, chunk.notebooks)
+	foreach (const EDAM::Type::Notebook & notebook, chunk.notebooks)
 	{
 		if (notebook.updateSequenceNum <= globalUpdateCount)
 			continue;
 		notebooks.push_back(Notebook());
-		notebooks.back().guid    = notebook.guid;
-		notebooks.back().name    = notebook.name;
-		notebooks.back().usn     = notebook.updateSequenceNum;
-		notebooks.back().isDirty = false;
+		ConvertFromEnNotebook(notebook, notebooks.back());
 	}
-	foreach (const EDAM::Types::Tag & tag, chunk.tags)
+	foreach (const EDAM::Type::Tag & tag, chunk.tags)
 	{
 		if (tag.updateSequenceNum <= globalUpdateCount)
 			continue;
@@ -451,7 +615,7 @@ void NoteStore::ListEntries
 	)
 {
 	wstring notebookFilterGuid(ConvertToUnicode(notebookFilter));
-	foreach (const EDAM::Types::Note & note, chunk.notes)
+	foreach (const EDAM::Type::Note & note, chunk.notes)
 	{
 		if (!note.__isset.active || note.active)
 			continue;
@@ -459,12 +623,12 @@ void NoteStore::ListEntries
 			continue;
 		expungedNotes.push_back(note.guid);
 	}
-	foreach (const EDAM::Types::Resource & resource, chunk.resources)
+	foreach (const EDAM::Type::Resource & resource, chunk.resources)
 		resources.push_back(resource.guid);
-	foreach (const EDAM::Types::Guid & guid, chunk.expungedNotes)
+	foreach (const EDAM::Type::Guid & guid, chunk.expungedNotes)
 		expungedNotes.push_back(guid);
-	foreach (const EDAM::Types::Guid & guid, chunk.expungedNotebooks)
+	foreach (const EDAM::Type::Guid & guid, chunk.expungedNotebooks)
 		expungedNotebooks.push_back(guid);
-	foreach (const EDAM::Types::Guid & guid, chunk.expungedTags)
+	foreach (const EDAM::Type::Guid & guid, chunk.expungedTags)
 		expungedTags.push_back(guid);
 }

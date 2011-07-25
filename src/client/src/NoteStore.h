@@ -115,9 +115,53 @@ public:
 
 private:
 
-	__int64 ConvertFromEnTime(__int64 enTime);
+	Timestamp ConvertFromEnTime(__int64 enTime);
 
-	__int64 ConvertToEnTime(__int64 time);
+	__int64 ConvertToEnTime(Timestamp time);
+
+	void ConvertFromEnNote
+		( const Evernote::EDAM::Type::Note & enNote
+		, Note                             & note
+		);
+
+	void ConvertToEnNote
+		( const Note                 & note
+		, const std::wstring         & body
+		, const Guid                 & notebook
+		, Evernote::EDAM::Type::Note & enNote
+		);
+
+	void ConvertFromEnNotebook
+		( const Evernote::EDAM::Type::Notebook & enNotebook
+		, Notebook                             & notebook
+		);
+
+	void ConvertToEnNotebook
+		( const Notebook                 & notebook
+		, Evernote::EDAM::Type::Notebook & enNotebook
+		);
+
+	void ConvertFromEnResource
+		( const Evernote::EDAM::Type::Resource & enResource
+		, const Guid                           & guid
+		, Resource                             & resource
+		, RecognitionEntryList                 & recognitionEntries
+		);
+
+	void ConvertToEnResource
+		( const Resource                 & resource
+		, Evernote::EDAM::Type::Resource & enResource
+		);
+
+	void ConvertFromEnTag
+		( const Evernote::EDAM::Type::Tag & enTag
+		, Tag                             & tag
+		);
+
+	void ConvertToEnTag
+		( const Tag                 & tag
+		, Evernote::EDAM::Type::Tag & enTag
+		);
 
 	void ListEntries
 		( Evernote::EDAM::NoteStore::SyncChunk & chunk

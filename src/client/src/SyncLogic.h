@@ -10,11 +10,13 @@ public:
 
 	enum ActionType
 	{
-		ActionAdd,
-		ActionDelete,
-		ActionRenameAdd,
-		ActionUpload,
-		ActionMerge,
+		ActionAdd,    // add note from the server
+		ActionDelete, // delete note on the server
+		ActionUpload, // add note to the server
+		ActionMerge,  // merge two conflicting notes
+
+		// not implemented
+		// ActionRenameAdd, // rename and add note from the server
 	};
 
 	template<typename T>

@@ -46,37 +46,6 @@ void NotebookProcessor::Merge
 	userModel.UpdateNotebook(local, remote);
 }
 
-void NotebookProcessor::RenameAdd
-	( const Notebook & local
-	, const Notebook & remote
-	)
-{
-	NotebookList notebooks;
-	userModel.GetNotebooks(notebooks);
-
-	vector<wstring> names;
-	names.reserve(notebooks.size());
-	foreach (const Notebook & notebook, notebooks)
-		names.push_back(notebook.name);
-	sort(names.begin(), names.end());
-
-	int n(2);
-	wstringstream name;
-	do
-	{
-		name.str(wstring());
-		name << local.name << L'(' << n << L')';
-		++n;
-	}
-	while (binary_search(names.begin(), names.end(), name.str()));
-
-	Notebook notebook(local);
-	notebook.name    = name.str();
-	notebook.isDirty = false;
-	userModel.UpdateNotebook(local, notebook);
-	userModel.AddNotebook(remote);
-}
-
 void NotebookProcessor::Update
 	( const Notebook & local
 	, INoteStore     & noteStore

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "AudioPlayer.h"
 
 #include "Test.h"
@@ -15,3 +16,4 @@ AUTO_TEST_CASE(TestAudioPlayer)
 	AudioPlayer player;
 	player.Play(L"\\Program Files\\MobileTest\\tito.wav");
 }
+*/

@@ -24,8 +24,6 @@ public:
 
 	virtual bool Execute();
 
-	virtual void Finalize();
-
 	virtual void Bind(int index, __int32              n);
 	virtual void Bind(int index, __int64              n);
 	virtual void Bind(int index, const std::string  & text);
@@ -42,5 +40,7 @@ public:
 
 private:
 
-	void HandleError(const std::string msg);
+	void HandleError(const std::string msg, bool canThrow = true);
+
+	virtual void Finalize();
 };

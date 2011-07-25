@@ -38,6 +38,11 @@ bool Guid::IsLocal() const
 	return data.at(data.size() - 1) == localMarker;
 }
 
+bool Guid::IsEmpty() const
+{
+	return data.empty();
+}
+
 Guid::operator const string & () const
 {
 	return data;
@@ -50,7 +55,12 @@ bool Guid::operator == (const Guid & guid) const
 
 bool Guid::operator != (const Guid & guid) const
 {
-	return data != guid.data;
+	return !(*this == guid);
+}
+
+Guid Guid::GetEmpty()
+{
+	return Guid("");
 }
 
 void Guid::FilterGuid

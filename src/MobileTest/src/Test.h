@@ -86,6 +86,11 @@ public:
 		out_ << L"exception\n";
 	}
 
+	void PrintMessage(LPCWSTR message)
+	{
+		out_ << message << L'\n';
+	}
+
 	void PrintReport()
 	{
 		out_ << passCount_ << L"/" << (failCount_ + passCount_) << L" tests passed\n";
@@ -222,4 +227,7 @@ public:
     {                                                                \
         TEST.UnexpectedException(L#exception);                       \
     }                                                                \
+
+#define TEST_PRINT(msg)     \
+	TEST.PrintMessage(msg); \
 

@@ -56,7 +56,7 @@ void EditorPresenter::OnAccept()
 	userModel.GetLastUsedNotebook(notebook);
 	userModel.AddNote(note, bodyXml, bodyText, notebook);
 
-	noteView.SetNote(note, L"", L"", bodyHtml);
+	noteView.SetNote(note, L"", L"", bodyHtml, L"");
 
 	SIZE thumbnailSize;
 	noteListView.GetThumbSize(thumbnailSize);

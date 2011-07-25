@@ -69,6 +69,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 
+#include "behaviors/behavior_aux.h" // HTMLayout behaviours
+
 #include "Event.h"
 #include "foreach.h"
 

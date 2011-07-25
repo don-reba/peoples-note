@@ -28,11 +28,6 @@ public:
 		, const Notebook & remote
 		);
 
-	void RenameAdd
-		( const Notebook & local
-		, const Notebook & remote
-		);
-
 	void Update
 		( const Notebook & local
 		, INoteStore     & noteStore

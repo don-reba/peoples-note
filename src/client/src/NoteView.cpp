@@ -167,6 +167,7 @@ void NoteView::SetNote
 	, const wstring & titleText
 	, const wstring & subtitleText
 	, const wstring & bodyHtml
+	, const wstring & attachment
 	)
 {
 	isDirty = false;
@@ -186,6 +187,12 @@ void NoteView::SetNote
 	DisconnectBehavior("#body input");
 	body.set_html(utf8, utf8Chars.size());
 	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
+
+	
+	vector<unsigned char> utf8AttachmentChars;
+	const unsigned char * utf8Attachment = Tools::ConvertToUtf8(attachment, utf8AttachmentChars);
+
+	element(FindFirstElement("#attachments")).set_html(utf8Attachment, utf8AttachmentChars.size());
 
 }
 

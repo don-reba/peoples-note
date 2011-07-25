@@ -40,10 +40,5 @@ public:
 		, const EnInteropNote & remote
 		);
 
-	void RenameAdd
-		( const EnInteropNote & local
-		, const EnInteropNote & remote
-		);
-
 	void Update(const EnInteropNote & local);
 };
