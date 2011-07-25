@@ -21,62 +21,41 @@ struct NotebookProcessorFixture
 	}
 };
 
-BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Add_Test, NotebookProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_AddLocal_Test, NotebookProcessorFixture)
 {
 	Notebook notebook;
 	notebook.name = L"test";
 
-	notebookProcessor.Add(notebook);
+	notebookProcessor.AddLocal(notebook);
 
 	BOOST_CHECK_EQUAL(userModel.notebooks.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.notebooks.at(0).name, L"test");
 }
 
-BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Create_Test, NotebookProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_CreateRemote_Test, NotebookProcessorFixture)
 {
 	MockNoteStore noteStore;
 
 	Notebook notebook;
 	notebook.name = L"test";
 
-	notebookProcessor.Create(notebook, noteStore);
+	notebookProcessor.CreateRemote(notebook, noteStore);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name, L"test");
 }
 
-BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Delete_Test, NotebookProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_DeleteLocal_Test, NotebookProcessorFixture)
 {
 	Notebook notebook;
 
-	notebookProcessor.Delete(notebook);
+	notebookProcessor.DeleteLocal(notebook);
 
 	BOOST_CHECK_EQUAL(userModel.expungedNotebooks.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.expungedNotebooks.at(0), notebook.guid);
 }
 
-BOOST_FIXTURE_TEST_CASE(NotebookProcessor_RenameAdd_Test, NotebookProcessorFixture)
-{
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"test";
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"test(1)";
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"test(2)";
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"test(3)";
-
-	Notebook notebook;
-	notebook.name = L"test";
-
-	notebookProcessor.RenameAdd(userModel.notebooks.at(0), notebook);
-
-	BOOST_CHECK_EQUAL(userModel.notebooks.size(), 5);
-	BOOST_CHECK_EQUAL(userModel.notebooks.at(0).name, L"test(4)");
-	BOOST_CHECK_EQUAL(userModel.notebooks.at(4).name, L"test");
-}
-
-BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Update_Test, NotebookProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NotebookProcessor_UpdateRemote_Test, NotebookProcessorFixture)
 {
 	MockNoteStore noteStore;
 
@@ -91,7 +70,7 @@ BOOST_FIXTURE_TEST_CASE(NotebookProcessor_Update_Test, NotebookProcessorFixture)
 	notebook.isDirty = false;
 	notebook.usn     = 2;
 
-	notebookProcessor.Update(notebook, noteStore);
+	notebookProcessor.UpdateRemote(notebook, noteStore);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name,    L"new");

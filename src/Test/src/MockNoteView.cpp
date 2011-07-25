@@ -78,12 +78,14 @@ void MockNoteView::SetNote
 	, const wstring & titleText
 	, const wstring & subtitleText
 	, const wstring & bodyHtml
+	, const wstring & attachment
 	)
 {
-	this->note     = note;
-	this->body     = bodyHtml;
-	this->subtitle = subtitleText;
-	this->title    = titleText;
+	this->note       = note;
+	this->body       = bodyHtml;
+	this->subtitle   = subtitleText;
+	this->title      = titleText;
+	this->attachment = attachment;
 }
 
 void MockNoteView::SetWindowTitle(const wstring & text)

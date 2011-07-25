@@ -125,10 +125,6 @@ struct SyncLogicFixture
 				action.Local->status  = StatusMerged;
 				action.Remote->status = StatusMerged;
 				break;
-			case SyncLogic::ActionRenameAdd:
-				action.Local->status  = StatusRenamed;
-				action.Remote->status = StatusAdded;
-				break;
 			case SyncLogic::ActionUpload:
 				action.Local->status = StatusUploaded;
 				break;

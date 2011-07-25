@@ -235,6 +235,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\Location.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\MD5\md5.c"
 				>
 				<FileConfiguration
@@ -251,7 +255,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\MockAudio.cpp"
+				RelativePath=".\src\MockAudioPlayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockAudioRecorder.cpp"
 				>
 			</File>
 			<File
@@ -618,7 +626,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\MockAudio.h"
+				RelativePath=".\src\MockAudioPlayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockAudioRecorder.h"
 				>
 			</File>
 			<File

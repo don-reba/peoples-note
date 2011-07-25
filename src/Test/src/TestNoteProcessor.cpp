@@ -30,7 +30,7 @@ struct NoteProcessorFixture
 	}
 };
 
-BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_AddLocal_Test, NoteProcessorFixture)
 {
 	notebook.name = L"test-notebook";
 
@@ -66,7 +66,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 
 	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{2}"));
 
-	noteProcessor.Add(note);
+	noteProcessor.AddLocal(note);
 
 	BOOST_REQUIRE_EQUAL(userModel.addedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).body, L"<en-note>test-body</en-note>");
@@ -101,7 +101,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Add_Test, NoteProcessorFixture)
 		);
 }
 
-BOOST_FIXTURE_TEST_CASE(NoteProcessor_Create_Test, NoteProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_CreateRemote_Test, NoteProcessorFixture)
 {
 	notebook.name = L"test-notebook";
 
@@ -117,7 +117,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Create_Test, NoteProcessorFixture)
 	userModel.resources.at(1).Guid = Guid("{2}");
 	userModel.resources.at(1).Hash = "2";
 
-	noteProcessor.Create(note);
+	noteProcessor.CreateRemote(note);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotes.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotes.at(0).name, L"test-note");
@@ -127,18 +127,18 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Create_Test, NoteProcessorFixture)
 	BOOST_CHECK_EQUAL(noteStore.createdResources.at(1).Hash, "2");
 }
 
-BOOST_FIXTURE_TEST_CASE(NoteProcessor_Delete_Test, NoteProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_DeleteLocal_Test, NoteProcessorFixture)
 {
 	EnInteropNote note;
 	note.guid = note.note.guid;
 
-	noteProcessor.Delete(note);
+	noteProcessor.DeleteLocal(note);
 
 	BOOST_CHECK_EQUAL(userModel.expungedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.expungedNotes.at(0), note.guid);
 }
 
-BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)
+BOOST_FIXTURE_TEST_CASE(NoteProcessor_MergeLocal_Test, NoteProcessorFixture)
 {
 	EnInteropNote local;
 	local.note.name = local.name = L"local-note";
@@ -157,7 +157,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_Merge_Test, NoteProcessorFixture)
 	noteStore.resources.back().Guid = Guid("{1}");
 	noteStore.resources.back().Note = remote.guid;
 
-	noteProcessor.Merge(local, remote);
+	noteProcessor.MergeLocal(local, remote);
 
 	BOOST_CHECK_EQUAL(userModel.notes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.notes.at(0).name, L"remote-note");
