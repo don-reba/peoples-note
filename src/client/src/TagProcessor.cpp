@@ -16,12 +16,12 @@ TagProcessor::TagProcessor(IUserModel & userModel)
 {
 }
 
-void TagProcessor::Add(const Tag & remote)
+void TagProcessor::AddLocal(const Tag & remote)
 {
 	userModel.AddTag(remote);
 }
 
-void TagProcessor::Create
+void TagProcessor::CreateRemote
 		( const Tag & local
 		, INoteStore          & noteStore
 		)
@@ -34,12 +34,12 @@ void TagProcessor::Create
 	userModel.AddTag(replacement);
 }
 
-void TagProcessor::Delete(const Tag & local)
+void TagProcessor::DeleteLocal(const Tag & local)
 {
 	userModel.ExpungeTag(local.guid);
 }
 
-void TagProcessor::Merge
+void TagProcessor::MergeLocal
 		( const Tag & local
 		, const Tag & remote
 		)
@@ -47,7 +47,7 @@ void TagProcessor::Merge
 	userModel.UpdateTag(local, remote);
 }
 
-void TagProcessor::Update
+void TagProcessor::UpdateRemote
 		( const Tag & local
 		, INoteStore          & noteStore
 		)

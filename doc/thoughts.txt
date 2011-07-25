@@ -3371,7 +3371,12 @@ attachment information is missing
 should rename Add/Create/Delete/DeleteRemote/Merge/Update
 	not clear whether add is local or remote
 		(it is local)
-	TODO
+	AddLocal
+	CreateRemote
+	DeleteLocal
+	DeleteRemote
+	MergeLocal
+	UpdateRemote
 update database
 	there has to be smooth migration
 	the database is going to gain many new columns

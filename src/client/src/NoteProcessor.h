@@ -27,18 +27,18 @@ public:
 		, const Notebook   & notebook
 		);
 
-	void Add(const EnInteropNote & remote);
+	void AddLocal(const EnInteropNote & remote);
 
-	void Create(const EnInteropNote & local);
+	void CreateRemote(const EnInteropNote & local);
 
-	void Delete(const EnInteropNote & local);
+	void DeleteLocal(const EnInteropNote & local);
 
 	void DeleteRemote(const Guid & guid);
 
-	void Merge
+	void MergeLocal
 		( const EnInteropNote & local
 		, const EnInteropNote & remote
 		);
 
-	void Update(const EnInteropNote & local);
+	void UpdateRemote(const EnInteropNote & local);
 };

@@ -14,21 +14,21 @@ public:
 
 	NotebookProcessor(IUserModel & userModel);
 
-	void Add(const Notebook & remote);
+	void AddLocal(const Notebook & remote);
 
-	void Create
+	void CreateRemote
 		( const Notebook & local
 		, INoteStore     & noteStore
 		);
 
-	void Delete(const Notebook & local);
+	void DeleteLocal(const Notebook & local);
 
-	void Merge
+	void MergeLocal
 		( const Notebook & local
 		, const Notebook & remote
 		);
 
-	void Update
+	void UpdateRemote
 		( const Notebook & local
 		, INoteStore     & noteStore
 		);

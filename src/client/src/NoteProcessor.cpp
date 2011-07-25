@@ -23,7 +23,7 @@ NoteProcessor::NoteProcessor
 {
 }
 
-void NoteProcessor::Add(const EnInteropNote & remote)
+void NoteProcessor::AddLocal(const EnInteropNote & remote)
 {
 	wstring body;
 	noteStore.GetNoteBody(remote.note, body);
@@ -51,7 +51,7 @@ void NoteProcessor::Add(const EnInteropNote & remote)
 		userModel.AddTagToNote(tagName, remote.note);
 }
 
-void NoteProcessor::Delete(const EnInteropNote & local)
+void NoteProcessor::DeleteLocal(const EnInteropNote & local)
 {
 	userModel.ExpungeNote(local.note.guid);
 }
@@ -61,7 +61,7 @@ void NoteProcessor::DeleteRemote(const Guid & guid)
 	noteStore.DeleteNote(guid);
 }
 
-void NoteProcessor::Create(const EnInteropNote & local)
+void NoteProcessor::CreateRemote(const EnInteropNote & local)
 {
 	Transaction transaction(userModel);
 
@@ -88,7 +88,7 @@ void NoteProcessor::Create(const EnInteropNote & local)
 	}
 }
 
-void NoteProcessor::Merge
+void NoteProcessor::MergeLocal
 	( const EnInteropNote & local
 	, const EnInteropNote & remote
 	)
@@ -117,7 +117,7 @@ void NoteProcessor::Merge
 	}
 }
 
-void NoteProcessor::Update(const EnInteropNote & local)
+void NoteProcessor::UpdateRemote(const EnInteropNote & local)
 {
 	Transaction transaction(userModel);
 

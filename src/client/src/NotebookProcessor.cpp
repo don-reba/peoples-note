@@ -16,12 +16,12 @@ NotebookProcessor::NotebookProcessor(IUserModel & userModel)
 {
 }
 
-void NotebookProcessor::Add(const Notebook & remote)
+void NotebookProcessor::AddLocal(const Notebook & remote)
 {
 	userModel.AddNotebook(remote);
 }
 
-void NotebookProcessor::Create
+void NotebookProcessor::CreateRemote
 	( const Notebook & local
 	, INoteStore     & noteStore
 	)
@@ -33,12 +33,12 @@ void NotebookProcessor::Create
 	userModel.UpdateNotebook(local, replacement);
 }
 
-void NotebookProcessor::Delete(const Notebook & local)
+void NotebookProcessor::DeleteLocal(const Notebook & local)
 {
 	userModel.ExpungeNotebook(local.guid);
 }
 
-void NotebookProcessor::Merge
+void NotebookProcessor::MergeLocal
 	( const Notebook & local
 	, const Notebook & remote
 	)
@@ -46,7 +46,7 @@ void NotebookProcessor::Merge
 	userModel.UpdateNotebook(local, remote);
 }
 
-void NotebookProcessor::Update
+void NotebookProcessor::UpdateRemote
 	( const Notebook & local
 	, INoteStore     & noteStore
 	)

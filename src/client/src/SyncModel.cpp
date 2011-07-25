@@ -270,26 +270,26 @@ void SyncModel::ProcessNotes
 			{
 			case SyncLogic::ActionAdd:
 				logger.PerformAction(L"Add", NULL, &action.Remote->guid);
-				processor.Add(*action.Remote);
+				processor.AddLocal(*action.Remote);
 				break;
 			case SyncLogic::ActionDelete:
 				logger.PerformAction(L"Delete", &action.Local->guid, NULL);
-				processor.Delete(*action.Local);
+				processor.DeleteLocal(*action.Local);
 				break;
 			case SyncLogic::ActionMerge:
 				logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
-				processor.Merge(*action.Local, *action.Remote);
+				processor.MergeLocal(*action.Local, *action.Remote);
 				break;
 			case SyncLogic::ActionUpload:
 				if (action.Local->guid.IsLocal())
 				{
 					logger.PerformAction(L"Create", &action.Local->guid, NULL);
-					processor.Create(*action.Local);
+					processor.CreateRemote(*action.Local);
 				}
 				else
 				{
 					logger.PerformAction(L"Update", &action.Local->guid, NULL);
-					processor.Update(*action.Local);
+					processor.UpdateRemote(*action.Local);
 				}
 				break;
 			}
@@ -333,26 +333,26 @@ void SyncModel::ProcessNotebooks
 		{
 		case SyncLogic::ActionAdd:
 			logger.PerformAction(L"Add", NULL, &action.Remote->guid);
-			processor.Add(*action.Remote);
+			processor.AddLocal(*action.Remote);
 			break;
 		case SyncLogic::ActionDelete:
 			logger.PerformAction(L"Delete", &action.Local->guid, NULL);
-			processor.Delete(*action.Local);
+			processor.DeleteLocal(*action.Local);
 			break;
 		case SyncLogic::ActionMerge:
 			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
-			processor.Merge(*action.Local, *action.Remote);
+			processor.MergeLocal(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionUpload:
 			if (action.Local->guid.IsLocal())
 			{
 					logger.PerformAction(L"Create", &action.Local->guid, NULL);
-					processor.Create(*action.Local, noteStore);
+					processor.CreateRemote(*action.Local, noteStore);
 			}
 			else
 			{
 					logger.PerformAction(L"Update", &action.Local->guid, NULL);
-					processor.Update(*action.Local, noteStore);
+					processor.UpdateRemote(*action.Local, noteStore);
 			}
 			break;
 		}
@@ -390,26 +390,26 @@ void SyncModel::ProcessTags
 		{
 		case SyncLogic::ActionAdd:
 			logger.PerformAction(L"Add", NULL, &action.Remote->guid);
-			processor.Add(*action.Remote);
+			processor.AddLocal(*action.Remote);
 			break;
 		case SyncLogic::ActionDelete:
 			logger.PerformAction(L"Delete", &action.Local->guid, NULL);
-			processor.Delete(*action.Local);
+			processor.DeleteLocal(*action.Local);
 			break;
 		case SyncLogic::ActionMerge:
 			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
-			processor.Merge(*action.Local, *action.Remote);
+			processor.MergeLocal(*action.Local, *action.Remote);
 			break;
 		case SyncLogic::ActionUpload:
 			if (action.Local->guid.IsLocal())
 			{
 				logger.PerformAction(L"Create", &action.Local->guid, NULL);
-				processor.Create(*action.Local, noteStore);
+				processor.CreateRemote(*action.Local, noteStore);
 			}
 			else
 			{
 				logger.PerformAction(L"Update", &action.Local->guid, NULL);
-				processor.Update(*action.Local, noteStore);
+				processor.UpdateRemote(*action.Local, noteStore);
 			}
 			break;
 		}
