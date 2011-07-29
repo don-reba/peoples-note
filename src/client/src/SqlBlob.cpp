@@ -13,7 +13,7 @@ SqlBlob::SqlBlob
 	, db   (db)
 {
 	const char * dbName = "main";
-	int          flags  = 0;
+	int          flags  = 0; // read-only
 	int result = sqlite3_blob_open(db, dbName, table, column, row, flags, &blob);
 	if (result != SQLITE_OK)
 		throw std::exception(sqlite3_errmsg(db));

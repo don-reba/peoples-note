@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "WindowRenderer.h"
-
+/*
 #include "Test.h"
 #include "Timer.h"
 #include "Tools.h"
@@ -75,3 +75,4 @@ AUTO_TEST_CASE(TestRenderThumbnail)
 
 	::DestroyWindow(window);
 }
+*/

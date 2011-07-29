@@ -3434,7 +3434,7 @@ should mark corrupted notes unsynced
 	or better yet, make note resources properly transactional
 	TODO
 should not throw exceptions in SqlStatement destructor
-	TODO
+	done
 I am unable to find some resources
 	while trying to render a thumbnail
 	this is for Da Vinci style turorial
@@ -3458,10 +3458,15 @@ what I should do for the next release
 	√ handle thumbnail rendering failure
 	√ fix SqlStatement destructor
 	empty note caches
-	rename processor methods
-	localize thumbnail rendering to loading code
+	√ rename processor methods
+	√ localize thumbnail rendering to loading code
 	fix scroll updating
 	modify the database
 	add metadata updating
+	load thumbnails asynchronously
 images don't show up when viewing notes
+	TODO
+test IUserModel::DeleteNoteThumbnail
+	TODO
+I should add profiling to SqlStatement
 	TODO

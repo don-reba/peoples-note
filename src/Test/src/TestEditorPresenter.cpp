@@ -7,6 +7,7 @@
 #include "MockNoteView.h"
 #include "MockUserModel.h"
 #include "EnNoteTranslator.h"
+#include "Thumbnail.h"
 
 struct EditorPresenterFixture
 {
@@ -43,6 +44,11 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.thumbSize.cx = 164;
 	noteListView.thumbSize.cy = 100;
 
+	Thumbnail thumbnail;
+	thumbnail.Width  = 0;
+	thumbnail.Height = 0;
+	userModel.noteThumbnails[editorView.note.guid] = thumbnail;
+
 	noteListView.SignalNewNote();
 
 	editorView.body =
@@ -68,14 +74,10 @@ BOOST_FIXTURE_TEST_CASE
 		, L"New Title"
 		);
 
-	BOOST_CHECK_EQUAL(noteView.renderSize.cx, 164);
-	BOOST_CHECK_EQUAL(noteView.renderSize.cy, 100);
-
-	bool isThumbnailUpdated
+	BOOST_CHECK
 		(  userModel.noteThumbnails.find(editorView.note.guid)
-		!= userModel.noteThumbnails.end()
+		== userModel.noteThumbnails.end()
 		);
-	BOOST_CHECK(isThumbnailUpdated);
 
 	BOOST_CHECK(noteListModel.isReloaded);
 }

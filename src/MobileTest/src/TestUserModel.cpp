@@ -1,5 +1,5 @@
 #include "stdafx.h"
-/*
+
 #include "DataStore.h"
 #include "MockFlashCard.h"
 #include "Note.h"
@@ -349,7 +349,7 @@ FIXTURE_TEST_CASE(UserModelNoteForeignKey, DataStoreFixture)
 			, fakeNotebook
 			)
 		, std::exception
-		, MESSAGE_EQUALS("foreign key constraint failed")
+		, MESSAGE_EQUALS("constraint failed")
 		);
 }
 
@@ -488,7 +488,7 @@ FIXTURE_TEST_CASE(UserModelResource0, DataStoreFixture)
 	TEST_CHECK_EXCEPTION
 		( userModel.AddResource(resource)
 		, std::exception
-		, MESSAGE_EQUALS("foreign key constraint failed")
+		, MESSAGE_EQUALS("constraint failed")
 		);
 }
 
@@ -893,4 +893,3 @@ FIXTURE_TEST_CASE(UserModelUpdateTag, DataStoreFixture)
 	TEST_CHECK_EQUAL(tags.at(0).name,    replacementTag.name);
 	TEST_CHECK_EQUAL(tags.at(0).usn,     replacementTag.usn);
 }
-*/

@@ -78,6 +78,11 @@ void MockUserModel::DeleteNote(const Guid & note)
 	deletedNotes.push_back(note);
 }
 
+void MockUserModel::DeleteNoteThumbnail(const Guid & note)
+{
+	noteThumbnails.erase(note);
+}
+
 void MockUserModel::EndTransaction()
 {
 	isInTransaction = false;

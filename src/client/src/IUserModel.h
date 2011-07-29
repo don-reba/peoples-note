@@ -46,6 +46,8 @@ public:
 
 	virtual void DeleteNote(const Guid & note) = 0;
 
+	virtual void DeleteNoteThumbnail(const Guid & note) = 0;
+
 	virtual void EndTransaction() = 0;
 
 	virtual bool Exists(const std::wstring & username) = 0;

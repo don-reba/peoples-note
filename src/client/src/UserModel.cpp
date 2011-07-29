@@ -266,6 +266,17 @@ void UserModel::DeleteNote(const Guid & note)
 	statement->Execute();
 }
 
+void UserModel::DeleteNoteThumbnail(const Guid & note)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "UPDATE Notes"
+		"  SET thumbnail = NULL"
+		"  WHERE guid = ?"
+		);
+	statement->Bind(1, note);
+	statement->Execute();
+}
+
 void UserModel::EndTransaction()
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -756,19 +767,12 @@ void UserModel::GetResource
 	__int64 row(0);
 	statement->Get(0, row);
 
-	if (statement->IsNull(1))
-	{
-		blob.clear();
-	}
-	else
-	{
-		IDataStore::Blob sqlBlob = dataStore.MakeBlob
-			( "Resources"
-			, "data"
-			, row
-			);
-		sqlBlob->Read(blob);
-	}
+	IDataStore::Blob sqlBlob = dataStore.MakeBlob
+		( "Resources"
+		, "data"
+		, row
+		);
+	sqlBlob->Read(blob);
 }
 
 void UserModel::GetResource
@@ -777,7 +781,7 @@ void UserModel::GetResource
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT rowid, hash, note, data"
+		( "SELECT rowid, hash, note"
 		"  FROM   Resources"
 		"  WHERE  guid = ?"
 		);
@@ -792,22 +796,14 @@ void UserModel::GetResource
 	statement->Get(2, noteGuid);
 
 	resource.Note = noteGuid;
-
-	if (statement->IsNull(3))
-	{
-		resource.Data.clear();
-	}
-	else
-	{
-		IDataStore::Blob sqlBlob = dataStore.MakeBlob
-			( "Resources"
-			, "data"
-			, row
-			);
-		sqlBlob->Read(resource.Data);
-	}
-
 	resource.Guid = guid;
+
+	IDataStore::Blob sqlBlob = dataStore.MakeBlob
+		( "Resources"
+		, "data"
+		, row
+		);
+	sqlBlob->Read(resource.Data);
 }
 
 void UserModel::GetTags(TagList & tags)

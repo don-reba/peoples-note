@@ -46,6 +46,11 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.selectedNoteGuid = guid;
 	userModel.noteBodies[guid] = L"<en-note/>";
 
+	Thumbnail thumbnail;
+	thumbnail.Width  = 0;
+	thumbnail.Height = 0;
+	userModel.noteThumbnails[guid] = thumbnail;
+
 	noteListView.SignalOpenNote();
 
 	noteView.isDirty = true;
@@ -67,14 +72,10 @@ BOOST_FIXTURE_TEST_CASE
 			L"<en-note><en-todo checked=\"false\"/></en-note>"
 		);
 
-	BOOST_CHECK_EQUAL(noteView.renderSize.cx, 164);
-	BOOST_CHECK_EQUAL(noteView.renderSize.cy, 100);
-
-	bool isThumbnailUpdated
-		(  noteListView.updatedThumbnails.find(guid)
-		!= noteListView.updatedThumbnails.end()
+	BOOST_CHECK
+		(  userModel.noteThumbnails.find(guid)
+		== userModel.noteThumbnails.end()
 		);
-	BOOST_CHECK(isThumbnailUpdated);
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -114,7 +115,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK_EQUAL(noteView.body, L"<p>test-note</p>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
-	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 01:00");
+	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 02:00");
 	BOOST_CHECK(noteView.isShown);
 
 	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{1}"));
@@ -124,7 +125,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK_EQUAL(noteView.body, L"<p>test-note</p>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
-	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 01:00\ntags: tag-0, tag-1");
+	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 02:00\ntags: tag-0, tag-1");
 	BOOST_CHECK(noteView.isShown);
 }
 
