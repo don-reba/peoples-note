@@ -592,29 +592,23 @@ void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 		( "SELECT rowid, thumbnailWidth, thumbnailHeight"
 		"  FROM Notes"
 		"  WHERE guid = ?"
+		"  AND   thumbnail IS NOT NULL"
 		"  LIMIT 1"
 		);
 	statement->Bind(1, guid);
-	if (statement->Execute())
-		throw std::exception("Note not found.");
-
-	__int64 row(0);
-	statement->Get(0, row);
-	statement->Get(1, thumbnail.Width);
-	statement->Get(2, thumbnail.Height);
-
-	if (thumbnail.Width > 0 && thumbnail.Height > 0)
+	if (!statement->Execute())
 	{
+		__int64 row(0);
+		statement->Get(0, row);
+		statement->Get(1, thumbnail.Width);
+		statement->Get(2, thumbnail.Height);
+
 		IDataStore::Blob sqlBlob = dataStore.MakeBlob
 			( "Notes"
 			, "thumbnail"
 			, row
 			);
 		sqlBlob->Read(thumbnail.Data);
-	}
-	else
-	{
-		thumbnail.Data.clear();
 	}
 }
 

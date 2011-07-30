@@ -816,6 +816,12 @@ FIXTURE_TEST_CASE(UserModelThumbnail, DataStoreFixture)
 	TEST_CHECK_EQUAL(out.Data.at(2), 5);
 	TEST_CHECK_EQUAL(out.Width,  7);
 	TEST_CHECK_EQUAL(out.Height, 11);
+
+	userModel.DeleteNoteThumbnail(guid);
+
+	out.Data.clear();
+	userModel.GetNoteThumbnail(guid, out);
+	TEST_CHECK(out.Data.empty());
 }
 
 FIXTURE_TEST_CASE(UserModelUnload, DataStoreFixture)
