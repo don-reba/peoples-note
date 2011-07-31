@@ -33,7 +33,6 @@ bool HtmlDataLoader::LoadFromUri(const wchar_t * uri, Blob & blob)
 		switch (ClassifyUri(uri))
 		{
 		case UriTypeHtml:      LoadHtmlUri      (uri, blob); return true;
-		case UriTypeHttpHtml:  LoadHttpHtmlUri  (uri, blob); return true;
 		case UriTypeHttpImg:   LoadHttpImgUri   (uri, blob); return true;
 		case UriTypeResource:  LoadResourceUri  (uri, blob); return true;
 		case UriTypeThumbnail: LoadThumbnailUri (uri, blob); return true;
@@ -56,7 +55,7 @@ HtmlDataLoader::UriType HtmlDataLoader::ClassifyHttpUri(const wchar_t * uri)
 {
 	const wchar_t * dotPosition(wcsrchr(uri, L'.'));
 	if (!dotPosition)
-		return UriTypeHttpHtml;
+		return UriTypeUnknown;
 	if (0 == wcsicmp(dotPosition, L".gif"))
 		return UriTypeHttpImg;
 	if (0 == wcsicmp(dotPosition, L".jpg"))
@@ -65,7 +64,7 @@ HtmlDataLoader::UriType HtmlDataLoader::ClassifyHttpUri(const wchar_t * uri)
 		return UriTypeHttpImg;
 	if (0 == wcsicmp(dotPosition, L".png"))
 		return UriTypeHttpImg;
-	return UriTypeHttpHtml;
+	return UriTypeUnknown;
 }
 
 HtmlDataLoader::UriType HtmlDataLoader::ClassifyUri(const wchar_t * uri)
@@ -122,20 +121,8 @@ void HtmlDataLoader::LoadHtmlUri(const wchar_t * uri, Blob & blob)
 	blob.assign(resource.data, resource.data + resource.size);
 }
 
-void HtmlDataLoader::LoadHttpHtmlUri(const wchar_t * uri, Blob & blob)
-{
-	blob.clear();
-
-	SHELLEXECUTEINFO info = { sizeof(info) };
-	info.fMask  = SEE_MASK_FLAG_NO_UI | SEE_MASK_NOCLOSEPROCESS;
-	info.lpVerb = L"open";
-	info.lpFile = uri;
-	::ShellExecuteEx(&info);
-}
-
 void HtmlDataLoader::LoadHttpImgUri(const wchar_t * uri, Blob & blob)
 {
-	blob.clear();
 }
 
 void HtmlDataLoader::LoadResourceUri(const wchar_t * uri, Blob & blob)

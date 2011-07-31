@@ -142,8 +142,23 @@ void HTMLayoutWindow::ProcessMessage(WndMsg & msg)
 
 BOOL HTMLayoutWindow::OnBehavior(BEHAVIOR_EVENT_PARAMS * params)
 {
-	const HELEMENT element = params->heTarget;
-	const UINT     command = params->cmd;
+	const element element(params->heTarget);
+	const UINT    command(params->cmd);
+
+	if (params->cmd == HYPERLINK_CLICK)
+	{
+		const wchar_t * href(element.get_attribute("href"));
+		if (href)
+		{
+			SHELLEXECUTEINFO info = { sizeof(info) };
+			info.fMask  = SEE_MASK_FLAG_NO_UI | SEE_MASK_NOCLOSEPROCESS;
+			info.lpVerb = L"open";
+			info.lpFile = href;
+			::ShellExecuteEx(&info);
+		}
+		return;
+	}
+
 	foreach (const EventRecord & record, eventRecords)
 	{
 		if (record.element == element && record.command == command)
@@ -202,6 +217,7 @@ BOOL HTMLayoutWindow::ProcessHTMLayoutEvent
 		return OnFocus(reinterpret_cast<FOCUS_PARAMS*>(params));
 	case HANDLE_KEY:
 		return OnKey(reinterpret_cast<KEY_PARAMS*>(params));
+
 	};
 	return FALSE;
 }
