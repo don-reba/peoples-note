@@ -3412,7 +3412,8 @@ maybe thumbnail generation is not leaking
 	btw, after editing a note
 		don't regenerate the thumbnail
 		just remove it
-		TODO
+		images are not reloaded for some reason
+		I used to be calling NoteListView.UpdateThumbnail
 	maybe I allocate a buffer too large
 	the memory might also become fragmented
 	it seems to be the case that
@@ -3429,7 +3430,8 @@ journal file refreshes like crazy during sync
 	TODO
 should empty caches upon closing a note
 	also after rendering a thumbnail
-	TODO
+	don't even need the image cache, really
+	just have to call HTMLayoutDataReady(Async)
 should mark corrupted notes unsynced
 	or better yet, make note resources properly transactional
 	TODO
@@ -3470,3 +3472,10 @@ test IUserModel::DeleteNoteThumbnail
 	TODO
 I should add profiling to SqlStatement
 	TODO
+should not load all notes on every reload
+	TODO
+all images should be loaded asynchronously
+	should queue up load requests and return LOAD_DISCARD
+	actually, rendering needs extensive HTMLayout work
+	it can't be done from another thread easily
+	better leave this be

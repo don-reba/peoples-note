@@ -22,7 +22,11 @@ private:
 
 public:
 
-	VoiceEditorView(HINSTANCE instance, bool highRes);
+	VoiceEditorView
+		( HINSTANCE         instance
+		, bool              highRes
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	void Create(HWND parent);
 

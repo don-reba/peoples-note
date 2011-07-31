@@ -25,7 +25,11 @@ private:
 
 public:
 
-	CredentialsView(HINSTANCE instance, bool highRes);
+	CredentialsView
+		( HINSTANCE         instance
+		, bool              highRes
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	void Create(HWND parent);
 

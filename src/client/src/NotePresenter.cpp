@@ -54,28 +54,20 @@ void NotePresenter::OnCloseNote()
 	wstring bodyText;
 	enNoteTranslator.ConvertToText(bodyXml, bodyText);
 
-	Transaction transaction(userModel);
-
 	Note note;
 	noteView.GetNote(note);
 	note.isDirty = true;
 
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-	userModel.AddNote(note, bodyXml, bodyText, notebook);
+	{
+		Transaction transaction(userModel);
 
-	noteView.SetNote(note, L"", L"", bodyHtml, L"");
+		Notebook notebook;
+		userModel.GetLastUsedNotebook(notebook);
+		userModel.AddNote(note, bodyXml, bodyText, notebook);
 
-	SIZE thumbnailSize;
-	noteListView.GetThumbSize(thumbnailSize);
-
-	Thumbnail thumbnail;
-	thumbnail.Width  = thumbnailSize.cx;
-	thumbnail.Height = thumbnailSize.cy;
-	noteView.Render(thumbnail);
-	userModel.SetNoteThumbnail(note.guid, thumbnail);
-
-	noteListView.UpdateThumbnail(note.guid);
+		userModel.DeleteNoteThumbnail(note.guid);
+		noteListView.UpdateThumbnail(note.guid);
+	}
 
 	noteListModel.Reload();
 }

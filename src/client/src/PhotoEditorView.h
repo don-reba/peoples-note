@@ -21,7 +21,11 @@ private:
 
 public:
 
-	PhotoEditorView(HINSTANCE instance, bool highRes);
+	PhotoEditorView
+		( HINSTANCE         instance
+		, bool              highRes
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	void Create(HWND parent);
 

@@ -63,10 +63,11 @@ private:
 public:
 
 	NoteListView
-		( HINSTANCE   instance
-		, bool        highRes
-		, IAnimator & animator
-		, int         cmdShow
+		( HINSTANCE         instance
+		, bool              highRes
+		, IAnimator       & animator
+		, int               cmdShow
+		, IHtmlDataLoader & htmlDataLoader
 		);
 
 	void Create();

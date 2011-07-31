@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "HTMLayoutWindow.h"
 
+#include "IHtmlDataLoader.h"
 #include "Tools.h"
 
 #include "htmlayout.h"
@@ -14,12 +15,14 @@ using namespace Tools;
 // interface
 //----------
 
-HTMLayoutWindow::HTMLayoutWindow(const wchar_t * resourceId, bool highRes)
-	: resourceId    (resourceId)
-	, highRes       (highRes)
-	, isHtmlDataSet (false)
-	, htmlData      (NULL)
-	, htmlUri       (NULL)
+HTMLayoutWindow::HTMLayoutWindow
+	( const wchar_t   * resourceId
+	, bool              highRes
+	, IHtmlDataLoader & htmlDataLoader
+	)
+	: resourceId     (resourceId)
+	, highRes        (highRes)
+	, htmlDataLoader (htmlDataLoader)
 {
 }
 
@@ -44,11 +47,6 @@ void HTMLayoutWindow::ConnectBehavior
 {
 	EventRecord record = { element, command, event };
 	eventRecords.push_back(record);
-}
-
-void HTMLayoutWindow::ConnectLoadHtmlData(slot_type OnLoadHtmlData)
-{
-	SignalLoadHtmlData.connect(OnLoadHtmlData);
 }
 
 void HTMLayoutWindow::DisconnectBehavior(const char * path)
@@ -76,40 +74,6 @@ HELEMENT HTMLayoutWindow::FindFirstElement(const char * selector)
 		throw std::exception(message.c_str());
 	}
 	return result;
-}
-
-const wchar_t * HTMLayoutWindow::GetHtmlUri()
-{
-	return htmlUri;
-}
-
-void HTMLayoutWindow::SetHtmlData(const BYTE * data, DWORD size)
-{
-	htmlData      = data;
-	htmlDataSize  = size;
-	isHtmlDataSet = true;
-}
-
-BYTE * HTMLayoutWindow::GetHtmlData()
-{
-	return const_cast<BYTE*>(htmlData);
-}
-
-DWORD HTMLayoutWindow::GetHtmlDataSize()
-{
-	return htmlDataSize;
-}
-
-void HTMLayoutWindow::SetHtmlUri(const wchar_t * uri)
-{
-	htmlUri = uri;
-}
-
-bool HTMLayoutWindow::UseHtmlData()
-{
-	bool isHtmlDataSet = this->isHtmlDataSet;
-	this->isHtmlDataSet = false;
-	return isHtmlDataSet;
 }
 
 //------------------------
@@ -203,21 +167,11 @@ BOOL HTMLayoutWindow::OnKey(KEY_PARAMS * params)
 
 BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 {
-	htmlUri = params->uri;
-	SignalLoadHtmlData();
-	if (UseHtmlData())
-	{
-		if (htmlDataSize > 0)
-		{
-			params->outData     = const_cast<BYTE*>(htmlData);
-			params->outDataSize = htmlDataSize;
-			return LOAD_OK;
-		}
-		else
-		{
-			return LOAD_DISCARD;
-		}
-	}
+	Blob blob;
+	htmlDataLoader.LoadFromUri(params->uri, blob);
+	if (blob.empty())
+		return LOAD_DISCARD;
+	::HTMLayoutDataReady(hwnd_, params->uri, &blob[0], blob.size());
 	return LOAD_OK;
 }
 

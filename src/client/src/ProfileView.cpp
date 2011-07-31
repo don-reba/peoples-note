@@ -15,9 +15,13 @@ using namespace Tools;
 // interface
 //----------
 
-ProfileView::ProfileView(HINSTANCE instance, bool highRes)
+ProfileView::ProfileView
+	( HINSTANCE         instance
+	, bool              highRes
+	, IHtmlDataLoader & htmlDataLoader
+	)
 	: instance        (instance)
-	, HTMLayoutWindow (L"profile.htm", highRes)
+	, HTMLayoutWindow (L"profile.htm", highRes, htmlDataLoader)
 {
 }
 

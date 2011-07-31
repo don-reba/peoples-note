@@ -16,6 +16,8 @@ struct KEY_PARAMS;
 struct tagNMHL_LOAD_DATA;
 typedef tagNMHL_LOAD_DATA NMHL_LOAD_DATA;
 
+class IHtmlDataLoader;
+
 class HTMLayoutWindow : public Window, public ISignalProvider
 {
 // data types
@@ -46,29 +48,19 @@ private:
 
 	std::vector<EventRecord>  eventRecords;
 
-	const BYTE    * htmlData;
-	DWORD           htmlDataSize;
-	bool            isHtmlDataSet;
-	const wchar_t * htmlUri;
-
 protected:
 
 	signal SignalCreated;
-	signal SignalLoadHtmlData;
 
-// interface
-
-public:
-
-	void ConnectLoadHtmlData(slot_type OnLoadHtmlData);
-
-	const wchar_t * GetHtmlUri();
-
-	void SetHtmlData(const BYTE * data, DWORD size);
+	IHtmlDataLoader & htmlDataLoader;
 
 protected:
 
-	HTMLayoutWindow(const wchar_t * resourceId, bool highRes);
+	HTMLayoutWindow
+		( const wchar_t   * resourceId
+		, bool              highRes
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	template <typename T>
 	void ConnectBehavior
@@ -109,14 +101,6 @@ protected:
 	HELEMENT FindFirstElement(const char * selector);
 
 	virtual void RegisterEventHandlers() {}
-
-	BYTE * GetHtmlData();
-
-	DWORD GetHtmlDataSize();
-
-	void SetHtmlUri(const wchar_t * uri);
-
-	bool UseHtmlData();
 
 // window message handlers
 

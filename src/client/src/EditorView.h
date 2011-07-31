@@ -29,7 +29,11 @@ private:
 
 public:
 
-	EditorView(HINSTANCE instance, bool highRes);
+	EditorView
+		( HINSTANCE         instance
+		, bool              highRes
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	void Create(HWND parent);
 

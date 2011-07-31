@@ -17,7 +17,6 @@
 #include "File.h"
 #include "FlashCard.h"
 #include "HtmlDataLoader.h"
-#include "HtmlLayoutPresenter.h"
 #include "InkEditorModel.h"
 #include "InkEditorPresenter.h"
 #include "InkEditorView.h"
@@ -164,23 +163,23 @@ int WINAPI WinMain(HINSTANCE instance,
 		NoteListModel noteListModel(20, userModel, registryKey);
 		SyncModel     syncModel(enNoteTranslator, enService, messagePump, syncUserModel, logger);
 
-		AboutView       aboutView       (instance, highRes);
-		CredentialsView credentialsView (instance, highRes);
-		EditorView      editorView      (instance, highRes);
-		InkEditorView   inkEditorView   (instance);
-		NoteView        noteView        (instance, highRes, animator);
-		NoteListView    noteListView    (instance, highRes, animator, nCmdShow);
-		PhotoEditorView photoEditorView (instance, highRes);
-		ProfileView     profileView     (instance, highRes);
-		VoiceEditorView voiceEditorView (instance, highRes);
-
 		HtmlDataLoader htmlDataLoader
 			( highRes
 			, enNoteTranslator
-			, noteListView
-			, noteView
 			, userModel
 			);
+
+		AboutView       aboutView       (instance, highRes, htmlDataLoader);
+		CredentialsView credentialsView (instance, highRes, htmlDataLoader);
+		EditorView      editorView      (instance, highRes, htmlDataLoader);
+		InkEditorView   inkEditorView   (instance);
+		NoteView        noteView        (instance, highRes, animator, htmlDataLoader);
+		NoteListView    noteListView    (instance, highRes, animator, nCmdShow, htmlDataLoader);
+		PhotoEditorView photoEditorView (instance, highRes, htmlDataLoader);
+		ProfileView     profileView     (instance, highRes, htmlDataLoader);
+		VoiceEditorView voiceEditorView (instance, highRes, htmlDataLoader);
+
+		htmlDataLoader.AttachViews(noteListView, noteView);
 
 		AboutPresenter aboutPresenter
 			( aboutView
@@ -205,17 +204,6 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListModel
 			, noteListView
 			, userModel
-			);
-		HtmlLayoutPresenter
-			( aboutView
-			, credentialsView
-			, editorView
-			, noteView
-			, noteListView
-			, photoEditorView
-			, profileView
-			, voiceEditorView
-			, htmlDataLoader
 			);
 		InkEditorPresenter
 			( inkEditorModel

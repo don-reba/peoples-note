@@ -3,6 +3,7 @@
 
 #include "crackers.h"
 #include "resourceppc.h"
+#include "IHtmlDataLoader.h"
 #include "Tools.h"
 
 #include <sstream>
@@ -18,17 +19,18 @@ using namespace Tools;
 //----------
 
 NoteListView::NoteListView
-	( HINSTANCE   instance
-	, bool        highRes
-	, IAnimator & animator
-	, int         cmdShow
+	( HINSTANCE         instance
+	, bool              highRes
+	, IAnimator       & animator
+	, int               cmdShow
+	, IHtmlDataLoader & htmlDataLoader
 	)
 	: cmdShow           (cmdShow)
 	, instance          (instance)
 	, gestureProcessor  (animator)
 	, searchButtonState (SearchButtonSearch)
 	, sipState          (SHFS_HIDESIPBUTTON)
-	, HTMLayoutWindow   (L"main.htm", highRes)
+	, HTMLayoutWindow   (L"main.htm", highRes, htmlDataLoader)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
@@ -334,19 +336,18 @@ void NoteListView::UpdateThumbnail(const Guid & note)
 {
 	wstring uri(L"thumb:");
 	uri.append(ConvertToUnicode(note));
-	SetHtmlUri(uri.c_str());
 
-	SignalLoadHtmlData();
-	if (UseHtmlData())
-	{
-		HTMLayoutDataReadyAsync
-			( hwnd_
-			, uri.c_str()
-			, GetHtmlData()
-			, GetHtmlDataSize()
-			, HLRT_DATA_IMAGE
-			);
-	}
+	Blob blob;
+	htmlDataLoader.LoadFromUri(uri.c_str(), blob);
+	if (blob.empty())
+		return;
+	HTMLayoutDataReadyAsync
+		( hwnd_
+		, uri.c_str()
+		, &blob[0]
+		, blob.size()
+		, HLRT_DATA_IMAGE
+		);
 }
 
 //------------------

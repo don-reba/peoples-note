@@ -44,9 +44,11 @@ private:
 public:
 
 	NoteView
-		( HINSTANCE   instance
-		, bool        highRes
-		, IAnimator & animator);
+		( HINSTANCE         instance
+		, bool              highRes
+		, IAnimator       & animator
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	void Create(HWND parent);
 

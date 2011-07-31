@@ -20,7 +20,11 @@ private:
 
 public:
 
-	ProfileView(HINSTANCE instance, bool highRes);
+	ProfileView
+		( HINSTANCE         instance
+		, bool              highRes
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	void Create(HWND parent);
 

@@ -15,11 +15,15 @@ using namespace Tools;
 // interface
 //----------
 
-EditorView::EditorView(HINSTANCE instance, bool highRes)
+EditorView::EditorView
+	( HINSTANCE         instance
+	, bool              highRes
+	, IHtmlDataLoader & htmlDataLoader
+	)
 	: instance        (instance)
 	, isMaximized     (false)
 	, parent          (NULL)
-	, HTMLayoutWindow (L"note-edit.htm", highRes)
+	, HTMLayoutWindow (L"note-edit.htm", highRes, htmlDataLoader)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);

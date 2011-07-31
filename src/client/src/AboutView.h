@@ -23,7 +23,11 @@ private:
 
 public:
 
-	AboutView(HINSTANCE instance, bool highRes);
+	AboutView
+		( HINSTANCE         instance
+		, bool              highRes
+		, IHtmlDataLoader & htmlDataLoader
+		);
 
 	void Create(HWND parent);
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "HtmlDataLoader.h"
 
+#include "Blob.h"
 #include "EnNoteTranslator.h"
 #include "HtmlResource.h"
 #include "INoteListView.h"
@@ -17,41 +18,25 @@ using namespace Tools;
 HtmlDataLoader::HtmlDataLoader
 	( bool               highRes
 	, EnNoteTranslator & enNoteTranslator
-	, INoteListView    & noteListView
-	, INoteView        & noteView
 	, IUserModel       & userModel
 	)
 	: highRes          (highRes)
 	, enNoteTranslator (enNoteTranslator)
-	, noteListView     (noteListView)
-	, noteView         (noteView)
 	, userModel        (userModel)
 {
 }
 
-BYTE * HtmlDataLoader::GetData()
-{
-	if (blob.empty())
-		return NULL;
-	return &blob[0];
-}
-
-DWORD HtmlDataLoader::GetDataSize()
-{
-	return blob.size();
-}
-
-bool HtmlDataLoader::LoadFromUri(const wchar_t * uri)
+bool HtmlDataLoader::LoadFromUri(const wchar_t * uri, Blob & blob)
 {
 	try
 	{
 		switch (ClassifyUri(uri))
 		{
-		case UriTypeHtml:      LoadHtmlUri      (uri); return true;
-		case UriTypeHttpHtml:  LoadHttpHtmlUri  (uri); return true;
-		case UriTypeHttpImg:   LoadHttpImgUri   (uri); return true;
-		case UriTypeResource:  LoadResourceUri  (uri); return true;
-		case UriTypeThumbnail: LoadThumbnailUri (uri); return true;
+		case UriTypeHtml:      LoadHtmlUri      (uri, blob); return true;
+		case UriTypeHttpHtml:  LoadHttpHtmlUri  (uri, blob); return true;
+		case UriTypeHttpImg:   LoadHttpImgUri   (uri, blob); return true;
+		case UriTypeResource:  LoadResourceUri  (uri, blob); return true;
+		case UriTypeThumbnail: LoadThumbnailUri (uri, blob); return true;
 		}
 	}
 	catch (const std::exception & e)
@@ -59,6 +44,12 @@ bool HtmlDataLoader::LoadFromUri(const wchar_t * uri)
 		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
 	}
 	return false;
+}
+
+void HtmlDataLoader::AttachViews(INoteListView & noteListView, INoteView & noteView)
+{
+	this->noteListView = &noteListView;
+	this->noteView     = &noteView;
 }
 
 HtmlDataLoader::UriType HtmlDataLoader::ClassifyHttpUri(const wchar_t * uri)
@@ -93,6 +84,20 @@ HtmlDataLoader::UriType HtmlDataLoader::ClassifyUri(const wchar_t * uri)
 	return UriTypeUnknown;
 }
 
+void HtmlDataLoader::CreateThumbnail(const Guid & guid, Thumbnail & thumbnail)
+{
+	wstring body;
+	userModel.GetNoteBody(guid, body);
+
+	wstring html;
+	enNoteTranslator.ConvertToHtml(body, html);
+
+	Note note;
+	noteView->SetNote(note, L"", L"", html, L"");
+
+	noteView->Render(thumbnail);
+}
+
 bool HtmlDataLoader::IsPrefix
 	( const wchar_t * begin
 	, const wchar_t * end
@@ -111,13 +116,13 @@ bool HtmlDataLoader::IsPrefix
 	return begin == end;
 }
 
-void HtmlDataLoader::LoadHtmlUri(const wchar_t * uri)
+void HtmlDataLoader::LoadHtmlUri(const wchar_t * uri, Blob & blob)
 {
 	HtmlResource resource(LoadHtmlResource(uri, highRes));
 	blob.assign(resource.data, resource.data + resource.size);
 }
 
-void HtmlDataLoader::LoadHttpHtmlUri(const wchar_t * uri)
+void HtmlDataLoader::LoadHttpHtmlUri(const wchar_t * uri, Blob & blob)
 {
 	blob.clear();
 
@@ -128,12 +133,12 @@ void HtmlDataLoader::LoadHttpHtmlUri(const wchar_t * uri)
 	::ShellExecuteEx(&info);
 }
 
-void HtmlDataLoader::LoadHttpImgUri(const wchar_t * uri)
+void HtmlDataLoader::LoadHttpImgUri(const wchar_t * uri, Blob & blob)
 {
 	blob.clear();
 }
 
-void HtmlDataLoader::LoadResourceUri(const wchar_t * uri)
+void HtmlDataLoader::LoadResourceUri(const wchar_t * uri, Blob & blob)
 {
 	const wchar_t * colonPosition (wcschr(uri,               L':'));
 	const wchar_t * dotPosition   (wcschr(colonPosition + 1, L'.'));
@@ -148,8 +153,14 @@ void HtmlDataLoader::LoadResourceUri(const wchar_t * uri)
 	}
 }
 
-void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
+void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri, Blob & blob)
 {
+	if (!noteListView || !noteView)
+	{
+		DEBUGMSG(true, (L"Attemted to load thumbnails before setting views."));
+		return;
+	}
+
 	Guid guid(wcschr(uri, L':') + 1);
 
 	Transaction transaction(userModel);
@@ -158,23 +169,14 @@ void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri)
 	userModel.GetNoteThumbnail(guid, thumbnail);
 
 	SIZE size;
-	noteListView.GetThumbSize(size);
-	if (thumbnail.Width != size.cx || thumbnail.Height != size.cy)
+	noteListView->GetThumbSize(size);
+	if (thumbnail.Data.empty() || thumbnail.Width != size.cx || thumbnail.Height != size.cy)
 	{
 		thumbnail.Width  = size.cx;
 		thumbnail.Height = size.cy;
-
-		wstring body;
-		userModel.GetNoteBody(guid, body);
-
-		wstring html;
-		enNoteTranslator.ConvertToHtml(body, html);
-
-		Note note;
-		noteView.SetNote(note, L"", L"", html, L"");
-
-		noteView.Render(thumbnail);
+		CreateThumbnail(guid, thumbnail);
 		userModel.SetNoteThumbnail(guid, thumbnail);
 	}
+
 	blob.swap(thumbnail.Data);
 }

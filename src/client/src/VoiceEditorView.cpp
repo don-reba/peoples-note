@@ -18,10 +18,14 @@ using namespace Tools;
 // interface
 //----------
 
-VoiceEditorView::VoiceEditorView(HINSTANCE instance, bool highRes)
+VoiceEditorView::VoiceEditorView
+	( HINSTANCE         instance
+	, bool              highRes
+	, IHtmlDataLoader & htmlDataLoader
+	)
 	: instance        (instance)
 	, parent          (NULL)
-	, HTMLayoutWindow (L"voice-edit.htm", highRes)
+	, HTMLayoutWindow (L"voice-edit.htm", highRes, htmlDataLoader)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);

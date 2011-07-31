@@ -20,16 +20,17 @@ using namespace Tools;
 //----------
 
 NoteView::NoteView
-	( HINSTANCE   instance
-	, bool        highRes
-	, IAnimator & animator
+	( HINSTANCE         instance
+	, bool              highRes
+	, IAnimator       & animator
+	, IHtmlDataLoader & htmlDataLoader
 	)
 	: instance         (instance)
 	, isDirty          (false)
 	, isMaximized      (false)
 	, gestureProcessor (animator)
 	, parent           (NULL)
-	, HTMLayoutWindow  (L"note-view.htm", highRes)
+	, HTMLayoutWindow  (L"note-view.htm", highRes, htmlDataLoader)
 {
 
 	gestureProcessor.ConnectDelayedMouseDown (bind(&NoteView::OnDelayedMouseDown, this));

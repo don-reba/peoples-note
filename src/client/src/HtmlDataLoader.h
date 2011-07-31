@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Blob.h"
 #include "IHtmlDataLoader.h"
 
 class EnNoteTranslator;
+class Guid;
 class INoteListView;
 class INoteView;
 class IUserModel;
+class Thumbnail;
 
 class HtmlDataLoader : public IHtmlDataLoader
 {
@@ -24,35 +25,32 @@ private:
 
 private:
 
-	Blob blob;
-
-	bool highRes;
+	const bool highRes;
 
 	EnNoteTranslator & enNoteTranslator;
-	INoteListView    & noteListView;
-	INoteView        & noteView;
 	IUserModel       & userModel;
+
+	INoteListView * noteListView;
+	INoteView     * noteView;
 
 public:
 
 	HtmlDataLoader
 		( bool               highRes
 		, EnNoteTranslator & enNoteTranslator
-		, INoteListView    & noteListView
-		, INoteView        & noteView
 		, IUserModel       & userModel
 		);
 
-	virtual BYTE * GetData();
+	virtual bool LoadFromUri(const wchar_t * uri, Blob & blob);
 
-	virtual DWORD GetDataSize();
-
-	virtual bool LoadFromUri(const wchar_t * uri);
+	void AttachViews(INoteListView & noteListView, INoteView & noteView);
 
 private:
 
 	UriType ClassifyHttpUri (const wchar_t * uri);
 	UriType ClassifyUri     (const wchar_t * uri);
+
+	void CreateThumbnail(const Guid & guid, Thumbnail & thumbnail);
 
 	bool IsPrefix
 		( const wchar_t * begin
@@ -60,9 +58,9 @@ private:
 		, const wchar_t * prefix
 		);
 
-	void LoadHtmlUri      (const wchar_t * uri);
-	void LoadHttpHtmlUri  (const wchar_t * uri);
-	void LoadHttpImgUri   (const wchar_t * uri);
-	void LoadResourceUri  (const wchar_t * uri);
-	void LoadThumbnailUri (const wchar_t * uri);
+	void LoadHtmlUri      (const wchar_t * uri, Blob & blob);
+	void LoadHttpHtmlUri  (const wchar_t * uri, Blob & blob);
+	void LoadHttpImgUri   (const wchar_t * uri, Blob & blob);
+	void LoadResourceUri  (const wchar_t * uri, Blob & blob);
+	void LoadThumbnailUri (const wchar_t * uri, Blob & blob);
 };

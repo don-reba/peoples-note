@@ -17,10 +17,14 @@ using namespace Tools;
 // interface
 //----------
 
-PhotoEditorView::PhotoEditorView(HINSTANCE instance, bool highRes)
+PhotoEditorView::PhotoEditorView
+	( HINSTANCE         instance
+	, bool              highRes
+	, IHtmlDataLoader & htmlDataLoader
+	)
 	: instance        (instance)
 	, parent          (NULL)
-	, HTMLayoutWindow (L"photo-edit.htm", highRes)
+	, HTMLayoutWindow (L"photo-edit.htm", highRes, htmlDataLoader)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
