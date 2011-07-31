@@ -128,7 +128,6 @@ void NoteView::Hide()
 	::EnableWindow(parent, TRUE);
 	::ShowWindow(hwnd_,   SW_HIDE);
 	::ShowWindow(menuBar, SW_HIDE);
-	HideScrollbar();
 	SignalClose();
 }
 
@@ -169,11 +168,14 @@ void NoteView::SetNote
 	, const wstring & subtitleText
 	, const wstring & bodyHtml
 	, const wstring & attachment
+	, const bool      enableChrome
 	)
 {
 	isDirty = false;
 
 	this->note = note;
+
+	SetChrome(enableChrome);
 
 	element title    (FindFirstElement("#title"));
 	element subtitle (FindFirstElement("#subtitle"));
@@ -189,12 +191,14 @@ void NoteView::SetNote
 	body.set_html(utf8, utf8Chars.size());
 	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
 
-	
 	vector<unsigned char> utf8AttachmentChars;
 	const unsigned char * utf8Attachment = Tools::ConvertToUtf8(attachment, utf8AttachmentChars);
 
 	element(FindFirstElement("#attachments")).set_html(utf8Attachment, utf8AttachmentChars.size());
 
+	POINT scrollPos = { 0 };
+	SetScrollPos(scrollPos);
+	UpdateScrollbar();
 }
 
 void NoteView::SetWindowTitle(const std::wstring & text)
@@ -210,11 +214,7 @@ void NoteView::Show()
 	::EnableWindow(parent, FALSE);
 	::BringWindowToTop(hwnd_);
 
-	ShowScrollbar();
 	element(element::root_element(hwnd_)).update(MEASURE_DEEP|REDRAW_NOW);
-	POINT scrollPos = { 0 };
-	SetScrollPos(scrollPos);
-	UpdateScrollbar();
 
 	::ShowWindow(hwnd_,   SW_SHOW);
 	::ShowWindow(menuBar, SW_SHOW);
@@ -235,12 +235,6 @@ POINT NoteView::GetScrollPos()
 	return scrollPos;
 }
 
-void NoteView::HideScrollbar()
-{
-	vScroll.set_style_attribute("display", L"none");
-	hScroll.set_style_attribute("display", L"none");
-}
-
 ATOM NoteView::RegisterClass(const wstring & wndClass)
 {
 	WNDCLASS wc = { 0 };
@@ -251,6 +245,18 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
 	wc.lpszClassName = wndClass.c_str();
 	return ::RegisterClass(&wc);
+}
+
+void NoteView::SetChrome(bool enable)
+{
+	element blocks[] =
+		{ hScroll
+		, vScroll
+		, element(FindFirstElement("#header"))
+		, element(FindFirstElement("#attachments"))
+		};
+	for (int i(0); i != GetArraySize(blocks); ++i)
+		blocks[i].set_style_attribute("display", enable ? L"block" : L"none");
 }
 
 void NoteView::SetScrollPos(POINT pos)
@@ -305,12 +311,6 @@ void NoteView::SetScrollPos(POINT pos)
 			};
 		hScroll.set_scroll_pos(hScrollPos, false);
 	}
-}
-
-void NoteView::ShowScrollbar()
-{
-	vScroll.set_style_attribute("display", L"block");
-	hScroll.set_style_attribute("display", L"block");
 }
 
 void NoteView::UpdateScrollbar()

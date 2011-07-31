@@ -8,10 +8,14 @@
 				margin           : 0px;
 				padding          : 0px;
 			}
+			#header
+			{
+				background-color : #f0ec40;
+				padding: 0px 0px 4px 0px;
+			}
 			#title
 			{
-				font-size   : 14px;
-				font-weight : bold;
+				font-size   : 16px;
 			}
 			#subtitle
 			{
@@ -22,6 +26,20 @@
 				font-size : 12px;
 				width     : 100%%;
 				height    : 100%%;
+			}
+			#attachments
+			{
+				font-size        : 12px;
+				background-color : #f0ec40;
+			}
+			#attachments div
+			{
+				vertical-align : middle;
+			}
+			#attachments div img
+			{
+				margin-right   : 4px;
+				vertical-align : middle;
 			}
 			#note
 			{
@@ -77,14 +95,17 @@
 		</style>
 	</head>
 	<body>
-		<div #hscroll><div #slider /></div>
 		<div #note-panel>
 			<div #note>
-				<div #title />
-				<div #subtitle />
+				<div #header>
+					<div #title />
+					<div #subtitle />
+				</div>
 				<div #body />
+				<div #attachments />
 			</div>
 			<div #vscroll><div #slider /></div>
 		</div>
+		<div #hscroll><div #slider /></div>
 	</body>
 </html>
