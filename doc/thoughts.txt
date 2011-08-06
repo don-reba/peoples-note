@@ -3241,6 +3241,7 @@ editing problem
 relative URLs
 	might want to convert relative URLs in notes into absolute URLs
 		given the note's source URL
+	need the note's source URL for this
 	TODO
 should write sync log to disk more often
 	done
@@ -3355,8 +3356,9 @@ db streaming
 		TODO
 scrolling does not get updated
 	in note list
+		TODO
 	in note view
-	TODO
+		fixed
 attachment information is missing
 	I generall need to capture more complete information
 	need extra information
@@ -3380,8 +3382,39 @@ should rename Add/Create/Delete/DeleteRemote/Merge/Update
 update database
 	there has to be smooth migration
 	the database is going to gain many new columns
+		need to add a migration
+			MigrateFrom4To5
+		this has to set all appropriate default values
 	those columns will have to be filled at first sync
-		I could add an extra "synced" column initially set to false
+		implentation
+			list all entries
+			update local notes, notebooks, and resources
+			set the "success" property at the end
+		logistics
+			add an extra "synced" column initially set to false
+			too much overhead
+			just add a "success" flag property
+	new columns
+		notes
+			modificationDate
+			subjectDate
+			altitude
+			latitude
+			longitude
+			author
+			source
+			sourceUrl
+			sourceApplication
+		notebooks
+			creation date
+			modification date
+		tag
+			parentGuid
+	location storage
+		solutions
+			separate hasLocation column
+			null values
+				good enough
 leaking memory
 	looks like thumbnail generation leaks
 		the original 
@@ -3459,18 +3492,20 @@ I am unable to find some resources
 what I should do for the next release
 	√ handle thumbnail rendering failure
 	√ fix SqlStatement destructor
-	empty note caches
+	√ empty note caches
 	√ rename processor methods
 	√ localize thumbnail rendering to loading code
-	fix scroll updating
+	√ fix scroll updating
 	modify the database
 	add metadata updating
-	load thumbnails asynchronously
+	x load thumbnails asynchronously
 images don't show up when viewing notes
-	TODO
+	database problem
+	fixed
 test IUserModel::DeleteNoteThumbnail
-	TODO
+	done
 I should add profiling to SqlStatement
+	might make sense to enable choosing which statements to cache
 	TODO
 should not load all notes on every reload
 	TODO
@@ -3479,3 +3514,28 @@ all images should be loaded asynchronously
 	actually, rendering needs extensive HTMLayout work
 	it can't be done from another thread easily
 	better leave this be
+don't need a buffer for images
+	can call HTMLayoutDataReady
+	I don't really like loading resources through the presenter either
+	it would be much simpler to load them directly from the view
+	except the data loader needs view references...
+		ouch
+	solutions
+		take htmlDataLoader by pointer
+		take views by pointer
+			might be easiest
+		signal
+need to disable scrollbars for thumbnail rendering
+	could simply add corresponding methods
+	disable scrollbars for thumbnail rendering
+	enable them when loading notes
+	could add it as an SetNote parameter
+	done
+should interleave sync entry loading and processing
+	so as not to waste memory
+	TODO
+case-sensitivity for search
+	have to study the problem
+	for tags
+	for notes
+	TOTO

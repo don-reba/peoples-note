@@ -26,21 +26,27 @@ public:
 
 	virtual void Bind(int index, __int32              n);
 	virtual void Bind(int index, __int64              n);
+	virtual void Bind(int index, double               n);
 	virtual void Bind(int index, const std::string  & text);
 	virtual void Bind(int index, const std::wstring & text);
 	virtual void Bind(int index, const Blob         & blob);
 
+	virtual void BindNull(int index);
+
 	virtual void Get(int index, bool         & n);
 	virtual void Get(int index, __int32      & n);
 	virtual void Get(int index, __int64      & n);
+	virtual void Get(int index, double       & n);
 	virtual void Get(int index, std::string  & text);
 	virtual void Get(int index, std::wstring & text);
+	virtual void Get(int index, Guid         & guid);
+	virtual void Get(int index, Timestamp    & time);
 
 	virtual bool IsNull(int index);
 
 private:
 
-	void HandleError(const std::string msg, bool canThrow = true);
+	void HandleError(const std::string msg);
 
 	virtual void Finalize();
 };

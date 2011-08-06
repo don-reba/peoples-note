@@ -9,12 +9,12 @@ class Note
 public:
 
 	Guid         guid;
+	int          usn;
+	std::wstring name;
+	bool         isDirty;
 	Timestamp    creationDate;
 	Timestamp    modificationDate;
 	Timestamp    subjectDate;
-	std::wstring name;
-	int          usn;
-	bool         isDirty;
 	Location     Location;
 	std::wstring Author;
 	std::wstring Source;

@@ -64,7 +64,7 @@ Note MakeNote(const wchar_t * name, int timestamp)
 {
 	Note note;
 	note.name = name;
-	note.creationDate = timestamp;
+	note.modificationDate = timestamp;
 	return note;
 }
 

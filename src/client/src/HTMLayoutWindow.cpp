@@ -156,7 +156,7 @@ BOOL HTMLayoutWindow::OnBehavior(BEHAVIOR_EVENT_PARAMS * params)
 			info.lpFile = href;
 			::ShellExecuteEx(&info);
 		}
-		return;
+		return TRUE;
 	}
 
 	foreach (const EventRecord & record, eventRecords)

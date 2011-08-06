@@ -97,16 +97,34 @@ void UserModel::AddNote
 	{
 		{
 			IDataStore::Statement insertNote = dataStore.MakeStatement
-				( "INSERT INTO Notes(guid, usn, creationDate, title, body, isDirty, notebook)"
-				"  VALUES (?, ?, ?, ?, ?, ?, ?)"
+				( "INSERT INTO Notes"
+				"  VALUES (?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, 0, NULL, 0, 0, ?)"
 				);
 			insertNote->Bind(1, note.guid);
 			insertNote->Bind(2, note.usn);
-			insertNote->Bind(3, note.creationDate.GetTime());
-			insertNote->Bind(4, note.name);
+			insertNote->Bind(3, note.name);
+			insertNote->Bind(4, note.isDirty);
 			insertNote->Bind(5, body);
-			insertNote->Bind(6, note.isDirty);
-			insertNote->Bind(7, notebook.guid);
+			insertNote->Bind(6, note.creationDate.GetTime());
+			insertNote->Bind(7, note.modificationDate.GetTime());
+			insertNote->Bind(8, note.subjectDate.GetTime());
+			if (note.Location.IsValid)
+			{
+				insertNote->Bind(9,  note.Location.Altitude);
+				insertNote->Bind(10, note.Location.Latitude);
+				insertNote->Bind(11, note.Location.Longitude);
+			}
+			else
+			{
+				insertNote->BindNull(9);
+				insertNote->BindNull(10);
+				insertNote->BindNull(11);
+			}
+			insertNote->Bind(12, note.Author);
+			insertNote->Bind(13, note.Source);
+			insertNote->Bind(14, note.SourceUrl);
+			insertNote->Bind(15, note.SourceApplication);
+			insertNote->Bind(16, notebook.guid);
 			insertNote->Execute();
 		}
 		{
@@ -140,19 +158,38 @@ void UserModel::AddNote
 		{
 			IDataStore::Statement updateNote = dataStore.MakeStatement
 				( "UPDATE Notes"
-				"  SET    guid = ?, usn = ?, creationDate = ?, title = ?, body = ?,"
-				"         isDirty = ?, isDeleted = 0, notebook = ?,"
-				"         thumbnail = NULL, thumbnailWidth = 0, thumbnailHeight = 0"
-				"  WHERE  rowid = ?"
+				"  SET usn = ?, title = ?, isDirty = ?, body = ?, creationDate = ?,"
+				"      modificationDate = ?, subjectDate = ?, altitude = ?, latitude = ?,"
+				"      longitude = ?, author = ?, source = ?, sourceUrl = ?, sourceApplication = ?,"
+				"      isDeleted = 0, thumbnail = NULL, thumbnailWidth = 0, thumbnailHeight = 0,"
+				"      notebook = ?"
+				"  WHERE rowid = ?"
 				);
-			updateNote->Bind(1, note.guid);
-			updateNote->Bind(2, note.usn);
-			updateNote->Bind(3, note.creationDate.GetTime());
-			updateNote->Bind(4, note.name);
-			updateNote->Bind(5, body);
-			updateNote->Bind(6, note.isDirty);
-			updateNote->Bind(7, notebook.guid);
-			updateNote->Bind(8, rowid);
+			updateNote->Bind(1, note.usn);
+			updateNote->Bind(2, note.name);
+			updateNote->Bind(3, note.isDirty);
+			updateNote->Bind(4, body);
+			updateNote->Bind(5, note.creationDate.GetTime());
+			updateNote->Bind(6, note.modificationDate.GetTime());
+			updateNote->Bind(7, note.subjectDate.GetTime());
+			if (note.Location.IsValid)
+			{
+				updateNote->Bind(8,  note.Location.Altitude);
+				updateNote->Bind(9,  note.Location.Latitude);
+				updateNote->Bind(10, note.Location.Longitude);
+			}
+			else
+			{
+				updateNote->BindNull(8);
+				updateNote->BindNull(9);
+				updateNote->BindNull(10);
+			}
+			updateNote->Bind(11, note.Author);
+			updateNote->Bind(12, note.Source);
+			updateNote->Bind(13, note.SourceUrl);
+			updateNote->Bind(14, note.SourceApplication);
+			updateNote->Bind(15, notebook.guid);
+			updateNote->Bind(16, rowid);
 			updateNote->Execute();
 		}
 	}
@@ -161,13 +198,15 @@ void UserModel::AddNote
 void UserModel::AddNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR IGNORE INTO Notebooks(guid, usn, name, isDirty)"
-		"  VALUES (?, ?, ?, ?)"
+		( "INSERT OR IGNORE INTO Notebooks"
+		"  VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0)"
 		);
 	statement->Bind(1, notebook.guid);
 	statement->Bind(2, notebook.usn);
 	statement->Bind(3, notebook.name);
-	statement->Bind(4, notebook.isDirty);
+	statement->Bind(4, notebook.CreationDate.GetTime());
+	statement->Bind(5, notebook.ModificationDate.GetTime());
+	statement->Bind(6, notebook.isDirty);
 	statement->Execute();
 }
 
@@ -212,14 +251,15 @@ void UserModel::AddTag(const Tag & tag)
 		);
 
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR REPLACE INTO Tags(guid, usn, name, searchName, isDirty)"
-		"  VALUES (?, ?, ?, ?, ?)"
+		( "INSERT OR REPLACE INTO Tags(guid, usn, name, parentGuid, searchName, isDirty)"
+		"  VALUES (?, ?, ?, ?, ?, ?)"
 		);
 	statement->Bind(1, tag.guid);
 	statement->Bind(2, tag.usn);
 	statement->Bind(3, tag.name);
-	statement->Bind(4, searchName);
-	statement->Bind(5, tag.isDirty);
+	statement->Bind(4, tag.parentGuid);
+	statement->Bind(5, searchName);
+	statement->Bind(6, tag.isDirty);
 	statement->Execute();
 }
 
@@ -380,19 +420,19 @@ void UserModel::GetCredentials(Credentials & credentials)
 void UserModel::GetDefaultNotebook(Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, isDirty"
+		( "SELECT guid, usn, name, creationDate, modificationDate, isDirty"
 		"  FROM Notebooks"
 		"  WHERE isDefault = 1"
 		"  LIMIT 1"
 		);
 	if (statement->Execute())
 		throw std::exception("No default notebook.");
-	wstring guidString;
-	statement->Get(0, guidString);
+	statement->Get(0, notebook.guid);
 	statement->Get(1, notebook.usn);
 	statement->Get(2, notebook.name);
-	statement->Get(3, notebook.isDirty);
-	notebook.guid = guidString;
+	statement->Get(4, notebook.CreationDate);
+	statement->Get(5, notebook.ModificationDate);
+	statement->Get(6, notebook.isDirty);
 }
 
 void UserModel::GetDeletedNotes(GuidList & notes)
@@ -438,7 +478,7 @@ void UserModel::GetLastUsedNotebook(Notebook & notebook)
 	Transaction transaction(*this);
 
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, isDirty"
+		( "SELECT guid, usn, name, creationDate, modificationDate, isDirty"
 		"  FROM Notebooks"
 		"  WHERE isLastUsed = 1"
 		"  LIMIT 1"
@@ -449,12 +489,12 @@ void UserModel::GetLastUsedNotebook(Notebook & notebook)
 		MakeNotebookLastUsed(notebook.guid);
 		return;
 	}
-	wstring guidString;
-	statement->Get(0, guidString);
+	statement->Get(0, notebook.guid);
 	statement->Get(1, notebook.usn);
 	statement->Get(2, notebook.name);
-	statement->Get(3, notebook.isDirty);
-	notebook.guid = guidString;
+	statement->Get(3, notebook.CreationDate);
+	statement->Get(4, notebook.ModificationDate);
+	statement->Get(5, notebook.isDirty);
 }
 
 DbLocation UserModel::GetLocation()
@@ -532,7 +572,7 @@ void UserModel::GetNoteTags
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, isDirty"
+		( "SELECT guid, usn, name, parentGuid, isDirty"
 		"  FROM Tags, NoteTags"
 		"  WHERE note = ? AND tag = guid"
 		"  ORDER BY name"
@@ -540,13 +580,13 @@ void UserModel::GetNoteTags
 	statement->Bind(1, note.guid);
 	while (!statement->Execute())
 	{
-		string  guid;
 		tags.push_back(Tag());
-		statement->Get(0, guid);
-		statement->Get(1, tags.back().usn);
-		statement->Get(2, tags.back().name);
-		statement->Get(3, tags.back().isDirty);
-		tags.back().guid = guid;
+		Tag & t(tags.back());
+		statement->Get(0, t.guid);
+		statement->Get(1, t.usn);
+		statement->Get(2, t.name);
+		statement->Get(3, t.parentGuid);
+		statement->Get(4, t.isDirty);
 	}
 }
 
@@ -556,19 +596,19 @@ void UserModel::GetNotebook
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, isDirty"
+		( "SELECT guid, usn, name, creationDate, modificationDate, isDirty"
 		"  FROM   Notebooks"
 		"  WHERE  guid = ?"
 		);
 	statement->Bind(1, guid);
 	if (statement->Execute())
 		throw std::exception("Notebook not found.");
-	wstring guidString;
-	statement->Get(0, guidString);
+	statement->Get(0, notebook.guid);
 	statement->Get(1, notebook.usn);
 	statement->Get(2, notebook.name);
-	statement->Get(3, notebook.isDirty);
-	notebook.guid = guidString;
+	statement->Get(3, notebook.CreationDate);
+	statement->Get(4, notebook.ModificationDate);
+	statement->Get(5, notebook.isDirty);
 }
 
 int UserModel::GetNotebookUpdateCount(const Guid & notebook)
@@ -615,19 +655,20 @@ void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 void UserModel::GetNotebooks(NotebookList & notebooks)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, isDirty"
+		( "SELECT guid, usn, name, creationDate, modificationDate, isDirty"
 		"  FROM Notebooks"
 		"  ORDER BY name"
 		);
 	while (!statement->Execute())
 	{
 		notebooks.push_back(Notebook());
-		wstring guidString;
-		statement->Get(0, guidString);
-		statement->Get(1, notebooks.back().usn);
-		statement->Get(2, notebooks.back().name);
-		statement->Get(3, notebooks.back().isDirty);
-		notebooks.back().guid = guidString;
+		Notebook & n(notebooks.back());
+		statement->Get(0, n.guid);
+		statement->Get(1, n.usn);
+		statement->Get(2, n.name);
+		statement->Get(3, n.CreationDate);
+		statement->Get(4, n.ModificationDate);
+		statement->Get(5, n.isDirty);
 	}
 }
 
@@ -638,30 +679,35 @@ void UserModel::GetNotesByNotebook
 {
 	notes.clear();
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, title, creationDate, isDirty"
+		("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
+		"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
 		"  FROM Notes"
 		"  WHERE isDeleted = 0 AND notebook = ?"
-		"  ORDER BY creationDate DESC"
+		"  ORDER BY modificationDate DESC"
 		);
 	statement->Bind(1, notebook.guid);
 	while (!statement->Execute())
 	{
-		string  guid;
-		int     usn;
-		wstring title;
-		int     creationDate;
-		bool    isDirty;
-		statement->Get(0, guid);
-		statement->Get(1, usn);
-		statement->Get(2, title);
-		statement->Get(3, creationDate);
-		statement->Get(4, isDirty);
 		notes.push_back(Note());
-		notes.back().guid         = guid;
-		notes.back().usn          = usn;
-		notes.back().name         = title;
-		notes.back().creationDate = creationDate;
-		notes.back().isDirty      = isDirty;
+		Note & n(notes.back());
+		statement->Get(0, n.guid);
+		statement->Get(1, n.usn);
+		statement->Get(2, n.name);
+		statement->Get(3, n.isDirty);
+		statement->Get(4, n.creationDate);
+		statement->Get(5, n.modificationDate);
+		statement->Get(6, n.subjectDate);
+		statement->Get(7, n.Location.Altitude);
+		statement->Get(8, n.Location.Latitude);
+		statement->Get(9, n.Location.Longitude);
+		statement->Get(10, n.Author);
+		statement->Get(11, n.Source);
+		statement->Get(12, n.SourceUrl);
+		statement->Get(13, n.SourceApplication);
+		n.Location.IsValid
+			=  n.Location.Altitude  != 0
+			|| n.Location.Latitude  != 0
+			|| n.Location.Longitude != 0;
 	}
 }
 
@@ -672,18 +718,25 @@ void UserModel::GetNotesBySearch
 {
 	notes.clear();
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
-		"  FROM   Notes as n, NoteText"
-		"  WHERE  n.isDeleted = 0 AND n.rowid = NoteText.rowid AND NoteText MATCH ?"
-		"  UNION"
-		"  SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
-		"  FROM   Notes as n, NoteTags as nt, Tags as t"
-		"  WHERE  n.isDeleted = 0 AND t.searchName = ? AND nt.tag = t.guid AND n.guid = nt.note"
-		"  UNION"
-		"  SELECT n.guid, n.usn, n.title, n.creationDate, n.isDirty"
-		"  FROM   Notes as n, Resources as rs, Recognition as rc"
-		"  WHERE  n.isDeleted = 0 AND rc.text = ? AND rc.resource = rs.guid AND rs.note = n.guid"
-		"  ORDER  BY n.creationDate DESC"
+		("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
+		"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
+		" FROM ( SELECT n.guid"
+		"        FROM   Notes AS n JOIN NoteText ON (n.rowid = NoteText.rowid)"
+		"        WHERE  n.isDeleted = 0 AND NoteText MATCH ?"
+		"        UNION"
+		"        SELECT n.guid"
+		"        FROM   Notes    AS n"
+		"        JOIN   NoteTags AS nt ON (n.guid = nt.note)"
+		"        JOIN   Tags     AS t  ON (t.guid = nt.tag)"
+		"        WHERE  n.isDeleted = 0 AND t.searchName = ?"
+		"        UNION"
+		"        SELECT n.guid"
+		"        FROM   Notes       AS n"
+		"        JOIN   Resources   AS rs ON (n.guid = rs.note)"
+		"        JOIN   Recognition AS rc ON (rs.guid = rc.resource)"
+		"        WHERE  n.isDeleted = 0 AND rc.text = ?"
+		"      ) JOIN Notes USING (guid)"
+		" ORDER  BY modificationDate DESC"
 		);
 	wstring ucSearch;
 	transform
@@ -697,22 +750,26 @@ void UserModel::GetNotesBySearch
 	statement->Bind(3, ucSearch);
 	while (!statement->Execute())
 	{
-		string  guid;
-		int     usn;
-		wstring title;
-		int     creationDate;
-		bool    isDirty;
-		statement->Get(0, guid);
-		statement->Get(1, usn);
-		statement->Get(2, title);
-		statement->Get(3, creationDate);
-		statement->Get(4, isDirty);
 		notes.push_back(Note());
-		notes.back().guid         = guid;
-		notes.back().usn          = usn;
-		notes.back().name         = title;
-		notes.back().creationDate = creationDate;
-		notes.back().isDirty      = isDirty;
+		Note & n(notes.back());
+		statement->Get(0, n.guid);
+		statement->Get(1, n.usn);
+		statement->Get(2, n.name);
+		statement->Get(3, n.isDirty);
+		statement->Get(4, n.creationDate);
+		statement->Get(5, n.modificationDate);
+		statement->Get(6, n.subjectDate);
+		statement->Get(7, n.Location.Altitude);
+		statement->Get(8, n.Location.Latitude);
+		statement->Get(9, n.Location.Longitude);
+		statement->Get(10, n.Author);
+		statement->Get(11, n.Source);
+		statement->Get(12, n.SourceUrl);
+		statement->Get(13, n.SourceApplication);
+		n.Location.IsValid
+			=  n.Location.Altitude  != 0
+			|| n.Location.Latitude  != 0
+			|| n.Location.Longitude != 0;
 	}
 }
 
@@ -803,25 +860,19 @@ void UserModel::GetResource
 void UserModel::GetTags(TagList & tags)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, isDirty"
+		( "SELECT guid, usn, name, parentGuid, isDirty"
 		"  FROM Tags"
 		"  ORDER BY name"
 		);
 	while (!statement->Execute())
 	{
-		wstring guid;
-		wstring name;
-		int     usn;
-		bool    isDirty;
-		statement->Get(0, guid);
-		statement->Get(1, usn);
-		statement->Get(2, name);
-		statement->Get(3, isDirty);
 		tags.push_back(Tag());
-		tags.back().guid    = guid;
-		tags.back().usn     = usn;
-		tags.back().name    = name;
-		tags.back().isDirty = isDirty;
+		Tag & t(tags.back());
+		statement->Get(0, t.guid);
+		statement->Get(1, t.usn);
+		statement->Get(2, t.name);
+		statement->Get(3, t.parentGuid);
+		statement->Get(4, t.isDirty);
 	}
 }
 
@@ -1045,14 +1096,17 @@ void UserModel::UpdateNotebook
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "UPDATE Notebooks"
-		"  SET guid = ?, usn = ?, name = ?, isDirty = ?"
+		"  SET guid = ?, usn = ?, name = ?, creationDate = ?,"
+		"      modificationDate = ?, isDirty = ?"
 		"  WHERE guid = ?"
 		);
 	statement->Bind(1, replacement.guid);
 	statement->Bind(2, replacement.usn);
 	statement->Bind(3, replacement.name);
-	statement->Bind(4, replacement.isDirty);
-	statement->Bind(5, notebook.guid);
+	statement->Bind(4, replacement.CreationDate.GetTime());
+	statement->Bind(5, replacement.ModificationDate.GetTime());
+	statement->Bind(6, replacement.isDirty);
+	statement->Bind(7, notebook.guid);
 	statement->Execute();
 }
 
@@ -1063,14 +1117,15 @@ void UserModel::UpdateTag
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "UPDATE Tags"
-		"  SET guid = ?, usn = ?, name = ?, isDirty = ?"
+		"  SET guid = ?, usn = ?, name = ?, parentGuid = ?, isDirty = ?"
 		"  WHERE guid = ?"
 		);
 	statement->Bind(1, replacement.guid);
 	statement->Bind(2, replacement.usn);
 	statement->Bind(3, replacement.name);
-	statement->Bind(4, replacement.isDirty);
-	statement->Bind(5, tag.guid);
+	statement->Bind(4, replacement.parentGuid);
+	statement->Bind(5, replacement.isDirty);
+	statement->Bind(6, tag.guid);
 	statement->Execute();
 }
 
@@ -1100,7 +1155,7 @@ void UserModel::GetFirstNotebook(Notebook & notebook)
 	Transaction transaction(*this);
 
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT   guid, usn, name, isDirty"
+		( "SELECT   guid, usn, name, creationDate, modificationDate, isDirty"
 		"  FROM     Notebooks"
 		"  ORDER BY name"
 		"  LIMIT    1"
@@ -1115,14 +1170,14 @@ void UserModel::GetFirstNotebook(Notebook & notebook)
 		MakeNotebookDefault(notebook.guid);
 		MakeNotebookLastUsed(notebook.guid);
 	}
-	wstring guidString;
-	statement->Get(0, guidString);
+	statement->Get(0, notebook.guid);
 	statement->Get(1, notebook.usn);
 	statement->Get(2, notebook.name);
-	statement->Get(3, notebook.isDirty);
-	notebook.guid = guidString;
+	statement->Get(3, notebook.CreationDate);
+	statement->Get(4, notebook.ModificationDate);
+	statement->Get(5, notebook.isDirty);
 }
-
+#define BLOCK (BLOCK_TOP|BLOCK_BOTTOM)
 void UserModel::Initialize(wstring name)
 {
 	dataStore.MakeStatement
@@ -1142,8 +1197,10 @@ void UserModel::Initialize(wstring name)
 			"( guid PRIMARY KEY"
 			", usn"
 			", name"
-			", updateCount DEFAULT 0"
+			", creationDate"
+			", modificationDate"
 			", isDirty"
+			", updateCount DEFAULT 0"
 			", isDefault  DEFAULT 0"
 			", isLastUsed DEFAULT 0"
 			")"
@@ -1172,10 +1229,19 @@ void UserModel::Initialize(wstring name)
 		( "CREATE TABLE Notes"
 			"( guid PRIMARY KEY"
 			", usn"
-			", creationDate"
 			", title"
-			", body"
 			", isDirty"
+			", body"
+			", creationDate"
+			", modificationDate"
+			", subjectDate"
+			", altitude"
+			", latitude"
+			", longitude"
+			", author"
+			", source"
+			", sourceUrl"
+			", sourceApplication"
 			", isDeleted DEFAULT 0"
 			", thumbnail"
 			", thumbnailWidth  DEFAULT 0"
@@ -1207,6 +1273,7 @@ void UserModel::Initialize(wstring name)
 			"( guid PRIMARY KEY"
 			", usn"
 			", name"
+			", parentGuid"
 			", searchName UNIQUE"
 			", isDirty"
 			")"
