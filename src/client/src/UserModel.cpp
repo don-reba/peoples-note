@@ -1191,7 +1191,7 @@ void UserModel::Initialize(wstring name)
 			", value NOT NULL"
 			")"
 		)->Execute();
-	SetProperty(L"version",      4);
+	SetProperty(L"version",      5);
 	SetProperty(L"username",     name);
 	SetProperty(L"password",     L"");
 	SetProperty(L"lastSyncTime", 0);
@@ -1327,6 +1327,40 @@ void UserModel::MigrateFrom3To4()
 	SetProperty(L"version", 4);
 }
 
+void UserModel::MigrateFrom4To5()
+{
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `modificationDate`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `subjectDate`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `altitude`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `latitude`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `longitude`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `author`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `source`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `sourceUrl`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notes ADD COLUMN `sourceApplication`")->Execute();
+
+	dataStore.MakeStatement("ALTER TABLE Notebooks ADD COLUMN `creationDate`")->Execute();
+	dataStore.MakeStatement("ALTER TABLE Notebooks ADD COLUMN `modificationDate`")->Execute();
+
+	dataStore.MakeStatement("ALTER TABLE Tags ADD COLUMN `parentGuid`")->Execute();
+
+	dataStore.MakeStatement("DROP TRIGGER ReplaceNotebook")->Execute();
+	dataStore.MakeStatement
+		( "CREATE TRIGGER ReplaceNotebook"
+		"  BEFORE INSERT ON Notebooks"
+		"  BEGIN"
+		"  UPDATE Notebooks"
+		"  SET    usn = NEW.usn, name = NEW.name, updateCount = NEW.updateCount,"
+		"         isDirty = NEW.isDirty, isDefault = NEW.isDefault,"
+		"         isLastUsed = NEW.isLastUsed, creationDate = NEW.creationDate,"
+		"         modificationDate = NEW.modificationDate"
+		"  WHERE  guid = NEW.guid;"
+		"  END"
+		)->Execute();
+
+	SetProperty(L"version", 5);
+}
+
 void UserModel::Move
 	( const wstring & oldPath
 	, const wstring & newPath
@@ -1360,7 +1394,8 @@ void UserModel::Update()
 	switch (GetVersion())
 	{
 	case 3: MigrateFrom3To4();
-	case 4: break;
+	case 4: MigrateFrom4To5();
+	case 5: break;
 	default:
 		throw std::exception("Incompatible database version.");
 	}

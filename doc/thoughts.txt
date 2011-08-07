@@ -3496,7 +3496,8 @@ what I should do for the next release
 	√ rename processor methods
 	√ localize thumbnail rendering to loading code
 	√ fix scroll updating
-	modify the database
+	√ modify the database
+	add migration
 	add metadata updating
 	x load thumbnails asynchronously
 images don't show up when viewing notes
@@ -3538,4 +3539,27 @@ case-sensitivity for search
 	have to study the problem
 	for tags
 	for notes
-	TOTO
+	TODO
+migration
+	got to add the new columns
+		notes
+			modificationDate
+			subjectDate
+			altitude
+			latitude
+			longitude
+			author
+			source
+			sourceUrl
+			sourceApplication
+		notebooks
+			creation date
+			modification date
+		tag
+			parentGuid
+	also need to replace the notebook trigger
+		DROP TRIGGER ReplaceNotebook
+		CREATE TRIGGER ReplaceNotebook ...
+	all columns must have default values
+		maybe they will be NULL, if left unspecified
+		this is what I want

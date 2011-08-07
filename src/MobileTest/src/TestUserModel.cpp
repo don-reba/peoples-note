@@ -466,7 +466,7 @@ FIXTURE_TEST_CASE(UserModelReplacement, DataStoreFixture)
 	userModel.GetNotebooks(notebooks);
 	TEST_CHECK_EQUAL(notebooks.size(), 2);
 	TEST_CHECK_EQUAL(notebooks.at(1).name, L"notebook-1");
-	TEST_CHECK_EQUAL(notebooks.at(1).CreationDate.GetTime(),     3L);
+	TEST_CHECK_EQUAL(notebooks.at(1).CreationDate.GetTime(),     2L);
 	TEST_CHECK_EQUAL(notebooks.at(1).ModificationDate.GetTime(), 4L);
 
 	userModel.AddNote(note0, L"", L"", notebook1);
