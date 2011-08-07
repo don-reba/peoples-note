@@ -505,7 +505,8 @@ DbLocation UserModel::GetLocation()
 Note UserModel::GetNote(Guid guid)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT title, usn, creationDate, isDirty"
+		("SELECT usn, title, isDirty, creationDate, modificationDate, subjectDate,"
+		"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
 		"  FROM Notes"
 		"  WHERE guid = ?"
 		"  LIMIT 1"
@@ -513,21 +514,25 @@ Note UserModel::GetNote(Guid guid)
 	statement->Bind(1, guid);
 	if (statement->Execute())
 		throw std::exception("Note not found.");
-	wstring title;
-	int     usn;
-	int     creationDate;
-	bool    isDirty;
-	statement->Get(0, title);
-	statement->Get(1, usn);
-	statement->Get(2, creationDate);
-	statement->Get(3, isDirty);
-	Note note;
-	note.guid         = guid;
-	note.name         = title;
-	note.usn          = usn;
-	note.creationDate = creationDate;
-	note.isDirty      = isDirty;
-	return note;
+	Note n;
+	statement->Get(0,  n.usn);
+	statement->Get(1,  n.name);
+	statement->Get(2,  n.isDirty);
+	statement->Get(3,  n.creationDate);
+	statement->Get(4,  n.modificationDate);
+	statement->Get(5,  n.subjectDate);
+	statement->Get(6,  n.Location.Altitude);
+	statement->Get(7,  n.Location.Latitude);
+	statement->Get(8,  n.Location.Longitude);
+	statement->Get(9,  n.Author);
+	statement->Get(10, n.Source);
+	statement->Get(11, n.SourceUrl);
+	statement->Get(12, n.SourceApplication);
+	n.Location.IsValid
+		=  n.Location.Altitude  != 0
+		|| n.Location.Latitude  != 0
+		|| n.Location.Longitude != 0;
+	return n;
 }
 
 void UserModel::GetNoteBody
@@ -690,16 +695,16 @@ void UserModel::GetNotesByNotebook
 	{
 		notes.push_back(Note());
 		Note & n(notes.back());
-		statement->Get(0, n.guid);
-		statement->Get(1, n.usn);
-		statement->Get(2, n.name);
-		statement->Get(3, n.isDirty);
-		statement->Get(4, n.creationDate);
-		statement->Get(5, n.modificationDate);
-		statement->Get(6, n.subjectDate);
-		statement->Get(7, n.Location.Altitude);
-		statement->Get(8, n.Location.Latitude);
-		statement->Get(9, n.Location.Longitude);
+		statement->Get(0,  n.guid);
+		statement->Get(1,  n.usn);
+		statement->Get(2,  n.name);
+		statement->Get(3,  n.isDirty);
+		statement->Get(4,  n.creationDate);
+		statement->Get(5,  n.modificationDate);
+		statement->Get(6,  n.subjectDate);
+		statement->Get(7,  n.Location.Altitude);
+		statement->Get(8,  n.Location.Latitude);
+		statement->Get(9,  n.Location.Longitude);
 		statement->Get(10, n.Author);
 		statement->Get(11, n.Source);
 		statement->Get(12, n.SourceUrl);
@@ -752,16 +757,16 @@ void UserModel::GetNotesBySearch
 	{
 		notes.push_back(Note());
 		Note & n(notes.back());
-		statement->Get(0, n.guid);
-		statement->Get(1, n.usn);
-		statement->Get(2, n.name);
-		statement->Get(3, n.isDirty);
-		statement->Get(4, n.creationDate);
-		statement->Get(5, n.modificationDate);
-		statement->Get(6, n.subjectDate);
-		statement->Get(7, n.Location.Altitude);
-		statement->Get(8, n.Location.Latitude);
-		statement->Get(9, n.Location.Longitude);
+		statement->Get(0,  n.guid);
+		statement->Get(1,  n.usn);
+		statement->Get(2,  n.name);
+		statement->Get(3,  n.isDirty);
+		statement->Get(4,  n.creationDate);
+		statement->Get(5,  n.modificationDate);
+		statement->Get(6,  n.subjectDate);
+		statement->Get(7,  n.Location.Altitude);
+		statement->Get(8,  n.Location.Latitude);
+		statement->Get(9,  n.Location.Longitude);
 		statement->Get(10, n.Author);
 		statement->Get(11, n.Source);
 		statement->Get(12, n.SourceUrl);
@@ -1213,7 +1218,8 @@ void UserModel::Initialize(wstring name)
 		"  UPDATE Notebooks"
 		"  SET    usn = NEW.usn, name = NEW.name, updateCount = NEW.updateCount,"
 		"         isDirty = NEW.isDirty, isDefault = NEW.isDefault,"
-		"         isLastUsed = NEW.isLastUsed"
+		"         isLastUsed = NEW.isLastUsed, creationDate = NEW.creationDate,"
+		"         modificationDate = NEW.modificationDate"
 		"  WHERE  guid = NEW.guid;"
 		"  END"
 		)->Execute();
