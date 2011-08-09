@@ -72,8 +72,7 @@ public:
 
 	virtual DbLocation GetLocation() = 0;
 
-	// TODO: changed Note to a reference parameter
-	virtual Note GetNote(Guid guid) = 0;
+	virtual void GetNote(const Guid & guid, Note & note) = 0;
 
 	virtual void GetNotebook
 		( const Guid & guid

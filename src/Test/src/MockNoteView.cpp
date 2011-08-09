@@ -6,9 +6,10 @@
 using namespace std;
 
 MockNoteView::MockNoteView()
-	: isDirty     (false)
-	, isMaximized (false)
-	, isShown     (false)
+	: enableChrome (false)
+	, isDirty      (false)
+	, isMaximized  (false)
+	, isShown      (false)
 {
 }
 
@@ -79,13 +80,15 @@ void MockNoteView::SetNote
 	, const wstring & subtitleText
 	, const wstring & bodyHtml
 	, const wstring & attachment
+	, const bool      enableChrome
 	)
 {
-	this->note       = note;
-	this->body       = bodyHtml;
-	this->subtitle   = subtitleText;
-	this->title      = titleText;
-	this->attachment = attachment;
+	this->note         = note;
+	this->body         = bodyHtml;
+	this->subtitle     = subtitleText;
+	this->title        = titleText;
+	this->attachment   = attachment;
+	this->enableChrome = enableChrome;
 }
 
 void MockNoteView::SetWindowTitle(const wstring & text)

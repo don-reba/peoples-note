@@ -80,7 +80,8 @@ void NotePresenter::OnOpenNote()
 
 	wstring body;
 	userModel.GetNoteBody(guid, body);
-	Note note(userModel.GetNote(guid));
+	Note note;
+	userModel.GetNote(guid, note);
 
 	wstring subtitle(L"created on ");
 	subtitle.append(note.creationDate.GetFormattedDateTime());

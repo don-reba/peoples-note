@@ -111,11 +111,15 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.selectedNoteGuid = Guid("{0}");
 	userModel.noteBodies["{0}"] = L"<en-note><p>test-note</p></en-note>";
 
+	noteView.enableChrome = false;
+
 	noteListView.SignalOpenNote();
 
-	BOOST_CHECK_EQUAL(noteView.body, L"<p>test-note</p>");
-	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
-	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 02:00");
+	BOOST_CHECK_EQUAL(noteView.body,       L"<p>test-note</p>");
+	BOOST_CHECK_EQUAL(noteView.title,      L"note-title");
+	BOOST_CHECK_EQUAL(noteView.subtitle,   L"created on 1970-01-01 02:00");
+	BOOST_CHECK_EQUAL(noteView.attachment, L"");
+	BOOST_CHECK(noteView.enableChrome);
 	BOOST_CHECK(noteView.isShown);
 
 	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{1}"));
@@ -123,7 +127,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	noteListView.SignalOpenNote();
 
-	BOOST_CHECK_EQUAL(noteView.body, L"<p>test-note</p>");
+	BOOST_CHECK_EQUAL(noteView.body,     L"<p>test-note</p>");
 	BOOST_CHECK_EQUAL(noteView.title,    L"note-title");
 	BOOST_CHECK_EQUAL(noteView.subtitle, L"created on 1970-01-01 02:00\ntags: tag-0, tag-1");
 	BOOST_CHECK(noteView.isShown);

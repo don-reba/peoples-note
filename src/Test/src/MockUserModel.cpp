@@ -161,13 +161,16 @@ DbLocation MockUserModel::GetLocation()
 	return location;
 }
 
-Note MockUserModel::GetNote(Guid guid)
+void MockUserModel::GetNote(const Guid & guid, Note & note)
 {
 	const string & guidString = static_cast<const string &>(guid);
-	foreach (Note & note, notes)
+	foreach (Note & n, notes)
 	{
-		if (guidString == static_cast<const string &>(note.guid))
-			return note;
+		if (guidString == static_cast<const string &>(n.guid))
+		{
+			note = n;
+			return;
+		}
 	}
 	throw std::exception("Note not found.");
 }

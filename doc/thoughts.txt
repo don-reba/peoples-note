@@ -3394,6 +3394,8 @@ update database
 			add an extra "synced" column initially set to false
 			too much overhead
 			just add a "success" flag property
+				should be version-specific
+				metadata version property
 	new columns
 		notes
 			modificationDate
@@ -3497,7 +3499,7 @@ what I should do for the next release
 	√ localize thumbnail rendering to loading code
 	√ fix scroll updating
 	√ modify the database
-	add migration
+	√ add migration
 	add metadata updating
 	x load thumbnails asynchronously
 images don't show up when viewing notes
@@ -3563,3 +3565,5 @@ migration
 	all columns must have default values
 		maybe they will be NULL, if left unspecified
 		this is what I want
+the test note is note getting downloaded
+	TODO

@@ -176,7 +176,7 @@ public:
 
 	virtual DbLocation GetLocation();
 
-	virtual Note GetNote(Guid guid);
+	virtual void GetNote(const Guid & guid, Note & note);
 
 	virtual void GetNoteBody
 		( const Guid   & guid

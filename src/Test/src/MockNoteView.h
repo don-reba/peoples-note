@@ -13,6 +13,7 @@ public:
 	std::wstring subtitle;
 	std::wstring title;
 	std::wstring windowTitle;
+	bool         enableChrome;
 	bool         isDirty;
 	bool         isMaximized;
 	bool         isShown;
@@ -59,6 +60,7 @@ public:
 		, const std::wstring & subtitleText
 		, const std::wstring & bodyHtml
 		, const std::wstring & attachment
+		, const bool           enableChrome
 		);
 
 	virtual void SetWindowTitle(const std::wstring & text);

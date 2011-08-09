@@ -502,7 +502,7 @@ DbLocation UserModel::GetLocation()
 	return dataStore.GetLocation();
 }
 
-Note UserModel::GetNote(Guid guid)
+void UserModel::GetNote(const Guid & guid, Note & note)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
 		("SELECT usn, title, isDirty, creationDate, modificationDate, subjectDate,"
@@ -514,25 +514,23 @@ Note UserModel::GetNote(Guid guid)
 	statement->Bind(1, guid);
 	if (statement->Execute())
 		throw std::exception("Note not found.");
-	Note n;
-	statement->Get(0,  n.usn);
-	statement->Get(1,  n.name);
-	statement->Get(2,  n.isDirty);
-	statement->Get(3,  n.creationDate);
-	statement->Get(4,  n.modificationDate);
-	statement->Get(5,  n.subjectDate);
-	statement->Get(6,  n.Location.Altitude);
-	statement->Get(7,  n.Location.Latitude);
-	statement->Get(8,  n.Location.Longitude);
-	statement->Get(9,  n.Author);
-	statement->Get(10, n.Source);
-	statement->Get(11, n.SourceUrl);
-	statement->Get(12, n.SourceApplication);
-	n.Location.IsValid
-		=  n.Location.Altitude  != 0
-		|| n.Location.Latitude  != 0
-		|| n.Location.Longitude != 0;
-	return n;
+	statement->Get(0,  note.usn);
+	statement->Get(1,  note.name);
+	statement->Get(2,  note.isDirty);
+	statement->Get(3,  note.creationDate);
+	statement->Get(4,  note.modificationDate);
+	statement->Get(5,  note.subjectDate);
+	statement->Get(6,  note.Location.Altitude);
+	statement->Get(7,  note.Location.Latitude);
+	statement->Get(8,  note.Location.Longitude);
+	statement->Get(9,  note.Author);
+	statement->Get(10, note.Source);
+	statement->Get(11, note.SourceUrl);
+	statement->Get(12, note.SourceApplication);
+	note.Location.IsValid
+		=  note.Location.Altitude  != 0
+		|| note.Location.Latitude  != 0
+		|| note.Location.Longitude != 0;
 }
 
 void UserModel::GetNoteBody
@@ -688,7 +686,7 @@ void UserModel::GetNotesByNotebook
 		"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
 		"  FROM Notes"
 		"  WHERE isDeleted = 0 AND notebook = ?"
-		"  ORDER BY modificationDate DESC"
+		"  ORDER BY modificationDate, creationDate DESC"
 		);
 	statement->Bind(1, notebook.guid);
 	while (!statement->Execute())
@@ -741,7 +739,7 @@ void UserModel::GetNotesBySearch
 		"        JOIN   Recognition AS rc ON (rs.guid = rc.resource)"
 		"        WHERE  n.isDeleted = 0 AND rc.text = ?"
 		"      ) JOIN Notes USING (guid)"
-		" ORDER  BY modificationDate DESC"
+		" ORDER BY modificationDate, creationDate DESC"
 		);
 	wstring ucSearch;
 	transform
@@ -1388,7 +1386,6 @@ bool UserModel::TryLoad(const wstring & path, DbLocation location)
 void UserModel::Update()
 {
 	SetPragma("PRAGMA foreign_keys = ON");
-	//SetPragma("PRAGMA locking_mode = EXCLUSIVE");
 	SetPragma("PRAGMA synchronous = NORMAL");
 	Transaction transaction(*this);
 	switch (GetVersion())

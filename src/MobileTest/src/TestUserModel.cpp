@@ -150,7 +150,8 @@ FIXTURE_TEST_CASE(UserModelAddNote, DataStoreFixture)
 	userModel.AddTagToNote(L"test-tag-1", note0);
 
 	{
-		Note result = userModel.GetNote(note0.guid);
+		Note result;
+		userModel.GetNote(note0.guid, result);
 		TEST_CHECK_EQUAL(result.usn,                        3);
 		TEST_CHECK_EQUAL(result.isDirty,                    true);
 		TEST_CHECK_EQUAL(result.name,                       L"note-0");
@@ -170,7 +171,8 @@ FIXTURE_TEST_CASE(UserModelAddNote, DataStoreFixture)
 		TEST_CHECK_EQUAL(loaded, L"<html>note body 0</html>");
 	}
 	{
-		Note result = userModel.GetNote(note1.guid);
+		Note result;
+		userModel.GetNote(note1.guid, result);
 		TEST_CHECK_EQUAL(result.usn,                        8);
 		TEST_CHECK_EQUAL(result.isDirty,                    true);
 		TEST_CHECK_EQUAL(result.name,                       L"note-1");
