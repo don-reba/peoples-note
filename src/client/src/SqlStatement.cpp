@@ -39,7 +39,8 @@ bool SqlStatement::Execute()
 
 void SqlStatement::Finalize()
 {
-	sqlite3_finalize(statement);
+	if (sqlite3_finalize(statement) != SQLITE_OK)
+		DEBUGMSG(true, (L"%s\n", sqlite3_errmsg(db)));
 }
 
 void SqlStatement::Bind(int index, __int32 n)

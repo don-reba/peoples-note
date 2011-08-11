@@ -97,8 +97,11 @@ void UserModel::AddNote
 	{
 		{
 			IDataStore::Statement insertNote = dataStore.MakeStatement
-				( "INSERT INTO Notes"
-				"  VALUES (?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, 0, NULL, 0, 0, ?)"
+				("INSERT INTO Notes(`guid`, `usn`, `title`, `isDirty`, `body`, `creationDate`,"
+				"                   `modificationDate`, `subjectDate`, `altitude`, `latitude`,"
+				"                   `longitude`, `author`, `source`, `sourceUrl`,"
+				"                   `sourceApplication`, `notebook`)"
+				"  VALUES (?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?)"
 				);
 			insertNote->Bind(1, note.guid);
 			insertNote->Bind(2, note.usn);
@@ -198,7 +201,8 @@ void UserModel::AddNote
 void UserModel::AddNotebook(const Notebook & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "INSERT OR IGNORE INTO Notebooks"
+		("INSERT OR REPLACE INTO Notebooks(`guid`, `usn`, `name`, `creationDate`, `modificationDate`,"
+		"                                  `isDirty`, `updateCount`, `isDefault`, `isLastUsed`)"
 		"  VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0)"
 		);
 	statement->Bind(1, notebook.guid);

@@ -3565,5 +3565,16 @@ migration
 	all columns must have default values
 		maybe they will be NULL, if left unspecified
 		this is what I want
-the test note is note getting downloaded
+the test note is not getting downloaded
+	it looks like expunged notes are not filtered by notebook
+	it seems to download all notes
+	ok, so the initial update count is 0
+		makes sense
+	it is getting downloaded, but AddNote does not add correctly
+	column order is different between
+		new database
+		updated database
+	therefore I have to name the columns explicitely
+	TODO
+need to filter you &nbsp; from note text
 	TODO
