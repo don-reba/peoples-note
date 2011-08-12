@@ -33,7 +33,7 @@ SyncModel::SyncModel
 	, IEnService       & enService
 	, IMessagePump     & messagePump
 	, IUserModel       & userModel
-	, ILogger      & logger
+	, ILogger          & logger
 	)
 	: enNoteTranslator (enNoteTranslator)
 	, syncThread       (NULL)
@@ -41,7 +41,7 @@ SyncModel::SyncModel
 	, messagePump      (messagePump)
 	, userModel        (userModel)
 	, stopRequested    (false)
-	, logger       (logger)
+	, logger           (logger)
 {
 	::InitializeCriticalSection(&lock);
 }

@@ -79,19 +79,35 @@ Note MakeNote(const Guid & guid, const wchar_t * name = L"")
 Note MakeNote
 	( const Guid    & guid
 	, const wchar_t * name
-	, Timestamp       creationDate
+	, Timestamp       modificationDate
 	, int             usn
 	, bool            isDirty
 	)
 {
 	Note note;
-	note.guid         = guid;
-	note.name         = name;
-	note.creationDate = creationDate;
-	note.usn          = usn;
-	note.isDirty      = isDirty;
+	note.guid             = guid;
+	note.name             = name;
+	note.modificationDate = modificationDate;
+	note.usn              = usn;
+	note.isDirty          = isDirty;
 	return note;
 }
+
+#define TestNoteEquality(note1, note2)                                                        \
+        TEST_CHECK_EQUAL(note1.guid,                       note2.guid);                       \
+        TEST_CHECK_EQUAL(note1.usn,                        note2.usn);                        \
+        TEST_CHECK_EQUAL(note1.name,                       note2.name);                       \
+        TEST_CHECK_EQUAL(note1.isDirty,                    note2.isDirty);                    \
+        TEST_CHECK_EQUAL(note1.creationDate.GetTime(),     note2.creationDate.GetTime());     \
+        TEST_CHECK_EQUAL(note1.modificationDate.GetTime(), note2.modificationDate.GetTime()); \
+        TEST_CHECK_EQUAL(note1.subjectDate.GetTime(),      note2.subjectDate.GetTime());      \
+        TEST_CHECK_EQUAL(note1.Location.Altitude,          note2.Location.Altitude);          \
+        TEST_CHECK_EQUAL(note1.Location.Latitude,          note2.Location.Latitude);          \
+        TEST_CHECK_EQUAL(note1.Location.Longitude,         note2.Location.Longitude);         \
+        TEST_CHECK_EQUAL(note1.Author,                     note2.Author);                     \
+        TEST_CHECK_EQUAL(note1.Source,                     note2.Source);                     \
+        TEST_CHECK_EQUAL(note1.SourceUrl,                  note2.SourceUrl);                  \
+        TEST_CHECK_EQUAL(note1.SourceApplication,          note2.SourceApplication);          \
 
 //-----------
 // test suite
@@ -113,6 +129,7 @@ FIXTURE_TEST_CASE(UserModelAddNote, DataStoreFixture)
 	note0.Author             = L"Motoko";
 	note0.Source             = L"Sea of information";
 	note0.SourceApplication  = L"Project 2501";
+	note0.SourceUrl          = L"http://peoplesnote.org";
 	wstring body0(L"<html>note body 0</html>");
 
 	Note note1;
@@ -152,19 +169,7 @@ FIXTURE_TEST_CASE(UserModelAddNote, DataStoreFixture)
 	{
 		Note result;
 		userModel.GetNote(note0.guid, result);
-		TEST_CHECK_EQUAL(result.usn,                        3);
-		TEST_CHECK_EQUAL(result.isDirty,                    true);
-		TEST_CHECK_EQUAL(result.name,                       L"note-0");
-		TEST_CHECK_EQUAL(result.creationDate.GetTime(),     2L);
-		TEST_CHECK_EQUAL(result.modificationDate.GetTime(), 3L);
-		TEST_CHECK_EQUAL(result.subjectDate.GetTime(),      4L);
-		TEST_CHECK_EQUAL(result.Location.IsValid,           true);
-		TEST_CHECK_EQUAL(result.Location.Altitude,          -0.5);
-		TEST_CHECK_EQUAL(result.Location.Latitude,          0.5);
-		TEST_CHECK_EQUAL(result.Location.Longitude,         1.5);
-		TEST_CHECK_EQUAL(result.Author,                     L"Motoko");
-		TEST_CHECK_EQUAL(result.Source,                     L"Sea of information");
-		TEST_CHECK_EQUAL(result.SourceApplication,          L"Project 2501");
+		TestNoteEquality(result, note0);
 
 		wstring loaded;
 		userModel.GetNoteBody(note0.guid, loaded);
@@ -675,7 +680,7 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 
 		Credentials credentials;
 		userModel.GetCredentials(credentials);
-		TEST_CHECK_EQUAL(userModel.GetVersion(),       4);
+		TEST_CHECK_EQUAL(userModel.GetVersion(),       5);
 		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 1);
 
@@ -696,7 +701,7 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 
 		Credentials credentials;
 		userModel.GetCredentials(credentials);
-		TEST_CHECK_EQUAL(userModel.GetVersion(),       4);
+		TEST_CHECK_EQUAL(userModel.GetVersion(),       5);
 		TEST_CHECK_EQUAL(credentials.GetUsername(),    storeName);
 		TEST_CHECK_EQUAL(credentials.GetPassword(),    L"test-pwd");
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
@@ -762,7 +767,7 @@ FIXTURE_TEST_CASE(UserModelNotesByNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes.at(1).name, L"note-2");
 }
 
-FIXTURE_TEST_CASE(UserModelNotesBySearch, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelGetNotesBySearch, DataStoreFixture)
 {
 	Notebook notebook;
 	notebook.name = L"notebook";
@@ -786,8 +791,8 @@ FIXTURE_TEST_CASE(UserModelNotesBySearch, DataStoreFixture)
 	NoteList notes0;
 	userModel.GetNotesBySearch(L"software", notes0);
 	TEST_CHECK_EQUAL(notes0.size(), 2);
-	TEST_CHECK_EQUAL(notes0.at(0).name, L"software use");
-	TEST_CHECK_EQUAL(notes0.at(1).name, L"useful software");
+	TEST_CHECK_EQUAL(notes0.at(0).name, L"useful software");
+	TEST_CHECK_EQUAL(notes0.at(1).name, L"software use");
 
 	NoteList notes1;
 	userModel.GetNotesBySearch(L"use", notes1);
@@ -861,6 +866,66 @@ FIXTURE_TEST_CASE(UserModelUnload, DataStoreFixture)
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), FALSE);
 	userModel.Unload();
 	TEST_CHECK_EQUAL(::DeleteFile(storeFile), TRUE);
+}
+
+FIXTURE_TEST_CASE(UserModelUpdateNote, DataStoreFixture)
+{
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
+
+	Guid guid1;
+	Note note;
+	note.guid               = guid1;
+	note.usn                = 1;
+	note.name               = L"note 1";
+	note.isDirty            = true;
+	note.creationDate       = Timestamp(1);
+	note.modificationDate   = Timestamp(2);
+	note.subjectDate        = Timestamp(3);
+	note.Location.IsValid   = true;
+	note.Location.Altitude  = 1;
+	note.Location.Latitude  = 2;
+	note.Location.Longitude = 3;
+	note.Author             = L"Motoko";
+	note.Source             = L"Sea of informaiton";
+	note.SourceApplication  = L"Project 2501";
+	note.SourceUrl          = L"http://www.peoplesnote.org";
+
+
+	userModel.AddNote(note, L"", L"", notebook);
+
+	NoteList notes;
+	userModel.GetNotesByNotebook(notebook, notes);
+	TEST_CHECK_EQUAL(notes.size(), 1);
+	TestNoteEquality(notes.at(0), note);
+
+	Guid guid2;
+	note.guid               = guid2;
+	note.usn                = 2;
+	note.name               = L"note 2";
+	note.isDirty            = false;
+	note.creationDate       = Timestamp(4);
+	note.modificationDate   = Timestamp(5);
+	note.subjectDate        = Timestamp(6);
+	note.Location.IsValid   = false;
+	note.Location.Altitude  = 7;
+	note.Location.Latitude  = 8;
+	note.Location.Longitude = 9;
+	note.Author             = L"Kusanagi";
+	note.Source             = L"Section 9";
+	note.SourceApplication  = L"Public Security";
+	note.SourceUrl          = L"http://peoplesnote.org";
+
+	userModel.UpdateNote(guid1, note);
+
+	note.Location.Altitude  = 0;
+	note.Location.Latitude  = 0;
+	note.Location.Longitude = 0;
+
+	notes.clear();
+	userModel.GetNotesByNotebook(notebook, notes);
+	TEST_CHECK_EQUAL(notes.size(), 1);
+	TestNoteEquality(notes.at(0), note);
 }
 
 FIXTURE_TEST_CASE(UserModelUpdateNotebook, DataStoreFixture)

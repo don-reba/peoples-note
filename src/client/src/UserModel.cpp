@@ -518,6 +518,7 @@ void UserModel::GetNote(const Guid & guid, Note & note)
 	statement->Bind(1, guid);
 	if (statement->Execute())
 		throw std::exception("Note not found.");
+	note.guid = guid;
 	statement->Get(0,  note.usn);
 	statement->Get(1,  note.name);
 	statement->Get(2,  note.isDirty);
@@ -1094,6 +1095,45 @@ void UserModel::SetUpdateCount(int updateCount)
 void UserModel::Unload()
 {
 	dataStore.Close();
+}
+
+void UserModel::UpdateNote
+	( const Guid & note
+	, const Note & replacement
+	)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "UPDATE Notes"
+		"  SET guid = ?, usn = ?, title = ?, isDirty = ?, creationDate = ?,"
+		"      modificationDate = ?, subjectDate = ?, altitude = ?, latitude = ?,"
+		"      longitude = ?, author = ?, source = ?, sourceUrl = ?, sourceApplication = ?"
+		"  WHERE guid = ?"
+		);
+	statement->Bind(1, replacement.guid);
+	statement->Bind(2, replacement.usn);
+	statement->Bind(3, replacement.name);
+	statement->Bind(4, replacement.isDirty);
+	statement->Bind(5, replacement.creationDate.GetTime());
+	statement->Bind(6, replacement.modificationDate.GetTime());
+	statement->Bind(7, replacement.subjectDate.GetTime());
+	if (replacement.Location.IsValid)
+	{
+		statement->Bind(8,  replacement.Location.Altitude);
+		statement->Bind(9,  replacement.Location.Latitude);
+		statement->Bind(10, replacement.Location.Longitude);
+	}
+	else
+	{
+		statement->BindNull(8);
+		statement->BindNull(9);
+		statement->BindNull(10);
+	}
+	statement->Bind(11, replacement.Author);
+	statement->Bind(12, replacement.Source);
+	statement->Bind(13, replacement.SourceUrl);
+	statement->Bind(14, replacement.SourceApplication);
+	statement->Bind(15, note);
+	statement->Execute();
 }
 
 void UserModel::UpdateNotebook

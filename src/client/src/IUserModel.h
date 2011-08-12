@@ -171,6 +171,11 @@ public:
 
 	virtual void Unload() = 0;
 
+	virtual void UpdateNote
+		( const Guid & note
+		, const Note & replacement
+		) = 0;
+
 	virtual void UpdateNotebook
 		( const Notebook & notebook
 		, const Notebook & replacement

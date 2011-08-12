@@ -102,11 +102,7 @@ void NotePresenter::OnOpenNote()
 	wstring html;
 	enNoteTranslator.ConvertToHtml(body, html);
 
-	wstring attachment =
-		L"<div><img src='audio-attachment.png' />Placeholder 1 with a very long title that will never fit onto a single line</div>"
-		L"<div><img src='audio-attachment.png' />Placeholder 2</div>";
-
-	noteView.SetNote(note, note.name, subtitle, html, attachment, true);
+	noteView.SetNote(note, note.name, subtitle, html, L"", true);
 	noteView.Show();
 }
 
