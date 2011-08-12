@@ -1225,6 +1225,10 @@ typedef UINT CALLBACK HTMLayoutElementAnimator( HELEMENT he, UINT step, LPVOID a
   */
 EXTERN_C HLDOM_RESULT HLAPI HTMLayoutAnimateElement( HELEMENT he, HTMLayoutElementAnimator* pAnimator, LPVOID animatorParam);
 
+
+EXTERN_C HLDOM_RESULT HLAPI HTMLayoutEnqueueMeasure( HELEMENT he);
+
+
 /** HTMLayoutParseValue - parses JSON forrmatted text (data).
  * \param[in] text \b LPCWSTR, json text.
  * \param[in] textLength \b UINT, length of json text.

@@ -408,6 +408,8 @@ ATOM NoteListView::RegisterClass(wstring wndClass)
 
 void NoteListView::SetNoteListScrollPos(int pos)
 {
+	POINT point = { 0 };
+
 	POINT scrollPos;
 	RECT  viewRect;
 	SIZE  contentSize;
@@ -417,29 +419,49 @@ void NoteListView::SetNoteListScrollPos(int pos)
 	RECT listRect(noteList.get_location(SCROLLABLE_AREA));
 	int scrollableHeight(listRect.bottom - listRect.top);
 	if (scrollableHeight <= 0)
+	{
+		noteList.set_scroll_pos   (point, false);
+		listScroll.set_scroll_pos (point, false);
 		return;
+	}
 
 	int contentDistance(contentHeight - scrollableHeight);
 	if (contentDistance <= 0)
+	{
+		noteList.set_scroll_pos   (point, false);
+		listScroll.set_scroll_pos (point, false);
 		return;
+	}
 
 	RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
 	int scrollHeight(scrollRect.bottom - scrollRect.top);
 	if (scrollHeight <= 0)
+	{
+		noteList.set_scroll_pos   (point, false);
+		listScroll.set_scroll_pos (point, false);
 		return;
+	}
 
 	RECT sliderRect(listSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
 	int sliderHeight(sliderRect.bottom - sliderRect.top);
 	if (sliderHeight <= 0)
+	{
+		noteList.set_scroll_pos   (point, false);
+		listScroll.set_scroll_pos (point, false);
 		return;
+	}
 
 	int scrollDistance(scrollHeight - sliderHeight);
 	if (scrollDistance <= 0)
+	{
+		noteList.set_scroll_pos   (point, false);
+		listScroll.set_scroll_pos (point, false);
 		return;
+	}
 
 	pos = min(max(pos, 0), contentDistance);
 
-	POINT point = { 0, pos };
+	point.y = pos;
 	noteList.set_scroll_pos(point, false);
 
 	point.y = -static_cast<int>(static_cast<__int64>(pos) * scrollDistance / contentDistance);

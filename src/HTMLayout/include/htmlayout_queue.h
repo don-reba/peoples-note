@@ -73,8 +73,6 @@ namespace htmlayout
     static void clear() { instance()._clear(); }
     static bool is_empty() { return instance()._is_empty(); }
 
-  private:
-
     static queue& instance()
     {
       static queue _queue;
@@ -104,7 +102,7 @@ namespace htmlayout
     // Place this call after GetMessage()/PeekMessage() in main loop
     void _execute()
     {
-      for(gui_task* next = pop(); next; next = pop())
+      for(gui_task* next = _pop(); next; next = _pop())
       {
         next->exec(); // do it
         delete next;
@@ -114,7 +112,7 @@ namespace htmlayout
     void _clear()
     {
       gui_task* next;
-      while(next = pop())
+      while(next = _pop())
         delete next;
     }
     bool _is_empty() const
@@ -122,7 +120,7 @@ namespace htmlayout
       return head == 0; 
     }
 
-    gui_task* pop()
+    gui_task* _pop()
     {
       critical_section cs(guard);
       if( !head ) return 0;

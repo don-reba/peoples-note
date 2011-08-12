@@ -308,34 +308,44 @@
 
   enum EXCHANGE_EVENTS 
   {
-    SYS_DRAG_ENTER,
-    SYS_DRAG_LEAVE,
-    SYS_DRAG,
-    SYS_DROP,
+    X_DRAG_ENTER,
+    X_DRAG_LEAVE,
+    X_DRAG,
+    X_DROP,
   };
 
   enum EXCHANGE_DATA_TYPE 
   {
     EXF_UNDEFINED   = 0,
-    EXF_TEXT        = 0x01,
-    EXF_HTML        = 0x02,
-    EXF_HYPERLINK   = 0x04,
-    EXF_JSON        = 0x08,
-    EXF_FILE        = 0x10,
+    EXF_TEXT        = 0x01, // FETCH_EXCHANGE_DATA will receive UTF8 encoded string - plain text
+    EXF_HTML        = 0x02, // FETCH_EXCHANGE_DATA will receive UTF8 encoded string - html
+    EXF_HYPERLINK   = 0x04, // FETCH_EXCHANGE_DATA will receive UTF8 encoded string with pair url\0caption (null separated)
+    EXF_JSON        = 0x08, // FETCH_EXCHANGE_DATA will receive UTF8 encoded string with JSON literal
+    EXF_FILE        = 0x10, // FETCH_EXCHANGE_DATA will receive UTF8 encoded list of file names separated by nulls
+  };
+  enum EXCHANGE_COMMANDS
+  {
+    EXC_NONE = 0,
+    EXC_COPY = 1,
+    EXC_MOVE = 2,
+    EXC_LINK = 4,
   };
 
-  struct EXCHANGE_EVENT_PARAMS
+  struct EXCHANGE_PARAMS;
+
+  typedef BOOL CALLBACK FETCH_EXCHANGE_DATA(EXCHANGE_PARAMS* params, UINT data_type, LPCBYTE* ppDataStart, UINT* pDataLength );
+
+  struct EXCHANGE_PARAMS
   {
     UINT      cmd;          // EXCHANGE_EVENTS
     HELEMENT  target;       // target element
     POINT     pos;          // position of cursor, element relative
     POINT     pos_view;     // position of cursor, view (window) relative
-    LPVOID    data;         // exchange data
-    UINT      data_length;  // exchange data length (bytes)
-    UINT      data_type;    // 
-    UINT      drag_mode;    // DROPEFFECT_NONE ... DROPEFFECT_LINK
+    UINT      data_types;   // combination of EXCHANGE_DATA_TYPEs above 
+    UINT      drag_cmd;     // EXCHANGE_COMMANDS above
+    FETCH_EXCHANGE_DATA*
+              fetch_data;   // function to fetch the data of desired type.
   };
- 
 
   enum BEHAVIOR_EVENTS
   {
@@ -367,6 +377,9 @@
                                      // application can provide its own HELEMENT here (if it is NULL) or modify current menu element.
       
       VISIUAL_STATUS_CHANGED = 0x11, // broadcast notification, sent to all elements of some container being shown or hidden   
+      DISABLED_STATUS_CHANGED = 0x12,// broadcast notification, sent to all elements of some container that got new value of :disabled state
+
+      POPUP_DISMISSING = 0x13,       // popup is about to be closed
 
 
       // "grey" event codes  - notfications from behaviors from this SDK 

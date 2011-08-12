@@ -1275,6 +1275,12 @@ namespace htmlayout
         inline bool on_element(HELEMENT he) { hfound = he; return true; /*stop enumeration*/ }
       };
 
+      void delay_measure()
+      {
+        HLDOM_RESULT r = ::HTMLayoutEnqueueMeasure(he);
+        assert(r == HLDOM_OK); r;
+      }
+
     };
 
     /**Expando - structure that can be associated with the DOM element. 

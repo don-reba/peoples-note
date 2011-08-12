@@ -3356,7 +3356,7 @@ db streaming
 		TODO
 scrolling does not get updated
 	in note list
-		TODO
+		fixed
 	in note view
 		fixed
 attachment information is missing
@@ -3417,6 +3417,18 @@ update database
 			separate hasLocation column
 			null values
 				good enough
+	database updating
+		AddNote
+			requires a new body, etc
+			need UpdateNote
+		UpdateNotebook
+		UpdateTag
+	problems and solutions
+		premature termination
+			completeness flag
+		unsynced data
+			do a complete sync
+			don't download note bodies for existing notes
 leaking memory
 	looks like thumbnail generation leaks
 		the original 
@@ -3483,14 +3495,12 @@ I am unable to find some resources
 		but the SQL code was wrong
 		I was fetching too much data
 		also, the Execute command does not check for NOMEM
-		TODO
 	it should be handled gracefully
 	maybe finalizing in SqlStatement destructor is a bad idea
 		it might fail
 		reason for failure is important
 		the caller should be notified
 		better would be to handle errors in Execute
-	TODO
 what I should do for the next release
 	√ handle thumbnail rendering failure
 	√ fix SqlStatement destructor
@@ -3502,6 +3512,7 @@ what I should do for the next release
 	√ add migration
 	add metadata updating
 	x load thumbnails asynchronously
+	hide attachments
 images don't show up when viewing notes
 	database problem
 	fixed
@@ -3575,6 +3586,7 @@ the test note is not getting downloaded
 		new database
 		updated database
 	therefore I have to name the columns explicitely
+need to filter &nbsp; from note text
 	TODO
-need to filter you &nbsp; from note text
-	TODO
+for some reason, next page does not display anything
+	scrolling issue

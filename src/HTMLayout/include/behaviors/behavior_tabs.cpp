@@ -160,16 +160,42 @@ struct tabs: public behavior
     // select next/prev/first/last tab
     bool select_tab( dom::element& tabs_el, dom::element& tab_el, int direction )
     {
-           
       // find new tab 
-
       dom::element new_tab_el(0);
       switch( direction )
       {
-        case -2: new_tab_el = tab_el.first_sibling(); break;
-        case -1: new_tab_el = tab_el.prev_sibling(); break;
-        case +1: new_tab_el = tab_el.next_sibling(); break;
-        case +2: new_tab_el = tab_el.last_sibling(); break;
+        case -2: new_tab_el = tabs_el.first_sibling(); 
+                 while( new_tab_el.is_valid() )
+                 {
+                   if( !new_tab_el.get_state(STATE_DISABLED) )
+                     break;
+                   new_tab_el = new_tab_el.next_sibling();
+                 }
+                 break;
+        case -1: new_tab_el = tab_el.prev_sibling(); 
+                 while( new_tab_el.is_valid() )
+                 {
+                   if( !new_tab_el.get_state(STATE_DISABLED) )
+                     break;
+                   new_tab_el = new_tab_el.prev_sibling();
+                 }
+                 break;
+        case +1: new_tab_el = tab_el.next_sibling(); 
+                 while( new_tab_el.is_valid() )
+                 {
+                   if( !new_tab_el.get_state(STATE_DISABLED) )
+                     break;
+                   new_tab_el = new_tab_el.next_sibling();
+                 }
+                 break;
+        case +2: new_tab_el = tab_el.last_sibling(); 
+                 while( new_tab_el.is_valid() )
+                 {
+                   if( !new_tab_el.get_state(STATE_DISABLED) )
+                     break;
+                   new_tab_el = new_tab_el.prev_sibling();
+                 }
+                 break;
         default: assert(false); return false;
       }
 

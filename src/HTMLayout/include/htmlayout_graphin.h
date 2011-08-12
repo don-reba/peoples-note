@@ -21,7 +21,7 @@
 \brief Graphin support, AGG based graphics primitives
 */
 
-#if defined(_WINDOWS) || defined(_WIN32_WCE)
+#if defined(WIN32) || defined(_WIN32_WCE)
   #define WIN32_LEAN_AND_MEAN   // exclude unused rarely used stuff from Windows headers
   #include <windows.h>
   typedef HDC HPLATFORMGFX;
@@ -35,8 +35,8 @@
   } *HPLATFORMGFX;
 #endif
 
-#if defined(__GNUC__)
-  #define GRAPHIN_CALL(n) (*n)
+#if defined(__GNUC__) || defined(STATIC_LIB)
+  #define GRAPHIN_CALL(n) (* n)
   #define GRAPHIN_CALLC   
 #elif defined( _MSC_VER )
   #define GRAPHIN_CALL(n) (__stdcall *n) 
@@ -122,6 +122,43 @@ enum LINE_CAP_TYPE
   LINE_CAP_SQUARE = 1,
   LINE_CAP_ROUND = 2,
 };
+
+enum GRAPHIN_BLEND_MODE
+{
+  BLEND_CLEAR,
+  BLEND_SRC,
+  BLEND_DST,
+  BLEND_SRCOVER,
+  BLEND_DSTOVER,
+  BLEND_SRCIN,
+  BLEND_DSTIN,
+  BLEND_SRCOUT,
+  BLEND_DSTOUT,
+  BLEND_SRCATOP,
+  BLEND_DSTATOP,
+  BLEND_XOR,
+  BLEND_ADD,
+  BLEND_SUB,
+  BLEND_MULTIPLY,
+  BLEND_SCREEN,
+  BLEND_OVERLAY,
+  BLEND_DARKEN,
+  BLEND_LIGHTEN,
+  BLEND_COLORDODGE,
+  BLEND_COLORBURN,
+  BLEND_HARDLIGHT,
+  BLEND_SOFTLIGHT,
+  BLEND_DIFFERENCE,
+  BLEND_EXCLUSION,
+  BLEND_CONTRAST,
+  BLEND_INVERT,
+  BLEND_INVERTRGB,
+
+  BLEND_ALPHA,
+
+  BLEND_COUNT,
+};
+
 
 typedef BOOL GRAPHIN_CALLC image_write_function(LPVOID prm, LPBYTE data, UINT data_length);
 
@@ -399,7 +436,44 @@ struct Graphin
 
   GRAPHIN_RESULT 
         GRAPHIN_CALL(gRectInClipBox) ( HGFX hgfx, POS x1, POS y1, POS x2, POS y2, BOOL* yes);
+        
+// blending mode        
+  GRAPHIN_RESULT 
+        GRAPHIN_CALL(gSetBlendMode) ( HGFX gfx, GRAPHIN_BLEND_MODE mode );
+  GRAPHIN_RESULT 
+        GRAPHIN_CALL(gGetBlendMode) ( HGFX gfx, GRAPHIN_BLEND_MODE* p_mode );
+        
+// antialiasing gamma
+  GRAPHIN_RESULT
+          GRAPHIN_CALL(gSetGamma)( HGFX gfx, REAL gamma_value );
+  GRAPHIN_RESULT
+          GRAPHIN_CALL(gGetGamma)( HGFX gfx, REAL* p_gamma_value );
+          
+// --- Dashes -------------------------------------------------------------
 
+  // dahed lines
+
+  // Set dash length/gap for strokes
+  GRAPHIN_RESULT
+          GRAPHIN_CALL(gSetDash)( HGFX gfx, POS dash_len, POS gap_len );
+
+  // remove dashes (stroke styling)
+  GRAPHIN_RESULT
+          GRAPHIN_CALL(gResetDash)( HGFX gfx );
+
+  // set dash start offset
+  GRAPHIN_RESULT
+          GRAPHIN_CALL(gSetDashOffset)( HGFX gfx, POS dash_start );
+
+  // get dash start offset
+  GRAPHIN_RESULT
+          GRAPHIN_CALL(gGetDashOffset)( HGFX gfx, POS* p_dash_start );
+
+  // --- Dashes (end) --------------------------------------------------------
+          
+  // Set pattern fill (by image) for all consequent DrawPath's 
+  GRAPHIN_RESULT
+          GRAPHIN_CALL(gFillPattern)( HGFX hgfx, HIMG pattern, UINT opacity, INT offset_x, INT offset_y );
 };
 
 typedef Graphin* PGraphin;

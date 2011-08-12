@@ -434,6 +434,7 @@ enum HTMLayoutResourceType
 
 EXTERN_C BOOL HLAPI HTMLayoutDataReadyAsync(HWND hwnd,LPCWSTR uri,LPBYTE data, DWORD dataLength, UINT dataType /*HTMLayoutResourceType*/ );
 
+#define WPARAM_DISCARD_BUILTIN_DD_SUPP0RT 0x8000 // pass this value in wParam of WM_CREATE or WM_INITDIALOG to disable builtin IDropSource/IDropTatget (Drag-n-drop)
 
 /**HTMLayout Window Proc.*/
 EXTERN_C LRESULT CALLBACK HTMLayoutProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

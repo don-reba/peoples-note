@@ -153,7 +153,7 @@
 inline void* zalloc ( size_t sz)
 {
     void* p = malloc(sz);
-    memset(p,0,sz);
+    if(p) memset(p,0,sz);
     return p;
 }
 
@@ -281,13 +281,13 @@ namespace utf8
           continue;
         }
 //#pragma warning( suppress:4127 ) //  warning C4127: conditional expression is constant
-        if( sizeof(wchar_t) == 16 ) // Seems like Windows, wchar_t is utf16 code units sequence there.
+        if( sizeof(wchar_t) == 2 ) // Seems like Windows, wchar_t is utf16 code units sequence there.
         {
           outbuf.push( wchar_t(0xd7c0 + (b >> 10)) );
           outbuf.push( wchar_t(0xdc00 | (b & 0x3ff)) );
         }
 //#pragma warning( suppress:4127 ) //  warning C4127: conditional expression is constant
-        else if( sizeof(wchar_t) >= 21 ) // wchar_t is full ucs-4 
+        else if( sizeof(wchar_t) >= 4 ) // wchar_t is full ucs-4 (21-bit)
         {
           outbuf.push( wchar_t(b) );
         }

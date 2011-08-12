@@ -122,6 +122,13 @@ namespace htmlayout
         return FALSE;
       }
 
+    // system D&D events
+    virtual BOOL handle_exchange (HELEMENT he, EXCHANGE_PARAMS& params ) 
+      { 
+        return FALSE;
+      }
+
+
     //
     // alternative set of event handlers (aka old set).
     //
@@ -188,6 +195,7 @@ namespace htmlayout
           case HANDLE_DATA_ARRIVED: { DATA_ARRIVED_PARAMS *p = (DATA_ARRIVED_PARAMS *)prms; return pThis->handle_data_arrived(he, *p ); }
           case HANDLE_SIZE:         {  pThis->handle_size(he); return FALSE; }
           case HANDLE_SCROLL:       { SCROLL_PARAMS *p = (SCROLL_PARAMS *)prms; return pThis->handle_scroll(he, *p ); }
+          case HANDLE_EXCHANGE:     { EXCHANGE_PARAMS *p = (EXCHANGE_PARAMS *)prms; return pThis->handle_exchange(he, *p ); }
           case HANDLE_GESTURE:      { GESTURE_PARAMS *p = (GESTURE_PARAMS *)prms; return pThis->handle_gesture(he, *p ); }
 
           default:

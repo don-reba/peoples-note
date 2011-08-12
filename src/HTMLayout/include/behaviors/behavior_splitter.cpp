@@ -119,6 +119,9 @@ struct splitter: public behavior
         width += (pt.x - pressed_offset);
         if(width >= 0)
         {
+          first.delay_measure();
+          second.delay_measure();
+
           swprintf(buf,L"%dpx", width);
           first.set_style_attribute("width",buf);
           second.set_style_attribute("width",L"100%%");
@@ -129,6 +132,9 @@ struct splitter: public behavior
         width -= (pt.x - pressed_offset);
         if(width >= 0)
         {
+          first.delay_measure();
+          second.delay_measure();
+
           swprintf(buf,L"%dpx", width);
           first.set_style_attribute("width",L"100%%");
           second.set_style_attribute("width",buf);
@@ -171,6 +177,9 @@ struct splitter: public behavior
         height += (pt.y - pressed_offset);
         if(height >= 0)
         {
+          first.delay_measure();
+          second.delay_measure();
+
           swprintf(buf,L"%dpx", height);
           first.set_style_attribute("height",buf);
           second.set_style_attribute("height",L"100%%");
@@ -181,6 +190,9 @@ struct splitter: public behavior
         height -= (pt.y - pressed_offset);
         if(height >= 0)
         {
+          first.delay_measure();
+          second.delay_measure();
+
           swprintf(buf,L"%dpx", height);
           first.set_style_attribute("height",L"100%%");
           second.set_style_attribute("height",buf);
