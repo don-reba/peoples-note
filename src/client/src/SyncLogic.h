@@ -1,3 +1,7 @@
+// Implements the Evernote synchronization spec.
+// The difference between full sync logic and incremental is that the former
+// deletes clean strictly local notes.
+
 #pragma once
 
 #include "Guid.h"
@@ -142,16 +146,16 @@ void SyncLogic::FullSync
 		else
 		{
 			const T & l(*l->second);
-			if (l.usn == r.usn)
+			if (l.isDirty)
 			{
-				if (l.isDirty)
+				if (l.usn != r.usn)
+					actions.push_back(Action<T>(ActionMerge, &l, &r));
+				else
 					actions.push_back(Action<T>(ActionUpload, &l, NULL));
 			}
 			else
 			{
-				if (l.isDirty)
-					actions.push_back(Action<T>(ActionMerge, &l, &r));
-				else
+				if (l.usn != r.usn)
 					actions.push_back(Action<T>(ActionAdd, NULL, &r));
 			}
 		}
@@ -240,7 +244,9 @@ void SyncLogic::IncrementalSync
 					actions.push_back(Action<T>(ActionUpload, &l, NULL));
 			}
 			else
+			{
 				actions.push_back(Action<T>(ActionAdd, NULL, &r));
+			}
 		}
 	}
 

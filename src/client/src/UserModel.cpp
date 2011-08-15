@@ -69,13 +69,6 @@ int UserModel::GetResourceCount()
 	return count;
 }
 
-int UserModel::GetVersion()
-{
-	int version(0);
-	GetProperty(L"version", version);
-	return version;
-}
-
 //--------------------------
 // IUuserModel implementaion
 //--------------------------
@@ -786,29 +779,6 @@ wstring UserModel::GetPath()
 	return dataStore.GetPath();
 }
 
-__int64 UserModel::GetSize()
-{
-	HANDLE file = ::CreateFile
-		( dataStore.GetPath().c_str()        // lpFileName
-		, GENERIC_READ                       // dwDesiredAccess
-		, FILE_SHARE_READ | FILE_SHARE_WRITE // dwShareMode
-		, NULL                               // lpSecurityAttributes
-		, OPEN_EXISTING                      // dwCreationDisposition
-		, FILE_ATTRIBUTE_NORMAL              // dwFlagsAndAttributes
-		, NULL                               // hTemplateFile
-		);
-	if (file == INVALID_HANDLE_VALUE)
-		throw std::exception("Could not access file.");
-
-	ULARGE_INTEGER size;
-	size.LowPart = ::GetFileSize(file, &size.HighPart);
-	::CloseHandle(file);
-	if (size.LowPart == 0xFFFFFFFF && ::GetLastError() != NO_ERROR)
-		throw std::exception("Could not retreive file size.");
-
-	return size.QuadPart;
-}
-
 void UserModel::GetResource
 	( const string & hash
 	, Blob         & blob
@@ -865,6 +835,36 @@ void UserModel::GetResource
 	sqlBlob->Read(resource.Data);
 }
 
+__int64 UserModel::GetSize()
+{
+	HANDLE file = ::CreateFile
+		( dataStore.GetPath().c_str()        // lpFileName
+		, GENERIC_READ                       // dwDesiredAccess
+		, FILE_SHARE_READ | FILE_SHARE_WRITE // dwShareMode
+		, NULL                               // lpSecurityAttributes
+		, OPEN_EXISTING                      // dwCreationDisposition
+		, FILE_ATTRIBUTE_NORMAL              // dwFlagsAndAttributes
+		, NULL                               // hTemplateFile
+		);
+	if (file == INVALID_HANDLE_VALUE)
+		throw std::exception("Could not access file.");
+
+	ULARGE_INTEGER size;
+	size.LowPart = ::GetFileSize(file, &size.HighPart);
+	::CloseHandle(file);
+	if (size.LowPart == 0xFFFFFFFF && ::GetLastError() != NO_ERROR)
+		throw std::exception("Could not retreive file size.");
+
+	return size.QuadPart;
+}
+
+int UserModel::GetSyncVersion()
+{
+	int version(0);
+	GetProperty(L"syncVersion", version);
+	return version;
+}
+
 void UserModel::GetTags(TagList & tags)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -889,6 +889,13 @@ int UserModel::GetUpdateCount()
 	int updateCount(0);
 	GetProperty(L"updateCount", updateCount);
 	return updateCount;
+}
+
+int UserModel::GetVersion()
+{
+	int version(0);
+	GetProperty(L"version", version);
+	return version;
 }
 
 void UserModel::Load(const wstring & username)
@@ -1085,6 +1092,11 @@ void UserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
 	statement->Bind(3, thumbnail.Height);
 	statement->Bind(4, guid);
 	statement->Execute();
+}
+
+void UserModel::SetSyncVersion(int version)
+{
+	SetProperty(L"syncVersion", version);
 }
 
 void UserModel::SetUpdateCount(int updateCount)

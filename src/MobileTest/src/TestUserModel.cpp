@@ -996,3 +996,10 @@ FIXTURE_TEST_CASE(UserModelUpdateTag, DataStoreFixture)
 	TEST_CHECK_EQUAL(tags.at(0).name,    replacementTag.name);
 	TEST_CHECK_EQUAL(tags.at(0).usn,     replacementTag.usn);
 }
+
+FIXTURE_TEST_CASE(UserModelSyncVersion, DataStoreFixture)
+{
+	TEST_CHECK_EQUAL(userModel.GetSyncVersion(), 0);
+	userModel.SetSyncVersion(17);
+	TEST_CHECK_EQUAL(userModel.GetSyncVersion(), 17);
+}

@@ -808,6 +808,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\UserUpdater.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\VoiceEditorModel.cpp"
 				>
 			</File>
@@ -1343,6 +1347,10 @@
 			</File>
 			<File
 				RelativePath=".\src\UserStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\UserUpdater.h"
 				>
 			</File>
 			<File

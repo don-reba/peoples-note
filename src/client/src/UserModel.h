@@ -38,8 +38,6 @@ public:
 
 	int GetResourceCount();
 
-	int GetVersion();
-
 // IUserModel implementation
 
 public:
@@ -137,8 +135,6 @@ public:
 
 	virtual std::wstring GetPath();
 
-	virtual __int64 GetSize();
-
 	virtual void GetResource
 		( const std::string & hash
 		, Blob              & blob
@@ -149,9 +145,15 @@ public:
 		, Resource   & resource
 		);
 
+	virtual __int64 GetSize();
+
+	virtual int GetSyncVersion();
+
 	virtual void GetTags(TagList & tags);
 
 	virtual int GetUpdateCount();
+
+	virtual int GetVersion();
 
 	virtual void Load(const std::wstring & username);
 
@@ -188,6 +190,8 @@ public:
 		( const Guid      & guid
 		, const Thumbnail & thumbnail
 		);
+
+	virtual void SetSyncVersion(int version);
 
 	virtual void SetUpdateCount(int updateCount);
 

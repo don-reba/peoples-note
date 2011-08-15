@@ -115,8 +115,6 @@ public:
 
 	virtual std::wstring GetPath() = 0;
 
-	virtual __int64 GetSize() = 0;
-
 	virtual void GetResource
 		( const std::string & hash
 		, Blob              & blob
@@ -127,9 +125,15 @@ public:
 		, Resource   & resource
 		) = 0;
 
+	virtual __int64 GetSize() = 0;
+
+	virtual int GetSyncVersion() = 0;
+
 	virtual void GetTags(TagList & tags) = 0;
 
 	virtual int GetUpdateCount() = 0;
+
+	virtual int GetVersion() = 0;
 
 	virtual void Load(const std::wstring & username) = 0;
 
@@ -166,6 +170,8 @@ public:
 		( const Guid & notebook
 		, int          updateCount
 		) = 0;
+
+	virtual void SetSyncVersion(int version) = 0;
 
 	virtual void SetUpdateCount(int updateCount) = 0;
 

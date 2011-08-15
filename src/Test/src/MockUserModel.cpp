@@ -273,11 +273,6 @@ wstring MockUserModel::GetPath()
 	return path;
 }
 
-__int64 MockUserModel::GetSize()
-{
-	return size;
-}
-
 void MockUserModel::GetResource
 	( const string & hash
 	, Blob         & blob
@@ -299,6 +294,16 @@ void MockUserModel::GetResource(const Guid & guid, Resource & resource)
 	}
 }
 
+__int64 MockUserModel::GetSize()
+{
+	return size;
+}
+
+int MockUserModel::GetSyncVersion()
+{
+	return syncVersion;
+}
+
 void MockUserModel::GetTags(TagList & tags)
 {
 	copy(this->tags.begin(), this->tags.end(), back_inserter(tags));
@@ -307,6 +312,11 @@ void MockUserModel::GetTags(TagList & tags)
 int MockUserModel::GetUpdateCount()
 {
 	return updateCount;
+}
+
+int MockUserModel::GetVersion()
+{
+	return version;
 }
 
 void MockUserModel::Load(const wstring & username)
@@ -413,6 +423,11 @@ void MockUserModel::SetNotebookUpdateCount
 	notebookUpdateCounts[notebook] = updateCount;
 }
 
+void MockUserModel::SetSyncVersion(int version)
+{
+	syncVersion = version;
+}
+
 void MockUserModel::SetUpdateCount(int updateCount)
 {
 	this->updateCount = updateCount;
@@ -422,6 +437,20 @@ void MockUserModel::Unload()
 {
 	loadMethod = LoadMethodNone;
 	loadedAs.clear();
+}
+
+void MockUserModel::UpdateNote
+	( const Guid & note
+	, const Note & replacement
+	)
+{
+	foreach (Note & n, notes)
+	{
+		if (n.guid != note)
+			continue;
+		n = replacement;
+		return;
+	}
 }
 
 void MockUserModel::UpdateNotebook
