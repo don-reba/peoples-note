@@ -1149,7 +1149,7 @@ void UserModel::UpdateNote
 }
 
 void UserModel::UpdateNotebook
-	( const Notebook & notebook
+	( const Guid     & notebook
 	, const Notebook & replacement
 	)
 {
@@ -1165,13 +1165,13 @@ void UserModel::UpdateNotebook
 	statement->Bind(4, replacement.CreationDate.GetTime());
 	statement->Bind(5, replacement.ModificationDate.GetTime());
 	statement->Bind(6, replacement.isDirty);
-	statement->Bind(7, notebook.guid);
+	statement->Bind(7, notebook);
 	statement->Execute();
 }
 
 void UserModel::UpdateTag
-	( const Tag & tag
-	, const Tag & replacement
+	( const Guid & tag
+	, const Tag  & replacement
 	)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
@@ -1184,7 +1184,7 @@ void UserModel::UpdateTag
 	statement->Bind(3, replacement.name);
 	statement->Bind(4, replacement.parentGuid);
 	statement->Bind(5, replacement.isDirty);
-	statement->Bind(6, tag.guid);
+	statement->Bind(6, tag);
 	statement->Execute();
 }
 

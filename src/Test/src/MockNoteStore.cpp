@@ -51,6 +51,13 @@ void MockNoteStore::GetDefaultNotebook(Guid & notebook)
 	notebook = defaultNotebook;
 }
 
+void MockNoteStore::GetNote
+	( const Guid & guid
+	,       Note & note
+	)
+{
+}
+
 void MockNoteStore::GetNoteBody
 	( const Note   & note
 	, std::wstring & content
@@ -95,9 +102,23 @@ void MockNoteStore::GetNoteTagNames
 	}
 }
 
+void MockNoteStore::GetNotebook
+	( const Guid     & guid
+	,       Notebook & noteobok
+	)
+{
+}
+
 void MockNoteStore::GetSyncState(SyncState & syncState)
 {
 	syncState = this->syncState;
+}
+
+void MockNoteStore::GetTag
+	( const Guid & guid
+	,       Tag  & tag
+	)
+{
 }
 
 void MockNoteStore::ListEntries

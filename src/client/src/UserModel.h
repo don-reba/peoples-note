@@ -203,13 +203,13 @@ public:
 		);
 
 	virtual void UpdateNotebook
-		( const Notebook & notebook
+		( const Guid     & notebook
 		, const Notebook & replacement
 		);
 
 	virtual void UpdateTag
-		( const Tag & tag
-		, const Tag & replacement
+		( const Guid & tag
+		, const Tag  & replacement
 		);
 
 // utility functions
@@ -266,9 +266,8 @@ void UserModel::GetProperty(const std::wstring & key, T & value)
 		"  LIMIT 1"
 		);
 	statement->Bind(1, key);
-	if (statement->Execute())
-		throw std::exception("Property not found.");
-	statement->Get(0, value);
+	if (!statement->Execute())
+		statement->Get(0, value);
 }
 
 template <typename T>

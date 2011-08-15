@@ -101,6 +101,24 @@ void NoteStore::GetDefaultNotebook(Guid & notebook)
 	notebook = enNotebook.guid;
 }
 
+void NoteStore::GetNote
+	( const Guid & guid
+	,       Note & note
+	)
+{
+	ConvertFromEnNote
+		( noteStore.getNote
+			( token                  // authenticationToken
+			, ConvertToUnicode(guid) // guid
+			, false                  // withContent
+			, false                  // withResourceData
+			, false                  // withResourcesRecognition
+			, false                  // withResourcesAlternateData
+			)
+		, note
+		);
+}
+
 void NoteStore::GetNoteBody
 	( const Note & note
 	, wstring    & content
@@ -139,12 +157,40 @@ void NoteStore::GetNoteTagNames
 	names.swap(noteStore.getNoteTagNames(token, guid));
 }
 
+void NoteStore::GetNotebook
+	( const Guid     & guid
+	,       Notebook & notebook
+	)
+{
+	ConvertFromEnNotebook
+		( noteStore.getNotebook
+			( token                  // authenticationToken
+			, ConvertToUnicode(guid) // guid
+			)
+		, notebook
+		);
+}
+
 void NoteStore::GetSyncState(SyncState & syncState)
 {
 	EDAM::NoteStore::SyncState enSyncState(noteStore.getSyncState(token));
 	syncState.UpdateCount    = enSyncState.updateCount;
 	syncState.FullSyncBefore = enSyncState.fullSyncBefore;
 	syncState.CurrentEnTime  = enSyncState.currentTime;
+}
+
+void NoteStore::GetTag
+	( const Guid & guid
+	,       Tag  & tag
+	)
+{
+	ConvertFromEnTag
+		( noteStore.getTag
+			( token                  // authenticationToken
+			, ConvertToUnicode(guid) // guid
+			)
+		, tag
+		);
 }
 
 void NoteStore::ListEntries

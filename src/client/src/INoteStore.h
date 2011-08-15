@@ -35,6 +35,8 @@ public:
 
 	virtual void GetDefaultNotebook(Guid & notebook) = 0;
 
+	virtual void GetNote(const Guid & guid, Note & note) = 0;
+
 	virtual void GetNoteBody
 		( const Note   & note
 		, std::wstring & content
@@ -51,7 +53,11 @@ public:
 		, std::vector<std::wstring> & names
 		) = 0;
 
+	virtual void GetNotebook(const Guid & guid, Notebook & notebook) = 0;
+
 	virtual void GetSyncState(SyncState & syncState) = 0;
+
+	virtual void GetTag(const Guid & guid, Tag & tag) = 0;
 
 	virtual void ListEntries
 		( EnInteropNoteList & notes

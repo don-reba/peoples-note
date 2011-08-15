@@ -454,13 +454,13 @@ void MockUserModel::UpdateNote
 }
 
 void MockUserModel::UpdateNotebook
-	( const Notebook & notebook
+	( const Guid     & notebook
 	, const Notebook & replacement
 	)
 {
 	foreach (Notebook & n, notebooks)
 	{
-		if (n.guid != notebook.guid)
+		if (n.guid != notebook)
 			continue;
 		n = replacement;
 		return;
@@ -468,13 +468,13 @@ void MockUserModel::UpdateNotebook
 }
 
 void MockUserModel::UpdateTag
-	( const Tag & tag
-	, const Tag & replacement
+	( const Guid & tag
+	, const Tag  & replacement
 	)
 {
 	foreach (Tag & t, tags)
 	{
-		if (t.guid != tag.guid)
+		if (t.guid != tag)
 			continue;
 		t = replacement;
 		return;

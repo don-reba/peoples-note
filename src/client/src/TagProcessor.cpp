@@ -44,7 +44,7 @@ void TagProcessor::MergeLocal
 		, const Tag & remote
 		)
 {
-	userModel.UpdateTag(local, remote);
+	userModel.UpdateTag(local.guid, remote);
 }
 
 void TagProcessor::UpdateRemote
@@ -55,6 +55,6 @@ void TagProcessor::UpdateRemote
 	Transaction transaction(userModel);
 
 	Tag replacement;
-	noteStore.UpdateTag(local, replacement);
-	userModel.UpdateTag(local, replacement);
+	noteStore.UpdateTag(local,      replacement);
+	userModel.UpdateTag(local.guid, replacement);
 }
