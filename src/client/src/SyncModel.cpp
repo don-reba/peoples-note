@@ -464,6 +464,7 @@ try
 
 	logger.BeginSyncStage(fullSync ? L"full" : L"incremental");
 
+	PostProgressMessage(0.0);
 	PostTextMessage(fullSync ? L"Begin full sync..." : L"Begin incremental sync...");
 
 	EnInteropNoteList remoteNotes;
@@ -589,10 +590,12 @@ void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
 
 void SyncModel::UpdateModel(INoteStore & noteStore)
 {
-	logger.BeginSyncStage(L"update");
-	PostTextMessage(L"Updating notes...");
-
 	UserUpdater updater(noteStore, userModel);
+
+	logger.BeginSyncStage(L"update");
+
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Updating notes...");
 	{
 		NotebookList notebooks;
 		userModel.GetNotebooks(notebooks);
@@ -603,20 +606,31 @@ void SyncModel::UpdateModel(INoteStore & noteStore)
 
 			NoteList notes;
 			userModel.GetNotesByNotebook(notebook, notes);
+			double progress(0.0);
 			foreach (const Note & note, notes)
 			{
 				try { updater.UpdateNote(note.guid); }
 				catch (const std::exception &) {}
+
+				progress += 1.0;
+				PostProgressMessage(progress / notes.size());
 			}
 		}
 	}
+
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Updating tags...");
 	{
 		TagList tags;
 		userModel.GetTags(tags);
+		double progress(0.0);
 		foreach (const Tag & tag, tags)
 		{
 			try { updater.UpdateTag(tag.guid); }
 			catch (const std::exception &) {}
+
+			progress += 1.0;
+			PostProgressMessage(progress / tags.size());
 		}
 	}
 }

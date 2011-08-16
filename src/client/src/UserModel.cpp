@@ -684,7 +684,7 @@ void UserModel::GetNotesByNotebook
 		"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
 		"  FROM Notes"
 		"  WHERE isDeleted = 0 AND notebook = ?"
-		"  ORDER BY modificationDate, creationDate DESC"
+		"  ORDER BY modificationDate DESC, creationDate DESC"
 		);
 	statement->Bind(1, notebook.guid);
 	while (!statement->Execute())
@@ -737,7 +737,7 @@ void UserModel::GetNotesBySearch
 		"        JOIN   Recognition AS rc ON (rs.guid = rc.resource)"
 		"        WHERE  n.isDeleted = 0 AND rc.text = ?"
 		"      ) JOIN Notes USING (guid)"
-		" ORDER BY modificationDate, creationDate DESC"
+		" ORDER BY modificationDate DESC, creationDate DESC"
 		);
 	wstring ucSearch;
 	transform
