@@ -960,6 +960,7 @@ user management
 	so we don't check password on login
 	however, sync needs the password
 	it is better to get it from the database
+	TODO
 sync
 	must be capable of full sync and incremental sync
 	full sync = clear clean records from db, then perform incremental sync
@@ -3590,3 +3591,26 @@ need to filter &nbsp; from note text
 	TODO
 for some reason, next page does not display anything
 	scrolling issue
+sync metadata
+	I probaly want to make a full sync
+	how is full sync logic different from incremental?
+		it deletes clean strictly local notes
+	this is not what's needed
+	what is needed is
+		get a list of all local note guids
+			call getNote(guid, false, false, false, false)
+			call updateNote()
+		get a list of all notebook guids
+			call getNotebook(guid)
+			call updateNotebook
+		get a list of all tag guids
+			call getTag(guid)
+			call updateTag
+	might have to fix updateNotebook and updateTag to tage Guids
+	when should metadata be synced?
+		before main sync
+			only incremental or both?
+			lets do both, why not
+	progress indicator
+		should be available
+	TODO

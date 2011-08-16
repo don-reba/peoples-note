@@ -1443,6 +1443,7 @@ void UserModel::Update()
 {
 	SetPragma("PRAGMA foreign_keys = ON");
 	SetPragma("PRAGMA synchronous = NORMAL");
+	//SetPragma("PRAGMA locking_mode = EXCLUSIVE");
 	Transaction transaction(*this);
 	switch (GetVersion())
 	{

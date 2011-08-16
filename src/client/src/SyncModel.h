@@ -50,7 +50,7 @@ private:
 	EnNoteTranslator & enNoteTranslator;
 	IEnService       & enService;
 	IMessagePump     & messagePump;
-	ILogger      & logger;
+	ILogger          & logger;
 	IUserModel       & userModel;
 
 	HANDLE syncThread;
@@ -136,4 +136,6 @@ private:
 	static DWORD WINAPI Sync(LPVOID param);
 
 	void UpdateDefaultNotebook(INoteStore & noteStore);
+
+	void UpdateModel(INoteStore & noteStore);
 };

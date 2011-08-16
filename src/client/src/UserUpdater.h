@@ -18,9 +18,9 @@ public:
 		, IUserModel & userModel
 		);
 
-	void UpdateNote(Guid & note);
+	void UpdateNote(const Guid & guid);
 
-	void UpdateNotebook(Guid & notebook);
+	void UpdateNotebook(const Guid & guid);
 
-	void UpdateTag(Guid & tag);
+	void UpdateTag(const Guid & guid);
 };

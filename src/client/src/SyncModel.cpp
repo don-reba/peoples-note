@@ -15,6 +15,7 @@
 #include "SyncLogic.h"
 #include "TagProcessor.h"
 #include "Tools.h"
+#include "UserUpdater.h"
 
 #include <Evernote\EDAM\Error.h>
 
@@ -451,6 +452,12 @@ try
 			)
 		);
 
+	if (userModel.GetSyncVersion() < userModel.GetVersion())
+	{
+		UpdateModel(*noteStore);
+		userModel.SetSyncVersion(userModel.GetVersion());
+	}
+
 	SyncState syncState;
 	noteStore->GetSyncState(syncState);
 	bool fullSync(userModel.GetLastSyncEnTime() < syncState.FullSyncBefore);
@@ -578,6 +585,40 @@ void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
 	Guid defaultNotebook;
 	noteStore.GetDefaultNotebook(defaultNotebook);
 	userModel.MakeNotebookDefault(defaultNotebook);
+}
+
+void SyncModel::UpdateModel(INoteStore & noteStore)
+{
+	logger.BeginSyncStage(L"update");
+	PostTextMessage(L"Updating notes...");
+
+	UserUpdater updater(noteStore, userModel);
+	{
+		NotebookList notebooks;
+		userModel.GetNotebooks(notebooks);
+		foreach (const Notebook & notebook, notebooks)
+		{
+			try { updater.UpdateNotebook(notebook.guid); }
+			catch (const std::exception &) {}
+
+			NoteList notes;
+			userModel.GetNotesByNotebook(notebook, notes);
+			foreach (const Note & note, notes)
+			{
+				try { updater.UpdateNote(note.guid); }
+				catch (const std::exception &) {}
+			}
+		}
+	}
+	{
+		TagList tags;
+		userModel.GetTags(tags);
+		foreach (const Tag & tag, tags)
+		{
+			try { updater.UpdateTag(tag.guid); }
+			catch (const std::exception &) {}
+		}
+	}
 }
 
 //--------------------------
