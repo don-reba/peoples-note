@@ -68,7 +68,9 @@ void EnNoteTranslator::ConvertToText
 		case node_data:
 			{
 				// output text
-				text.append(node->value(), node->value_size());
+				wstring value(node->value(), node->value_size());
+				ClearEntities(value);
+				text.append(value);
 				text.append(L" ");
 				next = node->parent()->next_sibling();
 			} break;
@@ -96,6 +98,8 @@ void EnNoteTranslator::ConvertToText
 		}
 		node = next;
 	}
+
+	ClearSymbols(text);
 }
 
 void EnNoteTranslator::ConvertToXml
@@ -144,6 +148,26 @@ bool EnNoteTranslator::AttributeNameSortPredicate
 	)
 {
 	return _wcsicmp(name1, name2) < 0;
+}
+
+void EnNoteTranslator::ClearEntities(wstring & text)
+{
+	wstring::size_type s(0), f(0);
+	while (f < text.size())
+	{
+		s = text.find(L'&', f); if (s == wstring::npos) break;
+		f = text.find(L';', s); if (f == wstring::npos) break;
+		text.replace(s, f - s, f - s, ' ');
+	}
+}
+
+void EnNoteTranslator::ClearSymbols(wstring & text)
+{
+	foreach (wchar_t & c, text)
+	{
+		if (!IsCharAlphaNumeric(c))
+			c = L' ';
+	}
 }
 
 void EnNoteTranslator::DeleteNode

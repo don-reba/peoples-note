@@ -62,6 +62,10 @@ private:
 		, const wchar_t * name2
 		);
 
+	static void ClearEntities(std::wstring & text);
+
+	static void ClearSymbols(std::wstring & text);
+
 	static void DeleteNode
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent

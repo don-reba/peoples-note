@@ -41,9 +41,8 @@ BOOST_FIXTURE_TEST_CASE
 
 	Guid guid;
 	userModel.notes.push_back(Note());
-	userModel.notes.back().guid             = guid;
-	userModel.notes.back().isDirty          = false;
-	userModel.notes.back().modificationDate = Timestamp(0);
+	userModel.notes.back().guid    = guid;
+	userModel.notes.back().isDirty = false;
 	noteListView.selectedNoteGuid = guid;
 	userModel.noteBodies[guid] = L"<en-note/>";
 

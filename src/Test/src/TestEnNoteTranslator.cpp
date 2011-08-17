@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "EnNoteTranslator.h"
 #include "MockUserModel.h"
@@ -46,12 +46,13 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToText)
 			L"<table><tr><td>cell1</td></tr><tr><td>cell2</td></tr></table>"
 			L"<p>text2</p>"
 			L"<en-crypt>CIPHER</en-crypt>"
-			L"<p>text3</p>"
+			L"<p>text3.text4</p>"
+			L"<p>&aelig;</p>"
 		L"</en-note>";
 	wstring text;
 	enNoteTranslator.ConvertToText(xml, text);
 
-	BOOST_CHECK_EQUAL(text, L"text1 cell1 cell2 text2 text3 ");
+	BOOST_CHECK_EQUAL(text, L"text1 cell1 cell2 text2 text3 text4         ");
 }
 
 BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToXml)
