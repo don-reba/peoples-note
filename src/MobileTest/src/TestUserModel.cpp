@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "DataStore.h"
 #include "MockFlashCard.h"
@@ -767,7 +767,7 @@ FIXTURE_TEST_CASE(UserModelNotesByNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes.at(1).name, L"note-2");
 }
 
-FIXTURE_TEST_CASE(UserModelGetNotesBySearch, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelGetNotesBySearch1, DataStoreFixture)
 {
 	Notebook notebook;
 	notebook.name = L"notebook";
@@ -788,16 +788,40 @@ FIXTURE_TEST_CASE(UserModelGetNotesBySearch, DataStoreFixture)
 		, notebook
 		);
 
-	NoteList notes0;
-	userModel.GetNotesBySearch(L"software", notes0);
-	TEST_CHECK_EQUAL(notes0.size(), 2);
-	TEST_CHECK_EQUAL(notes0.at(0).name, L"useful software");
-	TEST_CHECK_EQUAL(notes0.at(1).name, L"software use");
+	NoteList notes;
+	userModel.GetNotesBySearch(L"software", notes);
+	TEST_CHECK_EQUAL(notes.size(), 2);
+	TEST_CHECK_EQUAL(notes.at(0).name, L"software use");
+	TEST_CHECK_EQUAL(notes.at(1).name, L"useful software");
 
-	NoteList notes1;
-	userModel.GetNotesBySearch(L"use", notes1);
-	TEST_CHECK_EQUAL(notes1.size(), 1);
-	TEST_CHECK_EQUAL(notes1.at(0).name, L"software use");
+	notes.clear();
+	userModel.GetNotesBySearch(L"use", notes);
+	TEST_CHECK_EQUAL(notes.size(), 1);
+	TEST_CHECK_EQUAL(notes.at(0).name, L"software use");
+}
+
+FIXTURE_TEST_CASE(UserModelGetNotesBySearch2, DataStoreFixture)
+{
+	Notebook notebook;
+	notebook.name = L"notebook";
+	userModel.AddNotebook(notebook);
+
+	wstring empty;
+
+	userModel.AddNote
+		( MakeNote(L"Ангара", 0)
+		, empty
+		, L"Восточный"
+		, notebook
+		);
+
+	NoteList notes;
+	userModel.GetNotesBySearch(L"ангара", notes);
+	TEST_CHECK_EQUAL(notes.size(), 1);
+
+	notes.clear();
+	userModel.GetNotesBySearch(L"восточный", notes);
+	TEST_CHECK_EQUAL(notes.size(), 1);
 }
 
 FIXTURE_TEST_CASE(UserModelTags, DataStoreFixture)
@@ -943,7 +967,7 @@ FIXTURE_TEST_CASE(UserModelUpdateNotebook, DataStoreFixture)
 	replacementNotebook.name    = L"notebook-1";
 	replacementNotebook.usn     = 1;
 
-	userModel.UpdateNotebook(notebook, replacementNotebook);
+	userModel.UpdateNotebook(notebook.guid, replacementNotebook);
 
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
@@ -985,7 +1009,7 @@ FIXTURE_TEST_CASE(UserModelUpdateTag, DataStoreFixture)
 	replacementTag.name    = L"tag-1";
 	replacementTag.usn     = 1;
 
-	userModel.UpdateTag(tag, replacementTag);
+	userModel.UpdateTag(tag.guid, replacementTag);
 
 	TagList tags;
 	userModel.GetTags(tags);

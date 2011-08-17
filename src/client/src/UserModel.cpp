@@ -126,13 +126,30 @@ void UserModel::AddNote
 		{
 			__int64 rowid(dataStore.GetLastInsertRowid());
 
+			wstring ucName;
+			ucName.reserve(note.name.size());
+			transform
+				( note.name.begin()
+				, note.name.end()
+				, back_inserter(ucName)
+				, towupper
+				);
+			wstring ucBody;
+			ucBody.reserve(bodyText.size());
+			transform
+				( bodyText.begin()
+				, bodyText.end()
+				, back_inserter(ucBody)
+				, towupper
+				);
+
 			IDataStore::Statement insertText = dataStore.MakeStatement
 				( "INSERT INTO NoteText(rowid, title, body)"
 				"  VALUES (?, ?, ?)"
 				);
 			insertText->Bind(1, rowid);
-			insertText->Bind(2, note.name);
-			insertText->Bind(3, bodyText);
+			insertText->Bind(2, ucName);
+			insertText->Bind(3, ucBody);
 			insertText->Execute();
 		}
 	}
@@ -209,11 +226,19 @@ void UserModel::AddNotebook(const Notebook & notebook)
 
 void UserModel::AddRecognitionEntry(const RecognitionEntry & entry)
 {
+	wstring ucText;
+	transform
+		( entry.Text.begin()
+		, entry.Text.end()
+		, back_inserter(ucText)
+		, towupper
+		);
+
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "INSERT INTO Recognition(text, weight, x, y, w, h, resource)"
 		"  VALUES (?, ?, ?, ?, ?, ?, ?)"
 		);
-	statement->Bind(1, entry.Text);
+	statement->Bind(1, ucText);
 	statement->Bind(2, entry.Weight);
 	statement->Bind(3, entry.X);
 	statement->Bind(4, entry.Y);
@@ -746,7 +771,7 @@ void UserModel::GetNotesBySearch
 		, back_inserter(ucSearch)
 		, towupper
 		);
-	statement->Bind(1, search);
+	statement->Bind(1, ucSearch);
 	statement->Bind(2, ucSearch);
 	statement->Bind(3, ucSearch);
 	while (!statement->Execute())
