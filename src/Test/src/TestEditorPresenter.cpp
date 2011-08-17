@@ -62,6 +62,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).note.isDirty, true);
 
+	BOOST_CHECK(userModel.addedNotes.at(0).note.modificationDate.GetTime() > 0);
+
 	BOOST_CHECK_EQUAL
 		( userModel.addedNotes.at(0).body
 		,
