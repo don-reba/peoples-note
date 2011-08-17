@@ -56,6 +56,7 @@ void NotePresenter::OnCloseNote()
 
 	Note note;
 	noteView.GetNote(note);
+	note.modificationDate = Timestamp::GetCurrentTime();
 	note.isDirty = true;
 
 	{

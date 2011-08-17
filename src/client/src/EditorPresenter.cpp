@@ -48,6 +48,7 @@ void EditorPresenter::OnAccept()
 	Note note;
 	editorView.GetNote(note);
 	editorView.GetTitle(note.name);
+	note.modificationDate = Timestamp::GetCurrentTime();
 	note.isDirty = true;
 
 	editorView.Hide();

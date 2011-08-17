@@ -3511,9 +3511,10 @@ what I should do for the next release
 	√ fix scroll updating
 	√ modify the database
 	√ add migration
-	add metadata updating
+	√ add metadata updating
 	x load thumbnails asynchronously
-	hide attachments
+	√ hide attachments
+	  set modificationd dates
 images don't show up when viewing notes
 	database problem
 	fixed
@@ -3588,6 +3589,7 @@ the test note is not getting downloaded
 		updated database
 	therefore I have to name the columns explicitely
 need to filter &nbsp; from note text
+	should include the other entities, as well
 	TODO
 for some reason, next page does not display anything
 	scrolling issue
@@ -3613,4 +3615,11 @@ sync metadata
 			lets do both, why not
 	progress indicator
 		should be available
-	TODO
+		easiest to add separate bars for
+			each notebook
+			tags
+should set modification date after editing
+	editors
+		EditorPresenter
+		NotePresenter
+	done
