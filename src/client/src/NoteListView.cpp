@@ -328,7 +328,7 @@ void NoteListView::UncheckNotebookTitleOption()
 void NoteListView::UpdateNotes()
 {
 	noteList.update(MEASURE_DEEP|REDRAW_NOW);
-	SetNoteListScrollPos(0);
+	SetScrollPos(0);
 	UpdateScrollbar();
 }
 
@@ -363,7 +363,7 @@ element NoteListView::GetChild(element parent, element descendant)
 	return descendant;
 }
 
-int NoteListView::GetNoteListScrollPos()
+int NoteListView::GetScrollPos()
 {
 	POINT scrollPos;
 	RECT  viewRect;
@@ -406,7 +406,7 @@ ATOM NoteListView::RegisterClass(wstring wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void NoteListView::SetNoteListScrollPos(int pos)
+void NoteListView::SetScrollPos(int pos)
 {
 	POINT point = { 0 };
 
@@ -515,12 +515,12 @@ void NoteListView::OnDelayedMouseDown()
 
 void NoteListView::OnGestureStart()
 {
-	startScrollPos = GetNoteListScrollPos();
+	startScrollPos = GetScrollPos();
 }
 
 void NoteListView::OnGestureStep()
 {
-	SetNoteListScrollPos(startScrollPos + gestureProcessor.GetScrollDistance());
+	SetScrollPos(startScrollPos + gestureProcessor.GetScrollDistance());
 }
 
 //------------------------

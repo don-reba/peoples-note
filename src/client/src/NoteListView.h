@@ -152,7 +152,7 @@ private:
 
 	element GetChild(element parent, element descendant);
 
-	int GetNoteListScrollPos();
+	int GetScrollPos();
 
 	static bool IsChild(element child, element parent);
 
@@ -160,7 +160,7 @@ private:
 
 	ATOM RegisterClass(std::wstring wndClass);
 
-	void SetNoteListScrollPos(int pos);
+	void SetScrollPos(int pos);
 
 	void UpdateScrollbar();
 

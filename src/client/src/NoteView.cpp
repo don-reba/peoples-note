@@ -149,6 +149,9 @@ void NoteView::MaximizeWindow()
 
 void NoteView::Render(Thumbnail & thumbnail)
 {
+	POINT scrollPos = { 0 };
+	SetScrollPos(scrollPos);
+
 	HTMLayoutUpdateElementEx
 		( element::root_element(hwnd_)
 		, RESET_STYLE_DEEP | MEASURE_DEEP | REDRAW_NOW
@@ -195,10 +198,6 @@ void NoteView::SetNote
 	const unsigned char * utf8Attachment = Tools::ConvertToUtf8(attachment, utf8AttachmentChars);
 
 	element(FindFirstElement("#attachments")).set_html(utf8Attachment, utf8AttachmentChars.size());
-
-	POINT scrollPos = { 0 };
-	SetScrollPos(scrollPos);
-	UpdateScrollbar();
 }
 
 void NoteView::SetWindowTitle(const std::wstring & text)
@@ -219,6 +218,10 @@ void NoteView::Show()
 	::ShowWindow(hwnd_,   SW_SHOW);
 	::ShowWindow(menuBar, SW_SHOW);
 	::UpdateWindow(hwnd_);
+
+	POINT scrollPos = { 0 };
+	SetScrollPos(scrollPos);
+	UpdateScrollbar();
 }
 
 //------------------
@@ -267,34 +270,21 @@ void NoteView::SetScrollPos(POINT pos)
 	body.get_scroll_info(scrollPos, viewRect, contentSize);
 	int contentHeight(contentSize.cy);
 
-	Rect listRect(body.get_location(SCROLLABLE_AREA));
-	if (listRect.GetWidth() == 0 || listRect.GetHeight() == 0)
+	Rect bodyRect(body.get_location(SCROLLABLE_AREA));
+	if (bodyRect.GetWidth() == 0 || bodyRect.GetHeight() == 0)
 		return;
 
 	SIZE contentDistance =
-		{ contentSize.cx - listRect.GetWidth()
-		, contentSize.cy - listRect.GetHeight()
+		{ contentSize.cx - bodyRect.GetWidth()
+		, contentSize.cy - bodyRect.GetHeight()
 		};
 
 	pos.x = max(min(pos.x, contentDistance.cx), 0);
 	pos.y = max(min(pos.y, contentDistance.cy), 0);
 	body.set_scroll_pos(pos, false);
 
-	if (contentDistance.cy > 0)
-	{
-		Rect vScrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		Rect vSliderRect(vSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
-
-		__int64 vScrollDistance(vScrollRect.GetHeight() - vSliderRect.GetHeight());
-		if (vScrollDistance <= 0L)
-			return;
-
-		POINT vScrollPos =
-			{ 0
-			, -static_cast<int>(pos.y * vScrollDistance / contentDistance.cy)
-			};
-		vScroll.set_scroll_pos(vScrollPos, false);
-	}
+	POINT hScrollPos = { 0 };
+	POINT vScrollPos = { 0 };
 
 	if (contentDistance.cx > 0)
 	{
@@ -302,80 +292,79 @@ void NoteView::SetScrollPos(POINT pos)
 		Rect hSliderRect(hSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
 
 		__int64 hScrollDistance(hScrollRect.GetWidth() - hSliderRect.GetWidth());
-		if (hScrollDistance <= 0L)
-			return;
-
-		POINT hScrollPos =
-			{ -static_cast<int>(pos.x * hScrollDistance / contentDistance.cx)
-			, 0
-			};
-		hScroll.set_scroll_pos(hScrollPos, false);
+		if (hScrollDistance > 0L)
+			hScrollPos.x =-static_cast<int>(pos.x * hScrollDistance / contentDistance.cx);
 	}
+
+	if (contentDistance.cy > 0)
+	{
+		Rect vScrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
+		Rect vSliderRect(vSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
+
+		__int64 vScrollDistance(vScrollRect.GetHeight() - vSliderRect.GetHeight());
+		if (vScrollDistance > 0L)
+			vScrollPos.y = -static_cast<int>(pos.y * vScrollDistance / contentDistance.cy);
+	}
+
+	hScroll.set_scroll_pos(hScrollPos, false);
+	vScroll.set_scroll_pos(vScrollPos, false);
 }
 
 void NoteView::UpdateScrollbar()
 {
-	Rect listRect(body.get_location(SCROLLABLE_AREA));
-	if (listRect.GetWidth() == 0 || listRect.GetHeight() == 0)
+	Rect bodyRect(body.get_location(SCROLLABLE_AREA));
+	if (bodyRect.GetWidth() == 0 || bodyRect.GetHeight() == 0)
 		return;
 
 	POINT scrollPos;
 	RECT  viewRect;
 	SIZE  contentSize;
 	body.get_scroll_info(scrollPos, viewRect, contentSize);
-	if (contentSize.cy > 0)
+	if (contentSize.cy > bodyRect.GetHeight())
 	{
-		if (contentSize.cy <= listRect.GetHeight())
-		{
-			vSlider.set_style_attribute("display", L"none");
-			return;
-		}
-		else
-		{
-			vSlider.set_style_attribute("display", L"block");
-		}
+		vSlider.set_style_attribute("display", L"block");
 
 		Rect scrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		if (scrollRect.GetHeight() == 0)
-			return;
-
-		int sliderHeight
-			( static_cast<int>
-				( static_cast<__int64>(scrollRect.GetHeight())
-				* listRect.GetHeight() / contentSize.cy
-				)
-			);
-
-		wchar_t text[16];
-		_itow_s(sliderHeight, text, 16, 10);
-		vSlider.set_style_attribute("height", text);
+		if (scrollRect.GetHeight() > 0)
+		{
+			int sliderHeight
+				( static_cast<int>
+					( static_cast<__int64>(scrollRect.GetHeight())
+					* bodyRect.GetHeight() / contentSize.cy
+					)
+				);
+			wchar_t text[16];
+			_itow_s(sliderHeight, text, 16, 10);
+			vSlider.set_style_attribute("height", text);
+		}
 	}
-	if (contentSize.cx > 0)
+	else
 	{
-		if (contentSize.cx <= listRect.GetWidth())
-		{
-			hSlider.set_style_attribute("display", L"none");
-			return;
-		}
-		else
-		{
-			hSlider.set_style_attribute("display", L"block");
-		}
+		vSlider.set_style_attribute("display", L"none");
+	}
+
+	if (contentSize.cx > bodyRect.GetWidth())
+	{
+			
+		hSlider.set_style_attribute("display", L"block");
 
 		Rect scrollRect(hScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		if (scrollRect.GetWidth() == 0)
-			return;
-
-		int sliderWidth
-			( static_cast<int>
-				( static_cast<__int64>(scrollRect.GetWidth())
-				* listRect.GetWidth() / contentSize.cx
-				)
-			);
-
-		wchar_t text[16];
-		_itow_s(sliderWidth, text, 16, 10);
-		hSlider.set_style_attribute("width", text);
+		if (scrollRect.GetWidth() > 0)
+		{
+			int sliderWidth
+				( static_cast<int>
+					( static_cast<__int64>(scrollRect.GetWidth())
+					* bodyRect.GetWidth() / contentSize.cx
+					)
+				);
+			wchar_t text[16];
+			_itow_s(sliderWidth, text, 16, 10);
+			hSlider.set_style_attribute("width", text);
+		}
+	}
+	else
+	{
+		hSlider.set_style_attribute("display", L"none");
 	}
 }
 
