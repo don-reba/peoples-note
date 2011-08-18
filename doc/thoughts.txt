@@ -3522,6 +3522,15 @@ test IUserModel::DeleteNoteThumbnail
 	done
 I should add profiling to SqlStatement
 	might make sense to enable choosing which statements to cache
+	where to store the times?
+	I need persistent storage for queries
+		solutions
+			associative cache
+				- time overhead
+			data members
+				- code duplication
+				- poor code locality
+				+ no smart pointers
 	TODO
 should not load all notes on every reload
 	TODO
@@ -3554,7 +3563,7 @@ case-sensitivity for search
 	have to study the problem
 	for tags
 	for notes
-	TODO
+	done
 migration
 	got to add the new columns
 		notes
@@ -3590,7 +3599,7 @@ the test note is not getting downloaded
 	therefore I have to name the columns explicitely
 need to filter &nbsp; from note text
 	should include the other entities, as well
-	TODO
+	done
 for some reason, next page does not display anything
 	scrolling issue
 sync metadata
@@ -3623,3 +3632,8 @@ should set modification date after editing
 		EditorPresenter
 		NotePresenter
 	done
+note source URLs
+	title currently set as text
+	it should be underlined when there is a link, right?
+	no, user should see the address before clicking
+	if I do it via <a></a>, I won't need any special signals

@@ -182,10 +182,22 @@ void NoteView::SetNote
 
 	element title    (FindFirstElement("#title"));
 	element subtitle (FindFirstElement("#subtitle"));
+	element source   (FindFirstElement("#source"));
 	element body     (FindFirstElement("#body"));
 
 	title.set_text    (titleText.c_str(),    titleText.size());
 	subtitle.set_text (subtitleText.c_str(), subtitleText.size());
+
+	if (note.SourceUrl.empty())
+	{
+		source.set_style_attribute("display", L"none");
+	}
+	else
+	{
+		source.set_style_attribute("display", L"block");
+		source.set_text(note.SourceUrl.c_str(), note.SourceUrl.size());
+		source.set_attribute("href", note.SourceUrl.c_str());
+	}
 
 	vector<unsigned char> utf8Chars;
 	const unsigned char * utf8 = Tools::ConvertToUtf8(bodyHtml, utf8Chars);
