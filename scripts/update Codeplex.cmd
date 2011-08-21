@@ -4,7 +4,7 @@ pushd ..
 
 set dst=Codeplex
 set opt=/s /xf *.swp *.swo /njh /njs /nfl /ndl
-set winCEopt=/xd "Windows Mobile 6 Professional SDK (ARMV4I)" "Windows Mobile 5.0 Pocket PC SDK (ARMV4I)" /xf *.user *.aps
+set winCEopt=/xd Win32 "Windows Mobile 6 Professional SDK (ARMV4I)" "Windows Mobile 5.0 Pocket PC SDK (ARMV4I)" /xf *.user *.aps
 set win32opt=/xd Debug Release /xf *.user
 
 robocopy "src\client"       "%dst%\src\client"       %opt% %winCEopt%
@@ -12,7 +12,7 @@ robocopy "src\MobileTest"   "%dst%\src\MobileTest"   %opt% %winCEopt%
 robocopy "src\Test"         "%dst%\src\Test"         %opt% %win32opt%
 robocopy "src\CallDump"     "%dst%\src\CallDump"     %opt% %winCEopt%
 robocopy "src\Evernote API" "%dst%\src\Evernote API" %opt% %winCEopt%
-robocopy "src\HTMLayout"    "%dst%\src\HTMLayout"    %opt%
+robocopy "src\HTMLayout"    "%dst%\src\HTMLayout"    %opt% %win32opt%
 
 xcopy/q/y "src\Evernote client.sln" "%dst%\src"
 
