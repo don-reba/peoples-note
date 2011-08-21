@@ -835,6 +835,10 @@
 				RelativePath=".\src\WindowRenderer.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\WinException.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1387,6 +1391,10 @@
 			</File>
 			<File
 				RelativePath=".\src\WindowRenderer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\WinException.h"
 				>
 			</File>
 		</Filter>

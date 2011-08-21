@@ -7,6 +7,7 @@
 #include "ISqlStatement.h"
 #include "Notebook.h"
 #include "Transaction.h"
+#include "WinException.h"
 
 #include "SQLite/sqlite3.h"
 
@@ -1447,10 +1448,14 @@ void UserModel::Move
 	)
 {
 	Unload();
+
 	BOOL result(::MoveFile(oldPath.c_str(), newPath.c_str()));
+	DWORD error(::GetLastError());
+
 	Load(username);
+
 	if (result == FALSE)
-		throw std::exception("Could not move database.");
+		throw WinException(error, L"Kernel32.dll");
 }
 
 void UserModel::SetPragma(const char * sql)
