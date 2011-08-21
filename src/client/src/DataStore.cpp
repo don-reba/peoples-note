@@ -5,6 +5,8 @@
 #include "SqlStatement.h"
 #include "Tools.h"
 
+#include <sstream>
+
 using namespace boost;
 using namespace std;
 using namespace Tools;
@@ -22,6 +24,22 @@ DataStore::DataStore()
 DataStore::~DataStore()
 {
 	sqlite3_close(db);
+	foreach (StatementCache::value_type & info, statements)
+	{
+		wstring sql(ConvertToUnicode(info.first));
+		if (sql.size() > 80)
+			sql.resize(80);
+
+		wstringstream preparationTime;  preparationTime  << info.second.PreparationTime;
+		wstringstream executionTime;    executionTime    << info.second.ExecutionTime;
+		wstringstream finalizationTime; finalizationTime << info.second.FinalizationTime;
+
+		::NKDbgPrintfW(L"%s\n",                 sql.c_str());
+		::NKDbgPrintfW(L"Count:        %d\n",   info.second.UseCount);
+		::NKDbgPrintfW(L"Preparation:  %s s\n", preparationTime.str().c_str());
+		::NKDbgPrintfW(L"Execution:    %s s\n", executionTime.str().c_str());
+		::NKDbgPrintfW(L"Finalization: %s s\n", finalizationTime.str().c_str());
+	}
 }
 
 //--------------------------
@@ -93,7 +111,7 @@ IDataStore::Blob DataStore::MakeBlob
 
 IDataStore::Statement DataStore::MakeStatement(const char * sql)
 {
-	return make_shared<SqlStatement>(db, sql);
+	return make_shared<SqlStatement>(db, sql, ref(statements[sql]));
 }
 
 int DataStore::HandleBusy(void * param, int count)

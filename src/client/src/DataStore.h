@@ -2,15 +2,33 @@
 #include "IDataStore.h"
 
 #include "SQLite/sqlite3.h"
+#include "SqlStatementInfo.h"
+
+#include <map>
+#include <string>
 
 class DataStore : public IDataStore
 {
+private:
+
+	struct StatementComparator
+	{
+		bool operator () (const char * a, const char * b) const
+		{
+			return std::strcmp(a, b) < 0;
+		}
+	};
+
+	typedef std::map<const char *, SqlStatementInfo, StatementComparator> StatementCache;
+
 private:
 
 	sqlite3 * db;
 
 	DbLocation   location;
 	std::wstring path;
+
+	StatementCache statements;
 
 // interface
 

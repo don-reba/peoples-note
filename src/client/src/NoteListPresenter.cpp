@@ -134,8 +134,6 @@ void NoteListPresenter::OnNoteListChanged()
 		noteListView.AddNote(ConvertToHtml(note, guid), guid, note.isDirty);
 	}
 	noteListView.UpdateNotes();
-
-	UpdateSyncCounter();
 }
 
 void NoteListPresenter::OnPageDown()
@@ -277,7 +275,7 @@ wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid
 	stream << L"<img #thumb src=\"thumb:";
 	stream << guid;
 	stream << L"\"/><text #time>";
-	stream << FormatDate(note.creationDate);
+	stream << FormatDate(note.modificationDate);
 	stream << L"</text><text #title>";
 	stream << FormatTitle(note.name);
 	stream << L"</text>";

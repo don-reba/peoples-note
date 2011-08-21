@@ -3531,8 +3531,24 @@ I should add profiling to SqlStatement
 				- code duplication
 				- poor code locality
 				+ no smart pointers
+	there needs to be two parts to a statement
+		cached part keeping profiling info
+		RAII part for clearing, resetting, or finalizing
+	ISqlStatement contains too many methods
+		not really
+		they cannot be routed through fewer methods
 	TODO
 should not load all notes on every reload
+	retrieval takes almost 5 seconds
+		but called once
+	counting dirty notes takes 3.5 seconds
+		but called for every page
+		why?
+		it is called from OnNoteListChanged
+		is this necessary?
+		this is just paging
+		no
+	nothing else takes significant time
 	TODO
 all images should be loaded asynchronously
 	should queue up load requests and return LOAD_DISCARD
@@ -3637,3 +3653,11 @@ note source URLs
 	it should be underlined when there is a link, right?
 	no, user should see the address before clicking
 	if I do it via <a></a>, I won't need any special signals
+database does not move to the storage card
+	need a better error message
+	TODO
+why is DataStore destroyed 4 times?
+	some sort of debugging artifact
+	it is only destroyed twice
+	once per instance
+	as it should

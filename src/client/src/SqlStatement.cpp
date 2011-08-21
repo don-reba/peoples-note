@@ -2,6 +2,8 @@
 #include "SqlStatement.h"
 
 #include "IDataStore.h"
+#include "SqlStatementInfo.h"
+#include "Timer.h"
 #include "Tools.h"
 
 #include "SQLite/sqlite3.h"
@@ -9,12 +11,20 @@
 using namespace std;
 using namespace Tools;
 
-SqlStatement::SqlStatement(sqlite3 * db, const char * sql)
+SqlStatement::SqlStatement(sqlite3 * db, const char * sql, SqlStatementInfo & info)
 	: db        (db)
+	, info      (info)
 	, statement (NULL)
 {
+	++info.UseCount;
+
+	Timer timer;
 	int result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
-	if (result != SQLITE_OK)
+	timer.Stop();
+
+	if (result == SQLITE_OK)
+		info.PreparationTime += timer.GetElapsedSeconds();
+	else
 		HandleError(sqlite3_errmsg(db));
 }
 
@@ -26,11 +36,19 @@ SqlStatement::~SqlStatement()
 
 bool SqlStatement::Execute()
 {
-	switch (sqlite3_step(statement))
+	Timer timer;
+	int result(sqlite3_step(statement));
+	timer.Stop();
+
+	switch (result)
 	{
-	case SQLITE_OK:   return true;
-	case SQLITE_DONE: return true;
-	case SQLITE_ROW:  return false;
+	case SQLITE_OK:
+	case SQLITE_DONE:
+		info.ExecutionTime += timer.GetElapsedSeconds();
+		return true;
+	case SQLITE_ROW:
+		info.ExecutionTime += timer.GetElapsedSeconds();
+		return false;
 	default:
 		HandleError(sqlite3_errmsg(db));
 		return false;
@@ -39,7 +57,13 @@ bool SqlStatement::Execute()
 
 void SqlStatement::Finalize()
 {
-	if (sqlite3_finalize(statement) != SQLITE_OK)
+	Timer timer;
+	int result = sqlite3_finalize(statement);
+	timer.Stop();
+
+	if (result == SQLITE_OK)
+		info.FinalizationTime += timer.GetElapsedSeconds();
+	else
 		DEBUGMSG(true, (L"%s\n", sqlite3_errmsg(db)));
 }
 

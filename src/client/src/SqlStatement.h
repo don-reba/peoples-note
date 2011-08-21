@@ -1,9 +1,9 @@
 #pragma once
-
 #include "ISqlStatement.h"
 
 struct sqlite3_stmt;
 struct sqlite3;
+class  SqlStatementInfo;
 
 class SqlStatement : public ISqlStatement
 {
@@ -12,9 +12,11 @@ private:
 	sqlite3_stmt * statement;
 	sqlite3      * db;
 
+	SqlStatementInfo & info;
+
 public:
 
-	SqlStatement(sqlite3 * db, const char * sql);
+	SqlStatement(sqlite3 * db, const char * sql, SqlStatementInfo & info);
 
 	~SqlStatement();
 

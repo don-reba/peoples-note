@@ -537,7 +537,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Timer.cpp"
+				RelativePath="..\client\src\Timer.cpp"
 				>
 			</File>
 			<File
@@ -575,11 +575,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
@@ -592,10 +592,6 @@
 			</File>
 			<File
 				RelativePath=".\src\Test.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\Timer.h"
 				>
 			</File>
 		</Filter>
