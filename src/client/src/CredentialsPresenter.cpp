@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include "Credentials.h"
 #include "CredentialsPresenter.h"
 #include "ICredentialsModel.h"
 #include "ICredentialsView.h"
@@ -45,10 +44,17 @@ void CredentialsPresenter::OnCommit()
 
 void CredentialsPresenter::OnUpdate()
 {
+	const wstring username(credentialsModel.GetUsername());
+
 	credentialsView.Open();
-	credentialsView.SetUsername(credentialsModel.GetUsername());
+	credentialsView.SetUsername(username);
 	credentialsView.SetPassword(L"");
 	credentialsView.SetMessage(credentialsModel.GetStatus());
+
+	if (username.empty())
+		credentialsView.SetFocusToUsername();
+	else
+		credentialsView.SetFocusToPassword();
 }
 
 void CredentialsPresenter::OnViewCreated()

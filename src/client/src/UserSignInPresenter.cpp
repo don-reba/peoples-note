@@ -13,6 +13,8 @@ using namespace boost;
 using namespace std;
 using namespace Tools;
 
+const wstring anonymousUser(L"[anonymous]");
+
 UserSignInPresenter::UserSignInPresenter
 	( ICredentialsModel & credentialsModel
 	, IEnService        & enService
@@ -36,13 +38,13 @@ try
 
 	if (username.empty())
 	{
-		credentialsModel.Update(L"Please, enter a username.");
+		credentialsModel.Update(L"");
 		return;
 	}
 
 	userModel.Unload();
 
-	if (username == L"[anonymous]")
+	if (username == anonymousUser)
 	{
 		userModel.LoadOrCreate(username);
 		credentialsModel.Commit();
@@ -75,7 +77,7 @@ try
 			enService.GetUserStore()->GetAuthenticationToken(username, password);
 		if (authenticationResult.IsGood)
 		{
-			userModel.LoadAs(L"[anonymous]", username);
+			userModel.LoadAs(anonymousUser, username);
 			userModel.SetCredentials
 				( username
 				, HashPassword(credentialsModel.GetPassword())
@@ -95,10 +97,8 @@ catch (const std::exception & e)
 
 void UserSignInPresenter::OnSignIn()
 {
-	//Credentials credentials;
-	//userModel.GetCredentials(credentials);
-	//if (credentials.Username == L"[anonymous]")
-	//	credentialsModel.SetStatus(L"");
-	//else
-	//	credentialsModel.SetCredentials(L"[anonymous]", L"");
+	if (userModel.GetUsername() == anonymousUser)
+		credentialsModel.Set(L"", L"");
+	else
+		credentialsModel.Set(anonymousUser, L"");
 }

@@ -45,6 +45,10 @@ public:
 
 	virtual void Open();
 
+	virtual void SetFocusToPassword();
+
+	virtual void SetFocusToUsername();
+
 	virtual void SetMessage(const std::wstring & message);
 
 	virtual void SetPassword(const std::wstring & password);

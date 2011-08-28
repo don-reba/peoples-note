@@ -20,6 +20,10 @@ public:
 
 	virtual void Open() = 0;
 
+	virtual void SetFocusToPassword() = 0;
+
+	virtual void SetFocusToUsername() = 0;
+
 	virtual void SetMessage(const std::wstring & message) = 0;
 
 	virtual void SetPassword(const std::wstring & password) = 0;
