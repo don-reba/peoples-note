@@ -8,6 +8,10 @@
 using namespace boost;
 using namespace std;
 
+//-----------------------
+// auxilliary definitions
+//-----------------------
+
 struct SearchPresenterFixture
 {
 	MockNoteListModel noteListModel;
@@ -32,6 +36,10 @@ Note MakeNote(const wchar_t * name)
 	note.name = name;
 	return note;
 }
+
+//-----------
+// test cases
+//-----------
 
 BOOST_FIXTURE_TEST_CASE
 	( SearchPresenter_Clear_Test

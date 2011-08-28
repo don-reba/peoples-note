@@ -1,87 +1,111 @@
 #include "stdafx.h"
 #include "MockCredentialsModel.h"
+#include "MockEnService.h"
 #include "MockNoteListView.h"
 #include "MockUserModel.h"
 #include "SignalCheck.h"
+#include "Tools.h"
 #include "UserSignInPresenter.h"
 
 #include <boost/ref.hpp>
 
+using namespace boost;
+using namespace Tools;
+
+//-----------------------
+// auxilliary definitions
+//-----------------------
+
 struct UserSignInPresenterFixture
 {
 	MockCredentialsModel credentialsModel;
+	MockEnService        enService;
 	MockNoteListView     noteListView;
 	MockUserModel        userModel;
-	UserSignInPresenter  signInPresenter;
+
+	UserSignInPresenter signInPresenter;
 
 	UserSignInPresenterFixture()
-		: signInPresenter (credentialsModel, noteListView, userModel)
+		: signInPresenter
+			( credentialsModel
+			, enService
+			, noteListView
+			, userModel
+			)
 	{
 	}
 };
 
+//-----------
+// test cases
+//-----------
+
 BOOST_FIXTURE_TEST_CASE
-	( UserSignInPresenter_UpdateNew_Test
+	( UserSignInPresenter_CredentialsSet
 	, UserSignInPresenterFixture
 	)
 {
-	credentialsModel.SignalUpdated();
+	SignalCheck signalCommitCheck;
+	credentialsModel.ConnectCommit(ref(signalCommitCheck));
+
+	credentialsModel.status = L"status";
+
+	credentialsModel.SignalSet();
+
+	BOOST_CHECK(!signalCommitCheck);
+	BOOST_CHECK_EQUAL(credentialsModel.status, L"");
+
+	credentialsModel.username = L"[anonymous]";
+	signalCommitCheck.Reset();
+
+	credentialsModel.SignalSet();
+
+	BOOST_CHECK(signalCommitCheck);
+	BOOST_CHECK_EQUAL(userModel.loadedAs, L"[anonymous]");
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadOrCreate);
+
+	credentialsModel.username = L"username";
+	signalCommitCheck.Reset();
+
+	credentialsModel.SignalSet();
+
+	BOOST_CHECK(!signalCommitCheck);
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodNone);
+	BOOST_CHECK_EQUAL(credentialsModel.status, L"Please, enter a password.");
 
-	userModel.Load(L"[anonymous]");
-	credentialsModel.username = L"test-usr";
-	credentialsModel.password = L"test-pwd";
-	credentialsModel.SignalUpdated();
-	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadAs);
+	credentialsModel.password = L"password";
+	userModel.validUsernames.insert(L"username");
+	signalCommitCheck.Reset();
 
-	Credentials credentials;
-	userModel.GetCredentials(credentials);
-	BOOST_CHECK_EQUAL(credentials.GetUsername(), L"test-usr");
-	BOOST_CHECK_EQUAL(credentials.GetPassword(), L"test-pwd");
-}
+	credentialsModel.SignalSet();
 
-BOOST_FIXTURE_TEST_CASE
-	( UserSignInPresenter_UpdateOld_Test
-	, UserSignInPresenterFixture
-	)
-{
-	credentialsModel.SignalUpdated();
+	BOOST_CHECK(!signalCommitCheck);
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodNone);
+	BOOST_CHECK_EQUAL(credentialsModel.status, L"The password is invalid.");
 
-	userModel.Load(L"[anonymous]");
-	userModel.validUsernames.insert(L"test-usr");
-	credentialsModel.username = L"test-usr";
-	credentialsModel.SignalUpdated();
+	userModel.password = HashPassword(L"password");
+	signalCommitCheck.Reset();
+
+	credentialsModel.SignalSet();
+
+	BOOST_CHECK(signalCommitCheck);
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoad);
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( UserSignInPresenter_SignIn_Test
+	( UserSignInPresenter_SignIn
 	, UserSignInPresenterFixture
 	)
 {
-	SignalCheck signalUpdatingCheck;
-	credentialsModel.SignalUpdating.connect(boost::ref(signalUpdatingCheck));
-
-	userModel.SetCredentials(L"[anonymous]", L"");
+	userModel.username = L"username";
 
 	noteListView.SignalSignIn();
-	BOOST_CHECK(signalUpdatingCheck);
-}
 
-BOOST_FIXTURE_TEST_CASE
-	( UserSignInPresenter_SignOut_Test
-	, UserSignInPresenterFixture
-	)
-{
-	SignalCheck signalUpdatingCheck;
-	credentialsModel.SignalUpdating.connect(boost::ref(signalUpdatingCheck));
+	BOOST_CHECK_EQUAL(credentialsModel.username, L"[anonymous]");
+
+	userModel.username = L"[anonymous]";
 
 	noteListView.SignalSignIn();
-	BOOST_CHECK(!signalUpdatingCheck);
 
-	BOOST_CHECK_EQUAL(credentialsModel.GetUsername(), L"[anonymous]");
-	BOOST_CHECK_EQUAL(credentialsModel.GetPassword(), L"");
-
-	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadOrCreate);
+	BOOST_CHECK_EQUAL(credentialsModel.username, L"");
 }

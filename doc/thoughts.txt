@@ -3820,6 +3820,8 @@ offline sign-in
 		commit
 			close dialog
 	if the password is invalid, I might want to check with Evernote
+	password rejection by Evernote needs testing
+		TODO
 data access changes
 	remove the Credentials class
 		done

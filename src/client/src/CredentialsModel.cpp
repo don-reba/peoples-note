@@ -22,8 +22,8 @@ std::wstring CredentialsModel::GetStatus() const
 }
 
 void CredentialsModel::Set
-	( std::wstring username
-	, std::wstring password
+	( const std::wstring & username
+	, const std::wstring & password
 	)
 {
 	this->username = username;

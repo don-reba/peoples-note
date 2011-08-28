@@ -389,10 +389,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\Credentials.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\CredentialsModel.cpp"
 				>
 			</File>
@@ -564,6 +560,10 @@
 				RelativePath="..\client\src\WindowRenderer.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\client\src\WinException.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -575,11 +575,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
+				RelativePath=".\src\resourceppc.h"
 				>
 			</File>
 			<File

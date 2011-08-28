@@ -2,53 +2,48 @@
 #include "UserLoader.h"
 #include "MockLastUserModel.h"
 #include "MockNoteListView.h"
-#include "MockUserModel.h"
+#include "MockCredentialsModel.h"
 
 using namespace boost;
 using namespace std;
 
 struct UserLoaderFixture
 {
-	MockUserModel     userModel;
-	MockLastUserModel lastUserModel;
-	UserLoader        userLoader;
+	MockCredentialsModel credentialsModel;
+	MockLastUserModel    lastUserModel;
 
-	UserLoaderFixture() : userLoader(userModel, lastUserModel) {}
+	UserLoader userLoader;
+
+	UserLoaderFixture()
+		: userLoader(credentialsModel, lastUserModel)
+	{
+	}
 };
 
 BOOST_FIXTURE_TEST_CASE
-	( UserLoader_DefaultUser_Test
+	( UserLoader_Run
 	, UserLoaderFixture
 	)
 {
+	lastUserModel.username = L"username";
+	lastUserModel.password = L"password";
+
 	userLoader.Run();
 
-	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadOrCreate);
-	BOOST_CHECK_EQUAL(userModel.loadedAs, L"[anonymous]");
+	BOOST_CHECK_EQUAL(credentialsModel.username, L"username");
+	BOOST_CHECK_EQUAL(credentialsModel.password, L"password");
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( UserLoader_Test
+	( UserLoader_Commit
 	, UserLoaderFixture
 	)
 {
-	lastUserModel.username = L"test-usr";
+	credentialsModel.username = L"username";
+	credentialsModel.password = L"password";
 
-	userLoader.Run();
+	credentialsModel.Commit();
 
-	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoad);
-
-	BOOST_CHECK_EQUAL(userModel.loadedAs, L"test-usr");
-}
-
-BOOST_FIXTURE_TEST_CASE
-	( UserLoader_Anonymous_Test
-	, UserLoaderFixture
-	)
-{
-	userLoader.Run();
-
-	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadOrCreate);
-
-	BOOST_CHECK_EQUAL(userModel.loadedAs, L"[anonymous]");
+	BOOST_CHECK_EQUAL(lastUserModel.username, L"username");
+	BOOST_CHECK_EQUAL(lastUserModel.password, L"password");
 }

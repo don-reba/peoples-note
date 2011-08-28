@@ -9,6 +9,10 @@
 
 using namespace std;
 
+//-----------------------
+// auxilliary definitions
+//-----------------------
+
 struct NotebookProcessorFixture
 {
 	MockUserModel userModel;
@@ -20,6 +24,10 @@ struct NotebookProcessorFixture
 	{
 	}
 };
+
+//-----------
+// test cases
+//-----------
 
 BOOST_FIXTURE_TEST_CASE(NotebookProcessor_AddLocal_Test, NotebookProcessorFixture)
 {

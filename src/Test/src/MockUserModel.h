@@ -67,7 +67,8 @@ public:
 
 public:
 
-	Credentials credentials;
+	std::wstring password;
+	std::wstring username;
 
 	Guid defaultNotebook;
 	Guid lastUsedNotebook;
@@ -162,8 +163,6 @@ public:
 
 	virtual void ExpungeTag(const Guid & tag);
 
-	virtual void GetCredentials(Credentials & credentials);
-
 	virtual void GetDefaultNotebook(Notebook & notebook);
 
 	virtual void GetDeletedNotes(GuidList & notes);
@@ -221,6 +220,8 @@ public:
 
 	virtual std::wstring GetPath();
 
+	virtual std::wstring GetPassword();
+
 	virtual void GetResource
 		( const std::string & hash
 		, Blob              & blob
@@ -234,6 +235,8 @@ public:
 	virtual __int64 GetSize();
 
 	virtual int GetSyncVersion();
+
+	virtual std::wstring GetUsername();
 
 	virtual void GetTags(TagList & tags);
 

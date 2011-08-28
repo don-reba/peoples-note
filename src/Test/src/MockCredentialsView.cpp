@@ -4,7 +4,9 @@
 using namespace std;
 
 MockCredentialsView::MockCredentialsView()
-	: isOpen (false)
+	: isOpen            (false)
+	, isPasswordFocused (false)
+	, isUsernameFocused (false)
 {
 }
 
@@ -41,6 +43,18 @@ wstring MockCredentialsView::GetUsername() const
 void MockCredentialsView::Open()
 {
 	isOpen = true;
+}
+
+void MockCredentialsView::SetFocusToPassword()
+{
+	isPasswordFocused = true;
+	isUsernameFocused = false;
+}
+
+void MockCredentialsView::SetFocusToUsername()
+{
+	isPasswordFocused = false;
+	isUsernameFocused = true;
 }
 
 void MockCredentialsView::SetMessage(const wstring & message)

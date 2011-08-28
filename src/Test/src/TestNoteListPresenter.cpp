@@ -99,8 +99,6 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.notes.at(2).value,   L"{2}");
 	BOOST_CHECK_EQUAL(noteListView.notes.at(2).isDirty, false);
 
-	BOOST_CHECK_EQUAL(noteListView.syncText, L"2");
-
 	BOOST_CHECK(noteListView.isPageDownVisible);
 	BOOST_CHECK(!noteListView.isPageUpVisible);
 }

@@ -3,12 +3,21 @@
 
 using namespace std;
 
-wstring MockLastUserModel::GetUsername()
+wstring MockLastUserModel::GetPassword() const
+{
+	return password;
+}
+
+wstring MockLastUserModel::GetUsername() const
 {
 	return username;
 }
 
-void MockLastUserModel::SetUsername(const wstring & username)
+void MockLastUserModel::SetCredentials
+	( const wstring & username
+	, const wstring & password
+	)
 {
 	this->username = username;
+	this->password = password;
 }

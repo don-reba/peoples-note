@@ -13,6 +13,10 @@
 using namespace boost;
 using namespace std;
 
+//-----------------------
+// auxilliary definitions
+//-----------------------
+
 struct SyncModelFixture
 {
 	EnNoteTranslator enNoteTranslator;
@@ -35,6 +39,10 @@ struct SyncModelFixture
 		enService.userStore->authenticationResult.IsGood = true;
 	}
 };
+
+//-----------
+// test cases
+//-----------
 
 BOOST_FIXTURE_TEST_CASE(SyncModel_Test, SyncModelFixture)
 {

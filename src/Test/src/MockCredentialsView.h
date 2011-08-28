@@ -10,6 +10,9 @@ public:
 	std::wstring password;
 	std::wstring username;
 
+	bool isPasswordFocused;
+	bool isUsernameFocused;
+
 	signal SignalCancel;
 	signal SignalCreated;
 	signal SignalOk;
@@ -35,6 +38,10 @@ public:
 	virtual std::wstring GetUsername() const;
 
 	virtual void Open();
+
+	virtual void SetFocusToPassword();
+
+	virtual void SetFocusToUsername();
 
 	virtual void SetMessage(const std::wstring & message);
 

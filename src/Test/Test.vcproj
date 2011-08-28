@@ -183,10 +183,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\Credentials.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\CredentialsModel.cpp"
 				>
 			</File>
@@ -613,6 +609,10 @@
 			</File>
 			<File
 				RelativePath="..\client\src\VoiceEditorPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\WinException.cpp"
 				>
 			</File>
 		</Filter>

@@ -9,6 +9,10 @@
 
 using namespace std;
 
+//-----------------------
+// auxilliary definitions
+//-----------------------
+
 struct NotePresenterFixture
 {
 	EnNoteTranslator enNoteTranslator;
@@ -30,6 +34,10 @@ struct NotePresenterFixture
 	{
 	}
 };
+
+//-----------
+// test cases
+//-----------
 
 BOOST_FIXTURE_TEST_CASE
 	( NotePresenter_CloseNote

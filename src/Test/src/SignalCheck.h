@@ -13,4 +13,6 @@ public:
 	void operator () () { signalled = true; }
 
 	operator bool() const { return signalled; }
+
+	void Reset() { signalled = false; }
 };

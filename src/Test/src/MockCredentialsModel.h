@@ -4,10 +4,15 @@
 
 class MockCredentialsModel : public ICredentialsModel
 {
+	MacroTestEvent(Commit)
+	MacroTestEvent(Set)
+	MacroTestEvent(Update)
+
 public:
 	
 	std::wstring username;
 	std::wstring password;
+	std::wstring status;
 
 	signal SignalUpdated;
 	signal SignalUpdating;
@@ -16,22 +21,20 @@ public:
 
 	MockCredentialsModel();
 
-	MockCredentialsModel
-		( std::wstring username
-		, std::wstring password
-		);
-
 public:
 
-	virtual void ConnectUpdated(slot_type OnUpdated);
-
-	virtual void ConnectUpdating(slot_type OnUpdating);
+	virtual void Commit();
 	
 	virtual std::wstring GetUsername() const;
 
 	virtual std::wstring GetPassword() const;
 
-	virtual void SetCredentials(std::wstring username, std::wstring password);
+	virtual std::wstring GetStatus() const;
 
-	virtual void Update();
+	virtual void Set
+		( const std::wstring & username
+		, const std::wstring & password
+		);
+
+	virtual void Update(const std::wstring & status);
 };

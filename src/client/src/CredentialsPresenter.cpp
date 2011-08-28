@@ -60,12 +60,8 @@ void CredentialsPresenter::OnUpdate()
 void CredentialsPresenter::OnViewCreated()
 {
 	wstring username(credentialsModel.GetUsername());
-	wstring password(credentialsModel.GetPassword());
-	if (username.empty() || username == L"[anonymous]")
-	{
+	if (username == L"[anonymous]")
 		username = L"";
-		password = L"";
-	}
 	credentialsView.SetUsername(username);
-	credentialsView.SetPassword(password);
+	credentialsView.SetPassword(L"");
 }

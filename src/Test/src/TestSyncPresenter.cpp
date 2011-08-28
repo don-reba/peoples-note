@@ -29,10 +29,10 @@ BOOST_FIXTURE_TEST_CASE
 	, SyncPresenterFixture
 	)
 {
-	userModel.credentials.SetUsername(L"test-usr");
+	userModel.username = L"username";
 
 	noteListView.SignalSync();
 
 	BOOST_CHECK(syncModel.syncBegan);
-	BOOST_CHECK_EQUAL(syncModel.username, L"test-usr");
+	BOOST_CHECK_EQUAL(syncModel.username, L"username");
 }

@@ -5,22 +5,31 @@
 using namespace boost;
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(LastUserModel_Get_Test)
+struct LastUserModelFixture
 {
-	MockRegistryKey key;
-	LastUserModel   lastUserModel(key);
+	MockRegistryKey registryKey;
 
-	key.SetString(L"username", L"test-usr");
+	LastUserModel lastUserModel;
 
-	BOOST_CHECK_EQUAL(lastUserModel.GetUsername(), L"test-usr");
+	LastUserModelFixture()
+		: lastUserModel(registryKey)
+	{
+	}
+};
+
+BOOST_FIXTURE_TEST_CASE(LastUserModel_Get, LastUserModelFixture)
+{
+	registryKey.SetString(L"password", L"password");
+	registryKey.SetString(L"username", L"username");
+
+	BOOST_CHECK_EQUAL(lastUserModel.GetUsername(), L"username");
+	BOOST_CHECK_EQUAL(lastUserModel.GetPassword(), L"password");
 }
 
-BOOST_AUTO_TEST_CASE(LastUserModel_Set_Test)
+BOOST_FIXTURE_TEST_CASE(LastUserModel_Set, LastUserModelFixture)
 {
-	MockRegistryKey key;
-	LastUserModel   lastUserModel(key);
+	lastUserModel.SetCredentials(L"username", L"password");
 
-	lastUserModel.SetUsername(L"test-usr");
-
-	BOOST_CHECK_EQUAL(key.GetString(L"username", L""), L"test-usr");
+	BOOST_CHECK_EQUAL(registryKey.GetString(L"username", L""), L"username");
+	BOOST_CHECK_EQUAL(registryKey.GetString(L"password", L""), L"password");
 }

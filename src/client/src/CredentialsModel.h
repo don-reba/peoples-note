@@ -25,8 +25,8 @@ public:
 	virtual std::wstring GetStatus() const;
 
 	virtual void Set
-		( std::wstring username
-		, std::wstring password
+		( const std::wstring & username
+		, const std::wstring & password
 		);
 
 	virtual void Update(const std::wstring & status);

@@ -122,8 +122,8 @@ BOOST_FIXTURE_TEST_CASE
 	profileView.isShown = false;
 	userModel.location  = DbLocationDevice;
 
-	userModel.credentials.SetUsername(L"username");
-	userModel.credentials.SetPassword(L"password");
+	userModel.username = L"username";
+	userModel.password = L"password";
 
 	userModel.path = L"db-path";
 	userModel.size = 235;

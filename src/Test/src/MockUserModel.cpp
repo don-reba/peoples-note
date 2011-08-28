@@ -108,11 +108,6 @@ void MockUserModel::ExpungeTag(const Guid & tag)
 	expungedTags.push_back(tag);
 }
 
-void MockUserModel::GetCredentials(Credentials & credentials)
-{
-	credentials = this->credentials;
-}
-
 void MockUserModel::GetDefaultNotebook(Notebook & notebook)
 {
 	notebook.guid = defaultNotebook;
@@ -273,6 +268,11 @@ wstring MockUserModel::GetPath()
 	return path;
 }
 
+wstring MockUserModel::GetPassword()
+{
+	return password;
+}
+
 void MockUserModel::GetResource
 	( const string & hash
 	, Blob         & blob
@@ -312,6 +312,11 @@ void MockUserModel::GetTags(TagList & tags)
 int MockUserModel::GetUpdateCount()
 {
 	return updateCount;
+}
+
+wstring MockUserModel::GetUsername()
+{
+	return username;
 }
 
 int MockUserModel::GetVersion()
@@ -398,8 +403,8 @@ void MockUserModel::SetCredentials
 		, const wstring & password
 		)
 {
-	credentials.SetUsername(username);
-	credentials.SetPassword(password);
+	this->username = username;
+	this->password = password;
 }
 
 void MockUserModel::SetLastSyncEnTime(__int64 enTime)

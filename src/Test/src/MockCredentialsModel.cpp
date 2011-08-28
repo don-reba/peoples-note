@@ -7,46 +7,38 @@ MockCredentialsModel::MockCredentialsModel()
 {
 }
 
-MockCredentialsModel::MockCredentialsModel
-	( wstring username
-	, wstring password
-	)
-	: username (username)
-	, password (password)
+void MockCredentialsModel::Commit()
 {
+	SignalCommit();
 }
 
-void MockCredentialsModel::ConnectUpdated(slot_type OnUpdated)
-{
-	SignalUpdated.connect(OnUpdated);
-}
-
-void  MockCredentialsModel::ConnectUpdating(slot_type OnUpdating)
-{
-	SignalUpdating.connect(OnUpdating);
-}
-
-std::wstring MockCredentialsModel::GetUsername() const
+wstring MockCredentialsModel::GetUsername() const
 {
 	return username;
 }
 
-std::wstring MockCredentialsModel::GetPassword() const
+wstring MockCredentialsModel::GetPassword() const
 {
 	return password;
 }
 
-void MockCredentialsModel::SetCredentials
-	( std::wstring username
-	, std::wstring password
+wstring MockCredentialsModel::GetStatus() const
+{
+	return status;
+}
+
+void MockCredentialsModel::Set
+	( const wstring & username
+	, const wstring & password
 	)
 {
 	this->username = username;
 	this->password = password;
-	SignalUpdated();
+	SignalSet();
 }
 
-void MockCredentialsModel::Update()
+void MockCredentialsModel::Update(const wstring & status)
 {
-	SignalUpdating();
+	this->status = status;
+	SignalUpdate();
 }
