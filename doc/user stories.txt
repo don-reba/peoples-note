@@ -1,13 +1,11 @@
 user management
 	√ when the program starts, the last user is loaded
-	√ when there is no last user, the anonymous user is loaded
-	√ when the anonymous user is not available, create him
-	√ when the anonymous user is loaded, the menu should contain a "sign in" option
-	√ when a named user is loaded, the menu should contain a "sign out" option
-	√ when the user signs in, the anonymous account is unloaded
-	√ when signing into an existing account, load the new account
-	√ when signing into a new account, rename the anonymous account
-	when the program is closed, the user name is stored in the registry
+	√ when username is unspecified, the anonymous user is loaded
+	√ when the anonymous user is not available, he is created
+	√ when an existing user is loaded, his password is checked against the database
+	√ when a new user is loaded, the password is checked with Evernote
+		√ if no valid password is provided, another should be requested
+	√ when a new user is loaded and the anonymous user is signed in, the anonymous user is converted to the new user
 sign in window
 	√ when the window is displayed, the user should be able to enter username and password, accept, or cancel
 	√ when the user chooses to accept, the username and password should be verified
@@ -16,12 +14,14 @@ sign in window
 	√ when the user presses "enter" in the username field, the focus should move to the password field
 	√ when the user presses "enter" in the password field, signing in should be attempted
 	√ when the user presses "esc", signing in should be cancelled
+	when signing in is attempted, the credentials are set to ones entered
+	when signing in is cancelled, the credentials are unmodified
 note creation
 	√ when the user clicks the new-text button, a text note creation screen should be displayed
-	when the user clicks the new-ink button, an ink note creation screen should be displayed
-	when the user clicks the new-voice button, audio recording should start
+	√ when the user clicks the new-ink button, an ink note creation screen should be displayed
+	√ when the user clicks the new-voice button, audio recording should start
 		the audio should be compressed
-	when the user clicks the new-photo button, the camera should be activated
+	√ when the user clicks the new-photo button, the camera should be activated
 	√ when a note is created, it should be added to the note list and persisted
 	√ when creation is aborted, no note should be created
 sync
@@ -63,6 +63,9 @@ note list paging
 	√ when a previous page is available, the "earlier notes" link should be added to the beginning of the list
 	√ when the "later notes" link is clicked, the next page should be set as the note list
 	√ when the "earlier notes" link is clicked, the previous page should be set as the note list
+note list menu
+	√ when the anonymous user is loaded, the menu should contain a "sign in" option
+	√ when a named user is loaded, the menu should contain a "sign out" option
 note view
 	√ when the user signs in, the list of notebooks should be filled in
 	√ when the user clicks a TODO checkbox, the checkbox should be toggled

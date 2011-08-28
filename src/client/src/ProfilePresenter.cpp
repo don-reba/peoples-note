@@ -77,7 +77,7 @@ void ProfilePresenter::OnProfile()
 	SetDbPath(userModel.GetPath());
 	SetDbSize(userModel.GetSize());
 	SetMoveButtonText(userModel.GetLocation());
-	SetUsername(credentials.GetUsername());
+	SetUsername(credentials.Username);
 
 	if (!flashCard.Exists())
 		profileView.DisableMoveButton();

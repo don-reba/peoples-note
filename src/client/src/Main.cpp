@@ -152,7 +152,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		EnService enService(logger);
 
-		CredentialsModel newCredentials;
+		CredentialsModel credentialsModel;
 		InkEditorModel   inkEditorModel(registryKey);
 		LastUserModel    lastUserModel(registryKey);
 		PhotoEditorModel photoEditorModel(registryKey);
@@ -186,9 +186,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, noteListView
 			);
 		CredentialsPresenter credentialsPresenter
-			( newCredentials
+			( credentialsModel
 			, credentialsView
-			, enService
 			);
 		EditorPresenter editorPresenter
 			( editorView
@@ -256,11 +255,12 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			);
 		UserLoader userLoader
-			( userModel
+			( credentialsModel
 			, lastUserModel
 			);
 		UserSignInPresenter userSignInPresenter
-			( newCredentials
+			( credentialsModel
+			, enService
 			, noteListView
 			, userModel
 			);
@@ -285,7 +285,6 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		userLoader.Run();
 		int result(RunMessageLoop(animator, syncModel));
-		userLoader.Save();
 
 		syncModel.StopSync();
 

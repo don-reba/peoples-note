@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "CredentialsModel.h"
 
+void CredentialsModel::Commit()
+{
+	SignalCommit();
+}
 
 std::wstring CredentialsModel::GetUsername() const
 {
@@ -12,17 +16,23 @@ std::wstring CredentialsModel::GetPassword() const
 	return password;
 }
 
-void CredentialsModel::SetCredentials
+std::wstring CredentialsModel::GetStatus() const
+{
+	return status;
+}
+
+void CredentialsModel::Set
 	( std::wstring username
 	, std::wstring password
 	)
 {
 	this->username = username;
 	this->password = password;
-	SignalUpdated();
+	SignalSet();
 }
 
-void CredentialsModel::Update()
+void CredentialsModel::Update(const std::wstring & status)
 {
-	SignalUpdating();
+	this->status = status;
+	SignalUpdate();
 }

@@ -1,7 +1,7 @@
 #pragma once
-
 #include "ILastUserModel.h"
-#include "IRegistryKey.h"
+
+class IRegistryKey;
 
 class LastUserModel : public ILastUserModel
 {
@@ -13,7 +13,12 @@ public:
 
 	LastUserModel(IRegistryKey & registryKey);
 
-	virtual std::wstring GetUsername();
+	virtual std::wstring GetPassword() const;
 
-	virtual void SetUsername(const std::wstring & username);
+	virtual std::wstring GetUsername() const;
+
+	virtual void SetCredentials
+		( const std::wstring & username
+		, const std::wstring & password
+		);
 };

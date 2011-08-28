@@ -9,37 +9,27 @@ using namespace boost;
 using namespace std;
 
 UserLoader::UserLoader
-	( IUserModel     & userModel
-	, ILastUserModel & lastUserModel
+	( ICredentialsModel & credentialsModel
+	, ILastUserModel    & lastUserModel
 	)
-	: userModel     (userModel)
-	, lastUserModel (lastUserModel)
+	: credentialsModel (credentialsModel)
+	, lastUserModel    (lastUserModel)
 {
+	credentialsModel.ConnectCommit(bind(&UserLoader::OnCommit, this));
 }
 
 void UserLoader::Run()
 {
-	const wstring & username(lastUserModel.GetUsername());
-	if (username.empty())
-	{
-		userModel.LoadOrCreate(L"[anonymous]");
-	}
-	else
-	{
-		try
-		{
-			userModel.Load(username);
-		}
-		catch (const std::exception &)
-		{
-			userModel.LoadOrCreate(L"[anonymous]");
-		}
-	}
+	credentialsModel.Set
+		( lastUserModel.GetUsername()
+		, lastUserModel.GetPassword()
+		);
 }
 
-void UserLoader::Save()
+void UserLoader::OnCommit()
 {
-	Credentials credentials;
-	userModel.GetCredentials(credentials);
-	lastUserModel.SetUsername(credentials.GetUsername());
+	lastUserModel.SetCredentials
+		( credentialsModel.GetUsername()
+		, credentialsModel.GetPassword()
+		);
 }

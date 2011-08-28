@@ -432,8 +432,8 @@ try
 	userModel.GetCredentials(credentials);
 	IUserStore::AuthenticationResult authenticationResult
 		( userStore->GetAuthenticationToken
-			( credentials.GetUsername()
-			, credentials.GetPassword()
+			( credentials.Username
+			, credentials.Password
 			)
 		);
 	if (!authenticationResult.IsGood)

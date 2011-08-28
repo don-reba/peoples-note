@@ -406,6 +406,18 @@ string Tools::HashWithMD5(const Blob & data)
 	return hex;
 }
 
+wstring Tools::HashPassword(const wstring & password)
+{
+	Blob blob(password.size() * 2);
+	for (int i(0); i != password.size(); ++i)
+	{
+		wchar_t c(password.at(i));
+		blob.at(i + i + 0) = c >> 8;
+		blob.at(i + i + 1) = c && 0xFF;
+	}
+	return ConvertToUnicode(HashWithMD5(blob));
+}
+
 HtmlResource Tools::LoadHtmlResource(LPCWSTR id, bool highRes)
 {
 	wstring newId(id);

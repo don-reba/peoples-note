@@ -23,6 +23,7 @@ InkEditorView::InkEditorView(HINSTANCE instance)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
+	::ZeroMemory(&drawingBounds, sizeof(drawingBounds));
 }
 
 void InkEditorView::Create(HWND parent)

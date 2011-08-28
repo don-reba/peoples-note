@@ -1,23 +1,25 @@
 #pragma once
 
+class ICredentialsModel;
 class ILastUserModel;
-class IUserModel;
 
 class UserLoader
 {
 private:
 
-	IUserModel     & userModel;
-	ILastUserModel & lastUserModel;
+	ICredentialsModel & credentialsModel;
+	ILastUserModel    & lastUserModel;
 
 public:
 
 	UserLoader
-		( IUserModel     & userModel
-		, ILastUserModel & lastUserModel
+		( ICredentialsModel & credentialsModel
+		, ILastUserModel    & lastUserModel
 		);
 
 	void Run();
 
-	void Save();
+private:
+
+	void OnCommit();
 };

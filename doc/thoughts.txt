@@ -2902,7 +2902,6 @@ db profiling
 				perhaps, use map, instead of set
 			print out the queries
 			print out the stats
-	TODO
 note deletion
 	there seems to be no action for deletion of remote resources
 	it is not in the spec, either
@@ -3105,7 +3104,7 @@ too many notes get updated after changing default notebook
 		why is it zero?
 	TODO
 connections time out too early
-	TODO
+	fixed
 password stars can be the wrong colour
 	maybe they are not the wrong colour
 	maybe the user's font does not have the '•' symbol
@@ -3187,8 +3186,6 @@ need to check local note deletion
 	fixed
 need to improve the message on wrong password
 	done
-should not store password in the database!
-	TODO
 note titles
 	need to
 		add a menu option
@@ -3537,7 +3534,6 @@ I should add profiling to SqlStatement
 	ISqlStatement contains too many methods
 		not really
 		they cannot be routed through fewer methods
-	TODO
 should not load all notes on every reload
 	retrieval takes almost 5 seconds
 		but called once
@@ -3655,9 +3651,178 @@ note source URLs
 	if I do it via <a></a>, I won't need any special signals
 database does not move to the storage card
 	need a better error message
+		done
 	TODO
 why is DataStore destroyed 4 times?
 	some sort of debugging artifact
 	it is only destroyed twice
 	once per instance
 	as it should
+offline sign-in
+	current scheme
+		at sign-in
+			check credentials with Evernote
+			store in the credentials model
+			if the username is [anonymous]
+				open anonymous DB
+			else if the DB exixts
+				load it
+			else
+				rename [anonymous]
+				store credentials
+		at sync
+			password is loaded from DB
+	problems
+		new passwords not stored in DB
+		user might have been signing in with a changed password
+			try old password or delete DB
+		how is load failure signalled?
+	new design
+		at sign-in
+			if the username is [anonymous]
+				open anonymous DB
+			else if the DB exists
+				for older database
+					check password against the one stored
+				for newer database
+					hash password
+					check hash against the one stored
+			else
+				verify password
+				hash the password
+				create the database with that hash
+		at DB load
+			for older database
+				retrieve password
+				compute hash
+				store hash
+		at sync
+			try to authenticate
+			if can't show the sign-in box
+				with fixed username
+			if accepted, repeat
+			if cancelled, abort
+	the password is currently not stored in the registry
+		I should fix that
+	UserSignInPresenter has no view access
+		can't report errors
+		I could store credentials status in the model
+			and move all validation from CredentialsPresenter
+		sounds like a good idea
+		if UserSignInPresenter encounters a problem
+			call model update with a message
+		if a model needs to be updated
+			a view is shown with the message
+		if the view is already visible
+			the message is updated
+		if the user accepts the change
+			the model is modified
+			and UserSignInPresenter validates it
+			[x] the view is closed
+				but it should only close if validation fails
+				esentially, it should be closed when validation passes
+				can make status change an event
+		if the user cancels the change
+			the view is closed
+			the model is not modified
+			but that would lead to the dialog opening again
+			I could make a separate cancellation handler
+				to resolve any problems with it
+			what resolutions are there?
+				in case of singning in
+				make sure at least anonymous database is loaded
+				in case of password change, do nothing
+			this foes not affect the model
+			should the user manager handle the UI event, then?
+	problem
+		it is possible to start up without opening a database
+		happens when the dialog pops up at start and the user cancels
+		but then, the dialog should not pop up to begin with
+		it should not pop up for [anonymous]
+		but it pops up now, because the password is missing
+		it might also pop up if registry info is corrupted
+			which has to be accounted for
+		so, what happens, when I press cancel?
+			it should load the anonymous user
+		something should happen on cancel
+		the note list would get refereshed when a new database is loaded
+		the anonymous database should be loaded on cancelation
+			but I don't want to load it just in case beforehand
+			because loading time is very important
+		I could make a cancellation event
+			if no database is loaded, quit
+		TODO
+	what about sync
+		what if I can't authorize?
+		then I should ask for another password
+			and the username should be disabled
+		I could stop sync
+			on OK try again
+			on Cancel do nothing
+		maybe I should not ask for password when sync can't authorize
+		instead, I could add an option to change password from the profile
+		that might make more sense
+	rethinking
+		the outcome of accepting and rejecting depends on the context
+			the context of invocation
+		this should not happen
+		the dialog is strictly for signing in
+	problem
+		should be able to set focus to password
+	more thoughts
+		the dialog shows up in two situations
+			the user wants to sign in
+			stored credentials are invalid
+		the two could be unified by preloading the anonymous user
+		cancelling the dialog should leave everything as is
+		I should not unload the current database until I am sure I can load another
+		then I should be able to check password without unloading
+			the user model can't do this
+			it only has access to a single data store
+			should I create a new verifier class?
+			I would have to, if I don't want to unload the database
+			however, is this really a big deal?
+			just reload it on cancel
+	credentials model operations
+		reset on cancel
+			if I reset, then what is the point of loading anonymous?
+			anyway you put it, unloading just to check is a bad idea
+			wait...
+			why not always load anonymous on cancel?
+			we only sign in from the anonymous or on startup
+		commit on ok
+		set status to provide feedback
+		update to show the dialog
+	plan
+		load [anonymous] at startup
+		make sure the checks do not unload the database
+			add a password verification function
+		bad plan
+	other plan
+		try load last known user at startup
+			same as clicking OK in the dialog
+			set username/password
+		pop up a dialog with no message on signin
+		if something goes wrong, set a message
+			update <message>
+		on success close dialog
+			commit
+		load [anonymous] on cancel
+			set [anonymous]
+	credentials model operations
+		update
+			pop up dialog
+			display status message
+			could be empty
+		set
+			set credentials
+			try load
+		commit
+			close dialog
+	if the password is invalid, I might want to check with Evernote
+	TODO
+data access changes
+	remove the Credentials class
+		TODO
+	factor out database location
+		TODO

@@ -1,6 +1,7 @@
 #pragma once
 
 class ICredentialsModel;
+class IEnService;
 class INoteListView;
 class IUserModel;
 
@@ -8,20 +9,22 @@ class UserSignInPresenter
 {
 private:
 
-	ICredentialsModel & newCredentials;
+	ICredentialsModel & credentialsModel;
+	IEnService        & enService;
 	INoteListView     & noteListView;
 	IUserModel        & userModel;
 
 public:
 
 	UserSignInPresenter
-		( ICredentialsModel & newCredentials
+		( ICredentialsModel & credentialsModel
+		, IEnService        & enService
 		, INoteListView     & noteListView
 		, IUserModel        & userModel
 		);
 
 private:
 
-	void OnCredentialsUpdated();
+	void OnCredentialsSet();
 	void OnSignIn();
 };

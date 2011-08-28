@@ -237,6 +237,8 @@ private:
 
 	void MigrateFrom4To5();
 
+	void MigrateFrom5To6();
+
 	void Move
 		( const std::wstring & oldPath
 		, const std::wstring & newPath

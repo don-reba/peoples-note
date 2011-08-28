@@ -33,6 +33,8 @@ namespace Tools
 
 	std::string HashWithMD5(const Blob & data);
 
+	std::wstring HashPassword(const std::wstring & password);
+
 	HtmlResource LoadHtmlResource(LPCWSTR id, bool highRes);
 
 	std::wstring LoadStringResource(int id);

@@ -61,6 +61,9 @@ wstring CredentialsView::GetUsername() const
 
 void CredentialsView::Open()
 {
+	if (NULL != hwnd_)
+		return;
+
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_CREDENTIALS_VIEW);
 

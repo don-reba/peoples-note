@@ -30,5 +30,5 @@ void SyncPresenter::OnSync()
 	Credentials credentials;
 	userModel.GetCredentials(credentials);
 
-	syncModel.BeginSync(credentials.GetUsername());
+	syncModel.BeginSync(credentials.Username);
 }

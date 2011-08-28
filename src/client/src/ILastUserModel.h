@@ -1,14 +1,17 @@
 #pragma once
 
-class ICredentialsModel;
-
 class ILastUserModel
 {
 public:
 
 	virtual ~ILastUserModel() {}
 
-	virtual std::wstring GetUsername() = 0;
+	virtual std::wstring GetPassword() const = 0;
 
-	virtual void SetUsername(const std::wstring & username) = 0;
+	virtual std::wstring GetUsername() const = 0;
+
+	virtual void SetCredentials
+		( const std::wstring & username
+		, const std::wstring & password
+		) = 0;
 };

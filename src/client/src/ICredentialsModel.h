@@ -4,19 +4,24 @@
 
 class ICredentialsModel : public ISignalProvider
 {
-	MacroIEvent(Updated)
-	MacroIEvent(Updating)
+	MacroIEvent(Commit)
+	MacroIEvent(Set)
+	MacroIEvent(Update)
 
 public:
+
+	virtual void Commit() = 0;
 	
 	virtual std::wstring GetUsername() const = 0;
 
 	virtual std::wstring GetPassword() const = 0;
 
-	virtual void SetCredentials
+	virtual std::wstring GetStatus() const = 0;
+
+	virtual void Set
 		( std::wstring username
 		, std::wstring password
 		) = 0;
 
-	virtual void Update() = 0;
+	virtual void Update(const std::wstring & status) = 0;
 };

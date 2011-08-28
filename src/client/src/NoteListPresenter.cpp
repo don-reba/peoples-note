@@ -188,9 +188,8 @@ void NoteListPresenter::OnUserLoaded()
 
 	Credentials credentials;
 	userModel.GetCredentials(credentials);
-	wstring username(credentials.GetUsername());
 
-	if (username == L"[anonymous]")
+	if (credentials.Username == L"[anonymous]")
 	{
 		noteListView.SetProfileText(L"Profile");
 		noteListView.SetSigninText(L"Sign in");
@@ -198,7 +197,7 @@ void NoteListPresenter::OnUserLoaded()
 	}
 	else
 	{
-		noteListView.SetProfileText(username);
+		noteListView.SetProfileText(credentials.Username);
 		noteListView.SetSigninText(L"Sign out");
 		noteListView.ShowSyncButton();
 	}

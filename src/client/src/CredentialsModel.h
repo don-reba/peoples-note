@@ -4,24 +4,30 @@
 
 class CredentialsModel : public ICredentialsModel
 {
-	MacroEvent(Updated)
-	MacroEvent(Updating)
+	MacroEvent(Commit)
+	MacroEvent(Set)
+	MacroEvent(Update)
 
 private:
 
 	std::wstring username;
 	std::wstring password;
+	std::wstring status;
 
 public:
+
+	virtual void Commit();
 	
 	virtual std::wstring GetUsername() const;
 
 	virtual std::wstring GetPassword() const;
 
-	virtual void SetCredentials
+	virtual std::wstring GetStatus() const;
+
+	virtual void Set
 		( std::wstring username
 		, std::wstring password
 		);
 
-	virtual void Update();
+	virtual void Update(const std::wstring & status);
 };
