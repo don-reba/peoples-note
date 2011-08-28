@@ -3820,9 +3820,8 @@ offline sign-in
 		commit
 			close dialog
 	if the password is invalid, I might want to check with Evernote
-	TODO
 data access changes
 	remove the Credentials class
-		TODO
+		done
 	factor out database location
 		TODO

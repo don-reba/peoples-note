@@ -6,6 +6,7 @@
 #include "AudioPlayer.h"
 #include "AudioRecorder.h"
 #include "CredentialsPresenter.h"
+#include "CredentialsModel.h"
 #include "CredentialsView.h"
 #include "DataStore.h"
 #include "EditorPresenter.h"

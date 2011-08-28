@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Blob.h"
-#include "Credentials.h"
 #include "DbLocation.h"
 #include "ISignalProvider.h"
 #include "Guid.h"
@@ -11,8 +10,6 @@
 #include "Resource.h"
 #include "Tag.h"
 #include "Thumbnail.h"
-
-class ICredentialsModel;
 
 class IUserModel : public ISignalProvider
 {
@@ -58,7 +55,9 @@ public:
 
 	virtual void ExpungeTag(const Guid & tag) = 0;
 
-	virtual void GetCredentials(Credentials & credentials) = 0;
+	virtual std::wstring GetPassword() = 0;
+
+	virtual std::wstring GetUsername() = 0;
 
 	virtual void GetDefaultNotebook(Notebook & notebook) = 0;
 

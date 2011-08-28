@@ -886,10 +886,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Credentials.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\CredentialsModel.h"
 				>
 			</File>

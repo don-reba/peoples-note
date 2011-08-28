@@ -428,12 +428,10 @@ try
 	PostTextMessage(L"Connecting...");
 
 	IEnService::UserStorePtr userStore(enService.GetUserStore());
-	Credentials credentials;
-	userModel.GetCredentials(credentials);
 	IUserStore::AuthenticationResult authenticationResult
 		( userStore->GetAuthenticationToken
-			( credentials.Username
-			, credentials.Password
+			( userModel.GetUsername()
+			, userModel.GetPassword()
 			)
 		);
 	if (!authenticationResult.IsGood)

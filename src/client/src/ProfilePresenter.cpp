@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ProfilePresenter.h"
 
-#include "Credentials.h"
 #include "IFlashCard.h"
 #include "IProfileView.h"
 #include "INoteListView.h"
@@ -71,13 +70,10 @@ void ProfilePresenter::OnProfile()
 {
 	profileView.Show();
 
-	Credentials credentials;
-	userModel.GetCredentials(credentials);
-
 	SetDbPath(userModel.GetPath());
 	SetDbSize(userModel.GetSize());
 	SetMoveButtonText(userModel.GetLocation());
-	SetUsername(credentials.Username);
+	SetUsername(userModel.GetUsername());
 
 	if (!flashCard.Exists())
 		profileView.DisableMoveButton();

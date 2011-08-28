@@ -433,14 +433,18 @@ void UserModel::ExpungeTag(const Guid & tag)
 	statement->Execute();
 }
 
-void UserModel::GetCredentials(Credentials & credentials)
+wstring UserModel::GetPassword()
 {
 	wstring password;
-	wstring username;
 	GetProperty(L"password", password);
+	return password;
+}
+
+wstring UserModel::GetUsername()
+{
+	wstring username;
 	GetProperty(L"username", username);
-	credentials.Password = password;
-	credentials.Username = username;
+	return username;
 }
 
 void UserModel::GetDefaultNotebook(Notebook & notebook)

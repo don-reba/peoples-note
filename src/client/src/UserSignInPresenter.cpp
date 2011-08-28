@@ -59,10 +59,7 @@ try
 	{
 		userModel.Load(username);
 
-		Credentials credentials;
-		userModel.GetCredentials(credentials);
-
-		if (HashPassword(password) == credentials.Password)
+		if (HashPassword(password) == userModel.GetPassword())
 		{
 			credentialsModel.Commit();
 		}

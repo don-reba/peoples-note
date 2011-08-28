@@ -1,8 +1,6 @@
 #pragma once
 #include "IUserModel.h"
 
-#include "CredentialsModel.h"
-
 class IDataStore;
 class IFlashCard;
 
@@ -78,7 +76,9 @@ public:
 
 	virtual void ExpungeTag(const Guid & tag);
 
-	virtual void GetCredentials(Credentials & credentials);
+	virtual std::wstring GetPassword();
+
+	virtual std::wstring GetUsername();
 
 	virtual void GetDefaultNotebook(Notebook & notebook);
 
