@@ -1,5 +1,4 @@
 #pragma once
-
 #include "ISyncModel.h"
 
 #include "EnInteropNote.h"
@@ -53,6 +52,9 @@ private:
 	ILogger          & logger;
 	IUserModel       & userModel;
 
+	std::wstring username;
+	std::wstring password;
+
 	HANDLE syncThread;
 
 	CRITICAL_SECTION lock;
@@ -86,7 +88,10 @@ public:
 
 public:
 
-	virtual void BeginSync(const std::wstring & username);
+	virtual void BeginSync
+		( const std::wstring & username
+		, const std::wstring & password
+		);
 
 	virtual const wchar_t * GetStatusText();
 

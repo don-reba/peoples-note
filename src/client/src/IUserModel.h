@@ -55,7 +55,7 @@ public:
 
 	virtual void ExpungeTag(const Guid & tag) = 0;
 
-	virtual std::wstring GetPassword() = 0;
+	virtual std::wstring GetPasswordHash() = 0;
 
 	virtual std::wstring GetUsername() = 0;
 

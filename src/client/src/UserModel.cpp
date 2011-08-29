@@ -433,7 +433,7 @@ void UserModel::ExpungeTag(const Guid & tag)
 	statement->Execute();
 }
 
-wstring UserModel::GetPassword()
+wstring UserModel::GetPasswordHash()
 {
 	wstring password;
 	GetProperty(L"password", password);
@@ -1279,6 +1279,7 @@ void UserModel::Initialize(wstring name)
 			")"
 		)->Execute();
 	SetProperty(L"version",      dbVersion);
+	SetProperty(L"syncVersion",  dbVersion);
 	SetProperty(L"username",     name);
 	SetProperty(L"password",     L"");
 	SetProperty(L"lastSyncTime", 0);

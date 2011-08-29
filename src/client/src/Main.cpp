@@ -253,7 +253,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		SyncPresenter syncPresenter
 			( noteListView
 			, syncModel
-			, userModel
+			, lastUserModel
 			);
 		UserLoader userLoader
 			( credentialsModel

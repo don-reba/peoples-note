@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Notebook.h"
-
 class INoteListView;
 class ISyncModel;
-class IUserModel;
+class ILastUserModel;
 
 class SyncPresenter
 {
@@ -12,14 +10,14 @@ private:
 
 	INoteListView  & noteListView;
 	ISyncModel     & syncModel;
-	IUserModel     & userModel;
+	ILastUserModel & lastUserModel;
 
 public:
 
 	SyncPresenter::SyncPresenter
 		( INoteListView  & noteListView
 		, ISyncModel     & syncModel
-		, IUserModel     & userModel
+		, ILastUserModel & lastUserModel
 		);
 
 private:

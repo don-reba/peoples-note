@@ -347,11 +347,13 @@ void NoteStore::ConvertToEnNote
 	, EDAM::Type::Note & enNote
 	)
 {
+	enNote.__isset.guid         = true;
 	enNote.__isset.title        = true;
 	enNote.__isset.created      = true;
 	enNote.__isset.content      = true;
 	enNote.__isset.notebookGuid = true;
 
+	enNote.guid         = ConvertToUnicode(note.guid);
 	enNote.title        = note.name;
 	enNote.created      = ConvertToEnTime(note.creationDate);
 	enNote.updated      = ConvertToEnTime(note.modificationDate);
@@ -406,12 +408,12 @@ void NoteStore::ConvertFromEnNotebook
 	, Notebook                   & notebook
 	)
 {
-		notebook.guid             = enNotebook.guid;
-		notebook.name             = enNotebook.name;
-		notebook.CreationDate     = ConvertFromEnTime(enNotebook.serviceCreated);
-		notebook.ModificationDate = ConvertFromEnTime(enNotebook.serviceUpdated);
-		notebook.usn              = enNotebook.updateSequenceNum;
-		notebook.isDirty          = false;
+	notebook.guid             = enNotebook.guid;
+	notebook.name             = enNotebook.name;
+	notebook.CreationDate     = ConvertFromEnTime(enNotebook.serviceCreated);
+	notebook.ModificationDate = ConvertFromEnTime(enNotebook.serviceUpdated);
+	notebook.usn              = enNotebook.updateSequenceNum;
+	notebook.isDirty          = false;
 }
 
 void NoteStore::ConvertToEnNotebook
@@ -487,61 +489,64 @@ void NoteStore::ConvertToEnResource
 	, EDAM::Type::Resource & enResource
 	)
 {
-		enResource.__isset.data = true;
-		enResource.data.__isset.body = true;
-		enResource.data.__isset.size = true;
+	enResource.__isset.guid = true;
+	enResource.guid = ConvertToUnicode(resource.Guid);
 
-		copy
-			( resource.Data.begin()
-			, resource.Data.end()
-			, back_inserter(enResource.data.body)
-			);
-		enResource.data.size = resource.Data.size();
+	enResource.__isset.data = true;
+	enResource.data.__isset.body = true;
+	enResource.data.__isset.size = true;
 
-		enResource.__isset.mime = true;
-		enResource.mime = L"image/jpeg";
+	copy
+		( resource.Data.begin()
+		, resource.Data.end()
+		, back_inserter(enResource.data.body)
+		);
+	enResource.data.size = resource.Data.size();
 
-		if (resource.Dimensions.IsValid)
-		{
-			enResource.__isset.width  = true;
-			enResource.__isset.height = true;
-			enResource.width  = resource.Dimensions.Width;
-			enResource.height = resource.Dimensions.Height;
-		}
-		if (!resource.SourceUrl.empty())
-		{
-			enResource.__isset.attributes = true;
-			enResource.attributes.__isset.sourceURL = true;
-			enResource.attributes.sourceURL = resource.SourceUrl;
-		}
-		if (resource.Timestamp.GetTime() != 0)
-		{
-			enResource.__isset.attributes = true;
-			enResource.attributes.__isset.timestamp = true;
-			enResource.attributes.timestamp = ConvertToEnTime(resource.Timestamp);
-		}
-		if (resource.Location.IsValid)
-		{
-			enResource.__isset.attributes = true;
-			enResource.attributes.__isset.altitude  = true;
-			enResource.attributes.__isset.longitude = true;
-			enResource.attributes.__isset.latitude  = true;
-			enResource.attributes.altitude  = resource.Location.Altitude;
-			enResource.attributes.longitude = resource.Location.Longitude;
-			enResource.attributes.latitude  = resource.Location.Latitude;
-		}
-		if (!resource.FileName.empty())
-		{
-			enResource.__isset.attributes = true;
-			enResource.attributes.__isset.fileName = true;
-			enResource.attributes.fileName = resource.FileName;
-		}
-		if (resource.IsAttachment)
-		{
-			enResource.__isset.attributes = true;
-			enResource.attributes.__isset.attachment = true;
-			enResource.attributes.attachment = resource.IsAttachment;
-		}
+	enResource.__isset.mime = true;
+	enResource.mime = L"image/jpeg";
+
+	if (resource.Dimensions.IsValid)
+	{
+		enResource.__isset.width  = true;
+		enResource.__isset.height = true;
+		enResource.width  = resource.Dimensions.Width;
+		enResource.height = resource.Dimensions.Height;
+	}
+	if (!resource.SourceUrl.empty())
+	{
+		enResource.__isset.attributes = true;
+		enResource.attributes.__isset.sourceURL = true;
+		enResource.attributes.sourceURL = resource.SourceUrl;
+	}
+	if (resource.Timestamp.GetTime() != 0)
+	{
+		enResource.__isset.attributes = true;
+		enResource.attributes.__isset.timestamp = true;
+		enResource.attributes.timestamp = ConvertToEnTime(resource.Timestamp);
+	}
+	if (resource.Location.IsValid)
+	{
+		enResource.__isset.attributes = true;
+		enResource.attributes.__isset.altitude  = true;
+		enResource.attributes.__isset.longitude = true;
+		enResource.attributes.__isset.latitude  = true;
+		enResource.attributes.altitude  = resource.Location.Altitude;
+		enResource.attributes.longitude = resource.Location.Longitude;
+		enResource.attributes.latitude  = resource.Location.Latitude;
+	}
+	if (!resource.FileName.empty())
+	{
+		enResource.__isset.attributes = true;
+		enResource.attributes.__isset.fileName = true;
+		enResource.attributes.fileName = resource.FileName;
+	}
+	if (resource.IsAttachment)
+	{
+		enResource.__isset.attributes = true;
+		enResource.attributes.__isset.attachment = true;
+		enResource.attributes.attachment = resource.IsAttachment;
+	}
 }
 
 void NoteStore::ConvertFromEnTag

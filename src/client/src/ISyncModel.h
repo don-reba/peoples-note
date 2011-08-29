@@ -14,7 +14,10 @@ class ISyncModel : public ISignalProvider
 
 public:
 
-	virtual void BeginSync(const std::wstring & username) = 0;
+	virtual void BeginSync
+		( const std::wstring & username
+		, const std::wstring & password
+		) = 0;
 
 	virtual const wchar_t * GetStatusText() = 0;
 

@@ -101,10 +101,14 @@ void SyncModel::StopSync()
 // ISyncModel implementation
 //--------------------------
 
-void SyncModel::BeginSync(const wstring & username)
+void SyncModel::BeginSync
+	( const wstring & username
+	, const wstring & password
+	)
 {
 	CloseThread();
-	userModel.Load(username);
+	this->username = username;
+	this->password = password;
 	syncThread = ::CreateThread
 		( NULL             // lpsa
 		, 0                // cbStack
@@ -427,13 +431,11 @@ try
 
 	PostTextMessage(L"Connecting...");
 
+	userModel.Load(username);
+
 	IEnService::UserStorePtr userStore(enService.GetUserStore());
 	IUserStore::AuthenticationResult authenticationResult
-		( userStore->GetAuthenticationToken
-			( userModel.GetUsername()
-			, userModel.GetPassword()
-			)
-		);
+		(userStore->GetAuthenticationToken(username, password));
 	if (!authenticationResult.IsGood)
 	{
 		FinishSync
@@ -450,10 +452,10 @@ try
 			)
 		);
 
-	if (userModel.GetSyncVersion() < userModel.GetVersion())
+	if (userModel.GetSyncVersion() < 5)
 	{
 		UpdateModel(*noteStore);
-		userModel.SetSyncVersion(userModel.GetVersion());
+		userModel.SetSyncVersion(5);
 	}
 
 	SyncState syncState;
@@ -599,6 +601,9 @@ void SyncModel::UpdateModel(INoteStore & noteStore)
 		userModel.GetNotebooks(notebooks);
 		foreach (const Notebook & notebook, notebooks)
 		{
+			if (notebook.guid.IsLocal())
+				continue;
+
 			try { updater.UpdateNotebook(notebook.guid); }
 			catch (const std::exception &) {}
 
@@ -607,6 +612,9 @@ void SyncModel::UpdateModel(INoteStore & noteStore)
 			double progress(0.0);
 			foreach (const Note & note, notes)
 			{
+				if (note.guid.IsLocal())
+					continue;
+
 				try { updater.UpdateNote(note.guid); }
 				catch (const std::exception &) {}
 
@@ -624,6 +632,9 @@ void SyncModel::UpdateModel(INoteStore & noteStore)
 		double progress(0.0);
 		foreach (const Tag & tag, tags)
 		{
+			if (tag.guid.IsLocal())
+				continue;
+
 			try { updater.UpdateTag(tag.guid); }
 			catch (const std::exception &) {}
 
