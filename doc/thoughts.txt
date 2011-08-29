@@ -3827,3 +3827,7 @@ data access changes
 		done
 	factor out database location
 		TODO
+should handle thumbnail crashes
+	catch the exception
+	provide a stock thumbnail
+	TODO

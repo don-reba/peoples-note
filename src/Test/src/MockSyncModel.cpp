@@ -10,10 +10,14 @@ MockSyncModel::MockSyncModel()
 {
 }
 
-void MockSyncModel::BeginSync(const wstring & username)
+void MockSyncModel::BeginSync
+	( const wstring & username
+	, const wstring & password
+	)
 {
 	this->syncBegan = true;
 	this->username  = username;
+	this->password  = password;
 }
 
 void MockSyncModel::ConnectNotebooksChanged(slot_type OnNotebooksChanged)

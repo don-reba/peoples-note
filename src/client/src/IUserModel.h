@@ -155,7 +155,7 @@ public:
 
 	virtual void SetCredentials
 		( const std::wstring & username
-		, const std::wstring & password
+		, const std::wstring & passwordHash
 		) = 0;
 
 	virtual void SetLastSyncEnTime(__int64 enTime) = 0;

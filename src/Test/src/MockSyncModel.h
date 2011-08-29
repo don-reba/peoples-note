@@ -16,6 +16,7 @@ public:
 
 	std::wstring documentPath;
 	std::wstring username;
+	std::wstring password;
 	std::wstring statusText;
 	double       syncProgress;
 
@@ -23,7 +24,10 @@ public:
 
 	MockSyncModel();
 
-	virtual void BeginSync(const std::wstring & username);
+	virtual void BeginSync
+		( const std::wstring & username
+		, const std::wstring & pasword
+		);
 
 	virtual void ConnectNotebooksChanged(slot_type OnNotebooksChanged);
 

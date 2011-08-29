@@ -50,7 +50,7 @@ BOOST_FIXTURE_TEST_CASE(SyncModel_Test, SyncModelFixture)
 
 	SignalCheck signalSyncCompleteCheck;
 	syncModel.ConnectSyncComplete(ref(signalSyncCompleteCheck));
-	syncModel.BeginSync(L"test-usr");
+	syncModel.BeginSync(L"username", L"password");
 
 	::Sleep(20);
 	BOOST_CHECK(!signalSyncCompleteCheck);

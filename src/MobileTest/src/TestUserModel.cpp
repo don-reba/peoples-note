@@ -692,8 +692,8 @@ AUTO_TEST_CASE(UserModelLoadOrCreate)
 		userModel.LoadOrCreate(storeName);
 		TEST_CHECK(check.signalled);
 
-		TEST_CHECK_EQUAL(userModel.GetUsername(),      storeName);
-		TEST_CHECK_EQUAL(userModel.GetPassword(),      L"test-pwd");
+		TEST_CHECK_EQUAL(userModel.GetUsername(),     storeName);
+		TEST_CHECK_EQUAL(userModel.GetPasswordHash(), L"test-pwd");
 		TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 	}
 }

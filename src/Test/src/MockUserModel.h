@@ -220,7 +220,7 @@ public:
 
 	virtual std::wstring GetPath();
 
-	virtual std::wstring GetPassword();
+	virtual std::wstring GetPasswordHash();
 
 	virtual void GetResource
 		( const std::string & hash
@@ -265,7 +265,7 @@ public:
 
 	virtual void SetCredentials
 		( const std::wstring & username
-		, const std::wstring & password
+		, const std::wstring & passwordHash
 		);
 
 	virtual void SetLastSyncEnTime(__int64 enTime);

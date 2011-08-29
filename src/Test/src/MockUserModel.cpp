@@ -268,7 +268,7 @@ wstring MockUserModel::GetPath()
 	return path;
 }
 
-wstring MockUserModel::GetPassword()
+wstring MockUserModel::GetPasswordHash()
 {
 	return password;
 }
@@ -400,11 +400,11 @@ void MockUserModel::RemoveNoteTags(const Guid & note)
 
 void MockUserModel::SetCredentials
 		( const wstring & username
-		, const wstring & password
+		, const wstring & passwordHash
 		)
 {
 	this->username = username;
-	this->password = password;
+	this->password = passwordHash;
 }
 
 void MockUserModel::SetLastSyncEnTime(__int64 enTime)
