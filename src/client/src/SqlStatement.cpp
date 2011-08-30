@@ -11,6 +11,8 @@
 using namespace std;
 using namespace Tools;
 
+#ifdef PROFILE_SQL
+
 SqlStatement::SqlStatement(sqlite3 * db, const char * sql, SqlStatementInfo & info)
 	: db        (db)
 	, info      (info)
@@ -28,11 +30,26 @@ SqlStatement::SqlStatement(sqlite3 * db, const char * sql, SqlStatementInfo & in
 		HandleError(sqlite3_errmsg(db));
 }
 
+#else PROFILE_SQL
+
+SqlStatement::SqlStatement(sqlite3 * db, const char * sql)
+	: db        (db)
+	, statement (NULL)
+{
+	int result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
+	if (result != SQLITE_OK)
+		HandleError(sqlite3_errmsg(db));
+}
+
+#endif // PROFILE_SQL
+
 SqlStatement::~SqlStatement()
 {
 	if (statement != NULL)
 		Finalize();
 }
+
+#ifdef PROFILE_SQL
 
 bool SqlStatement::Execute()
 {
@@ -55,6 +72,29 @@ bool SqlStatement::Execute()
 	}
 }
 
+#else // PROFILE_SQL
+
+bool SqlStatement::Execute()
+{
+	int result(sqlite3_step(statement));
+
+	switch (result)
+	{
+	case SQLITE_OK:
+	case SQLITE_DONE:
+		return true;
+	case SQLITE_ROW:
+		return false;
+	default:
+		HandleError(sqlite3_errmsg(db));
+		return false;
+	}
+}
+
+#endif // PROFILE_SQL
+
+#ifdef PROFILE_SQL
+
 void SqlStatement::Finalize()
 {
 	Timer timer;
@@ -66,6 +106,17 @@ void SqlStatement::Finalize()
 	else
 		DEBUGMSG(true, (L"%s\n", sqlite3_errmsg(db)));
 }
+
+#else // PROFILE_SQL
+
+void SqlStatement::Finalize()
+{
+	int result = sqlite3_finalize(statement);
+	if (result != SQLITE_OK)
+		DEBUGMSG(true, (L"%s\n", sqlite3_errmsg(db)));
+}
+
+#endif // PROFILE_SQL
 
 void SqlStatement::Bind(int index, __int32 n)
 {

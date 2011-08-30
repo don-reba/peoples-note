@@ -12,11 +12,17 @@ private:
 	sqlite3_stmt * statement;
 	sqlite3      * db;
 
+#ifdef PROFILE_SQL
 	SqlStatementInfo & info;
+#endif // PROFILE_SQL
 
 public:
 
+#ifdef PROFILE_SQL
 	SqlStatement(sqlite3 * db, const char * sql, SqlStatementInfo & info);
+#else
+	SqlStatement(sqlite3 * db, const char * sql);
+#endif
 
 	~SqlStatement();
 

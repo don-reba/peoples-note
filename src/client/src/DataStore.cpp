@@ -24,6 +24,8 @@ DataStore::DataStore()
 DataStore::~DataStore()
 {
 	sqlite3_close(db);
+
+#ifdef PROFILE_SQL
 	foreach (StatementCache::value_type & info, statements)
 	{
 		wstring sql(ConvertToUnicode(info.first));
@@ -40,6 +42,7 @@ DataStore::~DataStore()
 		::NKDbgPrintfW(L"Execution:    %s s\n", executionTime.str().c_str());
 		::NKDbgPrintfW(L"Finalization: %s s\n", finalizationTime.str().c_str());
 	}
+#endif // PROFILE_SQL
 }
 
 //--------------------------
@@ -111,7 +114,11 @@ IDataStore::Blob DataStore::MakeBlob
 
 IDataStore::Statement DataStore::MakeStatement(const char * sql)
 {
+#ifdef PROFILE_SQL
 	return make_shared<SqlStatement>(db, sql, ref(statements[sql]));
+#else // PROFILE_SQL
+	return make_shared<SqlStatement>(db, sql);
+#endif // PROFILE_SQL
 }
 
 int DataStore::HandleBusy(void * param, int count)

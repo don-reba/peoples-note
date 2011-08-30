@@ -28,7 +28,9 @@ private:
 	DbLocation   location;
 	std::wstring path;
 
+#ifdef PROFILE_SQL
 	StatementCache statements;
+#endif // PROFILE_SQL
 
 // interface
 
