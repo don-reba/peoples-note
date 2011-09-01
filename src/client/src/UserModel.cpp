@@ -1049,8 +1049,7 @@ void UserModel::MoveToCard()
 	if (!flashCard.GetPath(cardFolder))
 		throw std::exception("No storage card available.");
 
-	wstring username;
-	GetProperty(L"username", username);
+	wstring username(GetUsername());
 	::CreateDirectory(cardFolder.c_str(), NULL);
 	Move
 		( CreatePathFromName(deviceFolder, username)
@@ -1065,8 +1064,7 @@ void UserModel::MoveToDevice()
 	if (!flashCard.GetPath(cardFolder))
 		throw std::exception("No storage card available.");
 
-	wstring username;
-	GetProperty(L"username", username);
+	wstring username(GetUsername());
 	::CreateDirectory(deviceFolder.c_str(), NULL);
 	Move
 		( CreatePathFromName(cardFolder,   username)

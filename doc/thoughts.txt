@@ -3652,6 +3652,16 @@ note source URLs
 database does not move to the storage card
 	need a better error message
 		done
+	the error is
+		The system cannot find the file specified.
+		ERROR_FILE_NOT_FOUND (2)
+	happens when the old path is used as the new
+	is FindFirstFlashCard returning "\My Device"?
+		let's see what FindNextFlashCard say
+		the emulator finds only the "Storage Card" flash card
+		finds only "Internal Storage" on my phone
+		actually moves to "Trusted", however
+			weird
 	TODO
 why is DataStore destroyed 4 times?
 	some sort of debugging artifact
@@ -3751,7 +3761,6 @@ offline sign-in
 			because loading time is very important
 		I could make a cancellation event
 			if no database is loaded, quit
-		TODO
 	what about sync
 		what if I can't authorize?
 		then I should ask for another password

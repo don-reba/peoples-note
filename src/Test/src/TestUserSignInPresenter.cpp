@@ -55,6 +55,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(!signalCommitCheck);
 	BOOST_CHECK_EQUAL(credentialsModel.status, L"");
 
+	//----
+
 	credentialsModel.username = L"[anonymous]";
 	signalCommitCheck.Reset();
 
@@ -63,6 +65,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(signalCommitCheck);
 	BOOST_CHECK_EQUAL(userModel.loadedAs, L"[anonymous]");
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadOrCreate);
+
+	//----
 
 	credentialsModel.username = L"username";
 	signalCommitCheck.Reset();
@@ -73,8 +77,37 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodNone);
 	BOOST_CHECK_EQUAL(credentialsModel.status, L"Please, enter a password.");
 
+	//----
+
 	credentialsModel.password = L"password";
+	signalCommitCheck.Reset();
+
+	enService.userStore->authenticationResult.IsGood  = false;
+	enService.userStore->authenticationResult.Message = L"message";
+	signalCommitCheck.Reset();
+
+	credentialsModel.SignalSet();
+
+	BOOST_CHECK(!signalCommitCheck);
+	BOOST_CHECK_EQUAL(credentialsModel.status, L"message");
+
+	//----
+
+	enService.userStore->authenticationResult.IsGood  = true;
+	signalCommitCheck.Reset();
+
+	credentialsModel.SignalSet();
+
+	BOOST_CHECK(signalCommitCheck);
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadAs);
+	BOOST_CHECK_EQUAL(userModel.loadedAs, L"username");
+	BOOST_CHECK_EQUAL(userModel.username, L"username");
+	BOOST_CHECK_EQUAL(userModel.password, HashPassword(L"password"));
+
+	//----
+
 	userModel.validUsernames.insert(L"username");
+	userModel.password.clear();
 	signalCommitCheck.Reset();
 
 	credentialsModel.SignalSet();
@@ -82,6 +115,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(!signalCommitCheck);
 	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodNone);
 	BOOST_CHECK_EQUAL(credentialsModel.status, L"The password is invalid.");
+
+	//----
 
 	userModel.password = HashPassword(L"password");
 	signalCommitCheck.Reset();
