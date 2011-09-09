@@ -28,6 +28,13 @@ void UserUpdater::UpdateNotebook(const Guid & guid)
 	userModel.UpdateNotebook(guid, notebook);
 }
 
+void UserUpdater::UpdateResource(const Guid & guid)
+{
+	Resource resource;
+	noteStore.GetResource(guid, resource);
+	userModel.UpdateResource(guid, resource);
+}
+
 void UserUpdater::UpdateTag(const Guid & guid)
 {
 	Tag tag;

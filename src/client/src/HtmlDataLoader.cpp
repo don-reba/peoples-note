@@ -92,7 +92,7 @@ void HtmlDataLoader::CreateThumbnail(const Guid & guid, Thumbnail & thumbnail)
 	enNoteTranslator.ConvertToHtml(body, html);
 
 	Note note;
-	noteView->SetNote(note, L"", L"", html, L"", false);
+	noteView->SetNote(note, L"", L"", html, INoteView::AttachmentList(), false);
 
 	noteView->Render(thumbnail);
 }

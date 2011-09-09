@@ -27,6 +27,8 @@ namespace Tools
 
 	void DecodeBase64(const wchar_t * text, Blob & data);
 
+	std::wstring EscapeHtml(const std::wstring & str);
+
 #ifdef _DEBUG
 	std::wstring GetMessageName(int id);
 #endif // _DEBUG

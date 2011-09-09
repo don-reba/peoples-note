@@ -12,5 +12,7 @@ public:
 public:
 
 	Location();
-	Location(double latitude, double longitude, double altitude);
+	Location(double atltitude, double latitude, double longitude);
+
+	void Validate();
 };

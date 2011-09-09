@@ -116,6 +116,14 @@ void NoteView::GetNote(Note & note)
 	note = this->note;
 }
 
+Guid NoteView::GetSelecteAttachmentGuid()
+{
+	const wchar_t * value(element(FindFirstElement("#attachments")).get_attribute("value"));
+	if (value)
+		return value;
+	return Guid::GetEmpty();
+}
+
 void NoteView::GetTitle(std::wstring & text)
 {
 	text = element(FindFirstElement("#title")).text();
@@ -166,12 +174,12 @@ void NoteView::RestoreWindow()
 }
 
 void NoteView::SetNote
-	( const Note    & note
-	, const wstring & titleText
-	, const wstring & subtitleText
-	, const wstring & bodyHtml
-	, const wstring & attachment
-	, const bool      enableChrome
+	( const Note           & note
+	, const wstring        & titleText
+	, const wstring        & subtitleText
+	, const wstring        & bodyHtml
+	, const AttachmentList & attachments
+	, const bool             enableChrome
 	)
 {
 	isDirty = false;
@@ -206,10 +214,7 @@ void NoteView::SetNote
 	body.set_html(utf8, utf8Chars.size());
 	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
 
-	vector<unsigned char> utf8AttachmentChars;
-	const unsigned char * utf8Attachment = Tools::ConvertToUtf8(attachment, utf8AttachmentChars);
-
-	element(FindFirstElement("#attachments")).set_html(utf8Attachment, utf8AttachmentChars.size());
+	SetAttachments(attachments);
 }
 
 void NoteView::SetWindowTitle(const std::wstring & text)
@@ -260,6 +265,27 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 	wc.hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH);
 	wc.lpszClassName = wndClass.c_str();
 	return ::RegisterClass(&wc);
+}
+
+void NoteView::SetAttachments(const AttachmentList & attachments)
+{
+	DisconnectBehavior("#attachments > option");
+
+	element list(FindFirstElement("#attachments"));
+
+	vector<element> old;
+	list.find_all(old, ":root > option");
+	foreach (element & e, old)
+		e.destroy();
+
+	foreach (const Attachment & attachment, attachments)
+	{
+		element e(element::create("option"));
+		list.insert(e, list.children_count() - 1);
+		e.set_attribute("value", ConvertToUnicode(attachment.Guid).c_str());
+		e.set_text(attachment.Text.c_str());
+		ConnectBehavior(e, BUTTON_CLICK, &NoteView::OnAttachment);
+	}
 }
 
 void NoteView::SetChrome(bool enable)
@@ -540,6 +566,14 @@ void NoteView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void NoteView::OnAttachment(BEHAVIOR_EVENT_PARAMS * params)
+{
+	const wchar_t * value(element(params->heTarget).get_attribute("value"));
+	if (value)
+		element(FindFirstElement("#attachments")).set_attribute("value", value);
+	SignalAttachment();
+}
 
 void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 {

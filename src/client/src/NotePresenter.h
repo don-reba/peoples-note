@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Attachment.h"
+
 class INoteListModel;
 class INoteListView;
 class INoteView;
@@ -32,6 +34,7 @@ public:
 
 private:
 
+	void OnAttachment();
 	void OnCloseNote();
 	void OnOpenNote();
 	void OnToggleMaximize();

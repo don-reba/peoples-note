@@ -13,6 +13,7 @@ class IMessagePump;
 class INoteStore;
 class ILogger;
 class IUserModel;
+class UserUpdater;
 
 
 class SyncModel : public ISyncModel
@@ -142,5 +143,8 @@ private:
 
 	void UpdateDefaultNotebook(INoteStore & noteStore);
 
-	void UpdateModel(INoteStore & noteStore);
+	void UpdateModel     (INoteStore  & noteStore);
+	void UpdateNotes     (UserUpdater & updater);
+	void UpdateResources (UserUpdater & updater);
+	void UpdateTags      (UserUpdater & updater);
 };

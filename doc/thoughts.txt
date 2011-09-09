@@ -3511,7 +3511,7 @@ what I should do for the next release
 	√ add metadata updating
 	x load thumbnails asynchronously
 	√ hide attachments
-	  set modificationd dates
+	√ set modificationd dates
 images don't show up when viewing notes
 	database problem
 	fixed
@@ -3835,8 +3835,34 @@ data access changes
 	remove the Credentials class
 		done
 	factor out database location
-		TODO
+		no need, really
 should handle thumbnail crashes
 	catch the exception
 	provide a stock thumbnail
+	TODO
+displaying attachments
+	note view is capable of displaying them
+	can the presenter retrieve them?
+		there is GetNoteResources
+			where is it used?
+			in sync model
+		it returns a list of Guids
+			note enough
+	for each resource we need
+		guid
+		type
+		name
+	need to test GetNoteAttachments
+		TODO
+	resource data still is not stored in the database
+		TODO
+	have to make sure recognition entries are not deleted
+		TODO
+	TODO
+LoadAs logic is incorrect
+	TODO
+FlashCard::GetPath always returns true
+	TODO
+resource data should be put intoa separate 1-1 table
+	to avoid slowing down queries
 	TODO

@@ -303,20 +303,3 @@ wstring NoteListPresenter::FormatDate(const Timestamp &timestamp)
 {
 	return EscapeHtml(timestamp.GetFormattedDateTime());
 }
-
-wstring NoteListPresenter::EscapeHtml(const std::wstring & str)
-{
-	wostringstream stream;
-	foreach (wchar_t c, str)
-	{
-		switch (c)
-		{
-		case L'<': stream << L"&lt;";   break;
-		case L'>': stream << L"&gt;";   break;
-		case L'&': stream << L"&amp;";  break;
-		case L'"': stream << L"&quot;"; break;
-		default:   stream << c;
-		}
-	}
-	return stream.str();
-}

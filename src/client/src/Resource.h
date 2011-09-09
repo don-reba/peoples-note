@@ -20,13 +20,15 @@ public:
 	public:
 
 		Size() : IsValid(false) {}
+
+		void Validate() { IsValid = Width || Height; }
 	};
 
 public:
 
 	std::string  Hash;
 	std::wstring Mime;
-	::Blob       Data;
+	Blob         Data;
 	::Guid       Guid;
 	::Guid       Note;
 	Size         Dimensions;

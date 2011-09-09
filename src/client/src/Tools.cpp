@@ -251,6 +251,24 @@ void Tools::DecodeBase64(const wchar_t * text, Blob & data)
 	data.resize(size);
 }
 
+wstring Tools::EscapeHtml(const wstring & str)
+{
+	wstring result;
+	result.reserve(str.size());
+	foreach (wchar_t c, str)
+	{
+		switch (c)
+		{
+		case L'<': result.append(L"&lt;");   break;
+		case L'>': result.append(L"&gt;");   break;
+		case L'&': result.append(L"&amp;");  break;
+		case L'"': result.append(L"&quot;"); break;
+		default:   result.push_back(c);
+		}
+	}
+	return result;
+}
+
 #ifdef _DEBUG
 wstring Tools::GetMessageName(int id)
 {

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "INoteStore.h"
 
 #include "AuthenticationToken.h"
@@ -75,6 +74,8 @@ public:
 
 	virtual void GetNotebook(const Guid & guid, Notebook & notebook);
 
+	virtual void GetResource(const Guid & guid, Resource & resource);
+
 	virtual void GetSyncState(SyncState & syncState);
 
 	virtual void GetTag(const Guid & guid, Tag & tag);
@@ -145,6 +146,11 @@ private:
 	void ConvertToEnNotebook
 		( const Notebook                 & notebook
 		, Evernote::EDAM::Type::Notebook & enNotebook
+		);
+
+	void NoteStore::ConvertFromEnResource
+		( const Evernote::EDAM::Type::Resource & enResource
+		, Resource                             & resource
 		);
 
 	void ConvertFromEnResource

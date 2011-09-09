@@ -55,6 +55,8 @@ public:
 
 	virtual void GetNotebook(const Guid & guid, Notebook & notebook) = 0;
 
+	virtual void GetResource(const Guid & guid, Resource & resource) = 0;
+
 	virtual void GetSyncState(SyncState & syncState) = 0;
 
 	virtual void GetTag(const Guid & guid, Tag & tag) = 0;

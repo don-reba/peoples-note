@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Attachment.h"
 #include "Blob.h"
 #include "DbLocation.h"
 #include "ISignalProvider.h"
@@ -73,6 +74,11 @@ public:
 
 	virtual void GetNote(const Guid & guid, Note & note) = 0;
 
+	virtual void GetNoteAttachments
+		( const Guid     & note
+		, AttachmentList & attachments
+		) = 0;
+
 	virtual void GetNotebook
 		( const Guid & guid
 		, Notebook   & notebook
@@ -123,6 +129,8 @@ public:
 		( const Guid & guid
 		, Resource   & resource
 		) = 0;
+
+	virtual void GetResources(GuidList & resources) = 0;
 
 	virtual __int64 GetSize() = 0;
 
@@ -184,6 +192,11 @@ public:
 	virtual void UpdateNotebook
 		( const Guid     & notebook
 		, const Notebook & replacement
+		) = 0;
+
+	virtual void UpdateResource
+		( const Guid     & resource
+		, const Resource & replacement
 		) = 0;
 
 	virtual void UpdateTag

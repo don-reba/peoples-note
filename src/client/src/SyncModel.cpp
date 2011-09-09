@@ -452,11 +452,7 @@ try
 			)
 		);
 
-	if (userModel.GetSyncVersion() < 5)
-	{
-		UpdateModel(*noteStore);
-		userModel.SetSyncVersion(5);
-	}
+	UpdateModel(*noteStore);
 
 	SyncState syncState;
 	noteStore->GetSyncState(syncState);
@@ -590,9 +586,29 @@ void SyncModel::UpdateDefaultNotebook(INoteStore & noteStore)
 
 void SyncModel::UpdateModel(INoteStore & noteStore)
 {
+	int modelSyncVersion(userModel.GetSyncVersion());
+
+	if (modelSyncVersion == 7)
+		return;
+	
 	UserUpdater updater(noteStore, userModel);
 
-	logger.BeginSyncStage(L"update");
+	if (modelSyncVersion < 5)
+	{
+		UpdateNotes (updater);
+		UpdateTags  (updater);
+		userModel.SetSyncVersion(5);
+	} 
+	if (modelSyncVersion < 7)
+	{
+		UpdateResources(updater);
+	}
+	userModel.SetSyncVersion(7);
+}
+
+void SyncModel::UpdateNotes(UserUpdater & updater)
+{
+	logger.BeginSyncStage(L"note update");
 
 	PostProgressMessage(0.0);
 	PostTextMessage(L"Updating notes...");
@@ -623,6 +639,35 @@ void SyncModel::UpdateModel(INoteStore & noteStore)
 			}
 		}
 	}
+}
+
+void SyncModel::UpdateResources(UserUpdater & updater)
+{
+	logger.BeginSyncStage(L"resources update");
+
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Updating attachments...");
+	{
+		GuidList resources;
+		userModel.GetResources(resources);
+		double progress(0.0);
+		foreach (const Guid & resource, resources)
+		{
+			if (resource.IsLocal())
+				continue;
+
+			try { updater.UpdateResource(resource); }
+			catch (const std::exception &) {}
+
+			progress += 1.0;
+			PostProgressMessage(progress / resources.size());
+		}
+	}
+}
+
+void SyncModel::UpdateTags(UserUpdater & updater)
+{
+	logger.BeginSyncStage(L"tag update");
 
 	PostProgressMessage(0.0);
 	PostTextMessage(L"Updating tags...");

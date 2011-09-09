@@ -858,7 +858,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\AttachmentType.h"
+				RelativePath=".\src\Attachment.h"
 				>
 			</File>
 			<File

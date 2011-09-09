@@ -22,5 +22,7 @@ public:
 
 	void UpdateNotebook(const Guid & guid);
 
+	void UpdateResource(const Guid & guid);
+
 	void UpdateTag(const Guid & guid);
 };

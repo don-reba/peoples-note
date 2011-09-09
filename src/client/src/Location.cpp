@@ -6,10 +6,15 @@ Location::Location()
 {
 }
 
-Location::Location(double latitude, double longitude, double altitude)
+Location::Location(double altitude, double latitude, double longitude)
 	: IsValid   (true)
+	, Altitude  (altitude)
 	, Latitude  (latitude)
 	, Longitude (longitude)
-	, Altitude  (altitude)
 {
+}
+
+void Location::Validate()
+{
+	IsValid = Altitude != 0.0 || Latitude != 0.0 || Longitude != 0.0;
 }

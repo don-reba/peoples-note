@@ -142,7 +142,7 @@ void NoteStore::GetNoteResource
 		, guidString  // guid
 		, true        // withData
 		, true        // withRecognition
-		, false       // withAttributes
+		, true        // withAttributes
 		, false       // withAlternateData
 		);
 	ConvertFromEnResource(enResource, guid, resource, recognitionEntries);
@@ -168,6 +168,21 @@ void NoteStore::GetNotebook
 			, ConvertToUnicode(guid) // guid
 			)
 		, notebook
+		);
+}
+
+void NoteStore::GetResource(const Guid & guid, Resource & resource)
+{
+	ConvertFromEnResource
+		( noteStore.getResource
+			( token                  // authenticationToken
+			, ConvertToUnicode(guid) // guid
+			, false                  // withData
+			, false                  // withRecognition
+			, true                   // withAttributes
+			, false                  // withAlternateData
+			)
+		, resource
 		);
 }
 
@@ -328,7 +343,7 @@ void NoteStore::ConvertFromEnNote
 		if (attributes.__isset.subjectDate)
 			note.subjectDate = ConvertFromEnTime(attributes.subjectDate);
 		if (attributes.__isset.latitude && attributes.__isset.longitude && attributes.__isset.altitude)
-			note.Location = Location(attributes.latitude, attributes.longitude, attributes.altitude);
+			note.Location = Location(attributes.altitude, attributes.latitude, attributes.longitude);
 		if (attributes.__isset.author)
 			note.Author = attributes.author;
 		if (attributes.__isset.source)
@@ -430,20 +445,14 @@ void NoteStore::ConvertToEnNotebook
 
 void NoteStore::ConvertFromEnResource
 	( const EDAM::Type::Resource & enResource
-	, const Guid                 & guid
 	, Resource                   & resource
-	, RecognitionEntryList       & recognitionEntries
 	)
 {
-	copy
-		( enResource.data.body.begin()
-		, enResource.data.body.end()
-		, back_inserter(resource.Data)
-		);
 	resource.Hash = HashWithMD5(resource.Data);
 	resource.Guid = enResource.guid;
 	resource.Note = enResource.noteGuid;
 	resource.Mime = enResource.mime;
+	resource.IsAttachment = false;
 	if (enResource.__isset.width && enResource.__isset.height)
 	{
 		resource.Dimensions.Width  = enResource.width;
@@ -458,7 +467,46 @@ void NoteStore::ConvertFromEnResource
 		if (attributes.__isset.timestamp)
 			resource.Timestamp = ConvertFromEnTime(attributes.timestamp);
 		if (attributes.__isset.latitude && attributes.__isset.longitude && attributes.__isset.altitude)
-			resource.Location = Location(attributes.latitude, attributes.longitude, attributes.altitude);
+			resource.Location = Location(attributes.altitude, attributes.latitude, attributes.longitude);
+		if (attributes.__isset.fileName)
+			resource.FileName = attributes.fileName;
+		if (attributes.__isset.attachment)
+			resource.IsAttachment = attributes.attachment;
+	}
+}
+
+void NoteStore::ConvertFromEnResource
+	( const EDAM::Type::Resource & enResource
+	, const Guid                 & guid
+	, Resource                   & resource
+	, RecognitionEntryList       & recognitionEntries
+	)
+{
+	copy
+		( enResource.data.body.begin()
+		, enResource.data.body.end()
+		, back_inserter(resource.Data)
+		);
+	resource.Hash = HashWithMD5(resource.Data);
+	resource.Guid = enResource.guid;
+	resource.Note = enResource.noteGuid;
+	resource.Mime = enResource.mime;
+	resource.IsAttachment = false;
+	if (enResource.__isset.width && enResource.__isset.height)
+	{
+		resource.Dimensions.Width  = enResource.width;
+		resource.Dimensions.Height = enResource.height;
+		resource.Dimensions.IsValid = true;
+	}
+	if (enResource.__isset.attributes)
+	{
+		const EDAM::Type::ResourceAttributes & attributes(enResource.attributes);
+		if (attributes.__isset.sourceURL)
+			resource.SourceUrl = attributes.sourceURL;
+		if (attributes.__isset.timestamp)
+			resource.Timestamp = ConvertFromEnTime(attributes.timestamp);
+		if (attributes.__isset.latitude && attributes.__isset.longitude && attributes.__isset.altitude)
+			resource.Location = Location(attributes.altitude, attributes.latitude, attributes.longitude);
 		if (attributes.__isset.fileName)
 			resource.FileName = attributes.fileName;
 		if (attributes.__isset.attachment)

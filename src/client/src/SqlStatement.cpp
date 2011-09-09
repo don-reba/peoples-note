@@ -194,6 +194,11 @@ void SqlStatement::Get(int index, bool & n)
 	n = (sqlite3_column_int(statement, index) != 0);
 }
 
+void SqlStatement::Get(int index, __int16 & n)
+{
+	n = sqlite3_column_int(statement, index);
+}
+
 void SqlStatement::Get(int index, __int32 & n)
 {
 	n = sqlite3_column_int(statement, index);

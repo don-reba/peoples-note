@@ -42,6 +42,7 @@ public:
 	virtual void BindNull(int index);
 
 	virtual void Get(int index, bool         & n);
+	virtual void Get(int index, __int16      & n);
 	virtual void Get(int index, __int32      & n);
 	virtual void Get(int index, __int64      & n);
 	virtual void Get(int index, double       & n);

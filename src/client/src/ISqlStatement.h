@@ -20,6 +20,7 @@ public:
 	virtual void BindNull(int index) = 0;
 
 	virtual void Get(int index, bool         & n)    = 0;
+	virtual void Get(int index, __int16      & n)    = 0;
 	virtual void Get(int index, __int32      & n)    = 0;
 	virtual void Get(int index, __int64      & n)    = 0;
 	virtual void Get(int index, double       & n)    = 0;

@@ -94,14 +94,19 @@ public:
 
 	virtual void GetNote(const Guid & guid, Note & note);
 
+	virtual void GetNoteAttachments
+		( const Guid     & note
+		, AttachmentList & attachments
+		);
+
 	virtual void GetNoteBody
 		( const Guid   & guid
 		, std::wstring & body
 		);
 
 	virtual void GetNoteResources
-		( const Guid        & note
-		, std::vector<Guid> & resources
+		( const Guid & note
+		, GuidList   & resources
 		);
 
 	virtual void GetNoteTags
@@ -144,6 +149,8 @@ public:
 		( const Guid & guid
 		, Resource   & resource
 		);
+
+	virtual void GetResources(GuidList & resources);
 
 	virtual __int64 GetSize();
 
@@ -207,6 +214,11 @@ public:
 		, const Notebook & replacement
 		);
 
+	virtual void UpdateResource
+		( const Guid     & resource
+		, const Resource & replacement
+		);
+
 	virtual void UpdateTag
 		( const Guid & tag
 		, const Tag  & replacement
@@ -238,6 +250,8 @@ private:
 	void MigrateFrom4To5();
 
 	void MigrateFrom5To6();
+
+	void MigrateFrom6To7();
 
 	void Move
 		( const std::wstring & oldPath

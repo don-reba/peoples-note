@@ -10,6 +10,7 @@ class IAnimator;
 
 class NoteView : public HTMLayoutWindow, public INoteView
 {
+	MacroEvent(Attachment)
 	MacroEvent(Close)
 	MacroEvent(Edit)
 	MacroEvent(ToggleMaximize)
@@ -62,6 +63,8 @@ public:
 
 	virtual void GetNote(Note & note);
 
+	virtual Guid GetSelecteAttachmentGuid();
+
 	virtual void GetTitle(std::wstring & text);
 
 	virtual void Hide();
@@ -77,12 +80,12 @@ public:
 	virtual void RestoreWindow();
 
 	virtual void SetNote
-		( const Note         & note
-		, const std::wstring & titleText
-		, const std::wstring & subtitleText
-		, const std::wstring & bodyHtml
-		, const std::wstring & attachment
-		, const bool           enableChrome
+		( const Note           & note
+		, const std::wstring   & titleText
+		, const std::wstring   & subtitleText
+		, const std::wstring   & bodyHtml
+		, const AttachmentList & attachments
+		, const bool             enableChrome
 		);
 
 	virtual void SetWindowTitle(const std::wstring & text);
@@ -96,6 +99,8 @@ private:
 	POINT GetScrollPos();
 
 	ATOM RegisterClass(const std::wstring & wndClass);
+
+	void SetAttachments(const AttachmentList & attachments);
 
 	void SetChrome(bool enable);
 
@@ -132,5 +137,6 @@ private:
 
 private:
 
-	void OnInput  (BEHAVIOR_EVENT_PARAMS * params);
+	void OnAttachment (BEHAVIOR_EVENT_PARAMS * params);
+	void OnInput      (BEHAVIOR_EVENT_PARAMS * params);
 };

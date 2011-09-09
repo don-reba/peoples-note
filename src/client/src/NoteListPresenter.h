@@ -74,6 +74,4 @@ private:
 	static std::wstring FormatTags(const TagList & tags);
 
 	static std::wstring FormatDate(const Timestamp & timestamp);
-
-	static std::wstring EscapeHtml(const std::wstring & string);
 };
