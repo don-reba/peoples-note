@@ -3855,9 +3855,11 @@ displaying attachments
 	need to test GetNoteAttachments
 		TODO
 	resource data still is not stored in the database
-		TODO
+		fixed
 	have to make sure recognition entries are not deleted
+		best done as a database test
 		TODO
+	ok, so attachments work, need to clean up
 	TODO
 LoadAs logic is incorrect
 	TODO
@@ -3865,4 +3867,6 @@ FlashCard::GetPath always returns true
 	TODO
 resource data should be put intoa separate 1-1 table
 	to avoid slowing down queries
+	TODO
+Tools:StartsWith/EndsWith are untested
 	TODO

@@ -2,58 +2,14 @@
 #include "EnImporter.h"
 
 #include "Note.h"
+#include "Tools.h"
 
 #include <fstream>
 #include <iterator>
 
 using namespace boost;
 using namespace std;
-
-//----------------------
-// auxillary definitions
-//----------------------
-
-template<typename T, typename I>
-bool StartsWith(const T & sequence, I begin, I end)
-{
-	if (sequence.size() < static_cast<size_t>(end - begin))
-		return false;
-	T::const_iterator i = sequence.begin();
-	while (begin != end)
-	{
-		if (*i != *begin)
-			return false;
-		++i; ++begin;
-	}
-	return true;
-}
-
-template<typename T>
-bool StartsWith(const T & sequence, T & fragment)
-{
-	return StartsWith(sequence, fragment.begin(), fragment.end());
-}
-
-template<typename T, typename I>
-bool EndsWith(const T & sequence, I begin, I end)
-{
-	if (sequence.size() < static_cast<size_t>(end - begin))
-		return false;
-	T::const_iterator i = sequence.end() - (end - begin);
-	while (begin != end)
-	{
-		if (*i != *begin)
-			return false;
-		++i; ++begin;
-	}
-	return true;
-}
-
-template<typename T>
-bool EndsWith(const T & sequence, const T & fragment)
-{
-	return EndsWith(sequence, fragment.begin(), fragment.end());
-}
+using namespace Tools;
 
 //-----------
 // test suite

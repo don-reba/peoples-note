@@ -135,12 +135,8 @@ void NotePresenter::OnOpenNote()
 	Note note;
 	userModel.GetNote(guid, note);
 
-	// subtitle
-
 	wstring subtitle(L"created on ");
 	subtitle.append(note.creationDate.GetFormattedDateTime());
-
-	// tags
 
 	TagList tags;
 	userModel.GetNoteTags(note, tags);
@@ -148,40 +144,24 @@ void NotePresenter::OnOpenNote()
 	{
 		subtitle.append(L"\ntags: ");
 		subtitle.append(tags[0].name);
-		for (int i = 1; i != tags.size(); ++i)
+		for (int i(1); i != tags.size(); ++i)
 		{
 			subtitle.append(L", ");
 			subtitle.append(tags[i].name);
 		}
 	}
 
-	// body
-
 	wstring html;
 	enNoteTranslator.ConvertToHtml(body, html);
 
-	// attachments
-
-	struct
-	{
-		INoteView::Attachment operator () (const Attachment & attachment)
-		{
-			return INoteView::Attachment
-				( attachment.Guid
-				, INoteView::MiscAttachment
-				, attachment.FileName
-				);
-		}
-	} convertAttachment;
-
-	AttachmentList            attachments;
-	INoteView::AttachmentList attachmentViews;
-	userModel.GetNoteAttachments(note.guid, attachments);
+	AttachmentList         attachments;
+	AttachmentViewInfoList attachmentViews;
+	userModel.GetNoteAttachments(guid, attachments);
 	transform
 		( attachments.begin()
 		, attachments.end()
 		, back_inserter(attachmentViews)
-		, convertAttachment
+		, &NotePresenter::ConvertAttachment
 		);
 
 	noteView.SetNote(note, note.name, subtitle, html, attachmentViews, true);
@@ -194,4 +174,64 @@ void NotePresenter::OnToggleMaximize()
 		noteView.RestoreWindow();
 	else
 		noteView.MaximizeWindow();
+}
+
+//------------------
+// utility functions
+//------------------
+
+const wchar_t * NotePresenter::GetAttachmentImageUrl(const Attachment & attachment)
+{
+	const wstring::size_type extLocation(attachment.FileName.rfind(L'.'));
+	if (extLocation == wstring::npos)
+	{
+		wstring mime;
+		mime.reserve(attachment.Mime.size());
+		transform
+			( attachment.Mime.begin()
+			, attachment.Mime.end()
+			, back_inserter(mime)
+			, tolower
+			);
+		if (mime == L"audio/mpeg")
+			return L"url(attachment-mp3.png)";
+		if (mime == L"application/pdf")
+			return L"url(attachment-pdf.png)";
+		if (StartsWith(mime, L"audio"))
+			return L"url(attachment-sound.png)";
+		if (StartsWith(mime, L"image"))
+			return L"url(attachment-image.png)";
+	}
+	else
+	{
+		wstring ext;
+		transform
+			( attachment.FileName.begin() + extLocation
+			, attachment.FileName.end()
+			, back_inserter(ext)
+			, tolower
+			);
+		if (ext == L".mp3")
+			return L"url(attachment-mp3.png)";
+		if (ext == L".pdf")
+			return L"url(attachment-pdf.png)";
+
+		const wchar_t * imageExts[] = { L".gif", L".jpg", L".jpeg", L".png", L".bmp" };
+		for (int i(0); i != GetArraySize(imageExts); ++i)
+			if (ext == imageExts[i]) return L"url(attachment-image.png)";
+
+		const wchar_t * audioExts[] = { L".wav", L".mpg", L".mpeg", L".amr", L".ogg", L".flac", L".ape" };
+		for (int i(0); i != GetArraySize(audioExts); ++i)
+			if (ext == audioExts[i]) return L"url(attachment-sound.png)";
+	}
+	return L"url(attachment-misc.png)";
+}
+
+AttachmentViewInfo NotePresenter::ConvertAttachment(const Attachment & attachment)
+{
+	return AttachmentViewInfo
+		( attachment.Guid
+		, GetAttachmentImageUrl(attachment)
+		, attachment.FileName
+		);
 }

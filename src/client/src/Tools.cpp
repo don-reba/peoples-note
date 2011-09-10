@@ -251,6 +251,11 @@ void Tools::DecodeBase64(const wchar_t * text, Blob & data)
 	data.resize(size);
 }
 
+bool Tools::EndsWith(const wstring & sequence, const wchar_t * fragment)
+{
+	return EndsWith(sequence, fragment, fragment + wcslen(fragment));
+}
+
 wstring Tools::EscapeHtml(const wstring & str)
 {
 	wstring result;
@@ -475,6 +480,25 @@ wstring Tools::LoadStringResource(int id)
 	return &str[0];
 }
 
+wstring Tools::MakeSizeString(__int64 size)
+{
+	wstringstream stream;
+	if (size < 0)
+	{
+		stream << L"-";
+		size = -size;
+	}
+	if (size < 0x400L)
+		stream << size << L" B";
+	else if(size < 0x100000L)
+		stream << (size / 0x400L) << L" KB";
+	else if (size < 0x40000000L)
+		stream << (size / 0x100000L) << L" MB";
+	else
+		stream << (size / 0x40000000L) << L" GB";
+	return stream.str();
+}
+
 void Tools::ReadBinaryFile
 	( const wchar_t * fileName
 	, Blob          & data
@@ -529,37 +553,9 @@ void Tools::ReplaceAll
 	}
 }
 
-wstring Tools::MakeSizeString(__int64 size)
+bool Tools::StartsWith(const wstring & sequence, const wchar_t * fragment)
 {
-	wstringstream stream;
-	if (size < 0)
-	{
-		stream << L"-";
-		size = -size;
-	}
-	if (size < 0x400L)
-		stream << size << L" B";
-	else if(size < 0x100000L)
-		stream << (size / 0x400L) << L" KB";
-	else if (size < 0x40000000L)
-		stream << (size / 0x100000L) << L" MB";
-	else
-		stream << (size / 0x40000000L) << L" GB";
-	return stream.str();
-}
-
-bool Tools::StartsWith(const wchar_t * text, const wchar_t * prefix)
-{
-	if (!(text && prefix))
-		return false;
-	while (*prefix)
-	{
-		if (*text != *prefix)
-			return false;
-		++text;
-		++prefix;
-	}
-	return true;
+	return StartsWith(sequence, fragment, fragment + wcslen(fragment));
 }
 
 void Tools::UnixTimeToFileTime

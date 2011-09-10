@@ -1,8 +1,8 @@
 #pragma once
 
+#include "AttachmentViewInfo.h"
 #include "Blob.h"
 #include "ISignalProvider.h"
-#include "Guid.h"
 #include "Thumbnail.h"
 
 class Note;
@@ -13,29 +13,6 @@ class INoteView : public ISignalProvider
 	MacroIEvent(Close)
 	MacroIEvent(Edit)
 	MacroIEvent(ToggleMaximize)
-
-public:
-
-	enum AttachmentType
-	{
-		AudioAttachment,
-		MiscAttachment,
-	};
-
-	class Attachment
-	{
-	public:
-		AttachmentType Type;
-		std::wstring   Text;
-		::Guid         Guid;
-
-		Attachment(const ::Guid & guid, AttachmentType type, const std::wstring & text)
-			: Guid(guid), Type(type), Text(text)
-		{
-		}
-	};
-
-	typedef std::vector<Attachment> AttachmentList;
 
 public:
 
@@ -60,12 +37,12 @@ public:
 	virtual void RestoreWindow() = 0;
 
 	virtual void SetNote
-		( const Note           & note
-		, const std::wstring   & titleText
-		, const std::wstring   & subtitleText
-		, const std::wstring   & bodyHtml
-		, const AttachmentList & attachments
-		, const bool             enableChrome
+		( const Note                   & note
+		, const std::wstring           & titleText
+		, const std::wstring           & subtitleText
+		, const std::wstring           & bodyHtml
+		, const AttachmentViewInfoList & attachments
+		, const bool                     enableChrome
 		) = 0;
 
 	virtual void SetWindowTitle(const std::wstring & text) = 0;

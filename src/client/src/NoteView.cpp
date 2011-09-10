@@ -174,12 +174,12 @@ void NoteView::RestoreWindow()
 }
 
 void NoteView::SetNote
-	( const Note           & note
-	, const wstring        & titleText
-	, const wstring        & subtitleText
-	, const wstring        & bodyHtml
-	, const AttachmentList & attachments
-	, const bool             enableChrome
+	( const Note                   & note
+	, const wstring                & titleText
+	, const wstring                & subtitleText
+	, const wstring                & bodyHtml
+	, const AttachmentViewInfoList & attachments
+	, const bool                     enableChrome
 	)
 {
 	isDirty = false;
@@ -267,7 +267,7 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void NoteView::SetAttachments(const AttachmentList & attachments)
+void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 {
 	DisconnectBehavior("#attachments > option");
 
@@ -278,10 +278,11 @@ void NoteView::SetAttachments(const AttachmentList & attachments)
 	foreach (element & e, old)
 		e.destroy();
 
-	foreach (const Attachment & attachment, attachments)
+	foreach (const AttachmentViewInfo & attachment, attachments)
 	{
 		element e(element::create("option"));
 		list.insert(e, list.children_count() - 1);
+		e.set_style_attribute("background-image", attachment.Icon.c_str());
 		e.set_attribute("value", ConvertToUnicode(attachment.Guid).c_str());
 		e.set_text(attachment.Text.c_str());
 		ConnectBehavior(e, BUTTON_CLICK, &NoteView::OnAttachment);

@@ -5,11 +5,61 @@
 
 namespace Tools
 {
+	//----------
+	// templates
+	//----------
+
+	template<typename T, typename I>
+	bool StartsWith(const T & sequence, I begin, I end)
+	{
+		if (sequence.size() < static_cast<size_t>(end - begin))
+			return false;
+		T::const_iterator i = sequence.begin();
+		while (begin != end)
+		{
+			if (*i != *begin)
+				return false;
+			++i; ++begin;
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool StartsWith(const T & sequence, const T & fragment)
+	{
+		return StartsWith(sequence, fragment.begin(), fragment.end());
+	}
+
+	template<typename T, typename I>
+	bool EndsWith(const T & sequence, I begin, I end)
+	{
+		if (sequence.size() < static_cast<size_t>(end - begin))
+			return false;
+		T::const_iterator i = sequence.end() - (end - begin);
+		while (begin != end)
+		{
+			if (*i != *begin)
+				return false;
+			++i; ++begin;
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool EndsWith(const T & sequence, const T & fragment)
+	{
+		return EndsWith(sequence, fragment.begin(), fragment.end());
+	}
+
 	template<class T, std::size_t N>
 	std::size_t GetArraySize(const T(&)[N]) throw() 
 	{
 		return N;
 	}
+
+	//-------------
+	// declarations
+	//-------------
  
 	std::string ConvertToAnsi(const std::wstring & str);
 
@@ -26,6 +76,8 @@ namespace Tools
 		);
 
 	void DecodeBase64(const wchar_t * text, Blob & data);
+
+	bool EndsWith(const std::wstring & sequence, const wchar_t * fragment);
 
 	std::wstring EscapeHtml(const std::wstring & str);
 
@@ -59,7 +111,7 @@ namespace Tools
 		, const std::wstring & replacement
 		);
 
-	bool StartsWith(const wchar_t * text, const wchar_t * prefix);
+	bool StartsWith(const std::wstring & sequence, const wchar_t * fragment);
 
 	void UnixTimeToFileTime
 		( time_t         unixTime

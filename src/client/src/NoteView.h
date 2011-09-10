@@ -80,12 +80,12 @@ public:
 	virtual void RestoreWindow();
 
 	virtual void SetNote
-		( const Note           & note
-		, const std::wstring   & titleText
-		, const std::wstring   & subtitleText
-		, const std::wstring   & bodyHtml
-		, const AttachmentList & attachments
-		, const bool             enableChrome
+		( const Note                   & note
+		, const std::wstring           & titleText
+		, const std::wstring           & subtitleText
+		, const std::wstring           & bodyHtml
+		, const AttachmentViewInfoList & attachments
+		, const bool                     enableChrome
 		);
 
 	virtual void SetWindowTitle(const std::wstring & text);
@@ -100,7 +100,7 @@ private:
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 
-	void SetAttachments(const AttachmentList & attachments);
+	void SetAttachments(const AttachmentViewInfoList & attachments);
 
 	void SetChrome(bool enable);
 

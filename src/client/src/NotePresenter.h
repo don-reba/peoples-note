@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Attachment.h"
+#include "AttachmentViewInfo.h"
 
 class INoteListModel;
 class INoteListView;
@@ -38,4 +39,10 @@ private:
 	void OnCloseNote();
 	void OnOpenNote();
 	void OnToggleMaximize();
+
+// utility functions
+
+	static AttachmentViewInfo ConvertAttachment(const Attachment & attachment);
+
+	static const wchar_t * GetAttachmentImageUrl(const Attachment & mime);
 };

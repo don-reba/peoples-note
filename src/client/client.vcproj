@@ -862,6 +862,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\AttachmentViewInfo.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\AudioPlayer.h"
 				>
 			</File>
@@ -1396,11 +1400,43 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\html-lr\audio-attachment.png"
+				RelativePath=".\html\attachment-image.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\audio-attachment.png"
+				RelativePath=".\html-lr\attachment-image.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\attachment-misc.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\attachment-misc.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\attachment-mp3.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\attachment-mp3.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\attachment-pdf.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\attachment-pdf.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\attachment-sound.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\attachment-sound.png"
 				>
 			</File>
 			<File
@@ -1448,19 +1484,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\corner-light.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html\corner-light.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\corner.png"
+				RelativePath=".\html-lr\corner-light.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\corner.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\corner.png"
 				>
 			</File>
 			<File
@@ -1472,11 +1508,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\encrypt.png"
+				RelativePath=".\html\encrypt.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\encrypt.png"
+				RelativePath=".\html-lr\encrypt.png"
 				>
 			</File>
 			<File
@@ -1488,15 +1524,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\gradient-64.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\gradient-64.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\ink-note-pressed.png"
+				RelativePath=".\html\gradient-64.png"
 				>
 			</File>
 			<File
@@ -1504,11 +1536,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\ink-note.png"
+				RelativePath=".\html\ink-note-pressed.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\ink-note.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\ink-note.png"
 				>
 			</File>
 			<File
@@ -1520,11 +1556,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\menu-check.png"
+				RelativePath=".\html-lr\menu-check.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\menu-check.png"
+				RelativePath=".\html\menu-check.png"
 				>
 			</File>
 			<File
@@ -1552,11 +1588,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-check.png"
+				RelativePath=".\html\rt-check.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-check.png"
+				RelativePath=".\html-lr\rt-check.png"
 				>
 			</File>
 			<File
@@ -1576,15 +1612,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-hide.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html\rt-hide.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-indent-dec.png"
+				RelativePath=".\html-lr\rt-hide.png"
 				>
 			</File>
 			<File
@@ -1592,11 +1624,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-indent-inc.png"
+				RelativePath=".\html\rt-indent-dec.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\rt-indent-inc.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\rt-indent-inc.png"
 				>
 			</File>
 			<File
@@ -1624,11 +1660,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-redo.png"
+				RelativePath=".\html\rt-redo.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-redo.png"
+				RelativePath=".\html-lr\rt-redo.png"
 				>
 			</File>
 			<File
@@ -1648,11 +1684,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\rt-undo.png"
+				RelativePath=".\html-lr\rt-undo.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\rt-undo.png"
+				RelativePath=".\html\rt-undo.png"
 				>
 			</File>
 			<File
@@ -1664,15 +1700,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\status-gray.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\status-gray.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\status-green.png"
+				RelativePath=".\html\status-gray.png"
 				>
 			</File>
 			<File
@@ -1680,11 +1712,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\sync.png"
+				RelativePath=".\html-lr\status-green.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\sync.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\sync.png"
 				>
 			</File>
 			<File
@@ -1716,11 +1752,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\voice-note.png"
+				RelativePath=".\html-lr\voice-note.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\voice-note.png"
+				RelativePath=".\html\voice-note.png"
 				>
 			</File>
 			<File
@@ -1732,11 +1768,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\voice-play.png"
+				RelativePath=".\html\voice-play.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\voice-play.png"
+				RelativePath=".\html-lr\voice-play.png"
 				>
 			</File>
 			<File
@@ -1748,11 +1784,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\voice-record.png"
+				RelativePath=".\html\voice-record.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\voice-record.png"
+				RelativePath=".\html-lr\voice-record.png"
 				>
 			</File>
 			<File
@@ -1764,11 +1800,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\voice-stop.png"
+				RelativePath=".\html\voice-stop.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\voice-stop.png"
+				RelativePath=".\html-lr\voice-stop.png"
 				>
 			</File>
 		</Filter>
