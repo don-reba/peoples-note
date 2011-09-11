@@ -159,7 +159,12 @@ public:
 
 	virtual void MoveToDevice() = 0;
 
-	virtual void RemoveNoteTags(const Guid & note) = 0;
+	virtual void ReplaceNote
+		( const Note          & note
+		, const std::wstring  & body
+		, const std::wstring  & bodyText
+		, const Notebook      & notebook
+		) = 0;
 
 	virtual void SetCredentials
 		( const std::wstring & username

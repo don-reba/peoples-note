@@ -136,16 +136,19 @@ void NoteStore::GetNoteResource
 	, RecognitionEntryList & recognitionEntries
 	)
 {
-	wstring guidString(ConvertToUnicode(guid));
-	EDAM::Type::Resource enResource = noteStore.getResource
-		( token       // authenticationToken
-		, guidString  // guid
-		, true        // withData
-		, true        // withRecognition
-		, true        // withAttributes
-		, false       // withAlternateData
+	ConvertFromEnResource
+		( noteStore.getResource
+			( token                  // authenticationToken
+			, ConvertToUnicode(guid) // guid
+			, true                   // withData
+			, true                   // withRecognition
+			, true                   // withAttributes
+			, false                  // withAlternateData
+			)
+		, guid
+		, resource
+		, recognitionEntries
 		);
-	ConvertFromEnResource(enResource, guid, resource, recognitionEntries);
 }
 
 void NoteStore::GetNoteTagNames

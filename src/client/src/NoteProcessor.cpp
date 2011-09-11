@@ -35,7 +35,7 @@ void NoteProcessor::AddLocal(const EnInteropNote & remote)
 	noteStore.GetNoteTagNames(remote.note, tagNames);
 
 	Transaction transaction(userModel);
-	userModel.AddNote(remote.note, body, bodyText, notebook);
+	userModel.ReplaceNote(remote.note, body, bodyText, notebook);
 	foreach (const Guid & guid, remote.resources)
 	{
 		Resource             resource;
@@ -46,7 +46,6 @@ void NoteProcessor::AddLocal(const EnInteropNote & remote)
 		foreach (const RecognitionEntry & entry, recognitionEntries)
 			userModel.AddRecognitionEntry(entry);
 	}
-	userModel.RemoveNoteTags(remote.note.guid);
 	foreach (const wstring & tagName, tagNames)
 		userModel.AddTagToNote(tagName, remote.note);
 }

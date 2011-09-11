@@ -92,70 +92,7 @@ void UserModel::AddNote
 	existenceCheck->Bind(1, note.guid);
 	if (existenceCheck->Execute())
 	{
-		{
-			IDataStore::Statement insertNote = dataStore.MakeStatement
-				("INSERT INTO Notes(`guid`, `usn`, `title`, `isDirty`, `body`, `creationDate`,"
-				"                   `modificationDate`, `subjectDate`, `altitude`, `latitude`,"
-				"                   `longitude`, `author`, `source`, `sourceUrl`,"
-				"                   `sourceApplication`, `notebook`)"
-				"  VALUES (?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?)"
-				);
-			insertNote->Bind(1, note.guid);
-			insertNote->Bind(2, note.usn);
-			insertNote->Bind(3, note.name);
-			insertNote->Bind(4, note.isDirty);
-			insertNote->Bind(5, body);
-			insertNote->Bind(6, note.creationDate.GetTime());
-			insertNote->Bind(7, note.modificationDate.GetTime());
-			insertNote->Bind(8, note.subjectDate.GetTime());
-			if (note.Location.IsValid)
-			{
-				insertNote->Bind(9,  note.Location.Altitude);
-				insertNote->Bind(10, note.Location.Latitude);
-				insertNote->Bind(11, note.Location.Longitude);
-			}
-			else
-			{
-				insertNote->BindNull(9);
-				insertNote->BindNull(10);
-				insertNote->BindNull(11);
-			}
-			insertNote->Bind(12, note.Author);
-			insertNote->Bind(13, note.Source);
-			insertNote->Bind(14, note.SourceUrl);
-			insertNote->Bind(15, note.SourceApplication);
-			insertNote->Bind(16, notebook.guid);
-			insertNote->Execute();
-		}
-		{
-			__int64 rowid(dataStore.GetLastInsertRowid());
-
-			wstring ucName;
-			ucName.reserve(note.name.size());
-			transform
-				( note.name.begin()
-				, note.name.end()
-				, back_inserter(ucName)
-				, towupper
-				);
-			wstring ucBody;
-			ucBody.reserve(bodyText.size());
-			transform
-				( bodyText.begin()
-				, bodyText.end()
-				, back_inserter(ucBody)
-				, towupper
-				);
-
-			IDataStore::Statement insertText = dataStore.MakeStatement
-				( "INSERT INTO NoteText(rowid, title, body)"
-				"  VALUES (?, ?, ?)"
-				);
-			insertText->Bind(1, rowid);
-			insertText->Bind(2, ucName);
-			insertText->Bind(3, ucBody);
-			insertText->Execute();
-		}
+		ReplaceNote(note, body, bodyText, notebook);
 	}
 	else
 	{
@@ -384,12 +321,11 @@ bool UserModel::Exists(const wstring & username)
 	wstring path(CreatePathFromName(deviceFolder, username));
 	if (INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str()))
 		return true;
-	if (flashCard.GetPath(path))
-	{
-		path = CreatePathFromName(path, username);
-		return INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str());
-	}
-	return false;
+	path = flashCard.GetPath();
+	if (path.empty())
+		return false;
+	path = CreatePathFromName(path, username);
+	return INVALID_FILE_ATTRIBUTES != ::GetFileAttributes(path.c_str());
 }
 
 void UserModel::ExpungeNote(const Guid & note)
@@ -1004,17 +940,12 @@ void UserModel::Load(const wstring & username)
 	wstring path(CreatePathFromName(deviceFolder.c_str(), username));
 	if (!TryLoad(path, DbLocationDevice))
 	{
-		wstring cardFolder;
-		if (flashCard.GetPath(cardFolder))
-		{
-			path = CreatePathFromName(cardFolder.c_str(), username);
-			if (!TryLoad(path, DbLocationCard))
-				throw std::exception("Database could not be loaded.");
-		}
-		else
-		{
+		wstring cardFolder(flashCard.GetPath());
+		if (cardFolder.empty())
 			throw std::exception("Database could not be loaded.");
-		}
+		path = CreatePathFromName(cardFolder.c_str(), username);
+		if (!TryLoad(path, DbLocationCard))
+			throw std::exception("Database could not be loaded.");
 	}
 	Update();
 	SignalLoaded();
@@ -1030,17 +961,12 @@ void UserModel::LoadAs
 	DbLocation location (DbLocationDevice);
 	if (INVALID_FILE_ATTRIBUTES == ::GetFileAttributes(oldPath.c_str()))
 	{
-		wstring cardFolder;
-		if (flashCard.GetPath(cardFolder))
-		{
-			oldPath  = CreatePathFromName(cardFolder, oldUsername);
-			newPath  = CreatePathFromName(cardFolder, newUsername);
-			location = DbLocationCard;
-		}
-		else
-		{
+		wstring cardFolder(flashCard.GetPath());
+		if (cardFolder.empty())
 			throw std::exception("Database could not be found.");
-		}
+		oldPath  = CreatePathFromName(cardFolder, oldUsername);
+		newPath  = CreatePathFromName(cardFolder, newUsername);
+		location = DbLocationCard;
 	}
 	if (!::MoveFile(oldPath.c_str(), newPath.c_str()))
 		throw std::exception("Database could not be renamed.");
@@ -1057,8 +983,8 @@ void UserModel::LoadOrCreate(const wstring & username)
 	DbLocation location (DbLocationDevice);
 	if (INVALID_FILE_ATTRIBUTES == ::GetFileAttributes(path.c_str()))
 	{
-		wstring cardFolder;
-		if (flashCard.GetPath(cardFolder))
+		wstring cardFolder(flashCard.GetPath());
+		if (!cardFolder.empty())
 		{
 			path     = CreatePathFromName(cardFolder, username);
 			location = DbLocationCard;
@@ -1113,8 +1039,8 @@ void UserModel::MakeNotebookLastUsed(const Guid & notebook)
 
 void UserModel::MoveToCard()
 {
-	wstring cardFolder;
-	if (!flashCard.GetPath(cardFolder))
+	wstring cardFolder(flashCard.GetPath());
+	if (cardFolder.empty())
 		throw std::exception("No storage card available.");
 
 	wstring username(GetUsername());
@@ -1128,8 +1054,8 @@ void UserModel::MoveToCard()
 
 void UserModel::MoveToDevice()
 {
-	wstring cardFolder;
-	if (!flashCard.GetPath(cardFolder))
+	wstring cardFolder(flashCard.GetPath());
+	if (cardFolder.empty())
 		throw std::exception("No storage card available.");
 
 	wstring username(GetUsername());
@@ -1141,13 +1067,78 @@ void UserModel::MoveToDevice()
 		);
 }
 
-void UserModel::RemoveNoteTags(const Guid & note)
+void UserModel::ReplaceNote
+	( const Note          & note
+	, const std::wstring  & body
+	, const std::wstring  & bodyText
+	, const Notebook      & notebook
+	)
 {
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "DELETE FROM NoteTags WHERE note = ?"
-		);
-	statement->Bind(1, note);
-	statement->Execute();
+	Transaction transaction(*this);
+	{
+		IDataStore::Statement insertNote = dataStore.MakeStatement
+			("INSERT OR REPLACE INTO Notes(`guid`, `usn`, `title`, `isDirty`, `body`,"
+			"                              `creationDate`, `modificationDate`, `subjectDate`,"
+			"                              `altitude`, `latitude`, `longitude`, `author`,"
+			"                              `source`, `sourceUrl`, `sourceApplication`, `notebook`)"
+			"  VALUES (?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?)"
+			);
+		insertNote->Bind(1, note.guid);
+		insertNote->Bind(2, note.usn);
+		insertNote->Bind(3, note.name);
+		insertNote->Bind(4, note.isDirty);
+		insertNote->Bind(5, body);
+		insertNote->Bind(6, note.creationDate.GetTime());
+		insertNote->Bind(7, note.modificationDate.GetTime());
+		insertNote->Bind(8, note.subjectDate.GetTime());
+		if (note.Location.IsValid)
+		{
+			insertNote->Bind(9,  note.Location.Altitude);
+			insertNote->Bind(10, note.Location.Latitude);
+			insertNote->Bind(11, note.Location.Longitude);
+		}
+		else
+		{
+			insertNote->BindNull(9);
+			insertNote->BindNull(10);
+			insertNote->BindNull(11);
+		}
+		insertNote->Bind(12, note.Author);
+		insertNote->Bind(13, note.Source);
+		insertNote->Bind(14, note.SourceUrl);
+		insertNote->Bind(15, note.SourceApplication);
+		insertNote->Bind(16, notebook.guid);
+		insertNote->Execute();
+	}
+	{
+		__int64 rowid(dataStore.GetLastInsertRowid());
+
+		wstring ucName;
+		ucName.reserve(note.name.size());
+		transform
+			( note.name.begin()
+			, note.name.end()
+			, back_inserter(ucName)
+			, towupper
+			);
+		wstring ucBody;
+		ucBody.reserve(bodyText.size());
+		transform
+			( bodyText.begin()
+			, bodyText.end()
+			, back_inserter(ucBody)
+			, towupper
+			);
+
+		IDataStore::Statement insertText = dataStore.MakeStatement
+			( "INSERT INTO NoteText(rowid, title, body)"
+			"  VALUES (?, ?, ?)"
+			);
+		insertText->Bind(1, rowid);
+		insertText->Bind(2, ucName);
+		insertText->Bind(3, ucBody);
+		insertText->Execute();
+	}
 }
 
 void UserModel::SetCredentials

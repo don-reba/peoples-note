@@ -3875,4 +3875,18 @@ resource data should be put intoa separate 1-1 table
 Tools:StartsWith/EndsWith are untested
 	TODO
 attachments are not deleted
+	adding a note through sync should delete old resources
+	updating  a note through the editor should not
+	both use the AddNote command
+	the note's tags should be deleted, as well
+	basically, I need to do INSERT OR REPLACE
+	I could leave AddNote as is and add a ReplaceNote command
+		alternatively
+			make AddNote strict
+			add NoteExists
+			add ReplaceNote
+		the alternative requires too many changes
+		it is also more complex
+	I already have RemoveNoteTags
+		not needed with ReplaceNote
 	TODO
