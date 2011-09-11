@@ -130,28 +130,15 @@ void NotePresenter::OnOpenNote()
 
 	Guid guid(noteListView.GetSelectedNoteGuid());
 
-	wstring body;
-	userModel.GetNoteBody(guid, body);
 	Note note;
 	userModel.GetNote(guid, note);
 
-	wstring subtitle(L"created on ");
-	subtitle.append(note.creationDate.GetFormattedDateTime());
+	wstring subtitle;
+	CreateSubtitle(note, subtitle);
 
-	TagList tags;
-	userModel.GetNoteTags(note, tags);
-	if (!tags.empty())
-	{
-		subtitle.append(L"\ntags: ");
-		subtitle.append(tags[0].name);
-		for (int i(1); i != tags.size(); ++i)
-		{
-			subtitle.append(L", ");
-			subtitle.append(tags[i].name);
-		}
-	}
-
+	wstring body;
 	wstring html;
+	userModel.GetNoteBody(guid, body);
 	enNoteTranslator.ConvertToHtml(body, html);
 
 	AttachmentList         attachments;
@@ -179,6 +166,25 @@ void NotePresenter::OnToggleMaximize()
 //------------------
 // utility functions
 //------------------
+
+void NotePresenter::CreateSubtitle(const Note & note, wstring & subtitle)
+{
+	subtitle = L"created on ";
+	subtitle.append(note.creationDate.GetFormattedDateTime());
+
+	TagList tags;
+	userModel.GetNoteTags(note, tags);
+	if (!tags.empty())
+	{
+		subtitle.append(L"\ntags: ");
+		subtitle.append(tags[0].name);
+		for (int i(1); i != tags.size(); ++i)
+		{
+			subtitle.append(L", ");
+			subtitle.append(tags[i].name);
+		}
+	}
+}
 
 const wchar_t * NotePresenter::GetAttachmentImageUrl(const Attachment & attachment)
 {
@@ -211,16 +217,20 @@ const wchar_t * NotePresenter::GetAttachmentImageUrl(const Attachment & attachme
 			, back_inserter(ext)
 			, tolower
 			);
+
 		if (ext == L".mp3")
 			return L"url(attachment-mp3.png)";
+
 		if (ext == L".pdf")
 			return L"url(attachment-pdf.png)";
 
-		const wchar_t * imageExts[] = { L".gif", L".jpg", L".jpeg", L".png", L".bmp" };
+		const wchar_t * imageExts[]
+			= { L".gif", L".jpg", L".jpeg", L".png", L".bmp", L".tif", L".tiff", L".raw" };
 		for (int i(0); i != GetArraySize(imageExts); ++i)
 			if (ext == imageExts[i]) return L"url(attachment-image.png)";
 
-		const wchar_t * audioExts[] = { L".wav", L".mpg", L".mpeg", L".amr", L".ogg", L".flac", L".ape" };
+		const wchar_t * audioExts[]
+			= { L".wav", L".mpg", L".mpeg", L".amr", L".ogg", L".flac", L".ape" };
 		for (int i(0); i != GetArraySize(audioExts); ++i)
 			if (ext == audioExts[i]) return L"url(attachment-sound.png)";
 	}

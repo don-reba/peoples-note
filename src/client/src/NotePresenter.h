@@ -8,6 +8,7 @@ class INoteListView;
 class INoteView;
 class IUserModel;
 class EnNoteTranslator;
+class Note;
 
 class NotePresenter
 {
@@ -41,6 +42,8 @@ private:
 	void OnToggleMaximize();
 
 // utility functions
+
+	void CreateSubtitle(const Note & note, std::wstring & subtitle);
 
 	static AttachmentViewInfo ConvertAttachment(const Attachment & attachment);
 

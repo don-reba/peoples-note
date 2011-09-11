@@ -598,7 +598,7 @@ void UserModel::GetNoteAttachments
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, mime, fileName"
 		"  FROM Resources"
-		"  WHERE note = ?"
+		"  WHERE note = ? AND length(fileName) > 0"
 		"  ORDER BY fileName, timestamp"
 		);
 	statement->Bind(1, note);

@@ -3860,7 +3860,11 @@ displaying attachments
 		best done as a database test
 		TODO
 	ok, so attachments work, need to clean up
-	TODO
+		seems clean enough
+	opening notes with attachments is slow now
+		data is one of the first members
+		we might want to move it into a new table
+		TODO
 LoadAs logic is incorrect
 	TODO
 FlashCard::GetPath always returns true
@@ -3869,4 +3873,6 @@ resource data should be put intoa separate 1-1 table
 	to avoid slowing down queries
 	TODO
 Tools:StartsWith/EndsWith are untested
+	TODO
+attachments are not deleted
 	TODO
