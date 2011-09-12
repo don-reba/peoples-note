@@ -63,6 +63,12 @@ public:
 
 	virtual void GetNote(Note & note);
 
+	virtual std::wstring GetSavePath
+		( const std::wstring & title
+		, const std::wstring & fileName
+		, const std::wstring & directory
+		);
+
 	virtual Guid GetSelecteAttachmentGuid();
 
 	virtual void GetTitle(std::wstring & text);

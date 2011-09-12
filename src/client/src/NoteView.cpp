@@ -7,7 +7,9 @@
 #include "resourceppc.h"
 #include "Tools.h"
 
+#include <algorithm>
 #include <fstream>
+#include <iterator>
 
 using namespace boost;
 using namespace htmlayout;
@@ -114,6 +116,35 @@ void NoteView::GetBody(wstring & html)
 void NoteView::GetNote(Note & note)
 {
 	note = this->note;
+}
+
+wstring NoteView::GetSavePath
+	( const wstring & title
+	, const wstring & fileName
+	, const wstring & directory
+	)
+{
+	vector<wchar_t> fileNameChars(fileName.begin(), fileName.end());
+	fileNameChars.resize(MAX_PATH);
+	fileNameChars.back() = L'\0';
+
+	vector<wchar_t> titleChars(title.begin(), title.end());
+	titleChars.resize(MAX_PATH);
+	titleChars.back() = L'\0';
+
+	OPENFILENAME openFileName = { };
+	openFileName.lStructSize     = sizeof(openFileName);
+	openFileName.lpstrTitle      = &titleChars[0];
+	openFileName.nMaxFileTitle   = titleChars.size();
+	openFileName.lpstrFile       = &fileNameChars[0];
+	openFileName.nMaxFile        = fileNameChars.size();
+	openFileName.lpstrInitialDir = directory.c_str();
+	openFileName.hwndOwner       = hwnd_;
+
+	BOOL result(::GetSaveFileName(&openFileName));
+	if (0 == result || 6 == result)
+		return L"";
+	return &fileNameChars[0];
 }
 
 Guid NoteView::GetSelecteAttachmentGuid()

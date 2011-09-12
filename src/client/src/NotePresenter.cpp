@@ -29,11 +29,12 @@ NotePresenter::NotePresenter
 	, IUserModel       & userModel
 	, EnNoteTranslator & enNoteTranslator
 	)
-	: noteListModel    (noteListModel)
-	, noteListView     (noteListView)
-	, noteView         (noteView)
-	, userModel        (userModel)
-	, enNoteTranslator (enNoteTranslator)
+	: deviceDocumentPath (deviceDocumentPath)
+	, noteListModel      (noteListModel)
+	, noteListView       (noteListView)
+	, noteView           (noteView)
+	, userModel          (userModel)
+	, enNoteTranslator   (enNoteTranslator)
 {
 	noteListView.ConnectOpenNote   (bind(&NotePresenter::OnOpenNote,       this));
 	noteView.ConnectAttachment     (bind(&NotePresenter::OnAttachment,     this));
@@ -56,26 +57,15 @@ void NotePresenter::OnAttachment()
 	if (resource.Data.empty())
 		return;
 
-	vector<wchar_t> fileName(MAX_PATH);
-	copy
-		( resource.FileName.begin()
-		, resource.FileName.size() <= fileName.size()
-		? resource.FileName.end()
-		: resource.FileName.begin() + fileName.size()
-		, fileName.begin()
+	wstring path = noteView.GetSavePath
+		( L"Save attachment..."
+		, resource.FileName
+		, deviceDocumentPath
 		);
-
-	OPENFILENAME openFileName = { sizeof(openFileName) };
-	openFileName.lpstrFile       = &fileName[0];
-	openFileName.nMaxFile        = MAX_PATH;
-	openFileName.lpstrInitialDir = deviceDocumentPath.c_str();
-	openFileName.lpstrTitle      = L"Save attachment...";
-	openFileName.Flags           = OFN_OVERWRITEPROMPT;
-	BOOL result(::GetSaveFileName(&openFileName));
-	if (0 == result || 6 == result)
+	if (path.empty())
 		return;
 
-	ofstream file(&fileName[0], ios::binary);
+	ofstream file(path.c_str(), ios::binary);
 	if (!file)
 		return;
 	file.write

@@ -20,6 +20,11 @@ public:
 	std::wstring title;
 	std::wstring windowTitle;
 
+	std::wstring savePathTitle;
+	std::wstring savePathFileName;
+	std::wstring savePathDirectory;
+	std::wstring savePath;
+
 	bool enableChrome;
 	bool isDirty;
 	bool isMaximized;
@@ -36,6 +41,12 @@ public:
 	virtual void GetBody(std::wstring & html);
 
 	virtual void GetNote(Note & note);
+
+	virtual std::wstring GetSavePath
+		( const std::wstring & title
+		, const std::wstring & fileName
+		, const std::wstring & directory
+		);
 
 	virtual Guid GetSelecteAttachmentGuid();
 

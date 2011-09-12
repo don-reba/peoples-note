@@ -23,6 +23,18 @@ void MockNoteView::GetNote(Note & note)
 	note = this->note;
 }
 
+wstring MockNoteView::GetSavePath
+	( const wstring & title
+	, const wstring & fileName
+	, const wstring & directory
+	)
+{
+	savePathTitle     = title;
+	savePathFileName  = fileName;
+	savePathDirectory = directory;
+	return savePath;
+}
+
 Guid MockNoteView::GetSelecteAttachmentGuid()
 {
 	return selectedAttachment;
