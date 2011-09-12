@@ -95,6 +95,8 @@ public:
 
 	virtual void GetNotebook(const Guid & guid, Notebook & notebook);
 
+	virtual void GetResource(const Guid & guid, Resource & resource);
+
 	virtual void GetSyncState(SyncState & syncState);
 
 	virtual void GetTag(const Guid & guid, Tag & tag);

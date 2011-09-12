@@ -236,6 +236,66 @@ FIXTURE_TEST_CASE(UserModelAddNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 }
 
+FIXTURE_TEST_CASE(UserModelAttahcments, DataStoreFixture)
+{
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
+
+	Note note0;
+	Note note1;
+	userModel.AddNote(note0, L"", L"", notebook);
+	userModel.AddNote(note1, L"", L"", notebook);
+
+	Resource resource0;
+	Resource resource1;
+	Resource resource2;
+	Resource resource3;
+	Resource resource4;
+	resource0.Hash = "0";
+	resource1.Hash = "1";
+	resource2.Hash = "2";
+	resource3.Hash = "3";
+	resource4.Hash = "4";
+	resource0.Mime = L"image/png";
+	resource1.Mime = L"image/jpg";
+	resource2.Mime = L"audio/wav";
+	resource0.FileName = L"file0";
+	resource1.FileName = L"file1"; // sort by filename
+	resource2.FileName = L"file1"; // sort by timestamp
+	resource3.FileName = L"";      // skip
+	resource4.FileName = L"file2";
+	resource0.Timestamp = 0;
+	resource1.Timestamp = 1;
+	resource2.Timestamp = 2;
+	resource3.Timestamp = 3;
+	resource4.Timestamp = 4;
+	resource0.Note = note0.guid;
+	resource1.Note = note0.guid;
+	resource2.Note = note0.guid;
+	resource3.Note = note0.guid;
+	resource4.Note = note1.guid; // skip
+
+	userModel.AddResource(resource3);
+	userModel.AddResource(resource2);
+	userModel.AddResource(resource1);
+	userModel.AddResource(resource4);
+	userModel.AddResource(resource0);
+
+	AttachmentList attachments;
+	userModel.GetNoteAttachments(note0.guid, attachments);
+
+	TEST_CHECK_EQUAL(attachments.size(), 3);
+	TEST_CHECK_EQUAL(attachments.at(0).Guid, resource0.Guid);
+	TEST_CHECK_EQUAL(attachments.at(1).Guid, resource1.Guid);
+	TEST_CHECK_EQUAL(attachments.at(2).Guid, resource2.Guid);
+	TEST_CHECK_EQUAL(attachments.at(0).Mime, L"image/png");
+	TEST_CHECK_EQUAL(attachments.at(1).Mime, L"image/jpg");
+	TEST_CHECK_EQUAL(attachments.at(2).Mime, L"audio/wav");
+	TEST_CHECK_EQUAL(attachments.at(0).FileName, L"file0");
+	TEST_CHECK_EQUAL(attachments.at(1).FileName, L"file1");
+	TEST_CHECK_EQUAL(attachments.at(2).FileName, L"file1");
+}
+
 FIXTURE_TEST_CASE(UserModelCascade, DataStoreFixture)
 {
 	Notebook notebook;
@@ -983,6 +1043,35 @@ FIXTURE_TEST_CASE(UserModelUpdateNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(notes.at(0).name, L"note-0");
 }
 
+FIXTURE_TEST_CASE(UserModelUpdateResource, DataStoreFixture)
+{
+	Notebook notebook;
+	userModel.GetDefaultNotebook(notebook);
+
+	Note note;
+	userModel.AddNote(note, L"", L"", notebook);
+
+	Resource resource;
+	resource.Note = note.guid;
+	userModel.AddResource(resource);
+
+	RecognitionEntry entry;
+	entry.Resource = resource.Guid;
+	userModel.AddRecognitionEntry(entry);
+
+	TEST_CHECK_EQUAL(userModel.GetRecognitionEntryCount(), 1);
+
+	Resource replacement;
+	replacement.Note = note.guid;
+	userModel.UpdateResource(resource.Guid, replacement);
+
+	TEST_CHECK_EQUAL(userModel.GetRecognitionEntryCount(), 1);
+
+	userModel.AddResource(replacement);
+
+	TEST_CHECK_EQUAL(userModel.GetRecognitionEntryCount(), 0);
+}
+
 FIXTURE_TEST_CASE(UserModelUpdateTag, DataStoreFixture)
 {
 	Tag tag;
@@ -1013,7 +1102,6 @@ FIXTURE_TEST_CASE(UserModelUpdateTag, DataStoreFixture)
 
 FIXTURE_TEST_CASE(UserModelSyncVersion, DataStoreFixture)
 {
-	TEST_CHECK_EQUAL(userModel.GetSyncVersion(), 0);
 	userModel.SetSyncVersion(17);
 	TEST_CHECK_EQUAL(userModel.GetSyncVersion(), 17);
 }

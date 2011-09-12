@@ -109,6 +109,13 @@ void MockNoteStore::GetNotebook
 {
 }
 
+void MockNoteStore::GetResource
+	( const Guid     & guid
+	,       Resource & resource
+	)
+{
+}
+
 void MockNoteStore::GetSyncState(SyncState & syncState)
 {
 	syncState = this->syncState;

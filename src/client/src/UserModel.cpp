@@ -61,6 +61,18 @@ int UserModel::GetNotebookCount()
 	return count;
 }
 
+int UserModel::GetRecognitionEntryCount()
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT COUNT(*)"
+		"  FROM Recognition"
+		);
+	statement->Execute();
+	int count(0);
+	statement->Get(0, count);
+	return count;
+}
+
 int UserModel::GetResourceCount()
 {
 	IDataStore::Statement statement = dataStore.MakeStatement

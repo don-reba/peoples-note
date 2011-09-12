@@ -15,7 +15,7 @@ using namespace std;
 
 struct NotePresenterFixture
 {
-	EnNoteTranslator enNoteTranslator;
+	EnNoteTranslator  enNoteTranslator;
 	MockNoteListModel noteListModel;
 	MockNoteListView  noteListView;
 	MockNoteView      noteView;
@@ -25,7 +25,8 @@ struct NotePresenterFixture
 
 	NotePresenterFixture()
 		: notePresenter
-			( noteListModel
+			( L"/Storage Card/"
+			, noteListModel
 			, noteListView
 			, noteView
 			, userModel
@@ -128,7 +129,7 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteView.body,       L"<p>test-note</p>");
 	BOOST_CHECK_EQUAL(noteView.title,      L"note-title");
 	BOOST_CHECK_EQUAL(noteView.subtitle,   L"created on 1970-01-01 02:00");
-	BOOST_CHECK_EQUAL(noteView.attachment, L"");
+	BOOST_CHECK(noteView.attachments.empty());
 	BOOST_CHECK(noteView.enableChrome);
 	BOOST_CHECK(noteView.isShown);
 

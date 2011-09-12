@@ -22,7 +22,8 @@ using namespace Tools;
 //----------
 
 NotePresenter::NotePresenter
-	( INoteListModel   & noteListModel
+	( const wstring    & deviceDocumentPath
+	, INoteListModel   & noteListModel
 	, INoteListView    & noteListView
 	, INoteView        & noteView
 	, IUserModel       & userModel
@@ -64,18 +65,10 @@ void NotePresenter::OnAttachment()
 		, fileName.begin()
 		);
 
-	vector<wchar_t> folder(MAX_PATH);
-	::SHGetSpecialFolderPath
-		( NULL           // hwndOwner
-		, &folder[0]     // lpszPath
-		, CSIDL_PERSONAL // nFolder
-		, TRUE           // fCreate
-		);
-
 	OPENFILENAME openFileName = { sizeof(openFileName) };
 	openFileName.lpstrFile       = &fileName[0];
 	openFileName.nMaxFile        = MAX_PATH;
-	openFileName.lpstrInitialDir = &folder[0];
+	openFileName.lpstrInitialDir = deviceDocumentPath.c_str();
 	openFileName.lpstrTitle      = L"Save attachment...";
 	openFileName.Flags           = OFN_OVERWRITEPROMPT;
 	BOOL result(::GetSaveFileName(&openFileName));

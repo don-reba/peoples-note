@@ -11,22 +11,43 @@ using namespace Tools;
 
 bool FlashCard::Exists() const
 {
-	WIN32_FIND_DATA find = { 0 };
-	::CloseHandle(::FindFirstFlashCard(&find));
-	return find.cFileName && *find.cFileName;
+	return !GetName().empty();
 }
 
-bool FlashCard::GetPath(wstring & path) const
+wstring FlashCard::GetPath() const
 {
-	WIN32_FIND_DATA find = { 0 };
-	::CloseHandle(::FindFirstFlashCard(&find));
-	if (!find.cFileName || !*find.cFileName)
-		return false;
+	wstring name(GetName());
+	if (name.empty())
+		return L"";
 
-	path = L"\\";
-	path.append(find.cFileName);
+	wstring path(L"\\");
+	path.append(name);
 	path.append(L"\\");
 	path.append(LoadStringResource(IDS_DOC_FOLDER));
+	return path;
+}
 
-	return true;
+wstring FlashCard::GetName()
+{
+	WIN32_FIND_DATA data = { 0 };
+	HANDLE handle(::FindFirstFlashCard(&data));
+	if (INVALID_HANDLE_VALUE != handle)
+	{
+		do
+		{
+			if (!IsValidData(data))
+				continue;
+			::CloseHandle(handle);
+			return data.cFileName;
+		}
+		while (::FindNextFlashCard(handle, &data));
+		::CloseHandle(handle);
+	}
+	return L"";
+}
+
+bool FlashCard::IsValidData(const WIN32_FIND_DATA & data)
+{
+	return data.cFileName && data.cFileName
+		&& (0 != wcsicmp(data.cFileName, L"network"));
 }

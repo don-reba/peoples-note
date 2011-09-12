@@ -253,6 +253,8 @@ void Tools::DecodeBase64(const wchar_t * text, Blob & data)
 
 bool Tools::EndsWith(const wstring & sequence, const wchar_t * fragment)
 {
+	if (!fragment)
+		return false;
 	return EndsWith(sequence, fragment, fragment + wcslen(fragment));
 }
 
@@ -555,6 +557,8 @@ void Tools::ReplaceAll
 
 bool Tools::StartsWith(const wstring & sequence, const wchar_t * fragment)
 {
+	if (!fragment)
+		return NULL;
 	return StartsWith(sequence, fragment, fragment + wcslen(fragment));
 }
 

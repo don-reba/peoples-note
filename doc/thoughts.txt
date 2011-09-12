@@ -3662,7 +3662,8 @@ database does not move to the storage card
 		finds only "Internal Storage" on my phone
 		actually moves to "Trusted", however
 			weird
-	TODO
+	caused by a "Network" card
+	fixed by special fitering
 why is DataStore destroyed 4 times?
 	some sort of debugging artifact
 	it is only destroyed twice
@@ -3853,12 +3854,11 @@ displaying attachments
 		type
 		name
 	need to test GetNoteAttachments
-		TODO
+		done
 	resource data still is not stored in the database
 		fixed
 	have to make sure recognition entries are not deleted
 		best done as a database test
-		TODO
 	ok, so attachments work, need to clean up
 		seems clean enough
 	opening notes with attachments is slow now
@@ -3868,12 +3868,13 @@ displaying attachments
 LoadAs logic is incorrect
 	TODO
 FlashCard::GetPath always returns true
-	TODO
-resource data should be put intoa separate 1-1 table
+	fixed
+resource data should be put into separate 1-1 table
 	to avoid slowing down queries
 	TODO
 Tools:StartsWith/EndsWith are untested
-	TODO
+	testing via strings should be fine
+	fixed
 attachments are not deleted
 	adding a note through sync should delete old resources
 	updating  a note through the editor should not
@@ -3889,4 +3890,3 @@ attachments are not deleted
 		it is also more complex
 	I already have RemoveNoteTags
 		not needed with ReplaceNote
-	TODO

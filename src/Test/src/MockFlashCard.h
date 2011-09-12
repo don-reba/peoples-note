@@ -9,7 +9,7 @@ public:
 
 public:
 
-	bool Exists() const;
+	virtual bool Exists() const;
 
-	bool GetPath(std::wstring & path) const;
+	virtual std::wstring GetPath() const;
 };

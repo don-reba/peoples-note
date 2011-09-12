@@ -8,8 +8,7 @@ bool MockFlashCard::Exists() const
 	return !path.empty();
 }
 
-bool MockFlashCard::GetPath(wstring & path) const
+wstring MockFlashCard::GetPath() const
 {
-	path = this->path;
-	return !path.empty();
+	return path;
 }

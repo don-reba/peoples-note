@@ -89,16 +89,6 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_AddLocal_Test, NoteProcessorFixture)
 		( userModel.resources.at(1).Hash
 		, "4816b20bbb2673692f5d8327d331fc00"
 		);
-
-	BOOST_REQUIRE_EQUAL(userModel.noteTags.size(), 2);
-	BOOST_CHECK
-		(  userModel.noteTags.find(MockUserModel::NoteTag("{0}", "{0}"))
-		!= userModel.noteTags.end()
-		);
-	BOOST_CHECK
-		(  userModel.noteTags.find(MockUserModel::NoteTag("{0}", "{1}"))
-		!= userModel.noteTags.end()
-		);
 }
 
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_CreateRemote_Test, NoteProcessorFixture)

@@ -170,6 +170,24 @@ void MockUserModel::GetNote(const Guid & guid, Note & note)
 	throw std::exception("Note not found.");
 }
 
+void MockUserModel::GetNoteAttachments
+	( const Guid     & note
+	, AttachmentList & attachments
+	)
+{
+	attachments.clear();
+	foreach (const Resource & r, resources)
+	{
+		if (r.FileName.empty() || r.Guid != note)
+			continue;
+		attachments.push_back(Attachment());
+		Attachment & a(attachments.back());
+		a.FileName = r.FileName;
+		a.Guid     = r.Guid;
+		a.Mime     = r.Mime;
+	}
+}
+
 void MockUserModel::GetNoteBody
 	( const Guid & guid
 	, wstring    & resource
@@ -294,6 +312,13 @@ void MockUserModel::GetResource(const Guid & guid, Resource & resource)
 	}
 }
 
+void MockUserModel::GetResources(GuidList & resources)
+{
+	resources.clear();
+	foreach (const Resource & r, this->resources)
+		resources.push_back(r.Guid);
+}
+
 __int64 MockUserModel::GetSize()
 {
 	return size;
@@ -337,9 +362,9 @@ void MockUserModel::Load(const wstring & username)
 }
 
 void MockUserModel::LoadAs
-		( const wstring & oldUsername
-		, const wstring & newUsername
-		)
+	( const wstring & oldUsername
+	, const wstring & newUsername
+	)
 {
 	if (loadMethod != LoadMethodNone)
 	{
@@ -385,17 +410,29 @@ void MockUserModel::MoveToDevice()
 	path     = L"device-path";
 }
 
-void MockUserModel::RemoveNoteTags(const Guid & note)
+void MockUserModel::ReplaceNote
+	( const Note     & note
+	, const wstring  & body
+	, const wstring  & bodyText
+	, const Notebook & notebook
+	)
 {
-	set<NoteTag>::iterator i(noteTags.begin());
-	while (i != noteTags.end())
+	foreach (Note & n, notes)
 	{
-		set<NoteTag>::iterator next(i);
-		++next;
-		if (note == i->note)
-			noteTags.erase(i);
-		i = next;
+		if (n.guid != note.guid)
+			continue;
+		n = note;
+		noteBodies[n.guid] = body;
+		foreach (NoteRecord & nr, addedNotes)
+		{
+			if (nr.note.guid != note.guid)
+				continue;
+			nr = NoteRecord(note, body, bodyText, notebook);
+			break;
+		}
+		return;
 	}
+	AddNote(note, body, bodyText, notebook);
 }
 
 void MockUserModel::SetCredentials
@@ -468,6 +505,20 @@ void MockUserModel::UpdateNotebook
 		if (n.guid != notebook)
 			continue;
 		n = replacement;
+		return;
+	}
+}
+
+void MockUserModel::UpdateResource
+	( const Guid     & resource
+	, const Resource & replacement
+	)
+{
+	foreach (Resource & r, resources)
+	{
+		if (r.Guid != resource)
+			continue;
+		r = replacement;
 		return;
 	}
 }

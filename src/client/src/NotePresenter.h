@@ -20,16 +20,19 @@ private:
 	IUserModel       & userModel;
 	EnNoteTranslator & enNoteTranslator;
 
+	std::wstring deviceDocumentPath;
+
 // interface
 
 public:
 
 	NotePresenter
-		( INoteListModel   & noteListModel
-		, INoteListView    & noteListView
-		, INoteView        & noteView
-		, IUserModel       & userModel
-		, EnNoteTranslator & enNoteTranslator
+		( const std::wstring & deviceDocumentPath
+		, INoteListModel     & noteListModel
+		, INoteListView      & noteListView
+		, INoteView          & noteView
+		, IUserModel         & userModel
+		, EnNoteTranslator   & enNoteTranslator
 		);
 
 // event handlers

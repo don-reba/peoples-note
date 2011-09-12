@@ -34,6 +34,8 @@ public:
 
 	int GetNotebookCount();
 
+	int GetRecognitionEntryCount();
+
 	int GetResourceCount();
 
 // IUserModel implementation

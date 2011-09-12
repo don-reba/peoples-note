@@ -88,6 +88,19 @@ BOOST_AUTO_TEST_CASE(ToolsDecodeBase64)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(ToolsEndsWith)
+{
+	BOOST_CHECK(!Tools::EndsWith(wstring(), NULL));
+
+	BOOST_CHECK(Tools::EndsWith(wstring(L""),    L""));
+	BOOST_CHECK(Tools::EndsWith(wstring(L"a"),   L""));
+	BOOST_CHECK(Tools::EndsWith(wstring(L"abc"), L"bc"));
+
+	BOOST_CHECK(!Tools::EndsWith(wstring(L""),    L"a"));
+	BOOST_CHECK(!Tools::EndsWith(wstring(L"a"),   L"b"));
+	BOOST_CHECK(!Tools::EndsWith(wstring(L"abc"), L"ab"));
+}
+
 BOOST_AUTO_TEST_CASE(ToolsMakeSizeString)
 {
 	BOOST_CHECK_EQUAL (Tools::MakeSizeString(0LL),                            L"0 B");
@@ -126,17 +139,15 @@ BOOST_AUTO_TEST_CASE(ToolsReplaceAll)
 
 BOOST_AUTO_TEST_CASE(ToolsStartsWith)
 {
-	BOOST_CHECK(!Tools::StartsWith(NULL, L""));
-	BOOST_CHECK(!Tools::StartsWith(NULL, NULL));
-	BOOST_CHECK(!Tools::StartsWith(L"",  NULL));
+	BOOST_CHECK(!Tools::StartsWith(wstring(), NULL));
 
-	BOOST_CHECK(Tools::StartsWith(L"",    L""));
-	BOOST_CHECK(Tools::StartsWith(L"a",   L""));
-	BOOST_CHECK(Tools::StartsWith(L"abc", L"ab"));
+	BOOST_CHECK(Tools::StartsWith(wstring(L""),    L""));
+	BOOST_CHECK(Tools::StartsWith(wstring(L"a"),   L""));
+	BOOST_CHECK(Tools::StartsWith(wstring(L"abc"), L"ab"));
 
-	BOOST_CHECK(!Tools::StartsWith(L"",    L"a"));
-	BOOST_CHECK(!Tools::StartsWith(L"a",   L"b"));
-	BOOST_CHECK(!Tools::StartsWith(L"abc", L"bc"));
+	BOOST_CHECK(!Tools::StartsWith(wstring(L""),    L"a"));
+	BOOST_CHECK(!Tools::StartsWith(wstring(L"a"),   L"b"));
+	BOOST_CHECK(!Tools::StartsWith(wstring(L"abc"), L"bc"));
 }
 
 BOOST_AUTO_TEST_CASE(ToolsUnixTimeToFileTime_Test1)

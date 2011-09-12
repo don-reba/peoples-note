@@ -135,8 +135,8 @@ int WINAPI WinMain(HINSTANCE instance,
 
 	try
 	{
-		wstring deviceDocumentPath (GetDeviceDocumentPath());
-		bool    highRes            (IsHighRes());
+		const wstring deviceDocumentPath (GetDeviceDocumentPath());
+		const bool    highRes            (IsHighRes());
 
 		Animator         animator;
 		AudioPlayer      audioPlayer;
@@ -225,7 +225,8 @@ int WINAPI WinMain(HINSTANCE instance,
 			, enNoteTranslator
 			);
 		NotePresenter notePresenter
-			( noteListModel
+			( deviceDocumentPath
+			, noteListModel
 			, noteListView
 			, noteView
 			, userModel
