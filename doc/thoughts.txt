@@ -3890,3 +3890,11 @@ attachments are not deleted
 		it is also more complex
 	I already have RemoveNoteTags
 		not needed with ReplaceNote
+new notes missing blank lines
+	the editor creates a <div type="en-note"/> for each paragram
+	these are then transformed into <en-note/> tags
+	convertion back to html strips the <en-note/> tags
+	editing simple "ab" adds <p/> tags
+		although in the wrong places
+	need to change initial text to <p>&nbsp;</p>
+	need to change empty html paragraphs to <p>&nbsp;</p>

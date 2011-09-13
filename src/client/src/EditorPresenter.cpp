@@ -111,7 +111,7 @@ void EditorPresenter::OnNewNote()
 	note.isDirty      = true;
 	note.usn          = 0;
 
-	wstring body(L"<div type=\"en-note\" />");
+	wstring body(L"<p>&nbsp;</p>");
 
 	editorView.SetNote(note, body);
 }

@@ -22,6 +22,7 @@ EnNoteTranslator::EnNoteTranslator()
 	htmlTransforms[L"div"]   = &EnNoteTranslator::ReplaceDiv;
 	htmlTransforms[L"img"]   = &EnNoteTranslator::ReplaceImg;
 	htmlTransforms[L"input"] = &EnNoteTranslator::ReplaceCheckbox;
+	htmlTransforms[L"p"]     = &EnNoteTranslator::ReplaceParagraph;
 
 	xmlTransforms[L"en-crypt"] = &EnNoteTranslator::ReplaceCrypt;
 	xmlTransforms[L"en-media"] = &EnNoteTranslator::ReplaceMedia;
@@ -443,6 +444,19 @@ void EnNoteTranslator::ReplaceMedia
 	child->remove_attribute(typeAttribute);
 	child->name(L"img");
 	child->append_attribute(store->allocate_attribute(L"src", srcString));
+}
+
+void EnNoteTranslator::ReplaceParagraph
+	( memory_pool<wchar_t> * store
+	, xml_node<wchar_t>    * parent
+	, xml_node<wchar_t>    * child
+	)
+{
+	if (child->value_size() > 0)
+		return;
+	xml_node<wchar_t> * node(store->allocate_node(node_element, L"p", L"&nbsp;"));
+	parent->insert_node(child, node);
+	parent->remove_node(child);
 }
 
 void EnNoteTranslator::ReplaceNote
