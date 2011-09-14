@@ -10,6 +10,7 @@
 #include "IUserModel.h"
 #include "Tools.h"
 #include "Transaction.h"
+#include "WaitCursor.h"
 
 #include <fstream>
 
@@ -53,9 +54,12 @@ void NotePresenter::OnAttachment()
 		return;
 
 	Resource resource;
-	userModel.GetResource(guid, resource);
-	if (resource.Data.empty())
-		return;
+	{
+		MacroWaitCursor;
+		userModel.GetResource(guid, resource);
+		if (resource.Data.empty())
+			return;
+	}
 
 	wstring path = noteView.GetSavePath
 		( L"Save attachment..."
@@ -64,6 +68,8 @@ void NotePresenter::OnAttachment()
 		);
 	if (path.empty())
 		return;
+
+	MacroWaitCursor;
 
 	ofstream file(path.c_str(), ios::binary);
 	if (!file)
@@ -78,6 +84,8 @@ void NotePresenter::OnCloseNote()
 {
 	if (!noteView.IsDirty())
 		return;
+
+	MacroWaitCursor;
 
 	wstring bodyHtml;
 	noteView.GetBody(bodyHtml);
@@ -109,6 +117,8 @@ void NotePresenter::OnCloseNote()
 
 void NotePresenter::OnOpenNote()
 {
+	WaitCursor waitCursor;
+
 	Transaction transaction(userModel);
 
 	Guid guid(noteListView.GetSelectedNoteGuid());

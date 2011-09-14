@@ -3898,3 +3898,11 @@ new notes missing blank lines
 		although in the wrong places
 	need to change initial text to <p>&nbsp;</p>
 	need to change empty html paragraphs to <p>&nbsp;</p>
+wait cursor
+	HTMLayout changes the cursor on mouse move events
+	solutions
+		disable this behaviour by handling
+			handle MOUSE_EVENT
+			set cursor to match current one
+		set root cursor to wait cursor
+	lets try the first approach

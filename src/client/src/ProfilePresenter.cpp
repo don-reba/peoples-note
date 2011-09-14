@@ -6,6 +6,7 @@
 #include "INoteListView.h"
 #include "IUserModel.h"
 #include "Tools.h"
+#include "WaitCursor.h"
 
 using namespace boost;
 using namespace std;
@@ -39,6 +40,8 @@ void ProfilePresenter::OnClose()
 
 void ProfilePresenter::OnDbMove()
 {
+	MacroWaitCursor;
+
 	try
 	{
 		profileView.DisableMoveButton();
