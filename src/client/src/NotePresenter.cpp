@@ -144,7 +144,14 @@ void NotePresenter::OnOpenNote()
 		, &NotePresenter::ConvertAttachment
 		);
 
-	noteView.SetNote(note, note.name, subtitle, html, attachmentViews, true);
+	try
+	{
+		noteView.SetNote(note, note.name, subtitle, html, attachmentViews, true);
+	}
+	catch (const exception &)
+	{
+		// try to proceed
+	}
 	noteView.Show();
 }
 

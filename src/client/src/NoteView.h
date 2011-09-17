@@ -116,6 +116,8 @@ private:
 
 	void UpdateWindowState();
 
+	bool TrySetHtml(const unsigned char * text, size_t textLength);
+
 // gesture message handlers
 
 private:

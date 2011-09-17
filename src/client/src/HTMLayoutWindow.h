@@ -42,13 +42,13 @@ private:
 
 private:
 
-	bool highRes;
-
 	const wchar_t * const resourceId;
 
 	std::vector<EventRecord>  eventRecords;
 
 protected:
+
+	bool highRes;
 
 	signal SignalCreated;
 

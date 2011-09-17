@@ -85,16 +85,26 @@ HtmlDataLoader::UriType HtmlDataLoader::ClassifyUri(const wchar_t * uri)
 
 void HtmlDataLoader::CreateThumbnail(const Guid & guid, Thumbnail & thumbnail)
 {
-	wstring body;
-	userModel.GetNoteBody(guid, body);
+	try
+	{
+		wstring body;
+		userModel.GetNoteBody(guid, body);
 
-	wstring html;
-	enNoteTranslator.ConvertToHtml(body, html);
+		wstring html;
+		enNoteTranslator.ConvertToHtml(body, html);
 
-	Note note;
-	noteView->SetNote(note, L"", L"", html, AttachmentViewInfoList(), false);
+		Note note;
+		noteView->SetNote(note, L"", L"", html, AttachmentViewInfoList(), false);
 
-	noteView->Render(thumbnail);
+		noteView->Render(thumbnail);
+	}
+	catch (...)
+	{
+		HtmlResource resource(LoadHtmlResource(L"thumbnail.png", highRes));
+		thumbnail.Data.clear();
+		thumbnail.Data.reserve(resource.size);
+		copy(resource.data, resource.data + resource.size, back_inserter(thumbnail.Data));
+	}
 }
 
 bool HtmlDataLoader::IsPrefix

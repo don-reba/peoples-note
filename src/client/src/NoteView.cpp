@@ -222,7 +222,6 @@ void NoteView::SetNote
 	element title    (FindFirstElement("#title"));
 	element subtitle (FindFirstElement("#subtitle"));
 	element source   (FindFirstElement("#source"));
-	element body     (FindFirstElement("#body"));
 
 	title.set_text    (titleText.c_str(),    titleText.size());
 	subtitle.set_text (subtitleText.c_str(), subtitleText.size());
@@ -242,10 +241,15 @@ void NoteView::SetNote
 	const unsigned char * utf8 = Tools::ConvertToUtf8(bodyHtml, utf8Chars);
 
 	DisconnectBehavior("#body input");
-	body.set_html(utf8, utf8Chars.size());
-	ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
-
-	SetAttachments(attachments);
+	if (TrySetHtml(utf8, utf8Chars.size()))
+	{
+		ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
+		SetAttachments(attachments);
+	}
+	else
+	{
+		throw std::exception("Note could not be parsed.");
+	}
 }
 
 void NoteView::SetWindowTitle(const std::wstring & text)
@@ -472,6 +476,24 @@ void NoteView::UpdateWindowState()
 		, rect.GetHeight()
 		, TRUE
 		);
+}
+
+bool NoteView::TrySetHtml(const unsigned char * text, size_t textLength)
+{
+	__try
+	{
+		HTMLayoutSetElementHtml
+			( FindFirstElement("#body")
+			, text
+			, textLength
+			, SIH_REPLACE_CONTENT
+			);
+		return true;
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		return false;
+	}
 }
 
 //-------------------------

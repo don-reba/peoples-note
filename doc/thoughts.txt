@@ -3840,6 +3840,9 @@ data access changes
 should handle thumbnail crashes
 	catch the exception
 	provide a stock thumbnail
+		what should it look like?
+		it should be clear that it does not show note contents
+		it can be a picture of a note
 	TODO
 displaying attachments
 	note view is capable of displaying them
@@ -3906,3 +3909,5 @@ wait cursor
 			set cursor to match current one
 		set root cursor to wait cursor
 	lets try the first approach
+		I am subscribed to events
+			not filtering them

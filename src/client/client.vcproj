@@ -1740,11 +1740,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\text-note.png"
+				RelativePath=".\html-lr\text-note.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\text-note.png"
+				RelativePath=".\html\text-note.png"
 				>
 			</File>
 			<File
@@ -1752,11 +1752,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html-lr\voice-note-pressed.png"
+				RelativePath=".\html-lr\thumbnail.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\thumbnail.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html\voice-note-pressed.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html-lr\voice-note-pressed.png"
 				>
 			</File>
 			<File
@@ -1792,19 +1800,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\html\voice-record.png"
-				>
-			</File>
-			<File
 				RelativePath=".\html-lr\voice-record.png"
 				>
 			</File>
 			<File
-				RelativePath=".\html\voice-stop-pressed.png"
+				RelativePath=".\html\voice-record.png"
 				>
 			</File>
 			<File
 				RelativePath=".\html-lr\voice-stop-pressed.png"
+				>
+			</File>
+			<File
+				RelativePath=".\html\voice-stop-pressed.png"
 				>
 			</File>
 			<File
