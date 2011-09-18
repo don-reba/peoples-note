@@ -162,7 +162,7 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.SignalNewNote();
 
 	BOOST_CHECK(editorView.isShown);
-	BOOST_CHECK_EQUAL(editorView.body, L"<div type=\"en-note\" />");
+	BOOST_CHECK_EQUAL(editorView.body, L"<p>&nbsp;</p>");
 	BOOST_CHECK_EQUAL(editorView.note.isDirty, true);
 	BOOST_CHECK_EQUAL(editorView.note.usn,     0);
 	BOOST_CHECK_EQUAL

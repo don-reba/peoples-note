@@ -148,7 +148,7 @@ void NotePresenter::OnOpenNote()
 	{
 		noteView.SetNote(note, note.name, subtitle, html, attachmentViews, true);
 	}
-	catch (const exception &)
+	catch (const std::exception &)
 	{
 		// try to proceed
 	}

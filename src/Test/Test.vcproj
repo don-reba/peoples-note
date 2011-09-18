@@ -612,6 +612,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\WaitCursor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\WinException.cpp"
 				>
 			</File>

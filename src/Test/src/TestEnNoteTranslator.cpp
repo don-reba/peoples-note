@@ -111,6 +111,16 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToXml)
 			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 			L"<en-note><p>1</p><p>2</p></en-note>"
 		);
+	
+	html = L"<p/><p></p>";
+	enNoteTranslator.ConvertToXml(html, xml);
+	BOOST_CHECK_EQUAL
+		( xml
+		,
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note><p>&nbsp;</p><p>&nbsp;</p></en-note>"
+		);
 }
 
 BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt_Test)

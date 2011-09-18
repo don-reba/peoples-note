@@ -3244,7 +3244,7 @@ relative URLs
 should write sync log to disk more often
 	done
 CredentialsPresenter.OnViewCreated is untested
-	TODO
+	fixed
 sync logger → general logger
 	goal
 		use the sync logger more generally
@@ -3843,7 +3843,7 @@ should handle thumbnail crashes
 		what should it look like?
 		it should be clear that it does not show note contents
 		it can be a picture of a note
-	TODO
+	done
 displaying attachments
 	note view is capable of displaying them
 	can the presenter retrieve them?
