@@ -34,7 +34,6 @@ NoteView::NoteView
 	, parent           (NULL)
 	, HTMLayoutWindow  (L"note-view.htm", highRes, htmlDataLoader)
 {
-
 	gestureProcessor.ConnectDelayedMouseDown (bind(&NoteView::OnDelayedMouseDown, this));
 	gestureProcessor.ConnectGestureStart     (bind(&NoteView::OnGestureStart,     this));
 	gestureProcessor.ConnectGestureStep      (bind(&NoteView::OnGestureStep,      this));
@@ -419,7 +418,6 @@ void NoteView::UpdateScrollbar()
 
 	if (contentSize.cx > bodyRect.GetWidth())
 	{
-			
 		hSlider.set_style_attribute("display", L"block");
 
 		Rect scrollRect(hScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
@@ -547,6 +545,7 @@ void NoteView::OnCommand(Msg<WM_COMMAND> & msg)
 	case IDM_OK:         CloseWindow(hwnd_);     break;
 	case IDM_CANCEL:     CloseWindow(hwnd_);     break;
 	case ID_EDIT_NOTE:   SignalEdit();           break;
+	case ID_EDIT_TAGS:   SignalEditTags();       break;
 	case ID_FULL_SCREEN: SignalToggleMaximize(); break;
 	}
 }

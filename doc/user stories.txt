@@ -133,3 +133,18 @@ photo note creation
 	√ when the user selects "Cancel", the window should close
 photo note creation
 	√ when the user selects "Cancel", the window should close
+note tag editor
+	when the user selects "OK" the current note's tags should be updated to match selection
+	when the user selects "OK" or "Cancel", the window should close
+	when the user clicks a selected tag, it should be cleared
+		sort the tag into the "cleared" list
+		a checkmark should appear to the left of the note
+	when the user clicks a clear tag, it should be selected
+		sort the tag into the "selected" list
+		the checkmark to the left of the note should disappear
+tag editor
+	when the user selects "OK" the current note's tags should be updated to match selection
+	when the user clicks "new tag" the tag should be made blank and set for editing
+	when the user clicks the "edit" button on a tag, it should be set for editing
+	when the user clicks the "delete" button on a tag, a confirmation dialog should be displayed
+	when the user confirms tag deletion, the tag should be deleted

@@ -4,13 +4,12 @@
 
 class MockSyncModel : public ISyncModel
 {
+	MacroTestEvent(SyncComplete)
+	MacroTestEvent(NotebooksChanged)
+	MacroTestEvent(NotesChanged)
+	MacroTestEvent(StatusUpdated)
+	MacroTestEvent(TagsChanged)
 public:
-
-	signal SignalSyncComplete;
-	signal SignalNotebooksChanged;
-	signal SignalNotesChanged;
-	signal SignalStatusUpdated;
-	signal SignalTagsChanged;
 
 	bool syncBegan;
 
@@ -28,16 +27,6 @@ public:
 		( const std::wstring & username
 		, const std::wstring & pasword
 		);
-
-	virtual void ConnectNotebooksChanged(slot_type OnNotebooksChanged);
-
-	virtual void ConnectNotesChanged(slot_type OnNotesChanged);
-
-	virtual void ConnectStatusUpdated(slot_type OnStatusUpdated);
-
-	virtual void ConnectTagsChanged(slot_type OnTagsChanged);
-
-	virtual void ConnectSyncComplete(slot_type OnSyncComplete);
 
 	virtual const wchar_t * GetStatusText();
 

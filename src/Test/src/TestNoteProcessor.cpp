@@ -64,7 +64,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_AddLocal_Test, NoteProcessorFixture)
 	userModel.tags.back().guid = Guid("{2}");
 	userModel.tags.back().name = L"tag-2";
 
-	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{2}"));
+	userModel.noteTags.insert(make_pair(Guid("{0}"), Guid("{2}")));
 
 	noteProcessor.AddLocal(note);
 

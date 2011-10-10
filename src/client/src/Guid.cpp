@@ -58,6 +58,11 @@ bool Guid::operator != (const Guid & guid) const
 	return !(*this == guid);
 }
 
+bool Guid::operator < (const Guid & guid) const
+{
+	return data < guid.data;
+}
+
 Guid Guid::GetEmpty()
 {
 	return Guid("");

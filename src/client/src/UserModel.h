@@ -66,6 +66,8 @@ public:
 
 	virtual void DeleteNote(const Guid & note);
 
+	virtual void DeleteNoteTags(const Guid & note) {}
+
 	virtual void DeleteNoteThumbnail(const Guid & note);
 
 	virtual void EndTransaction();

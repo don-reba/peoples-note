@@ -42,10 +42,11 @@ void InkEditorPresenter::OnAccept()
 {
 	// create note 
 	Note note;
-	note.name         = L"Ink note";
-	note.creationDate = Timestamp::GetCurrentTime();
-	note.isDirty      = true;
-	note.usn          = 0;
+	note.name             = L"Ink note";
+	note.creationDate     = Timestamp::GetCurrentTime();
+	note.modificationDate = note.creationDate;
+	note.isDirty          = true;
+	note.usn              = 0;
 
 	// create resource with hash
 	Resource image;

@@ -133,8 +133,8 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(noteView.enableChrome);
 	BOOST_CHECK(noteView.isShown);
 
-	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{1}"));
-	userModel.noteTags.insert(MockUserModel::NoteTag("{0}", "{2}"));
+	userModel.noteTags.insert(make_pair(Guid("{0}"), Guid("{1}")));
+	userModel.noteTags.insert(make_pair(Guid("{0}"), Guid("{2}")));
 
 	noteListView.SignalOpenNote();
 

@@ -28,6 +28,9 @@
 #include "NoteListPresenter.h"
 #include "NoteListView.h"
 #include "NotePresenter.h"
+#include "NoteTagListModel.h"
+#include "NoteTagListPresenter.h"
+#include "NoteTagListView.h"
 #include "PhotoEditorModel.h"
 #include "PhotoEditorView.h"
 #include "PhotoEditorPresenter.h"
@@ -156,6 +159,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		CredentialsModel credentialsModel;
 		InkEditorModel   inkEditorModel(registryKey);
 		LastUserModel    lastUserModel(registryKey);
+		NoteTagListModel noteTagListModel;
 		PhotoEditorModel photoEditorModel(registryKey);
 		UserModel        userModel     (dataStore,     deviceDocumentPath, flashCard);
 		UserModel        syncUserModel (syncDataStore, deviceDocumentPath, flashCard);
@@ -176,6 +180,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		InkEditorView   inkEditorView   (instance);
 		NoteView        noteView        (instance, highRes, animator, htmlDataLoader);
 		NoteListView    noteListView    (instance, highRes, animator, nCmdShow, htmlDataLoader);
+		NoteTagListView noteTagListView (instance, highRes, animator, htmlDataLoader);
 		PhotoEditorView photoEditorView (instance, highRes, htmlDataLoader);
 		ProfileView     profileView     (instance, highRes, htmlDataLoader);
 		VoiceEditorView voiceEditorView (instance, highRes, htmlDataLoader);
@@ -232,6 +237,12 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			, enNoteTranslator
 			);
+		NoteTagListPresenter
+			( noteTagListModel
+			, noteTagListView
+			, noteView
+			, userModel
+			);
 		PhotoEditorPresenter
 			( file
 			, noteListModel
@@ -276,12 +287,13 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 
 		noteListView.Create();
-		noteView.Create        (noteListView.hwnd_);
+		aboutView.Create       (noteListView.hwnd_);
+		credentialsView.Create (noteListView.hwnd_);
 		editorView.Create      (noteListView.hwnd_);
 		inkEditorView.Create   (noteListView.hwnd_);
+		noteTagListView.Create (noteListView.hwnd_);
+		noteView.Create        (noteListView.hwnd_);
 		photoEditorView.Create (noteListView.hwnd_);
-		credentialsView.Create (noteListView.hwnd_);
-		aboutView.Create       (noteListView.hwnd_);
 		profileView.Create     (noteListView.hwnd_);
 		voiceEditorView.Create (noteListView.hwnd_);
 

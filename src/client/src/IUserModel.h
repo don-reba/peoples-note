@@ -18,8 +18,6 @@ class IUserModel : public ISignalProvider
 
 public:
 
-	virtual ~IUserModel() {}
-
 	virtual void AddNote
 		( const Note          & note
 		, const std::wstring  & body
@@ -43,6 +41,8 @@ public:
 	virtual void BeginTransaction() = 0;
 
 	virtual void DeleteNote(const Guid & note) = 0;
+
+	virtual void DeleteNoteTags(const Guid & note) = 0;
 
 	virtual void DeleteNoteThumbnail(const Guid & note) = 0;
 

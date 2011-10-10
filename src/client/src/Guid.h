@@ -26,6 +26,8 @@ public:
 
 	bool operator != (const Guid & guid) const;
 
+	bool operator < (const Guid & guid) const;
+
 public:
 
 	static Guid GetEmpty();

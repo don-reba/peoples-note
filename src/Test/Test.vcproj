@@ -319,6 +319,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MockNoteTagListModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNoteTagListView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockNoteView.cpp"
 				>
 			</File>
@@ -380,6 +388,14 @@
 			</File>
 			<File
 				RelativePath="..\client\src\NoteProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\NoteTagListModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\NoteTagListPresenter.cpp"
 				>
 			</File>
 			<File
@@ -513,6 +529,14 @@
 			</File>
 			<File
 				RelativePath=".\src\TestNoteProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestNoteTagListModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestNoteTagListPresenter.cpp"
 				>
 			</File>
 			<File
@@ -699,6 +723,14 @@
 			</File>
 			<File
 				RelativePath=".\src\MockNoteStore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNoteTagListModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockNoteTagListView.h"
 				>
 			</File>
 			<File

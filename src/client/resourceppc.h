@@ -19,6 +19,7 @@
 #define IDC_INK_EDIT                    15
 #define IDC_PHOTO_EDIT                  16
 #define IDC_VOICE_EDIT                  17
+#define IDC_TAGS_VIEW                   18
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104
@@ -46,7 +47,8 @@
 #define ID_COLOR_TURQUOISE              32794
 #define ID_DELETE_NOTE                  32795
 #define ID_EDIT_NOTE                    32796
-#define ID_FULL_SCREEN                  32797
+#define ID_EDIT_TAGS                    32797
+#define ID_FULL_SCREEN                  32798
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

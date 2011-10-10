@@ -40,29 +40,6 @@ public:
 		LoadMethodLoadOrCreate,
 	};
 
-	struct NoteTag
-	{
-		std::string note;
-		std::string tag;
-		NoteTag()
-		{
-		}
-		NoteTag
-			( const std::string & note
-			, const std::string & tag
-			)
-			: note (note)
-			, tag  (tag)
-		{
-		}
-		bool operator < (const NoteTag & other) const
-		{
-			return (note == other.note)
-				? (tag  < other.tag)
-				: (note < other.note);
-		}
-	};
-
 // data
 
 public:
@@ -81,7 +58,7 @@ public:
 
 	std::map<std::string, std::wstring> noteBodies;
 	std::map<std::string, Thumbnail>    noteThumbnails;
-	std::set<NoteTag>                   noteTags;
+	std::multimap<Guid, Guid>           noteTags;
 
 	std::vector<NoteRecord> addedNotes;
 
@@ -150,6 +127,8 @@ public:
 	virtual void ConnectLoaded(slot_type OnLoaded);
 
 	virtual void DeleteNote(const Guid & note);
+
+	virtual void DeleteNoteTags(const Guid & note);
 
 	virtual void DeleteNoteThumbnail(const Guid & note);
 

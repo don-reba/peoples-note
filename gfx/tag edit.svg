@@ -786,6 +786,15 @@
          stdDeviation="2.6028549"
          id="feGaussianBlur3887-4-7-9" />
     </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter3885-8">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.6028549"
+         id="feGaussianBlur3887-2" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -795,8 +804,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="284.96539"
-     inkscape:cy="323.62159"
+     inkscape:cx="171.40322"
+     inkscape:cy="317.04492"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1060,101 +1069,99 @@
            x="21.114426"
            y="870.31567">thesis</tspan></text>
     </g>
+    <path
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       id="path3917-8"
+       d="m -2.5449215e-4,629.72732 0,64 476.00000449215,0 0,-63.97875 -476.00000449213,-0.0212 z"
+       style="fill:#f0ec40;fill-opacity:1;stroke:none" />
     <g
-       id="g3369">
+       transform="matrix(0.75,0,0,0.75,123.49975,130.23058)"
+       id="g3933-9">
       <path
-         style="fill:#f0ec40;fill-opacity:1;stroke:none"
-         d="m -2.5449215e-4,629.72732 0,64 476.00000449215,0 0,-63.97875 -476.00000449213,-0.0212 z"
-         id="path3917-8"
-         sodipodi:nodetypes="ccccc"
-         inkscape:connector-curvature="0" />
-      <g
-         id="g3933-9"
-         transform="matrix(0.75,0,0,0.75,123.49975,130.23058)">
-        <path
-           clip-path="url(#clipPath3880-14)"
-           style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876-3)"
-           d="m 438,665.32897 32,32 -32,0 0,-32"
-           id="path3935-2"
-           inkscape:connector-curvature="0" />
-        <path
-           id="path3937-7"
-           d="m 438,665.32897 32,32 -32,0 0,-32"
-           style="fill:url(#linearGradient3221-21);fill-opacity:1;stroke:none"
-           inkscape:connector-curvature="0" />
-        <path
-           style="fill:#f0ec40;fill-opacity:1;stroke:none"
-           d="m 470,697.32897 -32,-32 32,0 0,32"
-           id="path3939-9"
-           inkscape:connector-curvature="0" />
-      </g>
-      <text
-         id="text3029-5"
-         y="673.79089"
+         inkscape:connector-curvature="0"
+         id="path3935-2"
+         d="m 438,665.32897 32,32 -32,0 0,-32"
+         style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3876-3)"
+         clip-path="url(#clipPath3880-14)" />
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:url(#linearGradient3221-21);fill-opacity:1;stroke:none"
+         d="m 438,665.32897 32,32 -32,0 0,-32"
+         id="path3937-7" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3939-9"
+         d="m 470,697.32897 -32,-32 32,0 0,32"
+         style="fill:#f0ec40;fill-opacity:1;stroke:none" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:47.16770172px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       x="89.138344"
+       y="673.79089"
+       id="text3029-5"><tspan
+         sodipodi:role="line"
+         id="tspan3031-4"
          x="89.138344"
-         style="font-size:47.16770172px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#303030;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-         xml:space="preserve"><tspan
-           style="font-size:32px"
-           y="673.79089"
-           x="89.138344"
-           id="tspan3031-4"
-           sodipodi:role="line">recipe</tspan></text>
+         y="673.79089"
+         style="font-size:32px">recipe</tspan></text>
+    <rect
+       ry="0"
+       y="628.72736"
+       x="-0.0002524218"
+       height="1"
+       width="476"
+       id="rect3988-3"
+       style="fill:#606060;fill-opacity:1;stroke:none"
+       inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360" />
+    <image
+       y="640.22736"
+       x="25.13835"
+       id="image3338"
+       xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/check.png"
+       height="48"
+       width="48" />
+    <g
+       id="g3258"
+       transform="translate(-64,0)">
       <rect
+         transform="matrix(0.8251136,0,0,0.8251136,56.965581,235.99499)"
          inkscape:export-ydpi="360"
          inkscape:export-xdpi="360"
          inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
-         style="fill:#606060;fill-opacity:1;stroke:none"
-         id="rect3988-3"
-         width="476"
-         height="1"
-         x="-0.0002524218"
-         y="628.72736"
-         ry="0" />
+         ry="15.149429"
+         y="482.82648"
+         x="400.46429"
+         height="65.071373"
+         width="65.071373"
+         id="rect3787-1"
+         style="fill:#666666;fill-opacity:1;stroke:none;filter:url(#filter3885)"
+         rx="15.149429" />
+      <rect
+         rx="12"
+         ry="12"
+         style="fill:#ffffff;fill-opacity:1;stroke:#606060;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3789-7"
+         width="52.80727"
+         height="52.80727"
+         x="387.83612"
+         y="634.82373"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+         inkscape:export-xdpi="360"
+         inkscape:export-ydpi="360" />
       <image
-         width="48"
-         height="48"
-         xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/check.png"
-         id="image3338"
-         x="25.13835"
-         y="640.22736" />
-      <g
-         id="g3258">
-        <rect
-           rx="15.149429"
-           style="fill:#666666;fill-opacity:1;stroke:none;filter:url(#filter3885)"
-           id="rect3787-1"
-           width="65.071373"
-           height="65.071373"
-           x="400.46429"
-           y="482.82648"
-           ry="15.149429"
-           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
-           inkscape:export-xdpi="360"
-           inkscape:export-ydpi="360"
-           transform="matrix(0.8251136,0,0,0.8251136,56.965581,235.99499)" />
-        <rect
-           inkscape:export-ydpi="360"
-           inkscape:export-xdpi="360"
-           inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
-           y="634.82373"
-           x="387.83612"
-           height="52.80727"
-           width="52.80727"
-           id="rect3789-7"
-           style="fill:#ffffff;fill-opacity:1;stroke:#606060;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           ry="12"
-           rx="12" />
-        <image
-           y="645.22736"
-           x="398.23975"
-           id="image3252"
-           xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/edit.png"
-           height="32"
-           width="32" />
-      </g>
+         width="32"
+         height="32"
+         xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/edit.png"
+         id="image3252"
+         x="398.23975"
+         y="645.22736" />
     </g>
     <g
-       id="g3442">
+       id="g3363">
       <path
          style="fill:#f0ec40;fill-opacity:1;stroke:none"
          d="m -2.5242185e-4,693.72731 0,64 476.00001242185,0 0,-63.97875 -476.00001242183,-0.0212 z"
@@ -1502,6 +1509,41 @@
            width="32" />
       </g>
     </g>
+    <g
+       id="g3399">
+      <rect
+         transform="matrix(0.8251136,0,0,0.8251136,56.965581,235.99499)"
+         inkscape:export-ydpi="360"
+         inkscape:export-xdpi="360"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+         ry="15.149429"
+         y="482.82648"
+         x="400.46429"
+         height="65.071373"
+         width="65.071373"
+         id="rect3787-1-5"
+         style="fill:#666666;fill-opacity:1;stroke:none;filter:url(#filter3885-8)"
+         rx="15.149429" />
+      <rect
+         rx="12"
+         ry="12"
+         style="fill:#ffffff;fill-opacity:1;stroke:#606060;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3789-7-5"
+         width="52.80727"
+         height="52.80727"
+         x="387.83612"
+         y="634.82373"
+         inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render.png"
+         inkscape:export-xdpi="360"
+         inkscape:export-ydpi="360" />
+      <image
+         width="32"
+         height="32"
+         xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/delete.png"
+         id="image3396"
+         x="398.23975"
+         y="645.22736" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1529,12 +1571,12 @@
     <image
        sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/window title.png"
        xlink:href="icons/window title.png"
-       style="display:inline"
-       y="0"
-       x="-0.00025027155"
-       id="image3052"
+       width="480.00046"
        height="52"
-       width="480.00046" />
+       id="image3052"
+       x="-0.00025027155"
+       y="0"
+       style="display:inline" />
     <g
        transform="translate(0,-412.36218)"
        id="g3095">

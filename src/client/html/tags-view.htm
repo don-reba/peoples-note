@@ -1,0 +1,70 @@
+<html thumb-width=164 thumb-height=100>
+	<head>
+		<style>
+			body
+			{
+				background-color : #f0ec40;
+				color            : black;
+				font-size        : 26px;
+				margin           : 0px;
+				padding          : 0px;
+			}
+			h1
+			{
+				font-size   : 48px;
+				font-weight : normal;
+				margin      : 8px 0px 8px 10px;
+			}
+			#tag-list
+			{
+				height     : 100%%;
+				overflow   : hidden;
+				text-align : left;
+				width      : 100%%;
+			}
+			#tag-list > .tag
+			{
+				background-image    : url(corner.png);
+				background-position : right top;
+				background-repeat   : no-repeat;
+				behavior            : clickable;
+				border-top          : 1px solid #606060;
+				height              : 100px;
+				overflow            : hidden;
+			}
+			#tag-list > .tag[dirty]
+			{
+				background-image : url(corner-light.png);
+				background-color : #f0ecb0;
+			}
+			#tag-panel
+			{
+				flow   : horizontal;
+				height : 100%%;
+				width  : 100%;
+			}
+			#vscroll
+			{
+				background : white;
+				height     : 100%%;
+				overflow   : hidden;
+				width      : 5px;
+			}
+			#vscroll #slider
+			{
+				background-color : #606060;
+				border-radius    : 2px;
+				display          : none;
+				height           : 128px;
+				width            : 100%%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Choose tags</h1>
+		<div #tag-panel>
+			<div #note-list tabindex="0" />
+			<div #vscroll><div #slider /></div>
+		</div>
+	</body>
+</html>

@@ -1,5 +1,5 @@
 #pragma once
-#include "INoteView.h"
+#include "INoteTagListView.h"
 
 #include "HTMLayoutWindow.h"
 #include "Note.h"
@@ -8,13 +8,12 @@
 
 class IAnimator;
 
-class NoteView : public HTMLayoutWindow, public INoteView
+class NoteTagListView : public HTMLayoutWindow, public INoteTagListView
 {
-	MacroEvent(Attachment)
-	MacroEvent(Close)
-	MacroEvent(Edit)
-	MacroEvent(EditTags)
-	MacroEvent(ToggleMaximize)
+	MacroEvent(Cancel)
+	MacroEvent(Ok)
+	MacroEvent(TagCleared)
+	MacroEvent(TagSelected)
 
 private:
 
@@ -33,19 +32,16 @@ private:
 	POINT startScrollPos;
 
 	bool isDirty;
-	bool isMaximized;
 
 	element body;
 	element vScroll;
 	element vSlider;
-	element hScroll;
-	element hSlider;
 
 // interface
 
 public:
 
-	NoteView
+	NoteTagListView
 		( HINSTANCE         instance
 		, bool              highRes
 		, IAnimator       & animator
@@ -56,46 +52,18 @@ public:
 
 	virtual void RegisterEventHandlers();
 
-// INoteView implementation
+// INoteTagListView implementation
 
 public:
 
-	virtual void GetBody(std::wstring & html);
-
-	virtual void GetNote(Note & note);
-
-	virtual std::wstring GetSavePath
-		( const std::wstring & title
-		, const std::wstring & fileName
-		, const std::wstring & directory
-		);
-
-	virtual Guid GetSelecteAttachmentGuid();
-
-	virtual void GetTitle(std::wstring & text);
-
 	virtual void Hide();
 
-	virtual bool IsDirty();
+	virtual std::wstring GetActiveTag();
 
-	virtual bool IsMaximized();
-
-	virtual void MaximizeWindow();
-
-	virtual void Render(Thumbnail & thumbnail);
-
-	virtual void RestoreWindow();
-
-	virtual void SetNote
-		( const Note                   & note
-		, const std::wstring           & titleText
-		, const std::wstring           & subtitleText
-		, const std::wstring           & bodyHtml
-		, const AttachmentViewInfoList & attachments
-		, const bool                     enableChrome
+	virtual void SetTags
+		( const TagList & cleared
+		, const TagList & selected
 		);
-
-	virtual void SetWindowTitle(const std::wstring & text);
 
 	virtual void Show();
 
@@ -107,17 +75,11 @@ private:
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 
-	void SetAttachments(const AttachmentViewInfoList & attachments);
-
-	void SetChrome(bool enable);
-
 	void SetScrollPos(POINT pos);
 
 	void UpdateScrollbar();
 
 	void UpdateWindowState();
-
-	bool TrySetHtml(const unsigned char * text, size_t textLength);
 
 // gesture message handlers
 
@@ -132,7 +94,6 @@ private:
 private:
 
 	void OnActivate      (Msg<WM_ACTIVATE>      & msg);
-	void OnClose         (Msg<WM_CLOSE>         & msg);
 	void OnCommand       (Msg<WM_COMMAND>       & msg);
 	void OnMouseDown     (Msg<WM_LBUTTONDOWN>   & msg);
 	void OnMouseUp       (Msg<WM_LBUTTONUP>     & msg);

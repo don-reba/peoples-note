@@ -3872,9 +3872,6 @@ LoadAs logic is incorrect
 	TODO
 FlashCard::GetPath always returns true
 	fixed
-resource data should be put into separate 1-1 table
-	to avoid slowing down queries
-	TODO
 Tools:StartsWith/EndsWith are untested
 	testing via strings should be fine
 	fixed
@@ -3911,3 +3908,56 @@ wait cursor
 	lets try the first approach
 		I am subscribed to events
 			not filtering them
+tagging
+	need an easy way of adding tags to notes
+	mostly at creation, but also at editing
+		probably no need to add it to the viewer
+	I could make it easy in any situation
+		just create a new viewer
+		initialize it for specific notes
+	all I need is a multiselect list
+	might display tags in a tree
+		not in the first edition
+	need a way to add new tags
+		it should be compatible with editing
+			an editing mode
+			where the name is replaced with 
+		edit field should be best
+			where should it be?
+				on top, like the note list
+					could be confused with search
+				on bottom
+			what should the button label say?
+				Add for new notes
+				Select for old
+		√ a "Click to add tag…" button at the end
+			switch to editing mode on click
+			better place it at the beginning
+		x a "New tag" button at the top
+			what would it do?
+	need a way to mark selected tags
+		reserve light notes for dirty
+		checkboxes?
+			the user would only click on the small box
+		checkmarks?
+			should be clear enough
+			especially if it offsets text
+		TODO
+	should sort selected tags before unselected
+I might want to set a shadow to the rich text editor
+	TODO
+note tag list editor
+	do I want to control selected/cleared lists from the presenter
+		yep
+	how to keep lists sorted?
+		want to keep scroll position
+			have a SetTags view method taking two lists
+		the view should not contain sorting logic
+		I might want to have a model for this
+			the model would say after which tag to insert
+			the model should create change events
+				presenter should pass these to the view
+	note update
+		DeleteTags/AddTag vs UpdateTags
+			AddTag already present
+			easy to modify code
