@@ -60,7 +60,9 @@ void HTMLayoutWindow::DisconnectBehavior(const char * path)
 
 void HTMLayoutWindow::DisconnectBehavior(HELEMENT element)
 {
-	eventRecords.erase(find(eventRecords.begin(), eventRecords.end(), element));
+	vector<EventRecord>::iterator i(find(eventRecords.begin(), eventRecords.end(), element));
+	if (i != eventRecords.end())
+		eventRecords.erase(i);
 }
 
 HELEMENT HTMLayoutWindow::FindFirstElement(const char * selector)

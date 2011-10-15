@@ -47,7 +47,7 @@ void NoteTagListView::Create(HWND parent)
 
 void NoteTagListView::RegisterEventHandlers()
 {
-	body    = FindFirstElement("#tag-panel");
+	body    = FindFirstElement("#tag-list");
 	vScroll = FindFirstElement("#vscroll");
 	vSlider = FindFirstElement("#vscroll > #slider");
 }
@@ -67,7 +67,7 @@ void NoteTagListView::Hide()
 
 wstring NoteTagListView::GetActiveTag()
 {
-	return L"";
+	return activeTag;
 }
 
 void NoteTagListView::SetTags
@@ -75,6 +75,29 @@ void NoteTagListView::SetTags
 	, const TagList & selected
 	)
 {
+	element clearedList  (FindFirstElement("#cleared"));
+	element selectedList (FindFirstElement("#selected"));
+
+	vector<element> tags;
+	clearedList.find_all(tags, ".tag");
+	selectedList.find_all(tags, ".tag");
+
+	foreach (element & e, tags)
+		e.destroy();
+
+	foreach (const Tag & tag, cleared)
+		clearedList.append(CreateClearedTag(tag));
+
+	foreach (const Tag & tag, selected)
+		selectedList.append(CreateSelectedTag(tag));
+
+	DisconnectBehavior(".tag");
+	ConnectBehavior("#cleared > .tag",  BUTTON_CLICK, &NoteTagListView::OnCleared);
+	ConnectBehavior("#selected > .tag", BUTTON_CLICK, &NoteTagListView::OnSelected);
+
+	body.update(MEASURE_DEEP|REDRAW_NOW);
+
+	UpdateScrollbar();
 }
 
 void NoteTagListView::Show()
@@ -109,6 +132,7 @@ void NoteTagListView::Show()
 	::SHCreateMenuBar(&menuBarInfo);
 
 	UpdateWindowState();
+	SetScrollPos(0);
 
 	ShowWindow(hwnd_, SW_SHOW);
 }
@@ -117,14 +141,39 @@ void NoteTagListView::Show()
 // utility functions
 //------------------
 
-POINT NoteTagListView::GetScrollPos()
+element NoteTagListView::CreateClearedTag(const Tag & tag)
+{
+	element text(element::create("text", tag.name.c_str()));
+
+	element e(element::create("div"));
+	e.set_attribute("class", L"tag");
+	e.append(text);
+
+	return e;
+}
+
+element NoteTagListView::CreateSelectedTag(const Tag & tag)
+{
+	element image(element::create("img"));
+	image.set_attribute("src", L"tag-check.png");
+	
+	element text(element::create("text", tag.name.c_str()));
+
+	element e(element::create("div"));
+	e.set_attribute("class", L"tag");
+	e.append(image);
+	e.append(text);
+
+	return e;
+}
+
+int NoteTagListView::GetScrollPos()
 {
 	POINT scrollPos;
 	RECT  viewRect;
 	SIZE  contentSize;
-	element body(FindFirstElement("#note"));
 	body.get_scroll_info(scrollPos, viewRect, contentSize);
-	return scrollPos;
+	return scrollPos.y;
 }
 
 ATOM NoteTagListView::RegisterClass(const wstring & wndClass)
@@ -139,7 +188,7 @@ ATOM NoteTagListView::RegisterClass(const wstring & wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void NoteTagListView::SetScrollPos(POINT pos)
+void NoteTagListView::SetScrollPos(int pos)
 {
 	POINT scrollPos;
 	Rect  viewRect;
@@ -156,9 +205,8 @@ void NoteTagListView::SetScrollPos(POINT pos)
 		, contentSize.cy - bodyRect.GetHeight()
 		};
 
-	pos.x = max(min(pos.x, contentDistance.cx), 0);
-	pos.y = max(min(pos.y, contentDistance.cy), 0);
-	body.set_scroll_pos(pos, false);
+	POINT point = { 0, max(min(pos, contentDistance.cy), 0) };
+	body.set_scroll_pos(point, false);
 
 	POINT vScrollPos = { 0 };
 
@@ -169,7 +217,7 @@ void NoteTagListView::SetScrollPos(POINT pos)
 
 		__int64 vScrollDistance(vScrollRect.GetHeight() - vSliderRect.GetHeight());
 		if (vScrollDistance > 0L)
-			vScrollPos.y = -static_cast<int>(pos.y * vScrollDistance / contentDistance.cy);
+			vScrollPos.y = -static_cast<int>(point.y * vScrollDistance / contentDistance.cy);
 	}
 
 	vScroll.set_scroll_pos(vScrollPos, false);
@@ -264,12 +312,7 @@ void NoteTagListView::OnGestureStart()
 
 void NoteTagListView::OnGestureStep()
 {
-	SIZE offset(gestureProcessor.GetScrollDistance());
-	POINT distance =
-		{ startScrollPos.x + offset.cx
-		, startScrollPos.y + offset.cy
-		};
-	SetScrollPos(distance);
+	SetScrollPos(startScrollPos + gestureProcessor.GetScrollDistance());
 }
 
 //------------------------
@@ -362,3 +405,17 @@ void NoteTagListView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void NoteTagListView::OnCleared(BEHAVIOR_EVENT_PARAMS * params)
+{
+	element e(element(params->heTarget).find_first("text"));
+	activeTag = e.text().c_str();
+	SignalTagCleared();
+}
+
+void NoteTagListView::OnSelected(BEHAVIOR_EVENT_PARAMS * params)
+{
+	element e(element(params->heTarget).find_first("text"));
+	activeTag = e.text().c_str();
+	SignalTagSelected();
+}

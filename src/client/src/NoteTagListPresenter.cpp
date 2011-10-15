@@ -24,8 +24,8 @@ NoteTagListPresenter::NoteTagListPresenter
 
 	noteTagListView.ConnectCancel      (bind(&NoteTagListPresenter::OnCancel,      this));
 	noteTagListView.ConnectOk          (bind(&NoteTagListPresenter::OnOk,          this));
-	noteTagListView.ConnectTagCleared  (bind(&NoteTagListPresenter::OnTagCleared,  this));
-	noteTagListView.ConnectTagSelected (bind(&NoteTagListPresenter::OnTagSelected, this));
+	noteTagListView.ConnectTagCleared  (bind(&NoteTagListPresenter::OnClearedTag,  this));
+	noteTagListView.ConnectTagSelected (bind(&NoteTagListPresenter::OnSelectedTag, this));
 
 	noteView.ConnectEditTags(bind(&NoteTagListPresenter::OnEditTags, this));
 }
@@ -39,6 +39,11 @@ void NoteTagListPresenter::OnCancel()
 	CloseView();
 }
 
+void NoteTagListPresenter::OnClearedTag()
+{
+	SelectActiveTag();
+}
+
 void NoteTagListPresenter::OnEditTags()
 {
 	OpenView();
@@ -50,7 +55,7 @@ void NoteTagListPresenter::OnOk()
 	CloseView();
 }
 
-void NoteTagListPresenter::OnTagCleared()
+void NoteTagListPresenter::OnSelectedTag()
 {
 	ClearActiveTag();
 }
@@ -58,11 +63,6 @@ void NoteTagListPresenter::OnTagCleared()
 void NoteTagListPresenter::OnTagsChanged()
 {
 	UpdateView();
-}
-
-void NoteTagListPresenter::OnTagSelected()
-{
-	SelectActiveTag();
 }
 
 //------------------
@@ -90,9 +90,9 @@ void NoteTagListPresenter::OpenView()
 	TagList noteTags;
 	userModel.GetNoteTags(note, noteTags);
 
-	noteTagListModel.SetTags(tags, noteTags);
-
 	noteTagListView.Show();
+
+	noteTagListModel.SetTags(tags, noteTags);
 }
 
 void NoteTagListPresenter::SelectActiveTag()

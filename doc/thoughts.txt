@@ -3961,3 +3961,7 @@ note tag list editor
 		DeleteTags/AddTag vs UpdateTags
 			AddTag already present
 			easy to modify code
+	need to update note header after changing tags
+		TODO
+	need to mark note modified after changing tags
+		TODO

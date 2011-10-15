@@ -14,6 +14,7 @@ void NoteTagListModel::ClearTag(const wstring & name)
 {
 	MoveTag(selected, cleared, name);
 	isDirty = true;
+	SignalTagsChanged();
 }
 
 const TagList & NoteTagListModel::GetClearedTags()
@@ -35,6 +36,7 @@ void NoteTagListModel::SelectTag(const wstring & name)
 {
 	MoveTag(cleared, selected, name);
 	isDirty = true;
+	SignalTagsChanged();
 }
 
 void NoteTagListModel::SetTags
@@ -58,6 +60,7 @@ void NoteTagListModel::SetTags
 	}
 
 	isDirty = false;
+	SignalTagsChanged();
 }
 
 void NoteTagListModel::MoveTag

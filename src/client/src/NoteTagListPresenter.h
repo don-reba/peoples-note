@@ -28,11 +28,11 @@ public:
 private:
 
 	void OnCancel();
+	void OnClearedTag();
 	void OnEditTags();
 	void OnOk();
-	void OnTagCleared();
+	void OnSelectedTag();
 	void OnTagsChanged();
-	void OnTagSelected();
 
 // utility functions
 

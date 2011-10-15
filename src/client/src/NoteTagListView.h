@@ -3,7 +3,7 @@
 
 #include "HTMLayoutWindow.h"
 #include "Note.h"
-#include "NoteViewGestureProcessor.h"
+#include "NoteListGestureProcessor.h"
 #include "WindowRenderer.h"
 
 class IAnimator;
@@ -25,17 +25,19 @@ private:
 	HWND      menuBar;
 	HWND      parent;
 
-	NoteViewGestureProcessor gestureProcessor;
+	NoteListGestureProcessor gestureProcessor;
 
 	Note note;
 
-	POINT startScrollPos;
+	int startScrollPos;
 
 	bool isDirty;
 
 	element body;
 	element vScroll;
 	element vSlider;
+
+	std::wstring activeTag;
 
 // interface
 
@@ -71,11 +73,15 @@ public:
 
 private:
 
-	POINT GetScrollPos();
+	element CreateClearedTag(const Tag & tag);
+
+	element CreateSelectedTag(const Tag & tag);
+
+	int GetScrollPos();
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 
-	void SetScrollPos(POINT pos);
+	void SetScrollPos(int pos);
 
 	void UpdateScrollbar();
 
@@ -107,6 +113,6 @@ private:
 
 private:
 
-	void OnAttachment (BEHAVIOR_EVENT_PARAMS * params);
-	void OnInput      (BEHAVIOR_EVENT_PARAMS * params);
+	void OnCleared  (BEHAVIOR_EVENT_PARAMS * params);
+	void OnSelected (BEHAVIOR_EVENT_PARAMS * params);
 };
