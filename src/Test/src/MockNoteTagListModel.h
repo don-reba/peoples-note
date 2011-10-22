@@ -7,6 +7,7 @@
 class MockNoteTagListModel : public INoteTagListModel
 {
 	MacroTestEvent(TagsChanged)
+	MacroTestEvent(Committed)
 
 public:
 
@@ -23,6 +24,8 @@ public:
 public:
 
 	virtual void ClearTag(const std::wstring & tag);
+
+	virtual void Commit();
 
 	virtual const TagList & GetClearedTags();
 

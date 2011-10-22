@@ -251,6 +251,12 @@ void NoteView::SetNote
 	}
 }
 
+void NoteView::SetSubtitle(const wstring & subtitleText)
+{
+	element(FindFirstElement("#subtitle"))
+		.set_text (subtitleText.c_str(), subtitleText.size());
+}
+
 void NoteView::SetWindowTitle(const std::wstring & text)
 {
 	::SetWindowText(hwnd_, text.c_str());

@@ -233,6 +233,7 @@ int WINAPI WinMain(HINSTANCE instance,
 			( deviceDocumentPath
 			, noteListModel
 			, noteListView
+			, noteTagListModel
 			, noteView
 			, userModel
 			, enNoteTranslator

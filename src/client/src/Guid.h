@@ -22,6 +22,8 @@ public:
 
 	operator const std::string & () const;
 
+	operator std::wstring () const;
+
 	bool operator == (const Guid & guid) const;
 
 	bool operator != (const Guid & guid) const;

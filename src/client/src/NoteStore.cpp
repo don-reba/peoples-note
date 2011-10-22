@@ -46,6 +46,7 @@ void NoteStore::CreateNote
 	, const vector<Resource> & resources
 	, const Guid             & notebook
 	, Note                   & replacement
+	, GuidList               & replacementTags
 	)
 {
 	EDAM::Type::Note enNote;
@@ -59,6 +60,7 @@ void NoteStore::CreateNote
 	ConvertFromEnNote
 		( noteStore.createNote(token, enNote)
 		, replacement
+		, replacementTags
 		);
 }
 
@@ -92,7 +94,7 @@ void NoteStore::CreateTag
 
 void NoteStore::DeleteNote(const Guid & guid)
 {
-	noteStore.deleteNote(token, ConvertToUnicode(guid));
+	noteStore.deleteNote(token, guid);
 }
 
 void NoteStore::GetDefaultNotebook(Guid & notebook)
@@ -104,18 +106,20 @@ void NoteStore::GetDefaultNotebook(Guid & notebook)
 void NoteStore::GetNote
 	( const Guid & guid
 	,       Note & note
+	, GuidList   & tags
 	)
 {
 	ConvertFromEnNote
 		( noteStore.getNote
-			( token                  // authenticationToken
-			, ConvertToUnicode(guid) // guid
-			, false                  // withContent
-			, false                  // withResourceData
-			, false                  // withResourcesRecognition
-			, false                  // withResourcesAlternateData
+			( token // authenticationToken
+			, guid  // guid
+			, false // withContent
+			, false // withResourceData
+			, false // withResourcesRecognition
+			, false // withResourcesAlternateData
 			)
 		, note
+		, tags
 		);
 }
 
@@ -124,10 +128,7 @@ void NoteStore::GetNoteBody
 	, wstring    & content
 	)
 {
-	content = noteStore.getNoteContent
-		( token
-		, ConvertToUnicode(note.guid)
-		);
+	content = noteStore.getNoteContent(token, note.guid);
 }
 
 void NoteStore::GetNoteResource
@@ -138,12 +139,12 @@ void NoteStore::GetNoteResource
 {
 	ConvertFromEnResource
 		( noteStore.getResource
-			( token                  // authenticationToken
-			, ConvertToUnicode(guid) // guid
-			, true                   // withData
-			, true                   // withRecognition
-			, true                   // withAttributes
-			, false                  // withAlternateData
+			( token // authenticationToken
+			, guid  // guid
+			, true  // withData
+			, true  // withRecognition
+			, true  // withAttributes
+			, false // withAlternateData
 			)
 		, guid
 		, resource
@@ -156,8 +157,7 @@ void NoteStore::GetNoteTagNames
 	, vector<wstring> & names
 	)
 {
-	wstring guid(ConvertToUnicode(note.guid));
-	names.swap(noteStore.getNoteTagNames(token, guid));
+	names = noteStore.getNoteTagNames(token, note.guid);
 }
 
 void NoteStore::GetNotebook
@@ -167,8 +167,8 @@ void NoteStore::GetNotebook
 {
 	ConvertFromEnNotebook
 		( noteStore.getNotebook
-			( token                  // authenticationToken
-			, ConvertToUnicode(guid) // guid
+			( token // authenticationToken
+			, guid  // guid
 			)
 		, notebook
 		);
@@ -178,12 +178,12 @@ void NoteStore::GetResource(const Guid & guid, Resource & resource)
 {
 	ConvertFromEnResource
 		( noteStore.getResource
-			( token                  // authenticationToken
-			, ConvertToUnicode(guid) // guid
-			, false                  // withData
-			, false                  // withRecognition
-			, true                   // withAttributes
-			, false                  // withAlternateData
+			( token // authenticationToken
+			, guid  // guid
+			, false // withData
+			, false // withRecognition
+			, true  // withAttributes
+			, false // withAlternateData
 			)
 		, resource
 		);
@@ -204,8 +204,8 @@ void NoteStore::GetTag
 {
 	ConvertFromEnTag
 		( noteStore.getTag
-			( token                  // authenticationToken
-			, ConvertToUnicode(guid) // guid
+			( token // authenticationToken
+			, guid  // guid
 			)
 		, tag
 		);
@@ -267,15 +267,24 @@ void NoteStore::ListEntries
 }
 
 void NoteStore::UpdateNote
-	( const Note             & note
-	, const wstring          & body
-	, const vector<Resource> & resources
-	, const Guid             & notebook
-	, Note                   & replacement
+	( const Note         & note
+	, const wstring      & body
+	, const GuidList     & tags
+	, const ResourceList & resources
+	, const Guid         & notebook
+	, Note               & replacement
+	, GuidList           & replacementTags
 	)
 {
+	const size_t tagLimit(EDAM::Limits::constants.EDAM_NOTE_TAGS_MAX);
+
 	EDAM::Type::Note enNote;
 	ConvertToEnNote(note, body, notebook, enNote);
+
+	enNote.__isset.tagGuids = true;
+	copy(tags.begin(), tags.end(), back_inserter(enNote.tagGuids));
+	if (enNote.tagGuids.size() > tagLimit)
+		enNote.tagGuids.resize(tagLimit);
 
 	enNote.__isset.resources = true;
 	enNote.resources.resize(resources.size());
@@ -285,6 +294,7 @@ void NoteStore::UpdateNote
 	ConvertFromEnNote
 		( noteStore.updateNote(token, enNote)
 		, replacement
+		, replacementTags
 		);
 }
 
@@ -332,6 +342,7 @@ __int64 NoteStore::ConvertToEnTime(Timestamp time)
 void NoteStore::ConvertFromEnNote
 	( const EDAM::Type::Note & enNote
 	, Note                   & note
+	, GuidList               & tags
 	)
 {
 	note.guid             = Guid(enNote.guid);
@@ -340,6 +351,8 @@ void NoteStore::ConvertFromEnNote
 	note.name             = enNote.title;
 	note.usn              = enNote.updateSequenceNum;
 	note.isDirty          = false;
+	if (enNote.__isset.tagGuids)
+		copy(enNote.tagGuids.begin(), enNote.tagGuids.end(), back_inserter(tags));
 	if (enNote.__isset.attributes)
 	{
 		const EDAM::Type::NoteAttributes & attributes(enNote.attributes);
@@ -371,12 +384,12 @@ void NoteStore::ConvertToEnNote
 	enNote.__isset.content      = true;
 	enNote.__isset.notebookGuid = true;
 
-	enNote.guid         = ConvertToUnicode(note.guid);
+	enNote.guid         = note.guid;
 	enNote.title        = note.name;
 	enNote.created      = ConvertToEnTime(note.creationDate);
 	enNote.updated      = ConvertToEnTime(note.modificationDate);
 	enNote.content      = body;
-	enNote.notebookGuid = ConvertToUnicode(notebook);
+	enNote.notebookGuid = notebook;
 
 	// set optional attributes
 	if (note.subjectDate.GetTime())
@@ -442,7 +455,7 @@ void NoteStore::ConvertToEnNotebook
 	enNotebook.__isset.guid = true;
 	enNotebook.__isset.name = true;
 
-	enNotebook.guid = ConvertToUnicode(notebook.guid);
+	enNotebook.guid = notebook.guid;
 	enNotebook.name = notebook.name;
 }
 
@@ -541,7 +554,7 @@ void NoteStore::ConvertToEnResource
 	)
 {
 	enResource.__isset.guid = true;
-	enResource.guid = ConvertToUnicode(resource.Guid);
+	enResource.guid = resource.Guid;
 
 	enResource.__isset.data = true;
 	enResource.data.__isset.body = true;
@@ -624,13 +637,13 @@ void NoteStore::ConvertToEnTag
 	enTag.__isset.guid = true;
 	enTag.__isset.name = true;
 
-	enTag.guid = ConvertToUnicode(tag.guid);
+	enTag.guid = tag.guid;
 	enTag.name = tag.name;
 
 	if (!tag.parentGuid.IsEmpty())
 	{
 		enTag.__isset.parentGuid = true;
-		enTag.parentGuid = ConvertToUnicode(tag.parentGuid);
+		enTag.parentGuid = tag.parentGuid;
 	}
 }
 
@@ -643,7 +656,7 @@ void NoteStore::ListEntries
 	, const Guid                 & notebookFilter
 	)
 {
-	wstring notebookFilterGuid(ConvertToUnicode(notebookFilter));
+	wstring notebookFilterGuid(notebookFilter);
 	if (!notebookFilter.IsLocal())
 	{
 		int noteCount(0);
@@ -664,14 +677,15 @@ void NoteStore::ListEntries
 			if (note.notebookGuid != notebookFilterGuid)
 				continue;
 			notes.push_back(EnInteropNote());
-			ConvertFromEnNote(note, notes.back().note);
+			EnInteropNote & enNote(notes.back());
+			ConvertFromEnNote(note, enNote.note, enNote.tags);
 
-			notes.back().notebook = note.notebookGuid;
+			enNote.notebook = note.notebookGuid;
 
-			notes.back().guid    = notes.back().note.guid;
-			notes.back().name    = notes.back().note.name;
-			notes.back().usn     = notes.back().note.usn;
-			notes.back().isDirty = notes.back().note.isDirty;
+			enNote.guid    = notes.back().note.guid;
+			enNote.name    = notes.back().note.name;
+			enNote.usn     = notes.back().note.usn;
+			enNote.isDirty = notes.back().note.isDirty;
 
 			int resourceCount(0);
 			foreach (const EDAM::Type::Resource & resource, note.resources)
@@ -679,12 +693,12 @@ void NoteStore::ListEntries
 				if (resource.noteGuid == note.guid)
 					++resourceCount;
 			}
-			notes.back().resources.reserve(resourceCount);
+			enNote.resources.reserve(resourceCount);
 
 			foreach (const EDAM::Type::Resource & resource, note.resources)
 			{
 				if (resource.noteGuid == note.guid)
-					notes.back().resources.push_back(resource.guid);
+					enNote.resources.push_back(resource.guid);
 			}
 		}
 	}
@@ -716,7 +730,7 @@ void NoteStore::ListEntries
 	, const Guid                 & notebookFilter
 	)
 {
-	wstring notebookFilterGuid(ConvertToUnicode(notebookFilter));
+	wstring notebookFilterGuid(notebookFilter);
 	foreach (const EDAM::Type::Note & note, chunk.notes)
 	{
 		if (!note.__isset.active || note.active)

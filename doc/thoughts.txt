@@ -3962,6 +3962,30 @@ note tag list editor
 			AddTag already present
 			easy to modify code
 	need to update note header after changing tags
-		TODO
+		reloading the whole note might be excessive
+		need to mark the stored note dirty
+		need to update the tags
+			tags are set via subtitle text
+			the formatting is determined by the note presenter
+			then it should subscribe to the tag list view ok event
+				and modify the subtitle
+					need a new method for this
+				the event has to occur after tags are modified
+					not after the window is closed
 	need to mark note modified after changing tags
+		done
+	need to be able to add tags at note creation
 		TODO
+trying to modify a note during note sync throws an exception
+	the table is locked
+	need to deal with this situation gracefully
+	TODO
+uploading tags
+	have to check evernote API
+		Note class a a list of tag guids
+	update function expunges the old note
+	update function does not set tags
+	listing notes gets me the tags
+		should add them to the interop note class
+		I don't want to copy them around more than necessary
+		it already contains the resource list, though

@@ -52,6 +52,8 @@ public:
 		, const bool                     enableChrome
 		) = 0;
 
+	virtual void SetSubtitle(const std::wstring & subtitleText) = 0;
+
 	virtual void SetWindowTitle(const std::wstring & text) = 0;
 
 	virtual void Show() = 0;

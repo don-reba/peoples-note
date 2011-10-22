@@ -7,10 +7,13 @@
 class INoteTagListModel : public ISignalProvider
 {
 	MacroIEvent(TagsChanged)
+	MacroIEvent(Committed)
 
 public:
 
 	virtual void ClearTag(const std::wstring & tag) = 0;
+
+	virtual void Commit() = 0;
 
 	virtual const TagList & GetClearedTags() = 0;
 

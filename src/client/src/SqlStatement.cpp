@@ -182,6 +182,20 @@ void SqlStatement::Bind(int index, const Blob & blob)
 		HandleError(sqlite3_errmsg(db));
 }
 
+void SqlStatement::Bind(int index, const Guid & guid)
+{
+	const string & text(guid);
+	int result = sqlite3_bind_text
+		( statement
+		, index
+		, text.c_str()
+		, text.size()
+		, SQLITE_TRANSIENT
+		);
+	if (result != SQLITE_OK)
+		HandleError(sqlite3_errmsg(db));
+}
+
 void SqlStatement::BindNull(int index)
 {
 	int result = sqlite3_bind_null(statement, index);

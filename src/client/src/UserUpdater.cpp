@@ -16,9 +16,15 @@ UserUpdater::UserUpdater
 
 void UserUpdater::UpdateNote(const Guid & guid)
 {
-	Note note;
-	noteStore.GetNote(guid, note);
+	Note     note;
+	GuidList tags;
+	noteStore.GetNote(guid, note, tags);
+
 	userModel.UpdateNote(guid, note);
+	userModel.DeleteNoteTags(guid);
+
+	foreach (const Guid & tag, tags)
+		userModel.AddTagToNote(tag, note);
 }
 
 void UserUpdater::UpdateNotebook(const Guid & guid)

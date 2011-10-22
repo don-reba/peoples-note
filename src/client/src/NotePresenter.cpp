@@ -6,6 +6,7 @@
 #include "Guid.h"
 #include "INoteListModel.h"
 #include "INoteListView.h"
+#include "INoteTagListModel.h"
 #include "INoteView.h"
 #include "IUserModel.h"
 #include "Tools.h"
@@ -23,21 +24,26 @@ using namespace Tools;
 //----------
 
 NotePresenter::NotePresenter
-	( const wstring    & deviceDocumentPath
-	, INoteListModel   & noteListModel
-	, INoteListView    & noteListView
-	, INoteView        & noteView
-	, IUserModel       & userModel
-	, EnNoteTranslator & enNoteTranslator
+	( const wstring     & deviceDocumentPath
+	, INoteListModel    & noteListModel
+	, INoteListView     & noteListView
+	, INoteTagListModel & noteTagListModel
+	, INoteView         & noteView
+	, IUserModel        & userModel
+	, EnNoteTranslator  & enNoteTranslator
 	)
 	: deviceDocumentPath (deviceDocumentPath)
 	, noteListModel      (noteListModel)
 	, noteListView       (noteListView)
+	, noteTagListModel   (noteTagListModel)
 	, noteView           (noteView)
 	, userModel          (userModel)
 	, enNoteTranslator   (enNoteTranslator)
 {
-	noteListView.ConnectOpenNote   (bind(&NotePresenter::OnOpenNote,       this));
+	noteListView.ConnectOpenNote (bind(&NotePresenter::OnOpenNote, this));
+
+	noteTagListModel.ConnectCommitted (bind(&NotePresenter::OnTagListCommitted, this));
+
 	noteView.ConnectAttachment     (bind(&NotePresenter::OnAttachment,     this));
 	noteView.ConnectClose          (bind(&NotePresenter::OnCloseNote,      this));
 	noteView.ConnectToggleMaximize (bind(&NotePresenter::OnToggleMaximize, this));
@@ -153,6 +159,27 @@ void NotePresenter::OnOpenNote()
 		// try to proceed
 	}
 	noteView.Show();
+}
+
+void NotePresenter::OnTagListCommitted()
+{
+	WaitCursor waitCursor;
+
+	Transaction transaction(userModel);
+
+	Guid guid(noteListView.GetSelectedNoteGuid());
+
+	Note note;
+	userModel.GetNote(guid, note);
+	note.isDirty = true;
+
+	wstring subtitle;
+	CreateSubtitle(note, subtitle);
+
+	noteView.SetSubtitle(subtitle);
+
+	userModel.UpdateNote(note.guid, note);
+	noteListModel.Reload();
 }
 
 void NotePresenter::OnToggleMaximize()

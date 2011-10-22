@@ -110,7 +110,9 @@ void NoteTagListPresenter::UpdateNote()
 
 	userModel.DeleteNoteTags(note.guid);
 	foreach (const Tag & tag, noteTagListModel.GetSelectedTags())
-		userModel.AddTagToNote(tag.name, note);
+		userModel.AddTagToNote(tag.guid, note);
+
+	noteTagListModel.Commit();
 }
 
 void NoteTagListPresenter::UpdateView()
@@ -119,4 +121,8 @@ void NoteTagListPresenter::UpdateView()
 		( noteTagListModel.GetClearedTags()
 		, noteTagListModel.GetSelectedTags()
 		);
+
+	Note note;
+	noteView.GetNote(note);
+	note.isDirty = true;
 }

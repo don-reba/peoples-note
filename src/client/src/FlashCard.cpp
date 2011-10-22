@@ -37,11 +37,11 @@ wstring FlashCard::GetName()
 		{
 			if (!IsValidData(data))
 				continue;
-			::CloseHandle(handle);
+			::FindClose(handle);
 			return data.cFileName;
 		}
 		while (::FindNextFlashCard(handle, &data));
-		::CloseHandle(handle);
+		::FindClose(handle);
 	}
 	return L"";
 }

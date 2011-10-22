@@ -5,6 +5,7 @@
 
 class INoteListModel;
 class INoteListView;
+class INoteTagListModel;
 class INoteView;
 class IUserModel;
 class EnNoteTranslator;
@@ -14,11 +15,12 @@ class NotePresenter
 {
 private:
 
-	INoteListModel   & noteListModel;
-	INoteListView    & noteListView;
-	INoteView        & noteView;
-	IUserModel       & userModel;
-	EnNoteTranslator & enNoteTranslator;
+	INoteListModel    & noteListModel;
+	INoteListView     & noteListView;
+	INoteTagListModel & noteTagListModel;
+	INoteView         & noteView;
+	IUserModel        & userModel;
+	EnNoteTranslator  & enNoteTranslator;
 
 	std::wstring deviceDocumentPath;
 
@@ -30,6 +32,7 @@ public:
 		( const std::wstring & deviceDocumentPath
 		, INoteListModel     & noteListModel
 		, INoteListView      & noteListView
+		, INoteTagListModel  & noteTagListModel
 		, INoteView          & noteView
 		, IUserModel         & userModel
 		, EnNoteTranslator   & enNoteTranslator
@@ -42,6 +45,7 @@ private:
 	void OnAttachment();
 	void OnCloseNote();
 	void OnOpenNote();
+	void OnTagListCommitted();
 	void OnToggleMaximize();
 
 // utility functions

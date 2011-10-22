@@ -13,6 +13,11 @@ void MockNoteTagListModel::ClearTag(const wstring & tag)
 	clearedTag = tag;
 }
 
+void MockNoteTagListModel::Commit()
+{
+	SignalCommitted();
+}
+
 const TagList & MockNoteTagListModel::GetClearedTags()
 {
 	return cleared;

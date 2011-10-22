@@ -93,6 +93,11 @@ void MockNoteView::SetNote
 	this->enableChrome = enableChrome;
 }
 
+void MockNoteView::SetSubtitle(const wstring & text)
+{
+	subtitle = text;
+}
+
 void MockNoteView::SetWindowTitle(const wstring & text)
 {
 	windowTitle = text;

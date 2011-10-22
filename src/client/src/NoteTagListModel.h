@@ -4,6 +4,7 @@
 class NoteTagListModel : public INoteTagListModel
 {
 	MacroEvent(TagsChanged)
+	MacroEvent(Committed)
 
 private:
 
@@ -19,6 +20,8 @@ public:
 public:
 
 	virtual void ClearTag(const std::wstring & tag);
+
+	virtual void Commit();
 
 	virtual const TagList & GetClearedTags();
 

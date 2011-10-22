@@ -4,6 +4,7 @@
 #include "MockUserModel.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
+#include "MockNoteTagListModel.h"
 #include "MockNoteView.h"
 #include "NotePresenter.h"
 
@@ -15,11 +16,12 @@ using namespace std;
 
 struct NotePresenterFixture
 {
-	EnNoteTranslator  enNoteTranslator;
-	MockNoteListModel noteListModel;
-	MockNoteListView  noteListView;
-	MockNoteView      noteView;
-	MockUserModel     userModel;
+	EnNoteTranslator     enNoteTranslator;
+	MockNoteListModel    noteListModel;
+	MockNoteListView     noteListView;
+	MockNoteTagListModel noteTagListModel;
+	MockNoteView         noteView;
+	MockUserModel        userModel;
 
 	NotePresenter notePresenter;
 
@@ -28,6 +30,7 @@ struct NotePresenterFixture
 			( L"/Storage Card/"
 			, noteListModel
 			, noteListView
+			, noteTagListModel
 			, noteView
 			, userModel
 			, enNoteTranslator

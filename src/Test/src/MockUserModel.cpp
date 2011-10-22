@@ -49,17 +49,16 @@ void MockUserModel::AddTag(const Tag & tag)
 }
 
 void MockUserModel::AddTagToNote
-	( const std::wstring & tagName
-	, const Note         & note
+	( const Guid & tag
+	, const Note & note
 	)
 {
-	foreach (const Tag & tag, tags)
+	foreach (const Tag & t, tags)
 	{
-		if (tag.name == tagName)
-		{
-			noteTags.insert(make_pair(note.guid, tag.guid));
-			return;
-		}
+		if (t.guid != tag)
+			continue;
+		noteTags.insert(make_pair(note.guid, tag));
+		return;
 	}
 }
 

@@ -7,9 +7,10 @@ class EnInteropNote
 {
 public:
 
-	Note              note;
-	std::vector<Guid> resources;
-	Guid              notebook;
+	Note     note;
+	GuidList resources;
+	GuidList tags;
+	Guid     notebook;
 
 	std::wstring name;
 	Guid         guid;

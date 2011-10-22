@@ -14,11 +14,12 @@ class INoteStore
 public:
 
 	virtual void CreateNote
-		( const Note                  & note
-		, const std::wstring          & body
-		, const std::vector<Resource> & resources
-		, const Guid                  & notebook
-		, Note                        & replacement
+		( const Note         & note
+		, const std::wstring & body
+		, const ResourceList & resources
+		, const Guid         & notebook
+		, Note               & replacement
+		, GuidList           & replacementTags
 		) = 0;
 
 	virtual void CreateNotebook
@@ -35,7 +36,11 @@ public:
 
 	virtual void GetDefaultNotebook(Guid & notebook) = 0;
 
-	virtual void GetNote(const Guid & guid, Note & note) = 0;
+	virtual void GetNote
+		( const Guid & guid
+		, Note       & note
+		, GuidList  & tags
+		) = 0;
 
 	virtual void GetNoteBody
 		( const Note   & note
@@ -82,11 +87,13 @@ public:
 		) = 0;
 
 	virtual void UpdateNote
-		( const Note                  & note
-		, const std::wstring          & body
-		, const std::vector<Resource> & resources
-		, const Guid                  & guid
-		, Note                        & replacement
+		( const Note         & note
+		, const std::wstring & body
+		, const GuidList     & tags
+		, const ResourceList & resources
+		, const Guid         & notebook
+		, Note               & replacement
+		, GuidList           & replacementTags
 		) = 0;
 
 	virtual void UpdateNotebook

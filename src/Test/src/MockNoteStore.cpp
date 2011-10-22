@@ -11,6 +11,7 @@ void MockNoteStore::CreateNote
 	, const vector<Resource> & resources
 	, const Guid             & notebook
 	, Note                   & replacement
+	, GuidList               & replacementTags
 	)
 {
 	createdNotes.push_back(note);
@@ -21,6 +22,10 @@ void MockNoteStore::CreateNote
 		, back_inserter(createdResources)
 		);
 	replacement = replacementNote;
+	replacementTags.assign
+		( this->replacementTags.begin()
+		, this->replacementTags.end()
+		);
 }
 
 void MockNoteStore::CreateNotebook
@@ -54,6 +59,7 @@ void MockNoteStore::GetDefaultNotebook(Guid & notebook)
 void MockNoteStore::GetNote
 	( const Guid & guid
 	,       Note & note
+	, GuidList   & tags
 	)
 {
 }
@@ -180,11 +186,13 @@ void MockNoteStore::ListEntries
 }
 
 void MockNoteStore::UpdateNote
-	( const Note             & note
-	, const wstring          & body
-	, const vector<Resource> & resources
-	, const Guid             & notebook
-	, Note                   & replacement
+	( const Note         & note
+	, const wstring      & body
+	, const GuidList     & tags
+	, const ResourceList & resources
+	, const Guid         & notebook
+	, Note               & replacement
+	, GuidList           & replacementTags
 	)
 {
 	foreach (Note & n, createdNotes)
@@ -210,6 +218,10 @@ void MockNoteStore::UpdateNote
 			, back_inserter(this->resources)
 			);
 	replacement = replacementNote;
+	replacementTags.assign
+		( this->replacementTags.begin()
+		, this->replacementTags.end()
+		);
 }
 
 void MockNoteStore::UpdateNotebook

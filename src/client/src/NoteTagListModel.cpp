@@ -17,6 +17,11 @@ void NoteTagListModel::ClearTag(const wstring & name)
 	SignalTagsChanged();
 }
 
+void NoteTagListModel::Commit()
+{
+	SignalCommitted();
+}
+
 const TagList & NoteTagListModel::GetClearedTags()
 {
 	return cleared;

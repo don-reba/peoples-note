@@ -16,6 +16,7 @@ public:
 	virtual void Bind(int index, const std::string  & text) = 0;
 	virtual void Bind(int index, const std::wstring & text) = 0;
 	virtual void Bind(int index, const Blob         & blob) = 0;
+	virtual void Bind(int index, const Guid         & guid) = 0;
 
 	virtual void BindNull(int index) = 0;
 

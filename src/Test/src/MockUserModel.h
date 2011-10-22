@@ -118,8 +118,8 @@ public:
 	virtual void AddTag(const Tag & tag);
 
 	virtual void AddTagToNote
-		( const std::wstring & tagName
-		, const Note         & note
+		( const Guid & tag
+		, const Note & note
 		);
 
 	virtual void BeginTransaction();

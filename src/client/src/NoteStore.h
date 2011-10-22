@@ -33,11 +33,12 @@ public:
 public:
 
 	virtual void CreateNote
-		( const Note                  & note
-		, const std::wstring          & body
-		, const std::vector<Resource> & resources
-		, const Guid                  & notebook
-		, Note                        & replacement
+		( const Note         & note
+		, const std::wstring & body
+		, const ResourceList & resources
+		, const Guid         & notebook
+		, Note               & replacement
+		, GuidList           & replacementTags
 		);
 
 	virtual void CreateNotebook
@@ -54,7 +55,11 @@ public:
 
 	virtual void GetDefaultNotebook(Guid & notebook);
 
-	virtual void GetNote(const Guid & guid, Note & note);
+	virtual void GetNote
+		( const Guid & guid
+		, Note       & note
+		, GuidList   & tags
+		);
 
 	virtual void GetNoteBody
 		( const Note   & note
@@ -101,11 +106,13 @@ public:
 		);
 
 	virtual void UpdateNote
-		( const Note                  & note
-		, const std::wstring          & body
-		, const std::vector<Resource> & resources
-		, const Guid                  & notebook
-		, Note                        & replacement
+		( const Note         & note
+		, const std::wstring & body
+		, const GuidList     & tags
+		, const ResourceList & resources
+		, const Guid         & notebook
+		, Note               & replacement
+		, GuidList           & replacementTags
 		);
 
 	virtual void UpdateNotebook
@@ -129,6 +136,7 @@ private:
 	void ConvertFromEnNote
 		( const Evernote::EDAM::Type::Note & enNote
 		, Note                             & note
+		, GuidList                         & tags
 		);
 
 	void ConvertToEnNote

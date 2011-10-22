@@ -48,6 +48,11 @@ Guid::operator const string & () const
 	return data;
 }
 
+Guid::operator wstring () const
+{
+	return ConvertToUnicode(data);
+}
+
 bool Guid::operator == (const Guid & guid) const
 {
 	return data == guid.data;

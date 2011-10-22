@@ -13,6 +13,7 @@
 #include "SQLite/sqlite3.h"
 
 #include <algorithm>
+#include <functional>
 #include <iterator>
 #include <sstream>
 
@@ -267,26 +268,18 @@ void UserModel::AddTag(const Tag & tag)
 }
 
 void UserModel::AddTagToNote
-	( const wstring & tagName
-	, const Note    & note
+	( const Guid & tag
+	, const Note & note
 	)
 {
-	wstring searchName;
-	transform
-		( tagName.begin()
-		, tagName.end()
-		, back_inserter(searchName)
-		, towupper
-		);
-
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "INSERT OR REPLACE INTO NoteTags(note, tag)"
 			" SELECT ?, guid"
 			" FROM   tags"
-			" WHERE  searchName = ?"
+			" WHERE  guid = ?"
 		);
 	statement->Bind(1, note.guid);
-	statement->Bind(2, searchName);
+	statement->Bind(2, tag);
 	statement->Execute();
 }
 
@@ -304,6 +297,16 @@ void UserModel::DeleteNote(const Guid & note)
 		( "UPDATE Notes"
 		"  SET isDeleted = 1, isDirty = 1"
 		"  WHERE guid = ?"
+		);
+	statement->Bind(1, note);
+	statement->Execute();
+}
+
+void UserModel::DeleteNoteTags(const Guid & note)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "DELETE FROM NoteTags"
+		"  WHERE note = ?"
 		);
 	statement->Bind(1, note);
 	statement->Execute();

@@ -58,15 +58,15 @@ public:
 	virtual void AddTag(const Tag & tag);
 
 	virtual void AddTagToNote
-		( const std::wstring & tagName
-		, const Note         & note
+		( const Guid & tag
+		, const Note & note
 		);
 
 	virtual void BeginTransaction();
 
 	virtual void DeleteNote(const Guid & note);
 
-	virtual void DeleteNoteTags(const Guid & note) {}
+	virtual void DeleteNoteTags(const Guid & note);
 
 	virtual void DeleteNoteThumbnail(const Guid & note);
 
