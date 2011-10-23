@@ -8,8 +8,7 @@ private:
 
 	IUserModel & userModel;
 
-	// thread-local counter index
-	static DWORD counterIndex;
+	static LONG_PTR counter; // thread-local
 
 public:
 
@@ -18,7 +17,7 @@ public:
 
 private:
 
-	static int GetCount();
+	static LONG_PTR GetCount();
 
-	static void SetCount(int count);
+	static void SetCount(LONG_PTR count);
 };

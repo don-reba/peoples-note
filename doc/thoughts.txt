@@ -3890,6 +3890,13 @@ attachments are not deleted
 		it is also more complex
 	I already have RemoveNoteTags
 		not needed with ReplaceNote
+	why note delete note before adding?
+		ReplaceNote is note needed then
+		especially since it is only used in one place
+			and there are no analogous functions for other data
+		however, it is used by AddNote
+		this is a little messy
+		TODO
 new notes missing blank lines
 	the editor creates a <div type="en-note"/> for each paragram
 	these are then transformed into <en-note/> tags
@@ -3989,3 +3996,6 @@ uploading tags
 		should add them to the interop note class
 		I don't want to copy them around more than necessary
 		it already contains the resource list, though
+MergeLocal does the same thing as AddLocal
+	except it performs ExpungeNote/AddNote instead of ReplaceNote
+	delegated MergeLocal to AddLocal

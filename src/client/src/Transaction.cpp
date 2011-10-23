@@ -2,12 +2,12 @@
 #include "Transaction.h"
 #include "IUserModel.h"
 
-DWORD Transaction::counterIndex = ::TlsAlloc();
+LONG_PTR Transaction::counter(::TlsAlloc());
 
 Transaction::Transaction(IUserModel & userModel)
 	: userModel (userModel)
 {
-	int count(GetCount());
+	LONG_PTR count(GetCount());
 	if (count == 0)
 		userModel.BeginTransaction();
 	SetCount(count + 1);
@@ -15,18 +15,18 @@ Transaction::Transaction(IUserModel & userModel)
 
 Transaction::~Transaction()
 {
-	int count(GetCount());
+	LONG_PTR count(GetCount());
 	if (count == 1)
 		userModel.EndTransaction();
 	SetCount(count - 1);
 }
 
-int Transaction::GetCount()
+LONG_PTR Transaction::GetCount()
 {
-	return reinterpret_cast<int>(::TlsGetValue(counterIndex));
+	return reinterpret_cast<LONG_PTR>(::TlsGetValue(counter));
 }
 
-void Transaction::SetCount(int count)
+void Transaction::SetCount(LONG_PTR count)
 {
-	::TlsSetValue(counterIndex, reinterpret_cast<void*>(count));
+	::TlsSetValue(counter, reinterpret_cast<LPVOID>(count));
 }

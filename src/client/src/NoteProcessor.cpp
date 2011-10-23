@@ -96,32 +96,11 @@ void NoteProcessor::CreateRemote(const EnInteropNote & local)
 }
 
 void NoteProcessor::MergeLocal
-	( const EnInteropNote & local
+	( const EnInteropNote &
 	, const EnInteropNote & remote
 	)
 {
-	Transaction transaction(userModel);
-
-	userModel.ExpungeNote(local.note.guid);
-
-	wstring body;
-	noteStore.GetNoteBody(remote.note, body);
-
-	wstring bodyText;
-	enNoteTranslator.ConvertToText(body, bodyText);
-
-	userModel.AddNote(remote.note, body, bodyText, notebook);
-
-	foreach (const Guid & guid, remote.resources)
-	{
-		Resource             resource;
-		RecognitionEntryList recognitionEntries;
-
-		noteStore.GetNoteResource(guid, resource, recognitionEntries);
-		userModel.AddResource(resource);
-		foreach (const RecognitionEntry & entry, recognitionEntries)
-			userModel.AddRecognitionEntry(entry);
-	}
+	AddLocal(remote);
 }
 
 void NoteProcessor::UpdateRemote(const EnInteropNote & local)
