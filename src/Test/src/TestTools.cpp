@@ -170,11 +170,12 @@ BOOST_AUTO_TEST_CASE(ToolsUnixTimeToFileTime_Test2)
 	BOOST_CHECK_EQUAL(fileTime.dwHighDateTime, 0x01C295C4);
 }
 
+// Note: the output of this test depends on your time zone.
 BOOST_AUTO_TEST_CASE(ToolsUnixTimeToSystemTime_Test)
 {
 	time_t unixTime = 0;
 	SYSTEMTIME systemTime;
-	Tools::UnixTimeToSystemTime(unixTime, systemTime);
+	Tools::UnixTimeToLocalSystemTime(unixTime, systemTime);
 	BOOST_CHECK_EQUAL(systemTime.wYear,         1970);
 	BOOST_CHECK_EQUAL(systemTime.wMonth,        1);
 	BOOST_CHECK_EQUAL(systemTime.wDay,          1);

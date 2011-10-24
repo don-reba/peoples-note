@@ -1860,7 +1860,7 @@ editor implementation plan
 probably should rename view.hide to view.close, where appropriate
 	TODO
 losing formatting
-	open opening a created note
+	on opening a created note
 		could be during opening or saving
 	TODO
 should factor out URI loading
@@ -2021,7 +2021,6 @@ signin screen should accept "enter" in the password field
 	TODO
 note editor checkbox changes are not persisted
 	c-smile said he'd fix this
-	TODO
 links should open in a browser
 	fixed
 sync counter is not updated after a note is edited
@@ -2083,7 +2082,7 @@ sync button is not reenabled on failure
 		should add a test for this
 			TODO
 something is wrong with scrolling
-	TODO
+	fixed
 claim note title is shown incorrectly
 	its just too long
 in note view, apostrophies are not translated
@@ -2338,7 +2337,6 @@ should NoteStore::CreateNote replace note resources?
 		deletes the old note
 		adds the replacement note
 	don't the resources get deleted with the old note?
-	TODO
 need to improve error reporting
 	Evernote has special error types
 		EDAMUserException
@@ -3999,3 +3997,23 @@ uploading tags
 MergeLocal does the same thing as AddLocal
 	except it performs ExpungeNote/AddNote instead of ReplaceNote
 	delegated MergeLocal to AddLocal
+merging should take modificationd dates into account
+	current date is incorrect
+		displaying remote note's time 10 hours earlier
+		it might be in pacific time
+			but the documentation says its UTC
+		and I must be storing local time
+			but no, I convert to file time
+			file time it UTC-based
+			as is system time
+			and the tests pass
+				convertion is correct
+				current date is correct
+				formatting is correct
+			the emulator seems to think it is in pacific time
+				but it is showing current time, numerically
+				therefore, it has been set to the wrong time
+				actually, it is off by 10 hours
+		ouch…
+first signin results in "database not found"
+	TODO

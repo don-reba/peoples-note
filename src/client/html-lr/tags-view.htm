@@ -3,47 +3,58 @@
 		<style>
 			body
 			{
-				background : white;
-				color      : black;
-				font-size  : 26px;
-				margin     : 0px;
-				padding    : 0px;
-				text-align : center;
+				background-color : #f0ec40;
+				color            : black;
+				margin           : 0px;
+				padding          : 0px;
+				text-align       : left;
 			}
 			h1
 			{
-				font-size   : 48px;
+				font-size   : 24px;
 				font-weight : normal;
-				margin      : 8px 0px;
+				margin      : 4px 0px 4px 9px;
+			}
+			#tag-panel
+			{
+				flow     : horizontal;
+				height   : 100%%;
+				overflow : hidden;
+				width    : 100%;
 			}
 			#tag-list
 			{
-				background-color : #f0ec40;
-				height           : 100%%;
-				overflow         : hidden;
-				text-align       : left;
-				width            : 100%%;
+				height   : 100%%;
+				overflow : hidden;
+				width    : 100%%;
 			}
-			#tag-list > .tag
+			.tag
 			{
+				background-color    : #f0ec40;
 				background-image    : url(corner.png);
 				background-position : right top;
 				background-repeat   : no-repeat;
 				behavior            : clickable;
 				border-top          : 1px solid #606060;
-				height              : 100px;
+				flow                : horizontal;
+				font-size           : 12px;
+				height              : 32px;
+				padding             : 0px 15px 0px 9px;
 				overflow            : hidden;
+				width               : 100%%;
 			}
-			#tag-list > .tag[dirty]
+			.tag *
+			{
+				vertical-align : middle;
+			}
+			.tag img
+			{
+				margin-right : 4px;
+			}
+			.tag[dirty]
 			{
 				background-image : url(corner-light.png);
 				background-color : #f0ecb0;
-			}
-			#tag-panel
-			{
-				flow   : horizontal;
-				height : 100%%;
-				width  : 100%;
 			}
 			#vscroll
 			{
@@ -57,7 +68,7 @@
 				background-color : #606060;
 				border-radius    : 2px;
 				display          : none;
-				height           : 128px;
+				height           : 64px;
 				width            : 100%%;
 			}
 		</style>
@@ -65,7 +76,10 @@
 	<body>
 		<h1>Choose tags</h1>
 		<div #tag-panel>
-			<div #note-list tabindex="0" />
+			<div #tag-list>
+				<div #selected tabindex="1" />
+				<div #cleared tabindex="0" />
+			</div>
 			<div #vscroll><div #slider /></div>
 		</div>
 	</body>

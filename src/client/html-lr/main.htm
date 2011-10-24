@@ -172,7 +172,7 @@
 				background   : url(search.png) no-repeat;
 				border-style : none;
 				height       : 18px;
-				margin       : 4px             4px        4px 0px;
+				margin       : 4px 4px 4px 0px;
 				padding      : 0px;
 				width        : 18px;
 			}
@@ -260,40 +260,40 @@
 			<widget #search-button type="button" tabindex="3" />
 		</div>
 		<div #note-list-panel>
-				<div #note-list tabindex="0">
-					<div #new-note-note>
-						<div #label>Create note:</div>
-						<widget type="button" #new-text  />
-						<widget type="button" #new-ink   />
-						<widget type="button" #new-voice />
-						<widget type="button" #new-photo />
-					</div>
-					<div #page-up>Later notes</div>
-					<div #page-down>Eariler notes</div>
+			<div #note-list tabindex="0">
+				<div #new-note-note>
+					<div #label>Create note:</div>
+					<widget type="button" #new-text  />
+					<widget type="button" #new-ink   />
+					<widget type="button" #new-voice />
+					<widget type="button" #new-photo />
 				</div>
-				<div #scroll><div #slider /></div>
+				<div #page-up>Later notes</div>
+				<div #page-down>Eariler notes</div>
+			</div>
+			<div #scroll><div #slider /></div>
 		</div>
 		<div #status-bar>
-				<div #sync-panel>
-					<div #sync-icon />
-					<div #sync-text />
-				</div>
-				<div #status-progress><div #status-button><span #status /></div></div>
-				<div #menu>
-					Menu
-					<menu>
-						<li #menu-profile />
-						<li #menu-signin>Sign in</li>
-						<hr />
-						<li #menu-notebook-title>Show title</li>
-						<hr />
-						<li>Notebook <menu #notebook-list /></li>
-						<li #menu-import>Import notes</li>
-						<hr />
-						<li #menu-about>About</li>
-						<li #menu-exit>Exit</li>
-					</menu>
-				</div>
+			<div #sync-panel>
+				<div #sync-icon />
+				<div #sync-text />
+			</div>
+			<div #status-progress><div #status-button><span #status /></div></div>
+			<div #menu>
+				Menu
+				<menu>
+					<li #menu-profile />
+					<li #menu-signin>Sign in</li>
+					<hr />
+					<li #menu-notebook-title>Show title</li>
+					<hr />
+					<li>Notebook <menu #notebook-list /></li>
+					<li #menu-import>Import notes</li>
+					<hr />
+					<li #menu-about>About</li>
+					<li #menu-exit>Exit</li>
+				</menu>
+			</div>
 		</div>
 	</body>
 </html>

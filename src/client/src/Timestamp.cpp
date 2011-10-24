@@ -17,10 +17,15 @@ Timestamp::Timestamp(time_t unixTime)
 {
 }
 
+bool Timestamp::IsValid() const
+{
+	return unixTime > 0;
+}
+
 wstring Timestamp::GetFormattedDateTime() const
 {
 	SYSTEMTIME time;
-	UnixTimeToSystemTime(unixTime, time);
+	UnixTimeToLocalSystemTime(unixTime, time);
 
 	const LCID locale = LOCALE_USER_DEFAULT;
 
@@ -39,7 +44,7 @@ wstring Timestamp::GetFormattedDateTime() const
 		( locale           // Locale
 		, 0                // dwFlags
 		, &time            // lpTime
-		, L"HH:mm"         // lpFOrmat
+		, L"HH:mm"         // lpFormat
 		, &timeChars[0]    // lpTimeStr
 		, timeChars.size() // cchTime
 		);
@@ -54,9 +59,14 @@ __int64 Timestamp::GetTime() const
 	return unixTime;
 }
 
+bool Timestamp::operator < (const Timestamp & rhs) const
+{
+	return unixTime < rhs.unixTime;
+}
+
 Timestamp Timestamp::GetCurrentTime()
 {
 	SYSTEMTIME time;
 	::GetSystemTime(&time);
-	return Tools::SystemTimeToUnixTime(time);
+	return SystemTimeToUnixTime(time);
 }

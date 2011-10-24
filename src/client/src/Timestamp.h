@@ -14,9 +14,13 @@ public:
 
 	Timestamp(time_t unixTime);
 
+	bool IsValid() const;
+
 	std::wstring GetFormattedDateTime() const;
 
 	__int64 GetTime() const;
+
+	bool operator < (const Timestamp & rhs) const;
 
 	static Timestamp GetCurrentTime();
 };

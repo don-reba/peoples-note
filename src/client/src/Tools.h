@@ -118,7 +118,7 @@ namespace Tools
 		, OUT FILETIME & fileTime
 		);
 
-	void UnixTimeToSystemTime
+	void UnixTimeToLocalSystemTime
 		( time_t           unixTime
 		, OUT SYSTEMTIME & systemTime
 		);

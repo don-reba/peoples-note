@@ -96,11 +96,16 @@ void NoteProcessor::CreateRemote(const EnInteropNote & local)
 }
 
 void NoteProcessor::MergeLocal
-	( const EnInteropNote &
+	( const EnInteropNote & local
 	, const EnInteropNote & remote
 	)
 {
-	AddLocal(remote);
+	const Timestamp & l(local.note.modificationDate);
+	const Timestamp & r(remote.note.modificationDate);
+	if(l.IsValid() && r.IsValid() && r < l)
+		UpdateRemote(local);
+	else
+		AddLocal(remote);
 }
 
 void NoteProcessor::UpdateRemote(const EnInteropNote & local)

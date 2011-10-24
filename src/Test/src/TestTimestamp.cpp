@@ -23,3 +23,9 @@ BOOST_AUTO_TEST_CASE(Timestamp_GetFormattedDateTime_Test2)
 		, L"2002-11-27 05:25"
 		);
 }
+
+BOOST_AUTO_TEST_CASE(Timetsamp_GetCurrentTime)
+{
+	Timestamp timestamp(Timestamp::GetCurrentTime());
+	BOOST_CHECK(timestamp.GetTime() > 0);
+}

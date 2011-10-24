@@ -574,7 +574,7 @@ void Tools::UnixTimeToFileTime
 	fileTime.dwHighDateTime = temp >> 32;
 }
 
-void Tools::UnixTimeToSystemTime
+void Tools::UnixTimeToLocalSystemTime
 	(     time_t       unixTime
 	, OUT SYSTEMTIME & systemTime
 	)
