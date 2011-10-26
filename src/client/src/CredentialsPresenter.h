@@ -24,4 +24,6 @@ private:
 	void OnOk();
 	void OnUpdate();
 	void OnViewCreated();
+
+	static std::wstring CreateDisplayUsername(const std::wstring & username);
 };

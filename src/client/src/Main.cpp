@@ -136,10 +136,6 @@ int WINAPI WinMain(HINSTANCE instance,
 	SHInitExtraControls();
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
-	Timestamp timestamp(Timestamp::GetCurrentTime());
-	wstring formatted(timestamp.GetFormattedDateTime());
-	NKDbgPrintfW(L"timestamp: %s\n", formatted.c_str());
-
 	try
 	{
 		const wstring deviceDocumentPath (GetDeviceDocumentPath());

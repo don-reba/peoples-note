@@ -10,6 +10,8 @@ using namespace boost;
 using namespace std;
 using namespace Tools;
 
+const wstring anonymousUser(L"[anonymous]");
+
 CredentialsPresenter::CredentialsPresenter
 	( ICredentialsModel & credentialsModel
 	, ICredentialsView  & credentialsView
@@ -34,7 +36,7 @@ void CredentialsPresenter::OnOk()
 
 void CredentialsPresenter::OnCancel()
 {
-	credentialsModel.Set(L"[anonymous]", L"");
+	credentialsModel.Set(anonymousUser, L"");
 }
 
 void CredentialsPresenter::OnCommit()
@@ -44,7 +46,7 @@ void CredentialsPresenter::OnCommit()
 
 void CredentialsPresenter::OnUpdate()
 {
-	const wstring username(credentialsModel.GetUsername());
+	const wstring username(CreateDisplayUsername(credentialsModel.GetUsername()));
 
 	credentialsView.Open();
 	credentialsView.SetUsername(username);
@@ -59,9 +61,14 @@ void CredentialsPresenter::OnUpdate()
 
 void CredentialsPresenter::OnViewCreated()
 {
-	wstring username(credentialsModel.GetUsername());
-	if (username == L"[anonymous]")
-		username = L"";
-	credentialsView.SetUsername(username);
+	credentialsView.SetUsername(CreateDisplayUsername(credentialsModel.GetUsername()));
 	credentialsView.SetPassword(L"");
+}
+
+wstring CredentialsPresenter::CreateDisplayUsername(const wstring & username)
+{
+	if (username == anonymousUser)
+		return L"";
+	else
+		return username;
 }
