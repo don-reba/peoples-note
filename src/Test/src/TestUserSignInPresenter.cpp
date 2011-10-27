@@ -52,12 +52,14 @@ BOOST_FIXTURE_TEST_CASE
 
 	credentialsModel.SignalSet();
 
-	BOOST_CHECK(!signalCommitCheck);
-	BOOST_CHECK_EQUAL(credentialsModel.status, L"");
+	BOOST_CHECK(signalCommitCheck);
+	BOOST_CHECK_EQUAL(credentialsModel.status, L"status");
+	BOOST_CHECK_EQUAL(credentialsModel.username, L"[anonymous]");
+	BOOST_CHECK_EQUAL(userModel.loadedAs, L"[anonymous]");
+	BOOST_CHECK_EQUAL(userModel.loadMethod, MockUserModel::LoadMethodLoadOrCreate);
 
 	//----
 
-	credentialsModel.username = L"[anonymous]";
 	signalCommitCheck.Reset();
 
 	credentialsModel.SignalSet();
@@ -142,5 +144,5 @@ BOOST_FIXTURE_TEST_CASE
 
 	noteListView.SignalSignIn();
 
-	BOOST_CHECK_EQUAL(credentialsModel.username, L"");
+	BOOST_CHECK_EQUAL(credentialsModel.username, L"[anonymous]");
 }

@@ -960,7 +960,6 @@ user management
 	so we don't check password on login
 	however, sync needs the password
 	it is better to get it from the database
-	TODO
 sync
 	must be capable of full sync and incremental sync
 	full sync = clear clean records from db, then perform incremental sync
@@ -1395,7 +1394,7 @@ delayed sync logic
 	then there would be no need for processors
 	SyncLogic would generate a list of actions, instead
 	but this should be done after the sync indicator is up
-		TODO
+	I think I am doing this now
 updating dirty note list on note edit
 	there is currently no signal for committing note edits
 	this should be a note list model signal
@@ -1555,7 +1554,7 @@ sqlite init
 	might want to call these explicitly
 		sqlite3_initialize()
 		sqlite3_shutdown()
-	TODO
+	seems to work perfectly find now
 update processor tests
 	testing is difficult now
 		mixed with threading
@@ -4016,4 +4015,22 @@ merging should take modificationd dates into account
 				actually, it is off by 10 hours
 		ouch…
 first signin results in "database not found"
-	TODO
+	first signin should sign in as anonymous
+		not display an evernote signin screen
+	the program starts out by setting the last user's credetials
+	the last user's name is empty, so it invokes a model update
+		we don't want to do that, actually
+		we want to just load the anonymous user
+	when this happens the credentials presenter pops up the dialog
+	signin does not work with the username empty
+		it clears credentials on signin
+		this was supposed to provoke an update
+		why not do the update right away?
+		that works
+		problem solved?
+			sync works
+			restarting works
+			signing out works
+		signing in displays "[anonymous]"
+			got to tweak the presenter logic
+	done

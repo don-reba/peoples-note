@@ -452,7 +452,7 @@ void EnNoteTranslator::ReplaceParagraph
 	, xml_node<wchar_t>    * child
 	)
 {
-	if (child->value_size() > 0)
+	if (child->value_size() > 0 || child->first_node() != NULL)
 		return;
 	xml_node<wchar_t> * node(store->allocate_node(node_element, L"p", L"&nbsp;"));
 	parent->insert_node(child, node);

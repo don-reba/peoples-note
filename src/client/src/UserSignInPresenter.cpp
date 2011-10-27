@@ -39,7 +39,10 @@ try
 	wstring password(credentialsModel.GetPassword());
 
 	if (username.empty())
-		username = anonymousUser;
+	{
+		credentialsModel.Set(anonymousUser, L"");
+		return;
+	}
 
 	if (username == anonymousUser)
 	{
