@@ -27,21 +27,23 @@ HtmlDataLoader::HtmlDataLoader
 }
 
 bool HtmlDataLoader::LoadFromUri(const wchar_t * uri, Blob & blob)
+try
 {
-	try
+	switch (ClassifyUri(uri))
 	{
-		switch (ClassifyUri(uri))
-		{
-		case UriTypeHtml:      LoadHtmlUri      (uri, blob); return true;
-		case UriTypeHttpImg:   LoadHttpImgUri   (uri, blob); return true;
-		case UriTypeResource:  LoadResourceUri  (uri, blob); return true;
-		case UriTypeThumbnail: LoadThumbnailUri (uri, blob); return true;
-		}
+	case UriTypeHtml:      LoadHtmlUri      (uri, blob); return true;
+	case UriTypeHttpImg:   LoadHttpImgUri   (uri, blob); return true;
+	case UriTypeResource:  LoadResourceUri  (uri, blob); return true;
+	case UriTypeThumbnail: LoadThumbnailUri (uri, blob); return true;
 	}
-	catch (const std::exception & e)
-	{
-		NKDbgPrintfW(L"%s\n", ConvertToUnicode(e.what()).c_str());
-	}
+	return false;
+}
+catch (const std::exception & e)
+{
+	NKDbgPrintfW
+		( L"HtmlDataLoader::LoadFromUri: %s\n"
+		, ConvertToUnicode(e.what()).c_str()
+		);
 	return false;
 }
 

@@ -679,6 +679,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ScrollbarH.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ScrollbarV.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SearchPresenter.cpp"
 				>
 			</File>
@@ -1307,6 +1315,10 @@
 			</File>
 			<File
 				RelativePath=".\src\ScopedLock.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Scrollbar.h"
 				>
 			</File>
 			<File

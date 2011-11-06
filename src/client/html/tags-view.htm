@@ -59,11 +59,12 @@
 			#vscroll
 			{
 				background : white;
+				behavior   : vertical-touch-scrollbar;
 				height     : 100%%;
 				overflow   : hidden;
 				width      : 5px;
 			}
-			#vscroll #slider
+			#vscroll > .slider
 			{
 				background-color : #606060;
 				border-radius    : 2px;
@@ -80,7 +81,7 @@
 				<div #selected tabindex="1" />
 				<div #cleared tabindex="0" />
 			</div>
-			<div #vscroll><div #slider /></div>
+			<div #vscroll><div .slider /></div>
 		</div>
 	</body>
 </html>

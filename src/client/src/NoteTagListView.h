@@ -35,7 +35,6 @@ private:
 
 	element body;
 	element vScroll;
-	element vSlider;
 
 	std::wstring activeTag;
 

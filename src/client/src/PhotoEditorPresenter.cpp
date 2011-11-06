@@ -100,10 +100,11 @@ void PhotoEditorPresenter::CreatePhotoNote(const wstring & imagePath)
 {
 	// create note 
 	Note note;
-	note.name         = photoEditorView.GetTitle();
-	note.creationDate = Timestamp::GetCurrentTime();
-	note.isDirty      = true;
-	note.usn          = 0;
+	note.name             = photoEditorView.GetTitle();
+	note.isDirty          = true;
+	note.usn              = 0;
+	note.creationDate     = Timestamp::GetCurrentTime();
+	note.modificationDate = note.creationDate;
 
 	if (note.name.empty())
 		note.name = L"Photo";

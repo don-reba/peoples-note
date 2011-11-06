@@ -1861,7 +1861,7 @@ probably should rename view.hide to view.close, where appropriate
 losing formatting
 	on opening a created note
 		could be during opening or saving
-	TODO
+	can't repoduce
 should factor out URI loading
 	kinds of URIs
 		relative
@@ -2017,7 +2017,7 @@ threw an unhandled exception on attempt to commit an edited note
 	edited checkboxes in the viewer, then opened the editor
 	the viewer was setting checked=""
 signin screen should accept "enter" in the password field
-	TODO
+	done
 note editor checkbox changes are not persisted
 	c-smile said he'd fix this
 links should open in a browser
@@ -2058,7 +2058,7 @@ sync with DonReba did not upload my notes
 don't need to list notes for local notebooks
 	currently, only the Guid is available
 		should be enough
-	TODO
+	I don't know what this means aymore
 screenshot notes
 	should use distinctive notes
 	lets look EN's screenshots
@@ -2066,7 +2066,7 @@ screenshot notes
 		many pictures
 	only need five notes or so
 		√ city place photo
-		√ TODO list
+		√ todo list
 		√ web clip
 		√ product photo
 		food photo
@@ -2096,14 +2096,12 @@ would be good to add encryption and decryption
 		works in Crypto++
 	nevernote remembers previous passwords
 	TODO
-looks like the shortcut does not work for installation onto cards
-	TODO
 clicking notes does not work on WM 6
 	GetCursorPos does not work
 	need it to get the note element
 	can remember the note element in the WM_LBUTTONDOWN handler
 encrypted notes show up as gibberish
-	TODO
+	fixed
 some notes seem to not have the "value" attribute set
 	clickTarget was not necessarily a notedde
 the shortcut is not set correctly for memory card installations
@@ -2252,7 +2250,6 @@ cannot close the "about" window after switching to it from another app
 	can't reproduce on WM 6.0
 	WM seems to lack owned window support
 		if so, have to switch to dialogs
-	TODO
 crash after clicking the notebook submenu, then exiting
 	window should be closed with PostMessage, not SendMessage
 low resolution support
@@ -2422,7 +2419,6 @@ photo notes
 			no model
 		then, add settings
 	note that photos are, supposedly, always JPEGs
-	TODO
 window refactoring
 	there is common functionality in many windows
 		exiting on escape
@@ -4034,3 +4030,60 @@ first signin results in "database not found"
 		signing in displays "[anonymous]"
 			got to tweak the presenter logic
 	done
+scrolling refactor
+	I am repeating these methods
+		GetScrollPos
+			retrieve slider position
+			called from
+				OnGestureStart
+		SetScrollPos
+			set slider position
+			called from
+				OnGestureStep
+				Render
+				Show
+		UpdateScrollbar
+			toggle slider
+			resize slider
+			called from
+				Show
+				UpdateNotes
+	I want to make a behaviour that would
+		use to set scroll position on OnGestureStart
+		reset position when showing the window or rendering
+	that would not work
+	can only react to HTMLayout events
+		maybe I should react to scroll and size events
+		on size
+			update slider size
+		on scroll
+			update slider position
+		on gesture, show, render
+			scroll the main control
+	how to handle vertical/horizontal and vertical-only scroll?
+		specify scrollbars in styles
+			should the scrolblars be children of the styled element?
+			it would be more efficient
+			but it would complicate the markup
+			feels like premature optimization
+		get scrollbars at initialization
+	alternatively, the scrollbars could have behavior attached
+		horizontal and vertical separately
+			best to make these separate behaviours
+		I would send events to them from the animation handlers
+		each bar would do its own computations
+		this way I don't have to search DOM each time
+		note: animation does not work right with element::post_event
+note loading
+	how can a note load instantly and have an image placeholder?
+	seems to mean the image was not too large
+	the image resource is not found
+	is it because it is not in the database?
+		yes, it is
+	TODO
+sync error
+	trying to delete a note
+	getting eror 0xA - DATA_CONFLICT
+		this is not even a valid exception for DeleteNote
+		there does not seem to be information about this problem
+	TODO

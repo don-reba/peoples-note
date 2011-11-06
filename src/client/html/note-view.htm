@@ -52,6 +52,7 @@
 			}
 			#note
 			{
+				flow     : vertical;
 				overflow : hidden;
 				width    : 100%%;
 				height   : 100%%;
@@ -65,12 +66,13 @@
 			#hscroll
 			{
 				background   : white;
+				behavior     : horizontal-touch-scrollbar;
 				height       : 5px;
 				margin-right : 5px;
 				overflow     : hidden;
 				width        : 100%%;
 			}
-			#hscroll #slider
+			#hscroll > .slider
 			{
 				background-color : #606060;
 				border-radius    : 2px;
@@ -81,11 +83,12 @@
 			#vscroll
 			{
 				background : white;
+				behavior   : vertical-touch-scrollbar;
 				height     : 100%%;
 				overflow   : hidden;
 				width      : 5px;
 			}
-			#vscroll #slider
+			#vscroll > .slider
 			{
 				background-color : #606060;
 				border-radius    : 2px;
@@ -114,8 +117,8 @@
 				<div #body />
 				<div #attachments />
 			</div>
-			<div #vscroll><div #slider /></div>
+			<div #vscroll><div .slider /></div>
 		</div>
-		<div #hscroll><div #slider /></div>
+		<div #hscroll><div .slider /></div>
 	</body>
 </html>

@@ -2,8 +2,9 @@
 #include "NoteListView.h"
 
 #include "crackers.h"
-#include "resourceppc.h"
 #include "IHtmlDataLoader.h"
+#include "resourceppc.h"
+#include "Scrollbar.h"
 #include "Tools.h"
 
 #include <sstream>
@@ -90,7 +91,6 @@ void NoteListView::RegisterEventHandlers()
 
 	noteList     = FindFirstElement("#note-list");
 	listScroll   = FindFirstElement("#scroll");
-	listSlider   = FindFirstElement("#slider");
 	searchBox    = FindFirstElement("#search-box");
 	status       = FindFirstElement("#status");
 }
@@ -408,100 +408,12 @@ ATOM NoteListView::RegisterClass(wstring wndClass)
 
 void NoteListView::SetScrollPos(int pos)
 {
-	POINT point = { 0 };
-
-	POINT scrollPos;
-	RECT  viewRect;
-	SIZE  contentSize;
-	noteList.get_scroll_info(scrollPos, viewRect, contentSize);
-	int contentHeight(contentSize.cy);
-
-	RECT listRect(noteList.get_location(SCROLLABLE_AREA));
-	int scrollableHeight(listRect.bottom - listRect.top);
-	if (scrollableHeight <= 0)
-	{
-		noteList.set_scroll_pos   (point, false);
-		listScroll.set_scroll_pos (point, false);
-		return;
-	}
-
-	int contentDistance(contentHeight - scrollableHeight);
-	if (contentDistance <= 0)
-	{
-		noteList.set_scroll_pos   (point, false);
-		listScroll.set_scroll_pos (point, false);
-		return;
-	}
-
-	RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-	int scrollHeight(scrollRect.bottom - scrollRect.top);
-	if (scrollHeight <= 0)
-	{
-		noteList.set_scroll_pos   (point, false);
-		listScroll.set_scroll_pos (point, false);
-		return;
-	}
-
-	RECT sliderRect(listSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
-	int sliderHeight(sliderRect.bottom - sliderRect.top);
-	if (sliderHeight <= 0)
-	{
-		noteList.set_scroll_pos   (point, false);
-		listScroll.set_scroll_pos (point, false);
-		return;
-	}
-
-	int scrollDistance(scrollHeight - sliderHeight);
-	if (scrollDistance <= 0)
-	{
-		noteList.set_scroll_pos   (point, false);
-		listScroll.set_scroll_pos (point, false);
-		return;
-	}
-
-	pos = min(max(pos, 0), contentDistance);
-
-	point.y = pos;
-	noteList.set_scroll_pos(point, false);
-
-	point.y = -static_cast<int>(static_cast<__int64>(pos) * scrollDistance / contentDistance);
-	listScroll.set_scroll_pos(point, false);
+	noteList.send_event(TOUCH_SCROLL_POS, pos, listScroll);
 }
 
 void NoteListView::UpdateScrollbar()
 {
-	POINT scrollPos;
-	RECT  viewRect;
-	SIZE  contentSize;
-	noteList.get_scroll_info(scrollPos, viewRect, contentSize);
-	if (contentSize.cy <= 0)
-		return;
-
-	RECT listRect(noteList.get_location(SCROLLABLE_AREA));
-	__int64 scrollableHeight(listRect.bottom - listRect.top);
-	if (scrollableHeight <= 0L)
-		return;
-
-	if (contentSize.cy <= scrollableHeight)
-	{
-		listSlider.set_style_attribute("display", L"none");
-		return;
-	}
-	else
-	{
-		listSlider.set_style_attribute("display", L"block");
-	}
-
-	RECT scrollRect(listScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-	__int64 scrollHeight(scrollRect.bottom - scrollRect.top);
-	if (scrollHeight <= 0L)
-		return;
-
-	__int64 sliderHeight(scrollHeight * scrollableHeight / contentSize.cy);
-
-	wchar_t heightText[16];
-	_itow_s(static_cast<int>(sliderHeight), heightText, 16, 10);
-	listSlider.set_style_attribute("height", heightText);
+	noteList.send_event(TOUCH_SCROLL_UPDATE, 0, listScroll);
 }
 
 //-------------------------

@@ -5,6 +5,7 @@
 #include "IAnimator.h"
 #include "Rect.h"
 #include "resourceppc.h"
+#include "Scrollbar.h"
 #include "Tools.h"
 
 #include <algorithm>
@@ -49,7 +50,6 @@ void NoteTagListView::RegisterEventHandlers()
 {
 	body    = FindFirstElement("#tag-list");
 	vScroll = FindFirstElement("#vscroll");
-	vSlider = FindFirstElement("#vscroll > #slider");
 }
 
 //--------------------------------
@@ -190,71 +190,12 @@ ATOM NoteTagListView::RegisterClass(const wstring & wndClass)
 
 void NoteTagListView::SetScrollPos(int pos)
 {
-	POINT scrollPos;
-	Rect  viewRect;
-	SIZE  contentSize;
-	body.get_scroll_info(scrollPos, viewRect, contentSize);
-	int contentHeight(contentSize.cy);
-
-	Rect bodyRect(body.get_location(SCROLLABLE_AREA));
-	if (bodyRect.GetWidth() == 0 || bodyRect.GetHeight() == 0)
-		return;
-
-	SIZE contentDistance =
-		{ contentSize.cx - bodyRect.GetWidth()
-		, contentSize.cy - bodyRect.GetHeight()
-		};
-
-	POINT point = { 0, max(min(pos, contentDistance.cy), 0) };
-	body.set_scroll_pos(point, false);
-
-	POINT vScrollPos = { 0 };
-
-	if (contentDistance.cy > 0)
-	{
-		Rect vScrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		Rect vSliderRect(vSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
-
-		__int64 vScrollDistance(vScrollRect.GetHeight() - vSliderRect.GetHeight());
-		if (vScrollDistance > 0L)
-			vScrollPos.y = -static_cast<int>(point.y * vScrollDistance / contentDistance.cy);
-	}
-
-	vScroll.set_scroll_pos(vScrollPos, false);
+	body.send_event(TOUCH_SCROLL_POS, pos, vScroll);
 }
 
 void NoteTagListView::UpdateScrollbar()
 {
-	Rect bodyRect(body.get_location(SCROLLABLE_AREA));
-	if (bodyRect.GetWidth() == 0 || bodyRect.GetHeight() == 0)
-		return;
-
-	POINT scrollPos;
-	RECT  viewRect;
-	SIZE  contentSize;
-	body.get_scroll_info(scrollPos, viewRect, contentSize);
-	if (contentSize.cy > bodyRect.GetHeight())
-	{
-		vSlider.set_style_attribute("display", L"block");
-
-		Rect scrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		if (scrollRect.GetHeight() > 0)
-		{
-			int sliderHeight
-				( static_cast<int>
-					( static_cast<__int64>(scrollRect.GetHeight())
-					* bodyRect.GetHeight() / contentSize.cy
-					)
-				);
-			wchar_t text[16];
-			_itow_s(sliderHeight, text, 16, 10);
-			vSlider.set_style_attribute("height", text);
-		}
-	}
-	else
-	{
-		vSlider.set_style_attribute("display", L"none");
-	}
+	body.send_event(TOUCH_SCROLL_UPDATE, 0, vScroll);
 }
 
 void NoteTagListView::UpdateWindowState()

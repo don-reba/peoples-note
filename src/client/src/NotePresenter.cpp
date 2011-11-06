@@ -154,9 +154,12 @@ void NotePresenter::OnOpenNote()
 	{
 		noteView.SetNote(note, note.name, subtitle, html, attachmentViews, true);
 	}
-	catch (const std::exception &)
+	catch (const std::exception & e)
 	{
-		// try to proceed
+		NKDbgPrintfW
+			( L"NotePresenter::OnOpenNote: %s\n"
+			, ConvertToUnicode(e.what()).c_str()
+			);
 	}
 	noteView.Show();
 }

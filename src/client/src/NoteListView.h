@@ -50,7 +50,6 @@ private:
 	element clickTarget;
 	element noteList;
 	element listScroll;
-	element listSlider;
 	element searchBox;
 	element status;
 

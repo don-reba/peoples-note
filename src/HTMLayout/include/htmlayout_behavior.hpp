@@ -107,7 +107,7 @@ namespace htmlayout
     // see enum BEHAVIOR_EVENTS
     virtual BOOL handle_event (HELEMENT he, BEHAVIOR_EVENT_PARAMS& params ) 
       { 
-        return on_event(he, params.heTarget, (BEHAVIOR_EVENTS)params.cmd, params.reason );
+        return on_event(params.he, params.heTarget, (BEHAVIOR_EVENTS)params.cmd, params.reason );
       }
 
     // notification event: data requested by HTMLayoutRequestData just delivered

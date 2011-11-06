@@ -37,9 +37,7 @@ private:
 
 	element body;
 	element vScroll;
-	element vSlider;
 	element hScroll;
-	element hSlider;
 
 // interface
 

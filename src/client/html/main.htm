@@ -143,11 +143,12 @@
 			#scroll
 			{
 				background : white;
+				behavior   : vertical-touch-scrollbar;
 				height     : 100%%;
 				overflow   : hidden;
 				width      : 5px;
 			}
-			#scroll #slider
+			#scroll > .slider
 			{
 				background-color : #606060;
 				border-radius    : 2px;
@@ -253,8 +254,7 @@
 		</style>
 	</head>
 	<body>
-		<div #notebook-title>
-		</div>
+		<div #notebook-title />
 		<div #search-frame>
 			<widget #search-box    type="text"   tabindex="2" />
 			<widget #search-button type="button" tabindex="3" />
@@ -271,7 +271,7 @@
 				<div #page-up>Later notes</div>
 				<div #page-down>Eariler notes</div>
 			</div>
-			<div #scroll><div #slider /></div>
+			<div #scroll><div .slider /></div>
 		</div>
 		<div #status-bar>
 			<div #sync-panel>

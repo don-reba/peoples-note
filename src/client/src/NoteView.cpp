@@ -5,6 +5,7 @@
 #include "IAnimator.h"
 #include "Rect.h"
 #include "resourceppc.h"
+#include "Scrollbar.h"
 #include "Tools.h"
 
 #include <algorithm>
@@ -87,9 +88,7 @@ void NoteView::RegisterEventHandlers()
 {
 	body    = FindFirstElement("#note");
 	vScroll = FindFirstElement("#vscroll");
-	vSlider = FindFirstElement("#vscroll > #slider");
 	hScroll = FindFirstElement("#hscroll");
-	hSlider = FindFirstElement("#hscroll > #slider");
 }
 
 //-------------------------
@@ -343,107 +342,14 @@ void NoteView::SetChrome(bool enable)
 
 void NoteView::SetScrollPos(POINT pos)
 {
-	POINT scrollPos;
-	Rect  viewRect;
-	SIZE  contentSize;
-	body.get_scroll_info(scrollPos, viewRect, contentSize);
-	int contentHeight(contentSize.cy);
-
-	Rect bodyRect(body.get_location(SCROLLABLE_AREA));
-	if (bodyRect.GetWidth() == 0 || bodyRect.GetHeight() == 0)
-		return;
-
-	SIZE contentDistance =
-		{ contentSize.cx - bodyRect.GetWidth()
-		, contentSize.cy - bodyRect.GetHeight()
-		};
-
-	pos.x = max(min(pos.x, contentDistance.cx), 0);
-	pos.y = max(min(pos.y, contentDistance.cy), 0);
-	body.set_scroll_pos(pos, false);
-
-	POINT hScrollPos = { 0 };
-	POINT vScrollPos = { 0 };
-
-	if (contentDistance.cx > 0)
-	{
-		Rect hScrollRect(hScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		Rect hSliderRect(hSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
-
-		__int64 hScrollDistance(hScrollRect.GetWidth() - hSliderRect.GetWidth());
-		if (hScrollDistance > 0L)
-			hScrollPos.x =-static_cast<int>(pos.x * hScrollDistance / contentDistance.cx);
-	}
-
-	if (contentDistance.cy > 0)
-	{
-		Rect vScrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		Rect vSliderRect(vSlider.get_location(CONTAINER_RELATIVE|BORDER_BOX));
-
-		__int64 vScrollDistance(vScrollRect.GetHeight() - vSliderRect.GetHeight());
-		if (vScrollDistance > 0L)
-			vScrollPos.y = -static_cast<int>(pos.y * vScrollDistance / contentDistance.cy);
-	}
-
-	hScroll.set_scroll_pos(hScrollPos, false);
-	vScroll.set_scroll_pos(vScrollPos, false);
+	body.send_event(TOUCH_SCROLL_POS, pos.x, hScroll);
+	body.send_event(TOUCH_SCROLL_POS, pos.y, vScroll);
 }
 
 void NoteView::UpdateScrollbar()
 {
-	Rect bodyRect(body.get_location(SCROLLABLE_AREA));
-	if (bodyRect.GetWidth() == 0 || bodyRect.GetHeight() == 0)
-		return;
-
-	POINT scrollPos;
-	RECT  viewRect;
-	SIZE  contentSize;
-	body.get_scroll_info(scrollPos, viewRect, contentSize);
-	if (contentSize.cy > bodyRect.GetHeight())
-	{
-		vSlider.set_style_attribute("display", L"block");
-
-		Rect scrollRect(vScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		if (scrollRect.GetHeight() > 0)
-		{
-			int sliderHeight
-				( static_cast<int>
-					( static_cast<__int64>(scrollRect.GetHeight())
-					* bodyRect.GetHeight() / contentSize.cy
-					)
-				);
-			wchar_t text[16];
-			_itow_s(sliderHeight, text, 16, 10);
-			vSlider.set_style_attribute("height", text);
-		}
-	}
-	else
-	{
-		vSlider.set_style_attribute("display", L"none");
-	}
-
-	if (contentSize.cx > bodyRect.GetWidth())
-	{
-		hSlider.set_style_attribute("display", L"block");
-
-		Rect scrollRect(hScroll.get_location(ROOT_RELATIVE|CONTENT_BOX));
-		if (scrollRect.GetWidth() > 0)
-		{
-			int sliderWidth
-				( static_cast<int>
-					( static_cast<__int64>(scrollRect.GetWidth())
-					* bodyRect.GetWidth() / contentSize.cx
-					)
-				);
-			wchar_t text[16];
-			_itow_s(sliderWidth, text, 16, 10);
-			hSlider.set_style_attribute("width", text);
-		}
-	}
-	else
-	{
-		hSlider.set_style_attribute("display", L"none");
-	}
+	body.send_event(TOUCH_SCROLL_UPDATE, 0, vScroll);
+	body.send_event(TOUCH_SCROLL_UPDATE, 0, hScroll);
 }
 
 void NoteView::UpdateWindowState()

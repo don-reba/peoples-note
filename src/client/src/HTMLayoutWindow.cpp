@@ -182,6 +182,19 @@ BOOL HTMLayoutWindow::OnKey(KEY_PARAMS * params)
 	return FALSE;
 }
 
+BOOL HTMLayoutWindow::OnAttachBehavior(NMHL_ATTACH_BEHAVIOR * params)
+{
+	// attach custom behaviors
+	event_handler * pb(behavior::find(params->behaviorName, params->element));
+	if(pb)
+	{
+		params->elementTag    = pb;
+		params->elementProc   = htmlayout::behavior::element_proc;
+		params->elementEvents = pb->subscribed_to;
+	}
+	return 0;
+}
+
 BOOL HTMLayoutWindow::OnLoadData(NMHL_LOAD_DATA * params)
 {
 	Blob blob;
@@ -246,6 +259,8 @@ LRESULT HTMLayoutWindow::ProcessHTMLayoutNotify
 	{
 	case HLN_LOAD_DATA:
 		return OnLoadData(reinterpret_cast<NMHL_LOAD_DATA*>(lParam));
+	case HLN_ATTACH_BEHAVIOR:
+		return OnAttachBehavior(reinterpret_cast<NMHL_ATTACH_BEHAVIOR*>(lParam));
 	}
 	return 0;
 }
