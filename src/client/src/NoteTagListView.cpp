@@ -95,8 +95,6 @@ void NoteTagListView::SetTags
 	ConnectBehavior("#cleared > .tag",  BUTTON_CLICK, &NoteTagListView::OnCleared);
 	ConnectBehavior("#selected > .tag", BUTTON_CLICK, &NoteTagListView::OnSelected);
 
-	body.update(MEASURE_DEEP|REDRAW_NOW);
-
 	UpdateScrollbar();
 }
 

@@ -275,8 +275,7 @@ void NoteView::Show()
 	::ShowWindow(menuBar, SW_SHOW);
 	::UpdateWindow(hwnd_);
 
-	POINT scrollPos = { 0 };
-	SetScrollPos(scrollPos);
+	SetScrollPos(POINT());
 	UpdateScrollbar();
 }
 

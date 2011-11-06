@@ -327,7 +327,6 @@ void NoteListView::UncheckNotebookTitleOption()
 
 void NoteListView::UpdateNotes()
 {
-	noteList.update(MEASURE_DEEP|REDRAW_NOW);
 	SetScrollPos(0);
 	UpdateScrollbar();
 }
