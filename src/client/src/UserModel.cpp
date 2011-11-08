@@ -1146,7 +1146,7 @@ void UserModel::ReplaceNote
 			);
 
 		IDataStore::Statement insertText = dataStore.MakeStatement
-			( "INSERT INTO NoteText(rowid, title, body)"
+			( "INSERT OR REPLACE INTO NoteText(rowid, title, body)"
 			"  VALUES (?, ?, ?)"
 			);
 		insertText->Bind(1, rowid);
