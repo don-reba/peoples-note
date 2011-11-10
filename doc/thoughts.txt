@@ -4080,10 +4080,13 @@ note loading
 	the image resource is not found
 	is it because it is not in the database?
 		yes, it is
-	TODO
+	there was a problem with the search text insertion
 sync error
 	trying to delete a note
 	getting eror 0xA - DATA_CONFLICT
 		this is not even a valid exception for DeleteNote
 		there does not seem to be information about this problem
-	TODO
+	I don't seem to expunge the deleted note once I delete it remotely
+	that seems wrong
+	added exception logging
+	added local copy deletion

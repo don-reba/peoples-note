@@ -251,7 +251,17 @@ void SyncModel::ProcessNotes
 	foreach (const Guid & note, deletedNotes)
 	{
 		if (!note.IsLocal())
-			processor.DeleteRemote(note);
+		{
+			try
+			{
+				processor.DeleteRemote(note);
+			}
+			catch (...)
+			{
+				logger.SyncError(logger.GetExceptionMessage().Message);
+			}
+		}
+		processor.DeleteLocal(note);
 
 		PostProgressMessage(actionIndex / actionCount);
 		actionIndex += 1.0;
@@ -279,7 +289,7 @@ void SyncModel::ProcessNotes
 				break;
 			case SyncLogic::ActionDelete:
 				logger.PerformAction(L"Delete", &action.Local->guid, NULL);
-				processor.DeleteLocal(*action.Local);
+				processor.DeleteLocal(action.Local->guid);
 				break;
 			case SyncLogic::ActionMerge:
 				logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);

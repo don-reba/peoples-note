@@ -12,6 +12,8 @@
 #include <fstream>
 #include <iterator>
 
+#include <boost/scope_exit.hpp>
+
 using namespace boost;
 using namespace htmlayout;
 using namespace htmlayout::dom;

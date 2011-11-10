@@ -31,9 +31,9 @@ public:
 
 	void CreateRemote(const EnInteropNote & local);
 
-	void DeleteLocal(const EnInteropNote & local);
+	void DeleteLocal(const Guid & local);
 
-	void DeleteRemote(const Guid & guid);
+	void DeleteRemote(const Guid & remote);
 
 	void MergeLocal
 		( const EnInteropNote & local

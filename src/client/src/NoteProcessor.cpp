@@ -47,14 +47,14 @@ void NoteProcessor::AddLocal(const EnInteropNote & remote)
 		userModel.AddTagToNote(tag, remote.note);
 }
 
-void NoteProcessor::DeleteLocal(const EnInteropNote & local)
+void NoteProcessor::DeleteLocal(const Guid & local)
 {
-	userModel.ExpungeNote(local.note.guid);
+	userModel.ExpungeNote(local);
 }
 
-void NoteProcessor::DeleteRemote(const Guid & guid)
+void NoteProcessor::DeleteRemote(const Guid & remote)
 {
-	noteStore.DeleteNote(guid);
+	noteStore.DeleteNote(remote);
 }
 
 void NoteProcessor::CreateRemote(const EnInteropNote & local)

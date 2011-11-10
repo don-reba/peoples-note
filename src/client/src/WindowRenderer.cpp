@@ -8,6 +8,8 @@
 #include <initguid.h>
 #include <imgguids.h>
 
+#include <boost/scope_exit.hpp>
+
 using namespace htmlayout;
 using namespace htmlayout::dom;
 using namespace std;
@@ -23,9 +25,16 @@ void WindowRenderer::RenderThumbnail(HWND window, Thumbnail & thumbnail)
 
 	WORD * data(NULL);
 	HBITMAP bmp(RenderBitmap(window, windowSize, data));
+	BOOST_SCOPE_EXIT((&bmp))
+	{
+		::DeleteObject(bmp);
+	} BOOST_SCOPE_EXIT_END
+
+	if (!data)
+		throw std::exception("Thumbnail render failed.");
 	FlipImage(data, windowSize);
 	ResizeAndCompress(data, windowSize, size, thumbnail.Data);
-	::DeleteObject(bmp);
+	
 }
 
 void WindowRenderer::Render(HBITMAP bmp, Blob & blob)
@@ -118,7 +127,17 @@ HBITMAP WindowRenderer::RenderBitmap(HWND window, SIZE size, WORD *& data)
 	info.bmiColorsB               = 0x001f;
 
 	HDC windowDc(::GetDC(window));
+	BOOST_SCOPE_EXIT((&window)(&windowDc))
+	{
+		::ReleaseDC(window, windowDc);
+	} BOOST_SCOPE_EXIT_END
+
 	HDC dc(::CreateCompatibleDC(windowDc));
+	BOOST_SCOPE_EXIT((&dc))
+	{
+		::DeleteDC(dc);
+	} BOOST_SCOPE_EXIT_END
+
 	HBITMAP bmp = ::CreateDIBSection
 		( dc                              // hdc
 		, info.GetBitmapInfo()            // pbmi
@@ -133,8 +152,6 @@ HBITMAP WindowRenderer::RenderBitmap(HWND window, SIZE size, WORD *& data)
 		if (!HTMLayoutRender(window, bmp, rect))
 			throw std::exception("Note rendering failed.");
 	}
-	::DeleteDC(dc);
-	::ReleaseDC(window, windowDc);
 
 	return bmp;
 }
