@@ -4090,3 +4090,5 @@ sync error
 	that seems wrong
 	added exception logging
 	added local copy deletion
+	the note gets resurrected
+	TODO

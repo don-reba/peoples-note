@@ -46,6 +46,7 @@ NotePresenter::NotePresenter
 
 	noteView.ConnectAttachment     (bind(&NotePresenter::OnAttachment,     this));
 	noteView.ConnectClose          (bind(&NotePresenter::OnCloseNote,      this));
+	noteView.ConnectDelete         (bind(&NotePresenter::OnDeleteNote,     this));
 	noteView.ConnectToggleMaximize (bind(&NotePresenter::OnToggleMaximize, this));
 }
 
@@ -107,6 +108,8 @@ void NotePresenter::OnCloseNote()
 	note.modificationDate = Timestamp::GetCurrentTime();
 	note.isDirty = true;
 
+	noteView.SetNote(note, L"", L"", L"", AttachmentViewInfoList(), false); // clear
+
 	{
 		Transaction transaction(userModel);
 
@@ -117,6 +120,17 @@ void NotePresenter::OnCloseNote()
 		userModel.DeleteNoteThumbnail(note.guid);
 		noteListView.UpdateThumbnail(note.guid);
 	}
+
+	noteListModel.Reload();
+}
+
+void NotePresenter::OnDeleteNote()
+{
+	Note note;
+	noteView.GetNote(note);
+	userModel.DeleteNote(note.guid);
+	
+	noteView.Hide();
 
 	noteListModel.Reload();
 }

@@ -105,6 +105,8 @@ BEGIN
                 MENUITEM "Edit note", ID_EDIT_NOTE
                 MENUITEM "Edit tags", ID_EDIT_TAGS
 		MENUITEM SEPARATOR
+		MENUITEM "Delete note", ID_DELETE_NOTE
+		MENUITEM SEPARATOR
                 MENUITEM "Full screen", ID_FULL_SCREEN
 	END
 END

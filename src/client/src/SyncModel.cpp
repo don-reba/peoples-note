@@ -244,31 +244,7 @@ void SyncModel::ProcessNotes
 		return;
 	double actionIndex(0.0);
 
-	// sync deleted notes
-	PostProgressMessage(0.0);
-	PostTextMessage(L"Synchronizing deleted notes...");
-
-	foreach (const Guid & note, deletedNotes)
-	{
-		if (!note.IsLocal())
-		{
-			try
-			{
-				processor.DeleteRemote(note);
-			}
-			catch (...)
-			{
-				logger.SyncError(logger.GetExceptionMessage().Message);
-			}
-		}
-		processor.DeleteLocal(note);
-
-		PostProgressMessage(actionIndex / actionCount);
-		actionIndex += 1.0;
-	}
-
 	// perform the actions
-	PostProgressMessage(0.0);
 	PostTextMessage(L"Synchronizing notes...");
 
 	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
@@ -314,6 +290,29 @@ void SyncModel::ProcessNotes
 			ExceptionMessage message = logger.GetExceptionMessage();
 			logger.SyncError(message.Message);
 		}
+
+		PostProgressMessage(actionIndex / actionCount);
+		actionIndex += 1.0;
+	}
+
+	// sync deleted notes
+	PostProgressMessage(0.0);
+	PostTextMessage(L"Synchronizing deleted notes...");
+
+	foreach (const Guid & note, deletedNotes)
+	{
+		if (!note.IsLocal())
+		{
+			try
+			{
+				processor.DeleteRemote(note);
+			}
+			catch (...)
+			{
+				logger.SyncError(logger.GetExceptionMessage().Message);
+			}
+		}
+		processor.DeleteLocal(note);
 
 		PostProgressMessage(actionIndex / actionCount);
 		actionIndex += 1.0;

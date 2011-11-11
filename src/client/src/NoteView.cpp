@@ -457,6 +457,7 @@ void NoteView::OnCommand(Msg<WM_COMMAND> & msg)
 	case IDOK:           CloseWindow(hwnd_);     break;
 	case IDM_OK:         CloseWindow(hwnd_);     break;
 	case IDM_CANCEL:     CloseWindow(hwnd_);     break;
+	case ID_DELETE_NOTE: SignalDelete();         break;
 	case ID_EDIT_NOTE:   SignalEdit();           break;
 	case ID_EDIT_TAGS:   SignalEditTags();       break;
 	case ID_FULL_SCREEN: SignalToggleMaximize(); break;
