@@ -4091,4 +4091,6 @@ sync error
 	added exception logging
 	added local copy deletion
 	the note gets resurrected
-	TODO
+		was a temporary problem
+	turns out the error means the note has already been deleted
+	this makes sense, since deleted notes were noted expunged locally
