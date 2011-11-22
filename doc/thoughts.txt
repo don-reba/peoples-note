@@ -4094,3 +4094,21 @@ sync error
 		was a temporary problem
 	turns out the error means the note has already been deleted
 	this makes sense, since deleted notes were noted expunged locally
+resizing images
+	I might want to resize images before displaying
+	this would be done in the HTML data  loader
+	actually, only opaque "resources" are loaded
+	but they are classified in the HTML data loader
+	now, I need to do the following
+		load resource as an IImage
+			stop on failure
+			no exception thrown
+		call GetImageInfo
+			check Width and Height
+			if small enough, stop
+			no exception thrown
+		call CreateBitmapFromImage
+		encode into JPEG as before
+		pass the data back
+	mostly the same as getting a thumbnail
+		except for the starting data

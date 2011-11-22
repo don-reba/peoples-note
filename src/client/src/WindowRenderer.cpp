@@ -56,6 +56,79 @@ void WindowRenderer::Render(HBITMAP bmp, Blob & blob)
 	ResizeAndCompress(bits, size, size, blob);
 }
 
+void WindowRenderer::RescaleImage(const Blob & srcBlob, Blob & dstBlob, SIZE maxSize)
+{
+	if (srcBlob.empty())
+		return;
+
+	HRESULT result;
+
+	// get the image factory
+	CComPtr<IImagingFactory> imagingFactory;
+	result = ::CoCreateInstance
+		( CLSID_ImagingFactory
+		, NULL
+		, CLSCTX_INPROC_SERVER
+		, IID_IImagingFactory
+		, reinterpret_cast<void**>(&imagingFactory.Ptr())
+		);
+	if (FAILED(result))
+		throw ImagingException(result);
+
+	// get an image from the data
+	CComPtr<IImage> image;
+	result = imagingFactory->CreateImageFromBuffer
+		( &srcBlob[0]
+		, srcBlob.size()
+		, BufferDisposalFlagNone
+		, &image.Ptr()
+		);
+	if (FAILED(result))
+		return; // probably not an image
+
+	// get image information
+	ImageInfo info;
+	result = image->GetImageInfo(&info);
+	if (FAILED(result))
+		return;
+
+	SIZE startSize = { info.Width, info.Height };
+	if (startSize.cx <= maxSize.cx && startSize.cy <= maxSize.cy)
+		return;
+
+	// resize the image
+	CComPtr<IBitmapImage> bitmap;
+	imagingFactory->CreateBitmapFromImage
+		( image
+		, maxSize.cx
+		, maxSize.cy
+		, PixelFormat24bppRGB
+		, InterpolationHintBilinear
+		, &bitmap.Ptr()
+		);
+
+	// cast  image from IBitmapImage to IImage
+	CComPtr<IImage> image2;
+	result = bitmap.QueryInterface(image2);
+	if (FAILED(result))
+		throw ImagingException(result);
+
+	SIZE endSize;
+	if (startSize.cx * maxSize.cy < startSize.cy * maxSize.cx)
+	{
+		// bounded by height
+		endSize.cx = maxSize.cy * startSize.cx / startSize.cy;
+		endSize.cy = maxSize.cy;
+	}
+	else
+	{
+		// bounded by width
+		endSize.cx = maxSize.cx;
+		endSize.cy = maxSize.cx * startSize.cy / startSize.cx;
+	}
+	ResizeAndCompress(imagingFactory, image, startSize, endSize, dstBlob);
+}
+
 //------------------
 // utility functions
 //------------------
@@ -165,15 +238,19 @@ void WindowRenderer::ResizeAndCompress
 {
 	HRESULT result;
 
-	CComPtr<IImagingFactory> imageFactory;
+	// get the image factory
+	CComPtr<IImagingFactory> imagingFactory;
 	result = ::CoCreateInstance
 		( CLSID_ImagingFactory
 		, NULL
 		, CLSCTX_INPROC_SERVER
 		, IID_IImagingFactory
-		, reinterpret_cast<void**>(&imageFactory.Ptr())
+		, reinterpret_cast<void**>(&imagingFactory.Ptr())
 		);
+	if (FAILED(result))
+		throw ImagingException(result);
 
+	// prepare a bitmap header
 	BitmapData bitmapData = { 0 };
 	bitmapData.Width       = startSize.cx;
 	bitmapData.Height      = startSize.cy;
@@ -181,28 +258,55 @@ void WindowRenderer::ResizeAndCompress
 	bitmapData.PixelFormat = PixelFormat16bppRGB565;
 	bitmapData.Scan0       = data;
 
-	CComPtr<IBitmapImage> image;
-	result = imageFactory->CreateBitmapFromBuffer
+	// get an IBitmapImage using our data
+	CComPtr<IBitmapImage> bitmap;
+	result = imagingFactory->CreateBitmapFromBuffer
 		( &bitmapData  // bitmapData
-		, &image.Ptr() // bitmap
+		, &bitmap.Ptr() // bitmap
 		);
 	if (FAILED(result))
 		throw ImagingException(result);
 
-	CComPtr<IImage> image2;
-	result = image.QueryInterface(image2);
+	// cast  image from IBitmapImage to IImage
+	CComPtr<IImage> image;
+	result = bitmap.QueryInterface(image);
+	if (FAILED(result))
+		throw ImagingException(result);
 
+	ResizeAndCompress(imagingFactory, image, startSize, endSize, blob);
+}
+
+void WindowRenderer::ResizeAndCompress
+	( IImagingFactory * imagingFactory
+	, IImage          * image
+	, SIZE              startSize
+	, SIZE              endSize
+	, Blob            & blob
+	)
+{
+	HRESULT result;
+
+	// list installed image encoders
 	ImageCodecInfo * infos(NULL);
 	UINT             infoCount(0);
-	result = imageFactory->GetInstalledEncoders(&infoCount, &infos);
-	ImageCodecInfo * codecInfo(NULL);
+	BOOST_SCOPE_EXIT((&infos))
+	{
+		CoTaskMemFree(infos);
+	} BOOST_SCOPE_EXIT_END
+	result = imagingFactory->GetInstalledEncoders(&infoCount, &infos);
+	if (FAILED(result))
+		throw ImagingException(result);
+
+	// get JPEG encoder CLSID
+	CLSID codecId = { 0 };
 	for (int i(0); i != infoCount; ++i)
 	{
 		ImageCodecInfo * info = infos + i;
 		if (wcscmp(info->FormatDescription, L"JPEG") == 0)
-			codecInfo = info;
+			codecId = info->Clsid;
 	}
-	
+
+	// create a new data stream
 	CComPtr<IStream> stream;
 	result = ::CreateStreamOnHGlobal
 		( NULL          // hGlobal
@@ -212,31 +316,34 @@ void WindowRenderer::ResizeAndCompress
 	if (FAILED(result))
 		throw ImagingException(result);
 
+	// connect the stream to the encoder
 	CComPtr<IImageEncoder> encoder;
-	result = imageFactory->CreateImageEncoderToStream
-		( &codecInfo->Clsid // clsid
-		, stream            // stream
-		, &encoder.Ptr()    // encoder
+	result = imagingFactory->CreateImageEncoderToStream
+		( &codecId       // clsid
+		, stream         // stream
+		, &encoder.Ptr() // encoder
 		);
 	if (FAILED(result))
 		throw ImagingException(result);
 	encoder->InitEncoder(stream);
 
+	// create a new image sink
 	CComPtr<IImageSink> sink;
 	result = encoder->GetEncodeSink(&sink.Ptr());
 	if (FAILED(result))
 		throw ImagingException(result);
 
+	// create the thumbnail
 	if (startSize.cx == endSize.cx && startSize.cy == endSize.cy)
 	{
-		result = image2->PushIntoSink(sink);
+		result = image->PushIntoSink(sink);
 		if (FAILED(result))
 			throw ImagingException(result);
 	}
 	else
 	{
 		CComPtr<IImage> thumb;
-		result = image2->GetThumbnail(endSize.cx, endSize.cy, &thumb.Ptr());
+		result = image->GetThumbnail(endSize.cx, endSize.cy, &thumb.Ptr());
 		if (FAILED(result))
 			throw ImagingException(result);
 
@@ -245,6 +352,7 @@ void WindowRenderer::ResizeAndCompress
 			throw ImagingException(result);
 	}
 
+	// read thumbnail data from the stream into a blob
 	LARGE_INTEGER  zero = { 0 };
 	ULARGE_INTEGER pos  = { 0 };
 	stream->Seek(zero, STREAM_SEEK_CUR, &pos);

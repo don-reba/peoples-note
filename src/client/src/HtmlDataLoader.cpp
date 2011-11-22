@@ -9,6 +9,7 @@
 #include "Tools.h"
 #include "Transaction.h"
 #include "IUserModel.h"
+#include "WindowRenderer.h"
 
 #include "htmlayout.h"
 
@@ -145,6 +146,12 @@ void HtmlDataLoader::LoadResourceUri(const wchar_t * uri, Blob & blob)
 	try
 	{
 		userModel.GetResource(ConvertToAnsi(hash), blob);
+
+		SIZE maxSize = { 512, 512 };
+		Blob copy;
+		WindowRenderer::RescaleImage(blob, copy, maxSize);
+		if (!copy.empty())
+			blob.swap(copy);
 	}
 	catch(const std::exception &)
 	{

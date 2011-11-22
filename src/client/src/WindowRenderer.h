@@ -2,6 +2,9 @@
 
 #include "Thumbnail.h"
 
+interface IImagingFactory;
+interface IImage;
+
 class WindowRenderer
 {
 private:
@@ -27,6 +30,10 @@ public:
 
 	static void Render(HBITMAP bmp, Blob & blob);
 
+	// Rescale the image to maxSize, if it is larger.
+	// Leave dstBlob umodified in case of failure.
+	static void RescaleImage(const Blob & srcBlob, Blob & dstBlob, SIZE maxSize);
+
 // utility functions
 
 private:
@@ -44,5 +51,13 @@ private:
 		, SIZE   startSize
 		, SIZE   endSize
 		, Blob & blob
+		);
+
+	static void ResizeAndCompress
+		( IImagingFactory * imagingFactory
+		, IImage          * image
+		, SIZE              startSize
+		, SIZE              endSize
+		, Blob            & blob
 		);
 };
