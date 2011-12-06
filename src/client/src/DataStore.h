@@ -11,6 +11,7 @@ class DataStore : public IDataStore
 {
 private:
 
+#ifdef PROFILE_SQL
 	struct StatementComparator
 	{
 		bool operator () (const char * a, const char * b) const
@@ -21,16 +22,15 @@ private:
 
 	typedef std::map<const char *, SqlStatementInfo, StatementComparator> StatementCache;
 
+	StatementCache statements;
+#endif // PROFILE_SQL
+
 private:
 
 	sqlite3 * db;
 
 	DbLocation   location;
 	std::wstring path;
-
-#ifdef PROFILE_SQL
-	StatementCache statements;
-#endif // PROFILE_SQL
 
 // interface
 

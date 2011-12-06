@@ -13,17 +13,6 @@ class HtmlDataLoader : public IHtmlDataLoader
 {
 private:
 
-	enum UriType
-	{
-		UriTypeHtml,
-		UriTypeHttpImg,
-		UriTypeResource,
-		UriTypeThumbnail,
-		UriTypeUnknown,
-	};
-
-private:
-
 	const bool highRes;
 
 	EnNoteTranslator & enNoteTranslator;
@@ -40,7 +29,7 @@ public:
 		, IUserModel       & userModel
 		);
 
-	virtual bool LoadFromUri(const wchar_t * uri, Blob & blob);
+	virtual UriType LoadFromUri(const wchar_t * uri, Blob & blob);
 
 	void AttachViews(INoteListView & noteListView, INoteView & noteView);
 

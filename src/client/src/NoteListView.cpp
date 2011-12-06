@@ -340,12 +340,12 @@ void NoteListView::UpdateThumbnail(const Guid & note)
 	htmlDataLoader.LoadFromUri(uri.c_str(), blob);
 	if (blob.empty())
 		return;
-	HTMLayoutDataReadyAsync
-		( hwnd_
-		, uri.c_str()
-		, &blob[0]
-		, blob.size()
-		, HLRT_DATA_IMAGE
+	::HTMLayoutDataReadyAsync
+		( hwnd_           // hwnd
+		, uri.c_str()     // uri
+		, &blob[0]        // data
+		, blob.size()     // dataSize
+		, HLRT_DATA_IMAGE // dataType
 		);
 }
 

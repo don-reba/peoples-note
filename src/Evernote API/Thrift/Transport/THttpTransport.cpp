@@ -114,7 +114,7 @@ void THttpTransport::Flush()
 		, isConnectionSecure
 		);
 	SendRequest(requestHandle, buffer);
-	buffer.clear();
+	buffer.swap(vector<BYTE>());
 }
 
 //------------------

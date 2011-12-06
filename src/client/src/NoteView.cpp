@@ -49,8 +49,9 @@ void NoteView::Create(HWND parent)
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_NOTE_VIEW);
 
-	if (!RegisterClass(wndClass))
-		throw std::exception("Class could not be registered.");
+	//if (!RegisterClass(wndClass))
+	//	throw std::exception("Class could not be registered.");
+	RegisterClass(wndClass);
 
 	DWORD windowStyle   (WS_POPUP);
 	DWORD windowExStyle (WS_EX_CAPTIONOKBTN);
@@ -164,9 +165,14 @@ void NoteView::Hide()
 {
 	if (!::IsWindowVisible(hwnd_))
 		return;
+
 	::EnableWindow(parent, TRUE);
 	::ShowWindow(hwnd_,   SW_HIDE);
 	::ShowWindow(menuBar, SW_HIDE);
+
+	::DestroyWindow(hwnd_);
+	Create(parent);
+
 	SignalClose();
 }
 

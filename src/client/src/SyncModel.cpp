@@ -54,7 +54,7 @@ SyncModel::~SyncModel()
 
 void SyncModel::ProcessMessages()
 {
-	ScopedLock lock(lock);
+	ScopedLock lock(this->lock);
 	while (!messages.IsEmpty())
 	{
 		SyncMessageQueue::Message message(messages.Dequeue());
@@ -91,7 +91,7 @@ void SyncModel::ProcessMessages()
 
 void SyncModel::StopSync()
 {
-	ScopedLock lock(lock);
+	ScopedLock lock(this->lock);
 	stopRequested = true;
 	if (syncThread)
 		::WaitForSingleObject(syncThread, INFINITE);

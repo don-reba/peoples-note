@@ -27,17 +27,18 @@ HtmlDataLoader::HtmlDataLoader
 {
 }
 
-bool HtmlDataLoader::LoadFromUri(const wchar_t * uri, Blob & blob)
+IHtmlDataLoader::UriType HtmlDataLoader::LoadFromUri(const wchar_t * uri, Blob & blob)
 try
 {
-	switch (ClassifyUri(uri))
+	UriType type(ClassifyUri(uri));
+	switch (type)
 	{
-	case UriTypeHtml:      LoadHtmlUri      (uri, blob); return true;
-	case UriTypeHttpImg:   LoadHttpImgUri   (uri, blob); return true;
-	case UriTypeResource:  LoadResourceUri  (uri, blob); return true;
-	case UriTypeThumbnail: LoadThumbnailUri (uri, blob); return true;
+	case UriTypeHtml:      LoadHtmlUri      (uri, blob); break;
+	case UriTypeHttpImg:   LoadHttpImgUri   (uri, blob); break;
+	case UriTypeResource:  LoadResourceUri  (uri, blob); break;
+	case UriTypeThumbnail: LoadThumbnailUri (uri, blob); break;
 	}
-	return false;
+	return type;
 }
 catch (const std::exception & e)
 {
@@ -45,7 +46,7 @@ catch (const std::exception & e)
 		( L"HtmlDataLoader::LoadFromUri: %s\n"
 		, ConvertToUnicode(e.what()).c_str()
 		);
-	return false;
+	return UriTypeUnknown;
 }
 
 void HtmlDataLoader::AttachViews(INoteListView & noteListView, INoteView & noteView)
@@ -147,7 +148,7 @@ void HtmlDataLoader::LoadResourceUri(const wchar_t * uri, Blob & blob)
 	{
 		userModel.GetResource(ConvertToAnsi(hash), blob);
 
-		SIZE maxSize = { 512, 512 };
+		SIZE maxSize = { 1024, 1024 };
 		Blob copy;
 		WindowRenderer::RescaleImage(blob, copy, maxSize);
 		if (!copy.empty())
