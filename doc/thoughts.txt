@@ -4188,3 +4188,4 @@ memory
 			TODO
 		flush creates a new request
 			TODO
+fixed URLs causing horizontal scroll by specifying a { text-wrap unrestricted }
