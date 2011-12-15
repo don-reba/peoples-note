@@ -91,13 +91,14 @@ void EditorPresenter::OnEditNote()
 	MacroWaitCursor;
 
 	editorView.Show();
-	noteView.Hide();
 
 	Note note;
 	noteView.GetNote(note);
 
 	wstring body;
 	noteView.GetBody(body);
+
+	noteView.Hide();
 
 	editorView.SetNote(note, body);
 }
