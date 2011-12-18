@@ -5,7 +5,7 @@
 #include "IAnimator.h"
 #include "Rect.h"
 #include "resourceppc.h"
-#include "Scrollbar.h"
+#include "Scrolling.h"
 #include "Tools.h"
 
 #include <algorithm>
@@ -188,12 +188,12 @@ ATOM NoteTagListView::RegisterClass(const wstring & wndClass)
 
 void NoteTagListView::SetScrollPos(int pos)
 {
-	body.send_event(TOUCH_SCROLL_POS, pos, vScroll);
+	ScrollVertically(body, vScroll, pos);
 }
 
 void NoteTagListView::UpdateScrollbar()
 {
-	body.send_event(TOUCH_SCROLL_UPDATE, 0, vScroll);
+	UpdateVerticalScrollbar(body, vScroll);
 }
 
 void NoteTagListView::UpdateWindowState()

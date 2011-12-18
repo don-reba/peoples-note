@@ -5,7 +5,7 @@
 #include "IAnimator.h"
 #include "Rect.h"
 #include "resourceppc.h"
-#include "Scrollbar.h"
+#include "Scrolling.h"
 #include "Tools.h"
 
 #include <algorithm>
@@ -349,14 +349,14 @@ void NoteView::SetChrome(bool enable)
 
 void NoteView::SetScrollPos(POINT pos)
 {
-	body.send_event(TOUCH_SCROLL_POS, pos.x, hScroll);
-	body.send_event(TOUCH_SCROLL_POS, pos.y, vScroll);
+	ScrollHorizontally (body, hScroll, pos.x);
+	ScrollVertically   (body, vScroll, pos.y);
 }
 
 void NoteView::UpdateScrollbar()
 {
-	body.send_event(TOUCH_SCROLL_UPDATE, 0, vScroll);
-	body.send_event(TOUCH_SCROLL_UPDATE, 0, hScroll);
+	UpdateHorizontalScrollbar (body, hScroll);
+	UpdateVerticalScrollbar   (body, vScroll);
 }
 
 void NoteView::UpdateWindowState()
