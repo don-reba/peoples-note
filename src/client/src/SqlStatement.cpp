@@ -104,7 +104,7 @@ void SqlStatement::Finalize()
 	if (result == SQLITE_OK)
 		info.FinalizationTime += timer.GetElapsedSeconds();
 	else
-		DEBUGMSG(true, (L"%s\n", sqlite3_errmsg(db)));
+		::NKDbgPrintfW(L"%s\n", sqlite3_errmsg(db));
 }
 
 #else // PROFILE_SQL
@@ -113,7 +113,7 @@ void SqlStatement::Finalize()
 {
 	int result = sqlite3_finalize(statement);
 	if (result != SQLITE_OK)
-		DEBUGMSG(true, (L"%s\n", sqlite3_errmsg(db)));
+		::NKDbgPrintfW(L"%s\n", sqlite3_errmsg(db));
 }
 
 #endif // PROFILE_SQL
@@ -261,6 +261,6 @@ bool SqlStatement::IsNull(int index)
 
 void SqlStatement::HandleError(const std::string msg)
 {
-	DEBUGMSG(true, (L"%s\n", Tools::ConvertToUnicode(msg).c_str()));
+	::NKDbgPrintfW(L"%s\n", Tools::ConvertToUnicode(msg).c_str());
 	throw std::exception(msg.c_str());
 }

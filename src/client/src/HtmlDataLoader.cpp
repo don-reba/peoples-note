@@ -164,7 +164,7 @@ void HtmlDataLoader::LoadThumbnailUri(const wchar_t * uri, Blob & blob)
 {
 	if (!noteListView || !noteView)
 	{
-		DEBUGMSG(true, (L"Attemted to load thumbnails before setting views."));
+		::NKDbgPrintfW(L"Attemted to load thumbnails before setting views.");
 		return;
 	}
 

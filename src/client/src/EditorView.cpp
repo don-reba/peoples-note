@@ -168,7 +168,7 @@ void EditorView::ProcessMessage(WndMsg &msg)
 	}
 	catch (const std::exception & e)
 	{
-		DEBUGMSG(true, (L"%s\n", ConvertToUnicode(e.what()).c_str()));
+		NKDbgPrintfW(L"%s\n", ConvertToUnicode(e.what()).c_str());
 		throw e;
 	}
 }
