@@ -83,6 +83,7 @@ namespace Tools
 
 #ifdef _DEBUG
 	std::wstring GetMessageName(int id);
+	std::wstring GetVkName(UINT vk);
 #endif // _DEBUG
 
 	std::string HashWithMD5(const Blob & data);

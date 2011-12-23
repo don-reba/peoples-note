@@ -400,10 +400,156 @@ wstring Tools::GetMessageName(int id)
 	case 0x0402: return L"DM_RESERVED0x2";
 	case 0x8000: return L"WM_APP";
 	}
-	vector<wchar_t> number(12);
+	vector<wchar_t> number(14);
 	swprintf(&number[0], L"0x%X", id);
 	return &number[0];
 }
+
+wstring Tools::GetVkName(UINT vk)
+{
+	switch (vk)
+	{
+	case 0x01:  return L"VK_LBUTTON";
+	case 0x02:  return L"VK_RBUTTON";
+	case 0x03:  return L"VK_CANCEL";
+	case 0x04:  return L"VK_MBUTTON";
+	case 0x05:  return L"VK_XBUTTON1";
+	case 0x06:  return L"VK_XBUTTON2";
+	case 0x08:  return L"VK_BACK";
+	case 0x09:  return L"VK_TAB";
+	case 0x0C:  return L"VK_CLEAR";
+	case 0x0D:  return L"VK_RETURN";
+	case 0x10:  return L"VK_SHIFT";
+	case 0x11:  return L"VK_CONTROL";
+	case 0x12:  return L"VK_MENU";
+	case 0x13:  return L"VK_PAUSE";
+	case 0x14:  return L"VK_CAPITAL";
+	case 0x15:  return L"VK_KANA";
+	case 0x17:  return L"VK_JUNJA";
+	case 0x18:  return L"VK_FINAL";
+	case 0x19:  return L"VK_KANJI";
+	case 0x1B:  return L"VK_ESCAPE";
+	case 0x1c:  return L"VK_CONVERT";
+	case 0x1d:  return L"VK_NOCONVERT";
+	case 0x20:  return L"VK_SPACE";
+	case 0x21:  return L"VK_PRIOR";
+	case 0x22:  return L"VK_NEXT";
+	case 0x23:  return L"VK_END";
+	case 0x24:  return L"VK_HOME";
+	case 0x25:  return L"VK_LEFT";
+	case 0x26:  return L"VK_UP";
+	case 0x27:  return L"VK_RIGHT";
+	case 0x28:  return L"VK_DOWN";
+	case 0x29:  return L"VK_SELECT";
+	case 0x2A:  return L"VK_PRINT";
+	case 0x2B:  return L"VK_EXECUTE";
+	case 0x2C:  return L"VK_SNAPSHOT";
+	case 0x2D:  return L"VK_INSERT";
+	case 0x2E:  return L"VK_DELETE";
+	case 0x2F:  return L"VK_HELP";
+	case 0x5B:  return L"VK_LWIN";
+	case 0x5C:  return L"VK_RWIN";
+	case 0x5D:  return L"VK_APPS";
+	case 0x5F:  return L"VK_SLEEP";
+	case 0x60:  return L"VK_NUMPAD0";
+	case 0x61:  return L"VK_NUMPAD1";
+	case 0x62:  return L"VK_NUMPAD2";
+	case 0x63:  return L"VK_NUMPAD3";
+	case 0x64:  return L"VK_NUMPAD4";
+	case 0x65:  return L"VK_NUMPAD5";
+	case 0x66:  return L"VK_NUMPAD6";
+	case 0x67:  return L"VK_NUMPAD7";
+	case 0x68:  return L"VK_NUMPAD8";
+	case 0x69:  return L"VK_NUMPAD9";
+	case 0x6A:  return L"VK_MULTIPLY";
+	case 0x6B:  return L"VK_ADD";
+	case 0x6C:  return L"VK_SEPARATOR";
+	case 0x6D:  return L"VK_SUBTRACT";
+	case 0x6E:  return L"VK_DECIMAL";
+	case 0x6F:  return L"VK_DIVIDE";
+	case 0x70:  return L"VK_F1";
+	case 0x71:  return L"VK_F2";
+	case 0x72:  return L"VK_F3";
+	case 0x73:  return L"VK_F4";
+	case 0x74:  return L"VK_F5";
+	case 0x75:  return L"VK_F6";
+	case 0x76:  return L"VK_F7";
+	case 0x77:  return L"VK_F8";
+	case 0x78:  return L"VK_F9";
+	case 0x79:  return L"VK_F10";
+	case 0x7A:  return L"VK_F11";
+	case 0x7B:  return L"VK_F12";
+	case 0x7C:  return L"VK_F13";
+	case 0x7D:  return L"VK_F14";
+	case 0x7E:  return L"VK_F15";
+	case 0x7F:  return L"VK_F16";
+	case 0x80:  return L"VK_F17";
+	case 0x81:  return L"VK_F18";
+	case 0x82:  return L"VK_F19";
+	case 0x83:  return L"VK_F20";
+	case 0x84:  return L"VK_F21";
+	case 0x85:  return L"VK_F22";
+	case 0x86:  return L"VK_F23";
+	case 0x87:  return L"VK_F24";
+	case 0x90:  return L"VK_NUMLOCK";
+	case 0x91:  return L"VK_SCROLL";
+	case 0xA0:  return L"VK_LSHIFT";
+	case 0xA1:  return L"VK_RSHIFT";
+	case 0xA2:  return L"VK_LCONTROL";
+	case 0xA3:  return L"VK_RCONTROL";
+	case 0xA4:  return L"VK_LMENU";
+	case 0xA5:  return L"VK_RMENU";
+	case 0xA6:  return L"VK_BROWSER_BACK";
+	case 0xA7:  return L"VK_BROWSER_FORWARD";
+	case 0xA8:  return L"VK_BROWSER_REFRESH";
+	case 0xA9:  return L"VK_BROWSER_STOP";
+	case 0xAA:  return L"VK_BROWSER_SEARCH";
+	case 0xAB:  return L"VK_BROWSER_FAVORITES";
+	case 0xAC:  return L"VK_BROWSER_HOME";
+	case 0xAD:  return L"VK_VOLUME_MUTE";
+	case 0xAE:  return L"VK_VOLUME_DOWN";
+	case 0xAF:  return L"VK_VOLUME_UP";
+	case 0xB0:  return L"VK_MEDIA_NEXT_TRACK";
+	case 0xB1:  return L"VK_MEDIA_PREV_TRACK";
+	case 0xB2:  return L"VK_MEDIA_STOP";
+	case 0xB3:  return L"VK_MEDIA_PLAY_PAUSE";
+	case 0xB4:  return L"VK_LAUNCH_MAIL";
+	case 0xB5:  return L"VK_LAUNCH_MEDIA_SELECT";
+	case 0xB6:  return L"VK_LAUNCH_APP1";
+	case 0xB7:  return L"VK_LAUNCH_APP2";
+	case 0xBA:  return L"VK_SEMICOLON";
+	case 0xBB:  return L"VK_EQUAL";
+	case 0xBC:  return L"VK_COMMA";
+	case 0xBD:  return L"VK_HYPHEN";
+	case 0xBE:  return L"VK_PERIOD";
+	case 0xBF:  return L"VK_SLASH";
+	case 0xC0:  return L"VK_BACKQUOTE";
+	case 0xDB:  return L"VK_LBRACKET";
+	case 0xDC:  return L"VK_BACKSLASH";
+	case 0xDD:  return L"VK_RBRACKET";
+	case 0xDE:  return L"VK_APOSTROPHE";
+	case 0xDF:  return L"VK_OFF";
+	case 0xE2:  return L"VK_EXTEND_BSLASH";
+	case 0xE5:  return L"VK_PROCESSKEY";
+	case 0xF6:  return L"VK_ATTN";
+	case 0xF7:  return L"VK_CRSEL";
+	case 0xF8:  return L"VK_EXSEL";
+	case 0xF9:  return L"VK_EREOF";
+	case 0xFA:  return L"VK_PLAY";
+	case 0xFB:  return L"VK_ZOOM";
+	case 0xFC:  return L"VK_NONAME";
+	case 0xFD:  return L"VK_PA1";
+	case 0xFE:  return L"VK_OEM_CLEAR";
+	}
+	if (vk >= '0' && vk <= '9')
+		return wstring(1, L'0' + (vk - '0'));
+	if (vk >= 'A' && vk <= 'Z')
+		return wstring(1, L'A' + (vk - 'A'));
+	vector<wchar_t> number(14);
+	swprintf(&number[0], L"0x%X", vk);
+	return &number[0];
+}
+
 #endif // _DEBUG
 
 string Tools::HashWithMD5(const Blob & data)
