@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_DeleteLocal_Test, NoteProcessorFixture)
 	EnInteropNote note;
 	note.guid = note.note.guid;
 
-	noteProcessor.DeleteLocal(note);
+	noteProcessor.DeleteLocal(note.guid);
 
 	BOOST_CHECK_EQUAL(userModel.expungedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.expungedNotes.at(0), note.guid);

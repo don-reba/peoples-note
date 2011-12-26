@@ -7,6 +7,7 @@ class MockNoteView : public INoteView
 {
 	MacroTestEvent(Attachment)
 	MacroTestEvent(Close)
+	MacroTestEvent(Delete)
 	MacroTestEvent(Edit)
 	MacroTestEvent(EditTags)
 	MacroTestEvent(ToggleMaximize)

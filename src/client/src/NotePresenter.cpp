@@ -168,13 +168,20 @@ void NotePresenter::OnOpenNote()
 	{
 		noteView.SetNote(note, note.name, subtitle, html, attachmentViews, true);
 	}
+#ifdef WINCE
 	catch (const std::exception & e)
 	{
-		NKDbgPrintfW
+		::NKDbgPrintfW
 			( L"NotePresenter::OnOpenNote: %s\n"
 			, ConvertToUnicode(e.what()).c_str()
 			);
 	}
+#else
+	catch (const std::exception &)
+	{
+		// try to continue
+	}
+#endif // WINNT
 	noteView.Show();
 }
 
