@@ -541,13 +541,12 @@ wstring Tools::GetVkName(UINT vk)
 	case 0xFD:  return L"VK_PA1";
 	case 0xFE:  return L"VK_OEM_CLEAR";
 	}
-	if (vk >= '0' && vk <= '9')
-		return wstring(1, L'0' + (vk - '0'));
-	if (vk >= 'A' && vk <= 'Z')
-		return wstring(1, L'A' + (vk - 'A'));
+	wstring name(L"VK_");
+	if (vk >= '0' && vk <= '9') return name.push_back(L'0' + (vk - '0')), name;
+	if (vk >= 'A' && vk <= 'Z') return name.push_back(L'A' + (vk - 'A')), name;
 	vector<wchar_t> number(14);
 	swprintf(&number[0], L"0x%X", vk);
-	return &number[0];
+	return name + &number[0];
 }
 
 #endif // _DEBUG

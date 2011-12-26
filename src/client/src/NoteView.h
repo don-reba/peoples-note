@@ -108,6 +108,8 @@ private:
 
 	ATOM RegisterClass(const std::wstring & wndClass);
 
+	void Reset();
+
 	void SetAttachments(const AttachmentViewInfoList & attachments);
 
 	void SetChrome(bool enable);
