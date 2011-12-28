@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "crackers.h"
 
+BOOL AppendMenu(HMENU hMenu, UINT uFlags, HMENU hPopup, LPCTSTR lpNewItem)
+{
+	ASSERT((uFlags & MF_POPUP) == MF_POPUP);
+	return ::AppendMenu(hMenu, uFlags, reinterpret_cast<UINT>(hPopup), lpNewItem);
+}
+
 BOOL Toolbar_GetButtonInfo(HWND hwndCtl, int iID, LPTBBUTTONINFO lptbbi)
 {
 	WPARAM wParam = iID;

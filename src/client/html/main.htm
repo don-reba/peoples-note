@@ -14,7 +14,6 @@
 			#menu
 			{
 				background     : url(gradient-60.png) repeat-x;
-				behavior       : popup-menu;
 				border         : 1px solid #606060;
 				height         : 48px;
 				margin         : -1px;
@@ -278,21 +277,7 @@
 				<div #sync-text />
 			</div>
 			<div #status-progress><div #status-button><span #status /></div></div>
-			<div #menu>
-				Menu
-				<menu>
-					<li #menu-profile />
-					<li #menu-signin>Sign in</li>
-					<hr />
-					<li #menu-notebook-title>Show title</li>
-					<hr />
-					<li>Notebook <menu #notebook-list /></li>
-					<li #menu-import>Import notes</li>
-					<hr />
-					<li #menu-about>About</li>
-					<li #menu-exit>Exit</li>
-				</menu>
-			</div>
+			<widget type="button" #menu>Menu</widget>
 		</div>
 	</body>
 </html>

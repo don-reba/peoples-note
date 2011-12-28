@@ -65,18 +65,15 @@ void NoteListView::Create()
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
+	notebookMenu = CreateNotebookMenu();
+	mainMenu     = CreateMainMenu(notebookMenu);
+
 	::ShowWindow(hwnd_, cmdShow);
 	::UpdateWindow(hwnd_);
 }
 
 void NoteListView::RegisterEventHandlers()
 {
-	ConnectBehavior("#menu-about",          MENU_ITEM_CLICK,    &NoteListView::OnMenuAbout);
-	ConnectBehavior("#menu-exit",           MENU_ITEM_CLICK,    &NoteListView::OnMenuExit);
-	ConnectBehavior("#menu-import",         MENU_ITEM_CLICK,    &NoteListView::OnMenuImport);
-	ConnectBehavior("#menu-notebook-title", MENU_ITEM_CLICK,    &NoteListView::OnMenuNotebookTitle);
-	ConnectBehavior("#menu-profile",        MENU_ITEM_CLICK,    &NoteListView::OnMenuProfile);
-	ConnectBehavior("#menu-signin",         MENU_ITEM_CLICK,    &NoteListView::OnMenuSignIn);
 	ConnectBehavior("#new-ink",             BUTTON_CLICK,       &NoteListView::OnNewInk);
 	ConnectBehavior("#new-photo",           BUTTON_CLICK,       &NoteListView::OnNewPhoto);
 	ConnectBehavior("#new-text",            BUTTON_CLICK,       &NoteListView::OnNewText);
@@ -88,6 +85,7 @@ void NoteListView::RegisterEventHandlers()
 	ConnectBehavior("#search-button",       BUTTON_CLICK,       &NoteListView::OnSearch);
 	ConnectBehavior("#status-button",       BUTTON_CLICK,       &NoteListView::OnStatus);
 	ConnectBehavior("#sync-panel",          BUTTON_CLICK,       &NoteListView::OnSync);
+	ConnectBehavior("#menu",                BUTTON_CLICK,       &NoteListView::OnMenu);
 
 	noteList     = FindFirstElement("#note-list");
 	listScroll   = FindFirstElement("#scroll");
@@ -119,8 +117,8 @@ void NoteListView::AddNote
 
 void NoteListView::CheckNotebookTitleOption()
 {
-	element(FindFirstElement("#menu-notebook-title"))
-		.set_attribute("checked", L"");
+	//element(FindFirstElement("#menu-notebook-title"))
+	//	.set_attribute("checked", L"");
 }
 
 void NoteListView::ClearNotes()
@@ -214,33 +212,34 @@ void NoteListView::HideSyncButton()
 
 bool NoteListView::IsNotebookTitleOptionChecked()
 {
-	return element(FindFirstElement("#menu-notebook-title"))
-		.get_attribute("checked") != NULL;
+	//return element(FindFirstElement("#menu-notebook-title"))
+	//	.get_attribute("checked") != NULL;
+	return false;
 }
 
 void NoteListView::SetNotebookMenu(const std::wstring & html)
 {
-	element notebookList(FindFirstElement("#notebook-list"));
+	//element notebookList(FindFirstElement("#notebook-list"));
 
-	vector<element> notebooks;
-	notebookList.find_all(notebooks, "li[guid]");
-	foreach (element & notebook, notebooks)
-		DisconnectBehavior(notebook);
+	//vector<element> notebooks;
+	//notebookList.find_all(notebooks, "li[guid]");
+	//foreach (element & notebook, notebooks)
+	//	DisconnectBehavior(notebook);
 
-	vector<unsigned char> htmlUtf8Chars;
-	const unsigned char * htmlUtf8(ConvertToUtf8(html, htmlUtf8Chars));
-	notebookList.set_html(htmlUtf8, htmlUtf8Chars.size());
+	//vector<unsigned char> htmlUtf8Chars;
+	//const unsigned char * htmlUtf8(ConvertToUtf8(html, htmlUtf8Chars));
+	//notebookList.set_html(htmlUtf8, htmlUtf8Chars.size());
 
-	notebooks.clear();
-	notebookList.find_all(notebooks, "li[guid]");
-	foreach (element & notebook, notebooks)
-		ConnectBehavior(notebook, MENU_ITEM_CLICK, &NoteListView::OnMenuNotebook);
+	//notebooks.clear();
+	//notebookList.find_all(notebooks, "li[guid]");
+	//foreach (element & notebook, notebooks)
+	//	ConnectBehavior(notebook, MENU_ITEM_CLICK, &NoteListView::OnMenuNotebook);
 }
 
 void NoteListView::SetProfileText(const wstring & text)
 {
-	element(FindFirstElement("#menu-profile"))
-		.set_text(text.c_str());
+	//element(FindFirstElement("#menu-profile"))
+	//	.set_text(text.c_str());
 }
 
 void NoteListView::SetProgress(double fraction)
@@ -273,8 +272,8 @@ void NoteListView::SetSearchText(const wstring & text)
 
 void NoteListView::SetSigninText(const wstring & text)
 {
-	element(FindFirstElement("#menu-signin"))
-		.set_text(text.c_str());
+	//element(FindFirstElement("#menu-signin"))
+	//	.set_text(text.c_str());
 }
 
 void NoteListView::ShowNotebookTitle()
@@ -321,8 +320,8 @@ void NoteListView::SetWindowTitle(const wstring & text)
 
 void NoteListView::UncheckNotebookTitleOption()
 {
-	element(FindFirstElement("#menu-notebook-title"))
-		.remove_attribute("checked");
+	//element(FindFirstElement("#menu-notebook-title"))
+	//	.remove_attribute("checked");
 }
 
 void NoteListView::UpdateNotes()
@@ -352,6 +351,28 @@ void NoteListView::UpdateThumbnail(const Guid & note)
 //------------------
 // utility functions
 //------------------
+
+HMENU NoteListView::CreateMainMenu(HMENU notebookMenu)
+{
+	HMENU menu(::CreatePopupMenu());
+	::AppendMenu(menu, MF_STRING,    ID_PROFILE,        L"");
+	::AppendMenu(menu, MF_STRING,    ID_SIGNIN,         L"Sign in");
+	::AppendMenu(menu, MF_SEPARATOR, 0U,                NULL);
+	::AppendMenu(menu, MF_STRING,    ID_NOTEBOOK_TITLE, L"Show title");
+	::AppendMenu(menu, MF_SEPARATOR, 0U,                NULL);
+	::AppendMenu(menu, MF_POPUP,     notebookMenu,      L"Notebooks");
+	::AppendMenu(menu, MF_STRING,    ID_IMPORT,         L"Import notes");
+	::AppendMenu(menu, MF_SEPARATOR, 0U,                NULL);
+	::AppendMenu(menu, MF_STRING,    ID_ABOUT,          L"About");
+	::AppendMenu(menu, MF_STRING,    ID_EXIT,           L"Exit");
+	return menu;
+}
+
+HMENU NoteListView::CreateNotebookMenu()
+{
+	HMENU menu(::CreatePopupMenu());
+	return menu;
+}
 
 element NoteListView::GetChild(element parent, element descendant)
 {
@@ -453,6 +474,19 @@ void NoteListView::OnCaptureChanged(Msg<WM_CAPTURECHANGED> & msg)
 	msg.handled_ = true;
 }
 
+void NoteListView::OnCommand(Msg<WM_COMMAND> & msg)
+{
+	switch (msg.CtrlId())
+	{
+	case ID_ABOUT:          OnMenuAbout();         msg.handled_ = true; break;
+	case ID_EXIT:           OnMenuExit();          msg.handled_ = true; break;
+	case ID_IMPORT:         OnMenuImport();        msg.handled_ = true; break;
+	case ID_NOTEBOOK_TITLE: OnMenuNotebookTitle(); msg.handled_ = true; break;
+	case ID_PROFILE:        OnMenuProfile();       msg.handled_ = true; break;
+	case ID_SIGNIN:         OnMenuSignIn();        msg.handled_ = true; break;
+	}
+}
+
 void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 {
 	PostQuitMessage(0);
@@ -501,6 +535,7 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 	{
 		&NoteListView::OnActivate,
 		&NoteListView::OnCaptureChanged,
+		&NoteListView::OnCommand,
 		&NoteListView::OnDestroy,
 		&NoteListView::OnMouseDown,
 		&NoteListView::OnMouseMove,
@@ -548,39 +583,49 @@ BOOL NoteListView::OnKey(KEY_PARAMS * params)
 	return FALSE;
 }
 
-void NoteListView::OnMenuAbout(BEHAVIOR_EVENT_PARAMS * params)
+void NoteListView::OnMenu(BEHAVIOR_EVENT_PARAMS * params)
+{
+	element e(params->heTarget);
+	RECT rect(e.get_location(ROOT_RELATIVE|BORDER_BOX));
+	POINT location = { rect.right, rect.top };
+	::ClientToScreen(hwnd_, &location);
+
+	::TrackPopupMenuEx(mainMenu, TPM_RIGHTALIGN|TPM_BOTTOMALIGN, location.x, location.y, hwnd_, NULL);
+}
+
+void NoteListView::OnMenuAbout()
 {
 	SignalAbout();
 }
 
-void NoteListView::OnMenuExit(BEHAVIOR_EVENT_PARAMS * params)
+void NoteListView::OnMenuExit()
 {
 	CloseWindow(hwnd_);
 }
 
-void NoteListView::OnMenuImport(BEHAVIOR_EVENT_PARAMS * params)
+void NoteListView::OnMenuImport()
 {
 	SignalImport();
 }
 
-void NoteListView::OnMenuNotebook(BEHAVIOR_EVENT_PARAMS * params)
+void NoteListView::OnMenuNotebook()
 {
-	element notebook(params->heTarget);
-	selectedNotebookGuid = Guid(notebook.get_attribute("guid"));
-	SignalNotebookSelected();
+	//element notebook(params->heTarget);
+	//selectedNotebookGuid = Guid(notebook.get_attribute("guid"));
+	//SignalNotebookSelected();
 }
 
-void NoteListView::OnMenuNotebookTitle(BEHAVIOR_EVENT_PARAMS * params)
+void NoteListView::OnMenuNotebookTitle()
 {
 	SignalNotebookTitle();
 }
 
-void NoteListView::OnMenuProfile(BEHAVIOR_EVENT_PARAMS * params)
+void NoteListView::OnMenuProfile()
 {
 	SignalProfile();
 }
 
-void NoteListView::OnMenuSignIn(BEHAVIOR_EVENT_PARAMS * params)
+void NoteListView::OnMenuSignIn()
 {
 	SignalSignIn();
 }

@@ -45,6 +45,9 @@ private:
 	HINSTANCE      instance;
 	DWORD          sipState;
 
+	HMENU mainMenu;
+	HMENU notebookMenu;
+
 	int startScrollPos;
 
 	element clickTarget;
@@ -149,6 +152,10 @@ public:
 
 private:
 
+	static HMENU CreateMainMenu(HMENU notebookMenu);
+
+	static HMENU CreateNotebookMenu();
+
 	element GetChild(element parent, element descendant);
 
 	int GetScrollPos();
@@ -176,11 +183,20 @@ private:
 private:
 
 	void OnActivate       (Msg<WM_ACTIVATE>       & msg);
+	void OnCommand        (Msg<WM_COMMAND>        & msg);
 	void OnCaptureChanged (Msg<WM_CAPTURECHANGED> & msg);
 	void OnDestroy        (Msg<WM_DESTROY>        & msg);
 	void OnMouseDown      (Msg<WM_LBUTTONDOWN>    & msg);
 	void OnMouseUp        (Msg<WM_LBUTTONUP>      & msg);
 	void OnMouseMove      (Msg<WM_MOUSEMOVE>      & msg);
+
+	void OnMenuAbout();
+	void OnMenuExit();
+	void OnMenuImport();
+	void OnMenuNotebook();
+	void OnMenuNotebookTitle();
+	void OnMenuProfile();
+	void OnMenuSignIn();
 
 	virtual void ProcessMessage(WndMsg &msg);
 
@@ -191,13 +207,7 @@ private:
 	virtual BOOL OnFocus (FOCUS_PARAMS * params);
 	virtual BOOL OnKey   (KEY_PARAMS   * params);
 
-	void OnMenuAbout         (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuExit          (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuImport        (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuNotebook      (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuNotebookTitle (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuProfile       (BEHAVIOR_EVENT_PARAMS * params);
-	void OnMenuSignIn        (BEHAVIOR_EVENT_PARAMS * params);
+	void OnMenu              (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNewInk            (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNewPhoto          (BEHAVIOR_EVENT_PARAMS * params);
 	void OnNewText           (BEHAVIOR_EVENT_PARAMS * params);

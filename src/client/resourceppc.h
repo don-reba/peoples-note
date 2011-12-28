@@ -23,7 +23,6 @@
 #define IDI_CLIENT                      101
 #define IDS_OK                          103
 #define IDS_HELP                        104
-#define IDR_MENU1                       134
 #define IDM_CLOSE                       32772
 #define IDM_SIGNIN                      32773
 #define IDM_CANCEL                      32774
@@ -49,6 +48,13 @@
 #define ID_EDIT_NOTE                    32796
 #define ID_EDIT_TAGS                    32797
 #define ID_FULL_SCREEN                  32798
+#define ID_ABOUT                        32800
+#define ID_EXIT                         32801
+#define ID_IMPORT                       32802
+#define ID_NOTEBOOK_TITLE               32803
+#define ID_NOTEBOOKS                    32804
+#define ID_PROFILE                      32805
+#define ID_SIGNIN                       32806
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
