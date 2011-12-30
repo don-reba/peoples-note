@@ -34,27 +34,31 @@
 #define IDR_OK_CANCEL_MENUBAR           32780
 #define IDR_NOTE_VIEW_MENUBAR           32781
 #define IDR_OK_MENUBAR                  32782
-#define ID_PENWIDTH_1PX                 32785
-#define ID_PENWIDTH_2PX                 32786
-#define ID_PENWIDTH_4PX                 32787
-#define ID_PENWIDTH_8PX                 32788
-#define ID_PENWIDTH_16PX                32789
-#define ID_COLOR_BLACK                  32790
-#define ID_COLOR_GRAY                   32791
-#define ID_COLOR_WHITE                  32792
-#define ID_COLOR_SANGUINE               32793
-#define ID_COLOR_TURQUOISE              32794
-#define ID_DELETE_NOTE                  32795
-#define ID_EDIT_NOTE                    32796
-#define ID_EDIT_TAGS                    32797
-#define ID_FULL_SCREEN                  32798
-#define ID_ABOUT                        32800
-#define ID_EXIT                         32801
-#define ID_IMPORT                       32802
-#define ID_NOTEBOOK_TITLE               32803
-#define ID_NOTEBOOKS                    32804
-#define ID_PROFILE                      32805
-#define ID_SIGNIN                       32806
+
+#define ID_PENWIDTH_1PX                 10
+#define ID_PENWIDTH_2PX                 11
+#define ID_PENWIDTH_4PX                 12
+#define ID_PENWIDTH_8PX                 13
+#define ID_PENWIDTH_16PX                14
+#define ID_COLOR_BLACK                  15
+#define ID_COLOR_GRAY                   16
+#define ID_COLOR_WHITE                  17
+#define ID_COLOR_SANGUINE               18
+#define ID_COLOR_TURQUOISE              19
+
+#define ID_DELETE_NOTE                  10
+#define ID_EDIT_NOTE                    11
+#define ID_EDIT_TAGS                    12
+#define ID_FULL_SCREEN                  13
+
+#define ID_ABOUT                        10
+#define ID_EXIT                         11
+#define ID_IMPORT                       12
+#define ID_NOTEBOOK_TITLE               13
+#define ID_NOTEBOOKS                    14
+#define ID_PROFILE                      15
+#define ID_SIGNIN                       16
+
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

@@ -7,7 +7,6 @@
 #include "INoteView.h"
 #include "ISyncModel.h"
 #include "IUserModel.h"
-#include "NotebookMenuGenerator.h"
 #include "Notebook.h"
 #include "Tools.h"
 #include "Transaction.h"
@@ -160,10 +159,7 @@ void NoteListPresenter::OnSyncEnd()
 
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
-	
-	wstring menuHtml;
-	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
-	noteListView.SetNotebookMenu(menuHtml);
+	noteListView.SetNotebookMenu(notebooks);
 
 	UpdateSyncCounter();
 	noteListView.EnableSync();
@@ -224,10 +220,7 @@ void NoteListPresenter::UpdateNotebookListView()
 {
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
-
-	wstring menuHtml;
-	NotebookMenuGenerator::GetMenuHtml(notebooks, 6, menuHtml);
-	noteListView.SetNotebookMenu(menuHtml);
+	noteListView.SetNotebookMenu(notebooks);
 }
 
 void NoteListPresenter::UpdateNotebookTitleState()

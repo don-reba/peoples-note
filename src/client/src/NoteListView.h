@@ -1,6 +1,7 @@
 #pragma once
 #include "INoteListView.h"
 
+#include "Guid.h"
 #include "HTMLayoutWindow.h"
 #include "IAnimator.h"
 #include "NoteListGestureProcessor.h"
@@ -58,6 +59,8 @@ private:
 
 	Guid selectedNotebookGuid;
 
+	GuidList notebookGuids;
+
 	SearchButtonState searchButtonState;
 
 // interface
@@ -114,7 +117,7 @@ public:
 
 	virtual bool IsNotebookTitleOptionChecked();
 
-	virtual void SetNotebookMenu(const std::wstring & html);
+	virtual void SetNotebookMenu(const NotebookList & notebooks);
 
 	virtual void SetProfileText(const std::wstring & text);
 

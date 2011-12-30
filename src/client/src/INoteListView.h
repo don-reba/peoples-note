@@ -3,6 +3,7 @@
 #include "Blob.h"
 #include "ISignalProvider.h"
 #include "Guid.h"
+#include "Notebook.h"
 
 class INoteListView : public ISignalProvider
 {
@@ -62,7 +63,7 @@ public:
 
 	virtual bool IsNotebookTitleOptionChecked() = 0;
 
-	virtual void SetNotebookMenu(const std::wstring & html) = 0;
+	virtual void SetNotebookMenu(const NotebookList & notebooks) = 0;
 
 	virtual void SetProfileText(const std::wstring & text) = 0;
 

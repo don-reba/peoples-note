@@ -117,8 +117,7 @@ void NoteListView::AddNote
 
 void NoteListView::CheckNotebookTitleOption()
 {
-	//element(FindFirstElement("#menu-notebook-title"))
-	//	.set_attribute("checked", L"");
+	::CheckMenuItem(mainMenu, ID_NOTEBOOK_TITLE, MFS_CHECKED);
 }
 
 void NoteListView::ClearNotes()
@@ -212,34 +211,34 @@ void NoteListView::HideSyncButton()
 
 bool NoteListView::IsNotebookTitleOptionChecked()
 {
-	//return element(FindFirstElement("#menu-notebook-title"))
-	//	.get_attribute("checked") != NULL;
-	return false;
+	MENUITEMINFO info = { sizeof(info), MIIM_STATE };
+	if (!::GetMenuItemInfo(mainMenu, ID_NOTEBOOK_TITLE, FALSE, &info))
+		return false;
+	return (info.fState & MFS_CHECKED) != 0;
 }
 
-void NoteListView::SetNotebookMenu(const std::wstring & html)
+void NoteListView::SetNotebookMenu(const NotebookList & notebooks)
 {
-	//element notebookList(FindFirstElement("#notebook-list"));
+	MENUITEMINFO info = { sizeof(info) };
+	while (::GetMenuItemInfo(notebookMenu, 0, TRUE, &info))
+		::RemoveMenu(notebookMenu, 0, MF_BYPOSITION);
+	notebookGuids.clear();
 
-	//vector<element> notebooks;
-	//notebookList.find_all(notebooks, "li[guid]");
-	//foreach (element & notebook, notebooks)
-	//	DisconnectBehavior(notebook);
-
-	//vector<unsigned char> htmlUtf8Chars;
-	//const unsigned char * htmlUtf8(ConvertToUtf8(html, htmlUtf8Chars));
-	//notebookList.set_html(htmlUtf8, htmlUtf8Chars.size());
-
-	//notebooks.clear();
-	//notebookList.find_all(notebooks, "li[guid]");
-	//foreach (element & notebook, notebooks)
-	//	ConnectBehavior(notebook, MENU_ITEM_CLICK, &NoteListView::OnMenuNotebook);
+	// we pack the notebook number into the low 15 bits of its WORD-sized ID
+	for (int i(0), size(min(0x7FFF, notebooks.size())); i != size; ++i)
+	{
+		const Notebook & notebook(notebooks.at(i));
+		::AppendMenu(notebookMenu, MF_STRING, 0x8000 | i, notebook.name.c_str());
+		notebookGuids.push_back(notebook.guid);
+	}
 }
 
 void NoteListView::SetProfileText(const wstring & text)
 {
-	//element(FindFirstElement("#menu-profile"))
-	//	.set_text(text.c_str());
+	MENUITEMINFO info = { sizeof(info), MIIM_TYPE };
+	info.fType      = MFT_STRING;
+	info.dwTypeData = const_cast<LPWSTR>(text.c_str());
+	::SetMenuItemInfo(mainMenu, ID_PROFILE, FALSE, &info);
 }
 
 void NoteListView::SetProgress(double fraction)
@@ -272,8 +271,10 @@ void NoteListView::SetSearchText(const wstring & text)
 
 void NoteListView::SetSigninText(const wstring & text)
 {
-	//element(FindFirstElement("#menu-signin"))
-	//	.set_text(text.c_str());
+	MENUITEMINFO info = { sizeof(info), MIIM_TYPE };
+	info.fType      = MFT_STRING;
+	info.dwTypeData = const_cast<LPWSTR>(text.c_str());
+	::SetMenuItemInfo(mainMenu, ID_SIGNIN, FALSE, &info);
 }
 
 void NoteListView::ShowNotebookTitle()
@@ -320,8 +321,7 @@ void NoteListView::SetWindowTitle(const wstring & text)
 
 void NoteListView::UncheckNotebookTitleOption()
 {
-	//element(FindFirstElement("#menu-notebook-title"))
-	//	.remove_attribute("checked");
+	::CheckMenuItem(mainMenu, ID_NOTEBOOK_TITLE, MFS_UNCHECKED);
 }
 
 void NoteListView::UpdateNotes()
@@ -476,6 +476,12 @@ void NoteListView::OnCaptureChanged(Msg<WM_CAPTURECHANGED> & msg)
 
 void NoteListView::OnCommand(Msg<WM_COMMAND> & msg)
 {
+	if (msg.CtrlId() & 0x8000)
+	{
+		selectedNotebookGuid = notebookGuids.at(msg.CtrlId() & 0x7FFF);
+		SignalNotebookSelected();
+		return;
+	}
 	switch (msg.CtrlId())
 	{
 	case ID_ABOUT:          OnMenuAbout();         msg.handled_ = true; break;
@@ -608,12 +614,6 @@ void NoteListView::OnMenuImport()
 	SignalImport();
 }
 
-void NoteListView::OnMenuNotebook()
-{
-	//element notebook(params->heTarget);
-	//selectedNotebookGuid = Guid(notebook.get_attribute("guid"));
-	//SignalNotebookSelected();
-}
 
 void NoteListView::OnMenuNotebookTitle()
 {
