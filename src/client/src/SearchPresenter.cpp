@@ -29,38 +29,23 @@ SearchPresenter::SearchPresenter
 void SearchPresenter::OnClearSearch()
 {
 	noteListView.SetSearchText(L"");
-	ResetNotes();
+	noteListModel.SetQuery(L"");
+	noteListView.SetSearchButtonToSearch();
+	noteListModel.Reload();
 }
 
 void SearchPresenter::OnSearch()
 {
 	wstring search = noteListView.GetSearchString();
 	if (search.find_first_not_of(L" \t") == wstring::npos)
-		ResetNotes();
+		noteListView.SetSearchButtonToSearch();
 	else
-		SearchNotes(search);
+		noteListView.SetSearchButtonToClear();
+	noteListModel.SetQuery(search);
+	noteListModel.Reload();
 }
 
 void SearchPresenter::OnSearchChanged()
 {
 	noteListView.SetSearchButtonToSearch();
-}
-
-void SearchPresenter::ResetNotes()
-{
-	noteListView.SetSearchButtonToSearch();
-	Transaction transaction(userModel);
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-	noteListModel.Reload();
-}
-
-void SearchPresenter::SearchNotes(wstring search)
-{
-	noteListView.SetSearchButtonToClear();
-
-	Transaction transaction(userModel);
-	NoteList notes;
-	userModel.GetNotesBySearch(search, notes);
-	noteListModel.SetNotes(notes);
 }

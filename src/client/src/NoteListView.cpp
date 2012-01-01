@@ -476,12 +476,14 @@ void NoteListView::OnCaptureChanged(Msg<WM_CAPTURECHANGED> & msg)
 
 void NoteListView::OnCommand(Msg<WM_COMMAND> & msg)
 {
+	// notebook selection
 	if (msg.CtrlId() & 0x8000)
 	{
 		selectedNotebookGuid = notebookGuids.at(msg.CtrlId() & 0x7FFF);
 		SignalNotebookSelected();
 		return;
 	}
+	// other commands
 	switch (msg.CtrlId())
 	{
 	case ID_ABOUT:          OnMenuAbout();         msg.handled_ = true; break;

@@ -15,11 +15,12 @@ private:
 	IRegistryKey & registryKey;
 	IUserModel   & userModel;
 
-	const int pageSize;
+	const size_t pageSize;
 
-	NoteList notes;
-
+	bool hasNextPage;
 	int currentPage;
+
+	std::wstring query;
 
 public:
 
@@ -29,16 +30,13 @@ public:
 		, IRegistryKey & registryKey
 		);
 
-	virtual void GetCurrentPage
-		( NoteList::const_iterator & begin
-		, NoteList::const_iterator & end
-		);
+	virtual void GetCurrentPage(NoteList & notes);
 
 	virtual bool GetNotebookTitleState();
 
-	virtual bool HasNextNotes();
+	virtual bool HasNextPage();
 
-	virtual bool HasPreviousNotes();
+	virtual bool HasPreviousPage();
 
 	virtual void Reload();
 
@@ -48,5 +46,5 @@ public:
 
 	virtual void SetNotebookTitleState(bool isEnabled);
 
-	virtual void SetNotes(const NoteList & notes);
+	virtual void SetQuery(const std::wstring & query);
 };

@@ -25,8 +25,4 @@ private:
 	void OnClearSearch();
 	void OnSearch();
 	void OnSearchChanged();
-
-	void ResetNotes();
-
-	void SearchNotes(std::wstring search);
 };

@@ -11,16 +11,13 @@ public:
 
 	virtual ~INoteListModel() {}
 
-	virtual void GetCurrentPage
-		( NoteList::const_iterator & begin
-		, NoteList::const_iterator & end
-		) = 0;
+	virtual void GetCurrentPage(NoteList & notes) = 0;
 
 	virtual bool GetNotebookTitleState() = 0;
 
-	virtual bool HasNextNotes() = 0;
+	virtual bool HasNextPage() = 0;
 
-	virtual bool HasPreviousNotes() = 0;
+	virtual bool HasPreviousPage() = 0;
 
 	virtual void Reload() = 0;
 
@@ -30,5 +27,5 @@ public:
 
 	virtual void SetNotebookTitleState(bool isEnabled) = 0;
 
-	virtual void SetNotes(const NoteList & notes) = 0;
+	virtual void SetQuery(const std::wstring & query) = 0;
 };

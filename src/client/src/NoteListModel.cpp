@@ -14,25 +14,25 @@ NoteListModel::NoteListModel
 	, IUserModel   & userModel
 	, IRegistryKey & registryKey
 	)
-	: currentPage (0)
-	, pageSize    (pageSize)
-	, registryKey (registryKey)
-	, userModel   (userModel)
+	: currentPage  (0)
+	, hasNextPage (false)
+	, pageSize     (pageSize)
+	, registryKey  (registryKey)
+	, userModel    (userModel)
 {
 }
 
-void NoteListModel::GetCurrentPage
-	( NoteList::const_iterator & begin
-	, NoteList::const_iterator & end
-	)
+void NoteListModel::GetCurrentPage(NoteList & notes)
 {
-	// the checks could be simpler, if not for iterator verification
-	begin = notes.begin() + currentPage * pageSize;
-	end =
-		(notes.end() - begin > pageSize)
-		? begin + pageSize
-		: notes.end()
-		;
+	Transaction transaction(userModel);
+	Notebook notebook;
+	userModel.GetLastUsedNotebook(notebook);
+
+	// ask for one more note than necessary to tell whether there is another page
+	userModel.GetNotesBySearch(notebook.guid, query, currentPage * pageSize, pageSize + 1, notes);
+	hasNextPage = notes.size() > pageSize;
+	if (hasNextPage)
+		notes.pop_back();
 }
 
 bool NoteListModel::GetNotebookTitleState()
@@ -41,30 +41,25 @@ bool NoteListModel::GetNotebookTitleState()
 	return state == L"enabled";
 }
 
-bool NoteListModel::HasNextNotes()
+bool NoteListModel::HasNextPage()
 {
-	int notesUpToCurrent((currentPage + 1) * pageSize);
-	return notesUpToCurrent < static_cast<int>(notes.size());
+	return hasNextPage;
 }
 
-bool NoteListModel::HasPreviousNotes()
+bool NoteListModel::HasPreviousPage()
 {
 	return currentPage > 0;
 }
 
 void NoteListModel::Reload()
 {
-	Transaction transaction(userModel);
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-	userModel.GetNotesByNotebook(notebook, notes);
 	currentPage = 0;
 	SignalChanged();
 }
 
 void NoteListModel::SelectNextPage()
 {
-	if (!HasNextNotes())
+	if (!HasNextPage())
 		throw std::exception("Invalid call to NoteListModel::SelectNextPage.");
 	++currentPage;
 	SignalChanged();
@@ -72,7 +67,7 @@ void NoteListModel::SelectNextPage()
 
 void NoteListModel::SelectPreviousPage()
 {
-	if (!HasPreviousNotes())
+	if (!HasPreviousPage())
 		throw std::exception("Invalid call to NoteListModel::SelectPreviousPage.");
 	--currentPage;
 	SignalChanged();
@@ -86,9 +81,7 @@ void NoteListModel::SetNotebookTitleState(bool isEnabled)
 		);
 }
 
-void NoteListModel::SetNotes(const NoteList & notes)
+void NoteListModel::SetQuery(const wstring & query)
 {
-	this->notes = notes;
-	currentPage = 0;
-	SignalChanged();
+	this->query = query;
 }

@@ -133,12 +133,22 @@ public:
 	virtual int GetNotebookUpdateCount(const Guid & notebook);
 
 	virtual void GetNotesByNotebook
-		( const Notebook & notebook
-		, NoteList       & notes
+		( const Guid & notebook
+		, NoteList   & notes
+		);
+
+	virtual void GetNotesByNotebook
+		( const Guid & notebook
+		, int          start
+		, int          count
+		, NoteList   & notes
 		);
 
 	virtual void GetNotesBySearch
-		( const std::wstring & search
+		( const Guid         & notebook
+		, const std::wstring & search
+		, int                  start
+		, int                  count
 		, NoteList           & notes
 		);
 
