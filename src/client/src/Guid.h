@@ -13,8 +13,8 @@ private:
 public:
 
 	Guid();
-	Guid(std::string  data);
-	Guid(std::wstring data);
+	explicit Guid(std::string  data);
+	explicit Guid(std::wstring data);
 
 	bool IsLocal() const;
 

@@ -33,12 +33,12 @@ public:
 		std::wstring value;
 		bool         isDirty;
 	};
+	typedef std::vector<NoteRecord> NoteRecordList;
 
 public:
 
-	std::wstring notebookMenu;
-
-	std::vector<NoteRecord> notes;
+	NoteRecordList notes;
+	NotebookList   notebookMenu;
 
 	std::set<std::string> updatedThumbnails;
 
@@ -107,7 +107,7 @@ public:
 
 	virtual bool IsNotebookTitleOptionChecked();
 
-	virtual void SetNotebookMenu(const std::wstring & html);
+	virtual void SetNotebookMenu(const NotebookList & notebooks);
 
 	virtual void SetProfileText(const std::wstring & text);
 

@@ -367,10 +367,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\NotebookMenuGenerator.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\NotebookProcessor.cpp"
 				>
 			</File>
@@ -505,10 +501,6 @@
 			</File>
 			<File
 				RelativePath=".\src\TestLastUserModel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\TestNotebookMenuGenerator.cpp"
 				>
 			</File>
 			<File

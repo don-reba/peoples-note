@@ -17,7 +17,6 @@ private:
 
 	const size_t pageSize;
 
-	bool hasNextPage;
 	int currentPage;
 
 	std::wstring query;
@@ -30,13 +29,13 @@ public:
 		, IRegistryKey & registryKey
 		);
 
-	virtual void GetCurrentPage(NoteList & notes);
+	virtual void GetCurrentPage
+		( NoteList & notes
+		, bool     & hasPreviousPage
+		, bool     & hasNextPage
+		);
 
 	virtual bool GetNotebookTitleState();
-
-	virtual bool HasNextPage();
-
-	virtual bool HasPreviousPage();
 
 	virtual void Reload();
 

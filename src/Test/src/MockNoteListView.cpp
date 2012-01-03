@@ -101,9 +101,9 @@ bool MockNoteListView::IsNotebookTitleOptionChecked()
 	return isNotebookTitleEnabled;
 }
 
-void MockNoteListView::SetNotebookMenu(const wstring & html)
+void MockNoteListView::SetNotebookMenu(const NotebookList & notebooks)
 {
-	notebookMenu = html;
+	notebookMenu.assign(notebooks.begin(), notebooks.end());
 }
 
 void MockNoteListView::SetProfileText(const wstring & text)

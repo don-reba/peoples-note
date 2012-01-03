@@ -5,8 +5,8 @@ using namespace boost;
 using namespace std;
 
 MockNoteListModel::MockNoteListModel()
-	: hasNextNotes         (false)
-	, hasPreviousNotes     (false)
+	: hasNextPage          (false)
+	, hasPreviousPage      (false)
 	, isReloaded           (false)
 	, notebookTitleState   (false)
 	, nextPageSelected     (false)
@@ -21,27 +21,19 @@ void MockNoteListModel::ConnectChanged(slot_type OnReset)
 
 
 void MockNoteListModel::GetCurrentPage
-	( NoteList::const_iterator & begin
-	, NoteList::const_iterator & end
+	( NoteList & notes
+	, bool     & hasPreviousPage
+	, bool     & hasNextPage
 	)
 {
-	begin = notes.begin();
-	end   = notes.end();
+	notes.assign(this->notes.begin(), this->notes.end());
+	hasPreviousPage = this->hasPreviousPage;
+	hasNextPage     = this->hasNextPage;
 }
 
 bool MockNoteListModel::GetNotebookTitleState()
 {
 	return notebookTitleState;
-}
-
-bool MockNoteListModel::HasNextNotes()
-{
-	return hasNextNotes;
-}
-
-bool MockNoteListModel::HasPreviousNotes()
-{
-	return hasPreviousNotes;
 }
 
 void MockNoteListModel::Reload()
@@ -64,7 +56,7 @@ void MockNoteListModel::SetNotebookTitleState(bool isEnabled)
 	notebookTitleState = isEnabled;
 }
 
-void MockNoteListModel::SetNotes(const NoteList & notes)
+void MockNoteListModel::SetQuery(const wstring & query)
 {
-	this->notes = notes;
+	this->query = query;
 }

@@ -113,22 +113,18 @@ void NoteListPresenter::OnNotebookTitle()
 void NoteListPresenter::OnNoteListChanged()
 {
 	NoteList notes;
-	noteListModel.GetCurrentPage(notes);
+	bool hasPreviousPage, hasNextPage;
+	noteListModel.GetCurrentPage(notes, hasPreviousPage, hasNextPage);
 	noteListView.ClearNotes();
 	foreach (const Note & note, notes)
 	{
 		wstring guid(note.guid);
 		noteListView.AddNote(ConvertToHtml(note, guid), guid, note.isDirty);
 	}
-	if (noteListModel.HasPreviousPage())
-		noteListView.ShowPageUp();
-	else
-		noteListView.HidePageUp();
-
-	if (noteListModel.HasNextPage())
-		noteListView.ShowPageDown();
-	else
-		noteListView.HidePageDown();
+	if (hasPreviousPage) noteListView.ShowPageUp();
+	else                 noteListView.HidePageUp();
+	if (hasNextPage) noteListView.ShowPageDown();
+	else             noteListView.HidePageDown();
 	noteListView.UpdateNotes();
 }
 

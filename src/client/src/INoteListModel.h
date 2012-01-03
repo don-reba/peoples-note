@@ -11,13 +11,13 @@ public:
 
 	virtual ~INoteListModel() {}
 
-	virtual void GetCurrentPage(NoteList & notes) = 0;
+	virtual void GetCurrentPage
+		( NoteList & notes
+		, bool     & hasPreviousPage
+		, bool     & hasNextPage
+		) = 0;
 
 	virtual bool GetNotebookTitleState() = 0;
-
-	virtual bool HasNextPage() = 0;
-
-	virtual bool HasPreviousPage() = 0;
 
 	virtual void Reload() = 0;
 

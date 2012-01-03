@@ -65,17 +65,17 @@ BOOST_FIXTURE_TEST_CASE
 	, SearchPresenterFixture
 	)
 {
-	userModel.notes.push_back(MakeNote(L"note-0"));
-	userModel.notes.push_back(MakeNote(L"note-1"));
-
+	noteListModel.isReloaded = false;
 	noteListView.searchString = L"search";
+
 	noteListView.SignalSearch();
 
-	BOOST_CHECK_EQUAL(userModel.searchSelection, L"search");
+	NoteList notes;
+	bool hasPreviousPage, hasNextPage;
+	noteListModel.GetCurrentPage(notes, hasPreviousPage, hasNextPage);
 
-	BOOST_REQUIRE_EQUAL(noteListModel.notes.size(), 2);
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(0).name, L"note-0");
-	BOOST_CHECK_EQUAL(noteListModel.notes.at(1).name, L"note-1");
+	BOOST_CHECK_EQUAL(noteListModel.query, L"search");
+	BOOST_CHECK(noteListModel.isReloaded);
 
 	BOOST_CHECK(!noteListView.isSearchButtonSetToSearch);
 }

@@ -267,23 +267,43 @@ int MockUserModel::GetNotebookUpdateCount(const Guid & notebook)
 }
 
 void MockUserModel::GetNotesByNotebook
-	( const Notebook & notebook
-	, NoteList       & notes
+	( const Guid & notebook
+	, NoteList   & notes
 	)
 {
-	notebookSelection = notebook.name;
-	notes.clear();
-	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
+	notebookSelection = notebook;
+	notes.assign(this->notes.begin(), this->notes.end());
+}
+
+void MockUserModel::GetNotesByNotebook
+	( const Guid & notebook
+	, int          start
+	, int          count
+	, NoteList   & notes
+	)
+{
+	notebookSelection = notebook;
+	size_t finish(min(this->notes.size(), static_cast<size_t>(start + count)));
+	notes.assign
+		( this->notes.begin() + start
+		, this->notes.begin() + finish
+		);
 }
 
 void MockUserModel::GetNotesBySearch
-	( const std::wstring & search
-	, NoteList           & notes
+	( const Guid    & notebook
+	, const wstring & search
+	, int             start
+	, int             count
+	, NoteList      & notes
 	)
 {
 	searchSelection = search;
-	notes.clear();
-	copy(this->notes.begin(), this->notes.end(), back_inserter(notes));
+	size_t finish(min(this->notes.size(), static_cast<size_t>(start + count)));
+	notes.assign
+		( this->notes.begin() + start
+		, this->notes.begin() + finish
+		);
 }
 
 void MockUserModel::GetNoteThumbnail

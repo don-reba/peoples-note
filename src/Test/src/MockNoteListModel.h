@@ -7,10 +7,11 @@ class MockNoteListModel : public INoteListModel
 {
 public:
 
-	NoteList notes;
+	NoteList     notes;
+	std::wstring query;
 
-	bool hasNextNotes;
-	bool hasPreviousNotes;
+	bool hasNextPage;
+	bool hasPreviousPage;
 	bool isReloaded;
 	bool notebookTitleState;
 	bool nextPageSelected;
@@ -25,15 +26,12 @@ public:
 	virtual void ConnectChanged(slot_type OnReset);
 
 	virtual void GetCurrentPage
-		( NoteList::const_iterator & begin
-		, NoteList::const_iterator & end
+		( NoteList & notes
+		, bool & hasPreviousPage
+		, bool & hasNextPage
 		);
 
 	virtual bool GetNotebookTitleState();
-
-	virtual bool HasNextNotes();
-
-	virtual bool HasPreviousNotes();
 
 	virtual void Reload();
 
@@ -43,5 +41,5 @@ public:
 
 	virtual void SetNotebookTitleState(bool isEnabled);
 
-	virtual void SetNotes(const NoteList & notes);
+	virtual void SetQuery(const std::wstring & query);
 };

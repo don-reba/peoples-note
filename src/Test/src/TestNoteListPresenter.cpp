@@ -72,8 +72,8 @@ BOOST_FIXTURE_TEST_CASE
 		, back_inserter(noteListModel.notes)
 		);
 
-	noteListModel.hasPreviousNotes = false;
-	noteListModel.hasNextNotes     = true;
+	noteListModel.hasPreviousPage = false;
+	noteListModel.hasNextPage     = true;
 
 	noteListModel.SignalChanged();
 
@@ -167,23 +167,17 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes.push_back(Note());
 	userModel.notes.back().isDirty = true;
 
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"notebook-0";
-	userModel.notebooks.back().guid = Guid("guid-0");
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"notebook-1";
-	userModel.notebooks.back().guid = Guid("guid-1");
+	userModel.notebooks.resize(2);
+	userModel.notebooks.at(0).name = L"notebook-0";
+	userModel.notebooks.at(1).name = L"notebook-1";
 
 	syncModel.SignalNotebooksChanged();
 
 	BOOST_CHECK_EQUAL(noteListView.syncText, L"2");
 
-	BOOST_CHECK_EQUAL
-		( noteListView.notebookMenu
-		,
-			L"<li guid=\"guid-0\">notebook-0</li>"
-			L"<li guid=\"guid-1\">notebook-1</li>"
-		);
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.size(), 2);
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(0).name, L"notebook-0");
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(1).name, L"notebook-1");
 }
 
 BOOST_FIXTURE_TEST_CASE
@@ -271,12 +265,9 @@ BOOST_FIXTURE_TEST_CASE
 	, NoteListPresenterFixture
 	)
 {
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"notebook-0";
-	userModel.notebooks.back().guid = Guid("guid-0");
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"notebook-1";
-	userModel.notebooks.back().guid = Guid("guid-1");
+	userModel.notebooks.resize(2);
+	userModel.notebooks.at(0).name = L"notebook-0";
+	userModel.notebooks.at(1).name = L"notebook-1";
 
 	noteListView.isSyncEnabled = false;
 	noteListView.syncText      = L"";
@@ -286,12 +277,9 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.windowTitle, L"last-used-notebook");
 	BOOST_CHECK_EQUAL(noteListView.syncText,    L"0");
 
-	BOOST_CHECK_EQUAL
-		( noteListView.notebookMenu
-		,
-			L"<li guid=\"guid-0\">notebook-0</li>"
-			L"<li guid=\"guid-1\">notebook-1</li>"
-		);
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.size(), 2);
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(0).name, L"notebook-0");
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(1).name, L"notebook-1");
 
 	BOOST_CHECK(noteListView.isSyncEnabled);
 }
@@ -317,19 +305,13 @@ BOOST_FIXTURE_TEST_CASE
 	, NoteListPresenterFixture
 	)
 {
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"notebook-0";
-	userModel.notebooks.back().guid = Guid("guid-0");
-	userModel.notebooks.push_back(Notebook());
-	userModel.notebooks.back().name = L"notebook-1";
-	userModel.notebooks.back().guid = Guid("guid-1");
+	userModel.notebooks.resize(2);
+	userModel.notebooks.at(0).name = L"notebook-0";
+	userModel.notebooks.at(1).name = L"notebook-1";
 
 	userModel.SignalLoaded();
 
-	BOOST_CHECK_EQUAL
-		( noteListView.notebookMenu
-		,
-			L"<li guid=\"guid-0\">notebook-0</li>"
-			L"<li guid=\"guid-1\">notebook-1</li>"
-		);
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.size(), 2);
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(0).name, L"notebook-0");
+	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(1).name, L"notebook-1");
 }

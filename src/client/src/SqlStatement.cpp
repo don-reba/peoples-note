@@ -244,7 +244,7 @@ void SqlStatement::Get(int index, Guid & guid)
 {
 	string temp;
 	Get(index, temp);
-	guid = temp;
+	guid = Guid(temp);
 }
 
 void SqlStatement::Get(int index, Timestamp & time)
