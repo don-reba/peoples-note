@@ -100,7 +100,7 @@ void NoteStore::DeleteNote(const Guid & guid)
 void NoteStore::GetDefaultNotebook(Guid & notebook)
 {
 	EDAM::Type::Notebook enNotebook(noteStore.getDefaultNotebook(token));
-	notebook = enNotebook.guid;
+	notebook = Guid(enNotebook.guid);
 }
 
 void NoteStore::GetNote
@@ -352,7 +352,12 @@ void NoteStore::ConvertFromEnNote
 	note.usn              = enNote.updateSequenceNum;
 	note.isDirty          = false;
 	if (enNote.__isset.tagGuids)
-		copy(enNote.tagGuids.begin(), enNote.tagGuids.end(), back_inserter(tags));
+	{
+		tags.clear();
+		tags.reserve(enNote.tagGuids.size());
+		foreach (const EDAM::Type::Guid & guid, enNote.tagGuids)
+			tags.push_back(Guid(guid));
+	}
 	if (enNote.__isset.attributes)
 	{
 		const EDAM::Type::NoteAttributes & attributes(enNote.attributes);
@@ -439,7 +444,7 @@ void NoteStore::ConvertFromEnNotebook
 	, Notebook                   & notebook
 	)
 {
-	notebook.guid             = enNotebook.guid;
+	notebook.guid             = Guid(enNotebook.guid);
 	notebook.name             = enNotebook.name;
 	notebook.CreationDate     = ConvertFromEnTime(enNotebook.serviceCreated);
 	notebook.ModificationDate = ConvertFromEnTime(enNotebook.serviceUpdated);
@@ -465,8 +470,8 @@ void NoteStore::ConvertFromEnResource
 	)
 {
 	resource.Hash = HashWithMD5(resource.Data);
-	resource.Guid = enResource.guid;
-	resource.Note = enResource.noteGuid;
+	resource.Guid = Guid(enResource.guid);
+	resource.Note = Guid(enResource.noteGuid);
 	resource.Mime = enResource.mime;
 	resource.IsAttachment = false;
 	if (enResource.__isset.width && enResource.__isset.height)
@@ -504,8 +509,8 @@ void NoteStore::ConvertFromEnResource
 		, back_inserter(resource.Data)
 		);
 	resource.Hash = HashWithMD5(resource.Data);
-	resource.Guid = enResource.guid;
-	resource.Note = enResource.noteGuid;
+	resource.Guid = Guid(enResource.guid);
+	resource.Note = Guid(enResource.noteGuid);
 	resource.Mime = enResource.mime;
 	resource.IsAttachment = false;
 	if (enResource.__isset.width && enResource.__isset.height)
@@ -619,12 +624,12 @@ void NoteStore::ConvertFromEnTag
 	)
 {
 	tag.name    = enTag.name;
-	tag.guid    = enTag.guid;
+	tag.guid    = Guid(enTag.guid);
 	tag.usn     = enTag.updateSequenceNum;
 	tag.isDirty = false;
 
 	if (enTag.__isset.parentGuid)
-		tag.parentGuid = enTag.parentGuid;
+		tag.parentGuid = Guid(enTag.parentGuid);
 	else
 		tag.parentGuid = Guid::GetEmpty();
 }
@@ -680,7 +685,7 @@ void NoteStore::ListEntries
 			EnInteropNote & enNote(notes.back());
 			ConvertFromEnNote(note, enNote.note, enNote.tags);
 
-			enNote.notebook = note.notebookGuid;
+			enNote.notebook = Guid(note.notebookGuid);
 
 			enNote.guid    = notes.back().note.guid;
 			enNote.name    = notes.back().note.name;
@@ -698,7 +703,7 @@ void NoteStore::ListEntries
 			foreach (const EDAM::Type::Resource & resource, note.resources)
 			{
 				if (resource.noteGuid == note.guid)
-					enNote.resources.push_back(resource.guid);
+					enNote.resources.push_back(Guid(resource.guid));
 			}
 		}
 	}
@@ -714,7 +719,7 @@ void NoteStore::ListEntries
 		if (tag.updateSequenceNum <= globalUpdateCount)
 			continue;
 		tags.push_back(Tag());
-		tags.back().guid    = tag.guid;
+		tags.back().guid    = Guid(tag.guid);
 		tags.back().name    = tag.name;
 		tags.back().usn     = tag.updateSequenceNum;
 		tags.back().isDirty = false;
@@ -737,14 +742,14 @@ void NoteStore::ListEntries
 			continue;
 		if (note.notebookGuid != notebookFilterGuid)
 			continue;
-		expungedNotes.push_back(note.guid);
+		expungedNotes.push_back(Guid(note.guid));
 	}
 	foreach (const EDAM::Type::Resource & resource, chunk.resources)
-		resources.push_back(resource.guid);
+		resources.push_back(Guid(resource.guid));
 	foreach (const EDAM::Type::Guid & guid, chunk.expungedNotes)
-		expungedNotes.push_back(guid);
+		expungedNotes.push_back(Guid(guid));
 	foreach (const EDAM::Type::Guid & guid, chunk.expungedNotebooks)
-		expungedNotebooks.push_back(guid);
+		expungedNotebooks.push_back(Guid(guid));
 	foreach (const EDAM::Type::Guid & guid, chunk.expungedTags)
-		expungedTags.push_back(guid);
+		expungedTags.push_back(Guid(guid));
 }

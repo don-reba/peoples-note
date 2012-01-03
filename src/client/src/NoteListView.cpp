@@ -170,7 +170,7 @@ Guid NoteListView::GetSelectedNotebookGuid()
 
 Guid NoteListView::GetSelectedNoteGuid()
 {
-	return noteList.get_attribute("value");
+	return Guid(noteList.get_attribute("value"));
 }
 
 wstring NoteListView::GetSearchString()

@@ -119,7 +119,7 @@ Guid NoteView::GetSelecteAttachmentGuid()
 {
 	const wchar_t * value(element(FindFirstElement("#attachments")).get_attribute("value"));
 	if (value)
-		return value;
+		return Guid(value);
 	return Guid::GetEmpty();
 }
 
