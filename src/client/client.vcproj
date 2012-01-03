@@ -1886,6 +1886,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\html-lr\menu.css"
+				>
+			</File>
+			<File
+				RelativePath=".\html\menu.css"
+				>
+			</File>
+			<File
 				RelativePath=".\html\note-edit.htm"
 				>
 			</File>

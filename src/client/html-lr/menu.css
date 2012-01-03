@@ -1,0 +1,50 @@
+input:not([type]), input[type=text], input[type=password], widget[type=text], widget[type=password]
+{
+	background-image    : url(inputshadow.png);
+	background-position : 7px 7px 7px 7px;
+	background-repeat   : expand;
+	border-style        : none;
+	color               : black;
+	font-size           : 12px;
+	height              : 20px;
+	padding             : 0px 5px;
+}
+
+
+@set std-select-dropdown
+{
+	:root
+	{
+		background : none;
+		border     : none;
+		color      : black;
+	}
+	:root *
+	{
+		color : black;
+	}
+	:root > caption
+	{
+		background-image    : url(inputshadow.png);
+		background-position : 7px 7px 7px 7px;
+		background-repeat   : expand;
+		border              : none;
+		font-size           : 12px;
+		height              : 20px;
+		margin              : 0px;
+		padding             : 0px 5px;
+	}
+	:root > button
+	{
+		background-image : url(dropdown-arrow.png);
+		border-style     : none;
+		height           : 20px;
+		margin           : 0px;
+		width            : 20px;
+	}
+	:root > popup option:current
+	{
+		background-color : #3498ff;
+		color            : black;
+	}
+}
