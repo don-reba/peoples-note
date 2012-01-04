@@ -63,6 +63,10 @@ note list paging
 	√ when a previous page is available, the "earlier notes" link should be added to the beginning of the list
 	√ when the "later notes" link is clicked, the next page should be set as the note list
 	√ when the "earlier notes" link is clicked, the previous page should be set as the note list
+	√ when page is changed, the search query should be preserved
+	when the page is changed, the sort order should be preserved
+	when the note list mode is changed, the first note of the current page should be preserved
+	when the sort order is changed, the first page should be loaded
 note list menu
 	√ when the anonymous user is loaded, the menu should contain a "sign in" option
 	√ when a named user is loaded, the menu should contain a "sign out" option
@@ -71,7 +75,7 @@ note view
 	√ when the user clicks a TODO checkbox, the checkbox should be toggled
 	√ when a note is closed, the TODO checkbox state is persisted
 	√ when a note is closed, its thumbnail should be updated
-	for each attachment a note has, append a block with an icon and a title
+	√ for each attachment a note has, append a block with an icon and a title
 	when an audio attachment is clicked, play it
 	when a misc attachment is clicked, propose to save it
 notebooks
@@ -134,14 +138,14 @@ photo note creation
 photo note creation
 	√ when the user selects "Cancel", the window should close
 note tag editor
-	when the user selects "OK" the current note's tags should be updated to match selection
-	when the user selects "OK" or "Cancel", the window should close
-	when the user clicks a selected tag, it should be cleared
-		sort the tag into the "cleared" list
-		a checkmark should appear to the left of the note
-	when the user clicks a clear tag, it should be selected
-		sort the tag into the "selected" list
-		the checkmark to the left of the note should disappear
+	√ when the user selects "OK" the current note's tags should be updated to match selection
+	√ when the user selects "OK" or "Cancel", the window should close
+	√ when the user clicks a selected tag, it should be cleared
+		√ sort the tag into the "cleared" list
+		√ a checkmark should appear to the left of the note
+	√ when the user clicks a clear tag, it should be selected
+		√ sort the tag into the "selected" list
+		√ the checkmark to the left of the note should disappear
 tag editor
 	when the user selects "OK" the current note's tags should be updated to match selection
 	when the user clicks "new tag" the tag should be made blank and set for editing
