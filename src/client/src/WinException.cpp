@@ -8,7 +8,11 @@
 using namespace std;
 using namespace Tools;
 
-WinException::WinException(DWORD error, const wchar_t * source)
+WinException::WinException
+	( DWORD           error
+	, const wchar_t * source
+	, const char    * message
+	)
 {
 		DWORD flags
 			( FORMAT_MESSAGE_FROM_SYSTEM
@@ -25,7 +29,9 @@ WinException::WinException(DWORD error, const wchar_t * source)
 			, buffer.size()           // nSize
 			, NULL                    // Arguments
 			);
-		message = ConvertToAnsi(&buffer[0]);
+		this->message = message;
+		this->message.append(" ");
+		this->message.append(ConvertToAnsi(&buffer[0]));
 }
 
 const char * WinException::what() const

@@ -9,7 +9,11 @@ private:
 
 public:
 
-	WinException(DWORD error, const wchar_t * source);
+	WinException
+		( DWORD           error
+		, const wchar_t * source
+		, const char    * message
+		);
 
 	virtual const char * what() const;
 };

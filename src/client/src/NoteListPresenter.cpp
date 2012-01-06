@@ -38,8 +38,8 @@ NoteListPresenter::NoteListPresenter
 	noteListView.ConnectNotebookSelected
 		(bind(&NoteListPresenter::OnNotebookSelected, this));
 
-	noteListView.ConnectNotebookTitle
-		(bind(&NoteListPresenter::OnNotebookTitle, this));
+	noteListView.ConnectNotebookTitleStateChanged
+		(bind(&NoteListPresenter::OnNotebookTitleChanged, this));
 
 	noteListView.ConnectPageDown
 		(bind(&NoteListPresenter::OnPageDown, this));
@@ -49,6 +49,9 @@ NoteListPresenter::NoteListPresenter
 
 	noteListView.ConnectSync
 		(bind(&NoteListPresenter::OnSyncBegin, this));
+
+	noteListView.ConnectViewStyleChanged
+		(bind(&NoteListPresenter::OnViewStyleChanged, this));
 
 	syncModel.ConnectNotesChanged
 		(bind(&NoteListPresenter::OnNotesChanged, this));
@@ -103,11 +106,10 @@ void NoteListPresenter::OnNotebookSelected()
 	UpdateSyncCounter();
 }
 
-void NoteListPresenter::OnNotebookTitle()
+void NoteListPresenter::OnNotebookTitleChanged()
 {
-	bool isEnabled(noteListView.IsNotebookTitleOptionChecked());
-	noteListModel.SetNotebookTitleState(!isEnabled);
-	UpdateNotebookTitleState();
+	noteListModel.SetNotebookTitleState(noteListView.GetRequestedNotebookTitleState());
+	UpdateNotebookTitle();
 }
 
 void NoteListPresenter::OnNoteListChanged()
@@ -166,7 +168,8 @@ void NoteListPresenter::OnSyncStatusUpdated()
 
 void NoteListPresenter::OnUserLoaded()
 {
-	UpdateNotebookTitleState();
+	UpdateNotebookTitle();
+	UpdateViewStyle();
 
 	Transaction transaction(userModel);
 
@@ -193,6 +196,12 @@ void NoteListPresenter::OnUserLoaded()
 	UpdateSyncCounter();
 }
 
+void NoteListPresenter::OnViewStyleChanged()
+{
+	noteListModel.SetViewStyle(noteListView.GetRequestedViewStyle());
+	UpdateViewStyle();
+}
+
 //--------------------------------------------------
 // utility functions
 //
@@ -216,18 +225,12 @@ void NoteListPresenter::UpdateNotebookListView()
 	noteListView.SetNotebookMenu(notebooks);
 }
 
-void NoteListPresenter::UpdateNotebookTitleState()
+void NoteListPresenter::UpdateNotebookTitle()
 {
 	if (noteListModel.GetNotebookTitleState())
-	{
-		noteListView.CheckNotebookTitleOption();
 		noteListView.ShowNotebookTitle();
-	}
 	else
-	{
-		noteListView.UncheckNotebookTitleOption();
 		noteListView.HideNotebookTitle();
-	}
 }
 
 void NoteListPresenter::UpdateSyncCounter()
@@ -251,6 +254,11 @@ void NoteListPresenter::UpdateTitle()
 
 	noteListView.SetWindowTitle(notebook.name);
 	noteView.SetWindowTitle(notebook.name);
+}
+
+void NoteListPresenter::UpdateViewStyle()
+{
+	noteListView.SetViewStyle(noteListModel.GetViewStyle());
 }
 
 wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid)

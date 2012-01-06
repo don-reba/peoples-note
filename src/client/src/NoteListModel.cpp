@@ -41,8 +41,16 @@ void NoteListModel::GetCurrentPage
 
 bool NoteListModel::GetNotebookTitleState()
 {
-	wstring state = registryKey.GetString(L"notebook title state", L"disabled");
+	wstring state(registryKey.GetString(L"notebook title state", L"disabled"));
 	return state == L"enabled";
+}
+
+NotebookViewStyle NoteListModel::GetViewStyle()
+{
+	wstring styleName(registryKey.GetString(L"notebook view style", L"combined"));
+	if (styleName == L"titles")
+		return NotebookViewTitles;
+	return NotebookViewCombined;
 }
 
 void NoteListModel::Reload()
@@ -76,4 +84,12 @@ void NoteListModel::SetNotebookTitleState(bool isEnabled)
 void NoteListModel::SetQuery(const wstring & query)
 {
 	this->query = query;
+}
+
+void NoteListModel::SetViewStyle(NotebookViewStyle style)
+{
+	const wchar_t * styleName(L"combined");
+	if (style == NotebookViewTitles)
+		styleName = L"titles";
+	registryKey.SetString(L"notebook view style", styleName);
 }

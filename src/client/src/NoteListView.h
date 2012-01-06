@@ -17,7 +17,7 @@ class NoteListView : public HTMLayoutWindow, public INoteListView
 	MacroEvent(NewPhotoNote)
 	MacroEvent(NewVoiceNote)
 	MacroEvent(NotebookSelected)
-	MacroEvent(NotebookTitle)
+	MacroEvent(NotebookTitleStateChanged)
 	MacroEvent(OpenNote)
 	MacroEvent(PageDown)
 	MacroEvent(PageUp)
@@ -26,6 +26,7 @@ class NoteListView : public HTMLayoutWindow, public INoteListView
 	MacroEvent(SearchChanged)
 	MacroEvent(SignIn)
 	MacroEvent(Sync)
+	MacroEvent(ViewStyleChanged)
 
 private:
 
@@ -48,6 +49,7 @@ private:
 
 	HMENU mainMenu;
 	HMENU notebookMenu;
+	HMENU viewMenu;
 
 	int startScrollPos;
 
@@ -62,6 +64,9 @@ private:
 	GuidList notebookGuids;
 
 	SearchButtonState searchButtonState;
+
+	bool              requestedNotebookTitleState;
+	NotebookViewStyle requestedViewStyle;
 
 // interface
 
@@ -89,8 +94,6 @@ public:
 		,       bool           isDirty
 		);
 
-	virtual void CheckNotebookTitleOption();
-
 	virtual void ClearNotes();
 
 	virtual void DisableSync();
@@ -99,11 +102,15 @@ public:
 
 	virtual bool GetEnexPath(std::wstring & path);
 
+	virtual bool GetRequestedNotebookTitleState();
+
+	virtual NotebookViewStyle GetRequestedViewStyle();
+	
+	virtual std::wstring GetSearchString();
+
 	virtual Guid GetSelectedNotebookGuid();
 
 	virtual Guid GetSelectedNoteGuid();
-	
-	virtual std::wstring GetSearchString();
 
 	virtual void GetThumbSize(SIZE & size);
 
@@ -114,8 +121,6 @@ public:
 	virtual void HidePageUp();
 
 	virtual void HideSyncButton();
-
-	virtual bool IsNotebookTitleOptionChecked();
 
 	virtual void SetNotebookMenu(const NotebookList & notebooks);
 
@@ -135,6 +140,8 @@ public:
 
 	virtual void SetSyncText(const std::wstring & text);
 
+	virtual void SetViewStyle(NotebookViewStyle style);
+
 	virtual void SetWindowTitle(const std::wstring & text);
 
 	virtual void ShowNotebookTitle();
@@ -145,8 +152,6 @@ public:
 
 	virtual void ShowSyncButton();
 
-	virtual void UncheckNotebookTitleOption();
-
 	virtual void UpdateNotes();
 
 	virtual void UpdateThumbnail(const Guid & note);
@@ -155,9 +160,11 @@ public:
 
 private:
 
-	static HMENU CreateMainMenu(HMENU notebookMenu);
+	static HMENU CreateMainMenu(HMENU notebookMenu, HMENU viewMenu);
 
 	static HMENU CreateNotebookMenu();
+
+	static HMENU CreateViewMenu();
 
 	element GetChild(element parent, element descendant);
 
@@ -193,15 +200,10 @@ private:
 	void OnMouseUp        (Msg<WM_LBUTTONUP>      & msg);
 	void OnMouseMove      (Msg<WM_MOUSEMOVE>      & msg);
 
-	void OnMenuAbout();
-	void OnMenuExit();
-	void OnMenuImport();
-	void OnMenuNotebook();
-	void OnMenuNotebookTitle();
-	void OnMenuProfile();
-	void OnMenuSignIn();
-
 	virtual void ProcessMessage(WndMsg &msg);
+
+	void OnNotebookTitle();
+	void OnViewStyle(NotebookViewStyle style);
 
 // HTMLayout message handlers
 

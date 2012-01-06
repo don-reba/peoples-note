@@ -1687,7 +1687,7 @@ void UserModel::Move
 	Load(username);
 
 	if (result == FALSE)
-		throw WinException(error, L"Kernel32.dll");
+		throw WinException(error, L"Kernel32.dll", "Database could not be moved.");
 }
 
 void UserModel::SetPragma(const char * sql)

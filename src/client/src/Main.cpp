@@ -307,7 +307,7 @@ int WINAPI WinMain(HINSTANCE instance,
 
 		return result;
 	}
-	catch(std::exception e)
+	catch(const std::exception & e)
 	{
 #ifdef _DEBUG
 		MessageBox

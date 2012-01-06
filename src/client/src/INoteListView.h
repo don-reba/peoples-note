@@ -1,9 +1,10 @@
 #pragma once
+#include "ISignalProvider.h"
 
 #include "Blob.h"
-#include "ISignalProvider.h"
 #include "Guid.h"
 #include "Notebook.h"
+#include "NotebookViewStyle.h"
 
 class INoteListView : public ISignalProvider
 {
@@ -15,7 +16,7 @@ class INoteListView : public ISignalProvider
 	MacroIEvent(NewPhotoNote)
 	MacroIEvent(NewVoiceNote)
 	MacroIEvent(NotebookSelected)
-	MacroIEvent(NotebookTitle)
+	MacroIEvent(NotebookTitleStateChanged)
 	MacroIEvent(OpenNote)
 	MacroIEvent(PageDown)
 	MacroIEvent(PageUp)
@@ -24,6 +25,9 @@ class INoteListView : public ISignalProvider
 	MacroIEvent(SearchChanged)
 	MacroIEvent(SignIn)
 	MacroIEvent(Sync)
+	MacroIEvent(ViewStyleChanged)
+
+public:
 
 public:
 
@@ -35,8 +39,6 @@ public:
 		,       bool           isDirty
 		) = 0;
 
-	virtual void CheckNotebookTitleOption() = 0;
-
 	virtual void ClearNotes() = 0;
 
 	virtual void DisableSync() = 0;
@@ -45,13 +47,17 @@ public:
 
 	virtual bool GetEnexPath(std::wstring & path) = 0;
 
+	virtual bool GetRequestedNotebookTitleState() = 0;
+
+	virtual NotebookViewStyle GetRequestedViewStyle() = 0;
+
+	virtual std::wstring GetSearchString() = 0;
+
 	virtual Guid GetSelectedNotebookGuid() = 0;
 
 	virtual Guid GetSelectedNoteGuid() = 0;
 
 	virtual void GetThumbSize(SIZE & size) = 0;
-
-	virtual std::wstring GetSearchString() = 0;
 
 	virtual void HideNotebookTitle() = 0;
 
@@ -60,8 +66,6 @@ public:
 	virtual void HidePageUp() = 0;
 
 	virtual void HideSyncButton() = 0;
-
-	virtual bool IsNotebookTitleOptionChecked() = 0;
 
 	virtual void SetNotebookMenu(const NotebookList & notebooks) = 0;
 
@@ -81,6 +85,8 @@ public:
 
 	virtual void SetSyncText(const std::wstring & text) = 0;
 
+	virtual void SetViewStyle(NotebookViewStyle style) = 0;
+
 	virtual void SetWindowTitle(const std::wstring & text) = 0;
 
 	virtual void ShowNotebookTitle() = 0;
@@ -90,8 +96,6 @@ public:
 	virtual void ShowPageUp() = 0;
 
 	virtual void ShowSyncButton() = 0;
-
-	virtual void UncheckNotebookTitleOption() = 0;
 
 	virtual void UpdateNotes() = 0;
 

@@ -53,12 +53,16 @@
 				height              : 100px;
 				overflow            : hidden;
 			}
-			#note-list .note #thumb
+			#note-list[view-style=combined] .note #thumb
 			{
 				border-style : none;
 				border-right : 4px solid #f0ec40;
 				display      : block;
 				float        : left;
+			}
+			#note-list[view-style=titles] .note #thumb
+			{
+				display : none;
 			}
 			#note-list .note #time
 			{
@@ -258,7 +262,7 @@
 			<widget #search-button type="button" tabindex="3" />
 		</div>
 		<div #note-list-panel>
-			<div #note-list tabindex="0">
+			<div #note-list view-style="combined" tabindex="0">
 				<div #new-note-note>
 					<div #label>Create note:</div>
 					<widget type="button" #new-text  />

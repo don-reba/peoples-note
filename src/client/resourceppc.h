@@ -58,6 +58,8 @@
 #define ID_NOTEBOOKS                    14
 #define ID_PROFILE                      15
 #define ID_SIGNIN                       16
+#define ID_VIEW_COMBINED       17
+#define ID_VIEW_TITLES         18
 
 #define IDC_STATIC                      -1
 

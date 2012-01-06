@@ -44,7 +44,7 @@ private:
 	void OnNotebooksChanged();
 	void OnTagsChanged();
 	void OnNotebookSelected();
-	void OnNotebookTitle();
+	void OnNotebookTitleChanged();
 	void OnNoteListChanged();
 	void OnPageDown();
 	void OnPageUp();
@@ -52,6 +52,7 @@ private:
 	void OnSyncEnd();
 	void OnSyncStatusUpdated();
 	void OnUserLoaded();
+	void OnViewStyleChanged();
 
 // utility functions
 
@@ -61,11 +62,13 @@ private:
 
 	void UpdateNotebookListView();
 
-	void UpdateNotebookTitleState();
+	void UpdateNotebookTitle();
 
 	void UpdateSyncCounter();
 
 	void UpdateTitle();
+
+	void UpdateViewStyle();
 
 	static std::wstring ConvertToHtml(const Note & note, const std::wstring & guid);
 
