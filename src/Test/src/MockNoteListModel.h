@@ -1,14 +1,15 @@
 #pragma once
-
 #include "INoteListModel.h"
+
 #include "Note.h"
 
 class MockNoteListModel : public INoteListModel
 {
 public:
 
-	NoteList     notes;
-	std::wstring query;
+	NoteList          notes;
+	std::wstring      query;
+	NotebookViewStyle viewStyle;
 
 	bool hasNextPage;
 	bool hasPreviousPage;
@@ -33,6 +34,8 @@ public:
 
 	virtual bool GetNotebookTitleState();
 
+	virtual NotebookViewStyle GetViewStyle();
+
 	virtual void Reload();
 
 	virtual void SelectNextPage();
@@ -42,4 +45,6 @@ public:
 	virtual void SetNotebookTitleState(bool isEnabled);
 
 	virtual void SetQuery(const std::wstring & query);
+
+	virtual void SetViewStyle(NotebookViewStyle style);
 };

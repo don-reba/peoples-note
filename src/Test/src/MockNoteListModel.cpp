@@ -36,6 +36,11 @@ bool MockNoteListModel::GetNotebookTitleState()
 	return notebookTitleState;
 }
 
+NotebookViewStyle MockNoteListModel::GetViewStyle()
+{
+	return viewStyle;
+}
+
 void MockNoteListModel::Reload()
 {
 	isReloaded = true;
@@ -59,4 +64,9 @@ void MockNoteListModel::SetNotebookTitleState(bool isEnabled)
 void MockNoteListModel::SetQuery(const wstring & query)
 {
 	this->query = query;
+}
+
+void MockNoteListModel::SetViewStyle(NotebookViewStyle style)
+{
+	this->viewStyle = style;
 }

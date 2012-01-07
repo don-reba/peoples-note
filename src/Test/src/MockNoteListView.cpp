@@ -5,7 +5,6 @@ using namespace std;
 
 MockNoteListView::MockNoteListView()
 	: notesUpdated              (true)
-	, isNotebookTitleEnabled    (false)
 	, isNotebookTitleVisible    (false)
 	, isPageDownVisible         (false)
 	, isPageUpVisible           (false)
@@ -26,11 +25,6 @@ void MockNoteListView::AddNote
 	notes.back().value   = value;
 	notes.back().isDirty = isDirty;
 	notesUpdated = false;
-}
-
-void MockNoteListView::CheckNotebookTitleOption()
-{
-	isNotebookTitleEnabled = true;
 }
 
 void MockNoteListView::ClearNotes()
@@ -56,6 +50,21 @@ bool MockNoteListView::GetEnexPath(std::wstring & path)
 	return hasEnexPath;
 }
 
+bool MockNoteListView::GetRequestedNotebookTitleState()
+{
+	return requestedNotebookTitleState;
+}
+
+NotebookViewStyle MockNoteListView::GetRequestedViewStyle()
+{
+	return requestedViewStyle;
+}
+
+std::wstring MockNoteListView::GetSearchString()
+{
+	return searchString;
+}
+
 Guid MockNoteListView::GetSelectedNoteGuid()
 {
 	return selectedNoteGuid;
@@ -64,11 +73,6 @@ Guid MockNoteListView::GetSelectedNoteGuid()
 Guid MockNoteListView::GetSelectedNotebookGuid()
 {
 	return selectedNotebookGuid;
-}
-
-std::wstring MockNoteListView::GetSearchString()
-{
-	return searchString;
 }
 
 void MockNoteListView::GetThumbSize(SIZE & size)
@@ -94,11 +98,6 @@ void MockNoteListView::HidePageUp()
 void MockNoteListView::HideSyncButton()
 {
 	isSyncButtonShown = false;
-}
-
-bool MockNoteListView::IsNotebookTitleOptionChecked()
-{
-	return isNotebookTitleEnabled;
 }
 
 void MockNoteListView::SetNotebookMenu(const NotebookList & notebooks)
@@ -146,6 +145,11 @@ void MockNoteListView::SetSyncText(const wstring & text)
 	syncText = text;
 }
 
+void MockNoteListView::SetViewStyle(NotebookViewStyle style)
+{
+	viewStyle = style;
+}
+
 void MockNoteListView::SetWindowTitle(const wstring & text)
 {
 	windowTitle = text;
@@ -171,17 +175,12 @@ void MockNoteListView::ShowSyncButton()
 	isSyncButtonShown = true;
 }
 
-void MockNoteListView::UncheckNotebookTitleOption()
-{
-	isNotebookTitleEnabled = false;
-}
-
 void MockNoteListView::UpdateNotes()
 {
 	notesUpdated = true;
 }
 
-void MockNoteListView::UpdateThumbnail(const Guid & guid)
+void MockNoteListView::UpdateThumbnail(const Guid & note)
 {
-	updatedThumbnails.insert(guid);
+	updatedThumbnails.insert(note);
 }

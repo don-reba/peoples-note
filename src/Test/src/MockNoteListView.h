@@ -1,7 +1,7 @@
 #pragma once
+#include "INoteListView.h"
 
 #include "Guid.h"
-#include "INoteListView.h"
 
 #include <set>
 
@@ -15,7 +15,7 @@ class MockNoteListView : public INoteListView
 	MacroTestEvent(NewPhotoNote)
 	MacroTestEvent(NewVoiceNote)
 	MacroTestEvent(NotebookSelected)
-	MacroTestEvent(NotebookTitle)
+	MacroTestEvent(NotebookTitleStateChanged)
 	MacroTestEvent(OpenNote)
 	MacroTestEvent(PageDown)
 	MacroTestEvent(PageUp)
@@ -24,6 +24,7 @@ class MockNoteListView : public INoteListView
 	MacroTestEvent(SearchChanged)
 	MacroTestEvent(SignIn)
 	MacroTestEvent(Sync)
+	MacroTestEvent(ViewStyleChanged)
 
 public:
 
@@ -59,15 +60,18 @@ public:
 	std::wstring syncText;
 	std::wstring windowTitle;
 
-	SIZE thumbSize;
+	SIZE              thumbSize;
+	NotebookViewStyle viewStyle;
 
-	bool isNotebookTitleEnabled;
 	bool isNotebookTitleVisible;
 	bool isPageDownVisible;
 	bool isPageUpVisible;
 	bool isSyncButtonShown;
 	bool isSyncEnabled;
 	bool isSearchButtonSetToSearch;
+
+	bool              requestedNotebookTitleState;
+	NotebookViewStyle requestedViewStyle;
 
 public:
 
@@ -79,8 +83,6 @@ public:
 		,       bool           isDirty
 		);
 
-	virtual void CheckNotebookTitleOption();
-
 	virtual void ClearNotes();
 
 	virtual void DisableSync();
@@ -89,11 +91,15 @@ public:
 
 	virtual bool GetEnexPath(std::wstring & path);
 
+	virtual bool GetRequestedNotebookTitleState();
+
+	virtual NotebookViewStyle GetRequestedViewStyle();
+	
+	virtual std::wstring GetSearchString();
+
 	virtual Guid GetSelectedNotebookGuid();
 
 	virtual Guid GetSelectedNoteGuid();
-	
-	virtual std::wstring GetSearchString();
 
 	virtual void GetThumbSize(SIZE & size);
 
@@ -104,8 +110,6 @@ public:
 	virtual void HidePageUp();
 
 	virtual void HideSyncButton();
-
-	virtual bool IsNotebookTitleOptionChecked();
 
 	virtual void SetNotebookMenu(const NotebookList & notebooks);
 
@@ -125,6 +129,8 @@ public:
 
 	virtual void SetSyncText(const std::wstring & text);
 
+	virtual void SetViewStyle(NotebookViewStyle style);
+
 	virtual void SetWindowTitle(const std::wstring & text);
 
 	virtual void ShowNotebookTitle();
@@ -135,9 +141,7 @@ public:
 
 	virtual void ShowSyncButton();
 
-	virtual void UncheckNotebookTitleOption();
-
 	virtual void UpdateNotes();
 
-	virtual void UpdateThumbnail(const Guid & guid);
+	virtual void UpdateThumbnail(const Guid & note);
 };

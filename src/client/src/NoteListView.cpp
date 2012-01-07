@@ -390,9 +390,9 @@ HMENU NoteListView::CreateViewMenu()
 {
 	HMENU menu(::CreatePopupMenu());
 	::AppendMenu(menu, MF_STRING,    ID_VIEW_COMBINED,  L"Combined view");
-	::AppendMenu(menu, MF_STRING,    ID_VIEW_TITLES,    L"Titles view");
+	::AppendMenu(menu, MF_STRING,    ID_VIEW_TITLES,    L"Titles only");
 	::AppendMenu(menu, MF_SEPARATOR, 0U,                NULL);
-	::AppendMenu(menu, MF_STRING,    ID_NOTEBOOK_TITLE, L"Show title");
+	::AppendMenu(menu, MF_STRING,    ID_NOTEBOOK_TITLE, L"Show header");
 	::CheckMenuItem(menu, ID_VIEW_COMBINED, MFS_CHECKED);
 	return menu;
 }
