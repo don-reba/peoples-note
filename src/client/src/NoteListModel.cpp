@@ -10,12 +10,11 @@ using namespace boost;
 using namespace std;
 
 NoteListModel::NoteListModel
-	( int            pageSize
-	, IUserModel   & userModel
+	( IUserModel   & userModel
 	, IRegistryKey & registryKey
 	)
-	: currentPage (0)
-	, pageSize    (pageSize)
+	: firstNote   (0)
+	, pageSize    (0)
 	, registryKey (registryKey)
 	, userModel   (userModel)
 {
@@ -32,8 +31,8 @@ void NoteListModel::GetCurrentPage
 	userModel.GetLastUsedNotebook(notebook);
 
 	// ask for one more note than necessary to tell whether there is another page
-	userModel.GetNotesBySearch(notebook.guid, query, currentPage * pageSize, pageSize + 1, notes);
-	hasPreviousPage = currentPage > 0;
+	userModel.GetNotesBySearch(notebook.guid, query, firstNote, pageSize + 1, notes);
+	hasPreviousPage = firstNote > 0;
 	hasNextPage     = notes.size() > pageSize;
 	if (hasNextPage)
 		notes.pop_back();
@@ -55,21 +54,21 @@ NotebookViewStyle NoteListModel::GetViewStyle()
 
 void NoteListModel::Reload()
 {
-	currentPage = 0;
+	firstNote = 0;
 	SignalChanged();
 }
 
 void NoteListModel::SelectNextPage()
 {
-	++currentPage;
+	firstNote += pageSize;
 	SignalChanged();
 }
 
 void NoteListModel::SelectPreviousPage()
 {
-	if (currentPage <= 0)
+	firstNote -= pageSize;
+	if (firstNote < 0)
 		throw std::exception("Invalid call to NoteListModel::SelectPreviousPage.");
-	--currentPage;
 	SignalChanged();
 }
 
@@ -84,6 +83,11 @@ void NoteListModel::SetNotebookTitleState(bool isEnabled)
 void NoteListModel::SetQuery(const wstring & query)
 {
 	this->query = query;
+}
+
+void NoteListModel::SetPageSize(int pageSize)
+{
+	this->pageSize = pageSize;
 }
 
 void NoteListModel::SetViewStyle(NotebookViewStyle style)

@@ -304,6 +304,9 @@ void NoteListView::SetViewStyle(NotebookViewStyle style)
 		::CheckMenuItem(viewMenu, options[i], options[i] == option ? MFS_CHECKED : MFS_UNCHECKED);
 	if (styleName  != NULL)
 		static_cast<element>(FindFirstElement("#note-list")).set_attribute("view-style", styleName);
+
+	SetScrollPos(0);
+	UpdateScrollbar();
 }
 
 void NoteListView::SetWindowTitle(const wstring & text)
@@ -389,8 +392,8 @@ HMENU NoteListView::CreateNotebookMenu()
 HMENU NoteListView::CreateViewMenu()
 {
 	HMENU menu(::CreatePopupMenu());
-	::AppendMenu(menu, MF_STRING,    ID_VIEW_COMBINED,  L"Combined view");
-	::AppendMenu(menu, MF_STRING,    ID_VIEW_TITLES,    L"Titles only");
+	::AppendMenu(menu, MF_STRING,    ID_VIEW_COMBINED,  L"Full view");
+	::AppendMenu(menu, MF_STRING,    ID_VIEW_TITLES,    L"Compact");
 	::AppendMenu(menu, MF_SEPARATOR, 0U,                NULL);
 	::AppendMenu(menu, MF_STRING,    ID_NOTEBOOK_TITLE, L"Show header");
 	::CheckMenuItem(menu, ID_VIEW_COMBINED, MFS_CHECKED);

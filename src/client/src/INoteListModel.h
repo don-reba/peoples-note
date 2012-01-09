@@ -30,6 +30,8 @@ public:
 
 	virtual void SetNotebookTitleState(bool isEnabled) = 0;
 
+	virtual void SetPageSize(int pageSize) = 0;
+
 	virtual void SetQuery(const std::wstring & query) = 0;
 
 	virtual void SetViewStyle(NotebookViewStyle style) = 0;

@@ -10,6 +10,7 @@
 #include "Notebook.h"
 #include "Tools.h"
 #include "Transaction.h"
+#include "WaitCursor.h"
 
 #include <sstream>
 
@@ -114,6 +115,8 @@ void NoteListPresenter::OnNotebookTitleChanged()
 
 void NoteListPresenter::OnNoteListChanged()
 {
+	MacroWaitCursor;
+
 	NoteList notes;
 	bool hasPreviousPage, hasNextPage;
 	noteListModel.GetCurrentPage(notes, hasPreviousPage, hasNextPage);
@@ -198,6 +201,7 @@ void NoteListPresenter::OnUserLoaded()
 
 void NoteListPresenter::OnViewStyleChanged()
 {
+	MacroWaitCursor;
 	noteListModel.SetViewStyle(noteListView.GetRequestedViewStyle());
 	UpdateViewStyle();
 }
@@ -258,7 +262,13 @@ void NoteListPresenter::UpdateTitle()
 
 void NoteListPresenter::UpdateViewStyle()
 {
-	noteListView.SetViewStyle(noteListModel.GetViewStyle());
+	NotebookViewStyle viewStyle(noteListModel.GetViewStyle());
+	noteListView.SetViewStyle(viewStyle);
+	switch (viewStyle)
+	{
+	case NotebookViewCombined: noteListModel.SetPageSize(20); break;
+	case NotebookViewTitles:   noteListModel.SetPageSize(30); break;
+	}
 }
 
 wstring NoteListPresenter::ConvertToHtml(const Note & note, const wstring & guid)

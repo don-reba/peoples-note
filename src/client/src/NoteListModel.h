@@ -15,17 +15,15 @@ private:
 	IRegistryKey & registryKey;
 	IUserModel   & userModel;
 
-	const size_t pageSize;
-
-	int currentPage;
+	size_t pageSize;
+	int    firstNote;
 
 	std::wstring query;
 
 public:
 
 	NoteListModel
-		( int            pageSize
-		, IUserModel   & userModel
+		( IUserModel   & userModel
 		, IRegistryKey & registryKey
 		);
 
@@ -48,6 +46,8 @@ public:
 	virtual void SetNotebookTitleState(bool isEnabled);
 
 	virtual void SetQuery(const std::wstring & query);
+
+	virtual void SetPageSize(int pageSize);
 
 	virtual void SetViewStyle(NotebookViewStyle style);
 };
