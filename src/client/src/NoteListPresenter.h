@@ -41,9 +41,6 @@ public:
 private:
 
 	void OnNoteChanged();
-	void OnNotesChanged();
-	void OnNotebooksChanged();
-	void OnTagsChanged();
 	void OnNotebookSelected();
 	void OnNotebookTitleChanged();
 	void OnNoteListChanged();

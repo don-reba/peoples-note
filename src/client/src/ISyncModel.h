@@ -6,10 +6,7 @@ class IUserModel;
 
 class ISyncModel : public ISignalProvider
 {
-	MacroIEvent(NotebooksChanged)
-	MacroIEvent(NotesChanged)
 	MacroIEvent(StatusUpdated)
-	MacroIEvent(TagsChanged)
 	MacroIEvent(SyncComplete)
 
 public:

@@ -5,10 +5,7 @@
 class MockSyncModel : public ISyncModel
 {
 	MacroTestEvent(SyncComplete)
-	MacroTestEvent(NotebooksChanged)
-	MacroTestEvent(NotesChanged)
 	MacroTestEvent(StatusUpdated)
-	MacroTestEvent(TagsChanged)
 public:
 
 	bool syncBegan;

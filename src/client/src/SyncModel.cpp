@@ -60,15 +60,6 @@ void SyncModel::ProcessMessages()
 		SyncMessageQueue::Message message(messages.Dequeue());
 		switch (message.Type)
 		{
-		case SyncMessageQueue::MessageNotebooksChanged:
-			SignalNotebooksChanged();
-			break;
-		case SyncMessageQueue::MessageNotesChanged:
-			SignalNotesChanged();
-			break;
-		case SyncMessageQueue::MessageTagsChanged:
-			SignalTagsChanged();
-			break;
 		case SyncMessageQueue::MessageSyncComplete:
 			SignalSyncComplete();
 			break;

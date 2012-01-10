@@ -8,9 +8,6 @@ public:
 
 	enum MessageType
 	{
-		MessageNotebooksChanged,
-		MessageNotesChanged,
-		MessageTagsChanged,
 		MessageSyncFailed,
 		MessageSyncComplete,
 		MessageSyncProgress,

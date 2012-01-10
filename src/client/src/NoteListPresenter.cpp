@@ -57,20 +57,11 @@ NoteListPresenter::NoteListPresenter
 	noteListView.ConnectViewStyleChanged
 		(bind(&NoteListPresenter::OnViewStyleChanged, this));
 
-	syncModel.ConnectNotesChanged
-		(bind(&NoteListPresenter::OnNotesChanged, this));
-
-	syncModel.ConnectNotebooksChanged
-		(bind(&NoteListPresenter::OnNotebooksChanged, this));
-
 	syncModel.ConnectStatusUpdated
 		(bind(&NoteListPresenter::OnSyncStatusUpdated, this));
 
 	syncModel.ConnectSyncComplete
 		(bind(&NoteListPresenter::OnSyncEnd, this));
-
-	syncModel.ConnectTagsChanged
-		(bind(&NoteListPresenter::OnTagsChanged, this));
 
 	userModel.ConnectLoaded
 		(bind(&NoteListPresenter::OnUserLoaded, this));
@@ -83,26 +74,6 @@ NoteListPresenter::NoteListPresenter
 
 void NoteListPresenter::OnNoteChanged()
 {
-	UpdateSyncCounter();
-}
-
-void NoteListPresenter::OnNotesChanged()
-{
-	Transaction transaction(userModel);
-	UpdateSyncCounter();
-	noteListModel.Reload();
-}
-
-void NoteListPresenter::OnNotebooksChanged()
-{
-	Transaction transaction(userModel);
-	UpdateSyncCounter();
-	UpdateNotebookListView();
-}
-
-void NoteListPresenter::OnTagsChanged()
-{
-	Transaction transaction(userModel);
 	UpdateSyncCounter();
 }
 

@@ -20,10 +20,7 @@ class SyncModel : public ISyncModel
 {
 // events
 
-	MacroEvent(NotebooksChanged)
-	MacroEvent(NotesChanged)
 	MacroEvent(StatusUpdated)
-	MacroEvent(TagsChanged)
 	MacroEvent(SyncComplete)
 
 // types

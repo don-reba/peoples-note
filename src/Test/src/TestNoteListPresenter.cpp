@@ -155,30 +155,6 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_NotebooksChanged
-	, NoteListPresenterFixture
-	)
-{
-	userModel.notes.push_back(Note());
-	userModel.notes.back().isDirty = true;
-
-	userModel.notes.push_back(Note());
-	userModel.notes.back().isDirty = true;
-
-	userModel.notebooks.resize(2);
-	userModel.notebooks.at(0).name = L"notebook-0";
-	userModel.notebooks.at(1).name = L"notebook-1";
-
-	syncModel.SignalNotebooksChanged();
-
-	BOOST_CHECK_EQUAL(noteListView.syncText, L"2");
-
-	BOOST_CHECK_EQUAL(noteListView.notebookMenu.size(), 2);
-	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(0).name, L"notebook-0");
-	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(1).name, L"notebook-1");
-}
-
-BOOST_FIXTURE_TEST_CASE
 	( NoteListPresenter_NotebookSelected
 	, NoteListPresenterFixture
 	)
@@ -254,23 +230,6 @@ BOOST_FIXTURE_TEST_CASE
 }
 
 BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_NotesChanged
-	, NoteListPresenterFixture
-	)
-{
-	userModel.notes.push_back(Note());
-	userModel.notes.back().isDirty = true;
-	userModel.notes.push_back(Note());
-	userModel.notes.back().isDirty = true;
-
-	syncModel.SignalNotesChanged();
-
-	BOOST_CHECK_EQUAL(noteListView.syncText, L"2");
-
-	BOOST_CHECK(noteListModel.isReloaded);
-}
-
-BOOST_FIXTURE_TEST_CASE
 	( NoteListPresenter_SyncBegin
 	, NoteListPresenterFixture
 	)
@@ -304,22 +263,6 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK_EQUAL(noteListView.notebookMenu.at(1).name, L"notebook-1");
 
 	BOOST_CHECK(noteListView.isSyncEnabled);
-}
-
-BOOST_FIXTURE_TEST_CASE
-	( NoteListPresenter_TagsChanged
-	, NoteListPresenterFixture
-	)
-{
-	userModel.notes.push_back(Note());
-	userModel.notes.back().isDirty = true;
-
-	userModel.notes.push_back(Note());
-	userModel.notes.back().isDirty = true;
-
-	syncModel.SignalTagsChanged();
-
-	BOOST_CHECK_EQUAL(noteListView.syncText, L"2");
 }
 
 BOOST_FIXTURE_TEST_CASE
