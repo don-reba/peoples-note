@@ -5,12 +5,16 @@
 
 class MockNoteListModel : public INoteListModel
 {
+	MacroTestEvent(NoteChanged)
+	MacroTestEvent(NoteListChanged)
 public:
 
 	NoteList          notes;
+	size_t            pageSize;
 	std::wstring      query;
 	NotebookViewStyle viewStyle;
 
+	bool gotNotifiedOfNoteChange;
 	bool hasNextPage;
 	bool hasPreviousPage;
 	bool isReloaded;
@@ -18,13 +22,9 @@ public:
 	bool nextPageSelected;
 	bool previousPageSelected;
 
-	signal SignalChanged;
-
 public:
 
 	MockNoteListModel();
-
-	virtual void ConnectChanged(slot_type OnReset);
 
 	virtual void GetCurrentPage
 		( NoteList & notes
@@ -36,6 +36,8 @@ public:
 
 	virtual NotebookViewStyle GetViewStyle();
 
+	virtual void NotifyOfNoteChange();
+
 	virtual void Reload();
 
 	virtual void SelectNextPage();
@@ -43,6 +45,8 @@ public:
 	virtual void SelectPreviousPage();
 
 	virtual void SetNotebookTitleState(bool isEnabled);
+
+	virtual void SetPageSize(size_t pageSize);
 
 	virtual void SetQuery(const std::wstring & query);
 

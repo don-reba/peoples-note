@@ -33,7 +33,10 @@ NoteListPresenter::NoteListPresenter
 	, syncModel        (syncModel)
 	, enNoteTranslator (enNoteTranslator)
 {
-	noteListModel.ConnectChanged
+	noteListModel.ConnectNoteChanged
+		(bind(&NoteListPresenter::OnNoteChanged, this));
+
+	noteListModel.ConnectNoteListChanged
 		(bind(&NoteListPresenter::OnNoteListChanged, this));
 
 	noteListView.ConnectNotebookSelected
@@ -78,6 +81,11 @@ NoteListPresenter::NoteListPresenter
 // event handlers
 //---------------
 
+void NoteListPresenter::OnNoteChanged()
+{
+	UpdateSyncCounter();
+}
+
 void NoteListPresenter::OnNotesChanged()
 {
 	Transaction transaction(userModel);
@@ -103,6 +111,7 @@ void NoteListPresenter::OnNotebookSelected()
 	Transaction transaction(userModel);
 	UpdateActiveNotebook();
 	UpdateTitle();
+	ResetSearch();
 	noteListModel.Reload();
 	UpdateSyncCounter();
 }
@@ -211,6 +220,13 @@ void NoteListPresenter::OnViewStyleChanged()
 //
 // Note: transactions are managed at a higher level.
 //--------------------------------------------------
+
+void NoteListPresenter::ResetSearch()
+{
+	noteListView.SetSearchText(L"");
+	noteListModel.SetQuery(L"");
+	noteListView.SetSearchButtonToSearch();
+}
 
 void NoteListPresenter::UpdateActiveNotebook()
 {

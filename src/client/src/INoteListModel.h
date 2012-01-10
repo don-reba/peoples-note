@@ -6,7 +6,8 @@
 
 class INoteListModel : public ISignalProvider
 {
-	MacroIEvent(Changed)
+	MacroIEvent(NoteChanged)
+	MacroIEvent(NoteListChanged)
 
 public:
 
@@ -22,6 +23,8 @@ public:
 
 	virtual NotebookViewStyle GetViewStyle() = 0;
 
+	virtual void NotifyOfNoteChange() = 0;
+
 	virtual void Reload() = 0;
 
 	virtual void SelectNextPage() = 0;
@@ -30,7 +33,7 @@ public:
 
 	virtual void SetNotebookTitleState(bool isEnabled) = 0;
 
-	virtual void SetPageSize(int pageSize) = 0;
+	virtual void SetPageSize(size_t pageSize) = 0;
 
 	virtual void SetQuery(const std::wstring & query) = 0;
 

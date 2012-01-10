@@ -122,6 +122,7 @@ void NotePresenter::OnCloseNote()
 	}
 
 	noteListModel.Reload();
+	noteListModel.NotifyOfNoteChange();
 }
 
 void NotePresenter::OnDeleteNote()
@@ -176,12 +177,12 @@ void NotePresenter::OnOpenNote()
 			, ConvertToUnicode(e.what()).c_str()
 			);
 	}
-#else
+#else // WINCE
 	catch (const std::exception &)
 	{
 		// try to continue
 	}
-#endif // WINNT
+#endif // WINCE
 	noteView.Show();
 }
 

@@ -60,7 +60,7 @@ NotebookViewStyle MockNoteListView::GetRequestedViewStyle()
 	return requestedViewStyle;
 }
 
-std::wstring MockNoteListView::GetSearchString()
+std::wstring MockNoteListView::GetSearchText()
 {
 	return searchString;
 }

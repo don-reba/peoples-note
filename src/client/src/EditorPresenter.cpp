@@ -28,11 +28,11 @@ EditorPresenter::EditorPresenter
 	, noteView         (noteView)
 	, userModel        (userModel)
 {
-	editorView.ConnectAccept     (bind(&EditorPresenter::OnAccept,    this));
-	editorView.ConnectCancel     (bind(&EditorPresenter::OnCancel,    this));
+	editorView.ConnectAccept     (bind(&EditorPresenter::OnAccept,     this));
+	editorView.ConnectCancel     (bind(&EditorPresenter::OnCancel,     this));
 	editorView.ConnectDeleteNote (bind(&EditorPresenter::OnDeleteNote, this));
-	noteListView.ConnectNewNote  (bind(&EditorPresenter::OnNewNote,   this));
-	noteView.ConnectEdit         (bind(&EditorPresenter::OnEditNote,  this));
+	noteListView.ConnectNewNote  (bind(&EditorPresenter::OnNewNote,    this));
+	noteView.ConnectEdit         (bind(&EditorPresenter::OnEditNote,   this));
 }
 
 void EditorPresenter::OnAccept()
@@ -68,6 +68,7 @@ void EditorPresenter::OnAccept()
 	}
 
 	noteListModel.Reload();
+	noteListModel.NotifyOfNoteChange();
 }
 
 void EditorPresenter::OnCancel()

@@ -82,6 +82,7 @@ BOOST_FIXTURE_TEST_CASE
 		);
 
 	BOOST_CHECK(noteListModel.isReloaded);
+	BOOST_CHECK(noteListModel.gotNotifiedOfNoteChange);
 }
 
 BOOST_FIXTURE_TEST_CASE

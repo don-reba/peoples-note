@@ -72,6 +72,7 @@ BOOST_FIXTURE_TEST_CASE
 	noteView.SignalClose();
 
 	BOOST_CHECK(noteListModel.isReloaded);
+	BOOST_CHECK(noteListModel.gotNotifiedOfNoteChange);
 
 	BOOST_CHECK_EQUAL(userModel.addedNotes.size(), 1);
 	BOOST_CHECK_EQUAL(userModel.addedNotes.at(0).note.isDirty, true);

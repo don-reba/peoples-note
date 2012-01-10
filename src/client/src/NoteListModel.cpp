@@ -52,16 +52,21 @@ NotebookViewStyle NoteListModel::GetViewStyle()
 	return NotebookViewCombined;
 }
 
+void NoteListModel::NotifyOfNoteChange()
+{
+	SignalNoteChanged();
+}
+
 void NoteListModel::Reload()
 {
 	firstNote = 0;
-	SignalChanged();
+	SignalNoteListChanged();
 }
 
 void NoteListModel::SelectNextPage()
 {
 	firstNote += pageSize;
-	SignalChanged();
+	SignalNoteListChanged();
 }
 
 void NoteListModel::SelectPreviousPage()
@@ -69,7 +74,7 @@ void NoteListModel::SelectPreviousPage()
 	firstNote -= pageSize;
 	if (firstNote < 0)
 		throw std::exception("Invalid call to NoteListModel::SelectPreviousPage.");
-	SignalChanged();
+	SignalNoteListChanged();
 }
 
 void NoteListModel::SetNotebookTitleState(bool isEnabled)
@@ -85,7 +90,7 @@ void NoteListModel::SetQuery(const wstring & query)
 	this->query = query;
 }
 
-void NoteListModel::SetPageSize(int pageSize)
+void NoteListModel::SetPageSize(size_t pageSize)
 {
 	this->pageSize = pageSize;
 }

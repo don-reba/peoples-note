@@ -40,7 +40,8 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Empty)
 	MockRegistryKey registryKey;
 
 	MockUserModel userModel;
-	NoteListModel noteListModel(2, userModel, registryKey);
+	NoteListModel noteListModel(userModel, registryKey);
+	noteListModel.SetPageSize(2);
 
 	NoteList notes;
 	bool hasPreviousPage, hasNextPage;
@@ -64,7 +65,8 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Even)
 	MockRegistryKey registryKey;
 
 	MockUserModel userModel;
-	NoteListModel noteListModel(3, userModel, registryKey);
+	NoteListModel noteListModel(userModel, registryKey);
+	noteListModel.SetPageSize(3);
 
 	NoteList notes;
 	bool hasNextPage, hasPreviousPage;
@@ -92,7 +94,8 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Odd)
 	MockRegistryKey registryKey;
 
 	MockUserModel userModel;
-	NoteListModel noteListModel(3, userModel, registryKey);
+	NoteListModel noteListModel(userModel, registryKey);
+	noteListModel.SetPageSize(3);
 
 	NoteList notes;
 	bool hasNextPage, hasPreviousPage;
@@ -121,7 +124,8 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Reload)
 	MockRegistryKey registryKey;
 
 	MockUserModel userModel;
-	NoteListModel noteListModel(2, userModel, registryKey);
+	NoteListModel noteListModel(userModel, registryKey);
+	noteListModel.SetPageSize(2);
 
 	userModel.notes.resize(2);
 	userModel.notes.at(0).name = L"note 0";
@@ -137,7 +141,7 @@ BOOST_AUTO_TEST_CASE(NoteListModel_Reload)
 	BOOST_CHECK_EQUAL(notes.size(), 0);
 
 	SignalCheck signalChangedCheck;
-	noteListModel.ConnectChanged(ref(signalChangedCheck));
+	noteListModel.ConnectNoteListChanged(ref(signalChangedCheck));
 
 	noteListModel.Reload();
 
@@ -154,7 +158,8 @@ BOOST_AUTO_TEST_CASE(NoteListModel_NotebookTitle)
 	MockRegistryKey registryKey;
 
 	MockUserModel userModel;
-	NoteListModel noteListModel(2, userModel, registryKey);
+	NoteListModel noteListModel(userModel, registryKey);
+	noteListModel.SetPageSize(2);
 
 	noteListModel.SetNotebookTitleState(true);
 	BOOST_CHECK_EQUAL(registryKey.GetString(L"notebook title state", L""), L"enabled");

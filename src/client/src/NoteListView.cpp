@@ -180,7 +180,7 @@ Guid NoteListView::GetSelectedNoteGuid()
 	return Guid(noteList.get_attribute("value"));
 }
 
-wstring NoteListView::GetSearchString()
+wstring NoteListView::GetSearchText()
 {
 	return searchBox.text().c_str();
 }

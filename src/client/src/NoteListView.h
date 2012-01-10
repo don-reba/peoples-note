@@ -106,7 +106,7 @@ public:
 
 	virtual NotebookViewStyle GetRequestedViewStyle();
 	
-	virtual std::wstring GetSearchString();
+	virtual std::wstring GetSearchText();
 
 	virtual Guid GetSelectedNotebookGuid();
 

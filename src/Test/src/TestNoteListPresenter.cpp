@@ -75,7 +75,7 @@ BOOST_FIXTURE_TEST_CASE
 	noteListModel.hasPreviousPage = false;
 	noteListModel.hasNextPage     = true;
 
-	noteListModel.SignalChanged();
+	noteListModel.SignalNoteListChanged();
 
 	BOOST_CHECK_EQUAL(noteListView.notesUpdated, true);
 
@@ -240,6 +240,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	noteListView.SignalViewStyleChanged();
 
+	BOOST_CHECK_EQUAL(noteListModel.pageSize,  30u);
 	BOOST_CHECK_EQUAL(noteListModel.viewStyle, NotebookViewTitles);
 	BOOST_CHECK_EQUAL(noteListView.viewStyle,  NotebookViewTitles);
 
@@ -247,6 +248,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	noteListView.SignalViewStyleChanged();
 
+	BOOST_CHECK_EQUAL(noteListModel.pageSize,  20u);
 	BOOST_CHECK_EQUAL(noteListModel.viewStyle, NotebookViewCombined);
 	BOOST_CHECK_EQUAL(noteListView.viewStyle,  NotebookViewCombined);
 }

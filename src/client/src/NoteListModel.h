@@ -8,7 +8,8 @@ class IUserModel;
 
 class NoteListModel : public INoteListModel
 {
-	MacroEvent(Changed)
+	MacroEvent(NoteChanged)
+	MacroEvent(NoteListChanged)
 
 private:
 
@@ -37,6 +38,8 @@ public:
 
 	virtual NotebookViewStyle GetViewStyle();
 
+	virtual void NotifyOfNoteChange();
+
 	virtual void Reload();
 
 	virtual void SelectNextPage();
@@ -47,7 +50,7 @@ public:
 
 	virtual void SetQuery(const std::wstring & query);
 
-	virtual void SetPageSize(int pageSize);
+	virtual void SetPageSize(size_t pageSize);
 
 	virtual void SetViewStyle(NotebookViewStyle style);
 };

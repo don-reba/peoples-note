@@ -5,20 +5,15 @@ using namespace boost;
 using namespace std;
 
 MockNoteListModel::MockNoteListModel()
-	: hasNextPage          (false)
-	, hasPreviousPage      (false)
-	, isReloaded           (false)
-	, notebookTitleState   (false)
-	, nextPageSelected     (false)
-	, previousPageSelected (false)
+	: gotNotifiedOfNoteChange (false)
+	, hasNextPage             (false)
+	, hasPreviousPage         (false)
+	, isReloaded              (false)
+	, notebookTitleState      (false)
+	, nextPageSelected        (false)
+	, previousPageSelected    (false)
 {
 }
-
-void MockNoteListModel::ConnectChanged(slot_type OnReset)
-{
-	SignalChanged.connect(OnReset);
-}
-
 
 void MockNoteListModel::GetCurrentPage
 	( NoteList & notes
@@ -39,6 +34,11 @@ bool MockNoteListModel::GetNotebookTitleState()
 NotebookViewStyle MockNoteListModel::GetViewStyle()
 {
 	return viewStyle;
+}
+
+void MockNoteListModel::NotifyOfNoteChange()
+{
+	gotNotifiedOfNoteChange = true;
 }
 
 void MockNoteListModel::Reload()
@@ -64,6 +64,11 @@ void MockNoteListModel::SetNotebookTitleState(bool isEnabled)
 void MockNoteListModel::SetQuery(const wstring & query)
 {
 	this->query = query;
+}
+
+void MockNoteListModel::SetPageSize(size_t pageSize)
+{
+	this->pageSize = pageSize;
 }
 
 void MockNoteListModel::SetViewStyle(NotebookViewStyle style)

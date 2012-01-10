@@ -40,6 +40,7 @@ public:
 
 private:
 
+	void OnNoteChanged();
 	void OnNotesChanged();
 	void OnNotebooksChanged();
 	void OnTagsChanged();
@@ -57,6 +58,8 @@ private:
 // utility functions
 
 private:
+
+	void ResetSearch();
 
 	void UpdateActiveNotebook();
 

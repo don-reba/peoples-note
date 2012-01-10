@@ -36,7 +36,7 @@ void SearchPresenter::OnClearSearch()
 
 void SearchPresenter::OnSearch()
 {
-	wstring search = noteListView.GetSearchString();
+	wstring search = noteListView.GetSearchText();
 	if (search.find_first_not_of(L" \t") == wstring::npos)
 		noteListView.SetSearchButtonToSearch();
 	else
