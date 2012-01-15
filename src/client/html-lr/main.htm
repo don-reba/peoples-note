@@ -60,12 +60,16 @@
 			{
 				height : 38px;
 			}
-			#note-list .note #thumb
+			#note-list[view-style=combined] .note #thumb
 			{
 				border-style : none;
 				border-right : 2px solid #f0ec40;
 				display      : block;
 				float        : left;
+			}
+			#note-list[view-style=titles] .note #thumb
+			{
+				display : none;
 			}
 			#note-list .note #time
 			{
