@@ -1,0 +1,2 @@
+#define IDS_CHAR_STRING 1
+#define IDS_TEST_STRING 2

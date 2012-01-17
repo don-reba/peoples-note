@@ -131,7 +131,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)client\src&quot;;&quot;$(SolutionDir)Test\src&quot;;..\HTMLayout\include"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)client&quot;;&quot;$(SolutionDir)client\src&quot;;&quot;$(SolutionDir)Test\src&quot;;..\HTMLayout\include"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;POCKETPC2003_UI_MODEL;SQLITE_OMIT_UTF16;SQLITE_ENABLE_FTS3;SQLITE_ENABLE_FTS3_PARENTHESIS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -389,6 +389,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\crackers.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\CredentialsModel.cpp"
 				>
 			</File>
@@ -397,7 +401,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EditorView.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\Guid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\HTMLayoutWindow.cpp"
 				>
 			</File>
 			<File
@@ -430,6 +442,10 @@
 			</File>
 			<File
 				RelativePath="..\Test\src\MockFlashCard.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\client\src\Rect.cpp"
 				>
 			</File>
 			<File
@@ -505,6 +521,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TestEditor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TestRegistryKey.cpp"
 				>
 			</File>
@@ -575,11 +595,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resourceppc.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\resourceppc.h"
+				RelativePath=".\resource.h"
 				>
 			</File>
 			<File

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "resourceppc.h"
+#include "resource.h"
 #include "Test.h"
 #include "Tools.h"
 

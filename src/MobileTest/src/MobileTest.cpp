@@ -16,6 +16,17 @@ void OpenFile(const wchar_t * file)
 	ShellExecuteEx(&sei);
 }
 
+template<std::size_t N>
+bool Contains(const wchar_t * (&list)[N], const wchar_t * query)
+{
+	for (int i(0); i != N; ++i)
+	{
+		if (0 == wcscmp(list[i], query))
+			return true;
+	}
+	return false;
+}
+
 int WINAPI WinMain
 	( HINSTANCE instance
 	, HINSTANCE previousInstance
@@ -29,9 +40,16 @@ int WINAPI WinMain
 	const wchar_t * resultsFileName(L"results.txt");
 	std::wofstream resultsFile(resultsFileName);
 
+	const wchar_t * exclusionList[] =
+		{ L".\\src\\TestUserModel.cpp"
+		, L".\\src\\TestUserModelTransactions.cpp"
+		};
+
 	TEST_SUITE test(resultsFile);
 	foreach (TEST_BASE * test_case, TEST_LIST)
 	{
+		if (Contains(exclusionList, test_case->file))
+			continue;
 		test.SetTest(test_case->name);
 		try
 		{

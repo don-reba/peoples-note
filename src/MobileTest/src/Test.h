@@ -136,9 +136,14 @@ extern std::vector<TEST_BASE*> TEST_LIST;
 struct TEST_BASE
 {
 	const wchar_t * name;
+	const wchar_t * file;
 	TEST_BASE() { TEST_LIST.push_back(this); }
 	virtual void Run(TEST_SUITE&) = 0;
 };
+
+#define WSTR2(s) L##s
+#define WSTR(s) WSTR2(s)
+#define __WFILE__ WSTR(__FILE__)
 
 #define FIXTURE_TEST_CASE(test_name, F)              \
     struct test_name : F                             \
@@ -147,7 +152,11 @@ struct TEST_BASE
     };                                               \
     struct test_name##_runner : TEST_BASE            \
     {                                                \
-        test_name##_runner() { name = L#test_name; } \
+        test_name##_runner()                         \
+        {                                            \
+            name = L#test_name;                      \
+			file =  __WFILE__;                       \
+        }                                            \
         void Run(TEST_SUITE & TEST)                  \
         {                                            \
             test_name().Run(TEST);                   \
