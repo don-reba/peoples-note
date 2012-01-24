@@ -65,7 +65,7 @@ void NoteView::RegisterEventHandlers()
 // INoteView implementation
 //-------------------------
 
-static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
+static void CALLBACK WriteHtml(LPCBYTE utf8, UINT utf8_length, LPVOID param)
 {
 	wstring * dst(reinterpret_cast<wstring*>(param));
 	ConvertToUnicode(utf8, *dst);
@@ -73,12 +73,9 @@ static void CALLBACK _writer_a(LPCBYTE utf8, UINT utf8_length, LPVOID param)
 
 void NoteView::GetBody(wstring & html)
 {
+	const bool outerHtml(false);
 	HTMLayoutGetElementHtmlCB
-		( FindFirstElement("#body") // he
-		, false                     // outer
-		, _writer_a                 // cb
-		, &html                     // cb_param
-		);
+		(FindFirstElement("#body"), outerHtml, &WriteHtml, &html);
 }
 
 void NoteView::GetNote(Note & note)
@@ -137,9 +134,9 @@ void NoteView::Hide()
 	::ShowWindow(hwnd_,   SW_HIDE);
 	::ShowWindow(menuBar, SW_HIDE);
 
-	Reset();
-
 	SignalClose();
+
+	Reset();
 }
 
 bool NoteView::IsDirty()

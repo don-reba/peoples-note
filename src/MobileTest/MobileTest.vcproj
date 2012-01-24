@@ -413,6 +413,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\HtmlEditor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\ImagingException.cpp"
 				>
 			</File>
@@ -442,6 +446,10 @@
 			</File>
 			<File
 				RelativePath="..\Test\src\MockFlashCard.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockHtmlDataLoader.cpp"
 				>
 			</File>
 			<File
@@ -595,7 +603,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
+				RelativePath=".\src\HtmlEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockHtmlDataLoader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\resourceppc.h"
 				>
 			</File>
 			<File
