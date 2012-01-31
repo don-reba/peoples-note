@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LastUserModel.h"
+
 #include "MockRegistryKey.h"
 
 using namespace boost;

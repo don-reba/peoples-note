@@ -1,7 +1,8 @@
 #include "stdafx.h"
+#include "AboutPresenter.h"
+
 #include "MockAboutView.h"
 #include "MockNoteListView.h"
-#include "AboutPresenter.h"
 
 struct AboutPresenterFixture
 {

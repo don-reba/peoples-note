@@ -10,6 +10,12 @@
 #include <iterator>
 #include <memory>
 
+#pragma warning(push)
+#pragma warning(disable:4996)
+#include <boost/xpressive/xpressive.hpp>
+#pragma warning(pop)
+
+using namespace boost::xpressive;
 using namespace rapidxml;
 using namespace std;
 
@@ -42,7 +48,7 @@ void EnNoteTranslator::ConvertToHtml
 	ProcessNode(doc.get(), doc.get(), xmlTransforms);
 
 	html.clear();
-	print(back_inserter(html), *doc, print_no_indenting | print_no_char_expansion);
+	rapidxml::print(back_inserter(html), *doc, print_no_indenting | print_no_char_expansion);
 	// apostropies and amperstands are escaped in XML, but not in HTML
 	Tools::ReplaceAll(html, L"&apos;", L"'");
 }
@@ -121,7 +127,7 @@ void EnNoteTranslator::ConvertToXml
 	xml =
 		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n";
-	print(back_inserter(xml), *doc, print_no_indenting | print_no_char_expansion);
+	rapidxml::print(back_inserter(xml), *doc, print_no_indenting | print_no_char_expansion);
 }
 
 //------------------
@@ -228,6 +234,89 @@ void EnNoteTranslator::GetXmlAttributes
 	}
 }
 
+void EnNoteTranslator::ProcessDataNode
+	( rapidxml::memory_pool<wchar_t> * store
+	, rapidxml::xml_node<wchar_t>    * parent
+	, rapidxml::xml_node<wchar_t>    * child
+	)
+{
+	// Based on the format used by Android's text.util.Linkify.
+	// The pattern matches the following:
+	// * Optionally, a + sign followed immediately by one or more digits.
+	//   Spaces, dots, or dashes may follow.
+	// * Optionally, sets of digits in parentheses, separated by spaces,
+	//   dots, or dashes.
+	// * A string starting and ending with a digit, containing digits,
+	//   spaces, dots, and/or dashes.
+	wcregex expression = wcregex::compile
+		(                            // sdd = space, dot, or dash
+		L"(?:\\+\\d+[\\-\\. ]*)?"    // +<digits><sdd>*
+		L"(?:\\(\\d+\\)[\\-\\. ]*)?" // (<digits>)<sdd>*
+		L"\\d[\\d\\-\\. ]+"          // <digit><digit|sdd>+
+		);
+	const wchar_t * begin (child->value());
+	const wchar_t * end   (child->value() + child->value_size());
+
+	bool hasMatches(false);
+	const wchar_t * first(begin);
+	foreach_ (const wcmatch & matches, wcregex_iterator(begin, end, expression), wcregex_iterator())
+	{
+		const wcsub_match & match(*matches.begin());
+
+		// reject numbers with fewer than 5 digits
+		if (count_if(match.first, match.second, iswdigit) < 5)
+			continue;
+
+		hasMatches = true;
+
+		// the regular expression matches numbers ending in non-digits
+		// strip trailing non-digits
+		typedef reverse_iterator<const wchar_t *> riter;
+		const wchar_t * matchBegin (match.first);
+		const wchar_t * matchEnd   (find_if(riter(match.second), riter(match.first), iswdigit).base());
+
+		// add text preceding the phone number as usual
+		if (first != matchBegin)
+		{
+			parent->insert_node
+				( child
+				, store->allocate_node(node_data, L"", first, 0, matchBegin - first)
+				);
+		}
+
+		// prepend "tel:" to url, following iPhone and Android
+		wstring url(L"tel:");
+		url.append(matchBegin, matchEnd - matchBegin);
+
+		// add a phone link
+		xml_node<wchar_t> * linkNode = store->allocate_node
+				(node_element, L"a", matchBegin, 0, matchEnd - matchBegin);
+		linkNode->append_attribute
+			( store->allocate_attribute
+				( L"href"
+				, store->allocate_string(url.c_str(), url.size())
+				, 0
+				, url.size()
+				)
+			);
+		parent->insert_node(child, linkNode);
+
+		first = matchEnd;
+	}
+	if (hasMatches)
+	{
+		// append trailing text and remove the original node
+		if (first != end)
+		{
+			parent->insert_node
+				( child
+				, store->allocate_node(node_data, L"", first, 0, end - first)
+				);
+		}
+		parent->remove_node(child);
+	}
+}
+
 void EnNoteTranslator::ProcessNode
 	( memory_pool<wchar_t> * store
 	, xml_node<wchar_t>    * node
@@ -242,10 +331,16 @@ void EnNoteTranslator::ProcessNode
 		ProcessNode(store, child, transforms);
 
 		wstring name(child->name(), child->name_size());
-
-		TransformMap::const_iterator transform(transforms.find(name));
-		if (transform != transforms.end())
-			(*transform->second)(store, node, child);
+		if (child->type() == node_data)
+		{
+			ProcessDataNode(store, node, child);
+		}
+		else
+		{
+			TransformMap::const_iterator transform(transforms.find(name));
+			if (transform != transforms.end())
+				(*transform->second)(store, node, child);
+		}
 
 		child = sibling;
 	}

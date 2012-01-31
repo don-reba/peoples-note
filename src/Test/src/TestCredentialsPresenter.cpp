@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CredentialsPresenter.h"
+
 #include "MockCredentialsModel.h"
 #include "MockCredentialsView.h"
 #include "MockEnService.h"

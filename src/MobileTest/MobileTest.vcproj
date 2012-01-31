@@ -401,10 +401,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\client\src\EditorView.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\client\src\Guid.cpp"
 				>
 			</File>

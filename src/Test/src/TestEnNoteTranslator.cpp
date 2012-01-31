@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
-
 #include "EnNoteTranslator.h"
+
 #include "MockUserModel.h"
 #include "MockNoteListView.h"
 #include "MockNoteView.h"
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_ConvertToXml)
 		);
 }
 
-BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt_Test)
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt)
 {
 	EnNoteTranslator enNoteTranslator;
 
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt_Test)
 	BOOST_CHECK_EQUAL(xml, xml2);
 }
 
-BOOST_AUTO_TEST_CASE(EnNoteTranslator_Media_Test)
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_Media)
 {
 	EnNoteTranslator enNoteTranslator;
 
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Media_Test)
 	BOOST_CHECK_EQUAL(xml, xml2);
 }
 
-BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo)
 {
 	EnNoteTranslator enNoteTranslator;
 
@@ -210,7 +210,6 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 			L"<input type=\"checkbox\"/>"
 		);
 
-
 	wstring xml2;
 	enNoteTranslator.ConvertToXml(html, xml2);
 	BOOST_CHECK_EQUAL
@@ -224,5 +223,67 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Todo_Test)
 				L"<en-todo checked=\"false\"/>"
 				L"<en-todo checked=\"false\"/>"
 			L"</en-note>"
+		);
+}
+
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_PhoneNumbers)
+{
+	EnNoteTranslator enNoteTranslator;
+
+	wstring xml, html;
+
+	// international format
+	xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+		L"<en-note><p>Hello +34 (123) 456-789 World!</p></en-note>";
+	enNoteTranslator.ConvertToHtml(xml, html);
+	BOOST_CHECK_EQUAL
+		( html
+		, L"<p>Hello <a href=\"tel:+34 (123) 456-789\">+34 (123) 456-789</a> World!</p>"
+		);
+
+	// continuous
+	xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+		L"<en-note><p>Hello +1234567 World!</p></en-note>";
+	enNoteTranslator.ConvertToHtml(xml, html);
+	BOOST_CHECK_EQUAL
+		( html
+		, L"<p>Hello <a href=\"tel:+1234567\">+1234567</a> World!</p>"
+		);
+
+	// too few digits
+	xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+		L"<en-note><p>Hello +1234 World!</p></en-note>";
+	enNoteTranslator.ConvertToHtml(xml, html);
+	BOOST_CHECK_EQUAL
+		( html
+		, L"<p>Hello +1234 World!</p>"
+		);
+
+	// russian; national
+	xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+		L"<en-note><p>Hello 8.812.234-56-78 World!</p></en-note>";
+	enNoteTranslator.ConvertToHtml(xml, html);
+	BOOST_CHECK_EQUAL
+		( html
+		, L"<p>Hello <a href=\"tel:8.812.234-56-78\">8.812.234-56-78</a> World!</p>"
+		);
+
+	// multiple instances; end of sentence
+	xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+		L"<en-note><p>12345, 12345.</p></en-note>";
+	enNoteTranslator.ConvertToHtml(xml, html);
+	BOOST_CHECK_EQUAL
+		( html
+		, L"<p><a href=\"tel:12345\">12345</a>, <a href=\"tel:12345\">12345</a>.</p>"
 		);
 }

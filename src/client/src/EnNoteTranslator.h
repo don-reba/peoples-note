@@ -84,6 +84,12 @@ private:
 		, AttributeMap                & map
 		);
 
+	void ProcessDataNode
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
+		);
+
 	void ProcessNode
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * node

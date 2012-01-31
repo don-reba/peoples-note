@@ -1,10 +1,11 @@
 #include "stdafx.h"
+#include "NoteListPresenter.h"
+
 #include "EnNoteTranslator.h"
 #include "MockNoteListModel.h"
 #include "MockNoteListView.h"
 #include "MockNoteView.h"
 #include "MockSyncModel.h"
-#include "NoteListPresenter.h"
 #include "Note.h"
 #include "Tag.h"
 #include "MockUserModel.h"
