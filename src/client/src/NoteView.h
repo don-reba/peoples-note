@@ -33,8 +33,9 @@ private:
 
 	POINT startScrollPos;
 
-	bool isDirty;
 	bool isMaximized;
+
+	std::set<int> dirtyCheckboxIds;
 
 	element body;
 	element vScroll;
@@ -60,6 +61,8 @@ public:
 public:
 
 	virtual void GetBody(std::wstring & html);
+
+	virtual void GetDirtyCheckboxIds(std::set<int> & dirtyCheckboxIds);
 
 	virtual void GetNote(Note & note);
 

@@ -14,6 +14,7 @@
 #include "WaitCursor.h"
 
 #include <fstream>
+#include <set>
 
 using namespace boost;
 using namespace std;
@@ -94,28 +95,29 @@ void NotePresenter::OnCloseNote()
 
 	MacroWaitCursor;
 
-	wstring bodyHtml;
-	noteView.GetBody(bodyHtml);
-
-	wstring bodyXml;
-	enNoteTranslator.ConvertToXml(bodyHtml, bodyXml);
-
-	wstring bodyText;
-	enNoteTranslator.ConvertToText(bodyXml, bodyText);
-
-	Note note;
-	noteView.GetNote(note);
-	note.modificationDate = Timestamp::GetCurrentTime();
-	note.isDirty = true;
-
-	noteView.SetNote(note, L"", L"", L"", AttachmentViewInfoList(), false); // clear
-
 	{
 		Transaction transaction(userModel);
 
+		Note note;
+		noteView.GetNote(note);
+		note.modificationDate = Timestamp::GetCurrentTime();
+		note.isDirty = true;
+
+		set<int> dirtyCheckboxIds;
+		noteView.GetDirtyCheckboxIds(dirtyCheckboxIds);
+
+		wstring srcXml, dstXml;
+		userModel.GetNoteBody(note.guid, srcXml);
+		enNoteTranslator.ApplyXmlModifications(srcXml, dstXml, dirtyCheckboxIds);
+
+		wstring bodyText;
+		enNoteTranslator.ConvertToText(dstXml, bodyText);
+
+		noteView.SetNote(note, L"", L"", L"", AttachmentViewInfoList(), false); // clear
+
 		Notebook notebook;
 		userModel.GetLastUsedNotebook(notebook);
-		userModel.AddNote(note, bodyXml, bodyText, notebook);
+		userModel.AddNote(note, dstXml, bodyText, notebook);
 
 		userModel.DeleteNoteThumbnail(note.guid);
 		noteListView.UpdateThumbnail(note.guid);
@@ -153,7 +155,7 @@ void NotePresenter::OnOpenNote()
 	wstring body;
 	wstring html;
 	userModel.GetNoteBody(guid, body);
-	enNoteTranslator.ConvertToHtml(body, html);
+	enNoteTranslator.ConvertToHtml(body, html, true);
 
 	AttachmentList         attachments;
 	AttachmentViewInfoList attachmentViews;

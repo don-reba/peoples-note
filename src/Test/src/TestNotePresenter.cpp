@@ -66,8 +66,10 @@ BOOST_FIXTURE_TEST_CASE
 	noteListView.SignalOpenNote();
 
 	noteView.isDirty = true;
-	noteView.body =
-		L"<div type=\"en-note\"><input type=\"checkbox\"/></div>";
+	userModel.noteBodies[noteView.note.guid] =
+			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+			L"<en-note><en-todo checked=\"false\"/></en-note>";
 
 	noteView.SignalClose();
 
@@ -81,7 +83,7 @@ BOOST_FIXTURE_TEST_CASE
 
 	BOOST_CHECK_EQUAL
 		( userModel.addedNotes.at(0).body
-		, 
+		,
 			L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 			L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
 			L"<en-note><en-todo checked=\"false\"/></en-note>"

@@ -5,6 +5,8 @@
 #include "ISignalProvider.h"
 #include "Thumbnail.h"
 
+#include <set>
+
 class Note;
 
 class INoteView : public ISignalProvider
@@ -18,7 +20,7 @@ class INoteView : public ISignalProvider
 
 public:
 
-	virtual void GetBody(std::wstring & html) = 0;
+	virtual void GetDirtyCheckboxIds(std::set<int> & dirtyCheckboxIds) = 0;
 
 	virtual void GetNote(Note & note) = 0;
 

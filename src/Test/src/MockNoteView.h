@@ -1,6 +1,8 @@
 #pragma once
 #include "INoteView.h"
 
+#include <set>
+
 #include "Note.h"
 
 class MockNoteView : public INoteView
@@ -32,6 +34,8 @@ public:
 	bool isMaximized;
 	bool isShown;
 
+	std::set<int> dirtyCheckboxIds;
+
 	Note note;
 
 	SIZE renderSize;
@@ -40,7 +44,7 @@ public:
 
 	MockNoteView();
 
-	virtual void GetBody(std::wstring & html);
+	virtual void GetDirtyCheckboxIds(std::set<int> & dirtyCheckboxIds);
 
 	virtual void GetNote(Note & note);
 

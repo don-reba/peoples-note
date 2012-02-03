@@ -13,9 +13,13 @@ MockNoteView::MockNoteView()
 {
 }
 
-void MockNoteView::GetBody(wstring & html)
+void MockNoteView::GetDirtyCheckboxIds(set<int> & dirtyCheckboxIds)
 {
-	html = body;
+	dirtyCheckboxIds.clear();
+	dirtyCheckboxIds.insert
+		( this->dirtyCheckboxIds.begin()
+		, this->dirtyCheckboxIds.end()
+		);
 }
 
 void MockNoteView::GetNote(Note & note)

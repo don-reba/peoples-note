@@ -2,6 +2,7 @@
 
 #include "RapidXML/rapidxml.hpp"
 
+#include <set>
 #include <map>
 
 class EnNoteTranslator
@@ -10,7 +11,7 @@ class EnNoteTranslator
 
 private:
 
-	typedef void (*NodeTransform)
+	typedef void (EnNoteTranslator::*NodeTransform)
 		( rapidxml::memory_pool<wchar_t> *
 		, rapidxml::xml_node<wchar_t>    *
 		, rapidxml::xml_node<wchar_t>    *
@@ -23,8 +24,12 @@ private:
 
 private:
 
+	TransformMap editTransforms;
 	TransformMap htmlTransforms;
 	TransformMap xmlTransforms;
+
+	int           checkboxId;
+	std::set<int> dirtyCheckboxIds;
 
 // interface
 
@@ -32,9 +37,16 @@ public:
 
 	EnNoteTranslator();
 
+	void ApplyXmlModifications
+		( std::wstring    srcXml
+		, std::wstring  & dstXml
+		, std::set<int> & dirtyCheckboxIds
+		);
+
 	void ConvertToHtml
 		( std::wstring   xml
 		, std::wstring & html
+		, bool           linkify
 		);
 
 	void ConvertToText
@@ -94,57 +106,64 @@ private:
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * node
 		, TransformMap                   & transforms
+		, bool                             linkify
 		);
 
-	static void ReplaceCheckbox
+	void ReplaceCheckbox
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceCrypt
+	void ReplaceCrypt
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceDiv
+	 void ReplaceDiv
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceEncryptImg
+	void ReplaceEncryptImg
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceImg
+	void ReplaceImg
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceMedia
+	void ReplaceMedia
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceNote
+	void ReplaceNote
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceParagraph
+	void ReplaceParagraph
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
-	static void ReplaceTodo
+	void ReplaceTodo
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
+		);
+
+	void ReplaceEditTodo
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
 		, rapidxml::xml_node<wchar_t>    * child

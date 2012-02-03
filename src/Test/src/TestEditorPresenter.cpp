@@ -138,7 +138,8 @@ BOOST_FIXTURE_TEST_CASE
 	noteView.isShown   = true;
 	editorView.isShown = false;
 
-	noteView.body  = L"<div type=\"en-note\"><input type=\"checkbox\"/></div>";
+	userModel.noteBodies[noteView.note.guid] = L"<div type=\"en-note\"><input type=\"checkbox\"/></div>";
+
 	noteView.note.name = L"Note Title";
 
 	noteView.SignalEdit();

@@ -93,11 +93,18 @@ void EditorPresenter::OnEditNote()
 
 	editorView.Show();
 
+	set<int> dirtyCheckboxIds;
+	noteView.GetDirtyCheckboxIds(dirtyCheckboxIds);
+
 	Note note;
 	noteView.GetNote(note);
 
+	wstring srcXml, dstXml;
+	userModel.GetNoteBody(note.guid, srcXml);
+	enNoteTranslator.ApplyXmlModifications(srcXml, dstXml, dirtyCheckboxIds);
+
 	wstring body;
-	noteView.GetBody(body);
+	enNoteTranslator.ConvertToHtml(dstXml, body, false);
 
 	noteView.Hide();
 

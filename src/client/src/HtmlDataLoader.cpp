@@ -95,7 +95,7 @@ void HtmlDataLoader::CreateThumbnail(const Guid & guid, Thumbnail & thumbnail)
 		userModel.GetNoteBody(guid, body);
 
 		wstring html;
-		enNoteTranslator.ConvertToHtml(body, html);
+		enNoteTranslator.ConvertToHtml(body, html, true);
 
 		Note note;
 		noteView->SetNote(note, L"", L"", html, AttachmentViewInfoList(), false);

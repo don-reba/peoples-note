@@ -31,7 +31,6 @@ NoteView::NoteView
 	, IHtmlDataLoader & htmlDataLoader
 	)
 	: instance         (instance)
-	, isDirty          (false)
 	, isMaximized      (false)
 	, gestureProcessor (animator)
 	, parent           (NULL)
@@ -76,6 +75,15 @@ void NoteView::GetBody(wstring & html)
 	const bool outerHtml(false);
 	HTMLayoutGetElementHtmlCB
 		(FindFirstElement("#body"), outerHtml, &WriteHtml, &html);
+}
+
+void NoteView::GetDirtyCheckboxIds(set<int> & dirtyCheckboxIds)
+{
+	dirtyCheckboxIds.clear();
+	dirtyCheckboxIds.insert
+		( this->dirtyCheckboxIds.begin()
+		, this->dirtyCheckboxIds.end()
+		);
 }
 
 void NoteView::GetNote(Note & note)
@@ -141,7 +149,7 @@ void NoteView::Hide()
 
 bool NoteView::IsDirty()
 {
-	return isDirty;
+	return !dirtyCheckboxIds.empty();
 }
 
 bool NoteView::IsMaximized()
@@ -182,7 +190,7 @@ void NoteView::SetNote
 	, const bool                     enableChrome
 	)
 {
-	isDirty = false;
+	dirtyCheckboxIds.clear();
 
 	this->note = note;
 
@@ -559,10 +567,10 @@ void NoteView::OnAttachment(BEHAVIOR_EVENT_PARAMS * params)
 void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 {
 	element e(params->heTarget);
-	if (e.get_value().get(false))
-		e.set_attribute("checked", L"true");
+	int id(e.get_attribute_int("uid", -1));
+	set<int>::iterator i(dirtyCheckboxIds.find(id));
+	if (i == dirtyCheckboxIds.end())
+		dirtyCheckboxIds.insert(id);
 	else
-		e.remove_attribute("checked");
-	note.isDirty = true;
-	isDirty      = true;
+		dirtyCheckboxIds.erase(i);
 }
