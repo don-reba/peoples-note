@@ -40,6 +40,7 @@ public:
 
 private:
 
+	void OnAllNotebooksSelected();
 	void OnNoteChanged();
 	void OnNotebookSelected();
 	void OnNotebookTitleChanged();
@@ -57,6 +58,8 @@ private:
 private:
 
 	void ResetSearch();
+
+	void SelectAllNotebooks();
 
 	void UpdateActiveNotebook();
 

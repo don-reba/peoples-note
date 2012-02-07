@@ -41,8 +41,7 @@ int WINAPI WinMain
 	std::wofstream resultsFile(resultsFileName);
 
 	const wchar_t * exclusionList[] =
-		{ L".\\src\\TestUserModel.cpp"
-		, L".\\src\\TestUserModelTransactions.cpp"
+		{ L".\\src\\TestUserModelTransactions.cpp"
 		};
 
 	TEST_SUITE test(resultsFile);

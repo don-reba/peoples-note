@@ -86,9 +86,9 @@ int UserModel::GetResourceCount()
 	return count;
 }
 
-//--------------------------
-// IUuserModel implementaion
-//--------------------------
+//-------------------------
+// IUserModel implementaion
+//-------------------------
 
 void UserModel::AddNote
 	( const Note     & note
@@ -410,6 +410,13 @@ void UserModel::ExpungeTag(const Guid & tag)
 		);
 	statement->Bind(1, tag);
 	statement->Execute();
+}
+
+bool UserModel::GetAllNotebooksState()
+{
+	bool allNotebooks(false);
+	GetProperty(L"allNotebooks", allNotebooks);
+	return allNotebooks;
 }
 
 wstring UserModel::GetPasswordHash()
@@ -1230,6 +1237,11 @@ void UserModel::ReplaceNote
 		insertText->Bind(3, ucBody);
 		insertText->Execute();
 	}
+}
+
+void UserModel::SetAllNotebooksState(bool state)
+{
+	SetProperty(L"allNotebooks", state);
 }
 
 void UserModel::SetCredentials

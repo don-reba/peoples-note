@@ -237,7 +237,7 @@ FIXTURE_TEST_CASE(UserModelAddNotebook, DataStoreFixture)
 	TEST_CHECK_EQUAL(userModel.GetNotebookCount(), 2);
 }
 
-FIXTURE_TEST_CASE(UserModelAttahcments, DataStoreFixture)
+FIXTURE_TEST_CASE(UserModelAttachments, DataStoreFixture)
 {
 	Notebook notebook;
 	userModel.GetDefaultNotebook(notebook);
@@ -443,6 +443,17 @@ FIXTURE_TEST_CASE(UserModelNoteForeignKey, DataStoreFixture)
 		, std::exception
 		, MESSAGE_EQUALS("foreign key constraint failed")
 		);
+}
+
+FIXTURE_TEST_CASE(UserModelAllNotebooksState, DataStoreFixture)
+{
+	TEST_CHECK_EQUAL(userModel.GetAllNotebooksState(), false);
+
+	userModel.SetAllNotebooksState(true);
+	TEST_CHECK_EQUAL(userModel.GetAllNotebooksState(), true);
+
+	userModel.SetAllNotebooksState(false);
+	TEST_CHECK_EQUAL(userModel.GetAllNotebooksState(), false);
 }
 
 FIXTURE_TEST_CASE(UserModelDefaultNotebook, DataStoreFixture)

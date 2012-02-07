@@ -80,6 +80,8 @@ public:
 
 	virtual void ExpungeTag(const Guid & tag);
 
+	virtual bool GetAllNotebooksState();
+
 	virtual std::wstring GetPasswordHash();
 
 	virtual std::wstring GetUsername();
@@ -199,6 +201,8 @@ public:
 		, const std::wstring  & bodyText
 		, const Notebook      & notebook
 		);
+
+	virtual void SetAllNotebooksState(bool state);
 
 	virtual void SetCredentials
 		( const std::wstring & username

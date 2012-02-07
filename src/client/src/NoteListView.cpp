@@ -231,6 +231,8 @@ void NoteListView::SetNotebookMenu(const NotebookList & notebooks)
 		::AppendMenu(notebookMenu, MF_STRING, 0x8000 | i, notebook.name.c_str());
 		notebookGuids.push_back(notebook.guid);
 	}
+
+	::AppendMenu(notebookMenu, MF_STRING, ID_ALL_NOTEBOOKS, L"All Notebooks");
 }
 
 void NoteListView::SetProfileText(const wstring & text)
@@ -514,6 +516,7 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> & msg)
 	switch (msg.CtrlId())
 	{
 	case ID_ABOUT:          SignalAbout();                     return;
+	case ID_ALL_NOTEBOOKS:  SignalAllNotebooksSelected();      return;
 	case ID_EXIT:           CloseWindow(hwnd_);                return;
 	case ID_IMPORT:         SignalImport();                    return;
 	case ID_NOTEBOOK_TITLE: OnNotebookTitle();                 return;

@@ -60,6 +60,7 @@
 #define ID_SIGNIN              116
 #define ID_VIEW_COMBINED       117
 #define ID_VIEW_TITLES         118
+#define ID_ALL_NOTEBOOKS       119
 
 #define IDC_STATIC             -1
 

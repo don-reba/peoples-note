@@ -27,11 +27,22 @@ void NoteListModel::GetCurrentPage
 	)
 {
 	Transaction transaction(userModel);
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
 
-	// ask for one more note than necessary to tell whether there is another page
-	userModel.GetNotesBySearch(notebook.guid, query, firstNote, pageSize + 1, notes);
+	if (userModel.GetAllNotebooksState())
+	{
+		// ask for one more note than necessary to tell whether there is another page
+		//userModel.GetNotesBySearch(query, firstNote, pageSize + 1, notes);
+		::MessageBox(NULL, L"Nyu!", L"Message", MB_OK);
+	}
+	else
+	{
+		Notebook notebook;
+		userModel.GetLastUsedNotebook(notebook);
+
+		// ask for one more note than necessary to tell whether there is another page
+		userModel.GetNotesBySearch(notebook.guid, query, firstNote, pageSize + 1, notes);
+	}
+
 	hasPreviousPage = firstNote > 0;
 	hasNextPage     = notes.size() > pageSize;
 	if (hasNextPage)
