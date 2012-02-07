@@ -46,7 +46,7 @@ int UserModel::GetNoteCount()
 		);
 	statement->Execute();
 	int count(0);
-	statement->Get(0, count);
+	statement->Get(count);
 	return count;
 }
 
@@ -58,7 +58,7 @@ int UserModel::GetNotebookCount()
 		);
 	statement->Execute();
 	int count(0);
-	statement->Get(0, count);
+	statement->Get(count);
 	return count;
 }
 
@@ -70,7 +70,7 @@ int UserModel::GetRecognitionEntryCount()
 		);
 	statement->Execute();
 	int count(0);
-	statement->Get(0, count);
+	statement->Get(count);
 	return count;
 }
 
@@ -82,7 +82,7 @@ int UserModel::GetResourceCount()
 		);
 	statement->Execute();
 	int count(0);
-	statement->Get(0, count);
+	statement->Get(count);
 	return count;
 }
 
@@ -102,7 +102,7 @@ void UserModel::AddNote
 	IDataStore::Statement existenceCheck = dataStore.MakeStatement
 		( "SELECT rowid from Notes WHERE guid = ?"
 		);
-	existenceCheck->Bind(1, note.guid);
+	existenceCheck->Bind(note.guid);
 	if (existenceCheck->Execute())
 	{
 		ReplaceNote(note, body, bodyText, notebook);
@@ -110,16 +110,16 @@ void UserModel::AddNote
 	else
 	{
 		__int64 rowid(0);
-		existenceCheck->Get(0, rowid);
+		existenceCheck->Get(rowid);
 		{
 			IDataStore::Statement updateText = dataStore.MakeStatement
 				( "UPDATE NoteText"
 				"  SET    title = ?, body = ?"
 				"  WHERE  rowid = ?"
 				);
-			updateText->Bind(1, note.name);
-			updateText->Bind(2, bodyText);
-			updateText->Bind(3, rowid);
+			updateText->Bind(note.name);
+			updateText->Bind(bodyText);
+			updateText->Bind(rowid);
 			updateText->Execute();
 		}
 		{
@@ -132,31 +132,31 @@ void UserModel::AddNote
 				"      notebook = ?"
 				"  WHERE rowid = ?"
 				);
-			updateNote->Bind(1, note.usn);
-			updateNote->Bind(2, note.name);
-			updateNote->Bind(3, note.isDirty);
-			updateNote->Bind(4, body);
-			updateNote->Bind(5, note.creationDate.GetTime());
-			updateNote->Bind(6, note.modificationDate.GetTime());
-			updateNote->Bind(7, note.subjectDate.GetTime());
+			updateNote->Bind(note.usn);
+			updateNote->Bind(note.name);
+			updateNote->Bind(note.isDirty);
+			updateNote->Bind(body);
+			updateNote->Bind(note.creationDate.GetTime());
+			updateNote->Bind(note.modificationDate.GetTime());
+			updateNote->Bind(note.subjectDate.GetTime());
 			if (note.Location.IsValid)
 			{
-				updateNote->Bind(8,  note.Location.Altitude);
-				updateNote->Bind(9,  note.Location.Latitude);
-				updateNote->Bind(10, note.Location.Longitude);
+				updateNote->Bind(note.Location.Altitude);
+				updateNote->Bind(note.Location.Latitude);
+				updateNote->Bind(note.Location.Longitude);
 			}
 			else
 			{
-				updateNote->BindNull(8);
-				updateNote->BindNull(9);
-				updateNote->BindNull(10);
+				updateNote->BindNull();
+				updateNote->BindNull();
+				updateNote->BindNull();
 			}
-			updateNote->Bind(11, note.Author);
-			updateNote->Bind(12, note.Source);
-			updateNote->Bind(13, note.SourceUrl);
-			updateNote->Bind(14, note.SourceApplication);
-			updateNote->Bind(15, notebook.guid);
-			updateNote->Bind(16, rowid);
+			updateNote->Bind(note.Author);
+			updateNote->Bind(note.Source);
+			updateNote->Bind(note.SourceUrl);
+			updateNote->Bind(note.SourceApplication);
+			updateNote->Bind(notebook.guid);
+			updateNote->Bind(rowid);
 			updateNote->Execute();
 		}
 	}
@@ -169,12 +169,12 @@ void UserModel::AddNotebook(const Notebook & notebook)
 		"                                  `isDirty`, `updateCount`, `isDefault`, `isLastUsed`)"
 		"  VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0)"
 		);
-	statement->Bind(1, notebook.guid);
-	statement->Bind(2, notebook.usn);
-	statement->Bind(3, notebook.name);
-	statement->Bind(4, notebook.CreationDate.GetTime());
-	statement->Bind(5, notebook.ModificationDate.GetTime());
-	statement->Bind(6, notebook.isDirty);
+	statement->Bind(notebook.guid);
+	statement->Bind(notebook.usn);
+	statement->Bind(notebook.name);
+	statement->Bind(notebook.CreationDate.GetTime());
+	statement->Bind(notebook.ModificationDate.GetTime());
+	statement->Bind(notebook.isDirty);
 	statement->Execute();
 }
 
@@ -192,13 +192,13 @@ void UserModel::AddRecognitionEntry(const RecognitionEntry & entry)
 		( "INSERT INTO Recognition(text, weight, x, y, w, h, resource)"
 		"  VALUES (?, ?, ?, ?, ?, ?, ?)"
 		);
-	statement->Bind(1, ucText);
-	statement->Bind(2, entry.Weight);
-	statement->Bind(3, entry.X);
-	statement->Bind(4, entry.Y);
-	statement->Bind(5, entry.W);
-	statement->Bind(6, entry.H);
-	statement->Bind(7, entry.Resource);
+	statement->Bind(ucText);
+	statement->Bind(entry.Weight);
+	statement->Bind(entry.X);
+	statement->Bind(entry.Y);
+	statement->Bind(entry.W);
+	statement->Bind(entry.H);
+	statement->Bind(entry.Resource);
 	statement->Execute();
 }
 
@@ -210,37 +210,37 @@ void UserModel::AddResource(const Resource & resource)
 		"                                   `longitude`, `fileName`, `isAttachment`, `note`)"
 		"  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 		);
-	statement->Bind(1, resource.Guid);
-	statement->Bind(2, resource.Hash);
-	statement->Bind(3, resource.Data);
-	statement->Bind(4, resource.Mime);
+	statement->Bind(resource.Guid);
+	statement->Bind(resource.Hash);
+	statement->Bind(resource.Data);
+	statement->Bind(resource.Mime);
 	if (resource.Dimensions.IsValid)
 	{
-		statement->Bind(5, resource.Dimensions.Width);
-		statement->Bind(6, resource.Dimensions.Height);
+		statement->Bind(resource.Dimensions.Width);
+		statement->Bind(resource.Dimensions.Height);
 	}
 	else
 	{
-		statement->BindNull(5);
-		statement->BindNull(6);
+		statement->BindNull();
+		statement->BindNull();
 	}
-	statement->Bind(7, resource.SourceUrl);
-	statement->Bind(8, resource.Timestamp.GetTime());
+	statement->Bind(resource.SourceUrl);
+	statement->Bind(resource.Timestamp.GetTime());
 	if (resource.Location.IsValid)
 	{
-		statement->Bind(9,  resource.Location.Altitude);
-		statement->Bind(10, resource.Location.Latitude);
-		statement->Bind(11, resource.Location.Longitude);
+		statement->Bind(resource.Location.Altitude);
+		statement->Bind(resource.Location.Latitude);
+		statement->Bind(resource.Location.Longitude);
 	}
 	else
 	{
-		statement->BindNull(9);
-		statement->BindNull(10);
-		statement->BindNull(11);
+		statement->BindNull();
+		statement->BindNull();
+		statement->BindNull();
 	}
-	statement->Bind(12, resource.FileName);
-	statement->Bind(13, resource.IsAttachment);
-	statement->Bind(14, resource.Note);
+	statement->Bind(resource.FileName);
+	statement->Bind(resource.IsAttachment);
+	statement->Bind(resource.Note);
 	statement->Execute();
 }
 
@@ -258,12 +258,12 @@ void UserModel::AddTag(const Tag & tag)
 		( "INSERT OR REPLACE INTO Tags(guid, usn, name, parentGuid, searchName, isDirty)"
 		"  VALUES (?, ?, ?, ?, ?, ?)"
 		);
-	statement->Bind(1, tag.guid);
-	statement->Bind(2, tag.usn);
-	statement->Bind(3, tag.name);
-	statement->Bind(4, tag.parentGuid);
-	statement->Bind(5, searchName);
-	statement->Bind(6, tag.isDirty);
+	statement->Bind(tag.guid);
+	statement->Bind(tag.usn);
+	statement->Bind(tag.name);
+	statement->Bind(tag.parentGuid);
+	statement->Bind(searchName);
+	statement->Bind(tag.isDirty);
 	statement->Execute();
 }
 
@@ -278,8 +278,8 @@ void UserModel::AddTagToNote
 			" FROM   tags"
 			" WHERE  guid = ?"
 		);
-	statement->Bind(1, note.guid);
-	statement->Bind(2, tag);
+	statement->Bind(note.guid);
+	statement->Bind(tag);
 	statement->Execute();
 }
 
@@ -298,7 +298,7 @@ void UserModel::DeleteNote(const Guid & note)
 		"  SET isDeleted = 1, isDirty = 1"
 		"  WHERE guid = ?"
 		);
-	statement->Bind(1, note);
+	statement->Bind(note);
 	statement->Execute();
 }
 
@@ -308,7 +308,7 @@ void UserModel::DeleteNoteTags(const Guid & note)
 		( "DELETE FROM NoteTags"
 		"  WHERE note = ?"
 		);
-	statement->Bind(1, note);
+	statement->Bind(note);
 	statement->Execute();
 }
 
@@ -319,7 +319,7 @@ void UserModel::DeleteNoteThumbnail(const Guid & note)
 		"  SET thumbnail = NULL"
 		"  WHERE guid = ?"
 		);
-	statement->Bind(1, note);
+	statement->Bind(note);
 	statement->Execute();
 }
 
@@ -351,23 +351,23 @@ void UserModel::ExpungeNote(const Guid & note)
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "SELECT rowid FROM Notes Where guid = ?"
 			);
-		statement->Bind(1, note);
+		statement->Bind(note);
 		if (statement->Execute())
 			return;
-		statement->Get(0, rowid);
+		statement->Get(rowid);
 	}
 	{
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "DELETE FROM Notes WHERE rowid = ?"
 			);
-		statement->Bind(1, rowid);
+		statement->Bind(rowid);
 		statement->Execute();
 	}
 	{
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "DELETE FROM NoteText WHERE rowid = ?"
 			);
-		statement->Bind(1, rowid);
+		statement->Bind(rowid);
 		statement->Execute();
 	}
 }
@@ -381,17 +381,17 @@ void UserModel::ExpungeNotebook(const Guid & notebook)
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "SELECT isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
 			);
-		statement->Bind(1, notebook);
+		statement->Bind(notebook);
 		if (statement->Execute())
 			return;
-		statement->Get(0, isLastUsed);
+		statement->Get(isLastUsed);
 	}
 
 	{
 		IDataStore::Statement statement = dataStore.MakeStatement
 			( "DELETE FROM Notebooks WHERE guid = ?"
 			);
-		statement->Bind(1, notebook);
+		statement->Bind(notebook);
 		statement->Execute();
 	}
 
@@ -408,7 +408,7 @@ void UserModel::ExpungeTag(const Guid & tag)
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "DELETE FROM Tags WHERE guid = ?"
 		);
-	statement->Bind(1, tag);
+	statement->Bind(tag);
 	statement->Execute();
 }
 
@@ -443,12 +443,12 @@ void UserModel::GetDefaultNotebook(Notebook & notebook)
 		);
 	if (statement->Execute())
 		throw std::exception("No default notebook.");
-	statement->Get(0, notebook.guid);
-	statement->Get(1, notebook.usn);
-	statement->Get(2, notebook.name);
-	statement->Get(4, notebook.CreationDate);
-	statement->Get(5, notebook.ModificationDate);
-	statement->Get(6, notebook.isDirty);
+	statement->Get(notebook.guid);
+	statement->Get(notebook.usn);
+	statement->Get(notebook.name);
+	statement->Get(notebook.CreationDate);
+	statement->Get(notebook.ModificationDate);
+	statement->Get(notebook.isDirty);
 }
 
 void UserModel::GetDeletedNotes(GuidList & notes)
@@ -462,7 +462,7 @@ void UserModel::GetDeletedNotes(GuidList & notes)
 	while (!statement->Execute())
 	{
 		Guid guid;
-		statement->Get(0, guid);
+		statement->Get(guid);
 		notes.push_back(guid);
 	}
 }
@@ -474,11 +474,11 @@ int UserModel::GetDirtyNoteCount(const Notebook & notebook)
 		"  FROM Notes"
 		"  WHERE isDirty = 1 AND notebook = ?"
 		);
-	statement->Bind(1, notebook.guid);
+	statement->Bind(notebook.guid);
 	if (statement->Execute())
 		throw std::exception("Could not count dirty notes.");
 	int count;
-	statement->Get(0, count);
+	statement->Get(count);
 	return count;
 }
 
@@ -505,12 +505,12 @@ void UserModel::GetLastUsedNotebook(Notebook & notebook)
 		MakeNotebookLastUsed(notebook.guid);
 		return;
 	}
-	statement->Get(0, notebook.guid);
-	statement->Get(1, notebook.usn);
-	statement->Get(2, notebook.name);
-	statement->Get(3, notebook.CreationDate);
-	statement->Get(4, notebook.ModificationDate);
-	statement->Get(5, notebook.isDirty);
+	statement->Get(notebook.guid);
+	statement->Get(notebook.usn);
+	statement->Get(notebook.name);
+	statement->Get(notebook.CreationDate);
+	statement->Get(notebook.ModificationDate);
+	statement->Get(notebook.isDirty);
 }
 
 DbLocation UserModel::GetLocation()
@@ -527,23 +527,23 @@ void UserModel::GetNote(const Guid & guid, Note & note)
 		"  WHERE guid = ?"
 		"  LIMIT 1"
 		);
-	statement->Bind(1, guid);
+	statement->Bind(guid);
 	if (statement->Execute())
 		throw std::exception("Note not found.");
 	note.guid = guid;
-	statement->Get(0,  note.usn);
-	statement->Get(1,  note.name);
-	statement->Get(2,  note.isDirty);
-	statement->Get(3,  note.creationDate);
-	statement->Get(4,  note.modificationDate);
-	statement->Get(5,  note.subjectDate);
-	statement->Get(6,  note.Location.Altitude);
-	statement->Get(7,  note.Location.Latitude);
-	statement->Get(8,  note.Location.Longitude);
-	statement->Get(9,  note.Author);
-	statement->Get(10, note.Source);
-	statement->Get(11, note.SourceUrl);
-	statement->Get(12, note.SourceApplication);
+	statement->Get(note.usn);
+	statement->Get(note.name);
+	statement->Get(note.isDirty);
+	statement->Get(note.creationDate);
+	statement->Get(note.modificationDate);
+	statement->Get(note.subjectDate);
+	statement->Get(note.Location.Altitude);
+	statement->Get(note.Location.Latitude);
+	statement->Get(note.Location.Longitude);
+	statement->Get(note.Author);
+	statement->Get(note.Source);
+	statement->Get(note.SourceUrl);
+	statement->Get(note.SourceApplication);
 
 	note.Location.Validate();
 }
@@ -559,14 +559,14 @@ void UserModel::GetNoteAttachments
 		"  WHERE note = ? AND length(fileName) > 0"
 		"  ORDER BY fileName, timestamp"
 		);
-	statement->Bind(1, note);
+	statement->Bind(note);
 	while (!statement->Execute())
 	{
 		attachments.push_back(Attachment());
 		Attachment & attachment(attachments.back());
-		statement->Get(0, attachment.Guid);
-		statement->Get(1, attachment.Mime);
-		statement->Get(2, attachment.FileName);
+		statement->Get(attachment.Guid);
+		statement->Get(attachment.Mime);
+		statement->Get(attachment.FileName);
 	}
 }
 
@@ -581,10 +581,10 @@ void UserModel::GetNoteBody
 		"  WHERE guid = ?"
 		"  LIMIT 1"
 		);
-	statement->Bind(1, guid);
+	statement->Bind(guid);
 	if (statement->Execute())
 		throw std::exception("Note not found.");
-	statement->Get(0, body);
+	statement->Get(body);
 }
 
 void UserModel::GetNoteResources
@@ -597,11 +597,11 @@ void UserModel::GetNoteResources
 		"  FROM Resources"
 		"  WHERE note = ?"
 		);
-	statement->Bind(1, note);
+	statement->Bind(note);
 	while (!statement->Execute())
 	{
 		Guid guid;
-		statement->Get(0, guid);
+		statement->Get(guid);
 		resources.push_back(guid);
 	}
 }
@@ -617,16 +617,16 @@ void UserModel::GetNoteTags
 		"  WHERE note = ? AND tag = guid"
 		"  ORDER BY name"
 		);
-	statement->Bind(1, note.guid);
+	statement->Bind(note.guid);
 	while (!statement->Execute())
 	{
 		tags.push_back(Tag());
 		Tag & t(tags.back());
-		statement->Get(0, t.guid);
-		statement->Get(1, t.usn);
-		statement->Get(2, t.name);
-		statement->Get(3, t.parentGuid);
-		statement->Get(4, t.isDirty);
+		statement->Get(t.guid);
+		statement->Get(t.usn);
+		statement->Get(t.name);
+		statement->Get(t.parentGuid);
+		statement->Get(t.isDirty);
 	}
 }
 
@@ -640,15 +640,15 @@ void UserModel::GetNotebook
 		"  FROM   Notebooks"
 		"  WHERE  guid = ?"
 		);
-	statement->Bind(1, guid);
+	statement->Bind(guid);
 	if (statement->Execute())
 		throw std::exception("Notebook not found.");
-	statement->Get(0, notebook.guid);
-	statement->Get(1, notebook.usn);
-	statement->Get(2, notebook.name);
-	statement->Get(3, notebook.CreationDate);
-	statement->Get(4, notebook.ModificationDate);
-	statement->Get(5, notebook.isDirty);
+	statement->Get(notebook.guid);
+	statement->Get(notebook.usn);
+	statement->Get(notebook.name);
+	statement->Get(notebook.CreationDate);
+	statement->Get(notebook.ModificationDate);
+	statement->Get(notebook.isDirty);
 }
 
 int UserModel::GetNotebookUpdateCount(const Guid & notebook)
@@ -658,11 +658,11 @@ int UserModel::GetNotebookUpdateCount(const Guid & notebook)
 		"  FROM   Notebooks"
 		"  WHERE  guid = ?"
 		);
-	statement->Bind(1, notebook);
+	statement->Bind(notebook);
 	if (statement->Execute())
 		throw std::exception("Notebook not found.");
 	int updateCount(0);
-	statement->Get(0, updateCount);
+	statement->Get(updateCount);
 	return updateCount;
 }
 
@@ -675,13 +675,13 @@ void UserModel::GetNoteThumbnail(const Guid & guid, Thumbnail & thumbnail)
 		"  AND   thumbnail IS NOT NULL"
 		"  LIMIT 1"
 		);
-	statement->Bind(1, guid);
+	statement->Bind(guid);
 	if (!statement->Execute())
 	{
 		__int64 row(0);
-		statement->Get(0, row);
-		statement->Get(1, thumbnail.Width);
-		statement->Get(2, thumbnail.Height);
+		statement->Get(row);
+		statement->Get(thumbnail.Width);
+		statement->Get(thumbnail.Height);
 
 		IDataStore::Blob sqlBlob = dataStore.MakeBlob
 			( "Notes"
@@ -703,12 +703,12 @@ void UserModel::GetNotebooks(NotebookList & notebooks)
 	{
 		notebooks.push_back(Notebook());
 		Notebook & n(notebooks.back());
-		statement->Get(0, n.guid);
-		statement->Get(1, n.usn);
-		statement->Get(2, n.name);
-		statement->Get(3, n.CreationDate);
-		statement->Get(4, n.ModificationDate);
-		statement->Get(5, n.isDirty);
+		statement->Get(n.guid);
+		statement->Get(n.usn);
+		statement->Get(n.name);
+		statement->Get(n.CreationDate);
+		statement->Get(n.ModificationDate);
+		statement->Get(n.isDirty);
 	}
 }
 
@@ -739,9 +739,9 @@ void UserModel::GetNotesByNotebook
 			"  ORDER BY modificationDate DESC, creationDate DESC"
 			"  LIMIT ? OFFSET ?"
 			);
-		statement->Bind(1, notebook);
-		statement->Bind(2, count);
-		statement->Bind(3, start);
+		statement->Bind(notebook);
+		statement->Bind(count);
+		statement->Bind(start);
 	}
 	else
 	{
@@ -752,26 +752,26 @@ void UserModel::GetNotesByNotebook
 			"  WHERE isDeleted = 0 AND notebook = ?"
 			"  ORDER BY modificationDate DESC, creationDate DESC"
 			);
-		statement->Bind(1, notebook);
+		statement->Bind(notebook);
 	}
 	while (!statement->Execute())
 	{
 		notes.push_back(Note());
 		Note & n(notes.back());
-		statement->Get(0,  n.guid);
-		statement->Get(1,  n.usn);
-		statement->Get(2,  n.name);
-		statement->Get(3,  n.isDirty);
-		statement->Get(4,  n.creationDate);
-		statement->Get(5,  n.modificationDate);
-		statement->Get(6,  n.subjectDate);
-		statement->Get(7,  n.Location.Altitude);
-		statement->Get(8,  n.Location.Latitude);
-		statement->Get(9,  n.Location.Longitude);
-		statement->Get(10, n.Author);
-		statement->Get(11, n.Source);
-		statement->Get(12, n.SourceUrl);
-		statement->Get(13, n.SourceApplication);
+		statement->Get(n.guid);
+		statement->Get(n.usn);
+		statement->Get(n.name);
+		statement->Get(n.isDirty);
+		statement->Get(n.creationDate);
+		statement->Get(n.modificationDate);
+		statement->Get(n.subjectDate);
+		statement->Get(n.Location.Altitude);
+		statement->Get(n.Location.Latitude);
+		statement->Get(n.Location.Longitude);
+		statement->Get(n.Author);
+		statement->Get(n.Source);
+		statement->Get(n.SourceUrl);
+		statement->Get(n.SourceApplication);
 		n.Location.Validate();
 	}
 }
@@ -822,14 +822,14 @@ void UserModel::GetNotesBySearch
 			" ORDER BY modificationDate DESC, creationDate DESC"
 			" LIMIT ? OFFSET ?"
 			);
-		statement->Bind(1, notebook);
-		statement->Bind(2, ucSearch);
-		statement->Bind(3, notebook);
-		statement->Bind(4, ucSearch);
-		statement->Bind(5, notebook);
-		statement->Bind(6, ucSearch);
-		statement->Bind(7, count);
-		statement->Bind(8, start);
+		statement->Bind(notebook);
+		statement->Bind(ucSearch);
+		statement->Bind(notebook);
+		statement->Bind(ucSearch);
+		statement->Bind(notebook);
+		statement->Bind(ucSearch);
+		statement->Bind(count);
+		statement->Bind(start);
 	}
 	else
 	{
@@ -854,31 +854,31 @@ void UserModel::GetNotesBySearch
 			"      ) JOIN Notes USING (guid)"
 			" ORDER BY modificationDate DESC, creationDate DESC"
 			);
-		statement->Bind(1, notebook);
-		statement->Bind(2, ucSearch);
-		statement->Bind(3, notebook);
-		statement->Bind(4, ucSearch);
-		statement->Bind(5, notebook);
-		statement->Bind(6, ucSearch);
+		statement->Bind(notebook);
+		statement->Bind(ucSearch);
+		statement->Bind(notebook);
+		statement->Bind(ucSearch);
+		statement->Bind(notebook);
+		statement->Bind(ucSearch);
 	}
 	while (!statement->Execute())
 	{
 		notes.push_back(Note());
 		Note & n(notes.back());
-		statement->Get(0,  n.guid);
-		statement->Get(1,  n.usn);
-		statement->Get(2,  n.name);
-		statement->Get(3,  n.isDirty);
-		statement->Get(4,  n.creationDate);
-		statement->Get(5,  n.modificationDate);
-		statement->Get(6,  n.subjectDate);
-		statement->Get(7,  n.Location.Altitude);
-		statement->Get(8,  n.Location.Latitude);
-		statement->Get(9,  n.Location.Longitude);
-		statement->Get(10, n.Author);
-		statement->Get(11, n.Source);
-		statement->Get(12, n.SourceUrl);
-		statement->Get(13, n.SourceApplication);
+		statement->Get(n.guid);
+		statement->Get(n.usn);
+		statement->Get(n.name);
+		statement->Get(n.isDirty);
+		statement->Get(n.creationDate);
+		statement->Get(n.modificationDate);
+		statement->Get(n.subjectDate);
+		statement->Get(n.Location.Altitude);
+		statement->Get(n.Location.Latitude);
+		statement->Get(n.Location.Longitude);
+		statement->Get(n.Author);
+		statement->Get(n.Source);
+		statement->Get(n.SourceUrl);
+		statement->Get(n.SourceApplication);
 		n.Location.Validate();
 	}
 }
@@ -899,11 +899,11 @@ void UserModel::GetResource
 		"  WHERE  hash = ?"
 		"  LIMIT  1"
 		);
-	statement->Bind(1, hash);
+	statement->Bind(hash);
 	if (statement->Execute())
 		throw std::exception("Image resource not found.");
 	__int64 row(0);
-	statement->Get(0, row);
+	statement->Get(row);
 
 	IDataStore::Blob sqlBlob = dataStore.MakeBlob
 		( "Resources"
@@ -924,26 +924,26 @@ void UserModel::GetResource
 		"  FROM   Resources"
 		"  WHERE  guid = ?"
 		);
-	statement->Bind(1, guid);
+	statement->Bind(guid);
 	if (statement->Execute())
 		throw std::exception("Resource not found.");
 
 	resource.Guid = guid;
 
 	__int64 row(0);
-	statement->Get(0,  row);
-	statement->Get(1,  resource.Hash);
-	statement->Get(2,  resource.Mime);
-	statement->Get(3,  resource.Dimensions.Width);
-	statement->Get(4,  resource.Dimensions.Height);
-	statement->Get(5,  resource.SourceUrl);
-	statement->Get(6,  resource.Timestamp);
-	statement->Get(7,  resource.Location.Altitude);
-	statement->Get(8,  resource.Location.Latitude);
-	statement->Get(9,  resource.Location.Longitude);
-	statement->Get(10, resource.FileName);
-	statement->Get(11, resource.IsAttachment);
-	statement->Get(12, resource.Note);
+	statement->Get(row);
+	statement->Get(resource.Hash);
+	statement->Get(resource.Mime);
+	statement->Get(resource.Dimensions.Width);
+	statement->Get(resource.Dimensions.Height);
+	statement->Get(resource.SourceUrl);
+	statement->Get(resource.Timestamp);
+	statement->Get(resource.Location.Altitude);
+	statement->Get(resource.Location.Latitude);
+	statement->Get(resource.Location.Longitude);
+	statement->Get(resource.FileName);
+	statement->Get(resource.IsAttachment);
+	statement->Get(resource.Note);
 
 	resource.Dimensions.Validate();
 	resource.Location.Validate();
@@ -965,7 +965,7 @@ void UserModel::GetResources(GuidList & resources)
 	while (!statement->Execute())
 	{
 		Guid guid;
-		statement->Get(0, guid);
+		statement->Get(guid);
 		resources.push_back(guid);
 	}
 }
@@ -1011,11 +1011,11 @@ void UserModel::GetTags(TagList & tags)
 	{
 		tags.push_back(Tag());
 		Tag & t(tags.back());
-		statement->Get(0, t.guid);
-		statement->Get(1, t.usn);
-		statement->Get(2, t.name);
-		statement->Get(3, t.parentGuid);
-		statement->Get(4, t.isDirty);
+		statement->Get(t.guid);
+		statement->Get(t.usn);
+		statement->Get(t.name);
+		statement->Get(t.parentGuid);
+		statement->Get(t.isDirty);
 	}
 }
 
@@ -1113,7 +1113,7 @@ void UserModel::MakeNotebookDefault(const Guid & notebook)
 		"  SET isDefault = 1"
 		"  WHERE guid = ?"
 		);
-	setNew->Bind(1, notebook);
+	setNew->Bind(notebook);
 	setNew->Execute();
 }
 
@@ -1131,7 +1131,7 @@ void UserModel::MakeNotebookLastUsed(const Guid & notebook)
 		"  SET isLastUsed = 1"
 		"  WHERE guid = ?"
 		);
-	setNew->Bind(1, notebook);
+	setNew->Bind(notebook);
 	setNew->Execute();
 }
 
@@ -1181,31 +1181,31 @@ void UserModel::ReplaceNote
 			"                              `source`, `sourceUrl`, `sourceApplication`, `notebook`)"
 			"  VALUES (?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?,  ?, ?, ?, ?)"
 			);
-		insertNote->Bind(1, note.guid);
-		insertNote->Bind(2, note.usn);
-		insertNote->Bind(3, note.name);
-		insertNote->Bind(4, note.isDirty);
-		insertNote->Bind(5, body);
-		insertNote->Bind(6, note.creationDate.GetTime());
-		insertNote->Bind(7, note.modificationDate.GetTime());
-		insertNote->Bind(8, note.subjectDate.GetTime());
+		insertNote->Bind(note.guid);
+		insertNote->Bind(note.usn);
+		insertNote->Bind(note.name);
+		insertNote->Bind(note.isDirty);
+		insertNote->Bind(body);
+		insertNote->Bind(note.creationDate.GetTime());
+		insertNote->Bind(note.modificationDate.GetTime());
+		insertNote->Bind(note.subjectDate.GetTime());
 		if (note.Location.IsValid)
 		{
-			insertNote->Bind(9,  note.Location.Altitude);
-			insertNote->Bind(10, note.Location.Latitude);
-			insertNote->Bind(11, note.Location.Longitude);
+			insertNote->Bind(note.Location.Altitude);
+			insertNote->Bind(note.Location.Latitude);
+			insertNote->Bind(note.Location.Longitude);
 		}
 		else
 		{
-			insertNote->BindNull(9);
-			insertNote->BindNull(10);
-			insertNote->BindNull(11);
+			insertNote->BindNull();
+			insertNote->BindNull();
+			insertNote->BindNull();
 		}
-		insertNote->Bind(12, note.Author);
-		insertNote->Bind(13, note.Source);
-		insertNote->Bind(14, note.SourceUrl);
-		insertNote->Bind(15, note.SourceApplication);
-		insertNote->Bind(16, notebook.guid);
+		insertNote->Bind(note.Author);
+		insertNote->Bind(note.Source);
+		insertNote->Bind(note.SourceUrl);
+		insertNote->Bind(note.SourceApplication);
+		insertNote->Bind(notebook.guid);
 		insertNote->Execute();
 	}
 	{
@@ -1232,9 +1232,9 @@ void UserModel::ReplaceNote
 			( "INSERT OR REPLACE INTO NoteText(rowid, title, body)"
 			"  VALUES (?, ?, ?)"
 			);
-		insertText->Bind(1, rowid);
-		insertText->Bind(2, ucName);
-		insertText->Bind(3, ucBody);
+		insertText->Bind(rowid);
+		insertText->Bind(ucName);
+		insertText->Bind(ucBody);
 		insertText->Execute();
 	}
 }
@@ -1268,8 +1268,8 @@ void UserModel::SetNotebookUpdateCount
 		"  SET    updateCount = ?"
 		"  WHERE  guid = ?"
 		);
-	statement->Bind(1, updateCount);
-	statement->Bind(2, notebook);
+	statement->Bind(updateCount);
+	statement->Bind(notebook);
 	statement->Execute();
 }
 
@@ -1280,10 +1280,10 @@ void UserModel::SetNoteThumbnail(const Guid & guid, const Thumbnail & thumbnail)
 		"  SET    thumbnail = ?, thumbnailWidth = ?, thumbnailHeight = ?"
 		"  WHERE  guid = ?"
 		);
-	statement->Bind(1, thumbnail.Data);
-	statement->Bind(2, thumbnail.Width);
-	statement->Bind(3, thumbnail.Height);
-	statement->Bind(4, guid);
+	statement->Bind(thumbnail.Data);
+	statement->Bind(thumbnail.Width);
+	statement->Bind(thumbnail.Height);
+	statement->Bind(guid);
 	statement->Execute();
 }
 
@@ -1314,30 +1314,30 @@ void UserModel::UpdateNote
 		"      longitude = ?, author = ?, source = ?, sourceUrl = ?, sourceApplication = ?"
 		"  WHERE guid = ?"
 		);
-	statement->Bind(1, replacement.guid);
-	statement->Bind(2, replacement.usn);
-	statement->Bind(3, replacement.name);
-	statement->Bind(4, replacement.isDirty);
-	statement->Bind(5, replacement.creationDate.GetTime());
-	statement->Bind(6, replacement.modificationDate.GetTime());
-	statement->Bind(7, replacement.subjectDate.GetTime());
+	statement->Bind(replacement.guid);
+	statement->Bind(replacement.usn);
+	statement->Bind(replacement.name);
+	statement->Bind(replacement.isDirty);
+	statement->Bind(replacement.creationDate.GetTime());
+	statement->Bind(replacement.modificationDate.GetTime());
+	statement->Bind(replacement.subjectDate.GetTime());
 	if (replacement.Location.IsValid)
 	{
-		statement->Bind(8,  replacement.Location.Altitude);
-		statement->Bind(9,  replacement.Location.Latitude);
-		statement->Bind(10, replacement.Location.Longitude);
+		statement->Bind(replacement.Location.Altitude);
+		statement->Bind(replacement.Location.Latitude);
+		statement->Bind(replacement.Location.Longitude);
 	}
 	else
 	{
-		statement->BindNull(8);
-		statement->BindNull(9);
-		statement->BindNull(10);
+		statement->BindNull();
+		statement->BindNull();
+		statement->BindNull();
 	}
-	statement->Bind(11, replacement.Author);
-	statement->Bind(12, replacement.Source);
-	statement->Bind(13, replacement.SourceUrl);
-	statement->Bind(14, replacement.SourceApplication);
-	statement->Bind(15, note);
+	statement->Bind(replacement.Author);
+	statement->Bind(replacement.Source);
+	statement->Bind(replacement.SourceUrl);
+	statement->Bind(replacement.SourceApplication);
+	statement->Bind(note);
 	statement->Execute();
 }
 
@@ -1352,13 +1352,13 @@ void UserModel::UpdateNotebook
 		"      modificationDate = ?, isDirty = ?"
 		"  WHERE guid = ?"
 		);
-	statement->Bind(1, replacement.guid);
-	statement->Bind(2, replacement.usn);
-	statement->Bind(3, replacement.name);
-	statement->Bind(4, replacement.CreationDate.GetTime());
-	statement->Bind(5, replacement.ModificationDate.GetTime());
-	statement->Bind(6, replacement.isDirty);
-	statement->Bind(7, notebook);
+	statement->Bind(replacement.guid);
+	statement->Bind(replacement.usn);
+	statement->Bind(replacement.name);
+	statement->Bind(replacement.CreationDate.GetTime());
+	statement->Bind(replacement.ModificationDate.GetTime());
+	statement->Bind(replacement.isDirty);
+	statement->Bind(notebook);
 	statement->Execute();
 }
 
@@ -1374,36 +1374,36 @@ void UserModel::UpdateResource
 		"      longitude = ?, fileName = ?, isAttachment = ?"
 		"  WHERE guid = ?"
 		);
-	statement->Bind(1, replacement.Hash);
-	statement->Bind(2, replacement.Data);
-	statement->Bind(3, replacement.Mime);
+	statement->Bind(replacement.Hash);
+	statement->Bind(replacement.Data);
+	statement->Bind(replacement.Mime);
 	if (replacement.Dimensions.IsValid)
 	{
-		statement->Bind(4, replacement.Dimensions.Width);
-		statement->Bind(5, replacement.Dimensions.Height);
+		statement->Bind(replacement.Dimensions.Width);
+		statement->Bind(replacement.Dimensions.Height);
 	}
 	else
 	{
-		statement->BindNull(4);
-		statement->BindNull(5);
+		statement->BindNull();
+		statement->BindNull();
 	}
-	statement->Bind(6, replacement.SourceUrl);
-	statement->Bind(7, replacement.Timestamp.GetTime());
+	statement->Bind(replacement.SourceUrl);
+	statement->Bind(replacement.Timestamp.GetTime());
 	if (replacement.Location.IsValid)
 	{
-		statement->Bind(8,  replacement.Location.Altitude);
-		statement->Bind(9, replacement.Location.Latitude);
-		statement->Bind(10, replacement.Location.Longitude);
+		statement->Bind(replacement.Location.Altitude);
+		statement->Bind(replacement.Location.Latitude);
+		statement->Bind(replacement.Location.Longitude);
 	}
 	else
 	{
-		statement->BindNull(8);
-		statement->BindNull(9);
-		statement->BindNull(10);
+		statement->BindNull();
+		statement->BindNull();
+		statement->BindNull();
 	}
-	statement->Bind(11, replacement.FileName);
-	statement->Bind(12, replacement.IsAttachment);
-	statement->Bind(13, resource);
+	statement->Bind(replacement.FileName);
+	statement->Bind(replacement.IsAttachment);
+	statement->Bind(resource);
 }
 
 void UserModel::UpdateTag
@@ -1416,12 +1416,12 @@ void UserModel::UpdateTag
 		"  SET guid = ?, usn = ?, name = ?, parentGuid = ?, isDirty = ?"
 		"  WHERE guid = ?"
 		);
-	statement->Bind(1, replacement.guid);
-	statement->Bind(2, replacement.usn);
-	statement->Bind(3, replacement.name);
-	statement->Bind(4, replacement.parentGuid);
-	statement->Bind(5, replacement.isDirty);
-	statement->Bind(6, tag);
+	statement->Bind(replacement.guid);
+	statement->Bind(replacement.usn);
+	statement->Bind(replacement.name);
+	statement->Bind(replacement.parentGuid);
+	statement->Bind(replacement.isDirty);
+	statement->Bind(tag);
 	statement->Execute();
 }
 
@@ -1466,12 +1466,12 @@ void UserModel::GetFirstNotebook(Notebook & notebook)
 		MakeNotebookDefault(notebook.guid);
 		MakeNotebookLastUsed(notebook.guid);
 	}
-	statement->Get(0, notebook.guid);
-	statement->Get(1, notebook.usn);
-	statement->Get(2, notebook.name);
-	statement->Get(3, notebook.CreationDate);
-	statement->Get(4, notebook.ModificationDate);
-	statement->Get(5, notebook.isDirty);
+	statement->Get(notebook.guid);
+	statement->Get(notebook.usn);
+	statement->Get(notebook.name);
+	statement->Get(notebook.CreationDate);
+	statement->Get(notebook.ModificationDate);
+	statement->Get(notebook.isDirty);
 }
 
 void UserModel::Initialize(wstring name)

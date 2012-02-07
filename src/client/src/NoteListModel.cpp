@@ -32,7 +32,6 @@ void NoteListModel::GetCurrentPage
 	{
 		// ask for one more note than necessary to tell whether there is another page
 		//userModel.GetNotesBySearch(query, firstNote, pageSize + 1, notes);
-		::MessageBox(NULL, L"Nyu!", L"Message", MB_OK);
 	}
 	else
 	{

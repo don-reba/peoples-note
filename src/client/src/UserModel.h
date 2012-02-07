@@ -304,9 +304,9 @@ void UserModel::GetProperty(const std::wstring & key, T & value)
 		"  WHERE key = ?"
 		"  LIMIT 1"
 		);
-	statement->Bind(1, key);
+	statement->Bind(key);
 	if (!statement->Execute())
-		statement->Get(0, value);
+		statement->Get(value);
 }
 
 template <typename T>
@@ -315,7 +315,7 @@ void UserModel::SetProperty(const std::wstring & key, const T & value)
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "INSERT OR REPLACE INTO Properties VALUES (?, ?)"
 		);
-	statement->Bind(1, key);
-	statement->Bind(2, value);
+	statement->Bind(key);
+	statement->Bind(value);
 	statement->Execute();
 }

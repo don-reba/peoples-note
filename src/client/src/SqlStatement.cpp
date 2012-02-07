@@ -14,7 +14,9 @@ using namespace Tools;
 #ifdef PROFILE_SQL
 
 SqlStatement::SqlStatement(sqlite3 * db, const char * sql, SqlStatementInfo & info)
-	: db        (db)
+	: bindIndex (1)
+	, db        (db)
+	, getIndex  (0)
 	, info      (info)
 	, statement (NULL)
 {
@@ -33,7 +35,9 @@ SqlStatement::SqlStatement(sqlite3 * db, const char * sql, SqlStatementInfo & in
 #else PROFILE_SQL
 
 SqlStatement::SqlStatement(sqlite3 * db, const char * sql)
-	: db        (db)
+	: bindIndex (1)
+	, db        (db)
+	, getIndex  (0)
 	, statement (NULL)
 {
 	int result = sqlite3_prepare_v2(db, sql, -1, &statement, NULL);
@@ -53,6 +57,8 @@ SqlStatement::~SqlStatement()
 
 bool SqlStatement::Execute()
 {
+	getIndex = 0;
+
 	Timer timer;
 	int result(sqlite3_step(statement));
 	timer.Stop();
@@ -76,9 +82,8 @@ bool SqlStatement::Execute()
 
 bool SqlStatement::Execute()
 {
-	int result(sqlite3_step(statement));
-
-	switch (result)
+	getIndex = 0;
+	switch (sqlite3_step(statement))
 	{
 	case SQLITE_OK:
 	case SQLITE_DONE:
@@ -118,32 +123,32 @@ void SqlStatement::Finalize()
 
 #endif // PROFILE_SQL
 
-void SqlStatement::Bind(int index, __int32 n)
+void SqlStatement::Bind(__int32 n)
 {
-	int result = sqlite3_bind_int(statement, index, n);
+	int result(sqlite3_bind_int(statement, bindIndex++, n));
 	if (result != SQLITE_OK)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, __int64 n)
+void SqlStatement::Bind(__int64 n)
 {
-	int result = sqlite3_bind_int64(statement, index, n);
+	int result(sqlite3_bind_int64(statement, bindIndex++, n));
 	if (result != SQLITE_OK)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, double n)
+void SqlStatement::Bind(double n)
 {
-	int result = sqlite3_bind_double(statement, index, n);
+	int result(sqlite3_bind_double(statement, bindIndex++, n));
 	if (result != SQLITE_OK)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, const string & text)
+void SqlStatement::Bind(const string & text)
 {
 	int result = sqlite3_bind_text
 		( statement
-		, index
+		, bindIndex++
 		, text.c_str()
 		, text.size()
 		, SQLITE_TRANSIENT
@@ -152,13 +157,13 @@ void SqlStatement::Bind(int index, const string & text)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, const wstring & text)
+void SqlStatement::Bind(const wstring & text)
 {
 	vector<unsigned char> textUtf8Chars;
 	const char * textUtf8 = reinterpret_cast<const char *>(ConvertToUtf8(text, textUtf8Chars));
 	int result = sqlite3_bind_text
 		( statement
-		, index
+		, bindIndex++
 		, textUtf8
 		, textUtf8Chars.size()
 		, SQLITE_TRANSIENT
@@ -167,13 +172,13 @@ void SqlStatement::Bind(int index, const wstring & text)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, const Blob & blob)
+void SqlStatement::Bind(const Blob & blob)
 {
 	if (blob.empty())
 		return;
 	int result = sqlite3_bind_blob
 		( statement
-		, index
+		, bindIndex++
 		, &blob[0]
 		, blob.size()
 		, SQLITE_STATIC
@@ -182,12 +187,12 @@ void SqlStatement::Bind(int index, const Blob & blob)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Bind(int index, const Guid & guid)
+void SqlStatement::Bind(const Guid & guid)
 {
 	const string & text(guid);
 	int result = sqlite3_bind_text
 		( statement
-		, index
+		, bindIndex++
 		, text.c_str()
 		, text.size()
 		, SQLITE_TRANSIENT
@@ -196,67 +201,62 @@ void SqlStatement::Bind(int index, const Guid & guid)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::BindNull(int index)
+void SqlStatement::BindNull()
 {
-	int result = sqlite3_bind_null(statement, index);
+	int result = sqlite3_bind_null(statement, bindIndex++);
 	if (result != SQLITE_OK)
 		HandleError(sqlite3_errmsg(db));
 }
 
-void SqlStatement::Get(int index, bool & n)
+void SqlStatement::Get(bool & n)
 {
-	n = (sqlite3_column_int(statement, index) != 0);
+	n = (sqlite3_column_int(statement, getIndex++) != 0);
 }
 
-void SqlStatement::Get(int index, __int16 & n)
+void SqlStatement::Get(__int16 & n)
 {
-	n = sqlite3_column_int(statement, index);
+	n = sqlite3_column_int(statement, getIndex++);
 }
 
-void SqlStatement::Get(int index, __int32 & n)
+void SqlStatement::Get(__int32 & n)
 {
-	n = sqlite3_column_int(statement, index);
+	n = sqlite3_column_int(statement, getIndex++);
 }
 
-void SqlStatement::Get(int index, __int64 & n)
+void SqlStatement::Get(__int64 & n)
 {
-	n = sqlite3_column_int64(statement, index);
+	n = sqlite3_column_int64(statement, getIndex++);
 }
 
-void SqlStatement::Get(int index, double & n)
+void SqlStatement::Get(double & n)
 {
-	n = sqlite3_column_double(statement, index);
+	n = sqlite3_column_double(statement, getIndex++);
 }
 
-void SqlStatement::Get(int index, string & text)
+void SqlStatement::Get(string & text)
 {
-	const unsigned char * temp(sqlite3_column_text(statement, index));
+	const unsigned char * temp(sqlite3_column_text(statement, getIndex++));
 	if (temp)
 		text = reinterpret_cast<const char *>(temp);
 }
 
-void SqlStatement::Get(int index, wstring & text)
+void SqlStatement::Get(wstring & text)
 {
-	ConvertToUnicode(sqlite3_column_text(statement, index), text);
+	ConvertToUnicode(sqlite3_column_text(statement, getIndex++), text);
 }
 
-void SqlStatement::Get(int index, Guid & guid)
+void SqlStatement::Get(Guid & guid)
 {
 	string temp;
-	Get(index, temp);
+	Get(temp);
 	guid = Guid(temp);
 }
 
-void SqlStatement::Get(int index, Timestamp & time)
+void SqlStatement::Get(Timestamp & time)
 {
 	__int64 temp;
-	Get(index, temp);
+	Get(temp);
 	time = static_cast<time_t>(temp);
-}
-
-bool SqlStatement::IsNull(int index)
-{
-	return SQLITE_NULL == sqlite3_column_type(statement, index);
 }
 
 void SqlStatement::HandleError(const std::string msg)
