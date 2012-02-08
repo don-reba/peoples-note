@@ -175,7 +175,10 @@ void SqlStatement::Bind(const wstring & text)
 void SqlStatement::Bind(const Blob & blob)
 {
 	if (blob.empty())
+	{
+		++bindIndex;
 		return;
+	}
 	int result = sqlite3_bind_blob
 		( statement
 		, bindIndex++
