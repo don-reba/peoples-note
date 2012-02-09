@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "UserModel.h"
 
-#include "IDataStore.h"
 #include "IFlashCard.h"
 #include "ISqlBlob.h"
 #include "ISqlStatement.h"
@@ -712,155 +711,86 @@ void UserModel::GetNotebooks(NotebookList & notebooks)
 	}
 }
 
-void UserModel::GetNotesByNotebook
-	( const Guid & notebook
-	, NoteList   & notes
+void UserModel::GetNotes
+	( Guid       notebook // leave empty, if not used
+	, wstring    search   // leave empty, if not used
+	, int        start    // set count to 0, if not used
+	, int        count    // set to 0, if not used
+	, NoteList & notes
 	)
 {
-	GetNotesByNotebook(notebook, 0, 0, notes);
-}
-
-void UserModel::GetNotesByNotebook
-	( const Guid & notebook
-	, int          start
-	, int          count
-	, NoteList   & notes
-	)
-{
-	notes.clear();
 	IDataStore::Statement statement;
-	if (count > 0)
-	{
-		statement = dataStore.MakeStatement
-			("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
-			"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
-			"  FROM Notes"
-			"  WHERE isDeleted = 0 AND notebook = ?"
-			"  ORDER BY modificationDate DESC, creationDate DESC"
-			"  LIMIT ? OFFSET ?"
-			);
-		statement->Bind(notebook);
-		statement->Bind(count);
-		statement->Bind(start);
-	}
-	else
-	{
-		statement = dataStore.MakeStatement
-			("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
-			"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
-			"  FROM Notes"
-			"  WHERE isDeleted = 0 AND notebook = ?"
-			"  ORDER BY modificationDate DESC, creationDate DESC"
-			);
-		statement->Bind(notebook);
-	}
-	while (!statement->Execute())
-	{
-		notes.push_back(Note());
-		Note & n(notes.back());
-		statement->Get(n.guid);
-		statement->Get(n.usn);
-		statement->Get(n.name);
-		statement->Get(n.isDirty);
-		statement->Get(n.creationDate);
-		statement->Get(n.modificationDate);
-		statement->Get(n.subjectDate);
-		statement->Get(n.Location.Altitude);
-		statement->Get(n.Location.Latitude);
-		statement->Get(n.Location.Longitude);
-		statement->Get(n.Author);
-		statement->Get(n.Source);
-		statement->Get(n.SourceUrl);
-		statement->Get(n.SourceApplication);
-		n.Location.Validate();
-	}
-}
-
-void UserModel::GetNotesBySearch
-	( const Guid    & notebook
-	, const wstring & search
-	, int             start
-	, int             count
-	, NoteList      & notes
-	)
-{
 	if (search.find_first_not_of(L" \t") == wstring::npos)
 	{
-		GetNotesByNotebook(notebook, start, count, notes);
-		return;
-	}
-	wstring ucSearch;
-	transform
-		( search.begin()
-		, search.end()
-		, back_inserter(ucSearch)
-		, towupper
-		);
-	notes.clear();
-	IDataStore::Statement statement;
-	if (count > 0)
-	{
-		statement = dataStore.MakeStatement
+		string str
 			("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
 			"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
-			" FROM ( SELECT n.guid"
-			"        FROM   Notes AS n JOIN NoteText ON (n.rowid = NoteText.rowid)"
-			"        WHERE  n.isDeleted = 0 AND n.notebook = ? AND NoteText MATCH ?"
-			"        UNION"
-			"        SELECT n.guid"
-			"        FROM   Notes    AS n"
-			"        JOIN   NoteTags AS nt ON (n.guid = nt.note)"
-			"        JOIN   Tags     AS t  ON (t.guid = nt.tag)"
-			"        WHERE  n.isDeleted = 0 AND n.notebook = ? AND t.searchName = ?"
-			"        UNION"
-			"        SELECT n.guid"
-			"        FROM   Notes       AS n"
-			"        JOIN   Resources   AS rs ON (n.guid = rs.note)"
-			"        JOIN   Recognition AS rc ON (rs.guid = rc.resource)"
-			"        WHERE  n.isDeleted = 0 AND n.notebook = ? AND rc.text = ?"
-			"      ) JOIN Notes USING (guid)"
-			" ORDER BY modificationDate DESC, creationDate DESC"
-			" LIMIT ? OFFSET ?"
+			"  FROM Notes"
+			"  WHERE isDeleted = 0 {0}"
+			"  ORDER BY modificationDate DESC, creationDate DESC"
+			"  {1}"
 			);
-		statement->Bind(notebook);
-		statement->Bind(ucSearch);
-		statement->Bind(notebook);
-		statement->Bind(ucSearch);
-		statement->Bind(notebook);
-		statement->Bind(ucSearch);
-		statement->Bind(count);
-		statement->Bind(start);
+		Tools::ReplaceAll(str, "{0}", notebook.IsEmpty() ? "" : "AND notebook = ?");
+		Tools::ReplaceAll(str, "{1}", (count <= 0) ? "" : "LIMIT ? OFFSET ?");
+		statement = dataStore.MakeStatement(str.c_str());
+		if (!notebook.IsEmpty())
+			statement->Bind(notebook);
+		if (count > 0)
+		{
+			statement->Bind(count);
+			statement->Bind(start);
+		}
 	}
 	else
 	{
-		statement = dataStore.MakeStatement
+		string str
 			("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
 			"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
 			" FROM ( SELECT n.guid"
 			"        FROM   Notes AS n JOIN NoteText ON (n.rowid = NoteText.rowid)"
-			"        WHERE  n.isDeleted = 0 AND n.notebook = ? AND NoteText MATCH ?"
+			"        WHERE  n.isDeleted = 0 {0} AND NoteText MATCH ?"
 			"        UNION"
 			"        SELECT n.guid"
 			"        FROM   Notes    AS n"
 			"        JOIN   NoteTags AS nt ON (n.guid = nt.note)"
 			"        JOIN   Tags     AS t  ON (t.guid = nt.tag)"
-			"        WHERE  n.isDeleted = 0 AND n.notebook = ? AND t.searchName = ?"
+			"        WHERE  n.isDeleted = 0 {0} AND t.searchName = ?"
 			"        UNION"
 			"        SELECT n.guid"
 			"        FROM   Notes       AS n"
 			"        JOIN   Resources   AS rs ON (n.guid = rs.note)"
 			"        JOIN   Recognition AS rc ON (rs.guid = rc.resource)"
-			"        WHERE  n.isDeleted = 0 AND n.notebook = ? AND rc.text = ?"
+			"        WHERE  n.isDeleted = 0 {0} AND rc.text = ?"
 			"      ) JOIN Notes USING (guid)"
 			" ORDER BY modificationDate DESC, creationDate DESC"
+			" {1}"
 			);
-		statement->Bind(notebook);
+		Tools::ReplaceAll(str, "{0}", notebook.IsEmpty() ? "" : "AND n.notebook = ?");
+		Tools::ReplaceAll(str, "{1}", (count <= 0) ? "" : "LIMIT ? OFFSET ?");
+		statement = dataStore.MakeStatement(str.c_str());
+		wstring ucSearch;
+		transform
+			( search.begin()
+			, search.end()
+			, back_inserter(ucSearch)
+			, towupper
+			);
+		if (!notebook.IsEmpty())
+			statement->Bind(notebook);
 		statement->Bind(ucSearch);
-		statement->Bind(notebook);
+		if (!notebook.IsEmpty())
+			statement->Bind(notebook);
 		statement->Bind(ucSearch);
-		statement->Bind(notebook);
+		if (!notebook.IsEmpty())
+			statement->Bind(notebook);
 		statement->Bind(ucSearch);
+		if (count > 0)
+		{
+			statement->Bind(count);
+			statement->Bind(start);
+		}
 	}
+	notes.clear();
 	while (!statement->Execute())
 	{
 		notes.push_back(Note());

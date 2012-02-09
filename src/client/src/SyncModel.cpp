@@ -137,7 +137,7 @@ void SyncModel::GetNotes
 	)
 {
 	NoteList source;
-	userModel.GetNotesByNotebook(notebook.guid, source);
+	userModel.GetNotes(notebook.guid, L"", 0, 0, source);
 	foreach (const Note & note, source)
 	{
 		notes.push_back(EnInteropNote());
@@ -624,7 +624,7 @@ void SyncModel::UpdateNotes(UserUpdater & updater)
 			catch (const std::exception &) {}
 
 			NoteList notes;
-			userModel.GetNotesByNotebook(notebook.guid, notes);
+			userModel.GetNotes(notebook.guid, L"", 0, 0, notes);
 			double progress(0.0);
 			foreach (const Note & note, notes)
 			{

@@ -684,11 +684,8 @@ void Tools::ReadUtf8File
 	ConvertToUnicode(&utf8[0], contents);
 }
 
-void Tools::ReplaceAll
-	(       wstring & str
-	, const wstring & target
-	, const wstring & replacement
-	)
+template <typename T>
+void ReplaceAllImpl(T & str, const T & target, const T & replacement)
 {
 	if (target.empty() || target == replacement)
 		return;
@@ -698,6 +695,24 @@ void Tools::ReplaceAll
 		str.replace(i, target.length(), replacement);
 		i = str.find(target, i + replacement.length());
 	}
+}
+
+void Tools::ReplaceAll
+	(       string & str
+	, const string & target
+	, const string & replacement
+	)
+{
+	ReplaceAllImpl(str, target, replacement);
+}
+
+void Tools::ReplaceAll
+	(       wstring & str
+	, const wstring & target
+	, const wstring & replacement
+	)
+{
+	ReplaceAllImpl(str, target, replacement);
 }
 
 bool Tools::StartsWith(const wstring & sequence, const wchar_t * fragment)

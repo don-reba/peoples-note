@@ -110,24 +110,12 @@ public:
 
 	virtual int GetNotebookUpdateCount(const Guid & notebook) = 0;
 
-	virtual void GetNotesByNotebook
-		( const Guid & notebook
-		, NoteList   & notes
-		) = 0;
-
-	virtual void GetNotesByNotebook
-		( const Guid & notebook
-		, int          start
-		, int          count
-		, NoteList   & notes
-		) = 0;
-
-	virtual void GetNotesBySearch
-		( const Guid         & notebook
-		, const std::wstring & search
-		, int                  start
-		, int                  count
-		, NoteList           & notes
+	virtual void GetNotes
+		( Guid           notebook // leave empty, if not used
+		, std::wstring   search   // leave empty, if not used
+		, int            start    // set count to 0, if not used
+		, int            count    // set to 0, if not used
+		, NoteList     & notes
 		) = 0;
 
 	virtual std::wstring GetPath() = 0;

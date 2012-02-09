@@ -1,7 +1,8 @@
 #pragma once
 #include "IUserModel.h"
 
-class IDataStore;
+#include "IDataStore.h"
+
 class IFlashCard;
 
 class UserModel : public IUserModel
@@ -134,24 +135,12 @@ public:
 
 	virtual int GetNotebookUpdateCount(const Guid & notebook);
 
-	virtual void GetNotesByNotebook
-		( const Guid & notebook
-		, NoteList   & notes
-		);
-
-	virtual void GetNotesByNotebook
-		( const Guid & notebook
-		, int          start
-		, int          count
-		, NoteList   & notes
-		);
-
-	virtual void GetNotesBySearch
-		( const Guid         & notebook
-		, const std::wstring & search
-		, int                  start
-		, int                  count
-		, NoteList           & notes
+	virtual void GetNotes
+		( Guid           notebook // leave empty, if not used
+		, std::wstring   search   // leave empty, if not used
+		, int            start    // set count to 0, if not used
+		, int            count    // set to 0, if not used
+		, NoteList     & notes
 		);
 
 	virtual std::wstring GetPath();
@@ -262,6 +251,10 @@ private:
 		);
 
 	void GetFirstNotebook(Notebook & notebook);
+
+	void GetNotes(int start, int count, NoteList & notes);
+
+	void GetNotes(IDataStore::Statement & statement, NoteList & notes);
 
 	template<typename T>
 	void GetProperty(const std::wstring & name, T & value);

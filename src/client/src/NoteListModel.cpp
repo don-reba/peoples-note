@@ -31,7 +31,7 @@ void NoteListModel::GetCurrentPage
 	if (userModel.GetAllNotebooksState())
 	{
 		// ask for one more note than necessary to tell whether there is another page
-		//userModel.GetNotesBySearch(query, firstNote, pageSize + 1, notes);
+		userModel.GetNotes(Guid::GetEmpty(), query, firstNote, pageSize + 1, notes);
 	}
 	else
 	{
@@ -39,7 +39,7 @@ void NoteListModel::GetCurrentPage
 		userModel.GetLastUsedNotebook(notebook);
 
 		// ask for one more note than necessary to tell whether there is another page
-		userModel.GetNotesBySearch(notebook.guid, query, firstNote, pageSize + 1, notes);
+		userModel.GetNotes(notebook.guid, query, firstNote, pageSize + 1, notes);
 	}
 
 	hasPreviousPage = firstNote > 0;

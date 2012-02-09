@@ -7,12 +7,13 @@ using namespace boost;
 using namespace std;
 
 MockUserModel::MockUserModel()
-	: isInTransaction  (false)
-	, loadCount        (0)
-	, loadMethod       (LoadMethodNone)
-	, location         (DbLocationNone)
-	, path             (L"card-path")
-	, size             (42)
+	: allNotebooksState (false)
+	, isInTransaction   (false)
+	, loadCount         (0)
+	, loadMethod        (LoadMethodNone)
+	, location          (DbLocationNone)
+	, path              (L"card-path")
+	, size              (42)
 {
 }
 
@@ -112,6 +113,11 @@ void MockUserModel::ExpungeNotebook(const Guid & notebook)
 void MockUserModel::ExpungeTag(const Guid & tag)
 {
 	expungedTags.push_back(tag);
+}
+
+bool MockUserModel::GetAllNotebooksState()
+{
+	return allNotebooksState;
 }
 
 void MockUserModel::GetDefaultNotebook(Notebook & notebook)
@@ -266,44 +272,28 @@ int MockUserModel::GetNotebookUpdateCount(const Guid & notebook)
 	return notebookUpdateCounts[notebook];
 }
 
-void MockUserModel::GetNotesByNotebook
-	( const Guid & notebook
-	, NoteList   & notes
+void MockUserModel::GetNotes
+	( Guid       notebook // leave empty, if not used
+	, wstring    search   // leave empty, if not used
+	, int        start    // set count to 0, if not used
+	, int        count    // set to 0, if not used
+	, NoteList & notes
 	)
 {
 	notebookSelection = notebook;
-	notes.assign(this->notes.begin(), this->notes.end());
-}
-
-void MockUserModel::GetNotesByNotebook
-	( const Guid & notebook
-	, int          start
-	, int          count
-	, NoteList   & notes
-	)
-{
-	notebookSelection = notebook;
-	size_t finish(min(this->notes.size(), static_cast<size_t>(start + count)));
-	notes.assign
-		( this->notes.begin() + start
-		, this->notes.begin() + finish
-		);
-}
-
-void MockUserModel::GetNotesBySearch
-	( const Guid    & notebook
-	, const wstring & search
-	, int             start
-	, int             count
-	, NoteList      & notes
-	)
-{
-	searchSelection = search;
-	size_t finish(min(this->notes.size(), static_cast<size_t>(start + count)));
-	notes.assign
-		( this->notes.begin() + start
-		, this->notes.begin() + finish
-		);
+	searchSelection   = search;
+	if (count > 0)
+	{
+		size_t finish(min(this->notes.size(), static_cast<size_t>(start + count)));
+		notes.assign
+			( this->notes.begin() + start
+			, this->notes.begin() + finish
+			);
+	}
+	else
+	{
+		notes.assign(this->notes.begin(), this->notes.end());
+	}
 }
 
 void MockUserModel::GetNoteThumbnail
@@ -466,6 +456,11 @@ void MockUserModel::ReplaceNote
 		return;
 	}
 	AddNote(note, body, bodyText, notebook);
+}
+
+void MockUserModel::SetAllNotebooksState(bool state)
+{
+	allNotebooksState = state;
 }
 
 void MockUserModel::SetCredentials

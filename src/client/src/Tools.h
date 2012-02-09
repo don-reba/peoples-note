@@ -107,6 +107,12 @@ namespace Tools
 		);
 
 	void ReplaceAll
+		(       std::string & str
+		, const std::string & target
+		, const std::string & replacement
+		);
+
+	void ReplaceAll
 		(       std::wstring & str
 		, const std::wstring & target
 		, const std::wstring & replacement
