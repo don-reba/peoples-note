@@ -1,7 +1,7 @@
 #pragma once
 #include "IUserModel.h"
 
-#include "MockCredentialsModel.h"
+#include "ICredentialsModel.h"
 #include "Note.h"
 #include "Notebook.h"
 
@@ -153,6 +153,8 @@ public:
 	virtual __int64 GetLastSyncEnTime();
 
 	virtual void GetLastUsedNotebook(Guid & notebook);
+
+	virtual void GetLastUsedNotebookOrDefault(Guid & notebook);
 
 	virtual DbLocation GetLocation();
 

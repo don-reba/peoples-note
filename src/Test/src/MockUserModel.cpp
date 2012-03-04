@@ -156,6 +156,14 @@ void MockUserModel::GetLastUsedNotebook(Guid & notebook)
 	notebook = lastUsedNotebook;
 }
 
+void MockUserModel::GetLastUsedNotebookOrDefault(Guid & notebook)
+{
+	notebook
+		= lastUsedNotebook.IsEmpty()
+		? defaultNotebook
+		: lastUsedNotebook;
+}
+
 DbLocation MockUserModel::GetLocation()
 {
 	return location;

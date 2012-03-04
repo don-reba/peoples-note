@@ -134,7 +134,7 @@ void MockNoteStore::GetTag
 {
 }
 
-void MockNoteStore::ListEntries
+void MockNoteStore::ListFullSyncEntries
 	( EnInteropNoteList & notes
 	, NotebookList      & notebooks
 	, TagList           & tags
@@ -151,7 +151,7 @@ void MockNoteStore::ListEntries
 	copy(remoteTags.begin(),      remoteTags.end(),      back_inserter(tags));
 }
 
-void MockNoteStore::ListEntries
+void MockNoteStore::ListIncrementalSyncEntries
 	( int                 globalUpdateCount
 	, int                 notebookUpdateCount
 	, EnInteropNoteList & notes
@@ -165,7 +165,7 @@ void MockNoteStore::ListEntries
 	)
 
 {
-	ListEntries(notes, notebooks, tags, notebookFilter);
+	ListFullSyncEntries(notes, notebooks, tags, notebookFilter);
 	copy
 		( this->expungedNotes.begin()
 		, this->expungedNotes.end()

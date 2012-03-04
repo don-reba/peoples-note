@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\EnInteropNote.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\EnNoteTranslator.cpp"
 				>
 			</File>
