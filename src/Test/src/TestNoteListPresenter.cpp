@@ -45,6 +45,27 @@ struct NoteListPresenterFixture
 //-----------
 // test cases
 //-----------
+BOOST_FIXTURE_TEST_CASE
+	( NoteListPresenter_AllNotebooksSelected
+	, NoteListPresenterFixture
+	)
+{
+	noteListView.isSearchButtonSetToSearch = false;
+	noteListModel.isReloaded               = false;
+	noteListView.searchText                = L"search text";
+	noteListModel.query                    = L"query";
+
+	noteListView.SignalAllNotebooksSelected();
+
+	BOOST_CHECK_EQUAL(userModel.lastUsedNotebook, Guid::GetEmpty());
+	BOOST_CHECK_EQUAL(noteListView.windowTitle,   L"All notebooks");
+	BOOST_CHECK_EQUAL(noteView.windowTitle,       L"All notebooks");
+	BOOST_CHECK_EQUAL(noteListView.searchText,    L"");
+	BOOST_CHECK_EQUAL(noteListModel.query,        L"");
+
+	BOOST_CHECK(noteListView.isSearchButtonSetToSearch);
+	BOOST_CHECK(noteListModel.isReloaded);
+}
 
 // Note: the output of this test depends on your time zone.
 BOOST_FIXTURE_TEST_CASE
