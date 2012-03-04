@@ -211,7 +211,7 @@ void NoteStore::GetTag
 		);
 }
 
-void NoteStore::ListEntries
+void NoteStore::ListFullSyncEntries
 	( EnInteropNoteList & notes
 	, NotebookList      & notebooks
 	, TagList           & tags
@@ -228,7 +228,7 @@ void NoteStore::ListEntries
 	}
 }
 
-void NoteStore::ListEntries
+void NoteStore::ListIncrementalSyncEntries
 	( int                 globalUpdateCount
 	, int                 notebookUpdateCount
 	, EnInteropNoteList & notes
@@ -503,6 +503,9 @@ void NoteStore::ConvertFromEnResource
 	, RecognitionEntryList       & recognitionEntries
 	)
 {
+	resource.Data.reserve(enResource.data.body.size());
+	if (resource.Data.capacity() < enResource.data.body.size())
+		throw std::exception("Not enough memory to download resource.");
 	copy
 		( enResource.data.body.begin()
 		, enResource.data.body.end()
@@ -669,7 +672,7 @@ void NoteStore::ListEntries
 		{
 			if (note.__isset.active && !note.active)
 				continue;
-			if (note.notebookGuid != notebookFilterGuid)
+			if (!notebookFilter.IsEmpty() && note.notebookGuid != notebookFilterGuid)
 				continue;
 			++noteCount;
 		}
@@ -679,18 +682,21 @@ void NoteStore::ListEntries
 		{
 			if (note.__isset.active && !note.active)
 				continue;
-			if (note.notebookGuid != notebookFilterGuid)
+			if (!notebookFilter.IsEmpty() && note.notebookGuid != notebookFilterGuid)
 				continue;
-			notes.push_back(EnInteropNote());
+
+			Note     newNote;
+			GuidList newNoteTags;
+			ConvertFromEnNote(note, newNote, newNoteTags);
+
+			notes.push_back(EnInteropNote(newNote, Guid(note.notebookGuid)));
 			EnInteropNote & enNote(notes.back());
-			ConvertFromEnNote(note, enNote.note, enNote.tags);
 
-			enNote.notebook = Guid(note.notebookGuid);
-
-			enNote.guid    = notes.back().note.guid;
-			enNote.name    = notes.back().note.name;
-			enNote.usn     = notes.back().note.usn;
-			enNote.isDirty = notes.back().note.isDirty;
+			copy
+				( newNoteTags.begin()
+				, newNoteTags.end()
+				, back_inserter(notes.back().tags)
+				);
 
 			int resourceCount(0);
 			foreach (const EDAM::Type::Resource & resource, note.resources)
@@ -740,7 +746,7 @@ void NoteStore::ListEntries
 	{
 		if (!note.__isset.active || note.active)
 			continue;
-		if (note.notebookGuid != notebookFilterGuid)
+		if (!notebookFilter.IsEmpty() && note.notebookGuid != notebookFilterGuid)
 			continue;
 		expungedNotes.push_back(Guid(note.guid));
 	}

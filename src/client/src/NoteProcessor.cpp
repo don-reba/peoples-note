@@ -14,12 +14,10 @@ NoteProcessor::NoteProcessor
 	( EnNoteTranslator & enNoteTranslator
 	, IUserModel       & userModel
 	, INoteStore       & noteStore
-	, const Notebook   & notebook
 	)
 	: enNoteTranslator (enNoteTranslator)
 	, userModel        (userModel)
 	, noteStore        (noteStore)
-	, notebook         (notebook)
 {
 }
 
@@ -32,7 +30,7 @@ void NoteProcessor::AddLocal(const EnInteropNote & remote)
 	enNoteTranslator.ConvertToText(body, bodyText);
 
 	Transaction transaction(userModel);
-	userModel.ReplaceNote(remote.note, body, bodyText, notebook);
+	userModel.ReplaceNote(remote.note, body, bodyText, remote.notebook);
 	foreach (const Guid & guid, remote.resources)
 	{
 		Resource             resource;
@@ -77,13 +75,13 @@ void NoteProcessor::CreateRemote(const EnInteropNote & local)
 		( local.note
 		, body
 		, resources
-		, notebook.guid
+		, local.notebook
 		, replacement
 		, replacementTags
 		);
 
 	userModel.ExpungeNote(local.guid);
-	userModel.AddNote(replacement, body, bodyText, notebook);
+	userModel.AddNote(replacement, body, bodyText, local.notebook);
 	
 	foreach (const Guid & tag, replacementTags)
 		userModel.AddTagToNote(tag, replacement);
@@ -136,13 +134,13 @@ void NoteProcessor::UpdateRemote(const EnInteropNote & local)
 		, body
 		, tagGuids
 		, resources
-		, notebook.guid
+		, local.notebook
 		, replacement
 		, replacementTags
 		);
 
 	userModel.ExpungeNote(local.note.guid);
-	userModel.AddNote(replacement, body, bodyText, notebook);
+	userModel.AddNote(replacement, body, bodyText, local.notebook);
 
 	foreach (const Guid & tag, replacementTags)
 		userModel.AddTagToNote(tag, replacement);

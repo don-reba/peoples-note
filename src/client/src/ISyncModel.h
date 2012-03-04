@@ -1,6 +1,7 @@
 #pragma once
-
 #include "ISignalProvider.h"
+
+#include "Guid.h"
 
 class IUserModel;
 
@@ -14,6 +15,7 @@ public:
 	virtual void BeginSync
 		( const std::wstring & username
 		, const std::wstring & password
+		, const Guid         & notebook
 		) = 0;
 
 	virtual const wchar_t * GetStatusText() = 0;

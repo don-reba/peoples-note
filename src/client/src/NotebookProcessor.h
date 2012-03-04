@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Guid.h"
+
 class INoteStore;
 class IUserModel;
 class Notebook;
@@ -19,6 +21,7 @@ public:
 	void CreateRemote
 		( const Notebook & local
 		, INoteStore     & noteStore
+		, Guid           & replacementGuid
 		);
 
 	void DeleteLocal(const Notebook & local);
@@ -31,5 +34,6 @@ public:
 	void UpdateRemote
 		( const Notebook & local
 		, INoteStore     & noteStore
+		, Guid           & replacementGuid
 		);
 };

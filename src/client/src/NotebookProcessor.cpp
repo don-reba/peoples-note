@@ -24,6 +24,7 @@ void NotebookProcessor::AddLocal(const Notebook & remote)
 void NotebookProcessor::CreateRemote
 	( const Notebook & local
 	, INoteStore     & noteStore
+	, Guid           & replacementGuid
 	)
 {
 	Transaction transaction(userModel);
@@ -31,6 +32,7 @@ void NotebookProcessor::CreateRemote
 	Notebook replacement;
 	noteStore.CreateNotebook(local,      replacement);
 	userModel.UpdateNotebook(local.guid, replacement);
+	replacementGuid = replacement.guid;
 }
 
 void NotebookProcessor::DeleteLocal(const Notebook & local)
@@ -49,6 +51,7 @@ void NotebookProcessor::MergeLocal
 void NotebookProcessor::UpdateRemote
 	( const Notebook & local
 	, INoteStore     & noteStore
+	, Guid           & replacementGuid
 	)
 {
 	Transaction transaction(userModel);
@@ -56,4 +59,5 @@ void NotebookProcessor::UpdateRemote
 	Notebook replacement;
 	noteStore.UpdateNotebook(local,      replacement);
 	userModel.UpdateNotebook(local.guid, replacement);
+	replacementGuid = replacement.guid;
 }

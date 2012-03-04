@@ -14,6 +14,7 @@ public:
 	std::wstring username;
 	std::wstring password;
 	std::wstring statusText;
+	Guid         notebook;
 	double       syncProgress;
 
 public:
@@ -23,6 +24,7 @@ public:
 	virtual void BeginSync
 		( const std::wstring & username
 		, const std::wstring & pasword
+		, const Guid         & notebook
 		);
 
 	virtual const wchar_t * GetStatusText();

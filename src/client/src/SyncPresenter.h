@@ -3,6 +3,7 @@
 class INoteListView;
 class ISyncModel;
 class ILastUserModel;
+class IUserModel;
 
 class SyncPresenter
 {
@@ -11,6 +12,7 @@ private:
 	INoteListView  & noteListView;
 	ISyncModel     & syncModel;
 	ILastUserModel & lastUserModel;
+	IUserModel     & userModel;
 
 public:
 
@@ -18,6 +20,7 @@ public:
 		( INoteListView  & noteListView
 		, ISyncModel     & syncModel
 		, ILastUserModel & lastUserModel
+		, IUserModel     & userModel
 		);
 
 private:

@@ -59,9 +59,9 @@ void EditorPresenter::OnAccept()
 	{
 		Transaction transaction(userModel);
 
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-		userModel.AddNote(note, bodyXml, bodyText, notebook);
+		Guid targetNotebook("");
+		userModel.GetLastUsedNotebookOrDefault(targetNotebook);
+		userModel.AddNote(note, bodyXml, bodyText, targetNotebook);
 
 		userModel.DeleteNoteThumbnail(note.guid);
 		noteListView.UpdateThumbnail(note.guid);
@@ -115,8 +115,10 @@ void EditorPresenter::OnNewNote()
 {
 	editorView.Show();
 	
+	Guid     notebookGuid("");
 	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
+	userModel.GetLastUsedNotebookOrDefault(notebookGuid);
+	userModel.GetNotebook(notebookGuid, notebook);
 
 	Note note;
 	note.name         = L"New note in ";

@@ -6,7 +6,6 @@ class EnInteropNote;
 class EnNoteTranslator;
 class INoteStore;
 class IUserModel;
-class Notebook;
 
 class NoteProcessor
 {
@@ -15,8 +14,6 @@ private:
 	EnNoteTranslator & enNoteTranslator;
 	INoteStore       & noteStore;
 	IUserModel       & userModel;
-	
-	const Notebook & notebook;
 
 public:
 
@@ -24,7 +21,6 @@ public:
 		( EnNoteTranslator & enNoteTranslator
 		, IUserModel       & userModel
 		, INoteStore       & noteStore
-		, const Notebook   & notebook
 		);
 
 	void AddLocal(const EnInteropNote & remote);

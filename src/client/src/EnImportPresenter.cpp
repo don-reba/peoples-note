@@ -49,8 +49,8 @@ void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 
 	Transaction transaction(userModel);
 
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
+	Guid targetNotebook;
+	userModel.GetLastUsedNotebookOrDefault(targetNotebook);
 
 	NoteList             notes;
 	NoteBodyList         bodies;
@@ -74,7 +74,7 @@ void EnImportPresenter::ImportNotes(const wchar_t * fileName)
 		wstring bodyText;
 		enNoteTranslator.ConvertToText(body, bodyText);
 
-		userModel.AddNote(note, body, bodyText, notebook);
+		userModel.AddNote(note, body, bodyText, targetNotebook);
 	}
 
 	foreach (const Resource & resource, resources)

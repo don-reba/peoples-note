@@ -35,7 +35,7 @@ Guid::Guid(wstring data)
 
 bool Guid::IsLocal() const
 {
-	return data.at(data.size() - 1) == localMarker;
+	return !data.empty() && data.at(data.size() - 1) == localMarker;
 }
 
 bool Guid::IsEmpty() const

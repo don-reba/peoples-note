@@ -72,8 +72,8 @@ BOOST_AUTO_TEST_CASE(EnImportPresenter_Import_Test0)
 	BOOST_CHECK_EQUAL(addedNotes.at(1).note.name, L"note-2");
 	BOOST_CHECK_EQUAL(addedNotes.at(0).body, L"<en-note>body-1</en-note>");
 	BOOST_CHECK_EQUAL(addedNotes.at(1).body, L"<en-note>body-2</en-note>");
-	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook.name, L"last-used-notebook");
-	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook.name, L"last-used-notebook");
+	BOOST_CHECK_EQUAL(addedNotes.at(0).notebook, userModel.lastUsedNotebook);
+	BOOST_CHECK_EQUAL(addedNotes.at(1).notebook, userModel.lastUsedNotebook);
 
 	BOOST_CHECK(noteListModel.isReloaded);
 }

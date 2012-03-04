@@ -93,9 +93,12 @@ void UserModel::AddNote
 	( const Note     & note
 	, const wstring  & body
 	, const wstring  & bodyText
-	, const Notebook & notebook
+	, const Guid     & notebook
 	)
 {
+	if (notebook.IsEmpty())
+		throw std::exception("Invalid notebook.");
+
 	Transaction transaction(*this);
 
 	IDataStore::Statement existenceCheck = dataStore.MakeStatement
@@ -154,7 +157,7 @@ void UserModel::AddNote
 			updateNote->Bind(note.Source);
 			updateNote->Bind(note.SourceUrl);
 			updateNote->Bind(note.SourceApplication);
-			updateNote->Bind(notebook.guid);
+			updateNote->Bind(notebook);
 			updateNote->Bind(rowid);
 			updateNote->Execute();
 		}
@@ -373,33 +376,14 @@ void UserModel::ExpungeNote(const Guid & note)
 
 void UserModel::ExpungeNotebook(const Guid & notebook)
 {
-	Transaction transaction(*this);
+	if (notebook.IsEmpty())
+		throw std::exception("Invalid notebook.");
 
-	bool isLastUsed;
-	{
-		IDataStore::Statement statement = dataStore.MakeStatement
-			( "SELECT isLastUsed FROM Notebooks WHERE guid = ? LIMIT 1"
-			);
-		statement->Bind(notebook);
-		if (statement->Execute())
-			return;
-		statement->Get(isLastUsed);
-	}
-
-	{
-		IDataStore::Statement statement = dataStore.MakeStatement
-			( "DELETE FROM Notebooks WHERE guid = ?"
-			);
-		statement->Bind(notebook);
-		statement->Execute();
-	}
-
-	if (isLastUsed)
-	{
-		Notebook notebook;
-		GetFirstNotebook(notebook);
-		MakeNotebookLastUsed(notebook.guid);
-	}
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "DELETE FROM Notebooks WHERE guid = ?"
+		);
+	statement->Bind(notebook);
+	statement->Execute();
 }
 
 void UserModel::ExpungeTag(const Guid & tag)
@@ -409,13 +393,6 @@ void UserModel::ExpungeTag(const Guid & tag)
 		);
 	statement->Bind(tag);
 	statement->Execute();
-}
-
-bool UserModel::GetAllNotebooksState()
-{
-	bool allNotebooks(false);
-	GetProperty(L"allNotebooks", allNotebooks);
-	return allNotebooks;
 }
 
 wstring UserModel::GetPasswordHash()
@@ -432,22 +409,17 @@ wstring UserModel::GetUsername()
 	return username;
 }
 
-void UserModel::GetDefaultNotebook(Notebook & notebook)
+void UserModel::GetDefaultNotebook(Guid & notebook)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, creationDate, modificationDate, isDirty"
+		( "SELECT guid"
 		"  FROM Notebooks"
 		"  WHERE isDefault = 1"
 		"  LIMIT 1"
 		);
 	if (statement->Execute())
 		throw std::exception("No default notebook.");
-	statement->Get(notebook.guid);
-	statement->Get(notebook.usn);
-	statement->Get(notebook.name);
-	statement->Get(notebook.CreationDate);
-	statement->Get(notebook.ModificationDate);
-	statement->Get(notebook.isDirty);
+	statement->Get(notebook);
 }
 
 void UserModel::GetDeletedNotes(GuidList & notes)
@@ -466,14 +438,17 @@ void UserModel::GetDeletedNotes(GuidList & notes)
 	}
 }
 
-int UserModel::GetDirtyNoteCount(const Notebook & notebook)
+int UserModel::GetDirtyNoteCount(const Guid & notebook)
 {
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT Count(*)"
-		"  FROM Notes"
-		"  WHERE isDirty = 1 AND notebook = ?"
-		);
-	statement->Bind(notebook.guid);
+	string str
+			( "SELECT Count(*)"
+			"  FROM Notes"
+			"  WHERE isDirty = 1 {0}"
+			);
+	Tools::ReplaceAll(str, "{0}", notebook.IsEmpty() ? "" : "AND notebook = ?");
+	IDataStore::Statement statement(dataStore.MakeStatement(str.c_str()));
+	if (!notebook.IsEmpty())
+		statement->Bind(notebook);
 	if (statement->Execute())
 		throw std::exception("Could not count dirty notes.");
 	int count;
@@ -488,28 +463,27 @@ __int64 UserModel::GetLastSyncEnTime()
 	return enTime;
 }
 
-void UserModel::GetLastUsedNotebook(Notebook & notebook)
+void UserModel::GetLastUsedNotebook(Guid & notebook)
 {
 	Transaction transaction(*this);
 
 	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT guid, usn, name, creationDate, modificationDate, isDirty"
+		( "SELECT guid"
 		"  FROM Notebooks"
 		"  WHERE isLastUsed = 1"
 		"  LIMIT 1"
 		);
 	if (statement->Execute())
-	{
-		GetFirstNotebook(notebook);
-		MakeNotebookLastUsed(notebook.guid);
-		return;
-	}
-	statement->Get(notebook.guid);
-	statement->Get(notebook.usn);
-	statement->Get(notebook.name);
-	statement->Get(notebook.CreationDate);
-	statement->Get(notebook.ModificationDate);
-	statement->Get(notebook.isDirty);
+		notebook = Guid::GetEmpty();
+	else
+		statement->Get(notebook);
+}
+
+void UserModel::GetLastUsedNotebookOrDefault(Guid & notebook)
+{
+	GetLastUsedNotebook(notebook);
+	if (notebook.IsEmpty())
+		GetDefaultNotebook(notebook);
 }
 
 DbLocation UserModel::GetLocation()
@@ -634,6 +608,8 @@ void UserModel::GetNotebook
 	, Notebook   & notebook
 	)
 {
+	if (guid.IsEmpty())
+		throw std::exception("Invalid notebook.");
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "SELECT guid, usn, name, creationDate, modificationDate, isDirty"
 		"  FROM   Notebooks"
@@ -652,14 +628,28 @@ void UserModel::GetNotebook
 
 int UserModel::GetNotebookUpdateCount(const Guid & notebook)
 {
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT updateCount"
-		"  FROM   Notebooks"
-		"  WHERE  guid = ?"
-		);
-	statement->Bind(notebook);
-	if (statement->Execute())
-		throw std::exception("Notebook not found.");
+	IDataStore::Statement statement;
+
+	if (notebook.IsEmpty())
+	{
+		statement = dataStore.MakeStatement
+			( "SELECT MIN(updateCount)"
+			"  FROM   Notebooks"
+			);
+		statement->Execute();
+	}
+	else
+	{
+		statement = dataStore.MakeStatement
+			( "SELECT updateCount"
+			"  FROM   Notebooks"
+			"  WHERE  guid = ?"
+			);
+		statement->Bind(notebook);
+		if (statement->Execute())
+			throw std::exception("Notebook not found.");
+	}
+
 	int updateCount(0);
 	statement->Get(updateCount);
 	return updateCount;
@@ -722,14 +712,13 @@ void UserModel::GetNotes
 	IDataStore::Statement statement;
 	if (search.find_first_not_of(L" \t") == wstring::npos)
 	{
-		string str
-			("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
+		string str =
+			" SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
 			"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
 			"  FROM Notes"
 			"  WHERE isDeleted = 0 {0}"
 			"  ORDER BY modificationDate DESC, creationDate DESC"
-			"  {1}"
-			);
+			"  {1}";
 		Tools::ReplaceAll(str, "{0}", notebook.IsEmpty() ? "" : "AND notebook = ?");
 		Tools::ReplaceAll(str, "{1}", (count <= 0) ? "" : "LIMIT ? OFFSET ?");
 		statement = dataStore.MakeStatement(str.c_str());
@@ -743,8 +732,8 @@ void UserModel::GetNotes
 	}
 	else
 	{
-		string str
-			("SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
+		string str =
+			" SELECT guid, usn, title, isDirty, creationDate, modificationDate, subjectDate,"
 			"        altitude, latitude, longitude, author, source, sourceUrl, sourceApplication"
 			" FROM ( SELECT n.guid"
 			"        FROM   Notes AS n JOIN NoteText ON (n.rowid = NoteText.rowid)"
@@ -763,8 +752,7 @@ void UserModel::GetNotes
 			"        WHERE  n.isDeleted = 0 {0} AND rc.text = ?"
 			"      ) JOIN Notes USING (guid)"
 			" ORDER BY modificationDate DESC, creationDate DESC"
-			" {1}"
-			);
+			" {1}";
 		Tools::ReplaceAll(str, "{0}", notebook.IsEmpty() ? "" : "AND n.notebook = ?");
 		Tools::ReplaceAll(str, "{1}", (count <= 0) ? "" : "LIMIT ? OFFSET ?");
 		statement = dataStore.MakeStatement(str.c_str());
@@ -1031,6 +1019,9 @@ void UserModel::LoadOrCreate(const wstring & username)
 
 void UserModel::MakeNotebookDefault(const Guid & notebook)
 {
+	if (notebook.IsEmpty())
+		throw std::exception("Invalid notebook.");
+
 	IDataStore::Statement removeOld = dataStore.MakeStatement
 		( "UPDATE Notebooks"
 		"  SET isDefault = 0"
@@ -1056,13 +1047,16 @@ void UserModel::MakeNotebookLastUsed(const Guid & notebook)
 		);
 	removeOld->Execute();
 
-	IDataStore::Statement setNew = dataStore.MakeStatement
-		( "UPDATE Notebooks"
-		"  SET isLastUsed = 1"
-		"  WHERE guid = ?"
-		);
-	setNew->Bind(notebook);
-	setNew->Execute();
+	if (!notebook.IsEmpty())
+	{
+		IDataStore::Statement setNew = dataStore.MakeStatement
+			( "UPDATE Notebooks"
+			"  SET isLastUsed = 1"
+			"  WHERE guid = ?"
+			);
+		setNew->Bind(notebook);
+		setNew->Execute();
+	}
 }
 
 void UserModel::MoveToCard()
@@ -1099,9 +1093,12 @@ void UserModel::ReplaceNote
 	( const Note          & note
 	, const std::wstring  & body
 	, const std::wstring  & bodyText
-	, const Notebook      & notebook
+	, const Guid          & notebook
 	)
 {
+	if (notebook.IsEmpty())
+		throw std::exception("Invalid notebook.");
+
 	Transaction transaction(*this);
 	{
 		IDataStore::Statement insertNote = dataStore.MakeStatement
@@ -1135,7 +1132,7 @@ void UserModel::ReplaceNote
 		insertNote->Bind(note.Source);
 		insertNote->Bind(note.SourceUrl);
 		insertNote->Bind(note.SourceApplication);
-		insertNote->Bind(notebook.guid);
+		insertNote->Bind(notebook);
 		insertNote->Execute();
 	}
 	{
@@ -1169,11 +1166,6 @@ void UserModel::ReplaceNote
 	}
 }
 
-void UserModel::SetAllNotebooksState(bool state)
-{
-	SetProperty(L"allNotebooks", state);
-}
-
 void UserModel::SetCredentials
 	( const wstring & username
 	, const wstring & password
@@ -1193,6 +1185,9 @@ void UserModel::SetNotebookUpdateCount
 	, int          updateCount
 	)
 {
+	if (notebook.IsEmpty())
+		throw std::exception("Invalid notebook.");
+
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "UPDATE Notebooks"
 		"  SET    updateCount = ?"
@@ -1276,6 +1271,9 @@ void UserModel::UpdateNotebook
 	, const Notebook & replacement
 	)
 {
+	if (notebook.IsEmpty())
+		throw std::exception("Invalid notebook.");
+
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "UPDATE Notebooks"
 		"  SET guid = ?, usn = ?, name = ?, creationDate = ?,"
@@ -1374,34 +1372,6 @@ wstring UserModel::CreatePathFromName
 	wstringstream stream;
 	stream << folder << L'\\' << name << L".db";
 	return stream.str();
-}
-
-void UserModel::GetFirstNotebook(Notebook & notebook)
-{
-	Transaction transaction(*this);
-
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "SELECT   guid, usn, name, creationDate, modificationDate, isDirty"
-		"  FROM     Notebooks"
-		"  ORDER BY name"
-		"  LIMIT    1"
-		);
-	if (statement->Execute())
-	{
-		notebook.guid    = Guid();
-		notebook.name    = L"Notes";
-		notebook.isDirty = true;
-		notebook.usn     = GetUpdateCount();
-		AddNotebook(notebook);
-		MakeNotebookDefault(notebook.guid);
-		MakeNotebookLastUsed(notebook.guid);
-	}
-	statement->Get(notebook.guid);
-	statement->Get(notebook.usn);
-	statement->Get(notebook.name);
-	statement->Get(notebook.CreationDate);
-	statement->Get(notebook.ModificationDate);
-	statement->Get(notebook.isDirty);
 }
 
 void UserModel::Initialize(wstring name)

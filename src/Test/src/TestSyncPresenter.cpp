@@ -2,6 +2,7 @@
 #include "MockNoteListView.h"
 #include "MockSyncModel.h"
 #include "MockLastUserModel.h"
+#include "MockUserModel.h"
 #include "SyncPresenter.h"
 
 using namespace boost;
@@ -12,13 +13,16 @@ struct SyncPresenterFixture
 	MockNoteListView  noteListView;
 	MockSyncModel     syncModel;
 	MockLastUserModel lastUserModel;
-	SyncPresenter     syncPresenter;
+	MockUserModel     userModel;
+
+	SyncPresenter syncPresenter;
 
 	SyncPresenterFixture()
 		: syncPresenter
 			( noteListView
 			, syncModel
 			, lastUserModel
+			, userModel
 			)
 	{
 	}
@@ -37,4 +41,5 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(syncModel.syncBegan);
 	BOOST_CHECK_EQUAL(syncModel.username, L"username");
 	BOOST_CHECK_EQUAL(syncModel.password, L"password");
+	BOOST_CHECK_EQUAL(syncModel.notebook, userModel.lastUsedNotebook);
 }

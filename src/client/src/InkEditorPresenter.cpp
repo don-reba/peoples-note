@@ -74,9 +74,9 @@ void InkEditorPresenter::OnAccept()
 	// add both to the database
 	{
 		Transaction transaction(userModel);
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-		userModel.AddNote(note, body, L"", notebook);
+		Guid lastUsedNotebook;
+		userModel.GetLastUsedNotebookOrDefault(lastUsedNotebook);
+		userModel.AddNote(note, body, L"", lastUsedNotebook);
 		userModel.AddResource(image);
 	}
 

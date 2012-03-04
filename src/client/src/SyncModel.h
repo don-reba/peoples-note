@@ -8,13 +8,13 @@
 #include "Tag.h"
 
 class EnNoteTranslator;
+class Guid;
 class IEnService;
 class IMessagePump;
 class INoteStore;
 class ILogger;
 class IUserModel;
 class UserUpdater;
-
 
 class SyncModel : public ISyncModel
 {
@@ -52,6 +52,7 @@ private:
 
 	std::wstring username;
 	std::wstring password;
+	Guid         notebook;
 
 	HANDLE syncThread;
 
@@ -89,6 +90,7 @@ public:
 	virtual void BeginSync
 		( const std::wstring & username
 		, const std::wstring & password
+		, const Guid         & notebook
 		);
 
 	virtual const wchar_t * GetStatusText();
@@ -101,10 +103,7 @@ private:
 
 	void CloseThread();
 
-	void GetNotes
-		( const Notebook    & notebook
-		, EnInteropNoteList & notes
-		);
+	void GetLocalNotes(EnInteropNoteList & notes);
 
 	void FinishSync
 		( const wchar_t * logMessage
@@ -118,7 +117,6 @@ private:
 	void ProcessNotes
 		( const EnInteropNoteList & remoteNotes
 		, INoteStore              & noteStore
-		, Notebook                & notebook
 		, bool                      fullSync
 		);
 
@@ -140,8 +138,8 @@ private:
 
 	void UpdateDefaultNotebook(INoteStore & noteStore);
 
-	void UpdateModel     (INoteStore  & noteStore);
-	void UpdateNotes     (UserUpdater & updater);
-	void UpdateResources (UserUpdater & updater);
-	void UpdateTags      (UserUpdater & updater);
+	void UpdateModel             (INoteStore  & noteStore);
+	void UpdateNotebooksAndNotes (UserUpdater & updater);
+	void UpdateResources         (UserUpdater & updater);
+	void UpdateTags              (UserUpdater & updater);
 };

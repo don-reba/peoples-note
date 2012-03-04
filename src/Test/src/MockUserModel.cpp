@@ -7,8 +7,7 @@ using namespace boost;
 using namespace std;
 
 MockUserModel::MockUserModel()
-	: allNotebooksState (false)
-	, isInTransaction   (false)
+	: isInTransaction   (false)
 	, loadCount         (0)
 	, loadMethod        (LoadMethodNone)
 	, location          (DbLocationNone)
@@ -21,7 +20,7 @@ void MockUserModel::AddNote
 	( const Note     & note
 	, const wstring  & body
 	, const wstring  & bodyText
-	, const Notebook & notebook
+	, const Guid     & notebook
 	)
 {
 	addedNotes.push_back(NoteRecord(note, body, bodyText, notebook));
@@ -115,15 +114,10 @@ void MockUserModel::ExpungeTag(const Guid & tag)
 	expungedTags.push_back(tag);
 }
 
-bool MockUserModel::GetAllNotebooksState()
-{
-	return allNotebooksState;
-}
 
-void MockUserModel::GetDefaultNotebook(Notebook & notebook)
+void MockUserModel::GetDefaultNotebook(Guid & notebook)
 {
-	notebook.guid = defaultNotebook;
-	notebook.name = L"default-notebook";
+	notebook = defaultNotebook;
 }
 
 void MockUserModel::GetDeletedNotes(GuidList & notes)
@@ -136,7 +130,7 @@ void MockUserModel::GetDeletedNotes(GuidList & notes)
 		);
 }
 
-int MockUserModel::GetDirtyNoteCount(const Notebook & notebook)
+int MockUserModel::GetDirtyNoteCount(const Guid & notebook)
 {
 	int count(0);
 	foreach (const Note & note, notes)
@@ -157,10 +151,9 @@ __int64 MockUserModel::GetLastSyncEnTime()
 	return lastSyncEnTime;
 }
 
-void MockUserModel::GetLastUsedNotebook(Notebook & notebook)
+void MockUserModel::GetLastUsedNotebook(Guid & notebook)
 {
-	notebook.guid = lastUsedNotebook;
-	notebook.name = L"last-used-notebook";
+	notebook = lastUsedNotebook;
 }
 
 DbLocation MockUserModel::GetLocation()
@@ -248,6 +241,18 @@ void MockUserModel::GetNotebook
 	, Notebook   & notebook
 	)
 {
+	if (guid == defaultNotebook)
+	{
+		notebook.name = L"default-notebook";
+		notebook.guid = defaultNotebook;
+		return;
+	}
+	if (guid == lastUsedNotebook)
+	{
+		notebook.name = L"last-used-notebook";
+		notebook.guid = lastUsedNotebook;
+		return;
+	}
 	foreach (const Notebook & n, notebooks)
 	{
 		if (n.guid == guid)
@@ -437,7 +442,7 @@ void MockUserModel::ReplaceNote
 	( const Note     & note
 	, const wstring  & body
 	, const wstring  & bodyText
-	, const Notebook & notebook
+	, const Guid     & notebook
 	)
 {
 	foreach (Note & n, notes)
@@ -456,11 +461,6 @@ void MockUserModel::ReplaceNote
 		return;
 	}
 	AddNote(note, body, bodyText, notebook);
-}
-
-void MockUserModel::SetAllNotebooksState(bool state)
-{
-	allNotebooksState = state;
 }
 
 void MockUserModel::SetCredentials

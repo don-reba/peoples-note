@@ -16,6 +16,8 @@ public:
 	Guid         guid;
 	int          usn;
 	bool         isDirty;
+
+	EnInteropNote(const Note & note, const Guid & notebook);
 };
 
 typedef std::vector<EnInteropNote> EnInteropNoteList;

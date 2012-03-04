@@ -47,10 +47,12 @@ BOOST_FIXTURE_TEST_CASE(NotebookProcessor_CreateRemote_Test, NotebookProcessorFi
 	Notebook notebook;
 	notebook.name = L"test";
 
-	notebookProcessor.CreateRemote(notebook, noteStore);
+	Guid replacement;
+	notebookProcessor.CreateRemote(notebook, noteStore, replacement);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name, L"test");
+	BOOST_CHECK_EQUAL(replacement, noteStore.replacementNotebook.guid);
 }
 
 BOOST_FIXTURE_TEST_CASE(NotebookProcessor_DeleteLocal_Test, NotebookProcessorFixture)
@@ -78,10 +80,12 @@ BOOST_FIXTURE_TEST_CASE(NotebookProcessor_UpdateRemote_Test, NotebookProcessorFi
 	notebook.isDirty = false;
 	notebook.usn     = 2;
 
-	notebookProcessor.UpdateRemote(notebook, noteStore);
+	Guid replacement;
+	notebookProcessor.UpdateRemote(notebook, noteStore, replacement);
 
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.size(), 1);
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).name,    L"new");
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).isDirty, false);
 	BOOST_CHECK_EQUAL(noteStore.createdNotebooks.at(0).usn,     2);
+	BOOST_CHECK_EQUAL(replacement, noteStore.replacementNotebook.guid);
 }

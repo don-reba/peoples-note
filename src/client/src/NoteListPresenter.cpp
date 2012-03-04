@@ -214,17 +214,11 @@ void NoteListPresenter::ResetSearch()
 
 void NoteListPresenter::SelectAllNotebooks()
 {
-	userModel.SetAllNotebooksState(true);
-
-	Notebook defaultNotebook;
-	userModel.GetDefaultNotebook(defaultNotebook);
-	userModel.MakeNotebookLastUsed(defaultNotebook.guid);
+	userModel.MakeNotebookLastUsed(Guid::GetEmpty());
 }
 
 void NoteListPresenter::UpdateActiveNotebook()
 {
-	userModel.SetAllNotebooksState(false);
-
 	Notebook notebook;
 	userModel.GetNotebook
 		( noteListView.GetSelectedNotebookGuid()
@@ -250,10 +244,10 @@ void NoteListPresenter::UpdateNotebookTitle()
 
 void NoteListPresenter::UpdateSyncCounter()
 {
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
+	Guid notebookGuid("");
+	userModel.GetLastUsedNotebook(notebookGuid);
 
-	int noteCount(userModel.GetDirtyNoteCount(notebook));
+	int noteCount(userModel.GetDirtyNoteCount(notebookGuid));
 
 	int totalCount(noteCount);
 
@@ -265,16 +259,20 @@ void NoteListPresenter::UpdateSyncCounter()
 void NoteListPresenter::UpdateTitle()
 {
 	wstring name;
-	if (userModel.GetAllNotebooksState())
+
+	Guid guid("");
+	userModel.GetLastUsedNotebook(guid);
+	if (guid.IsEmpty())
 	{
 		name = L"All notebooks";
 	}
 	else
 	{
 		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
+		userModel.GetNotebook(guid, notebook);
 		name = notebook.name;
 	}
+
 	noteListView.SetWindowTitle(name);
 	noteView.SetWindowTitle(name);
 }

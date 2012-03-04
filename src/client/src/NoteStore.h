@@ -85,14 +85,14 @@ public:
 
 	virtual void GetTag(const Guid & guid, Tag & tag);
 
-	virtual void ListEntries
+	virtual void ListFullSyncEntries
 		( EnInteropNoteList & notes
 		, NotebookList      & notebooks
 		, TagList           & tags
 		, const Guid        & notebookFilter
 		);
 
-	virtual void ListEntries
+	virtual void ListIncrementalSyncEntries
 		( int                 globalUpdateCount
 		, int                 notebookUpdateCount
 		, EnInteropNoteList & notes

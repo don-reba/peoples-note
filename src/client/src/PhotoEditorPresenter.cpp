@@ -131,9 +131,9 @@ void PhotoEditorPresenter::CreatePhotoNote(const wstring & imagePath)
 	// add both to the database
 	{
 		Transaction transaction(userModel);
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-		userModel.AddNote(note, body, L"", notebook);
+		Guid targetNotebook;
+		userModel.GetLastUsedNotebookOrDefault(targetNotebook);
+		userModel.AddNote(note, body, L"", targetNotebook);
 		userModel.AddResource(image);
 	}
 

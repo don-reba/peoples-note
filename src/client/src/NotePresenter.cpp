@@ -115,9 +115,9 @@ void NotePresenter::OnCloseNote()
 
 		noteView.SetNote(note, L"", L"", L"", AttachmentViewInfoList(), false); // clear
 
-		Notebook notebook;
-		userModel.GetLastUsedNotebook(notebook);
-		userModel.AddNote(note, dstXml, bodyText, notebook);
+		Guid targetNotebook;
+		userModel.GetLastUsedNotebookOrDefault(targetNotebook);
+		userModel.AddNote(note, dstXml, bodyText, targetNotebook);
 
 		userModel.DeleteNoteThumbnail(note.guid);
 		noteListView.UpdateThumbnail(note.guid);

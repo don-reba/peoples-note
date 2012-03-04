@@ -22,7 +22,7 @@ public:
 		( const Note          & note
 		, const std::wstring  & body
 		, const std::wstring  & bodyText
-		, const Notebook      & notebook
+		, const Guid          & notebook
 		) = 0;
 
 	virtual void AddNotebook(const Notebook & notebook) = 0;
@@ -56,21 +56,21 @@ public:
 
 	virtual void ExpungeTag(const Guid & tag) = 0;
 
-	virtual bool GetAllNotebooksState() = 0;
-
 	virtual std::wstring GetPasswordHash() = 0;
 
 	virtual std::wstring GetUsername() = 0;
 
-	virtual void GetDefaultNotebook(Notebook & notebook) = 0;
+	virtual void GetDefaultNotebook(Guid & notebook) = 0;
 
 	virtual void GetDeletedNotes(GuidList & notes) = 0;
 
-	virtual int GetDirtyNoteCount(const Notebook & notebook) = 0;
+	virtual int GetDirtyNoteCount(const Guid & notebook) = 0;
 
 	virtual __int64 GetLastSyncEnTime() = 0;
 
-	virtual void GetLastUsedNotebook(Notebook & notebook) = 0;
+	virtual void GetLastUsedNotebook(Guid & notebook) = 0;
+
+	virtual void GetLastUsedNotebookOrDefault(Guid & notebook) = 0;
 
 	virtual DbLocation GetLocation() = 0;
 
@@ -163,10 +163,8 @@ public:
 		( const Note          & note
 		, const std::wstring  & body
 		, const std::wstring  & bodyText
-		, const Notebook      & notebook
+		, const Guid          & notebook
 		) = 0;
-
-	virtual void SetAllNotebooksState(bool state) = 0;
 
 	virtual void SetCredentials
 		( const std::wstring & username

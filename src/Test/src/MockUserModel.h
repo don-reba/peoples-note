@@ -18,7 +18,7 @@ public:
 			( const Note         & note
 			, const std::wstring & body
 			, const std::wstring & bodyText
-			, const Notebook     & notebook
+			, const Guid         & notebook
 			)
 			: note     (note)
 			, body     (body)
@@ -29,7 +29,7 @@ public:
 		Note         note;
 		std::wstring body;
 		std::wstring bodyText;
-		Notebook     notebook;
+		Guid         notebook;
 	};
 
 	enum LoadMethod
@@ -87,7 +87,6 @@ public:
 	int     updateCount;
 	int     syncVersion;
 	int     version;
-	bool    allNotebooksState;
 
 	std::map<std::string, int> notebookUpdateCounts;
 	
@@ -107,7 +106,7 @@ public:
 		( const Note          & note
 		, const std::wstring  & body
 		, const std::wstring  & bodyText
-		, const Notebook      & notebook
+		, const Guid          & notebook
 		);
 
 	virtual void AddNotebook(const Notebook & notebook);
@@ -143,19 +142,17 @@ public:
 
 	virtual void ExpungeTag(const Guid & tag);
 
-	virtual bool GetAllNotebooksState();
-
-	virtual void GetDefaultNotebook(Notebook & notebook);
+	virtual void GetDefaultNotebook(Guid & notebook);
 
 	virtual void GetDeletedNotes(GuidList & notes);
 
-	virtual int GetDirtyNoteCount(const Notebook & notebook);
+	virtual int GetDirtyNoteCount(const Guid & notebook);
 
 	virtual std::wstring GetFolder();
 
 	virtual __int64 GetLastSyncEnTime();
 
-	virtual void GetLastUsedNotebook(Notebook & notebook);
+	virtual void GetLastUsedNotebook(Guid & notebook);
 
 	virtual DbLocation GetLocation();
 
@@ -252,10 +249,8 @@ public:
 		( const Note          & note
 		, const std::wstring  & body
 		, const std::wstring  & bodyText
-		, const Notebook      & notebook
+		, const Guid          & notebook
 		);
-
-	virtual void SetAllNotebooksState(bool state);
 
 	virtual void SetCredentials
 		( const std::wstring & username

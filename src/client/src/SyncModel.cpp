@@ -95,11 +95,13 @@ void SyncModel::StopSync()
 void SyncModel::BeginSync
 	( const wstring & username
 	, const wstring & password
+	, const Guid    & notebook
 	)
 {
 	CloseThread();
 	this->username = username;
 	this->password = password;
+	this->notebook = notebook;
 	syncThread = ::CreateThread
 		( NULL             // lpsa
 		, 0                // cbStack
@@ -131,24 +133,34 @@ void SyncModel::CloseThread()
 	syncThread = NULL;
 }
 
-void SyncModel::GetNotes
-	( const Notebook    & notebook
-	, EnInteropNoteList & notes
-	)
+void SyncModel::GetLocalNotes(EnInteropNoteList & notes)
 {
-	NoteList source;
-	userModel.GetNotes(notebook.guid, L"", 0, 0, source);
-	foreach (const Note & note, source)
+	if (notebook.IsEmpty())
 	{
-		notes.push_back(EnInteropNote());
-		notes.back().note     = note;
-		notes.back().notebook = notebook.guid;
-		notes.back().guid     = note.guid;
-		notes.back().isDirty  = note.isDirty;
-		notes.back().name     = note.name;
-		notes.back().usn      = note.usn;
+		NotebookList notebooks;
+		userModel.GetNotebooks(notebooks);
 
-		userModel.GetNoteResources(note.guid, notes.back().resources);
+		NoteList source;
+		foreach (const Notebook & notebook, notebooks)
+		{
+			source.clear();
+			userModel.GetNotes(notebook.guid, L"", 0, 0, source);
+			foreach (const Note & note, source)
+			{
+				notes.push_back(EnInteropNote(note, notebook.guid));
+				userModel.GetNoteResources(note.guid, notes.back().resources);
+			}
+		}
+	}
+	else
+	{
+		NoteList source;
+		userModel.GetNotes(notebook, L"", 0, 0, source);
+		foreach (const Note & note, source)
+		{
+			notes.push_back(EnInteropNote(note, notebook));
+			userModel.GetNoteResources(note.guid, notes.back().resources);
+		}
 	}
 }
 
@@ -201,18 +213,17 @@ void SyncModel::PostSyncCompleteMessage()
 void SyncModel::ProcessNotes
 	( const EnInteropNoteList & remote
 	, INoteStore              & noteStore
-	, Notebook                & notebook
 	, bool                      fullSync
 	)
 {
 	EnInteropNoteList local;
-	GetNotes(notebook, local);
+	GetLocalNotes(local);
 	logger.ListNotes(L"Local notes", local);
 
 	vector<SyncLogic::Action<EnInteropNote> > actions;
 	SyncLogic::Sync(fullSync, remote, local, actions);
 
-	NoteProcessor processor(enNoteTranslator, userModel, noteStore, notebook);
+	NoteProcessor processor(enNoteTranslator, userModel, noteStore);
 
 	logger.BeginSyncStage(L"notes");
 
@@ -225,10 +236,13 @@ void SyncModel::ProcessNotes
 	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
 	{
 		// filter by notes from this notebook
-		if (action.Local && action.Local->notebook != notebook.guid)
-			continue;
-		if (action.Remote && action.Remote->notebook != notebook.guid)
-			continue;
+		if (!notebook.IsEmpty())
+		{
+			if (action.Local && action.Local->notebook != notebook)
+				continue;
+			if (action.Remote && action.Remote->notebook != notebook)
+				continue;
+		}
 		actionCount += 1.0;
 	}
 	if (actionCount == 0.0)
@@ -241,10 +255,13 @@ void SyncModel::ProcessNotes
 	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
 	{
 		// filter by notes from this notebook
-		if (action.Local && action.Local->notebook != notebook.guid)
-			continue;
-		if (action.Remote && action.Remote->notebook != notebook.guid)
-			continue;
+		if (!notebook.IsEmpty())
+		{
+			if (action.Local && action.Local->notebook != notebook)
+				continue;
+			if (action.Remote && action.Remote->notebook != notebook)
+				continue;
+		}
 
 		try
 		{
@@ -329,6 +346,7 @@ void SyncModel::ProcessNotebooks
 	PostTextMessage(L"Synchronizing notebooks...");
 
 	NotebookProcessor processor(userModel);
+	Guid              replacementGuid("");
 
 	logger.BeginSyncStage(L"notebooks");
 	double actionIndex(0.0);
@@ -352,13 +370,15 @@ void SyncModel::ProcessNotebooks
 			if (action.Local->guid.IsLocal())
 			{
 					logger.PerformAction(L"Create", &action.Local->guid, NULL);
-					processor.CreateRemote(*action.Local, noteStore);
+					processor.CreateRemote(*action.Local, noteStore, replacementGuid);
 			}
 			else
 			{
 					logger.PerformAction(L"Update", &action.Local->guid, NULL);
-					processor.UpdateRemote(*action.Local, noteStore);
+					processor.UpdateRemote(*action.Local, noteStore, replacementGuid);
 			}
+			if (action.Local->guid == this->notebook)
+				this->notebook = replacementGuid;
 			break;
 		}
 
@@ -467,26 +487,22 @@ try
 	NotebookList      remoteNotebooks;
 	TagList           remoteTags;
 
-	Notebook notebook;
-	userModel.GetLastUsedNotebook(notebook);
-	bool isLocalNotebook(notebook.guid.IsLocal());
-
 	if (fullSync)
 	{
 		int globalUpdateCount(userModel.GetUpdateCount());
 		if (globalUpdateCount < syncState.UpdateCount)
 		{
-			noteStore->ListEntries
+			noteStore->ListFullSyncEntries
 				( remoteNotes
 				, remoteNotebooks
 				, remoteTags
-				, notebook.guid
+				, notebook
 				);
 		}
 	}
 	else
 	{
-		int notebookUpdateCount(userModel.GetNotebookUpdateCount(notebook.guid));
+		int notebookUpdateCount(userModel.GetNotebookUpdateCount(notebook));
 		if (notebookUpdateCount < syncState.UpdateCount)
 		{
 			int globalUpdateCount(userModel.GetUpdateCount());
@@ -496,7 +512,7 @@ try
 			vector<Guid> expungedTags;
 			vector<Guid> resources;
 
-			noteStore->ListEntries
+			noteStore->ListIncrementalSyncEntries
 				( globalUpdateCount
 				, notebookUpdateCount
 				, remoteNotes
@@ -506,7 +522,7 @@ try
 				, expungedNotebooks
 				, expungedTags
 				, resources
-				, notebook.guid
+				, notebook
 				);
 
 			logger.ListGuids(L"Expunged notes",     expungedNotes);
@@ -546,11 +562,20 @@ try
 	ProcessTags      (remoteTags,      *noteStore, fullSync);
 
 	UpdateDefaultNotebook(*noteStore);
-	userModel.GetLastUsedNotebook(notebook);
 
-	ProcessNotes(remoteNotes, *noteStore, notebook, fullSync);
+	ProcessNotes(remoteNotes, *noteStore, fullSync);
 
-	userModel.SetNotebookUpdateCount(notebook.guid, isLocalNotebook ? 0 : syncState.UpdateCount);
+	if (notebook.IsEmpty())
+	{
+		NotebookList notebooks;
+		userModel.GetNotebooks(notebooks);
+		foreach (const Notebook & notebook, notebooks)
+			userModel.SetNotebookUpdateCount(notebook.guid, syncState.UpdateCount);
+	}
+	else
+	{
+		userModel.SetNotebookUpdateCount(notebook, syncState.UpdateCount);
+	}
 	userModel.SetUpdateCount(syncState.UpdateCount);
 	userModel.SetLastSyncEnTime(syncState.CurrentEnTime);
 
@@ -595,8 +620,8 @@ void SyncModel::UpdateModel(INoteStore & noteStore)
 
 	if (modelSyncVersion < 5)
 	{
-		UpdateNotes (updater);
-		UpdateTags  (updater);
+		UpdateNotebooksAndNotes (updater);
+		UpdateTags              (updater);
 		userModel.SetSyncVersion(5);
 	} 
 	if (modelSyncVersion < 7)
@@ -606,37 +631,36 @@ void SyncModel::UpdateModel(INoteStore & noteStore)
 	userModel.SetSyncVersion(7);
 }
 
-void SyncModel::UpdateNotes(UserUpdater & updater)
+void SyncModel::UpdateNotebooksAndNotes(UserUpdater & updater)
 {
 	logger.BeginSyncStage(L"note update");
 
 	PostProgressMessage(0.0);
 	PostTextMessage(L"Updating notes...");
+
+	NotebookList notebooks;
+	userModel.GetNotebooks(notebooks);
+	foreach (const Notebook & notebook, notebooks)
 	{
-		NotebookList notebooks;
-		userModel.GetNotebooks(notebooks);
-		foreach (const Notebook & notebook, notebooks)
+		if (notebook.guid.IsLocal())
+			continue;
+
+		try { updater.UpdateNotebook(notebook.guid); }
+		catch (const std::exception &) {}
+
+		NoteList notes;
+		userModel.GetNotes(notebook.guid, L"", 0, 0, notes);
+		double progress(0.0);
+		foreach (const Note & note, notes)
 		{
-			if (notebook.guid.IsLocal())
+			if (note.guid.IsLocal())
 				continue;
 
-			try { updater.UpdateNotebook(notebook.guid); }
+			try { updater.UpdateNote(note.guid); }
 			catch (const std::exception &) {}
 
-			NoteList notes;
-			userModel.GetNotes(notebook.guid, L"", 0, 0, notes);
-			double progress(0.0);
-			foreach (const Note & note, notes)
-			{
-				if (note.guid.IsLocal())
-					continue;
-
-				try { updater.UpdateNote(note.guid); }
-				catch (const std::exception &) {}
-
-				progress += 1.0;
-				PostProgressMessage(progress / notes.size());
-			}
+			progress += 1.0;
+			PostProgressMessage(progress / notes.size());
 		}
 	}
 }
@@ -647,21 +671,20 @@ void SyncModel::UpdateResources(UserUpdater & updater)
 
 	PostProgressMessage(0.0);
 	PostTextMessage(L"Updating attachments...");
+
+	GuidList resources;
+	userModel.GetResources(resources);
+	double progress(0.0);
+	foreach (const Guid & resource, resources)
 	{
-		GuidList resources;
-		userModel.GetResources(resources);
-		double progress(0.0);
-		foreach (const Guid & resource, resources)
-		{
-			if (resource.IsLocal())
-				continue;
+		if (resource.IsLocal())
+			continue;
 
-			try { updater.UpdateResource(resource); }
-			catch (const std::exception &) {}
+		try { updater.UpdateResource(resource); }
+		catch (const std::exception &) {}
 
-			progress += 1.0;
-			PostProgressMessage(progress / resources.size());
-		}
+		progress += 1.0;
+		PostProgressMessage(progress / resources.size());
 	}
 }
 
@@ -671,21 +694,20 @@ void SyncModel::UpdateTags(UserUpdater & updater)
 
 	PostProgressMessage(0.0);
 	PostTextMessage(L"Updating tags...");
+
+	TagList tags;
+	userModel.GetTags(tags);
+	double progress(0.0);
+	foreach (const Tag & tag, tags)
 	{
-		TagList tags;
-		userModel.GetTags(tags);
-		double progress(0.0);
-		foreach (const Tag & tag, tags)
-		{
-			if (tag.guid.IsLocal())
-				continue;
+		if (tag.guid.IsLocal())
+			continue;
 
-			try { updater.UpdateTag(tag.guid); }
-			catch (const std::exception &) {}
+		try { updater.UpdateTag(tag.guid); }
+		catch (const std::exception &) {}
 
-			progress += 1.0;
-			PostProgressMessage(progress / tags.size());
-		}
+		progress += 1.0;
+		PostProgressMessage(progress / tags.size());
 	}
 }
 

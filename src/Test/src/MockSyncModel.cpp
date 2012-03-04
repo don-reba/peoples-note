@@ -13,11 +13,13 @@ MockSyncModel::MockSyncModel()
 void MockSyncModel::BeginSync
 	( const wstring & username
 	, const wstring & password
+	, const Guid    & notebook
 	)
 {
 	this->syncBegan = true;
 	this->username  = username;
 	this->password  = password;
+	this->notebook  = notebook;
 }
 
 const wchar_t * MockSyncModel::GetStatusText()

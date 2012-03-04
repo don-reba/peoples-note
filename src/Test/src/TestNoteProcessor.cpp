@@ -15,7 +15,7 @@ struct NoteProcessorFixture
 	EnNoteTranslator enNoteTranslator;
 	MockUserModel    userModel;
 	MockNoteStore    noteStore;
-	Notebook         notebook;
+	Guid             notebook;
 
 	NoteProcessor noteProcessor;
 
@@ -26,14 +26,13 @@ struct NoteProcessorFixture
 			, noteStore
 			, notebook
 			)
+		, notebook("guid")
 	{
 	}
 };
 
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_AddLocal_Test, NoteProcessorFixture)
 {
-	notebook.name = L"test-notebook";
-
 	EnInteropNote note;
 	note.note.guid = Guid("{0}");
 	note.note.name = L"test-note";
@@ -93,8 +92,6 @@ BOOST_FIXTURE_TEST_CASE(NoteProcessor_AddLocal_Test, NoteProcessorFixture)
 
 BOOST_FIXTURE_TEST_CASE(NoteProcessor_CreateRemote_Test, NoteProcessorFixture)
 {
-	notebook.name = L"test-notebook";
-
 	EnInteropNote note;
 	note.note.name = L"test-note";
 	note.note.guid = Guid("{0}");
