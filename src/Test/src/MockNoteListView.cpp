@@ -95,6 +95,11 @@ void MockNoteListView::HidePageUp()
 	isPageUpVisible = false;
 }
 
+void MockNoteListView::SelectNotebook(const Guid & notebook)
+{
+	selectedNotebookGuid = notebook;
+}
+
 void MockNoteListView::HideSyncButton()
 {
 	isSyncButtonShown = false;

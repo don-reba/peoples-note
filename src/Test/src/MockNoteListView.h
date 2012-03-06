@@ -8,7 +8,6 @@
 class MockNoteListView : public INoteListView
 {
 	MacroTestEvent(About)
-	MacroTestEvent(AllNotebooksSelected);
 	MacroTestEvent(ClearSearch)
 	MacroTestEvent(Import)
 	MacroTestEvent(NewInkNote)
@@ -111,6 +110,8 @@ public:
 	virtual void HidePageUp();
 
 	virtual void HideSyncButton();
+
+	virtual void SelectNotebook(const Guid & notebook);
 
 	virtual void SetNotebookMenu(const NotebookList & notebooks);
 

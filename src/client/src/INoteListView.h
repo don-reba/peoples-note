@@ -9,7 +9,6 @@
 class INoteListView : public ISignalProvider
 {
 	MacroIEvent(About)
-	MacroIEvent(AllNotebooksSelected);
 	MacroIEvent(ClearSearch)
 	MacroIEvent(Import)
 	MacroIEvent(NewInkNote)
@@ -67,6 +66,8 @@ public:
 	virtual void HidePageUp() = 0;
 
 	virtual void HideSyncButton() = 0;
+
+	virtual void SelectNotebook(const Guid & notebook) = 0;
 
 	virtual void SetNotebookMenu(const NotebookList & notebooks) = 0;
 

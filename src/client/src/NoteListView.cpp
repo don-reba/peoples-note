@@ -217,6 +217,18 @@ void NoteListView::HideSyncButton()
 		.set_style_attribute("display", L"none");
 }
 
+void NoteListView::SelectNotebook(const Guid & notebook)
+{
+	for (int i(0), size(notebookGuids.size()); i != size; ++i)
+	{
+		::CheckMenuItem
+			( notebookMenu
+			, i | 0x8000
+			, (notebook == notebookGuids[i]) ? MFS_CHECKED : MFS_UNCHECKED
+			);
+	}
+}
+
 void NoteListView::SetNotebookMenu(const NotebookList & notebooks)
 {
 	MENUITEMINFO info = { sizeof(info) };
@@ -225,14 +237,15 @@ void NoteListView::SetNotebookMenu(const NotebookList & notebooks)
 	notebookGuids.clear();
 
 	// we pack the notebook number into the low 15 bits of its WORD-sized ID
-	for (int i(0), size(min(0x7FFF, notebooks.size())); i != size; ++i)
+	for (int i(0), size(min(0x7FFE, notebooks.size())); i != size; ++i)
 	{
 		const Notebook & notebook(notebooks.at(i));
 		::AppendMenu(notebookMenu, MF_STRING, 0x8000 | i, notebook.name.c_str());
 		notebookGuids.push_back(notebook.guid);
 	}
 
-	::AppendMenu(notebookMenu, MF_STRING, ID_ALL_NOTEBOOKS, L"All Notebooks");
+	::AppendMenu(notebookMenu, MF_STRING, 0x8000 | notebookGuids.size(), L"All Notebooks");
+	notebookGuids.push_back(Guid::GetEmpty());
 }
 
 void NoteListView::SetProfileText(const wstring & text)
@@ -516,7 +529,6 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> & msg)
 	switch (msg.CtrlId())
 	{
 	case ID_ABOUT:          SignalAbout();                     return;
-	case ID_ALL_NOTEBOOKS:  SignalAllNotebooksSelected();      return;
 	case ID_EXIT:           CloseWindow(hwnd_);                return;
 	case ID_IMPORT:         SignalImport();                    return;
 	case ID_NOTEBOOK_TITLE: OnNotebookTitle();                 return;

@@ -60,7 +60,8 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.notes[0].isDirty = false;
 	userModel.notes[1].isDirty = true;
 
-	noteListView.SignalAllNotebooksSelected();
+	noteListView.selectedNotebookGuid = Guid::GetEmpty();
+	noteListView.SignalNotebookSelected();
 
 	BOOST_CHECK_EQUAL(userModel.lastUsedNotebook, Guid::GetEmpty());
 	BOOST_CHECK_EQUAL(noteListView.windowTitle,   L"All notebooks");

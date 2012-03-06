@@ -10,7 +10,6 @@
 class NoteListView : public HTMLayoutWindow, public INoteListView
 {
 	MacroEvent(About)
-	MacroEvent(AllNotebooksSelected)
 	MacroEvent(ClearSearch)
 	MacroEvent(Import)
 	MacroEvent(NewInkNote)
@@ -122,6 +121,8 @@ public:
 	virtual void HidePageUp();
 
 	virtual void HideSyncButton();
+
+	virtual void SelectNotebook(const Guid & notebook);
 
 	virtual void SetNotebookMenu(const NotebookList & notebooks);
 

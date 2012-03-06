@@ -39,9 +39,6 @@ NoteListPresenter::NoteListPresenter
 	noteListModel.ConnectNoteListChanged
 		(bind(&NoteListPresenter::OnNoteListChanged, this));
 
-	noteListView.ConnectAllNotebooksSelected
-		(bind(&NoteListPresenter::OnAllNotebooksSelected, this));
-
 	noteListView.ConnectNotebookSelected
 		(bind(&NoteListPresenter::OnNotebookSelected, this));
 
@@ -74,16 +71,6 @@ NoteListPresenter::NoteListPresenter
 //---------------
 // event handlers
 //---------------
-
-void NoteListPresenter::OnAllNotebooksSelected()
-{
-	Transaction transaction(userModel);
-	SelectAllNotebooks();
-	UpdateTitle();
-	ResetSearch();
-	noteListModel.Reload();
-	UpdateSyncCounter();
-}
 
 void NoteListPresenter::OnNoteChanged()
 {
@@ -212,19 +199,11 @@ void NoteListPresenter::ResetSearch()
 	noteListView.SetSearchButtonToSearch();
 }
 
-void NoteListPresenter::SelectAllNotebooks()
-{
-	userModel.MakeNotebookLastUsed(Guid::GetEmpty());
-}
-
 void NoteListPresenter::UpdateActiveNotebook()
 {
-	Notebook notebook;
-	userModel.GetNotebook
-		( noteListView.GetSelectedNotebookGuid()
-		, notebook
-		);
-	userModel.MakeNotebookLastUsed(notebook.guid);
+	Guid selectedNotebook(noteListView.GetSelectedNotebookGuid());
+	userModel.MakeNotebookLastUsed(selectedNotebook);
+	noteListView.SelectNotebook(selectedNotebook);
 }
 
 void NoteListPresenter::UpdateNotebookListView()
@@ -232,6 +211,10 @@ void NoteListPresenter::UpdateNotebookListView()
 	NotebookList notebooks;
 	userModel.GetNotebooks(notebooks);
 	noteListView.SetNotebookMenu(notebooks);
+
+	Guid lastUsedNotebook("");
+	userModel.GetLastUsedNotebook(lastUsedNotebook);
+	noteListView.SelectNotebook(lastUsedNotebook);
 }
 
 void NoteListPresenter::UpdateNotebookTitle()
