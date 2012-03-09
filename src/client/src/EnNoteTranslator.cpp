@@ -33,6 +33,7 @@ EnNoteTranslator::EnNoteTranslator()
 	htmlTransforms[L"p"]     = &EnNoteTranslator::ReplaceParagraph;
 
 	xmlTransforms[L"en-crypt"] = &EnNoteTranslator::ReplaceCrypt;
+	xmlTransforms[L"font"]     = &EnNoteTranslator::ReplaceFont;
 	xmlTransforms[L"en-media"] = &EnNoteTranslator::ReplaceMedia;
 	xmlTransforms[L"en-note"]  = &EnNoteTranslator::ReplaceNote;
 	xmlTransforms[L"en-todo"]  = &EnNoteTranslator::ReplaceTodo;
@@ -446,6 +447,25 @@ void EnNoteTranslator::ReplaceDiv
 	if (type == L"en-note")
 		child->name(L"en-note");
 	child->remove_attribute(typeAttribute);
+}
+
+void EnNoteTranslator::ReplaceFont
+	( memory_pool<wchar_t> * store
+	, xml_node<wchar_t>    * parent
+	, xml_node<wchar_t>    * child
+	)
+{
+	xml_attribute<wchar_t> * attribute(child->first_attribute());
+	while (attribute)
+	{
+		xml_attribute<wchar_t> * next(attribute->next_attribute());
+
+		wstring name(attribute->name(), attribute->name_size());
+		if (_wcsicmp(name.c_str(), L"size") == 0)
+			child->remove_attribute(attribute);
+		
+		attribute = next;
+	}
 }
 
 void EnNoteTranslator::ReplaceEncryptImg

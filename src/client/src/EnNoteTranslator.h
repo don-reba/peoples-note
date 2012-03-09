@@ -127,6 +127,12 @@ private:
 		, rapidxml::xml_node<wchar_t>    * child
 		);
 
+	void ReplaceFont
+		( rapidxml::memory_pool<wchar_t> * store
+		, rapidxml::xml_node<wchar_t>    * parent
+		, rapidxml::xml_node<wchar_t>    * child
+		);
+
 	void ReplaceEncryptImg
 		( rapidxml::memory_pool<wchar_t> * store
 		, rapidxml::xml_node<wchar_t>    * parent
