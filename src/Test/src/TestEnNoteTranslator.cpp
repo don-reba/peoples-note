@@ -160,6 +160,23 @@ BOOST_AUTO_TEST_CASE(EnNoteTranslator_Encrypt)
 	BOOST_CHECK_EQUAL(xml, xml2);
 }
 
+BOOST_AUTO_TEST_CASE(EnNoteTranslator_FontSize)
+{
+	EnNoteTranslator enNoteTranslator;
+
+	wstring xml =
+		L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		L"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n"
+		L"<en-note>Hello <font size=\"1\" align=\"left\"><div size=\"2\">World</div></font>!</en-note>";
+	wstring html;
+	enNoteTranslator.ConvertToHtml(xml, html, true);
+
+	BOOST_CHECK_EQUAL
+		( html
+		, L"Hello <font align=\"left\"><div size=\"2\">World</div></font>!"
+		);
+}
+
 BOOST_AUTO_TEST_CASE(EnNoteTranslator_Media)
 {
 	EnNoteTranslator enNoteTranslator;

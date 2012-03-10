@@ -220,8 +220,8 @@ void SyncModel::ProcessNotes
 	GetLocalNotes(local);
 	logger.ListNotes(L"Local notes", local);
 
-	vector<SyncLogic::Action<EnInteropNote> > actions;
-	SyncLogic::Sync(fullSync, remote, local, actions);
+	vector<SyncAction<EnInteropNote> > actions;
+	ComputeSyncActions(fullSync, remote, local, actions);
 
 	NoteProcessor processor(enNoteTranslator, userModel, noteStore);
 
@@ -233,7 +233,7 @@ void SyncModel::ProcessNotes
 
 	// count the number of valid actions
 	double actionCount(deletedNotes.size());
-	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
+	foreach (const SyncAction<EnInteropNote> action, actions)
 	{
 		// filter by notes from this notebook
 		if (!notebook.IsEmpty())
@@ -252,7 +252,7 @@ void SyncModel::ProcessNotes
 	// perform the actions
 	PostTextMessage(L"Synchronizing notes...");
 
-	foreach (const SyncLogic::Action<EnInteropNote> action, actions)
+	foreach (const SyncAction<EnInteropNote> action, actions)
 	{
 		// filter by notes from this notebook
 		if (!notebook.IsEmpty())
@@ -267,19 +267,19 @@ void SyncModel::ProcessNotes
 		{
 			switch (action.Type)
 			{
-			case SyncLogic::ActionAdd:
+			case SyncActionAdd:
 				logger.PerformAction(L"Add", NULL, &action.Remote->guid);
 				processor.AddLocal(*action.Remote);
 				break;
-			case SyncLogic::ActionDelete:
+			case SyncActionDelete:
 				logger.PerformAction(L"Delete", &action.Local->guid, NULL);
 				processor.DeleteLocal(action.Local->guid);
 				break;
-			case SyncLogic::ActionMerge:
+			case SyncActionMerge:
 				logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 				processor.MergeLocal(*action.Local, *action.Remote);
 				break;
-			case SyncLogic::ActionUpload:
+			case SyncActionUpload:
 				if (action.Local->guid.IsLocal())
 				{
 					logger.PerformAction(L"Create", &action.Local->guid, NULL);
@@ -337,8 +337,8 @@ void SyncModel::ProcessNotebooks
 	userModel.GetNotebooks(local);
 	logger.ListNotebooks(L"Local notebooks", local);
 
-	vector<SyncLogic::Action<Notebook> > actions;
-	SyncLogic::Sync(fullSync, remote, local, actions);
+	vector<SyncAction<Notebook> > actions;
+	ComputeSyncActions(fullSync, remote, local, actions);
 	if (actions.empty())
 		return;
 
@@ -350,23 +350,23 @@ void SyncModel::ProcessNotebooks
 
 	logger.BeginSyncStage(L"notebooks");
 	double actionIndex(0.0);
-	foreach (const SyncLogic::Action<Notebook> action, actions)
+	foreach (const SyncAction<Notebook> action, actions)
 	{
 		switch (action.Type)
 		{
-		case SyncLogic::ActionAdd:
+		case SyncActionAdd:
 			logger.PerformAction(L"Add", NULL, &action.Remote->guid);
 			processor.AddLocal(*action.Remote);
 			break;
-		case SyncLogic::ActionDelete:
+		case SyncActionDelete:
 			logger.PerformAction(L"Delete", &action.Local->guid, NULL);
 			processor.DeleteLocal(*action.Local);
 			break;
-		case SyncLogic::ActionMerge:
+		case SyncActionMerge:
 			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 			processor.MergeLocal(*action.Local, *action.Remote);
 			break;
-		case SyncLogic::ActionUpload:
+		case SyncActionUpload:
 			if (action.Local->guid.IsLocal())
 			{
 					logger.PerformAction(L"Create", &action.Local->guid, NULL);
@@ -397,8 +397,8 @@ void SyncModel::ProcessTags
 	userModel.GetTags(local);
 	logger.ListTags(L"Local tags", local);
 
-	vector<SyncLogic::Action<Tag> > actions;
-	SyncLogic::Sync(fullSync, remote, local, actions);
+	vector<SyncAction<Tag> > actions;
+	ComputeSyncActions(fullSync, remote, local, actions);
 	if (actions.empty())
 		return;
 
@@ -409,23 +409,23 @@ void SyncModel::ProcessTags
 
 	logger.BeginSyncStage(L"tags");
 	double actionIndex(0.0);
-	foreach (const SyncLogic::Action<Tag> action, actions)
+	foreach (const SyncAction<Tag> action, actions)
 	{
 		switch (action.Type)
 		{
-		case SyncLogic::ActionAdd:
+		case SyncActionAdd:
 			logger.PerformAction(L"Add", NULL, &action.Remote->guid);
 			processor.AddLocal(*action.Remote);
 			break;
-		case SyncLogic::ActionDelete:
+		case SyncActionDelete:
 			logger.PerformAction(L"Delete", &action.Local->guid, NULL);
 			processor.DeleteLocal(*action.Local);
 			break;
-		case SyncLogic::ActionMerge:
+		case SyncActionMerge:
 			logger.PerformAction(L"Merge", &action.Local->guid, &action.Remote->guid);
 			processor.MergeLocal(*action.Local, *action.Remote);
 			break;
-		case SyncLogic::ActionUpload:
+		case SyncActionUpload:
 			if (action.Local->guid.IsLocal())
 			{
 				logger.PerformAction(L"Create", &action.Local->guid, NULL);
