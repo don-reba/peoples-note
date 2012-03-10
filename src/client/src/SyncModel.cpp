@@ -232,21 +232,7 @@ void SyncModel::ProcessNotes
 	userModel.GetDeletedNotes(deletedNotes);
 
 	// count the number of valid actions
-	double actionCount(deletedNotes.size());
-	foreach (const SyncAction<EnInteropNote> action, actions)
-	{
-		// filter by notes from this notebook
-		if (!notebook.IsEmpty())
-		{
-			if (action.Local && action.Local->notebook != notebook)
-				continue;
-			if (action.Remote && action.Remote->notebook != notebook)
-				continue;
-		}
-		actionCount += 1.0;
-	}
-	if (actionCount == 0.0)
-		return;
+	double actionCount(deletedNotes.size() + actions.size());
 	double actionIndex(0.0);
 
 	// perform the actions
