@@ -36,6 +36,9 @@ NoteListPresenter::NoteListPresenter
 	noteListModel.ConnectNoteChanged
 		(bind(&NoteListPresenter::OnNoteChanged, this));
 
+	noteListView.ConnectDeleteNote
+		(bind(&NoteListPresenter::OnDeleteNote, this));
+
 	noteListModel.ConnectNoteListChanged
 		(bind(&NoteListPresenter::OnNoteListChanged, this));
 
@@ -71,6 +74,12 @@ NoteListPresenter::NoteListPresenter
 //---------------
 // event handlers
 //---------------
+
+void NoteListPresenter::OnDeleteNote()
+{
+	userModel.DeleteNote(noteListView.GetSelectedNoteGuid());
+	noteListModel.Reload();
+}
 
 void NoteListPresenter::OnNoteChanged()
 {

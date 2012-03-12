@@ -222,7 +222,7 @@ struct Msg<WM_CLOSE> : Msg_
 template <>
 struct Msg<WM_COMMAND> : Msg_
 {
-	Msg(WndMsg &msg) :Msg_(msg) {}
+	Msg(WndMsg &msg) : Msg_(msg) {}
 	int CtrlId() const {
 		return LOWORD(wprm_);
 	}
@@ -231,6 +231,19 @@ struct Msg<WM_COMMAND> : Msg_
 	}
 	HWND CtrlHwnd() const {
 		return reinterpret_cast<HWND>(lprm_);
+	}
+};
+
+template<>
+struct Msg<WM_CONTEXTMENU> : Msg_
+{
+	Msg(WndMsg &msg) : Msg_(msg) {}
+	HWND CtrlHwnd() const {
+		return reinterpret_cast<HWND>(wprm_);
+	}
+	POINT Position() const {
+		POINT position = { (short)LOWORD(lprm_), (short)HIWORD(lprm_) };
+		return position;
 	}
 };
 

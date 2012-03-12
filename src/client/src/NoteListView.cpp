@@ -384,6 +384,15 @@ void NoteListView::UpdateThumbnail(const Guid & note)
 // utility functions
 //------------------
 
+void NoteListView::BeginStandardGestureRecognition(const POINT & position)
+{
+	SHRGINFO settings = { sizeof(settings) };
+	settings.hwndClient = hwnd_;
+	settings.ptDown     = position;
+	settings.dwFlags    = SHRG_LONGDELAY;
+	::SHRecognizeGesture(&settings);
+}
+
 HMENU NoteListView::CreateMainMenu(HMENU notebookMenu, HMENU viewMenu)
 {
 	HMENU menu(::CreatePopupMenu());
@@ -444,6 +453,11 @@ bool NoteListView::IsChild(element child, element parent)
 			return true;
 	}
 	return false;
+}
+
+bool NoteListView::IsNoteSelected()
+{
+	return noteList.get_attribute("value") != NULL;
 }
 
 void NoteListView::OnSearch()
@@ -529,6 +543,7 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> & msg)
 	switch (msg.CtrlId())
 	{
 	case ID_ABOUT:          SignalAbout();                     return;
+	case ID_DELETE_NOTE:    SignalDeleteNote();                return;
 	case ID_EXIT:           CloseWindow(hwnd_);                return;
 	case ID_IMPORT:         SignalImport();                    return;
 	case ID_NOTEBOOK_TITLE: OnNotebookTitle();                 return;
@@ -541,6 +556,16 @@ void NoteListView::OnCommand(Msg<WM_COMMAND> & msg)
 	msg.handled_ = false;
 }
 
+void NoteListView::OnContextMenu(Msg<WM_CONTEXTMENU> & msg)
+{
+	if (IsNoteSelected())
+	{
+		HMENU menu(::CreatePopupMenu());
+		::AppendMenu(menu, MF_STRING, ID_DELETE_NOTE, L"Delete note");
+		::TrackPopupMenuEx(menu, 0, msg.Position().x, msg.Position().y, hwnd_, NULL);
+	}
+}
+
 void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 {
 	PostQuitMessage(0);
@@ -548,7 +573,7 @@ void NoteListView::OnDestroy(Msg<WM_DESTROY> &msg)
 
 void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 {
-	clickTarget = element::find_element(hwnd_, msg.Position());
+	element clickTarget(element::find_element(hwnd_, msg.Position()));
 	if (!IsChild(clickTarget, noteList))
 	{
 		if (clickTarget == noteList)
@@ -562,9 +587,15 @@ void NoteListView::OnMouseDown(Msg<WM_LBUTTONDOWN> & msg)
 	if (type && 0 == wcsicmp(type, L"button"))
 		return;
 
+	const wchar_t * value(GetChild(noteList, clickTarget).get_attribute("value"));
+	if (value)
+		noteList.set_attribute("value", value);
+
 	::SetCapture(hwnd_);
 
 	gestureProcessor.OnMouseDown(msg);
+
+	BeginStandardGestureRecognition(msg.Position());
 	
 	msg.handled_ = true;
 }
@@ -590,6 +621,7 @@ void NoteListView::ProcessMessage(WndMsg &msg)
 		&NoteListView::OnActivate,
 		&NoteListView::OnCaptureChanged,
 		&NoteListView::OnCommand,
+		&NoteListView::OnContextMenu,
 		&NoteListView::OnDestroy,
 		&NoteListView::OnMouseDown,
 		&NoteListView::OnMouseMove,
@@ -684,15 +716,8 @@ void NoteListView::OnNewVoice(BEHAVIOR_EVENT_PARAMS * params)
 
 void NoteListView::OnNote(BEHAVIOR_EVENT_PARAMS * params)
 {
-	if (IsChild(clickTarget, noteList))
-	{
-		const wchar_t * value(GetChild(noteList, clickTarget).get_attribute("value"));
-		if (value)
-		{
-			noteList.set_attribute("value", value);
-			SignalOpenNote();
-		}
-	}
+	if (IsNoteSelected())
+		SignalOpenNote();
 }
 
 void NoteListView::OnPageDown(BEHAVIOR_EVENT_PARAMS * params)

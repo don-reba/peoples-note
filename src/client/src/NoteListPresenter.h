@@ -40,7 +40,7 @@ public:
 
 private:
 
-	void OnAllNotebooksSelected();
+	void OnDeleteNote();
 	void OnNoteChanged();
 	void OnNotebookSelected();
 	void OnNotebookTitleChanged();

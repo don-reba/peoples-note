@@ -46,20 +46,20 @@
 #define ID_COLOR_SANGUINE      118
 #define ID_COLOR_TURQUOISE     119
 
-#define ID_DELETE_NOTE         110
-#define ID_EDIT_NOTE           111
-#define ID_EDIT_TAGS           112
-#define ID_FULL_SCREEN         113
+#define ID_DELETE_NOTE         120
+#define ID_EDIT_NOTE           121
+#define ID_EDIT_TAGS           122
+#define ID_FULL_SCREEN         123
 
-#define ID_ABOUT               110
-#define ID_EXIT                111
-#define ID_IMPORT              112
-#define ID_NOTEBOOK_TITLE      113
-#define ID_NOTEBOOKS           114
-#define ID_PROFILE             115
-#define ID_SIGNIN              116
-#define ID_VIEW_COMBINED       117
-#define ID_VIEW_TITLES         118
+#define ID_ABOUT               130
+#define ID_EXIT                131
+#define ID_IMPORT              132
+#define ID_NOTEBOOK_TITLE      133
+#define ID_NOTEBOOKS           134
+#define ID_PROFILE             135
+#define ID_SIGNIN              136
+#define ID_VIEW_COMBINED       137
+#define ID_VIEW_TITLES         138
 
 #define IDC_STATIC             -1
 

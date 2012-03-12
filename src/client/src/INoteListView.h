@@ -10,6 +10,7 @@ class INoteListView : public ISignalProvider
 {
 	MacroIEvent(About)
 	MacroIEvent(ClearSearch)
+	MacroIEvent(DeleteNote)
 	MacroIEvent(Import)
 	MacroIEvent(NewInkNote)
 	MacroIEvent(NewNote)
