@@ -95,37 +95,37 @@ struct SyncLogicFixture
 	vector<MockResource> local;
 	vector<MockResource> remote;
 
-	vector<SyncLogic::Action<MockResource> > actions;
+	vector<SyncAction<MockResource> > actions;
 
 	void FullSync()
 	{
-		SyncLogic::Sync(true, remote, local, actions);
+		ComputeSyncActions(true, remote, local, actions);
 		ProcessActions();
 	}
 
 	void IncrementalSync()
 	{
-		SyncLogic::Sync(false, remote, local, actions);
+		ComputeSyncActions(false, remote, local, actions);
 		ProcessActions();
 	}
 
 	void ProcessActions()
 	{
-		foreach (const SyncLogic::Action<MockResource> action, actions)
+		foreach (const SyncAction<MockResource> action, actions)
 		{
 			switch (action.Type)
 			{
-			case SyncLogic::ActionAdd:
+			case SyncActionAdd:
 				action.Remote->status = StatusAdded;
 				break;
-			case SyncLogic::ActionDelete:
+			case SyncActionDelete:
 				action.Local->status = StatusDeleted;
 				break;
-			case SyncLogic::ActionMerge:
+			case SyncActionMerge:
 				action.Local->status  = StatusMerged;
 				action.Remote->status = StatusMerged;
 				break;
-			case SyncLogic::ActionUpload:
+			case SyncActionUpload:
 				action.Local->status = StatusUploaded;
 				break;
 			}

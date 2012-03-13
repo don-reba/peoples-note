@@ -74,6 +74,21 @@ BOOST_FIXTURE_TEST_CASE
 	BOOST_CHECK(noteListModel.isReloaded);
 }
 
+BOOST_FIXTURE_TEST_CASE
+	( NoteListPresenter_DeleteNote
+	, NoteListPresenterFixture
+	)
+{
+	noteListModel.isReloaded = false;
+
+	noteListView.SignalDeleteNote();
+
+	BOOST_REQUIRE_EQUAL(userModel.deletedNotes.size(), 1);
+	BOOST_CHECK_EQUAL(userModel.deletedNotes[0], noteListView.selectedNoteGuid);
+
+	BOOST_CHECK(noteListModel.isReloaded);
+}
+
 // Note: the output of this test depends on your time zone.
 BOOST_FIXTURE_TEST_CASE
 	( NoteListPresenter_NoteListChanged

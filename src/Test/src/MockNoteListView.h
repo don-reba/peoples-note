@@ -9,6 +9,7 @@ class MockNoteListView : public INoteListView
 {
 	MacroTestEvent(About)
 	MacroTestEvent(ClearSearch)
+	MacroTestEvent(DeleteNote)
 	MacroTestEvent(Import)
 	MacroTestEvent(NewInkNote)
 	MacroTestEvent(NewNote)
