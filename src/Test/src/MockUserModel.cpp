@@ -7,12 +7,13 @@ using namespace boost;
 using namespace std;
 
 MockUserModel::MockUserModel()
-	: isInTransaction   (false)
-	, loadCount         (0)
-	, loadMethod        (LoadMethodNone)
-	, location          (DbLocationNone)
-	, path              (L"card-path")
-	, size              (42)
+	: isCompacted     (false)
+	, isInTransaction (false)
+	, loadCount       (0)
+	, loadMethod      (LoadMethodNone)
+	, location        (DbLocationNone)
+	, path            (L"card-path")
+	, size            (42)
 {
 }
 
@@ -67,9 +68,9 @@ void MockUserModel::BeginTransaction()
 	isInTransaction = true;
 }
 
-void MockUserModel::ConnectLoaded(slot_type OnLoaded)
+void MockUserModel::Compact()
 {
-	SignalLoaded.connect(OnLoaded);
+	isCompacted = true;
 }
 
 void MockUserModel::DeleteNote(const Guid & note)

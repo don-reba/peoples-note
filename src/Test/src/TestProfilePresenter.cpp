@@ -28,7 +28,7 @@ struct ProfilePresenterFixture
 };
 
 BOOST_FIXTURE_TEST_CASE
-	( ProfilePresenter_Close
+	( ProfilePresenter_Compact
 	, ProfilePresenterFixture
 	)
 {
@@ -37,6 +37,20 @@ BOOST_FIXTURE_TEST_CASE
 	profileView.SignalClose();
 
 	BOOST_CHECK(!profileView.isShown);
+}
+
+BOOST_FIXTURE_TEST_CASE
+	( ProfilePresenter_Close
+	, ProfilePresenterFixture
+	)
+{
+	userModel.isCompacted = false;
+	userModel.size        = 2501;
+
+	profileView.SignalCompact();
+
+	BOOST_CHECK(userModel.isCompacted);
+	BOOST_CHECK_EQUAL(profileView.dbSize, L"2 KB");
 }
 
 BOOST_FIXTURE_TEST_CASE

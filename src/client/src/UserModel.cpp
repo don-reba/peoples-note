@@ -287,10 +287,12 @@ void UserModel::AddTagToNote
 
 void UserModel::BeginTransaction()
 {
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "BEGIN TRANSACTION"
-		);
-	statement->Execute();
+	dataStore.MakeStatement("BEGIN TRANSACTION")->Execute();
+}
+
+void UserModel::Compact()
+{
+	dataStore.MakeStatement("VACUUM")->Execute();
 }
 
 void UserModel::DeleteNote(const Guid & note)
@@ -327,10 +329,7 @@ void UserModel::DeleteNoteThumbnail(const Guid & note)
 
 void UserModel::EndTransaction()
 {
-	IDataStore::Statement statement = dataStore.MakeStatement
-		( "END TRANSACTION"
-		);
-	statement->Execute();
+	dataStore.MakeStatement("END TRANSACTION")->Execute();
 }
 
 bool UserModel::Exists(const wstring & username)

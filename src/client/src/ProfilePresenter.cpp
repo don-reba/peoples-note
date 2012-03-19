@@ -25,6 +25,7 @@ ProfilePresenter::ProfilePresenter
 {
 	noteListView.ConnectProfile (bind(&ProfilePresenter::OnProfile, this));
 	profileView.ConnectClose    (bind(&ProfilePresenter::OnClose,   this));
+	profileView.ConnectCompact  (bind(&ProfilePresenter::OnCompact, this));
 	profileView.ConnectDbMove   (bind(&ProfilePresenter::OnDbMove,  this));
 	userModel.ConnectLoaded     (bind(&ProfilePresenter::OnLoaded,  this));
 }
@@ -38,6 +39,15 @@ void ProfilePresenter::OnClose()
 	profileView.Hide();
 }
 
+void ProfilePresenter::OnCompact()
+{
+	MacroWaitCursor;
+	profileView.SetMessage(L"This might take a while...");
+	userModel.Compact();
+	profileView.SetMessage(L"");
+	SetDbSize(userModel.GetSize());
+}
+
 void ProfilePresenter::OnDbMove()
 {
 	MacroWaitCursor;
@@ -45,7 +55,7 @@ void ProfilePresenter::OnDbMove()
 	try
 	{
 		profileView.DisableMoveButton();
-		profileView.SetMoveErrorMessage(L"");
+		profileView.SetMessage(L"");
 		switch (userModel.GetLocation())
 		{
 		case DbLocationCard:   userModel.MoveToDevice(); break;
@@ -55,7 +65,7 @@ void ProfilePresenter::OnDbMove()
 	}
 	catch (std::exception & e)
 	{
-		profileView.SetMoveErrorMessage(ConvertToUnicode(e.what()).c_str());
+		profileView.SetMessage(ConvertToUnicode(e.what()).c_str());
 	}
 }
 

@@ -37,7 +37,8 @@ void ProfileView::Create(HWND parent)
 
 void ProfileView::RegisterEventHandlers()
 {
-	ConnectBehavior("#move", BUTTON_CLICK, &ProfileView::OnDbMove);
+	ConnectBehavior("#compact", BUTTON_CLICK, &ProfileView::OnCompact);
+	ConnectBehavior("#move",    BUTTON_CLICK, &ProfileView::OnDbMove);
 }
 
 //----------------------------
@@ -77,14 +78,16 @@ void ProfileView::SetDbSize(const wstring & size)
 	element(FindFirstElement("#size")).set_text(size.c_str());
 }
 
+void ProfileView::SetMessage(const wstring & message)
+{
+	element e(FindFirstElement("#message"));
+	e.set_text(message.c_str());
+	e.update(MEASURE_DEEP|REDRAW_NOW);
+}
+
 void ProfileView::SetMoveButtonText(const wstring & text)
 {
 	element(FindFirstElement("#move")).set_text(text.c_str());
-}
-
-void ProfileView::SetMoveErrorMessage(const wstring & message)
-{
-	element(FindFirstElement("#error")).set_text(message.c_str());
 }
 
 void ProfileView::SetUsername(const wstring & username)
@@ -181,6 +184,11 @@ void ProfileView::ProcessMessage(WndMsg &msg)
 //---------------------------
 // HTMLayout message handlers
 //---------------------------
+
+void ProfileView::OnCompact(BEHAVIOR_EVENT_PARAMS * params)
+{
+	SignalCompact();
+}
 
 void ProfileView::OnDbMove(BEHAVIOR_EVENT_PARAMS * params)
 {

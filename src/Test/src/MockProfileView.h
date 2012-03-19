@@ -3,6 +3,10 @@
 
 class MockProfileView : public IProfileView
 {
+	MacroTestEvent(Close)
+	MacroTestEvent(Compact)
+	MacroTestEvent(DbMove)
+
 public:
 
 	bool isMoveButtonEnabled;
@@ -14,18 +18,11 @@ public:
 	std::wstring moveErrorMessage;
 	std::wstring username;
 
-	signal SignalClose;
-	signal SignalDbMove;
-
 public:
 
 	MockProfileView();
 
 public:
-
-	virtual void ConnectClose(slot_type OnClose);
-
-	virtual void ConnectDbMove(slot_type OnDbMove);
 
 	virtual void DisableMoveButton();
 

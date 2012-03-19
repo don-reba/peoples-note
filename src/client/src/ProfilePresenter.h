@@ -30,6 +30,7 @@ public:
 private:
 
 	void OnClose();
+	void OnCompact();
 	void OnDbMove();
 	void OnLoaded();
 	void OnProfile();

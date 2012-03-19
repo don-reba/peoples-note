@@ -1,13 +1,14 @@
 #pragma once
+#include "IProfileView.h"
 
 #include "HTMLayoutWindow.h"
-#include "IProfileView.h"
 
 class IHtmlDataLoader;
 
 class ProfileView : public HTMLayoutWindow, public IProfileView
 {
 	MacroEvent(Close)
+	MacroEvent(Compact)
 	MacroEvent(DbMove)
 
 private:
@@ -46,9 +47,9 @@ public:
 
 	virtual void SetDbSize(const std::wstring & size);
 
-	virtual void SetMoveButtonText(const std::wstring & text);
+	virtual void SetMessage(const std::wstring & message);
 
-	virtual void SetMoveErrorMessage(const std::wstring & message);
+	virtual void SetMoveButtonText(const std::wstring & text);
 
 	virtual void SetUsername(const std::wstring & username);
 
@@ -58,9 +59,9 @@ public:
 
 private:
 
-	void OnActivate(Msg<WM_ACTIVATE> & msg);
-	void OnCommand (Msg<WM_COMMAND> & msg);
-	void OnKeyUp   (Msg<WM_KEYUP>   & msg);
+	void OnActivate (Msg<WM_ACTIVATE> & msg);
+	void OnCommand  (Msg<WM_COMMAND>  & msg);
+	void OnKeyUp    (Msg<WM_KEYUP>    & msg);
 
 	virtual void ProcessMessage(WndMsg &msg);
 
@@ -68,7 +69,8 @@ private:
 
 private:
 
-	void OnDbMove(BEHAVIOR_EVENT_PARAMS * params);
+	void OnCompact (BEHAVIOR_EVENT_PARAMS * params);
+	void OnDbMove  (BEHAVIOR_EVENT_PARAMS * params);
 
 // utility functions
 

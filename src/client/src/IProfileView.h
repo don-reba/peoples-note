@@ -5,6 +5,7 @@
 class IProfileView : public ISignalProvider
 {
 	MacroIEvent(Close)
+	MacroIEvent(Compact)
 	MacroIEvent(DbMove)
 
 public:
@@ -21,9 +22,9 @@ public:
 
 	virtual void SetDbSize(const std::wstring & size) = 0;
 
-	virtual void SetMoveButtonText(const std::wstring & text) = 0;
+	virtual void SetMessage(const std::wstring & message) = 0;
 
-	virtual void SetMoveErrorMessage(const std::wstring & message) = 0;
+	virtual void SetMoveButtonText(const std::wstring & text) = 0;
 
 	virtual void SetUsername(const std::wstring & username) = 0;
 

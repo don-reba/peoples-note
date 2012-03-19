@@ -9,16 +9,6 @@ MockProfileView::MockProfileView()
 {
 }
 
-void MockProfileView::ConnectClose(slot_type OnClose)
-{
-	SignalClose.connect(OnClose);
-}
-
-void MockProfileView::ConnectDbMove(slot_type OnDbMove)
-{
-	SignalDbMove.connect(OnDbMove);
-}
-
 void MockProfileView::DisableMoveButton()
 {
 	isMoveButtonEnabled = false;

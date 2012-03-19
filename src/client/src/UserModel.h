@@ -65,6 +65,8 @@ public:
 
 	virtual void BeginTransaction();
 
+	virtual void Compact();
+
 	virtual void DeleteNote(const Guid & note);
 
 	virtual void DeleteNoteTags(const Guid & note);

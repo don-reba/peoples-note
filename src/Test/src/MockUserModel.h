@@ -10,6 +10,8 @@
 
 class MockUserModel : public IUserModel
 {
+	MacroTestEvent(Loaded)
+
 public:
 
 	struct NoteRecord
@@ -74,6 +76,7 @@ public:
 	int          loadCount;
 	LoadMethod   loadMethod;
 
+	bool isCompacted;
 	bool isInTransaction;
 
 	std::wstring searchSelection;
@@ -90,8 +93,6 @@ public:
 
 	std::map<std::string, int> notebookUpdateCounts;
 	
-	signal SignalLoaded;
-
 // interface
 
 public:
@@ -124,7 +125,7 @@ public:
 
 	virtual void BeginTransaction();
 
-	virtual void ConnectLoaded(slot_type OnLoaded);
+	virtual void Compact();
 
 	virtual void DeleteNote(const Guid & note);
 

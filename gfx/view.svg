@@ -195,8 +195,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.79166665"
-     inkscape:cx="58.668621"
-     inkscape:cy="307.35239"
+     inkscape:cx="58.375794"
+     inkscape:cy="307.36592"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -255,7 +255,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -479,16 +479,6 @@
            y="453.55731"
            style="font-size:29px;font-weight:normal;fill:#000000;-inkscape-font-specification:Bitstream Vera Sans">Sounds.wav</tspan></text>
     </g>
-    <image
-       y="926.3623"
-       x="-0.00025027155"
-       id="image3086"
-       xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/sound-attachment.png"
-       height="64"
-       width="64"
-       inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\view.png"
-       inkscape:export-xdpi="180"
-       inkscape:export-ydpi="180" />
     <g
        id="g5017"
        transform="translate(-56.21055,-158.94739)"
@@ -531,6 +521,20 @@
          x="667.78949"
          y="585.83588" />
     </g>
+    <image
+       width="64"
+       height="64"
+       xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/attachment-sound.png"
+       id="image4968-1"
+       x="-0.00025027155"
+       y="926.3623" />
+    <image
+       y="926.3623"
+       x="405.99976"
+       id="image3879"
+       xlink:href="file:///C:/Users/Alexey/Programming/Evernote%20client/gfx/icons/play-attachment.png"
+       height="64"
+       width="64" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -558,12 +562,12 @@
     <image
        sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/window title.png"
        xlink:href="icons/window title.png"
-       style="display:inline"
-       y="0"
-       x="-0.00025027155"
-       id="image3052"
+       width="480.00046"
        height="52"
-       width="480.00046" />
+       id="image3052"
+       x="-0.00025027155"
+       y="0"
+       style="display:inline" />
     <rect
        style="fill:#000000;fill-opacity:1;stroke:none"
        id="rect2908-1"
