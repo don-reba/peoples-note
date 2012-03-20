@@ -297,6 +297,11 @@ void UserModel::Compact()
 
 void UserModel::DeleteNote(const Guid & note)
 {
+	if (note.IsLocal())
+	{
+		ExpungeNote(note);
+		return;
+	}
 	IDataStore::Statement statement = dataStore.MakeStatement
 		( "UPDATE Notes"
 		"  SET isDeleted = 1, isDirty = 1"

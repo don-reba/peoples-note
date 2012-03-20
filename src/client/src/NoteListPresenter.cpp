@@ -79,6 +79,7 @@ void NoteListPresenter::OnDeleteNote()
 {
 	userModel.DeleteNote(noteListView.GetSelectedNoteGuid());
 	noteListModel.Reload();
+	UpdateSyncCounter();
 }
 
 void NoteListPresenter::OnNoteChanged()
