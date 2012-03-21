@@ -14,7 +14,7 @@
    height="640"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.0 r9654"
+   inkscape:version="0.48.2 r9819"
    sodipodi:docname="profile.svg"
    inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\profile.png"
    inkscape:export-xdpi="360"
@@ -593,6 +593,19 @@
          stdDeviation="2.5531027"
          id="feGaussianBlur3885" />
     </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter3883-1"
+       x="-0.021026624"
+       width="1.0420533"
+       y="-0.12504993"
+       height="1.2500999">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.5531027"
+         id="feGaussianBlur3885-7" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -601,9 +614,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.93338095"
-     inkscape:cx="-112.44794"
-     inkscape:cy="291.90856"
+     inkscape:zoom="3.7335238"
+     inkscape:cx="832.70135"
+     inkscape:cy="263.32507"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -611,7 +624,7 @@
      inkscape:showpageshadow="true"
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-edge-midpoints="true"
-     inkscape:bbox-nodes="false"
+     inkscape:bbox-nodes="true"
      inkscape:snap-bbox-midpoints="false"
      inkscape:snap-grids="true"
      showguides="false"
@@ -661,7 +674,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -859,6 +872,40 @@
          x="17.935547"
          id="tspan3956"
          sodipodi:role="line">Database Settings</tspan></text>
+    <rect
+       style="fill:#f0ec40;fill-opacity:1;stroke:none;display:inline"
+       id="rect3758-8"
+       width="480"
+       height="552.99335"
+       x="625.70685"
+       y="579.36169" />
+    <rect
+       ry="12"
+       rx="12.000001"
+       y="787.87445"
+       x="666.41907"
+       height="49"
+       width="291.4137"
+       id="rect3881-0"
+       style="fill:#606060;fill-opacity:1;stroke:none;filter:url(#filter3883-1)" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#606060;stroke-width:1;stroke-opacity:1"
+       id="rect3111-9"
+       width="49.283192"
+       height="49"
+       x="666.41907"
+       y="787.87445"
+       rx="12.000001"
+       ry="7.8709521" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#606060;stroke-width:1;stroke-opacity:1;display:inline"
+       id="rect3111-9-2"
+       width="49.283192"
+       height="49"
+       x="666.41907"
+       y="787.87445"
+       rx="12.000001"
+       ry="7.8709521" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -886,12 +933,12 @@
     <image
        sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/window title.png"
        xlink:href="icons/window title.png"
-       y="412.36218"
-       x="-0.00024768067"
-       id="image3080"
-       height="52"
-       width="480"
+       transform="translate(0,-412.36218)"
        style="display:inline"
-       transform="translate(0,-412.36218)" />
+       width="480"
+       height="52"
+       id="image3080"
+       x="-0.00024768067"
+       y="412.36218" />
   </g>
 </svg>

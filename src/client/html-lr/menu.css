@@ -10,7 +10,6 @@ input:not([type]), input[type=text], input[type=password], widget[type=text], wi
 	padding             : 0px 5px;
 }
 
-
 @set std-select-dropdown
 {
 	:root
