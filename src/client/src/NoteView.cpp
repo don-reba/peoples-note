@@ -347,6 +347,12 @@ void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 		e.set_style_attribute("background-image", attachment.Icon.c_str());
 		e.set_attribute("value", ConvertToUnicode(attachment.Guid).c_str());
 		e.set_text(attachment.Text.c_str());
+
+		element play(element::create("img"));
+		play.set_attribute("src",   L"play-attachment.png");
+		play.set_attribute("class", L"play");
+		e.append(play);
+
 		ConnectBehavior(e, BUTTON_CLICK, &NoteView::OnAttachment);
 	}
 }
@@ -361,6 +367,12 @@ void NoteView::SetChrome(bool enable)
 		};
 	for (int i(0); i != GetArraySize(blocks); ++i)
 		blocks[i].set_style_attribute("display", enable ? L"block" : L"none");
+
+	element body(FindFirstElement("#body"));
+	if (enable)
+		body.set_attribute("chrome", L"");
+	else
+		body.remove_attribute("chrome");
 }
 
 void NoteView::SetScrollPos(POINT pos)

@@ -221,6 +221,16 @@ void NotePresenter::OnToggleMaximize()
 // utility functions
 //------------------
 
+AttachmentViewInfo NotePresenter::ConvertAttachment(const Attachment & attachment)
+{
+	return AttachmentViewInfo
+		( attachment.Guid
+		, GetAttachmentImageUrl(attachment)
+		, attachment.FileName
+		, IsAttachmentPlayable(attachment)
+		);
+}
+
 void NotePresenter::CreateSubtitle(const Note & note, wstring & subtitle)
 {
 	subtitle = L"created on ";
@@ -291,11 +301,14 @@ const wchar_t * NotePresenter::GetAttachmentImageUrl(const Attachment & attachme
 	return L"url(attachment-misc.png)";
 }
 
-AttachmentViewInfo NotePresenter::ConvertAttachment(const Attachment & attachment)
+bool NotePresenter::IsAttachmentPlayable(const Attachment & attachment)
 {
-	return AttachmentViewInfo
-		( attachment.Guid
-		, GetAttachmentImageUrl(attachment)
-		, attachment.FileName
+	wstring fileName;
+	transform
+		( attachment.FileName.begin()
+		, attachment.FileName.end()
+		, back_inserter(fileName)
+		, tolower
 		);
+	return EndsWith(fileName, L".wav");
 }
