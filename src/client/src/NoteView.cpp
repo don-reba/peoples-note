@@ -331,7 +331,7 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 
 void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 {
-	DisconnectBehavior("#attachments > option");
+	DisconnectBehavior("#attachments *");
 
 	element list(FindFirstElement("#attachments"));
 
@@ -342,18 +342,25 @@ void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 
 	foreach (const AttachmentViewInfo & attachment, attachments)
 	{
-		element e(element::create("option"));
-		list.insert(e, list.children_count() - 1);
-		e.set_style_attribute("background-image", attachment.Icon.c_str());
-		e.set_attribute("value", ConvertToUnicode(attachment.Guid).c_str());
-		e.set_text(attachment.Text.c_str());
+		element content (element::create("div"));
+		element play    (element::create("img"));
 
-		element play(element::create("img"));
+		element option(element::create("option"));
+		option.append(content);
+		option.append(play);
+
+		list.insert(option, list.children_count() - 1);
+
+		content.set_style_attribute("background-image", attachment.Icon.c_str());
+		content.set_attribute("value", ConvertToUnicode(attachment.Guid).c_str());
+		content.set_attribute("class", L"content");
+		content.set_text(attachment.Text.c_str());
+
 		play.set_attribute("src",   L"play-attachment.png");
 		play.set_attribute("class", L"play");
-		e.append(play);
 
-		ConnectBehavior(e, BUTTON_CLICK, &NoteView::OnAttachment);
+		ConnectBehavior(content, BUTTON_CLICK, &NoteView::OnAttachment);
+		ConnectBehavior(play,    BUTTON_CLICK, &NoteView::OnPlayAttachment);
 	}
 }
 
@@ -585,4 +592,9 @@ void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 		dirtyCheckboxIds.insert(id);
 	else
 		dirtyCheckboxIds.erase(i);
+}
+
+void NoteView::OnPlayAttachment(BEHAVIOR_EVENT_PARAMS * params)
+{
+	::MessageBox(hwnd_, L"OnPlayAttachment", L"Dbg", MB_OK);
 }

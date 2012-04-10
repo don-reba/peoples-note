@@ -152,6 +152,7 @@ private:
 
 private:
 
-	void OnAttachment (BEHAVIOR_EVENT_PARAMS * params);
-	void OnInput      (BEHAVIOR_EVENT_PARAMS * params);
+	void OnAttachment     (BEHAVIOR_EVENT_PARAMS * params);
+	void OnInput          (BEHAVIOR_EVENT_PARAMS * params);
+	void OnPlayAttachment (BEHAVIOR_EVENT_PARAMS * params);
 };
