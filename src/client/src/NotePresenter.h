@@ -46,6 +46,7 @@ private:
 	void OnCloseNote();
 	void OnDeleteNote();
 	void OnOpenNote();
+	void OnPlayAttachment();
 	void OnTagListCommitted();
 	void OnToggleMaximize();
 

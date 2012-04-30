@@ -3,6 +3,7 @@
 #include "AboutPresenter.h"
 #include "AboutView.h"
 #include "Animator.h"
+#include "AudioAttachmentPresenter.h"
 #include "AudioPlayer.h"
 #include "AudioRecorder.h"
 #include "CredentialsPresenter.h"
@@ -163,6 +164,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		PhotoEditorModel photoEditorModel(registryKey);
 		UserModel        userModel     (dataStore,     deviceDocumentPath, flashCard);
 		UserModel        syncUserModel (syncDataStore, deviceDocumentPath, flashCard);
+		VoiceEditorModel attachmentPlayerModel;
 		VoiceEditorModel voiceEditorModel;
 
 		NoteListModel noteListModel(userModel, registryKey);
@@ -174,22 +176,31 @@ int WINAPI WinMain(HINSTANCE instance,
 			, userModel
 			);
 
-		AboutView       aboutView       (instance, highRes, htmlDataLoader);
-		CredentialsView credentialsView (instance, highRes, htmlDataLoader);
-		EditorView      editorView      (instance, highRes, htmlDataLoader);
-		InkEditorView   inkEditorView   (instance);
-		NoteView        noteView        (instance, highRes, animator, htmlDataLoader);
-		NoteListView    noteListView    (instance, highRes, animator, nCmdShow, htmlDataLoader);
-		NoteTagListView noteTagListView (instance, highRes, animator, htmlDataLoader);
-		PhotoEditorView photoEditorView (instance, highRes, htmlDataLoader);
-		ProfileView     profileView     (instance, highRes, htmlDataLoader);
-		VoiceEditorView voiceEditorView (instance, highRes, htmlDataLoader);
+		AboutView       aboutView            (instance, highRes, htmlDataLoader);
+		CredentialsView credentialsView      (instance, highRes, htmlDataLoader);
+		EditorView      editorView           (instance, highRes, htmlDataLoader);
+		InkEditorView   inkEditorView        (instance);
+		NoteView        noteView             (instance, highRes, animator, htmlDataLoader);
+		NoteListView    noteListView         (instance, highRes, animator, nCmdShow, htmlDataLoader);
+		NoteTagListView noteTagListView      (instance, highRes, animator, htmlDataLoader);
+		PhotoEditorView photoEditorView      (instance, highRes, htmlDataLoader);
+		ProfileView     profileView          (instance, highRes, htmlDataLoader);
+		VoiceEditorView voiceEditorView      (instance, highRes, htmlDataLoader);
+		VoiceEditorView attachmentPlayerView (instance, highRes, htmlDataLoader);
 
 		htmlDataLoader.AttachViews(noteListView, noteView);
 
 		AboutPresenter aboutPresenter
 			( aboutView
 			, noteListView
+			);
+		AudioAttachmentPresenter audioAttachmentPresenter
+			( audioPlayer
+			, audioRecorder
+			, noteView
+			, attachmentPlayerModel
+			, attachmentPlayerView
+			, userModel
 			);
 		CredentialsPresenter credentialsPresenter
 			( credentialsModel
@@ -289,15 +300,16 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 
 		noteListView.Create();
-		aboutView.Create       (noteListView.hwnd_);
-		credentialsView.Create (noteListView.hwnd_);
-		editorView.Create      (noteListView.hwnd_);
-		inkEditorView.Create   (noteListView.hwnd_);
-		noteTagListView.Create (noteListView.hwnd_);
-		noteView.Create        (noteListView.hwnd_);
-		photoEditorView.Create (noteListView.hwnd_);
-		profileView.Create     (noteListView.hwnd_);
-		voiceEditorView.Create (noteListView.hwnd_);
+		aboutView.Create            (noteListView.hwnd_);
+		credentialsView.Create      (noteListView.hwnd_);
+		editorView.Create           (noteListView.hwnd_);
+		inkEditorView.Create        (noteListView.hwnd_);
+		noteTagListView.Create      (noteListView.hwnd_);
+		noteView.Create             (noteListView.hwnd_);
+		photoEditorView.Create      (noteListView.hwnd_);
+		profileView.Create          (noteListView.hwnd_);
+		voiceEditorView.Create      (noteListView.hwnd_);
+		attachmentPlayerView.Create (noteListView.hwnd_);
 
 		userLoader.Run();
 		int result(RunMessageLoop(animator, syncModel));

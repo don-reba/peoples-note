@@ -15,6 +15,7 @@ class NoteView : public HTMLayoutWindow, public INoteView
 	MacroEvent(Delete)
 	MacroEvent(Edit)
 	MacroEvent(EditTags)
+	MacroEvent(PlayAttachment)
 	MacroEvent(ToggleMaximize)
 
 private:

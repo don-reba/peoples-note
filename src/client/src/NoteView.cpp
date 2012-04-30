@@ -342,6 +342,8 @@ void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 
 	foreach (const AttachmentViewInfo & attachment, attachments)
 	{
+		wstring guid(ConvertToUnicode(attachment.Guid).c_str());
+
 		element content (element::create("div"));
 		element play    (element::create("img"));
 
@@ -352,11 +354,12 @@ void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 		list.insert(option, list.children_count() - 1);
 
 		content.set_style_attribute("background-image", attachment.Icon.c_str());
-		content.set_attribute("value", ConvertToUnicode(attachment.Guid).c_str());
+		content.set_attribute("value", guid.c_str());
 		content.set_attribute("class", L"content");
 		content.set_text(attachment.Text.c_str());
 
 		play.set_attribute("src",   L"play-attachment.png");
+		play.set_attribute("value", guid.c_str());
 		play.set_attribute("class", L"play");
 
 		ConnectBehavior(content, BUTTON_CLICK, &NoteView::OnAttachment);
@@ -578,8 +581,9 @@ void NoteView::ProcessMessage(WndMsg &msg)
 void NoteView::OnAttachment(BEHAVIOR_EVENT_PARAMS * params)
 {
 	const wchar_t * value(element(params->heTarget).get_attribute("value"));
-	if (value)
-		element(FindFirstElement("#attachments")).set_attribute("value", value);
+	if (!value)
+		return;
+	element(FindFirstElement("#attachments")).set_attribute("value", value);
 	SignalAttachment();
 }
 
@@ -596,5 +600,9 @@ void NoteView::OnInput(BEHAVIOR_EVENT_PARAMS * params)
 
 void NoteView::OnPlayAttachment(BEHAVIOR_EVENT_PARAMS * params)
 {
-	::MessageBox(hwnd_, L"OnPlayAttachment", L"Dbg", MB_OK);
+	const wchar_t * value(element(params->heTarget).get_attribute("value"));
+	if (!value)
+		return;
+	element(FindFirstElement("#attachments")).set_attribute("value", value);
+	SignalPlayAttachment();
 }

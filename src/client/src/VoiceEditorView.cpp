@@ -34,8 +34,7 @@ VoiceEditorView::VoiceEditorView
 void VoiceEditorView::Create(HWND parent)
 {
 	this->parent = parent;
-	if (!RegisterClass(LoadStringResource(IDC_VOICE_EDIT)))
-		throw std::exception("Class could not be registered.");
+	RegisterClass(LoadStringResource(IDC_VOICE_EDIT));
 }
 
 void VoiceEditorView::RegisterEventHandlers()

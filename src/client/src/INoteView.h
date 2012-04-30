@@ -16,6 +16,7 @@ class INoteView : public ISignalProvider
 	MacroIEvent(Delete)
 	MacroIEvent(Edit)
 	MacroIEvent(EditTags)
+	MacroIEvent(PlayAttachment)
 	MacroIEvent(ToggleMaximize)
 
 public:
