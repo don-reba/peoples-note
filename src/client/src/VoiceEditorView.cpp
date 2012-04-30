@@ -44,6 +44,21 @@ void VoiceEditorView::RegisterEventHandlers()
 	ConnectBehavior("#stop",   BUTTON_CLICK, &VoiceEditorView::OnVoiceStop);
 }
 
+void VoiceEditorView::SetButtons(int buttons)
+{
+	pair<int, const char*> ids[3] =
+		{ make_pair(PlayButton,   "#play")
+		, make_pair(RecordButton, "#record")
+		, make_pair(StopButton,   "#stop")
+	};
+	for (int i(0); i != 3; ++i)
+	{
+		bool isSet((buttons & ids[i].first) != 0);
+		element e(FindFirstElement(ids[i].second));
+		e.set_style_attribute("display", isSet ? L"block" : L"none");
+	}
+}
+
 //--------------------------------
 // IVoiceEditorView implementation
 //--------------------------------

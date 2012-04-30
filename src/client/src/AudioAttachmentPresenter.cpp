@@ -49,6 +49,7 @@ void AudioAttachmentPresenter::OnPlay()
 void AudioAttachmentPresenter::OnPlayAttachment()
 {
 	voiceEditorView.Show();
+	voiceEditorView.SetButtons(IVoiceEditorView::PlayButton | IVoiceEditorView::StopButton);
 }
 
 void AudioAttachmentPresenter::OnRecord()

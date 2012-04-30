@@ -32,6 +32,8 @@ public:
 
 	virtual void RegisterEventHandlers();
 
+	virtual void SetButtons(int buttons);
+
 // IVoiceEditorView implementation
 
 public:
