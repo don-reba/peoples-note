@@ -27,15 +27,44 @@ void AudioPlayer::Play(LPCWSTR path)
 
 	WaveOut waveOut(WAVE_MAPPER, &format, &AudioPlayer::WaveOutProc, this, WAVE_ALLOWSYNC);
 
-	std::vector<char> buffer(bufferSize);
+	std::vector<BYTE> buffer(bufferSize);
 
 	waveCurrentBlock   = 0;
 	waveFreeBlockCount = blockCount;
 	while(dataSize > 0 && !file.eof())
 	{
-		file.read(&buffer[0], min(dataSize, bufferSize));
+		file.read(reinterpret_cast<char*>(&buffer[0]), min(dataSize, bufferSize));
 		WriteWav(waveOut, &buffer[0], file.gcount());
 		dataSize -= file.gcount();
+	}
+	FlushWav(waveOut);
+
+	while(waveFreeBlockCount < blockCount)
+		Sleep(10);
+
+	for(int i(0); i < waveFreeBlockCount; i++) 
+	{
+		if(waveBlocks[i].dwFlags & WHDR_PREPARED)
+			waveOut.UnprepareHeader(&waveBlocks[i]);
+	}
+}
+
+void AudioPlayer::Play(const Blob & data)
+{
+	WAVEFORMATEX format;
+	int          dataSize;
+	ReadWavHeader(&data[0], format, dataSize);
+
+	WaveOut waveOut(WAVE_MAPPER, &format, &AudioPlayer::WaveOutProc, this, WAVE_ALLOWSYNC);
+
+	std::vector<char> buffer(bufferSize);
+
+	waveCurrentBlock   = 0;
+	waveFreeBlockCount = blockCount;
+	for (int i(0), size(data.size()); i < size; i += bufferSize)
+	{
+		size_t count(min(size - i, bufferSize));
+		WriteWav(waveOut, &data[i], count);
 	}
 	FlushWav(waveOut);
 
@@ -89,40 +118,46 @@ void AudioPlayer::ReadWavHeader
 	, int          & dataSize
 	)
 {
-	DWORD magicNumber;
-	stream.read(reinterpret_cast<char*>(&magicNumber), 4);
+	BYTE buffer[wavHeaderSize];
+	stream.read(reinterpret_cast<char*>(buffer), wavHeaderSize);
+	ReadWavHeader(buffer, format, dataSize);
+}
+
+void AudioPlayer::ReadWavHeader
+	( const BYTE   * data
+	, WAVEFORMATEX & format
+	, int          & dataSize
+	)
+{
+	DWORD magicNumber(*reinterpret_cast<const DWORD *>(data + 0));
 	if (magicNumber != 0x46464952) // "RIFF"
 		throw std::exception("Wrong file format.");
 
-	stream.read(reinterpret_cast<char*>(&magicNumber), 4);
-
-	DWORD formatName;
-	stream.read(reinterpret_cast<char*>(&formatName), 4);
+	DWORD formatName(*reinterpret_cast<const DWORD *>(data + 8));
 	if (formatName != 0x45564157) // "WAVE"
 		throw std::exception("Wrong file format.");
 
-	DWORD formatHeader;
-	stream.read(reinterpret_cast<char*>(&formatHeader), 4);
+	DWORD formatHeader(*reinterpret_cast<const DWORD *>(data + 12));
 	if (formatHeader != 0x20746D66) // " fmt"
 		throw std::exception("Wrong file format.");
 
-	stream.read(reinterpret_cast<char*>(&format.cbSize), 4);
+	format.cbSize = static_cast<WORD>(*reinterpret_cast<const DWORD *>(data + 16));
 	if (format.cbSize != 16)
 		throw std::exception("Wrong file format.");
 
-	stream.read(reinterpret_cast<char*>(&format.wFormatTag),      2);
-	stream.read(reinterpret_cast<char*>(&format.nChannels),       2);
-	stream.read(reinterpret_cast<char*>(&format.nSamplesPerSec),  4);
-	stream.read(reinterpret_cast<char*>(&format.nAvgBytesPerSec), 4);
-	stream.read(reinterpret_cast<char*>(&format.nBlockAlign),     2);
-	stream.read(reinterpret_cast<char*>(&format.wBitsPerSample),  2);
 
-	DWORD dataHeader;
-	stream.read(reinterpret_cast<char*>(&dataHeader), 4);
+	format.wFormatTag      = *reinterpret_cast<const  WORD *>(data + 20);
+	format.nChannels       = *reinterpret_cast<const  WORD *>(data + 22);
+	format.nSamplesPerSec  = *reinterpret_cast<const DWORD *>(data + 24);
+	format.nAvgBytesPerSec = *reinterpret_cast<const DWORD *>(data + 28);
+	format.nBlockAlign     = *reinterpret_cast<const  WORD *>(data + 32);
+	format.wBitsPerSample  = *reinterpret_cast<const  WORD *>(data + 34);
+
+	DWORD dataHeader(*reinterpret_cast<const DWORD *>(data + 36));
 	if (dataHeader != 0x61746164) // "data"
 		throw std::exception("Wrong file format.");
 
-	stream.read(reinterpret_cast<char*>(&dataSize), 4);
+	dataSize = *reinterpret_cast<const DWORD *>(data + 40);
 	if (dataSize < 0)
 		throw std::exception("Wrong file format.");
 }
@@ -167,7 +202,7 @@ void AudioPlayer::FlushWav(WaveOut & waveOut)
 	}
 }
 
-void AudioPlayer::WriteWav(WaveOut & waveOut, char * data, int size)
+void AudioPlayer::WriteWav(WaveOut & waveOut, const BYTE * data, int size)
 {
 	while(size > 0)
 	{

@@ -8,5 +8,7 @@ public:
 
 	virtual void Play(LPCWSTR path) = 0;
 
+	virtual void Play(const Blob & data) = 0;
+
 	virtual void Stop() = 0;
 };

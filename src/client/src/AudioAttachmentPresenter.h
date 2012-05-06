@@ -34,6 +34,5 @@ private:
 	void OnCancel();
 	void OnPlay();
 	void OnPlayAttachment();
-	void OnRecord();
 	void OnStop();
 };

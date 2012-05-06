@@ -8,6 +8,7 @@
 #include "IVoiceEditorModel.h"
 #include "IVoiceEditorView.h"
 #include "IUserModel.h"
+#include "WaitCursor.h"
 
 using namespace boost;
 using namespace std;
@@ -31,7 +32,6 @@ AudioAttachmentPresenter::AudioAttachmentPresenter
 
 	voiceEditorView.ConnectCancel (bind(&AudioAttachmentPresenter::OnCancel, this));
 	voiceEditorView.ConnectPlay   (bind(&AudioAttachmentPresenter::OnPlay,   this));
-	voiceEditorView.ConnectRecord (bind(&AudioAttachmentPresenter::OnRecord, this));
 	voiceEditorView.ConnectStop   (bind(&AudioAttachmentPresenter::OnStop,   this));
 }
 
@@ -42,8 +42,19 @@ void AudioAttachmentPresenter::OnCancel()
 
 void AudioAttachmentPresenter::OnPlay()
 {
-	//Blob empty;
-	//audio.Play(empty);
+	Guid guid(noteView.GetSelecteAttachmentGuid());
+	if (guid.IsEmpty())
+		return;
+
+	Resource resource;
+	{
+		MacroWaitCursor;
+		userModel.GetResource(guid, resource);
+		if (resource.Data.empty())
+			return;
+	}
+
+	audioPlayer.Play(resource.Data);
 }
 
 void AudioAttachmentPresenter::OnPlayAttachment()
@@ -52,13 +63,7 @@ void AudioAttachmentPresenter::OnPlayAttachment()
 	voiceEditorView.SetButtons(IVoiceEditorView::PlayButton | IVoiceEditorView::StopButton);
 }
 
-void AudioAttachmentPresenter::OnRecord()
-{
-	//Blob empty;
-	//audio.Record(empty);
-}
-
 void AudioAttachmentPresenter::OnStop()
 {
-	//audio.Stop();
+	audioPlayer.Stop();
 }

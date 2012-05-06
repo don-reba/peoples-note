@@ -21,6 +21,8 @@ private:
 	static const int blockSize  = 4096;
 	static const int bufferSize = 2048;
 
+	static const int wavHeaderSize = 44;
+
 public:
 
 	AudioPlayer();
@@ -29,6 +31,8 @@ public:
 public:
 
 	virtual void Play(LPCWSTR path);
+
+	virtual void Play(const Blob & data);
 
 	virtual void Stop();
 
@@ -42,6 +46,12 @@ private:
 
 	static void ReadWavHeader
 		( std::istream & stream
+		, WAVEFORMATEX & format
+		, int          & dataSize
+		);
+
+	static void ReadWavHeader
+		( const BYTE   * data
 		, WAVEFORMATEX & format
 		, int          & dataSize
 		);
@@ -63,5 +73,5 @@ private:
 
 	void FlushWav(WaveOut & waveOut);
 
-	void WriteWav(WaveOut & waveOut, char * data, int size);
+	void WriteWav(WaveOut & waveOut, const BYTE * data, int size);
 };
