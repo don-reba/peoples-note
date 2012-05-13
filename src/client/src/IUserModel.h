@@ -12,9 +12,15 @@
 #include "Tag.h"
 #include "Thumbnail.h"
 
+class ISqlBlob;
+
 class IUserModel : public ISignalProvider
 {
 	MacroIEvent(Loaded)
+
+public:
+
+	typedef boost::shared_ptr<ISqlBlob> SqlBlob;
 
 public:
 
@@ -131,6 +137,8 @@ public:
 		( const Guid & guid
 		, Resource   & resource
 		) = 0;
+
+	virtual SqlBlob GetResourceData(const Guid & guid) = 0;
 
 	virtual void GetResources(GuidList & resources) = 0;
 

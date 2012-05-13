@@ -157,6 +157,8 @@ public:
 		, Resource   & resource
 		);
 
+	virtual SqlBlob GetResourceData(const Guid & guid);
+
 	virtual void GetResources(GuidList & resources);
 
 	virtual __int64 GetSize();

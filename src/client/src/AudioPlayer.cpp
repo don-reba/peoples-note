@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "AudioPlayer.h"
 
+#include "ISqlBlob.h"
+
 AudioPlayer::AudioPlayer()
 {
 	::InitializeCriticalSection(&criticalSection);
@@ -17,54 +19,34 @@ AudioPlayer::~AudioPlayer()
 	DeallocateBlocks(waveBlocks);
 }
 
-void AudioPlayer::Play(LPCWSTR path)
-{
-	std::ifstream file(path, std::ios::binary);
-
-	WAVEFORMATEX format;
-	int          dataSize;
-	ReadWavHeader(file, format, dataSize);
-
-	WaveOut waveOut(WAVE_MAPPER, &format, &AudioPlayer::WaveOutProc, this, WAVE_ALLOWSYNC);
-
-	std::vector<BYTE> buffer(bufferSize);
-
-	waveCurrentBlock   = 0;
-	waveFreeBlockCount = blockCount;
-	while(dataSize > 0 && !file.eof())
-	{
-		file.read(reinterpret_cast<char*>(&buffer[0]), min(dataSize, bufferSize));
-		WriteWav(waveOut, &buffer[0], file.gcount());
-		dataSize -= file.gcount();
-	}
-	FlushWav(waveOut);
-
-	while(waveFreeBlockCount < blockCount)
-		Sleep(10);
-
-	for(int i(0); i < waveFreeBlockCount; i++) 
-	{
-		if(waveBlocks[i].dwFlags & WHDR_PREPARED)
-			waveOut.UnprepareHeader(&waveBlocks[i]);
-	}
-}
-
-void AudioPlayer::Play(const Blob & data)
+void AudioPlayer::Play(ISqlBlob & blob)
 {
 	WAVEFORMATEX format;
 	int          dataSize;
-	ReadWavHeader(&data[0], format, dataSize);
+	ReadWavHeader(blob, format, dataSize);
 
 	WaveOut waveOut(WAVE_MAPPER, &format, &AudioPlayer::WaveOutProc, this, WAVE_ALLOWSYNC);
 
-	std::vector<char> buffer(bufferSize);
+	Blob buffer(bufferSize);
 
-	waveCurrentBlock   = 0;
-	waveFreeBlockCount = blockCount;
-	for (int i(0), size(data.size()); i < size; i += bufferSize)
+	try
 	{
-		size_t count(min(size - i, bufferSize));
-		WriteWav(waveOut, &data[i], count);
+		waveCurrentBlock   = 0;
+		waveFreeBlockCount = blockCount;
+		int offset(wavHeaderSize);
+		while(dataSize > 0)
+		{
+			blob.Read(offset, min(dataSize, bufferSize), buffer);
+			if (buffer.empty())
+				break;
+			WriteWav(waveOut, &buffer[0], buffer.size());
+			offset   += buffer.size();
+			dataSize -= buffer.size();
+		}
+	}
+	catch (const std::exception &)
+	{
+		// try to do with what we have
 	}
 	FlushWav(waveOut);
 
@@ -113,14 +95,14 @@ void AudioPlayer::DeallocateBlocks(WAVEHDR * blocks)
 }
 
 void AudioPlayer::ReadWavHeader
-	( std::istream & stream
+	( ISqlBlob     & blob
 	, WAVEFORMATEX & format
 	, int          & dataSize
 	)
 {
-	BYTE buffer[wavHeaderSize];
-	stream.read(reinterpret_cast<char*>(buffer), wavHeaderSize);
-	ReadWavHeader(buffer, format, dataSize);
+	Blob buffer(wavHeaderSize);
+	blob.Read(0, wavHeaderSize, buffer);
+	ReadWavHeader(&buffer[0], format, dataSize);
 }
 
 void AudioPlayer::ReadWavHeader
@@ -204,6 +186,7 @@ void AudioPlayer::FlushWav(WaveOut & waveOut)
 
 void AudioPlayer::WriteWav(WaveOut & waveOut, const BYTE * data, int size)
 {
+	// copy data into blocks in a circular buffer
 	while(size > 0)
 	{
 		WAVEHDR * current(&waveBlocks[waveCurrentBlock]);
@@ -212,17 +195,22 @@ void AudioPlayer::WriteWav(WaveOut & waveOut, const BYTE * data, int size)
 			waveOut.UnprepareHeader(current);
 
 		const int remainder(blockSize - current->dwUser);
+
+		// write a partial block
 		if (size < remainder)
 		{
 			::memcpy(current->lpData + current->dwUser, data, size);
 			current->dwUser += size;
 			break;
 		}
+
+		// write a complete block
 		::memcpy(current->lpData + current->dwUser, data, remainder);
 		size -= remainder;
 		data += remainder;
 		current->dwBufferLength = blockSize;
 
+		// enqueue the block for playback
 		waveOut.PrepareHeader(current);
 		waveOut.Write(current);
 
@@ -230,9 +218,9 @@ void AudioPlayer::WriteWav(WaveOut & waveOut, const BYTE * data, int size)
 		waveFreeBlockCount--;
 		::LeaveCriticalSection(&criticalSection);
 
+		// move onto the next block, as soon as one becomes available
 		while(waveFreeBlockCount == 0)
 			Sleep(10);
-
 		waveCurrentBlock = (waveCurrentBlock + 1) % blockCount;
 		current->dwUser = 0;
 	}

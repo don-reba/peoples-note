@@ -26,5 +26,9 @@ public:
 
 public:
 
+	virtual int GetSize();
+
 	virtual void Read(Blob & blob);
+
+	virtual void Read(int offset, int size, Blob & data);
 };

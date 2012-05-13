@@ -45,16 +45,7 @@ void AudioAttachmentPresenter::OnPlay()
 	Guid guid(noteView.GetSelecteAttachmentGuid());
 	if (guid.IsEmpty())
 		return;
-
-	Resource resource;
-	{
-		MacroWaitCursor;
-		userModel.GetResource(guid, resource);
-		if (resource.Data.empty())
-			return;
-	}
-
-	audioPlayer.Play(resource.Data);
+	audioPlayer.Play(*userModel.GetResourceData(guid));
 }
 
 void AudioAttachmentPresenter::OnPlayAttachment()

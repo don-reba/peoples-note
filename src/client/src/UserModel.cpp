@@ -878,6 +878,23 @@ void UserModel::GetResource
 	sqlBlob->Read(resource.Data);
 }
 
+UserModel::SqlBlob UserModel::GetResourceData(const Guid & guid)
+{
+	IDataStore::Statement statement = dataStore.MakeStatement
+		( "SELECT `rowid`"
+		"  FROM   Resources"
+		"  WHERE  guid = ?"
+		);
+	statement->Bind(guid);
+	if (statement->Execute())
+		throw std::exception("Resource not found.");
+
+	__int64 row(0);
+	statement->Get(row);
+
+	return dataStore.MakeBlob("Resources", "data", row);
+}
+
 void UserModel::GetResources(GuidList & resources)
 {
 	IDataStore::Statement statement = dataStore.MakeStatement

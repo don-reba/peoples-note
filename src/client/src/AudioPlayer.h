@@ -3,8 +3,6 @@
 
 #include "WaveOut.h"
 
-#include <fstream>
-
 typedef struct tWAVEFORMATEX WAVEFORMATEX;
 
 class AudioPlayer : public IAudioPlayer
@@ -30,9 +28,7 @@ public:
 
 public:
 
-	virtual void Play(LPCWSTR path);
-
-	virtual void Play(const Blob & data);
+	virtual void Play(ISqlBlob & blob);
 
 	virtual void Stop();
 
@@ -45,7 +41,7 @@ private:
 	static void DeallocateBlocks(WAVEHDR * blocks);
 
 	static void ReadWavHeader
-		( std::istream & stream
+		( ISqlBlob     & blob
 		, WAVEFORMATEX & format
 		, int          & dataSize
 		);
