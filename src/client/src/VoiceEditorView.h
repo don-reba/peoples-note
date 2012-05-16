@@ -6,7 +6,9 @@
 class VoiceEditorView : public HTMLayoutWindow, public IVoiceEditorView
 {
 	MacroEvent(Cancel)
+	MacroEvent(Hide)
 	MacroEvent(Play)
+	MacroEvent(Show)
 	MacroEvent(Stop)
 	MacroEvent(Record)
 
@@ -47,6 +49,7 @@ public:
 private:
 
 	void OnActivate (Msg<WM_ACTIVATE> & msg);
+	void OnClose    (Msg<WM_CLOSE>    & msg);
 	void OnCommand  (Msg<WM_COMMAND>  & msg);
 	void OnKeyUp    (Msg<WM_KEYUP>    & msg);
 

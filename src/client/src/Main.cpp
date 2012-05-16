@@ -149,6 +149,7 @@ int WINAPI WinMain(HINSTANCE instance,
 		FlashCard        flashCard;
 		RegistryKey      registryKey(L"Software\\People's Note");
 		DataStore        dataStore;
+		DataStore        mediaDataStore;
 		DataStore        syncDataStore;
 		EnImporter       enImporter;
 		EnNoteTranslator enNoteTranslator;
@@ -162,8 +163,9 @@ int WINAPI WinMain(HINSTANCE instance,
 		LastUserModel    lastUserModel(registryKey);
 		NoteTagListModel noteTagListModel;
 		PhotoEditorModel photoEditorModel(registryKey);
-		UserModel        userModel     (dataStore,     deviceDocumentPath, flashCard);
-		UserModel        syncUserModel (syncDataStore, deviceDocumentPath, flashCard);
+		UserModel        userModel      (dataStore,      deviceDocumentPath, flashCard);
+		UserModel        mediaUserModel (mediaDataStore, deviceDocumentPath, flashCard);
+		UserModel        syncUserModel  (syncDataStore,  deviceDocumentPath, flashCard);
 		VoiceEditorModel attachmentPlayerModel;
 		VoiceEditorModel voiceEditorModel;
 
@@ -197,10 +199,11 @@ int WINAPI WinMain(HINSTANCE instance,
 		AudioAttachmentPresenter audioAttachmentPresenter
 			( audioPlayer
 			, audioRecorder
+			, credentialsModel
 			, noteView
+			, mediaUserModel
 			, attachmentPlayerModel
 			, attachmentPlayerView
-			, userModel
 			);
 		CredentialsPresenter credentialsPresenter
 			( credentialsModel

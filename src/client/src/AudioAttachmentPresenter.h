@@ -2,6 +2,7 @@
 
 class IAudioPlayer;
 class IAudioRecorder;
+class ICredentialsModel;
 class INoteView;
 class IVoiceEditorModel;
 class IVoiceEditorView;
@@ -14,25 +15,30 @@ private:
 	IAudioPlayer      & audioPlayer;
 	IAudioRecorder    & audioRecorder;
 	INoteView         & noteView;
+	IUserModel        & userModel;
 	IVoiceEditorModel & voiceEditorModel;
 	IVoiceEditorView  & voiceEditorView;
-	IUserModel        & userModel;
+
+	const ICredentialsModel & credentialsModel;
 
 public:
 
 	AudioAttachmentPresenter
-		( IAudioPlayer      & audioPlayer
-		, IAudioRecorder    & audioRecorder
-		, INoteView         & noteView
-		, IVoiceEditorModel & voiceEditorModel
-		, IVoiceEditorView  & voiceEditorView
-		, IUserModel        & userModel
+		( IAudioPlayer            & audioPlayer
+		, IAudioRecorder          & audioRecorder
+		, const ICredentialsModel & credentialsModel
+		, INoteView               & noteView
+		, IUserModel              & userModel
+		, IVoiceEditorModel       & voiceEditorModel
+		, IVoiceEditorView        & voiceEditorView
 		);
 
 private:
 
 	void OnCancel();
+	void OnHide();
 	void OnPlay();
 	void OnPlayAttachment();
+	void OnShow();
 	void OnStop();
 };

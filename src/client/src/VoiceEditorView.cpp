@@ -106,6 +106,8 @@ void VoiceEditorView::Show()
 	ResizeWindow();
 
 	ShowWindow(hwnd_, SW_SHOW);
+
+	SignalShow();
 }
 
 void VoiceEditorView::OnVoicePlay(BEHAVIOR_EVENT_PARAMS * params)
@@ -137,6 +139,11 @@ void VoiceEditorView::OnActivate(Msg<WM_ACTIVATE> & msg)
 	}
 }
 
+void VoiceEditorView::OnClose(Msg<WM_CLOSE> & msg)
+{
+	SignalHide();
+}
+
 void VoiceEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 {
 	switch (msg.CtrlId())
@@ -160,6 +167,7 @@ void VoiceEditorView::ProcessMessage(WndMsg &msg)
 	static Handler mmp[] =
 	{
 		&VoiceEditorView::OnActivate,
+		&VoiceEditorView::OnClose,
 		&VoiceEditorView::OnCommand,
 		&VoiceEditorView::OnKeyUp,
 	};
