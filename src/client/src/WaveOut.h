@@ -19,6 +19,8 @@ public:
 
 	void PrepareHeader(WAVEHDR * header);
 
+	void Reset();
+
 	void Write(WAVEHDR * header);
 
 	bool UnprepareHeader(WAVEHDR * header);

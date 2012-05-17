@@ -9,11 +9,22 @@ class AudioPlayer : public IAudioPlayer
 {
 private:
 
-	CRITICAL_SECTION criticalSection;
+	// This critical section synchronizes three threads:
+	// - main (UI) thread
+	// - audio loading thread
+	// - audio callback thread
+	CRITICAL_SECTION lock;
+
+	HANDLE thread;
+
+	boost::shared_ptr<ISqlBlob> blob;
+
+	bool isPlaying;
+	bool isStopRequested;
 
 	WAVEHDR * waveBlocks;
-	int waveCurrentBlock;
-	int waveFreeBlockCount;
+	long waveCurrentBlock;
+	long waveFreeBlockCount;
 
 	static const int blockCount = 20;
 	static const int blockSize  = 4096;
@@ -28,7 +39,7 @@ public:
 
 public:
 
-	virtual void Play(ISqlBlob & blob);
+	virtual void Play(boost::shared_ptr<ISqlBlob> & blob);
 
 	virtual void Stop();
 
@@ -39,6 +50,12 @@ private:
 	static WAVEHDR * AllocateBlocks(int size, int count);
 
 	static void DeallocateBlocks(WAVEHDR * blocks);
+
+	void FlushWav(WaveOut & waveOut);
+
+	void Play();
+
+	static DWORD WINAPI Play(LPVOID param);
 
 	static void ReadWavHeader
 		( ISqlBlob     & blob
@@ -51,6 +68,8 @@ private:
 		, WAVEFORMATEX & format
 		, int          & dataSize
 		);
+
+	void UnprepareHeaders(WaveOut & waveOut);
 
 	static void (CALLBACK WaveOutProc)
 		( HANDLE waveOut
@@ -66,8 +85,6 @@ private:
 		, DWORD  parameter1
 		, DWORD  parameter2
 		);
-
-	void FlushWav(WaveOut & waveOut);
 
 	void WriteWav(WaveOut & waveOut, const BYTE * data, int size);
 };

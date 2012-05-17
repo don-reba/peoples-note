@@ -6,64 +6,41 @@
 
 #include "ISqlBlob.h"
 
-AudioPlayer::AudioPlayer()
-{
-	::InitializeCriticalSection(&criticalSection);
+using namespace boost;
 
+AudioPlayer::AudioPlayer()
+	: isPlaying (false)
+	, thread    (NULL)
+{
 	waveBlocks = AllocateBlocks(blockSize, blockCount);
 }
 
 AudioPlayer::~AudioPlayer()
 {
-	::DeleteCriticalSection(&criticalSection);
+	if (thread != NULL)
+		::CloseHandle(thread);
 	DeallocateBlocks(waveBlocks);
 }
 
-void AudioPlayer::Play(ISqlBlob & blob)
+void AudioPlayer::Play(shared_ptr<ISqlBlob> & blob)
 {
-	WAVEFORMATEX format;
-	int          dataSize;
-	ReadWavHeader(blob, format, dataSize);
-
-	WaveOut waveOut(WAVE_MAPPER, &format, &AudioPlayer::WaveOutProc, this, WAVE_ALLOWSYNC);
-
-	Blob buffer(bufferSize);
-
-	try
-	{
-		waveCurrentBlock   = 0;
-		waveFreeBlockCount = blockCount;
-		int offset(wavHeaderSize);
-		while(dataSize > 0)
-		{
-			blob.Read(offset, min(dataSize, bufferSize), buffer);
-			if (buffer.empty())
-				break;
-			WriteWav(waveOut, &buffer[0], buffer.size());
-			offset   += buffer.size();
-			dataSize -= buffer.size();
-		}
-	}
-	catch (const std::exception &)
-	{
-		// try to do with what we have
-	}
-	FlushWav(waveOut);
-
-	while(waveFreeBlockCount < blockCount)
-		Sleep(10);
-
-	for(int i(0); i < waveFreeBlockCount; i++) 
-	{
-		if(waveBlocks[i].dwFlags & WHDR_PREPARED)
-			waveOut.UnprepareHeader(&waveBlocks[i]);
-	}
+	Stop();
+	this->blob = blob;
+	thread = ::CreateThread
+		( NULL               // lpsa
+		, 0                  // cbStack
+		, &AudioPlayer::Play // lpStartAddr
+		, this               // lpvThreadParam
+		, 0                  // fdwCreate
+		, NULL               // lpIDThread
+		);
 }
 
 void AudioPlayer::Stop()
 {
-//	if (waveOut)
-//		::waveOutReset(waveOut);
+	isStopRequested = true;
+	::WaitForSingleObject(thread, INFINITE);
+	isStopRequested = false;
 }
 
 //------------------
@@ -92,6 +69,56 @@ WAVEHDR * AudioPlayer::AllocateBlocks(int size, int count)
 void AudioPlayer::DeallocateBlocks(WAVEHDR * blocks)
 {
 	delete [] blocks;
+}
+
+void AudioPlayer::Play()
+{
+	WAVEFORMATEX format;
+	int          dataSize;
+	ReadWavHeader(*blob, format, dataSize);
+
+	WaveOut waveOut(WAVE_MAPPER, &format, &AudioPlayer::WaveOutProc, this, WAVE_ALLOWSYNC);
+
+	Blob buffer(bufferSize);
+
+	try
+	{
+		waveCurrentBlock   = 0;
+		waveFreeBlockCount = blockCount;
+		int offset(wavHeaderSize);
+		while(dataSize > 0)
+		{
+			if (isStopRequested)
+			{
+				waveOut.Reset();
+				UnprepareHeaders(waveOut);
+				return;
+			}
+
+			blob->Read(offset, min(dataSize, bufferSize), buffer);
+			if (buffer.empty())
+				break;
+			WriteWav(waveOut, &buffer[0], buffer.size());
+			offset   += buffer.size();
+			dataSize -= buffer.size();
+		}
+	}
+	catch (const std::exception &)
+	{
+		// try to do with what we have
+	}
+	FlushWav(waveOut);
+
+	while(waveFreeBlockCount < blockCount)
+		Sleep(10);
+
+	UnprepareHeaders(waveOut);
+}
+
+DWORD WINAPI AudioPlayer::Play(LPVOID param)
+{
+	reinterpret_cast<AudioPlayer*>(param)->Play();
+	return 0;
 }
 
 void AudioPlayer::ReadWavHeader
@@ -144,6 +171,15 @@ void AudioPlayer::ReadWavHeader
 		throw std::exception("Wrong file format.");
 }
 
+void AudioPlayer::UnprepareHeaders(WaveOut & waveOut)
+{
+	for(int i(0); i < waveFreeBlockCount; i++) 
+	{
+		if(waveBlocks[i].dwFlags & WHDR_PREPARED)
+			waveOut.UnprepareHeader(&waveBlocks[i]);
+	}
+}
+
 void AudioPlayer::WaveOutProc
 	( HANDLE waveOut
 	, UINT   message
@@ -166,9 +202,7 @@ void AudioPlayer::WaveOutProc
 	if(message != WOM_DONE)
 		return;
 
-	EnterCriticalSection(&criticalSection);
-	waveFreeBlockCount++;
-	LeaveCriticalSection(&criticalSection);
+	InterlockedIncrement(&waveFreeBlockCount);
 }
 
 void AudioPlayer::FlushWav(WaveOut & waveOut)
@@ -214,9 +248,7 @@ void AudioPlayer::WriteWav(WaveOut & waveOut, const BYTE * data, int size)
 		waveOut.PrepareHeader(current);
 		waveOut.Write(current);
 
-		::EnterCriticalSection(&criticalSection);
-		waveFreeBlockCount--;
-		::LeaveCriticalSection(&criticalSection);
+		InterlockedDecrement(&waveFreeBlockCount);
 
 		// move onto the next block, as soon as one becomes available
 		while(waveFreeBlockCount == 0)

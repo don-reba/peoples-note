@@ -43,6 +43,11 @@ void WaveOut::PrepareHeader(WAVEHDR * header)
 	}
 }
 
+void WaveOut::Reset()
+{
+	::waveOutReset(handle);
+}
+
 void WaveOut::Write(WAVEHDR * header)
 {
 	switch (::waveOutWrite(handle, header, sizeof(WAVEHDR)))

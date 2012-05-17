@@ -33,7 +33,7 @@ AudioAttachmentPresenter::AudioAttachmentPresenter
 {
 	noteView.ConnectPlayAttachment (bind(&AudioAttachmentPresenter::OnPlayAttachment, this));
 
-	voiceEditorView.ConnectHide   (bind(&AudioAttachmentPresenter::OnHide,  this));
+	voiceEditorView.ConnectHide   (bind(&AudioAttachmentPresenter::OnHide,   this));
 	voiceEditorView.ConnectCancel (bind(&AudioAttachmentPresenter::OnCancel, this));
 	voiceEditorView.ConnectPlay   (bind(&AudioAttachmentPresenter::OnPlay,   this));
 	voiceEditorView.ConnectShow   (bind(&AudioAttachmentPresenter::OnShow,   this));
@@ -47,6 +47,7 @@ void AudioAttachmentPresenter::OnCancel()
 
 void AudioAttachmentPresenter::OnHide()
 {
+	audioPlayer.Stop();
 	userModel.Unload();
 }
 
@@ -55,7 +56,7 @@ void AudioAttachmentPresenter::OnPlay()
 	Guid guid(noteView.GetSelecteAttachmentGuid());
 	if (guid.IsEmpty())
 		return;
-	audioPlayer.Play(*userModel.GetResourceData(guid));
+	audioPlayer.Play(userModel.GetResourceData(guid));
 }
 
 void AudioAttachmentPresenter::OnPlayAttachment()
@@ -66,7 +67,7 @@ void AudioAttachmentPresenter::OnPlayAttachment()
 
 void AudioAttachmentPresenter::OnShow()
 {
-	//userModel.Load(credentialsModel.GetUsername());
+	userModel.Load(credentialsModel.GetUsername());
 }
 
 void AudioAttachmentPresenter::OnStop()
