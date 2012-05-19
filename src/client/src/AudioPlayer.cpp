@@ -41,6 +41,7 @@ void AudioPlayer::Stop()
 	isStopRequested = true;
 	::WaitForSingleObject(thread, INFINITE);
 	isStopRequested = false;
+	this->blob.reset();
 }
 
 //------------------

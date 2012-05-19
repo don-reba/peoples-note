@@ -1,14 +1,13 @@
 #pragma once
 #include "ISignalProvider.h"
 
-class IVoiceEditorView : public ISignalProvider
+class IAudioPlayerView : public ISignalProvider
 {
 	MacroIEvent(Cancel)
 	MacroIEvent(Hide)
 	MacroIEvent(Play)
 	MacroIEvent(Show)
 	MacroIEvent(Stop)
-	MacroIEvent(Record)
 
 public:
 

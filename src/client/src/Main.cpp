@@ -5,6 +5,7 @@
 #include "Animator.h"
 #include "AudioAttachmentPresenter.h"
 #include "AudioPlayer.h"
+#include "AudioPlayerView.h"
 #include "AudioRecorder.h"
 #include "CredentialsPresenter.h"
 #include "CredentialsModel.h"
@@ -166,7 +167,6 @@ int WINAPI WinMain(HINSTANCE instance,
 		UserModel        userModel      (dataStore,      deviceDocumentPath, flashCard);
 		UserModel        mediaUserModel (mediaDataStore, deviceDocumentPath, flashCard);
 		UserModel        syncUserModel  (syncDataStore,  deviceDocumentPath, flashCard);
-		VoiceEditorModel attachmentPlayerModel;
 		VoiceEditorModel voiceEditorModel;
 
 		NoteListModel noteListModel(userModel, registryKey);
@@ -183,12 +183,12 @@ int WINAPI WinMain(HINSTANCE instance,
 		EditorView      editorView           (instance, highRes, htmlDataLoader);
 		InkEditorView   inkEditorView        (instance);
 		NoteView        noteView             (instance, highRes, animator, htmlDataLoader);
+		AudioPlayerView audioPlayerView      (instance, highRes, htmlDataLoader);
 		NoteListView    noteListView         (instance, highRes, animator, nCmdShow, htmlDataLoader);
 		NoteTagListView noteTagListView      (instance, highRes, animator, htmlDataLoader);
 		PhotoEditorView photoEditorView      (instance, highRes, htmlDataLoader);
 		ProfileView     profileView          (instance, highRes, htmlDataLoader);
 		VoiceEditorView voiceEditorView      (instance, highRes, htmlDataLoader);
-		VoiceEditorView attachmentPlayerView (instance, highRes, htmlDataLoader);
 
 		htmlDataLoader.AttachViews(noteListView, noteView);
 
@@ -198,12 +198,11 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 		AudioAttachmentPresenter audioAttachmentPresenter
 			( audioPlayer
+			, audioPlayerView
 			, audioRecorder
 			, credentialsModel
 			, noteView
 			, mediaUserModel
-			, attachmentPlayerModel
-			, attachmentPlayerView
 			);
 		CredentialsPresenter credentialsPresenter
 			( credentialsModel
@@ -303,16 +302,16 @@ int WINAPI WinMain(HINSTANCE instance,
 			);
 
 		noteListView.Create();
-		aboutView.Create            (noteListView.hwnd_);
-		credentialsView.Create      (noteListView.hwnd_);
-		editorView.Create           (noteListView.hwnd_);
-		inkEditorView.Create        (noteListView.hwnd_);
-		noteTagListView.Create      (noteListView.hwnd_);
-		noteView.Create             (noteListView.hwnd_);
-		photoEditorView.Create      (noteListView.hwnd_);
-		profileView.Create          (noteListView.hwnd_);
-		voiceEditorView.Create      (noteListView.hwnd_);
-		attachmentPlayerView.Create (noteListView.hwnd_);
+		aboutView.Create       (noteListView.hwnd_);
+		audioPlayerView.Create (noteListView.hwnd_);
+		credentialsView.Create (noteListView.hwnd_);
+		editorView.Create      (noteListView.hwnd_);
+		inkEditorView.Create   (noteListView.hwnd_);
+		noteTagListView.Create (noteListView.hwnd_);
+		noteView.Create        (noteListView.hwnd_);
+		photoEditorView.Create (noteListView.hwnd_);
+		profileView.Create     (noteListView.hwnd_);
+		voiceEditorView.Create (noteListView.hwnd_);
 
 		userLoader.Run();
 		int result(RunMessageLoop(animator, syncModel));

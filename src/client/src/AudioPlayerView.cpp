@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "VoiceEditorView.h"
+#include "AudioPlayerView.h"
 
 #include "crackers.h"
 #include "Rect.h"
@@ -18,37 +18,36 @@ using namespace Tools;
 // interface
 //----------
 
-VoiceEditorView::VoiceEditorView
+AudioPlayerView::AudioPlayerView
 	( HINSTANCE         instance
 	, bool              highRes
 	, IHtmlDataLoader & htmlDataLoader
 	)
 	: instance        (instance)
 	, parent          (NULL)
-	, HTMLayoutWindow (L"voice-edit.htm", highRes, htmlDataLoader)
+	, HTMLayoutWindow (L"audio-player.htm", highRes, htmlDataLoader)
 {
 	::ZeroMemory(&activateInfo, sizeof(activateInfo));
 	activateInfo.cbSize = sizeof(activateInfo);
 }
 
-void VoiceEditorView::Create(HWND parent)
+void AudioPlayerView::Create(HWND parent)
 {
 	this->parent = parent;
-	RegisterClass(LoadStringResource(IDC_VOICE_EDIT));
+	RegisterClass(LoadStringResource(IDC_AUDIO_PLAYER));
 }
 
-void VoiceEditorView::RegisterEventHandlers()
+void AudioPlayerView::RegisterEventHandlers()
 {
-	ConnectBehavior("#play",   BUTTON_CLICK, &VoiceEditorView::OnVoicePlay);
-	ConnectBehavior("#record", BUTTON_CLICK, &VoiceEditorView::OnVoiceRecord);
-	ConnectBehavior("#stop",   BUTTON_CLICK, &VoiceEditorView::OnVoiceStop);
+	ConnectBehavior("#play", BUTTON_CLICK, &AudioPlayerView::OnVoicePlay);
+	ConnectBehavior("#stop", BUTTON_CLICK, &AudioPlayerView::OnVoiceStop);
 }
 
 //--------------------------------
-// IVoiceEditorView implementation
+// IAudioPlayerView implementation
 //--------------------------------
 
-void VoiceEditorView::Hide()
+void AudioPlayerView::Hide()
 {
 	if (hwnd_)
 	{
@@ -57,10 +56,10 @@ void VoiceEditorView::Hide()
 	}
 }
 
-void VoiceEditorView::Show()
+void AudioPlayerView::Show()
 {
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
-	wstring wndClass = LoadStringResource(IDC_VOICE_EDIT);
+	wstring wndClass = LoadStringResource(IDC_AUDIO_PLAYER);
 
 	DWORD windowStyle(WS_POPUP);
 
@@ -95,17 +94,12 @@ void VoiceEditorView::Show()
 	SignalShow();
 }
 
-void VoiceEditorView::OnVoicePlay(BEHAVIOR_EVENT_PARAMS * params)
+void AudioPlayerView::OnVoicePlay(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalPlay();
 }
 
-void VoiceEditorView::OnVoiceRecord(BEHAVIOR_EVENT_PARAMS * params)
-{
-	SignalRecord();
-}
-
-void VoiceEditorView::OnVoiceStop(BEHAVIOR_EVENT_PARAMS * params)
+void AudioPlayerView::OnVoiceStop(BEHAVIOR_EVENT_PARAMS * params)
 {
 	SignalStop();
 }
@@ -114,7 +108,7 @@ void VoiceEditorView::OnVoiceStop(BEHAVIOR_EVENT_PARAMS * params)
 // window message handlers
 //------------------------
 
-void VoiceEditorView::OnActivate(Msg<WM_ACTIVATE> & msg)
+void AudioPlayerView::OnActivate(Msg<WM_ACTIVATE> & msg)
 {
 	if (msg.GetActiveState() != WA_INACTIVE)
 	{
@@ -124,12 +118,12 @@ void VoiceEditorView::OnActivate(Msg<WM_ACTIVATE> & msg)
 	}
 }
 
-void VoiceEditorView::OnClose(Msg<WM_CLOSE> & msg)
+void AudioPlayerView::OnClose(Msg<WM_CLOSE> & msg)
 {
 	SignalHide();
 }
 
-void VoiceEditorView::OnCommand(Msg<WM_COMMAND> & msg)
+void AudioPlayerView::OnCommand(Msg<WM_COMMAND> & msg)
 {
 	switch (msg.CtrlId())
 	{
@@ -138,7 +132,7 @@ void VoiceEditorView::OnCommand(Msg<WM_COMMAND> & msg)
 	}
 }
 
-void VoiceEditorView::OnKeyUp(Msg<WM_KEYUP> & msg)
+void AudioPlayerView::OnKeyUp(Msg<WM_KEYUP> & msg)
 {
 	if (msg.VKey() == 0x1b)
 	{
@@ -147,14 +141,14 @@ void VoiceEditorView::OnKeyUp(Msg<WM_KEYUP> & msg)
 	}
 }
 
-void VoiceEditorView::ProcessMessage(WndMsg &msg)
+void AudioPlayerView::ProcessMessage(WndMsg &msg)
 {
 	static Handler mmp[] =
 	{
-		&VoiceEditorView::OnActivate,
-		&VoiceEditorView::OnClose,
-		&VoiceEditorView::OnCommand,
-		&VoiceEditorView::OnKeyUp,
+		&AudioPlayerView::OnActivate,
+		&AudioPlayerView::OnClose,
+		&AudioPlayerView::OnCommand,
+		&AudioPlayerView::OnKeyUp,
 	};
 	try
 	{
@@ -172,11 +166,11 @@ void VoiceEditorView::ProcessMessage(WndMsg &msg)
 // utility functions
 //------------------
 
-ATOM VoiceEditorView::RegisterClass(const wstring & wndClass)
+ATOM AudioPlayerView::RegisterClass(const wstring & wndClass)
 {
 	WNDCLASS wc = { 0 };
 	wc.style         = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc   = &VoiceEditorView::WndProc<VoiceEditorView>;
+	wc.lpfnWndProc   = &AudioPlayerView::WndProc<AudioPlayerView>;
 	wc.hInstance     = instance;
 	wc.hIcon         = LoadIcon(instance, MAKEINTRESOURCE(IDI_CLIENT));
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -184,7 +178,7 @@ ATOM VoiceEditorView::RegisterClass(const wstring & wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void VoiceEditorView::ResizeWindow()
+void AudioPlayerView::ResizeWindow()
 {
 	HWND menuBar(::SHFindMenuBar(hwnd_));
 	if (menuBar)
