@@ -50,7 +50,7 @@ void AudioAttachmentPresenter::OnHide()
 
 void AudioAttachmentPresenter::OnPlay()
 {
-	Guid guid(noteView.GetSelecteAttachmentGuid());
+	Guid guid(noteView.GetSelectedAttachmentGuid());
 	if (guid.IsEmpty())
 		return;
 	audioPlayer.Play(userModel.GetResourceData(guid));
@@ -59,6 +59,7 @@ void AudioAttachmentPresenter::OnPlay()
 void AudioAttachmentPresenter::OnPlayAttachment()
 {
 	audioPlayerView.Show();
+	audioPlayerView.SetFileName(noteView.GetSelectedAttachmentName());
 }
 
 void AudioAttachmentPresenter::OnShow()

@@ -13,5 +13,7 @@ public:
 
 	virtual void Hide() = 0;
 
+	virtual void SetFileName(std::wstring & name) = 0;
+
 	virtual void Show() = 0;
 };

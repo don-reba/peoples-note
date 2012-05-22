@@ -31,7 +31,9 @@ public:
 		, const std::wstring & directory
 		) = 0;
 
-	virtual Guid GetSelecteAttachmentGuid() = 0;
+	virtual Guid GetSelectedAttachmentGuid() = 0;
+
+	virtual std::wstring GetSelectedAttachmentName() = 0;
 
 	virtual void GetTitle(std::wstring & text) = 0;
 

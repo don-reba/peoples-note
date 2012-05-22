@@ -121,12 +121,20 @@ wstring NoteView::GetSavePath
 	return &fileNameChars[0];
 }
 
-Guid NoteView::GetSelecteAttachmentGuid()
+Guid NoteView::GetSelectedAttachmentGuid()
 {
-	const wchar_t * value(element(FindFirstElement("#attachments")).get_attribute("value"));
-	if (value)
-		return Guid(value);
+	const int index(GetSelectedAttachmentIndex());
+	if (index >= 0)
+		return attachments[index].Guid;
 	return Guid::GetEmpty();
+}
+
+wstring NoteView::GetSelectedAttachmentName()
+{
+	const int index(GetSelectedAttachmentIndex());
+	if (index >= 0)
+		return attachments[index].Text;
+	return L"";
 }
 
 void NoteView::GetTitle(std::wstring & text)
@@ -222,7 +230,8 @@ void NoteView::SetNote
 	if (TrySetHtml(utf8, utf8Chars.size()))
 	{
 		ConnectBehavior("#body input", BUTTON_STATE_CHANGED, &NoteView::OnInput);
-		SetAttachments(attachments);
+		this->attachments.assign(attachments.begin(), attachments.end());
+		UpdateAttachments();
 	}
 	else
 	{
@@ -271,6 +280,12 @@ POINT NoteView::GetScrollPos()
 	element body(FindFirstElement("#note"));
 	body.get_scroll_info(scrollPos, viewRect, contentSize);
 	return scrollPos;
+}
+
+int NoteView::GetSelectedAttachmentIndex()
+{
+	return element(FindFirstElement("#attachments"))
+		.get_attribute_int("value", -1);
 }
 
 void NoteView::Reset()
@@ -330,7 +345,7 @@ ATOM NoteView::RegisterClass(const wstring & wndClass)
 	return ::RegisterClass(&wc);
 }
 
-void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
+void NoteView::UpdateAttachments()
 {
 	DisconnectBehavior("#attachments *");
 
@@ -341,8 +356,13 @@ void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 	foreach (element & e, old)
 		e.destroy();
 
-	foreach (const AttachmentViewInfo & attachment, attachments)
+	for (int i(0), size(attachments.size()); i != size; ++i)
 	{
+		wchar_t value[16];
+		_itow(i, value, 10);
+
+		const AttachmentViewInfo & attachment(attachments[i]);
+
 		wstring guid(ConvertToUnicode(attachment.Guid).c_str());
 
 		element content (element::create("div"));
@@ -355,7 +375,7 @@ void NoteView::SetAttachments(const AttachmentViewInfoList & attachments)
 		list.insert(option, list.children_count() - 1);
 
 		content.set_style_attribute("background-image", attachment.Icon.c_str());
-		content.set_attribute("value", guid.c_str());
+		content.set_attribute("value", value);
 		content.set_attribute("class", L"content");
 		content.set_text(attachment.Text.c_str());
 

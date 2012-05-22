@@ -54,13 +54,27 @@
 			}
 			#attachments > option
 			{
-				background     : #f0ec40 url(attachment-misc.png) no-repeat top left;
+				background-color : #f0ec40;
+				border-top       : 1px solid black;
+				font-size        : 12px;
+				min-height       : 32px;
+				flow             : horizontal;
+				vertical-align   : middle;
+			}
+			#attachments > option > .content
+			{
+				background     : url(attachment-misc.png) no-repeat top left;
 				behavior       : clickable;
-				border-top     : 1px solid black;
-				font-size      : 12px;
-				min-height     : 32px;
+				height         : 100%%;
 				padding        : 0px 0px 0px 36px;
 				vertical-align : middle;
+				width          : 100%%;
+			}
+			#attachments > option > .play
+			{
+				border   : none;
+				behavior : clickable;
+				border   : none;
 			}
 			#note
 			{

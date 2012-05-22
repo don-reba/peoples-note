@@ -57,7 +57,7 @@ NotePresenter::NotePresenter
 
 void NotePresenter::OnAttachment()
 {
-	Guid guid(noteView.GetSelecteAttachmentGuid());
+	Guid guid(noteView.GetSelectedAttachmentGuid());
 	if (guid.IsEmpty())
 		return;
 

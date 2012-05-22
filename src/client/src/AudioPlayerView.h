@@ -39,6 +39,8 @@ public:
 
 	virtual void Hide();
 
+	virtual void SetFileName(std::wstring & name);
+
 	virtual void Show();
 
 // windows message handlers

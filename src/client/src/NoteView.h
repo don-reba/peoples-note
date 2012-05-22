@@ -32,6 +32,8 @@ private:
 
 	Note note;
 
+	AttachmentViewInfoList attachments;
+
 	POINT startScrollPos;
 
 	bool isMaximized;
@@ -73,7 +75,9 @@ public:
 		, const std::wstring & directory
 		);
 
-	virtual Guid GetSelecteAttachmentGuid();
+	virtual Guid GetSelectedAttachmentGuid();
+
+	virtual std::wstring GetSelectedAttachmentName();
 
 	virtual void GetTitle(std::wstring & text);
 
@@ -110,15 +114,17 @@ private:
 
 	POINT GetScrollPos();
 
+	virtual int GetSelectedAttachmentIndex();
+
 	ATOM RegisterClass(const std::wstring & wndClass);
 
 	void Reset();
 
-	void SetAttachments(const AttachmentViewInfoList & attachments);
-
 	void SetChrome(bool enable);
 
 	void SetScrollPos(POINT pos);
+
+	void UpdateAttachments();
 
 	void UpdateScrollbar();
 

@@ -56,6 +56,11 @@ void AudioPlayerView::Hide()
 	}
 }
 
+void AudioPlayerView::SetFileName(wstring & name)
+{
+	element(FindFirstElement("#name")).set_text(name.c_str());
+}
+
 void AudioPlayerView::Show()
 {
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
