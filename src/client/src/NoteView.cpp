@@ -366,11 +366,20 @@ void NoteView::UpdateAttachments()
 		wstring guid(ConvertToUnicode(attachment.Guid).c_str());
 
 		element content (element::create("div"));
-		element play    (element::create("img"));
 
 		element option(element::create("option"));
 		option.append(content);
-		option.append(play);
+
+		if (attachment.IsPlayable)
+		{
+			element play(element::create("img"));
+			play.set_attribute("src",   L"play-attachment.png");
+			play.set_attribute("value", guid.c_str());
+			play.set_attribute("class", L"play");
+			option.append(play);
+			
+			ConnectBehavior(play, BUTTON_CLICK, &NoteView::OnPlayAttachment);
+		}
 
 		list.insert(option, list.children_count() - 1);
 
@@ -379,12 +388,7 @@ void NoteView::UpdateAttachments()
 		content.set_attribute("class", L"content");
 		content.set_text(attachment.Text.c_str());
 
-		play.set_attribute("src",   L"play-attachment.png");
-		play.set_attribute("value", guid.c_str());
-		play.set_attribute("class", L"play");
-
 		ConnectBehavior(content, BUTTON_CLICK, &NoteView::OnAttachment);
-		ConnectBehavior(play,    BUTTON_CLICK, &NoteView::OnPlayAttachment);
 	}
 }
 
