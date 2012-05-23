@@ -66,10 +66,12 @@ void AudioPlayerView::Show()
 	wstring wndTitle = LoadStringResource(IDS_APP_TITLE);
 	wstring wndClass = LoadStringResource(IDC_AUDIO_PLAYER);
 
-	DWORD windowStyle(WS_POPUP);
+	DWORD windowStyle   (WS_POPUP);
+	DWORD windowExStyle (WS_EX_CAPTIONOKBTN);
 
-	hwnd_ = ::CreateWindow
-		( wndClass.c_str() // lpClassName
+	hwnd_ = ::CreateWindowEx
+		( windowExStyle    // dwExStyle
+		, wndClass.c_str() // lpClassName
 		, wndTitle.c_str() // lpWindowName
 		, windowStyle      // dwStyle
 		, CW_USEDEFAULT    // x
@@ -84,11 +86,10 @@ void AudioPlayerView::Show()
 	if (!hwnd_)
 		throw std::exception("Window creation failed.");
 
-	::SHDoneButton(hwnd_, SHDB_SHOWCANCEL);
-
 	SHMENUBARINFO menuBarInfo = { sizeof(menuBarInfo) };
 	menuBarInfo.hwndParent = hwnd_;
-	menuBarInfo.nToolBarId = IDR_OK_CANCEL_MENUBAR;
+	menuBarInfo.dwFlags    = SHCMBF_HIDESIPBUTTON;
+	menuBarInfo.nToolBarId = IDR_OK_MENUBAR;
 	menuBarInfo.hInstRes   = instance;
 	::SHCreateMenuBar(&menuBarInfo);
 
@@ -132,8 +133,8 @@ void AudioPlayerView::OnCommand(Msg<WM_COMMAND> & msg)
 {
 	switch (msg.CtrlId())
 	{
-	case IDM_CANCEL: SignalCancel(); break;
-	case IDCANCEL:   SignalCancel(); break;
+	case IDOK:   SignalCancel(); break;
+	case IDM_OK: SignalCancel(); break;
 	}
 }
 
