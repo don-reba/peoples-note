@@ -10,6 +10,7 @@ MockNoteView::MockNoteView()
 	, isDirty      (false)
 	, isMaximized  (false)
 	, isShown      (false)
+	, selectedAttachment (Guid(), L"", L"", false)
 {
 }
 
@@ -39,9 +40,14 @@ wstring MockNoteView::GetSavePath
 	return savePath;
 }
 
-Guid MockNoteView::GetSelecteAttachmentGuid()
+Guid MockNoteView::GetSelectedAttachmentGuid()
 {
-	return selectedAttachment;
+	return selectedAttachment.Guid;
+}
+
+std::wstring MockNoteView::GetSelectedAttachmentName()
+{
+	return selectedAttachment.Text;
 }
 
 void MockNoteView::GetTitle(std::wstring & text)

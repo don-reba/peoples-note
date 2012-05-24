@@ -62,12 +62,12 @@ BOOST_FIXTURE_TEST_CASE
 	userModel.path     = L"path";
 
 	profileView.isMoveButtonEnabled = true;
-	profileView.moveErrorMessage    = L"error";
+	profileView.message             = L"error";
 
 	profileView.SignalDbMove();
 
 	BOOST_CHECK(!profileView.isMoveButtonEnabled);
-	BOOST_CHECK(profileView.moveErrorMessage.empty());
+	BOOST_CHECK(profileView.message.empty());
 
 	BOOST_CHECK_EQUAL(userModel.path, L"device-path");
 	BOOST_CHECK_EQUAL(userModel.location, DbLocationDevice);

@@ -12,12 +12,13 @@ class MockNoteView : public INoteView
 	MacroTestEvent(Delete)
 	MacroTestEvent(Edit)
 	MacroTestEvent(EditTags)
+	MacroTestEvent(PlayAttachment)
 	MacroTestEvent(ToggleMaximize)
 
 public:
 
 	AttachmentViewInfoList attachments;
-	Guid selectedAttachment;
+	AttachmentViewInfo     selectedAttachment;
 
 	std::wstring body;
 	std::wstring subtitle;
@@ -54,7 +55,9 @@ public:
 		, const std::wstring & directory
 		);
 
-	virtual Guid GetSelecteAttachmentGuid();
+	virtual Guid GetSelectedAttachmentGuid();
+
+	virtual std::wstring GetSelectedAttachmentName();
 
 	virtual void GetTitle(std::wstring & text);
 

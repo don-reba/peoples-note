@@ -57,6 +57,7 @@ public:
 	NoteList             notes;
 	RecognitionEntryList recognitionEntries;
 	ResourceList         resources;
+	SqlBlob              resourceData;
 	TagList              tags;
 
 	std::map<std::string, std::wstring> noteBodies;
@@ -216,6 +217,8 @@ public:
 		( const Guid & guid
 		, Resource   & resource
 		);
+
+	virtual SqlBlob GetResourceData(const Guid & guid);
 
 	virtual void GetResources(GuidList & resources);
 

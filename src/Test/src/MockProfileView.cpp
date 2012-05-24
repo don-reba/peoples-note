@@ -39,14 +39,14 @@ void MockProfileView::SetDbSize(const wstring & size)
 	dbSize = size;
 }
 
+void MockProfileView::SetMessage(const wstring & message)
+{
+	this->message = message;
+}
+
 void MockProfileView::SetMoveButtonText(const wstring & text)
 {
 	moveButtonText = text;
-}
-
-void MockProfileView::SetMoveErrorMessage(const wstring & message)
-{
-	moveErrorMessage = message;
 }
 
 void MockProfileView::SetUsername(const wstring & username)

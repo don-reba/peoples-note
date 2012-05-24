@@ -340,6 +340,11 @@ void MockUserModel::GetResource
 	}
 }
 
+MockUserModel::SqlBlob MockUserModel::GetResourceData(const Guid & guid)
+{
+	return resourceData;
+}
+
 void MockUserModel::GetResource(const Guid & guid, Resource & resource)
 {
 	foreach (const Resource & r, resources)
