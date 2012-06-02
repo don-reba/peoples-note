@@ -95,18 +95,6 @@ BOOST_FIXTURE_TEST_CASE
 		);
 }
 
-BOOST_FIXTURE_TEST_CASE
-	( NotePresenter_LoadingData
-	, NotePresenterFixture
-	)
-{
-	userModel.resources.push_back(Resource());
-	userModel.resources.back().Data.push_back(2);
-	userModel.resources.back().Data.push_back(3);
-	userModel.resources.back().Data.push_back(5);
-	userModel.resources.back().Hash = "test";
-}
-
 // Note: the output of this test depends on your time zone.
 BOOST_FIXTURE_TEST_CASE
 	( NotePresenter_OpenNote

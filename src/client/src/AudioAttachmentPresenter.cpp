@@ -16,22 +16,20 @@ using namespace std;
 AudioAttachmentPresenter::AudioAttachmentPresenter
 	( IAudioPlayer            & audioPlayer
 	, IAudioPlayerView        & audioPlayerView
-	, IAudioRecorder          & audioRecorder
 	, const ICredentialsModel & credentialsModel
 	, INoteView               & noteView
 	, IUserModel              & userModel
 	)
 	: audioPlayer      (audioPlayer)
 	, audioPlayerView  (audioPlayerView)
-	, audioRecorder    (audioRecorder)
 	, credentialsModel (credentialsModel)
 	, noteView         (noteView)
 	, userModel        (userModel)
 {
 	noteView.ConnectPlayAttachment (bind(&AudioAttachmentPresenter::OnPlayAttachment, this));
 
-	audioPlayerView.ConnectHide   (bind(&AudioAttachmentPresenter::OnHide,   this));
 	audioPlayerView.ConnectCancel (bind(&AudioAttachmentPresenter::OnCancel, this));
+	audioPlayerView.ConnectHide   (bind(&AudioAttachmentPresenter::OnHide,   this));
 	audioPlayerView.ConnectPlay   (bind(&AudioAttachmentPresenter::OnPlay,   this));
 	audioPlayerView.ConnectShow   (bind(&AudioAttachmentPresenter::OnShow,   this));
 	audioPlayerView.ConnectStop   (bind(&AudioAttachmentPresenter::OnStop,   this));

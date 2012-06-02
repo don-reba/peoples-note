@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\AudioAttachmentPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\client\src\CredentialsModel.cpp"
 				>
 			</File>
@@ -257,6 +261,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockAudioPlayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockAudioPlayerView.cpp"
 				>
 			</File>
 			<File
@@ -349,6 +357,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockSqlBlob.cpp"
 				>
 			</File>
 			<File
@@ -466,6 +478,10 @@
 			</File>
 			<File
 				RelativePath=".\src\TestAnimator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestAudioAttachmentPresenter.cpp"
 				>
 			</File>
 			<File
@@ -651,11 +667,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\client\src\ISqlBlob.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MockAboutView.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\MockAudioPlayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockAudioPlayerView.h"
 				>
 			</File>
 			<File
@@ -748,6 +772,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MockRegistryKey.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MockSqlBlob.h"
 				>
 			</File>
 			<File

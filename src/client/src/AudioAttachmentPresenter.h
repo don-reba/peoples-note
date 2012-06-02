@@ -12,11 +12,10 @@ class AudioAttachmentPresenter
 {
 private:
 
-	IAudioPlayer      & audioPlayer;
-	IAudioPlayerView  & audioPlayerView;
-	IAudioRecorder    & audioRecorder;
-	INoteView         & noteView;
-	IUserModel        & userModel;
+	IAudioPlayer     & audioPlayer;
+	IAudioPlayerView & audioPlayerView;
+	INoteView        & noteView;
+	IUserModel       & userModel;
 
 	const ICredentialsModel & credentialsModel;
 
@@ -25,7 +24,6 @@ public:
 	AudioAttachmentPresenter
 		( IAudioPlayer            & audioPlayer
 		, IAudioPlayerView        & audioPlayerView
-		, IAudioRecorder          & audioRecorder
 		, const ICredentialsModel & credentialsModel
 		, INoteView               & noteView
 		, IUserModel              & userModel

@@ -199,7 +199,6 @@ int WINAPI WinMain(HINSTANCE instance,
 		AudioAttachmentPresenter audioAttachmentPresenter
 			( audioPlayer
 			, audioPlayerView
-			, audioRecorder
 			, credentialsModel
 			, noteView
 			, mediaUserModel
