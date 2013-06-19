@@ -29,6 +29,19 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 	, wstring password
 	)
 {
+	AuthenticationResult result;
+	result.IsGood  = true;
+	result.Message = L"";
+	result.ShardId = L"https://www.evernote.com/shard/s9/notestore";
+	result.Token   = L"S=s9:U=f0333:E=14659dc23fc:C=13f022af800:P=1cd:A=en-devtoken:V=2:H=fdb22ec26cb9c45cf3d77e243675002e";
+	return result;
+}
+/*
+IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
+	( wstring username
+	, wstring password
+	)
+{
 	const wchar_t * userStoreUrl   = L"https://www.evernote.com/edam/user";
 
 	AuthenticationResult result;
@@ -82,3 +95,4 @@ IUserStore::AuthenticationResult UserStore::GetAuthenticationToken
 	}
 	return result;
 }
+*/

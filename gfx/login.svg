@@ -14,7 +14,7 @@
    height="640"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.0 r9654"
+   inkscape:version="0.48.2 r9819"
    sodipodi:docname="login.svg"
    inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\login.png"
    inkscape:export-xdpi="180"
@@ -585,6 +585,14 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <filter
+       inkscape:collect="always"
+       id="filter5096">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="6.49"
+         id="feGaussianBlur5098" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -594,8 +602,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="-100.27779"
-     inkscape:cy="350.77672"
+     inkscape:cx="404.47449"
+     inkscape:cy="390.50224"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -609,7 +617,7 @@
      showguides="false"
      inkscape:guide-bbox="true"
      inkscape:window-width="1680"
-     inkscape:window-height="1030"
+     inkscape:window-height="1028"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -656,7 +664,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -672,18 +680,6 @@
        height="640"
        x="0"
        y="0" />
-    <path
-       transform="translate(0,-412.36218)"
-       style="fill:#000000;fill-opacity:1;stroke:none;display:inline;filter:url(#filter3853)"
-       d="m 0,827.99805 0,59.03125 480,0 0,-59.03125 -480,0 z m 10,10.03125 460,0 0,40 -460,0 0,-40 z"
-       id="rect3016"
-       clip-path="none" />
-    <path
-       transform="translate(0,-412.36218)"
-       clip-path="none"
-       id="path2949"
-       d="m 0,884.05865 0,59.03125 480,0 0,-59.03125 -480,0 z m 10,10.03125 460,0 0,40 -460,0 0,-40 z"
-       style="fill:#000000;fill-opacity:1;stroke:none;display:inline;filter:url(#filter3853)" />
     <rect
        transform="matrix(0.9949567,-0.1003054,0.1003054,0.9949567,718.8205,-400.0274)"
        style="fill:#000000;stroke:#000000;stroke-width:1;stroke-opacity:1;filter:url(#filter3802)"
@@ -720,10 +716,17 @@
        y="35.006653"
        clip-path="url(#clipPath3742)" />
     <path
+       style="fill:#000000;fill-opacity:1;stroke:none;display:inline;filter:url(#filter5096)"
+       d="m 4.4107437e-6,401.007 0,169 L 480,570.007 l 0,-169 z M 10.000004,411.71875 l 459.999996,0 0,148 -459.999996,0 z"
+       id="rect3758-1"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:connector-curvature="0" />
+    <path
        style="fill:#70b438;fill-opacity:1;stroke:none"
-       d="M 0,77.006999 0,632.007 l 480,0 0,-555.000001 -480,0 z m 10,348.680501 460,0 0,40 -460,0 0,-40 z m 0,56.03125 460,0 0,40 -460,0 0,-40 z"
+       d="M 0,77.006999 0,632.007 l 480,0 0,-555.000001 z m 10,334.711751 460,0 0,148 -460,0 z"
        id="rect3758"
-       sodipodi:nodetypes="ccccccccccccccc" />
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:connector-curvature="0" />
   </g>
   <g
      inkscape:label="Layer 1"
@@ -731,32 +734,6 @@
      id="layer1"
      transform="translate(0,-412.36218)"
      style="display:inline">
-    <text
-       id="text4025"
-       y="868.31079"
-       x="30.116699"
-       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#696969;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       xml:space="preserve"
-       inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render (login).png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360"><tspan
-         y="868.31079"
-         x="30.116699"
-         id="tspan4027"
-         sodipodi:role="line">Username</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#696969;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
-       x="30.116699"
-       y="923.89703"
-       id="text3875"
-       inkscape:export-filename="C:\Users\Alexey\Programming\Evernote client\gfx\render (login).png"
-       inkscape:export-xdpi="360"
-       inkscape:export-ydpi="360"><tspan
-         sodipodi:role="line"
-         id="tspan3877"
-         x="30.116699"
-         y="923.89703">Password</tspan></text>
     <g
        id="g2931"
        transform="translate(0,-24)"
@@ -766,28 +743,47 @@
        inkscape:export-ydpi="360">
       <text
          id="text3879"
-         y="603.26825"
+         y="571.26825"
          x="113.70355"
          style="font-size:64.09456635px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="603.26825"
+           y="571.26825"
            x="113.70355"
            id="tspan3881"
            sodipodi:role="line" /><tspan
            id="tspan2915"
-           y="683.38647"
+           y="651.38647"
            x="113.70355"
            sodipodi:role="line">Evernote</tspan></text>
       <text
          id="text2917"
-         y="616.09143"
+         y="584.09143"
          x="117.21912"
          style="font-size:36.99126816px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
          xml:space="preserve"><tspan
-           y="616.09143"
+           y="584.09143"
            x="117.21912"
            id="tspan2919"
            sodipodi:role="line">sign into</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+         x="61.356445"
+         y="729.36218"
+         id="text5050"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           x="61.356445"
+           y="729.36218"
+           id="tspan5056">due to changes in Evernote's</tspan><tspan
+           sodipodi:role="line"
+           x="61.356445"
+           y="764.36218"
+           id="tspan5072">authentication, you need to</tspan><tspan
+           sodipodi:role="line"
+           x="61.356445"
+           y="799.36218"
+           id="tspan5076">enter a dev token to sign in</tspan></text>
     </g>
     <g
        id="g3857">
@@ -1024,7 +1020,20 @@
            style="fill:#000000;fill-opacity:1;stroke:none" />
       </g>
     </g>
-  </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4250"
+       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#696969;fill-opacity:1;stroke:none;font-family:Tahoma;-inkscape-font-specification:Tahoma"
+       transform="matrix(0.9043139,0,0,1,-571.54393,697.45866)"><flowRegion
+         id="flowRegion4252"><rect
+           id="rect4254"
+           width="461.1535"
+           height="110"
+           x="666"
+           y="136"
+           style="fill:#696969" /></flowRegion><flowPara
+         id="flowPara4258"
+         style="font-size:29.44410977px">*=**:*=*****:*=***********:*=***********:*=***:*=**-********:*=*:*=********************************</flowPara></flowRoot>  </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
@@ -1048,12 +1057,13 @@
        rx="0"
        ry="0" />
     <image
-       style="display:inline"
-       y="-2.8610229e-06"
-       x="-0.00023242188"
-       id="image3052"
-       height="52"
+       sodipodi:absref="C:\Users\Alexey\Programming\Evernote client\gfx\icons/window title.png"
+       xlink:href="icons/window title.png"
        width="480"
-       xlink:href="icons/window title.png" />
+       height="52"
+       id="image3052"
+       x="-0.00023242188"
+       y="-2.8610229e-06"
+       style="display:inline" />
   </g>
 </svg>

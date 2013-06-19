@@ -32,6 +32,13 @@
 			{
 				font-size : 64px;
 			}
+			#tip
+			{
+				font-size  : 28px;
+				text-align : left;
+				text-wrap  : none;
+				margin     : 0px auto 32px auto;
+			}
 			#message
 			{
 				font-size      : 24px;
@@ -40,7 +47,22 @@
 				text-align     : center;
 				vertical-align : middle;
 			}
-			#username, #password
+			#password
+			{
+				background-image    : url(inputshadow.png);
+				background-position : 13px 13px 13px 13px;
+				background-repeat   : expand;
+				border-style        : none;
+				behavior            : plaintext
+				color               : black;
+				font-size           : 24px;
+				height              : 100px;
+				margin              : 8px;
+				overflow-y          : auto;
+				text-wrap           : unrestricted;
+				padding             : 0px 10px;
+			}
+			#username
 			{
 				display : block;
 				width   : 100%%;
@@ -52,8 +74,9 @@
 			<div #h1>sign into</div>
 			<div #h2>Evernote</div>
 		</div>
-		<input #username type="text"     novalue="Name"                       />
-		<input #password type="password" novalue="Password" password-char="*" />
+		<div #tip>due to changes in Evernote's<br>authentication, you have to<br>enter a dev token to sign in</div>
+		<input #username type="text" novalue="Name" />
+		<widget #password type="textarea" novalue="*=**:*=*****:*=***********:*=***********:*=***:*=**-********:*=*:*=*************" />
 		<div #message />
 	</body>
 </html>

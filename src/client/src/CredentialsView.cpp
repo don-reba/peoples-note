@@ -47,7 +47,7 @@ wstring CredentialsView::GetPassword() const
 	element e = root.find_first("#password");
 	if (!e)
 		throw std::exception("#password not found.");
-	return e.text().c_str();
+	return static_cast<wstring>(e.get_value().to_string());
 }
 
 wstring CredentialsView::GetUsername() const
