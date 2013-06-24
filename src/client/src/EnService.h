@@ -12,8 +12,6 @@ public:
 
 	EnService(ILogger & logger);
 
-	virtual UserStorePtr GetUserStore();
-
 	virtual NoteStorePtr GetNoteStore
 		( const AuthenticationToken & token
 		, const std::wstring        & shardId

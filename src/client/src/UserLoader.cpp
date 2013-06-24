@@ -22,7 +22,8 @@ void UserLoader::Run()
 {
 	credentialsModel.Set
 		( lastUserModel.GetUsername()
-		, lastUserModel.GetPassword()
+		, lastUserModel.GetToken()
+		, lastUserModel.GetShard()
 		);
 }
 
@@ -30,6 +31,7 @@ void UserLoader::OnCommit()
 {
 	lastUserModel.SetCredentials
 		( credentialsModel.GetUsername()
-		, credentialsModel.GetPassword()
+		, credentialsModel.GetToken()
+		, credentialsModel.GetShard()
 		);
 }

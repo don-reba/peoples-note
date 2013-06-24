@@ -5,7 +5,6 @@
 #include "IEnService.h"
 #include "INoteListView.h"
 #include "IUserModel.h"
-#include "IUserStore.h"
 #include "Tools.h"
 #include "Transaction.h"
 
@@ -35,12 +34,13 @@ try
 {
 	userModel.Unload();
 
-	wstring username(credentialsModel.GetUsername());
-	wstring password(credentialsModel.GetPassword());
+	wstring username (credentialsModel.GetUsername());
+	wstring token    (credentialsModel.GetToken());
+	wstring shard    (credentialsModel.GetShard());
 
 	if (username.empty())
 	{
-		credentialsModel.Set(anonymousUser, L"");
+		credentialsModel.Set(anonymousUser, L"", L"");
 		return;
 	}
 
@@ -51,9 +51,15 @@ try
 		return;
 	}
 
-	if (password.empty())
+	if (token.empty())
 	{
-		credentialsModel.Update(L"Please, enter a password.");
+		credentialsModel.Update(L"Please, enter a developer token.");
+		return;
+	}
+
+	if (shard.empty())
+	{
+		credentialsModel.Update(L"Please, enter a notestore url.");
 		return;
 	}
 
@@ -61,33 +67,24 @@ try
 	{
 		userModel.Load(username);
 
-		if (HashPassword(password) == userModel.GetPasswordHash())
+		if (HashPassword(token) == userModel.GetPasswordHash())
 		{
 			credentialsModel.Commit();
 		}
 		else
 		{
 			userModel.Unload();
-			credentialsModel.Update(L"The password is invalid.");
+			credentialsModel.Update(L"The token is invalid.");
 		}
 	}
 	else
 	{
-		IUserStore::AuthenticationResult authenticationResult =
-			enService.GetUserStore()->GetAuthenticationToken(username, password);
-		if (authenticationResult.IsGood)
-		{
-			userModel.LoadAs(anonymousUser, username);
-			userModel.SetCredentials
-				( username
-				, HashPassword(credentialsModel.GetPassword())
-				);
-			credentialsModel.Commit();
-		}
-		else
-		{
-			credentialsModel.Update(authenticationResult.Message.c_str());
-		}
+		userModel.LoadAs(anonymousUser, username);
+		userModel.SetCredentials
+			( username
+			, HashPassword(token)
+			);
+		credentialsModel.Commit();
 	}
 }
 catch (const std::exception & e)
@@ -100,5 +97,5 @@ void UserSignInPresenter::OnSignIn()
 	if (userModel.GetUsername() == anonymousUser)
 		credentialsModel.Update(L"");
 	else
-		credentialsModel.Set(anonymousUser, L"");
+		credentialsModel.Set(anonymousUser, L"", L"");
 }

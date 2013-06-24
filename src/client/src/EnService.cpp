@@ -3,7 +3,6 @@
 
 #include "ILogger.h"
 #include "NoteStore.h"
-#include "UserStore.h"
 
 using namespace boost;
 using namespace std;
@@ -11,11 +10,6 @@ using namespace std;
 EnService::EnService(ILogger & logger)
 	: logger (logger)
 {
-}
-
-IEnService::UserStorePtr EnService::GetUserStore()
-{
-	return make_shared<UserStore>(ref(logger));
 }
 
 IEnService::NoteStorePtr EnService::GetNoteStore

@@ -32,13 +32,6 @@
 			{
 				font-size : 64px;
 			}
-			#tip
-			{
-				font-size  : 28px;
-				text-align : left;
-				text-wrap  : none;
-				margin     : 0px auto 32px auto;
-			}
 			#message
 			{
 				font-size      : 24px;
@@ -47,25 +40,33 @@
 				text-align     : center;
 				vertical-align : middle;
 			}
-			#password
+			#token
 			{
 				background-image    : url(inputshadow.png);
 				background-position : 13px 13px 13px 13px;
 				background-repeat   : expand;
 				border-style        : none;
-				behavior            : plaintext
 				color               : black;
 				font-size           : 24px;
 				height              : 100px;
-				margin              : 8px;
+				margin              : 0px 10px;
+				padding             : 0px 10px;
 				overflow-y          : auto;
 				text-wrap           : unrestricted;
 				padding             : 0px 10px;
 			}
-			#username
+			#username, #shard
 			{
 				display : block;
 				width   : 100%%;
+				margin  : 0px 10px;
+			}
+			.label
+			{
+				font-size  : 24px;
+				margin     : 8px 0px 4px 0px;
+				padding    : 0px 20px;
+				text-align : left;
 			}
 		</style>
 	</head>
@@ -74,9 +75,16 @@
 			<div #h1>sign into</div>
 			<div #h2>Evernote</div>
 		</div>
-		<div #tip>due to changes in Evernote's<br>authentication, you have to<br>enter a dev token to sign in</div>
-		<input #username type="text" novalue="Name" />
-		<widget #password type="textarea" novalue="*=**:*=*****:*=***********:*=***********:*=***:*=**-********:*=*:*=*************" />
+
+		<div .label>username</div>
+		<input #username type="text" />
+
+		<div .label>developer token</div>
+		<widget #token type="textarea" />
+
+		<div .label>notestore url</div>
+		<input #shard type="text" />
+
 		<div #message />
 	</body>
 </html>

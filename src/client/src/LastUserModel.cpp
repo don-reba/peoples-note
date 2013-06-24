@@ -11,9 +11,14 @@ LastUserModel::LastUserModel(IRegistryKey & registryKey)
 {
 }
 
-wstring LastUserModel::GetPassword() const
+wstring LastUserModel::GetShard() const
 {
-	return registryKey.GetString(L"password", L"");
+	return registryKey.GetString(L"shard", L"");
+}
+
+wstring LastUserModel::GetToken() const
+{
+	return registryKey.GetString(L"token", L"");
 }
 
 wstring LastUserModel::GetUsername() const
@@ -23,9 +28,11 @@ wstring LastUserModel::GetUsername() const
 
 void LastUserModel::SetCredentials
 	( const std::wstring & username
-	, const std::wstring & password
+	, const std::wstring & token
+	, const std::wstring & shard
 	)
 {
 	registryKey.SetString(L"username", username.c_str());
-	registryKey.SetString(L"password", password.c_str());
+	registryKey.SetString(L"token",    token.c_str());
+	registryKey.SetString(L"shard",    shard.c_str());
 }

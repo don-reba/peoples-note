@@ -39,19 +39,21 @@ public:
 
 	virtual void Close();
 
-	virtual std::wstring GetPassword() const;
+	virtual std::wstring GetShard() const;
+
+	virtual std::wstring GetToken() const;
 
 	virtual std::wstring GetUsername() const;
 
 	virtual void Open();
 
-	virtual void SetFocusToPassword();
-
 	virtual void SetFocusToUsername();
 
 	virtual void SetMessage(const std::wstring & message);
 
-	virtual void SetPassword(const std::wstring & password);
+	virtual void SetShard(const std::wstring & shard);
+
+	virtual void SetToken(const std::wstring & token);
 
 	virtual void SetUsername(const std::wstring & username);
 

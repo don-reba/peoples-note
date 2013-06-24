@@ -6,14 +6,19 @@ void CredentialsModel::Commit()
 	SignalCommit();
 }
 
+std::wstring CredentialsModel::GetShard() const
+{
+	return shard;
+}
+
+std::wstring CredentialsModel::GetToken() const
+{
+	return token;
+}
+
 std::wstring CredentialsModel::GetUsername() const
 {
 	return username;
-}
-
-std::wstring CredentialsModel::GetPassword() const
-{
-	return password;
 }
 
 std::wstring CredentialsModel::GetStatus() const
@@ -23,11 +28,13 @@ std::wstring CredentialsModel::GetStatus() const
 
 void CredentialsModel::Set
 	( const std::wstring & username
-	, const std::wstring & password
+	, const std::wstring & token
+	, const std::wstring & shard
 	)
 {
 	this->username = username;
-	this->password = password;
+	this->token    = token;
+	this->shard    = shard;
 	SignalSet();
 }
 

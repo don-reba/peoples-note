@@ -8,7 +8,6 @@
 #include "INoteStore.h"
 #include "ILogger.h"
 #include "IUserModel.h"
-#include "IUserStore.h"
 #include "NotebookProcessor.h"
 #include "NoteProcessor.h"
 #include "ScopedLock.h"
@@ -94,13 +93,15 @@ void SyncModel::StopSync()
 
 void SyncModel::BeginSync
 	( const wstring & username
-	, const wstring & password
+	, const wstring & token
+	, const wstring & shard
 	, const Guid    & notebook
 	)
 {
 	CloseThread();
 	this->username = username;
-	this->password = password;
+	this->token    = token;
+	this->shard    = shard;
 	this->notebook = notebook;
 	syncThread = ::CreateThread
 		( NULL             // lpsa
@@ -439,24 +440,7 @@ try
 
 	userModel.Load(username);
 
-	IEnService::UserStorePtr userStore(enService.GetUserStore());
-	IUserStore::AuthenticationResult authenticationResult
-		(userStore->GetAuthenticationToken(username, password));
-	if (!authenticationResult.IsGood)
-	{
-		FinishSync
-			( authenticationResult.Message.c_str()
-			, L"Tried to sync, but could not authenticate."
-			);
-		return;
-	}
-
-	IEnService::NoteStorePtr noteStore
-		( enService.GetNoteStore
-			( authenticationResult.Token
-			, authenticationResult.ShardId
-			)
-		);
+	IEnService::NoteStorePtr noteStore(enService.GetNoteStore(token, shard));
 
 	UpdateModel(*noteStore);
 

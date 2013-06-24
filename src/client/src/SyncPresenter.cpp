@@ -29,7 +29,8 @@ void SyncPresenter::OnSync()
 	userModel.GetLastUsedNotebook(notebookGuid);
 	syncModel.BeginSync
 		( lastUserModel.GetUsername()
-		, lastUserModel.GetPassword()
+		, lastUserModel.GetToken()
+		, lastUserModel.GetShard()
 		, notebookGuid
 		);
 }

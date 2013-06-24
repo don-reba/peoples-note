@@ -51,7 +51,8 @@ private:
 	IUserModel       & userModel;
 
 	std::wstring username;
-	std::wstring password;
+	std::wstring token;
+	std::wstring shard;
 	Guid         notebook;
 
 	HANDLE syncThread;
@@ -89,7 +90,8 @@ public:
 
 	virtual void BeginSync
 		( const std::wstring & username
-		, const std::wstring & password
+		, const std::wstring & token
+		, const std::wstring & shard
 		, const Guid         & notebook
 		);
 

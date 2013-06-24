@@ -14,7 +14,8 @@ public:
 
 	virtual void BeginSync
 		( const std::wstring & username
-		, const std::wstring & password
+		, const std::wstring & token
+		, const std::wstring & shard
 		, const Guid         & notebook
 		) = 0;
 

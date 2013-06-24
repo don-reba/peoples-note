@@ -40,21 +40,51 @@
 				text-align     : center;
 				vertical-align : middle;
 			}
-			#username, #password
+			#token
+			{
+				background-image    : url(inputshadow.png);
+				background-position : 7px 7px 7px 7px;
+				background-repeat   : expand;
+				border-style        : none;
+				color               : black;
+				font-size           : 12px;
+				height              : 50px;
+				margin              : 0px 5px;
+				padding             : 0px 5px;
+				overflow-y          : auto;
+				text-wrap           : unrestricted;
+				padding             : 0px 5px;
+			}
+			#username, #shard
 			{
 				display : block;
 				width   : 100%%;
+				margin  : 0px 5px;
+			}
+			.label
+			{
+				font-size  : 24px;
+				margin     : 4px 0px 2px 0px;
+				padding    : 0px 10px;
+				text-align : left;
 			}
 		</style>
 	</head>
 	<body>
-		<div #top/>
 		<div #heading>
 			<div #h1>sign into</div>
 			<div #h2>Evernote</div>
 		</div>
-		<input #username type="text"     novalue="Name"     />
-		<input #password type="password" novalue="Password" />
+
+		<div .label>username</div>
+		<input #username type="text" />
+
+		<div .label>developer token</div>
+		<widget #token type="textarea" />
+
+		<div .label>notestore url</div>
+		<input #shard type="text" />
+
 		<div #message />
 	</body>
 </html>

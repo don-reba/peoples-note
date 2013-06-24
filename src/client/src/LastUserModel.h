@@ -13,12 +13,15 @@ public:
 
 	LastUserModel(IRegistryKey & registryKey);
 
-	virtual std::wstring GetPassword() const;
+	virtual std::wstring GetShard() const;
+
+	virtual std::wstring GetToken() const;
 
 	virtual std::wstring GetUsername() const;
 
 	virtual void SetCredentials
 		( const std::wstring & username
-		, const std::wstring & password
+		, const std::wstring & token
+		, const std::wstring & shard
 		);
 };

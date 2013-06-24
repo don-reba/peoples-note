@@ -3,7 +3,6 @@
 #include "CredentialsPresenter.h"
 #include "ICredentialsModel.h"
 #include "ICredentialsView.h"
-#include "IUserStore.h"
 #include "Tools.h"
 
 using namespace boost;
@@ -30,13 +29,14 @@ void CredentialsPresenter::OnOk()
 {
 	credentialsModel.Set
 		( credentialsView.GetUsername()
-		, credentialsView.GetPassword()
+		, credentialsView.GetToken()
+		, credentialsView.GetShard()
 		);
 }
 
 void CredentialsPresenter::OnCancel()
 {
-	credentialsModel.Set(anonymousUser, L"");
+	credentialsModel.Set(anonymousUser, L"", L"");
 }
 
 void CredentialsPresenter::OnCommit()
@@ -49,20 +49,20 @@ void CredentialsPresenter::OnUpdate()
 	const wstring username(CreateDisplayUsername(credentialsModel.GetUsername()));
 
 	credentialsView.Open();
+
 	credentialsView.SetUsername(username);
-	credentialsView.SetPassword(L"");
+	credentialsView.SetToken(credentialsModel.GetToken());
+	credentialsView.SetShard(credentialsModel.GetShard());
 	credentialsView.SetMessage(credentialsModel.GetStatus());
 
-	if (username.empty())
-		credentialsView.SetFocusToUsername();
-	else
-		credentialsView.SetFocusToPassword();
+	credentialsView.SetFocusToUsername();
 }
 
 void CredentialsPresenter::OnViewCreated()
 {
 	credentialsView.SetUsername(CreateDisplayUsername(credentialsModel.GetUsername()));
-	credentialsView.SetPassword(L"");
+	credentialsView.SetToken(L"");
+	credentialsView.SetShard(L"");
 }
 
 wstring CredentialsPresenter::CreateDisplayUsername(const wstring & username)

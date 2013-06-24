@@ -41,12 +41,21 @@ void CredentialsView::Close()
 	hwnd_ = NULL;
 }
 
-wstring CredentialsView::GetPassword() const
+wstring CredentialsView::GetShard() const
 {
 	element root = element::root_element(hwnd_);
-	element e = root.find_first("#password");
+	element e = root.find_first("#shard");
 	if (!e)
-		throw std::exception("#password not found.");
+		throw std::exception("#shard not found.");
+	return static_cast<wstring>(e.get_value().to_string());
+}
+
+wstring CredentialsView::GetToken() const
+{
+	element root = element::root_element(hwnd_);
+	element e = root.find_first("#token");
+	if (!e)
+		throw std::exception("#token not found.");
 	return static_cast<wstring>(e.get_value().to_string());
 }
 
@@ -96,11 +105,6 @@ void CredentialsView::Open()
 	ShowWindow(hwnd_, SW_SHOW);
 }
 
-void CredentialsView::SetFocusToPassword()
-{
-	element(FindFirstElement("#password")).set_state(STATE_FOCUS);
-}
-
 void CredentialsView::SetFocusToUsername()
 {
 	element(FindFirstElement("#username")).set_state(STATE_FOCUS);
@@ -115,12 +119,20 @@ void CredentialsView::SetMessage(const std::wstring & message)
 	e.set_text(message.c_str());
 }
 
-void CredentialsView::SetPassword(const std::wstring & password)
+void CredentialsView::SetShard(const std::wstring & shard)
 {
-	element e(FindFirstElement("#password"));
+	element e(FindFirstElement("#shard"));
 	if (!e)
-		throw std::exception("#password not found.");
-	e.set_text(password.c_str());
+		throw std::exception("#shard not found.");
+	e.set_text(shard.c_str());
+}
+
+void CredentialsView::SetToken(const std::wstring & token)
+{
+	element e(FindFirstElement("#token"));
+	if (!e)
+		throw std::exception("#token not found.");
+	e.set_text(token.c_str());
 }
 
 void CredentialsView::SetUsername(const std::wstring & username)
