@@ -29,7 +29,7 @@ NoteStore::NoteStore
 	, const wstring             & shardId
 	)
 	: token     (token)
-	, transport (L"http://www.evernote.com/shard/s9/notestore")
+	, transport (shardId.c_str())
 	, protocol  (transport)
 	, noteStore (protocol)
 {

@@ -67,15 +67,7 @@ try
 	{
 		userModel.Load(username);
 
-		if (HashPassword(token) == userModel.GetPasswordHash())
-		{
-			credentialsModel.Commit();
-		}
-		else
-		{
-			userModel.Unload();
-			credentialsModel.Update(L"The token is invalid.");
-		}
+		credentialsModel.Commit();
 	}
 	else
 	{

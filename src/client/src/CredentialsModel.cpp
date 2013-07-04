@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "CredentialsModel.h"
+#include "Tools.h"
+
+using namespace Tools;
 
 void CredentialsModel::Commit()
 {
@@ -35,6 +38,10 @@ void CredentialsModel::Set
 	this->username = username;
 	this->token    = token;
 	this->shard    = shard;
+
+	if (StartsWith(this->shard, L"https:"))
+		this->shard.replace(0, 6, L"http:");
+
 	SignalSet();
 }
 
