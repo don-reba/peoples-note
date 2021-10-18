@@ -147,6 +147,7 @@ void PhotoEditorPresenter::CreatePhotoNote(const wstring & imagePath)
 	photoEditorView.Hide();
 
 	noteListModel.Reload();
+	noteListModel.NotifyOfNoteChange();
 }
 
 PhotoQuality PhotoEditorPresenter::GetQuality(const wchar_t * quality)

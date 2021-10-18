@@ -83,6 +83,7 @@ void InkEditorPresenter::OnAccept()
 	inkEditorView.Hide();
 
 	noteListModel.Reload();
+	noteListModel.NotifyOfNoteChange();
 }
 
 void InkEditorPresenter::OnCancel()
